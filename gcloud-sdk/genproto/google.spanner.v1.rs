@@ -378,9 +378,9 @@ pub mod plan_node {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Kind::Unspecified => "KIND_UNSPECIFIED",
-                Kind::Relational => "RELATIONAL",
-                Kind::Scalar => "SCALAR",
+                Self::Unspecified => "KIND_UNSPECIFIED",
+                Self::Relational => "RELATIONAL",
+                Self::Scalar => "SCALAR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -798,9 +798,9 @@ pub mod transaction_options {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    ReadLockMode::Unspecified => "READ_LOCK_MODE_UNSPECIFIED",
-                    ReadLockMode::Pessimistic => "PESSIMISTIC",
-                    ReadLockMode::Optimistic => "OPTIMISTIC",
+                    Self::Unspecified => "READ_LOCK_MODE_UNSPECIFIED",
+                    Self::Pessimistic => "PESSIMISTIC",
+                    Self::Optimistic => "OPTIMISTIC",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -984,20 +984,24 @@ pub struct Type {
     /// Required. The [TypeCode][google.spanner.v1.TypeCode] for this type.
     #[prost(enumeration = "TypeCode", tag = "1")]
     pub code: i32,
-    /// If [code][google.spanner.v1.Type.code] == [ARRAY][google.spanner.v1.TypeCode.ARRAY], then `array_element_type`
-    /// is the type of the array elements.
+    /// If [code][google.spanner.v1.Type.code] ==
+    /// [ARRAY][google.spanner.v1.TypeCode.ARRAY], then `array_element_type` is the
+    /// type of the array elements.
     #[prost(message, optional, boxed, tag = "2")]
     pub array_element_type: ::core::option::Option<::prost::alloc::boxed::Box<Type>>,
-    /// If [code][google.spanner.v1.Type.code] == [STRUCT][google.spanner.v1.TypeCode.STRUCT], then `struct_type`
-    /// provides type information for the struct's fields.
+    /// If [code][google.spanner.v1.Type.code] ==
+    /// [STRUCT][google.spanner.v1.TypeCode.STRUCT], then `struct_type` provides
+    /// type information for the struct's fields.
     #[prost(message, optional, tag = "3")]
     pub struct_type: ::core::option::Option<StructType>,
-    /// The [TypeAnnotationCode][google.spanner.v1.TypeAnnotationCode] that disambiguates SQL type that Spanner will
-    /// use to represent values of this type during query processing. This is
-    /// necessary for some type codes because a single [TypeCode][google.spanner.v1.TypeCode] can be mapped
-    /// to different SQL types depending on the SQL dialect. [type_annotation][google.spanner.v1.Type.type_annotation]
-    /// typically is not needed to process the content of a value (it doesn't
-    /// affect serialization) and clients can ignore it on the read path.
+    /// The [TypeAnnotationCode][google.spanner.v1.TypeAnnotationCode] that
+    /// disambiguates SQL type that Spanner will use to represent values of this
+    /// type during query processing. This is necessary for some type codes because
+    /// a single [TypeCode][google.spanner.v1.TypeCode] can be mapped to different
+    /// SQL types depending on the SQL dialect.
+    /// [type_annotation][google.spanner.v1.Type.type_annotation] typically is not
+    /// needed to process the content of a value (it doesn't affect serialization)
+    /// and clients can ignore it on the read path.
     #[prost(enumeration = "TypeAnnotationCode", tag = "4")]
     pub type_annotation: i32,
     /// If [code][google.spanner.v1.Type.code] ==
@@ -1008,15 +1012,16 @@ pub struct Type {
     #[prost(string, tag = "5")]
     pub proto_type_fqn: ::prost::alloc::string::String,
 }
-/// `StructType` defines the fields of a [STRUCT][google.spanner.v1.TypeCode.STRUCT] type.
+/// `StructType` defines the fields of a
+/// [STRUCT][google.spanner.v1.TypeCode.STRUCT] type.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StructType {
     /// The list of fields that make up this struct. Order is
     /// significant, because values of this struct type are represented as
     /// lists, where the order of field values matches the order of
-    /// fields in the [StructType][google.spanner.v1.StructType]. In turn, the order of fields
-    /// matches the order of columns in a read request, or the order of
-    /// fields in the `SELECT` clause of a query.
+    /// fields in the [StructType][google.spanner.v1.StructType]. In turn, the
+    /// order of fields matches the order of columns in a read request, or the
+    /// order of fields in the `SELECT` clause of a query.
     #[prost(message, repeated, tag = "1")]
     pub fields: ::prost::alloc::vec::Vec<struct_type::Field>,
 }
@@ -1085,14 +1090,14 @@ pub enum TypeCode {
     /// to \[struct_type.fields[i\]][google.spanner.v1.StructType.fields].
     Struct = 9,
     /// Encoded as `string`, in decimal format or scientific notation format.
-    /// <br>Decimal format:
-    /// <br>`\[+-\]Digits\[.[Digits]\]` or
-    /// <br>`[+-][Digits].Digits`
+    /// Decimal format:
+    /// `\[+-\]Digits\[.[Digits]\]` or
+    /// `[+-][Digits].Digits`
     ///
     /// Scientific notation:
-    /// <br>`\[+-\]Digits\[.[Digits\]][ExponentIndicator\[+-\]Digits]` or
-    /// <br>`[+-][Digits].Digits\[ExponentIndicator[+-\]Digits]`
-    /// <br>(ExponentIndicator is `"e"` or `"E"`)
+    /// `\[+-\]Digits\[.[Digits\]][ExponentIndicator\[+-\]Digits]` or
+    /// `[+-][Digits].Digits\[ExponentIndicator[+-\]Digits]`
+    /// (ExponentIndicator is `"e"` or `"E"`)
     Numeric = 10,
     /// Encoded as a JSON-formatted `string` as described in RFC 7159. The
     /// following rules are applied when parsing JSON input:
@@ -1108,6 +1113,12 @@ pub enum TypeCode {
     Proto = 13,
     /// Encoded as `string`, in decimal format.
     Enum = 14,
+    /// Encoded as `string`, in `ISO8601` duration format -
+    /// `P\[n\]Y[n]M\[n\]DT\[n\]H[n]M\[n[.fraction]\]S`
+    /// where `n` is an integer.
+    /// For example, `P1Y2M3DT4H5M6.5S` represents time duration of 1 year, 2
+    /// months, 3 days, 4 hours, 5 minutes, and 6.5 seconds.
+    Interval = 16,
 }
 impl TypeCode {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -1116,21 +1127,22 @@ impl TypeCode {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            TypeCode::Unspecified => "TYPE_CODE_UNSPECIFIED",
-            TypeCode::Bool => "BOOL",
-            TypeCode::Int64 => "INT64",
-            TypeCode::Float64 => "FLOAT64",
-            TypeCode::Float32 => "FLOAT32",
-            TypeCode::Timestamp => "TIMESTAMP",
-            TypeCode::Date => "DATE",
-            TypeCode::String => "STRING",
-            TypeCode::Bytes => "BYTES",
-            TypeCode::Array => "ARRAY",
-            TypeCode::Struct => "STRUCT",
-            TypeCode::Numeric => "NUMERIC",
-            TypeCode::Json => "JSON",
-            TypeCode::Proto => "PROTO",
-            TypeCode::Enum => "ENUM",
+            Self::Unspecified => "TYPE_CODE_UNSPECIFIED",
+            Self::Bool => "BOOL",
+            Self::Int64 => "INT64",
+            Self::Float64 => "FLOAT64",
+            Self::Float32 => "FLOAT32",
+            Self::Timestamp => "TIMESTAMP",
+            Self::Date => "DATE",
+            Self::String => "STRING",
+            Self::Bytes => "BYTES",
+            Self::Array => "ARRAY",
+            Self::Struct => "STRUCT",
+            Self::Numeric => "NUMERIC",
+            Self::Json => "JSON",
+            Self::Proto => "PROTO",
+            Self::Enum => "ENUM",
+            Self::Interval => "INTERVAL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1151,6 +1163,7 @@ impl TypeCode {
             "JSON" => Some(Self::Json),
             "PROTO" => Some(Self::Proto),
             "ENUM" => Some(Self::Enum),
+            "INTERVAL" => Some(Self::Interval),
             _ => None,
         }
     }
@@ -1166,18 +1179,19 @@ pub enum TypeAnnotationCode {
     /// Not specified.
     Unspecified = 0,
     /// PostgreSQL compatible NUMERIC type. This annotation needs to be applied to
-    /// [Type][google.spanner.v1.Type] instances having [NUMERIC][google.spanner.v1.TypeCode.NUMERIC]
-    /// type code to specify that values of this type should be treated as
-    /// PostgreSQL NUMERIC values. Currently this annotation is always needed for
-    /// [NUMERIC][google.spanner.v1.TypeCode.NUMERIC] when a client interacts with PostgreSQL-enabled
-    /// Spanner databases.
+    /// [Type][google.spanner.v1.Type] instances having
+    /// [NUMERIC][google.spanner.v1.TypeCode.NUMERIC] type code to specify that
+    /// values of this type should be treated as PostgreSQL NUMERIC values.
+    /// Currently this annotation is always needed for
+    /// [NUMERIC][google.spanner.v1.TypeCode.NUMERIC] when a client interacts with
+    /// PostgreSQL-enabled Spanner databases.
     PgNumeric = 2,
     /// PostgreSQL compatible JSONB type. This annotation needs to be applied to
-    /// [Type][google.spanner.v1.Type] instances having [JSON][google.spanner.v1.TypeCode.JSON]
-    /// type code to specify that values of this type should be treated as
-    /// PostgreSQL JSONB values. Currently this annotation is always needed for
-    /// [JSON][google.spanner.v1.TypeCode.JSON] when a client interacts with PostgreSQL-enabled
-    /// Spanner databases.
+    /// [Type][google.spanner.v1.Type] instances having
+    /// [JSON][google.spanner.v1.TypeCode.JSON] type code to specify that values of
+    /// this type should be treated as PostgreSQL JSONB values. Currently this
+    /// annotation is always needed for [JSON][google.spanner.v1.TypeCode.JSON]
+    /// when a client interacts with PostgreSQL-enabled Spanner databases.
     PgJsonb = 3,
     /// PostgreSQL compatible OID type. This annotation can be used by a client
     /// interacting with PostgreSQL-enabled Spanner database to specify that a
@@ -1191,10 +1205,10 @@ impl TypeAnnotationCode {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            TypeAnnotationCode::Unspecified => "TYPE_ANNOTATION_CODE_UNSPECIFIED",
-            TypeAnnotationCode::PgNumeric => "PG_NUMERIC",
-            TypeAnnotationCode::PgJsonb => "PG_JSONB",
-            TypeAnnotationCode::PgOid => "PG_OID",
+            Self::Unspecified => "TYPE_ANNOTATION_CODE_UNSPECIFIED",
+            Self::PgNumeric => "PG_NUMERIC",
+            Self::PgJsonb => "PG_JSONB",
+            Self::PgOid => "PG_OID",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1615,10 +1629,10 @@ pub mod request_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Priority::Unspecified => "PRIORITY_UNSPECIFIED",
-                Priority::Low => "PRIORITY_LOW",
-                Priority::Medium => "PRIORITY_MEDIUM",
-                Priority::High => "PRIORITY_HIGH",
+                Self::Unspecified => "PRIORITY_UNSPECIFIED",
+                Self::Low => "PRIORITY_LOW",
+                Self::Medium => "PRIORITY_MEDIUM",
+                Self::High => "PRIORITY_HIGH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1704,9 +1718,9 @@ pub mod directed_read_options {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Type::Unspecified => "TYPE_UNSPECIFIED",
-                    Type::ReadWrite => "READ_WRITE",
-                    Type::ReadOnly => "READ_ONLY",
+                    Self::Unspecified => "TYPE_UNSPECIFIED",
+                    Self::ReadWrite => "READ_WRITE",
+                    Self::ReadOnly => "READ_ONLY",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1933,9 +1947,17 @@ pub mod execute_sql_request {
         /// This mode returns only the query plan, without any results or
         /// execution statistics information.
         Plan = 1,
-        /// This mode returns both the query plan and the execution statistics along
-        /// with the results.
+        /// This mode returns the query plan, overall execution statistics,
+        /// operator level execution statistics along with the results. This has a
+        /// performance overhead compared to the other modes. It is not recommended
+        /// to use this mode for production traffic.
         Profile = 2,
+        /// This mode returns the overall (but not operator-level) execution
+        /// statistics along with the results.
+        WithStats = 3,
+        /// This mode returns the query plan, overall (but not operator-level)
+        /// execution statistics along with the results.
+        WithPlanAndStats = 4,
     }
     impl QueryMode {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1944,9 +1966,11 @@ pub mod execute_sql_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                QueryMode::Normal => "NORMAL",
-                QueryMode::Plan => "PLAN",
-                QueryMode::Profile => "PROFILE",
+                Self::Normal => "NORMAL",
+                Self::Plan => "PLAN",
+                Self::Profile => "PROFILE",
+                Self::WithStats => "WITH_STATS",
+                Self::WithPlanAndStats => "WITH_PLAN_AND_STATS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1955,6 +1979,8 @@ pub mod execute_sql_request {
                 "NORMAL" => Some(Self::Normal),
                 "PLAN" => Some(Self::Plan),
                 "PROFILE" => Some(Self::Profile),
+                "WITH_STATS" => Some(Self::WithStats),
+                "WITH_PLAN_AND_STATS" => Some(Self::WithPlanAndStats),
                 _ => None,
             }
         }
@@ -2346,9 +2372,9 @@ pub mod read_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                OrderBy::Unspecified => "ORDER_BY_UNSPECIFIED",
-                OrderBy::PrimaryKey => "ORDER_BY_PRIMARY_KEY",
-                OrderBy::NoOrder => "ORDER_BY_NO_ORDER",
+                Self::Unspecified => "ORDER_BY_UNSPECIFIED",
+                Self::PrimaryKey => "ORDER_BY_PRIMARY_KEY",
+                Self::NoOrder => "ORDER_BY_NO_ORDER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2425,9 +2451,9 @@ pub mod read_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                LockHint::Unspecified => "LOCK_HINT_UNSPECIFIED",
-                LockHint::Shared => "LOCK_HINT_SHARED",
-                LockHint::Exclusive => "LOCK_HINT_EXCLUSIVE",
+                Self::Unspecified => "LOCK_HINT_UNSPECIFIED",
+                Self::Shared => "LOCK_HINT_SHARED",
+                Self::Exclusive => "LOCK_HINT_EXCLUSIVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2576,7 +2602,13 @@ pub struct BatchWriteResponse {
 }
 /// Generated client implementations.
 pub mod spanner_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Cloud Spanner API
@@ -2690,8 +2722,7 @@ pub mod spanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2719,8 +2750,7 @@ pub mod spanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2746,8 +2776,7 @@ pub mod spanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2772,8 +2801,7 @@ pub mod spanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2797,8 +2825,7 @@ pub mod spanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2832,8 +2859,7 @@ pub mod spanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2862,8 +2888,7 @@ pub mod spanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2901,8 +2926,7 @@ pub mod spanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2937,8 +2961,7 @@ pub mod spanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2967,8 +2990,7 @@ pub mod spanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2994,8 +3016,7 @@ pub mod spanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3032,8 +3053,7 @@ pub mod spanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3063,8 +3083,7 @@ pub mod spanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3100,8 +3119,7 @@ pub mod spanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3139,8 +3157,7 @@ pub mod spanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3179,8 +3196,7 @@ pub mod spanner_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

@@ -121,14 +121,14 @@ pub mod registration {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::RegistrationPending => "REGISTRATION_PENDING",
-                State::RegistrationFailed => "REGISTRATION_FAILED",
-                State::TransferPending => "TRANSFER_PENDING",
-                State::TransferFailed => "TRANSFER_FAILED",
-                State::Active => "ACTIVE",
-                State::Suspended => "SUSPENDED",
-                State::Exported => "EXPORTED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::RegistrationPending => "REGISTRATION_PENDING",
+                Self::RegistrationFailed => "REGISTRATION_FAILED",
+                Self::TransferPending => "TRANSFER_PENDING",
+                Self::TransferFailed => "TRANSFER_FAILED",
+                Self::Active => "ACTIVE",
+                Self::Suspended => "SUSPENDED",
+                Self::Exported => "EXPORTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -181,9 +181,9 @@ pub mod registration {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Issue::Unspecified => "ISSUE_UNSPECIFIED",
-                Issue::ContactSupport => "CONTACT_SUPPORT",
-                Issue::UnverifiedEmail => "UNVERIFIED_EMAIL",
+                Self::Unspecified => "ISSUE_UNSPECIFIED",
+                Self::ContactSupport => "CONTACT_SUPPORT",
+                Self::UnverifiedEmail => "UNVERIFIED_EMAIL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -245,9 +245,9 @@ pub mod management_settings {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RenewalMethod::Unspecified => "RENEWAL_METHOD_UNSPECIFIED",
-                RenewalMethod::AutomaticRenewal => "AUTOMATIC_RENEWAL",
-                RenewalMethod::ManualRenewal => "MANUAL_RENEWAL",
+                Self::Unspecified => "RENEWAL_METHOD_UNSPECIFIED",
+                Self::AutomaticRenewal => "AUTOMATIC_RENEWAL",
+                Self::ManualRenewal => "MANUAL_RENEWAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -389,24 +389,24 @@ pub mod dns_settings {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Algorithm::Unspecified => "ALGORITHM_UNSPECIFIED",
-                    Algorithm::Rsamd5 => "RSAMD5",
-                    Algorithm::Dh => "DH",
-                    Algorithm::Dsa => "DSA",
-                    Algorithm::Ecc => "ECC",
-                    Algorithm::Rsasha1 => "RSASHA1",
-                    Algorithm::Dsansec3sha1 => "DSANSEC3SHA1",
-                    Algorithm::Rsasha1nsec3sha1 => "RSASHA1NSEC3SHA1",
-                    Algorithm::Rsasha256 => "RSASHA256",
-                    Algorithm::Rsasha512 => "RSASHA512",
-                    Algorithm::Eccgost => "ECCGOST",
-                    Algorithm::Ecdsap256sha256 => "ECDSAP256SHA256",
-                    Algorithm::Ecdsap384sha384 => "ECDSAP384SHA384",
-                    Algorithm::Ed25519 => "ED25519",
-                    Algorithm::Ed448 => "ED448",
-                    Algorithm::Indirect => "INDIRECT",
-                    Algorithm::Privatedns => "PRIVATEDNS",
-                    Algorithm::Privateoid => "PRIVATEOID",
+                    Self::Unspecified => "ALGORITHM_UNSPECIFIED",
+                    Self::Rsamd5 => "RSAMD5",
+                    Self::Dh => "DH",
+                    Self::Dsa => "DSA",
+                    Self::Ecc => "ECC",
+                    Self::Rsasha1 => "RSASHA1",
+                    Self::Dsansec3sha1 => "DSANSEC3SHA1",
+                    Self::Rsasha1nsec3sha1 => "RSASHA1NSEC3SHA1",
+                    Self::Rsasha256 => "RSASHA256",
+                    Self::Rsasha512 => "RSASHA512",
+                    Self::Eccgost => "ECCGOST",
+                    Self::Ecdsap256sha256 => "ECDSAP256SHA256",
+                    Self::Ecdsap384sha384 => "ECDSAP384SHA384",
+                    Self::Ed25519 => "ED25519",
+                    Self::Ed448 => "ED448",
+                    Self::Indirect => "INDIRECT",
+                    Self::Privatedns => "PRIVATEDNS",
+                    Self::Privateoid => "PRIVATEOID",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -467,11 +467,11 @@ pub mod dns_settings {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    DigestType::Unspecified => "DIGEST_TYPE_UNSPECIFIED",
-                    DigestType::Sha1 => "SHA1",
-                    DigestType::Sha256 => "SHA256",
-                    DigestType::Gost3411 => "GOST3411",
-                    DigestType::Sha384 => "SHA384",
+                    Self::Unspecified => "DIGEST_TYPE_UNSPECIFIED",
+                    Self::Sha1 => "SHA1",
+                    Self::Sha256 => "SHA256",
+                    Self::Gost3411 => "GOST3411",
+                    Self::Sha384 => "SHA384",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -541,9 +541,9 @@ pub mod dns_settings {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DsState::Unspecified => "DS_STATE_UNSPECIFIED",
-                DsState::DsRecordsUnpublished => "DS_RECORDS_UNPUBLISHED",
-                DsState::DsRecordsPublished => "DS_RECORDS_PUBLISHED",
+                Self::Unspecified => "DS_STATE_UNSPECIFIED",
+                Self::DsRecordsUnpublished => "DS_RECORDS_UNPUBLISHED",
+                Self::DsRecordsPublished => "DS_RECORDS_PUBLISHED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -951,11 +951,11 @@ pub mod register_parameters {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Availability::Unspecified => "AVAILABILITY_UNSPECIFIED",
-                Availability::Available => "AVAILABLE",
-                Availability::Unavailable => "UNAVAILABLE",
-                Availability::Unsupported => "UNSUPPORTED",
-                Availability::Unknown => "UNKNOWN",
+                Self::Unspecified => "AVAILABILITY_UNSPECIFIED",
+                Self::Available => "AVAILABLE",
+                Self::Unavailable => "UNAVAILABLE",
+                Self::Unsupported => "UNSUPPORTED",
+                Self::Unknown => "UNKNOWN",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1059,10 +1059,10 @@ impl ContactPrivacy {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ContactPrivacy::Unspecified => "CONTACT_PRIVACY_UNSPECIFIED",
-            ContactPrivacy::PublicContactData => "PUBLIC_CONTACT_DATA",
-            ContactPrivacy::PrivateContactData => "PRIVATE_CONTACT_DATA",
-            ContactPrivacy::RedactedContactData => "REDACTED_CONTACT_DATA",
+            Self::Unspecified => "CONTACT_PRIVACY_UNSPECIFIED",
+            Self::PublicContactData => "PUBLIC_CONTACT_DATA",
+            Self::PrivateContactData => "PRIVATE_CONTACT_DATA",
+            Self::RedactedContactData => "REDACTED_CONTACT_DATA",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1096,8 +1096,8 @@ impl DomainNotice {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DomainNotice::Unspecified => "DOMAIN_NOTICE_UNSPECIFIED",
-            DomainNotice::HstsPreloaded => "HSTS_PRELOADED",
+            Self::Unspecified => "DOMAIN_NOTICE_UNSPECIFIED",
+            Self::HstsPreloaded => "HSTS_PRELOADED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1126,8 +1126,8 @@ impl ContactNotice {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ContactNotice::Unspecified => "CONTACT_NOTICE_UNSPECIFIED",
-            ContactNotice::PublicContactDataAcknowledgement => {
+            Self::Unspecified => "CONTACT_NOTICE_UNSPECIFIED",
+            Self::PublicContactDataAcknowledgement => {
                 "PUBLIC_CONTACT_DATA_ACKNOWLEDGEMENT"
             }
         }
@@ -1161,9 +1161,9 @@ impl TransferLockState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            TransferLockState::Unspecified => "TRANSFER_LOCK_STATE_UNSPECIFIED",
-            TransferLockState::Unlocked => "UNLOCKED",
-            TransferLockState::Locked => "LOCKED",
+            Self::Unspecified => "TRANSFER_LOCK_STATE_UNSPECIFIED",
+            Self::Unlocked => "UNLOCKED",
+            Self::Locked => "LOCKED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1178,7 +1178,13 @@ impl TransferLockState {
 }
 /// Generated client implementations.
 pub mod domains_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The Cloud Domains API enables management and configuration of domain names.
@@ -1278,8 +1284,7 @@ pub mod domains_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1310,8 +1315,7 @@ pub mod domains_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1353,8 +1357,7 @@ pub mod domains_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1389,8 +1392,7 @@ pub mod domains_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1440,8 +1442,7 @@ pub mod domains_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1471,8 +1472,7 @@ pub mod domains_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1499,8 +1499,7 @@ pub mod domains_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1535,8 +1534,7 @@ pub mod domains_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1566,8 +1564,7 @@ pub mod domains_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1597,8 +1594,7 @@ pub mod domains_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1629,8 +1625,7 @@ pub mod domains_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1668,8 +1663,7 @@ pub mod domains_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1717,8 +1711,7 @@ pub mod domains_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1752,8 +1745,7 @@ pub mod domains_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1786,8 +1778,7 @@ pub mod domains_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

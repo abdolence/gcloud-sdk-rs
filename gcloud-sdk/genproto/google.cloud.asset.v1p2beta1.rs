@@ -374,9 +374,9 @@ impl ContentType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ContentType::Unspecified => "CONTENT_TYPE_UNSPECIFIED",
-            ContentType::Resource => "RESOURCE",
-            ContentType::IamPolicy => "IAM_POLICY",
+            Self::Unspecified => "CONTENT_TYPE_UNSPECIFIED",
+            Self::Resource => "RESOURCE",
+            Self::IamPolicy => "IAM_POLICY",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -391,7 +391,13 @@ impl ContentType {
 }
 /// Generated client implementations.
 pub mod asset_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Asset service definition.
@@ -485,8 +491,7 @@ pub mod asset_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -513,8 +518,7 @@ pub mod asset_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -544,8 +548,7 @@ pub mod asset_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -572,8 +575,7 @@ pub mod asset_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -600,8 +602,7 @@ pub mod asset_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

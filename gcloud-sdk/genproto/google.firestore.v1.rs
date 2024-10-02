@@ -328,9 +328,9 @@ pub mod structured_query {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Operator::Unspecified => "OPERATOR_UNSPECIFIED",
-                    Operator::And => "AND",
-                    Operator::Or => "OR",
+                    Self::Unspecified => "OPERATOR_UNSPECIFIED",
+                    Self::And => "AND",
+                    Self::Or => "OR",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -445,17 +445,17 @@ pub mod structured_query {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Operator::Unspecified => "OPERATOR_UNSPECIFIED",
-                    Operator::LessThan => "LESS_THAN",
-                    Operator::LessThanOrEqual => "LESS_THAN_OR_EQUAL",
-                    Operator::GreaterThan => "GREATER_THAN",
-                    Operator::GreaterThanOrEqual => "GREATER_THAN_OR_EQUAL",
-                    Operator::Equal => "EQUAL",
-                    Operator::NotEqual => "NOT_EQUAL",
-                    Operator::ArrayContains => "ARRAY_CONTAINS",
-                    Operator::In => "IN",
-                    Operator::ArrayContainsAny => "ARRAY_CONTAINS_ANY",
-                    Operator::NotIn => "NOT_IN",
+                    Self::Unspecified => "OPERATOR_UNSPECIFIED",
+                    Self::LessThan => "LESS_THAN",
+                    Self::LessThanOrEqual => "LESS_THAN_OR_EQUAL",
+                    Self::GreaterThan => "GREATER_THAN",
+                    Self::GreaterThanOrEqual => "GREATER_THAN_OR_EQUAL",
+                    Self::Equal => "EQUAL",
+                    Self::NotEqual => "NOT_EQUAL",
+                    Self::ArrayContains => "ARRAY_CONTAINS",
+                    Self::In => "IN",
+                    Self::ArrayContainsAny => "ARRAY_CONTAINS_ANY",
+                    Self::NotIn => "NOT_IN",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -531,11 +531,11 @@ pub mod structured_query {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Operator::Unspecified => "OPERATOR_UNSPECIFIED",
-                    Operator::IsNan => "IS_NAN",
-                    Operator::IsNull => "IS_NULL",
-                    Operator::IsNotNan => "IS_NOT_NAN",
-                    Operator::IsNotNull => "IS_NOT_NULL",
+                    Self::Unspecified => "OPERATOR_UNSPECIFIED",
+                    Self::IsNan => "IS_NAN",
+                    Self::IsNull => "IS_NULL",
+                    Self::IsNotNan => "IS_NOT_NAN",
+                    Self::IsNotNull => "IS_NOT_NULL",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -673,10 +673,10 @@ pub mod structured_query {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    DistanceMeasure::Unspecified => "DISTANCE_MEASURE_UNSPECIFIED",
-                    DistanceMeasure::Euclidean => "EUCLIDEAN",
-                    DistanceMeasure::Cosine => "COSINE",
-                    DistanceMeasure::DotProduct => "DOT_PRODUCT",
+                    Self::Unspecified => "DISTANCE_MEASURE_UNSPECIFIED",
+                    Self::Euclidean => "EUCLIDEAN",
+                    Self::Cosine => "COSINE",
+                    Self::DotProduct => "DOT_PRODUCT",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -719,9 +719,9 @@ pub mod structured_query {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Direction::Unspecified => "DIRECTION_UNSPECIFIED",
-                Direction::Ascending => "ASCENDING",
-                Direction::Descending => "DESCENDING",
+                Self::Unspecified => "DIRECTION_UNSPECIFIED",
+                Self::Ascending => "ASCENDING",
+                Self::Descending => "DESCENDING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1236,8 +1236,8 @@ pub mod document_transform {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    ServerValue::Unspecified => "SERVER_VALUE_UNSPECIFIED",
-                    ServerValue::RequestTime => "REQUEST_TIME",
+                    Self::Unspecified => "SERVER_VALUE_UNSPECIFIED",
+                    Self::RequestTime => "REQUEST_TIME",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2441,11 +2441,11 @@ pub mod target_change {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TargetChangeType::NoChange => "NO_CHANGE",
-                TargetChangeType::Add => "ADD",
-                TargetChangeType::Remove => "REMOVE",
-                TargetChangeType::Current => "CURRENT",
-                TargetChangeType::Reset => "RESET",
+                Self::NoChange => "NO_CHANGE",
+                Self::Add => "ADD",
+                Self::Remove => "REMOVE",
+                Self::Current => "CURRENT",
+                Self::Reset => "RESET",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2552,7 +2552,13 @@ pub struct BatchWriteResponse {
 }
 /// Generated client implementations.
 pub mod firestore_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The Cloud Firestore service.
@@ -2652,8 +2658,7 @@ pub mod firestore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2678,8 +2683,7 @@ pub mod firestore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2703,8 +2707,7 @@ pub mod firestore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2728,8 +2731,7 @@ pub mod firestore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2759,8 +2761,7 @@ pub mod firestore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2787,8 +2788,7 @@ pub mod firestore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2812,8 +2812,7 @@ pub mod firestore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2835,8 +2834,7 @@ pub mod firestore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2861,8 +2859,7 @@ pub mod firestore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2899,8 +2896,7 @@ pub mod firestore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2932,8 +2928,7 @@ pub mod firestore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2961,8 +2956,7 @@ pub mod firestore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2988,8 +2982,7 @@ pub mod firestore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3014,8 +3007,7 @@ pub mod firestore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3051,8 +3043,7 @@ pub mod firestore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3074,8 +3065,7 @@ pub mod firestore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

@@ -37,9 +37,9 @@ impl FallbackReason {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            FallbackReason::Unspecified => "FALLBACK_REASON_UNSPECIFIED",
-            FallbackReason::ServerError => "SERVER_ERROR",
-            FallbackReason::LatencyExceeded => "LATENCY_EXCEEDED",
+            Self::Unspecified => "FALLBACK_REASON_UNSPECIFIED",
+            Self::ServerError => "SERVER_ERROR",
+            Self::LatencyExceeded => "LATENCY_EXCEEDED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -74,9 +74,9 @@ impl FallbackRoutingMode {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            FallbackRoutingMode::Unspecified => "FALLBACK_ROUTING_MODE_UNSPECIFIED",
-            FallbackRoutingMode::FallbackTrafficUnaware => "FALLBACK_TRAFFIC_UNAWARE",
-            FallbackRoutingMode::FallbackTrafficAware => "FALLBACK_TRAFFIC_AWARE",
+            Self::Unspecified => "FALLBACK_ROUTING_MODE_UNSPECIFIED",
+            Self::FallbackTrafficUnaware => "FALLBACK_TRAFFIC_UNAWARE",
+            Self::FallbackTrafficAware => "FALLBACK_TRAFFIC_AWARE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -216,27 +216,27 @@ impl Maneuver {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            Maneuver::Unspecified => "MANEUVER_UNSPECIFIED",
-            Maneuver::TurnSlightLeft => "TURN_SLIGHT_LEFT",
-            Maneuver::TurnSharpLeft => "TURN_SHARP_LEFT",
-            Maneuver::UturnLeft => "UTURN_LEFT",
-            Maneuver::TurnLeft => "TURN_LEFT",
-            Maneuver::TurnSlightRight => "TURN_SLIGHT_RIGHT",
-            Maneuver::TurnSharpRight => "TURN_SHARP_RIGHT",
-            Maneuver::UturnRight => "UTURN_RIGHT",
-            Maneuver::TurnRight => "TURN_RIGHT",
-            Maneuver::Straight => "STRAIGHT",
-            Maneuver::RampLeft => "RAMP_LEFT",
-            Maneuver::RampRight => "RAMP_RIGHT",
-            Maneuver::Merge => "MERGE",
-            Maneuver::ForkLeft => "FORK_LEFT",
-            Maneuver::ForkRight => "FORK_RIGHT",
-            Maneuver::Ferry => "FERRY",
-            Maneuver::FerryTrain => "FERRY_TRAIN",
-            Maneuver::RoundaboutLeft => "ROUNDABOUT_LEFT",
-            Maneuver::RoundaboutRight => "ROUNDABOUT_RIGHT",
-            Maneuver::Depart => "DEPART",
-            Maneuver::NameChange => "NAME_CHANGE",
+            Self::Unspecified => "MANEUVER_UNSPECIFIED",
+            Self::TurnSlightLeft => "TURN_SLIGHT_LEFT",
+            Self::TurnSharpLeft => "TURN_SHARP_LEFT",
+            Self::UturnLeft => "UTURN_LEFT",
+            Self::TurnLeft => "TURN_LEFT",
+            Self::TurnSlightRight => "TURN_SLIGHT_RIGHT",
+            Self::TurnSharpRight => "TURN_SHARP_RIGHT",
+            Self::UturnRight => "UTURN_RIGHT",
+            Self::TurnRight => "TURN_RIGHT",
+            Self::Straight => "STRAIGHT",
+            Self::RampLeft => "RAMP_LEFT",
+            Self::RampRight => "RAMP_RIGHT",
+            Self::Merge => "MERGE",
+            Self::ForkLeft => "FORK_LEFT",
+            Self::ForkRight => "FORK_RIGHT",
+            Self::Ferry => "FERRY",
+            Self::FerryTrain => "FERRY_TRAIN",
+            Self::RoundaboutLeft => "ROUNDABOUT_LEFT",
+            Self::RoundaboutRight => "ROUNDABOUT_RIGHT",
+            Self::Depart => "DEPART",
+            Self::NameChange => "NAME_CHANGE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -325,9 +325,9 @@ impl PolylineQuality {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            PolylineQuality::Unspecified => "POLYLINE_QUALITY_UNSPECIFIED",
-            PolylineQuality::HighQuality => "HIGH_QUALITY",
-            PolylineQuality::Overview => "OVERVIEW",
+            Self::Unspecified => "POLYLINE_QUALITY_UNSPECIFIED",
+            Self::HighQuality => "HIGH_QUALITY",
+            Self::Overview => "OVERVIEW",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -360,9 +360,9 @@ impl PolylineEncoding {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            PolylineEncoding::Unspecified => "POLYLINE_ENCODING_UNSPECIFIED",
-            PolylineEncoding::EncodedPolyline => "ENCODED_POLYLINE",
-            PolylineEncoding::GeoJsonLinestring => "GEO_JSON_LINESTRING",
+            Self::Unspecified => "POLYLINE_ENCODING_UNSPECIFIED",
+            Self::EncodedPolyline => "ENCODED_POLYLINE",
+            Self::GeoJsonLinestring => "GEO_JSON_LINESTRING",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -400,10 +400,10 @@ impl RouteLabel {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            RouteLabel::Unspecified => "ROUTE_LABEL_UNSPECIFIED",
-            RouteLabel::DefaultRoute => "DEFAULT_ROUTE",
-            RouteLabel::DefaultRouteAlternate => "DEFAULT_ROUTE_ALTERNATE",
-            RouteLabel::FuelEfficient => "FUEL_EFFICIENT",
+            Self::Unspecified => "ROUTE_LABEL_UNSPECIFIED",
+            Self::DefaultRoute => "DEFAULT_ROUTE",
+            Self::DefaultRouteAlternate => "DEFAULT_ROUTE_ALTERNATE",
+            Self::FuelEfficient => "FUEL_EFFICIENT",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -446,12 +446,12 @@ impl RouteTravelMode {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            RouteTravelMode::TravelModeUnspecified => "TRAVEL_MODE_UNSPECIFIED",
-            RouteTravelMode::Drive => "DRIVE",
-            RouteTravelMode::Bicycle => "BICYCLE",
-            RouteTravelMode::Walk => "WALK",
-            RouteTravelMode::TwoWheeler => "TWO_WHEELER",
-            RouteTravelMode::Transit => "TRANSIT",
+            Self::TravelModeUnspecified => "TRAVEL_MODE_UNSPECIFIED",
+            Self::Drive => "DRIVE",
+            Self::Bicycle => "BICYCLE",
+            Self::Walk => "WALK",
+            Self::TwoWheeler => "TWO_WHEELER",
+            Self::Transit => "TRANSIT",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -514,10 +514,10 @@ pub mod speed_reading_interval {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Speed::Unspecified => "SPEED_UNSPECIFIED",
-                Speed::Normal => "NORMAL",
-                Speed::Slow => "SLOW",
-                Speed::TrafficJam => "TRAFFIC_JAM",
+                Self::Unspecified => "SPEED_UNSPECIFIED",
+                Self::Normal => "NORMAL",
+                Self::Slow => "SLOW",
+                Self::TrafficJam => "TRAFFIC_JAM",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -689,25 +689,25 @@ pub mod transit_vehicle {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TransitVehicleType::Unspecified => "TRANSIT_VEHICLE_TYPE_UNSPECIFIED",
-                TransitVehicleType::Bus => "BUS",
-                TransitVehicleType::CableCar => "CABLE_CAR",
-                TransitVehicleType::CommuterTrain => "COMMUTER_TRAIN",
-                TransitVehicleType::Ferry => "FERRY",
-                TransitVehicleType::Funicular => "FUNICULAR",
-                TransitVehicleType::GondolaLift => "GONDOLA_LIFT",
-                TransitVehicleType::HeavyRail => "HEAVY_RAIL",
-                TransitVehicleType::HighSpeedTrain => "HIGH_SPEED_TRAIN",
-                TransitVehicleType::IntercityBus => "INTERCITY_BUS",
-                TransitVehicleType::LongDistanceTrain => "LONG_DISTANCE_TRAIN",
-                TransitVehicleType::MetroRail => "METRO_RAIL",
-                TransitVehicleType::Monorail => "MONORAIL",
-                TransitVehicleType::Other => "OTHER",
-                TransitVehicleType::Rail => "RAIL",
-                TransitVehicleType::ShareTaxi => "SHARE_TAXI",
-                TransitVehicleType::Subway => "SUBWAY",
-                TransitVehicleType::Tram => "TRAM",
-                TransitVehicleType::Trolleybus => "TROLLEYBUS",
+                Self::Unspecified => "TRANSIT_VEHICLE_TYPE_UNSPECIFIED",
+                Self::Bus => "BUS",
+                Self::CableCar => "CABLE_CAR",
+                Self::CommuterTrain => "COMMUTER_TRAIN",
+                Self::Ferry => "FERRY",
+                Self::Funicular => "FUNICULAR",
+                Self::GondolaLift => "GONDOLA_LIFT",
+                Self::HeavyRail => "HEAVY_RAIL",
+                Self::HighSpeedTrain => "HIGH_SPEED_TRAIN",
+                Self::IntercityBus => "INTERCITY_BUS",
+                Self::LongDistanceTrain => "LONG_DISTANCE_TRAIN",
+                Self::MetroRail => "METRO_RAIL",
+                Self::Monorail => "MONORAIL",
+                Self::Other => "OTHER",
+                Self::Rail => "RAIL",
+                Self::ShareTaxi => "SHARE_TAXI",
+                Self::Subway => "SUBWAY",
+                Self::Tram => "TRAM",
+                Self::Trolleybus => "TROLLEYBUS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1379,119 +1379,115 @@ impl TollPass {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            TollPass::Unspecified => "TOLL_PASS_UNSPECIFIED",
-            TollPass::AuEtollTag => "AU_ETOLL_TAG",
-            TollPass::AuEwayTag => "AU_EWAY_TAG",
-            TollPass::AuLinkt => "AU_LINKT",
-            TollPass::ArTelepase => "AR_TELEPASE",
-            TollPass::BrAutoExpreso => "BR_AUTO_EXPRESO",
-            TollPass::BrConectcar => "BR_CONECTCAR",
-            TollPass::BrMoveMais => "BR_MOVE_MAIS",
-            TollPass::BrPassaRapido => "BR_PASSA_RAPIDO",
-            TollPass::BrSemParar => "BR_SEM_PARAR",
-            TollPass::BrTaggy => "BR_TAGGY",
-            TollPass::BrVeloe => "BR_VELOE",
-            TollPass::CaUsAkwasasneSeawayCorporateCard => {
+            Self::Unspecified => "TOLL_PASS_UNSPECIFIED",
+            Self::AuEtollTag => "AU_ETOLL_TAG",
+            Self::AuEwayTag => "AU_EWAY_TAG",
+            Self::AuLinkt => "AU_LINKT",
+            Self::ArTelepase => "AR_TELEPASE",
+            Self::BrAutoExpreso => "BR_AUTO_EXPRESO",
+            Self::BrConectcar => "BR_CONECTCAR",
+            Self::BrMoveMais => "BR_MOVE_MAIS",
+            Self::BrPassaRapido => "BR_PASSA_RAPIDO",
+            Self::BrSemParar => "BR_SEM_PARAR",
+            Self::BrTaggy => "BR_TAGGY",
+            Self::BrVeloe => "BR_VELOE",
+            Self::CaUsAkwasasneSeawayCorporateCard => {
                 "CA_US_AKWASASNE_SEAWAY_CORPORATE_CARD"
             }
-            TollPass::CaUsAkwasasneSeawayTransitCard => {
-                "CA_US_AKWASASNE_SEAWAY_TRANSIT_CARD"
-            }
-            TollPass::CaUsBlueWaterEdgePass => "CA_US_BLUE_WATER_EDGE_PASS",
-            TollPass::CaUsConnexion => "CA_US_CONNEXION",
-            TollPass::CaUsNexusCard => "CA_US_NEXUS_CARD",
-            TollPass::IdEToll => "ID_E_TOLL",
-            TollPass::InFastag => "IN_FASTAG",
-            TollPass::InLocalHpPlateExempt => "IN_LOCAL_HP_PLATE_EXEMPT",
-            TollPass::JpEtc => "JP_ETC",
-            TollPass::JpEtc2 => "JP_ETC2",
-            TollPass::MxIave => "MX_IAVE",
-            TollPass::MxPase => "MX_PASE",
-            TollPass::MxQuickpass => "MX_QUICKPASS",
-            TollPass::MxSistemaTelepeajeChihuahua => "MX_SISTEMA_TELEPEAJE_CHIHUAHUA",
-            TollPass::MxTagIave => "MX_TAG_IAVE",
-            TollPass::MxTagTelevia => "MX_TAG_TELEVIA",
-            TollPass::MxTelevia => "MX_TELEVIA",
-            TollPass::MxViapass => "MX_VIAPASS",
-            TollPass::UsAlFreedomPass => "US_AL_FREEDOM_PASS",
-            TollPass::UsAkAntonAndersonTunnelBookOf10Tickets => {
+            Self::CaUsAkwasasneSeawayTransitCard => "CA_US_AKWASASNE_SEAWAY_TRANSIT_CARD",
+            Self::CaUsBlueWaterEdgePass => "CA_US_BLUE_WATER_EDGE_PASS",
+            Self::CaUsConnexion => "CA_US_CONNEXION",
+            Self::CaUsNexusCard => "CA_US_NEXUS_CARD",
+            Self::IdEToll => "ID_E_TOLL",
+            Self::InFastag => "IN_FASTAG",
+            Self::InLocalHpPlateExempt => "IN_LOCAL_HP_PLATE_EXEMPT",
+            Self::JpEtc => "JP_ETC",
+            Self::JpEtc2 => "JP_ETC2",
+            Self::MxIave => "MX_IAVE",
+            Self::MxPase => "MX_PASE",
+            Self::MxQuickpass => "MX_QUICKPASS",
+            Self::MxSistemaTelepeajeChihuahua => "MX_SISTEMA_TELEPEAJE_CHIHUAHUA",
+            Self::MxTagIave => "MX_TAG_IAVE",
+            Self::MxTagTelevia => "MX_TAG_TELEVIA",
+            Self::MxTelevia => "MX_TELEVIA",
+            Self::MxViapass => "MX_VIAPASS",
+            Self::UsAlFreedomPass => "US_AL_FREEDOM_PASS",
+            Self::UsAkAntonAndersonTunnelBookOf10Tickets => {
                 "US_AK_ANTON_ANDERSON_TUNNEL_BOOK_OF_10_TICKETS"
             }
-            TollPass::UsCaFastrak => "US_CA_FASTRAK",
-            TollPass::UsCaFastrakCavSticker => "US_CA_FASTRAK_CAV_STICKER",
-            TollPass::UsCoExpresstoll => "US_CO_EXPRESSTOLL",
-            TollPass::UsCoGoPass => "US_CO_GO_PASS",
-            TollPass::UsDeEzpassde => "US_DE_EZPASSDE",
-            TollPass::UsFlBobSikesTollBridgePass => "US_FL_BOB_SIKES_TOLL_BRIDGE_PASS",
-            TollPass::UsFlDunesCommunityDevelopmentDistrictExpresscard => {
+            Self::UsCaFastrak => "US_CA_FASTRAK",
+            Self::UsCaFastrakCavSticker => "US_CA_FASTRAK_CAV_STICKER",
+            Self::UsCoExpresstoll => "US_CO_EXPRESSTOLL",
+            Self::UsCoGoPass => "US_CO_GO_PASS",
+            Self::UsDeEzpassde => "US_DE_EZPASSDE",
+            Self::UsFlBobSikesTollBridgePass => "US_FL_BOB_SIKES_TOLL_BRIDGE_PASS",
+            Self::UsFlDunesCommunityDevelopmentDistrictExpresscard => {
                 "US_FL_DUNES_COMMUNITY_DEVELOPMENT_DISTRICT_EXPRESSCARD"
             }
-            TollPass::UsFlEpass => "US_FL_EPASS",
-            TollPass::UsFlGibaTollPass => "US_FL_GIBA_TOLL_PASS",
-            TollPass::UsFlLeeway => "US_FL_LEEWAY",
-            TollPass::UsFlSunpass => "US_FL_SUNPASS",
-            TollPass::UsFlSunpassPro => "US_FL_SUNPASS_PRO",
-            TollPass::UsIlEzpassil => "US_IL_EZPASSIL",
-            TollPass::UsIlIpass => "US_IL_IPASS",
-            TollPass::UsInEzpassin => "US_IN_EZPASSIN",
-            TollPass::UsKsBestpassHorizon => "US_KS_BESTPASS_HORIZON",
-            TollPass::UsKsKtag => "US_KS_KTAG",
-            TollPass::UsKsNationalpass => "US_KS_NATIONALPASS",
-            TollPass::UsKsPrepassElitepass => "US_KS_PREPASS_ELITEPASS",
-            TollPass::UsKyRiverlink => "US_KY_RIVERLINK",
-            TollPass::UsLaGeauxpass => "US_LA_GEAUXPASS",
-            TollPass::UsLaTollTag => "US_LA_TOLL_TAG",
-            TollPass::UsMaEzpassma => "US_MA_EZPASSMA",
-            TollPass::UsMdEzpassmd => "US_MD_EZPASSMD",
-            TollPass::UsMeEzpassme => "US_ME_EZPASSME",
-            TollPass::UsMiAmbassadorBridgePremierCommuterCard => {
+            Self::UsFlEpass => "US_FL_EPASS",
+            Self::UsFlGibaTollPass => "US_FL_GIBA_TOLL_PASS",
+            Self::UsFlLeeway => "US_FL_LEEWAY",
+            Self::UsFlSunpass => "US_FL_SUNPASS",
+            Self::UsFlSunpassPro => "US_FL_SUNPASS_PRO",
+            Self::UsIlEzpassil => "US_IL_EZPASSIL",
+            Self::UsIlIpass => "US_IL_IPASS",
+            Self::UsInEzpassin => "US_IN_EZPASSIN",
+            Self::UsKsBestpassHorizon => "US_KS_BESTPASS_HORIZON",
+            Self::UsKsKtag => "US_KS_KTAG",
+            Self::UsKsNationalpass => "US_KS_NATIONALPASS",
+            Self::UsKsPrepassElitepass => "US_KS_PREPASS_ELITEPASS",
+            Self::UsKyRiverlink => "US_KY_RIVERLINK",
+            Self::UsLaGeauxpass => "US_LA_GEAUXPASS",
+            Self::UsLaTollTag => "US_LA_TOLL_TAG",
+            Self::UsMaEzpassma => "US_MA_EZPASSMA",
+            Self::UsMdEzpassmd => "US_MD_EZPASSMD",
+            Self::UsMeEzpassme => "US_ME_EZPASSME",
+            Self::UsMiAmbassadorBridgePremierCommuterCard => {
                 "US_MI_AMBASSADOR_BRIDGE_PREMIER_COMMUTER_CARD"
             }
-            TollPass::UsMiBcpass => "US_MI_BCPASS",
-            TollPass::UsMiGrosseIleTollBridgePassTag => {
+            Self::UsMiBcpass => "US_MI_BCPASS",
+            Self::UsMiGrosseIleTollBridgePassTag => {
                 "US_MI_GROSSE_ILE_TOLL_BRIDGE_PASS_TAG"
             }
-            TollPass::UsMiIqProxCard => "US_MI_IQ_PROX_CARD",
-            TollPass::UsMiIqTag => "US_MI_IQ_TAG",
-            TollPass::UsMiMackinacBridgeMacPass => "US_MI_MACKINAC_BRIDGE_MAC_PASS",
-            TollPass::UsMiNexpressToll => "US_MI_NEXPRESS_TOLL",
-            TollPass::UsMnEzpassmn => "US_MN_EZPASSMN",
-            TollPass::UsNcEzpassnc => "US_NC_EZPASSNC",
-            TollPass::UsNcPeachPass => "US_NC_PEACH_PASS",
-            TollPass::UsNcQuickPass => "US_NC_QUICK_PASS",
-            TollPass::UsNhEzpassnh => "US_NH_EZPASSNH",
-            TollPass::UsNjDownbeachExpressPass => "US_NJ_DOWNBEACH_EXPRESS_PASS",
-            TollPass::UsNjEzpassnj => "US_NJ_EZPASSNJ",
-            TollPass::UsNyExpresspass => "US_NY_EXPRESSPASS",
-            TollPass::UsNyEzpassny => "US_NY_EZPASSNY",
-            TollPass::UsOhEzpassoh => "US_OH_EZPASSOH",
-            TollPass::UsPaEzpasspa => "US_PA_EZPASSPA",
-            TollPass::UsRiEzpassri => "US_RI_EZPASSRI",
-            TollPass::UsScPalpass => "US_SC_PALPASS",
-            TollPass::UsTxAviTag => "US_TX_AVI_TAG",
-            TollPass::UsTxBancpass => "US_TX_BANCPASS",
-            TollPass::UsTxDelRioPass => "US_TX_DEL_RIO_PASS",
-            TollPass::UsTxEfastPass => "US_TX_EFAST_PASS",
-            TollPass::UsTxEaglePassExpressCard => "US_TX_EAGLE_PASS_EXPRESS_CARD",
-            TollPass::UsTxEptoll => "US_TX_EPTOLL",
-            TollPass::UsTxEzCross => "US_TX_EZ_CROSS",
-            TollPass::UsTxEztag => "US_TX_EZTAG",
-            TollPass::UsTxFuegoTag => "US_TX_FUEGO_TAG",
-            TollPass::UsTxLaredoTradeTag => "US_TX_LAREDO_TRADE_TAG",
-            TollPass::UsTxPluspass => "US_TX_PLUSPASS",
-            TollPass::UsTxTolltag => "US_TX_TOLLTAG",
-            TollPass::UsTxTxtag => "US_TX_TXTAG",
-            TollPass::UsTxXpressCard => "US_TX_XPRESS_CARD",
-            TollPass::UsUtAdamsAveParkwayExpresscard => {
-                "US_UT_ADAMS_AVE_PARKWAY_EXPRESSCARD"
-            }
-            TollPass::UsVaEzpassva => "US_VA_EZPASSVA",
-            TollPass::UsWaBreezeby => "US_WA_BREEZEBY",
-            TollPass::UsWaGoodToGo => "US_WA_GOOD_TO_GO",
-            TollPass::UsWvEzpasswv => "US_WV_EZPASSWV",
-            TollPass::UsWvMemorialBridgeTickets => "US_WV_MEMORIAL_BRIDGE_TICKETS",
-            TollPass::UsWvMovPass => "US_WV_MOV_PASS",
-            TollPass::UsWvNewellTollBridgeTicket => "US_WV_NEWELL_TOLL_BRIDGE_TICKET",
+            Self::UsMiIqProxCard => "US_MI_IQ_PROX_CARD",
+            Self::UsMiIqTag => "US_MI_IQ_TAG",
+            Self::UsMiMackinacBridgeMacPass => "US_MI_MACKINAC_BRIDGE_MAC_PASS",
+            Self::UsMiNexpressToll => "US_MI_NEXPRESS_TOLL",
+            Self::UsMnEzpassmn => "US_MN_EZPASSMN",
+            Self::UsNcEzpassnc => "US_NC_EZPASSNC",
+            Self::UsNcPeachPass => "US_NC_PEACH_PASS",
+            Self::UsNcQuickPass => "US_NC_QUICK_PASS",
+            Self::UsNhEzpassnh => "US_NH_EZPASSNH",
+            Self::UsNjDownbeachExpressPass => "US_NJ_DOWNBEACH_EXPRESS_PASS",
+            Self::UsNjEzpassnj => "US_NJ_EZPASSNJ",
+            Self::UsNyExpresspass => "US_NY_EXPRESSPASS",
+            Self::UsNyEzpassny => "US_NY_EZPASSNY",
+            Self::UsOhEzpassoh => "US_OH_EZPASSOH",
+            Self::UsPaEzpasspa => "US_PA_EZPASSPA",
+            Self::UsRiEzpassri => "US_RI_EZPASSRI",
+            Self::UsScPalpass => "US_SC_PALPASS",
+            Self::UsTxAviTag => "US_TX_AVI_TAG",
+            Self::UsTxBancpass => "US_TX_BANCPASS",
+            Self::UsTxDelRioPass => "US_TX_DEL_RIO_PASS",
+            Self::UsTxEfastPass => "US_TX_EFAST_PASS",
+            Self::UsTxEaglePassExpressCard => "US_TX_EAGLE_PASS_EXPRESS_CARD",
+            Self::UsTxEptoll => "US_TX_EPTOLL",
+            Self::UsTxEzCross => "US_TX_EZ_CROSS",
+            Self::UsTxEztag => "US_TX_EZTAG",
+            Self::UsTxFuegoTag => "US_TX_FUEGO_TAG",
+            Self::UsTxLaredoTradeTag => "US_TX_LAREDO_TRADE_TAG",
+            Self::UsTxPluspass => "US_TX_PLUSPASS",
+            Self::UsTxTolltag => "US_TX_TOLLTAG",
+            Self::UsTxTxtag => "US_TX_TXTAG",
+            Self::UsTxXpressCard => "US_TX_XPRESS_CARD",
+            Self::UsUtAdamsAveParkwayExpresscard => "US_UT_ADAMS_AVE_PARKWAY_EXPRESSCARD",
+            Self::UsVaEzpassva => "US_VA_EZPASSVA",
+            Self::UsWaBreezeby => "US_WA_BREEZEBY",
+            Self::UsWaGoodToGo => "US_WA_GOOD_TO_GO",
+            Self::UsWvEzpasswv => "US_WV_EZPASSWV",
+            Self::UsWvMemorialBridgeTickets => "US_WV_MEMORIAL_BRIDGE_TICKETS",
+            Self::UsWvMovPass => "US_WV_MOV_PASS",
+            Self::UsWvNewellTollBridgeTicket => "US_WV_NEWELL_TOLL_BRIDGE_TICKET",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1638,11 +1634,11 @@ impl VehicleEmissionType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            VehicleEmissionType::Unspecified => "VEHICLE_EMISSION_TYPE_UNSPECIFIED",
-            VehicleEmissionType::Gasoline => "GASOLINE",
-            VehicleEmissionType::Electric => "ELECTRIC",
-            VehicleEmissionType::Hybrid => "HYBRID",
-            VehicleEmissionType::Diesel => "DIESEL",
+            Self::Unspecified => "VEHICLE_EMISSION_TYPE_UNSPECIFIED",
+            Self::Gasoline => "GASOLINE",
+            Self::Electric => "ELECTRIC",
+            Self::Hybrid => "HYBRID",
+            Self::Diesel => "DIESEL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1738,10 +1734,10 @@ impl RoutingPreference {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            RoutingPreference::Unspecified => "ROUTING_PREFERENCE_UNSPECIFIED",
-            RoutingPreference::TrafficUnaware => "TRAFFIC_UNAWARE",
-            RoutingPreference::TrafficAware => "TRAFFIC_AWARE",
-            RoutingPreference::TrafficAwareOptimal => "TRAFFIC_AWARE_OPTIMAL",
+            Self::Unspecified => "ROUTING_PREFERENCE_UNSPECIFIED",
+            Self::TrafficUnaware => "TRAFFIC_UNAWARE",
+            Self::TrafficAware => "TRAFFIC_AWARE",
+            Self::TrafficAwareOptimal => "TRAFFIC_AWARE_OPTIMAL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1785,10 +1781,10 @@ impl TrafficModel {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            TrafficModel::Unspecified => "TRAFFIC_MODEL_UNSPECIFIED",
-            TrafficModel::BestGuess => "BEST_GUESS",
-            TrafficModel::Pessimistic => "PESSIMISTIC",
-            TrafficModel::Optimistic => "OPTIMISTIC",
+            Self::Unspecified => "TRAFFIC_MODEL_UNSPECIFIED",
+            Self::BestGuess => "BEST_GUESS",
+            Self::Pessimistic => "PESSIMISTIC",
+            Self::Optimistic => "OPTIMISTIC",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1852,12 +1848,12 @@ pub mod transit_preferences {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TransitTravelMode::Unspecified => "TRANSIT_TRAVEL_MODE_UNSPECIFIED",
-                TransitTravelMode::Bus => "BUS",
-                TransitTravelMode::Subway => "SUBWAY",
-                TransitTravelMode::Train => "TRAIN",
-                TransitTravelMode::LightRail => "LIGHT_RAIL",
-                TransitTravelMode::Rail => "RAIL",
+                Self::Unspecified => "TRANSIT_TRAVEL_MODE_UNSPECIFIED",
+                Self::Bus => "BUS",
+                Self::Subway => "SUBWAY",
+                Self::Train => "TRAIN",
+                Self::LightRail => "LIGHT_RAIL",
+                Self::Rail => "RAIL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1903,11 +1899,9 @@ pub mod transit_preferences {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TransitRoutingPreference::Unspecified => {
-                    "TRANSIT_ROUTING_PREFERENCE_UNSPECIFIED"
-                }
-                TransitRoutingPreference::LessWalking => "LESS_WALKING",
-                TransitRoutingPreference::FewerTransfers => "FEWER_TRANSFERS",
+                Self::Unspecified => "TRANSIT_ROUTING_PREFERENCE_UNSPECIFIED",
+                Self::LessWalking => "LESS_WALKING",
+                Self::FewerTransfers => "FEWER_TRANSFERS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1940,9 +1934,9 @@ impl Units {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            Units::Unspecified => "UNITS_UNSPECIFIED",
-            Units::Metric => "METRIC",
-            Units::Imperial => "IMPERIAL",
+            Self::Unspecified => "UNITS_UNSPECIFIED",
+            Self::Metric => "METRIC",
+            Self::Imperial => "IMPERIAL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2172,8 +2166,8 @@ pub mod compute_routes_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ReferenceRoute::Unspecified => "REFERENCE_ROUTE_UNSPECIFIED",
-                ReferenceRoute::FuelEfficient => "FUEL_EFFICIENT",
+                Self::Unspecified => "REFERENCE_ROUTE_UNSPECIFIED",
+                Self::FuelEfficient => "FUEL_EFFICIENT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2220,11 +2214,11 @@ pub mod compute_routes_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ExtraComputation::Unspecified => "EXTRA_COMPUTATION_UNSPECIFIED",
-                ExtraComputation::Tolls => "TOLLS",
-                ExtraComputation::FuelConsumption => "FUEL_CONSUMPTION",
-                ExtraComputation::TrafficOnPolyline => "TRAFFIC_ON_POLYLINE",
-                ExtraComputation::HtmlFormattedNavigationInstructions => {
+                Self::Unspecified => "EXTRA_COMPUTATION_UNSPECIFIED",
+                Self::Tolls => "TOLLS",
+                Self::FuelConsumption => "FUEL_CONSUMPTION",
+                Self::TrafficOnPolyline => "TRAFFIC_ON_POLYLINE",
+                Self::HtmlFormattedNavigationInstructions => {
                     "HTML_FORMATTED_NAVIGATION_INSTRUCTIONS"
                 }
             }
@@ -2383,8 +2377,8 @@ pub mod compute_route_matrix_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ExtraComputation::Unspecified => "EXTRA_COMPUTATION_UNSPECIFIED",
-                ExtraComputation::Tolls => "TOLLS",
+                Self::Unspecified => "EXTRA_COMPUTATION_UNSPECIFIED",
+                Self::Tolls => "TOLLS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2510,11 +2504,9 @@ impl RouteMatrixElementCondition {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            RouteMatrixElementCondition::Unspecified => {
-                "ROUTE_MATRIX_ELEMENT_CONDITION_UNSPECIFIED"
-            }
-            RouteMatrixElementCondition::RouteExists => "ROUTE_EXISTS",
-            RouteMatrixElementCondition::RouteNotFound => "ROUTE_NOT_FOUND",
+            Self::Unspecified => "ROUTE_MATRIX_ELEMENT_CONDITION_UNSPECIFIED",
+            Self::RouteExists => "ROUTE_EXISTS",
+            Self::RouteNotFound => "ROUTE_NOT_FOUND",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2529,7 +2521,13 @@ impl RouteMatrixElementCondition {
 }
 /// Generated client implementations.
 pub mod routes_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The Routes API.
@@ -2659,8 +2657,7 @@ pub mod routes_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2721,8 +2718,7 @@ pub mod routes_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

@@ -67,11 +67,11 @@ pub mod calendar_add_on_manifest {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                EventAccess::Unspecified => "UNSPECIFIED",
-                EventAccess::Metadata => "METADATA",
-                EventAccess::Read => "READ",
-                EventAccess::Write => "WRITE",
-                EventAccess::ReadWrite => "READ_WRITE",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Metadata => "METADATA",
+                Self::Read => "READ",
+                Self::Write => "WRITE",
+                Self::ReadWrite => "READ_WRITE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

@@ -180,9 +180,9 @@ pub mod span {
                 /// (if the ProtoBuf definition does not change) and safe for programmatic use.
                 pub fn as_str_name(&self) -> &'static str {
                     match self {
-                        Type::Unspecified => "TYPE_UNSPECIFIED",
-                        Type::Sent => "SENT",
-                        Type::Received => "RECEIVED",
+                        Self::Unspecified => "TYPE_UNSPECIFIED",
+                        Self::Sent => "SENT",
+                        Self::Received => "RECEIVED",
                     }
                 }
                 /// Creates an enum from field names used in the ProtoBuf definition.
@@ -276,9 +276,9 @@ pub mod span {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Type::Unspecified => "TYPE_UNSPECIFIED",
-                    Type::ChildLinkedSpan => "CHILD_LINKED_SPAN",
-                    Type::ParentLinkedSpan => "PARENT_LINKED_SPAN",
+                    Self::Unspecified => "TYPE_UNSPECIFIED",
+                    Self::ChildLinkedSpan => "CHILD_LINKED_SPAN",
+                    Self::ParentLinkedSpan => "PARENT_LINKED_SPAN",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -348,12 +348,12 @@ pub mod span {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SpanKind::Unspecified => "SPAN_KIND_UNSPECIFIED",
-                SpanKind::Internal => "INTERNAL",
-                SpanKind::Server => "SERVER",
-                SpanKind::Client => "CLIENT",
-                SpanKind::Producer => "PRODUCER",
-                SpanKind::Consumer => "CONSUMER",
+                Self::Unspecified => "SPAN_KIND_UNSPECIFIED",
+                Self::Internal => "INTERNAL",
+                Self::Server => "SERVER",
+                Self::Client => "CLIENT",
+                Self::Producer => "PRODUCER",
+                Self::Consumer => "CONSUMER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -500,7 +500,13 @@ pub struct BatchWriteSpansRequest {
 }
 /// Generated client implementations.
 pub mod trace_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for collecting and viewing traces and spans within a trace.
@@ -600,8 +606,7 @@ pub mod trace_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -628,8 +633,7 @@ pub mod trace_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

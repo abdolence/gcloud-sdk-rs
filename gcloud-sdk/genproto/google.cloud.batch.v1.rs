@@ -202,13 +202,13 @@ pub mod task_status {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Pending => "PENDING",
-                State::Assigned => "ASSIGNED",
-                State::Running => "RUNNING",
-                State::Failed => "FAILED",
-                State::Succeeded => "SUCCEEDED",
-                State::Unexecuted => "UNEXECUTED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::Assigned => "ASSIGNED",
+                Self::Running => "RUNNING",
+                Self::Failed => "FAILED",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Unexecuted => "UNEXECUTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -552,9 +552,9 @@ pub mod lifecycle_policy {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Action::Unspecified => "ACTION_UNSPECIFIED",
-                Action::RetryTask => "RETRY_TASK",
-                Action::FailTask => "FAIL_TASK",
+                Self::Unspecified => "ACTION_UNSPECIFIED",
+                Self::RetryTask => "RETRY_TASK",
+                Self::FailTask => "FAIL_TASK",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -732,9 +732,9 @@ pub mod logs_policy {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Destination::Unspecified => "DESTINATION_UNSPECIFIED",
-                Destination::CloudLogging => "CLOUD_LOGGING",
-                Destination::Path => "PATH",
+                Self::Unspecified => "DESTINATION_UNSPECIFIED",
+                Self::CloudLogging => "CLOUD_LOGGING",
+                Self::Path => "PATH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -837,13 +837,13 @@ pub mod job_status {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Queued => "QUEUED",
-                State::Scheduled => "SCHEDULED",
-                State::Running => "RUNNING",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
-                State::DeletionInProgress => "DELETION_IN_PROGRESS",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Queued => "QUEUED",
+                Self::Scheduled => "SCHEDULED",
+                Self::Running => "RUNNING",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::DeletionInProgress => "DELETION_IN_PROGRESS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -933,9 +933,9 @@ pub mod job_notification {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::JobStateChanged => "JOB_STATE_CHANGED",
-                Type::TaskStateChanged => "TASK_STATE_CHANGED",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::JobStateChanged => "JOB_STATE_CHANGED",
+                Self::TaskStateChanged => "TASK_STATE_CHANGED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1202,6 +1202,25 @@ pub mod allocation_policy {
         /// your behalf. Default is false.
         #[prost(bool, tag = "4")]
         pub install_ops_agent: bool,
+        /// Optional. Set this field to `true` if you want Batch to block
+        /// project-level SSH keys from accessing this job's VMs.  Alternatively, you
+        /// can configure the job to specify a VM instance template that blocks
+        /// project-level SSH keys. In either case, Batch blocks project-level SSH
+        /// keys while creating the VMs for this job.
+        ///
+        /// Batch allows project-level SSH keys for a job's VMs only if all
+        /// the following are true:
+        ///
+        /// + This field is undefined or set to `false`.
+        /// + The job's VM instance template (if any) doesn't block project-level
+        ///    SSH keys.
+        ///
+        /// Notably, you can override this behavior by manually updating a VM to
+        /// block or allow project-level SSH keys. For more information about
+        /// blocking project-level SSH keys, see the Compute Engine documentation:
+        /// <https://cloud.google.com/compute/docs/connect/restrict-ssh-keys#block-keys>
+        #[prost(bool, tag = "5")]
+        pub block_project_ssh_keys: bool,
         #[prost(oneof = "instance_policy_or_template::PolicyTemplate", tags = "1, 2")]
         pub policy_template: ::core::option::Option<
             instance_policy_or_template::PolicyTemplate,
@@ -1216,7 +1235,10 @@ pub mod allocation_policy {
             Policy(super::InstancePolicy),
             /// Name of an instance template used to create VMs.
             /// Named the field as 'instance_template' instead of 'template' to avoid
-            /// c++ keyword conflict.
+            /// C++ keyword conflict.
+            ///
+            /// Batch only supports global instance templates.
+            /// You can specify the global instance template as a full or partial URL.
             #[prost(string, tag = "2")]
             InstanceTemplate(::prost::alloc::string::String),
         }
@@ -1314,10 +1336,10 @@ pub mod allocation_policy {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ProvisioningModel::Unspecified => "PROVISIONING_MODEL_UNSPECIFIED",
-                ProvisioningModel::Standard => "STANDARD",
-                ProvisioningModel::Spot => "SPOT",
-                ProvisioningModel::Preemptible => "PREEMPTIBLE",
+                Self::Unspecified => "PROVISIONING_MODEL_UNSPECIFIED",
+                Self::Standard => "STANDARD",
+                Self::Spot => "SPOT",
+                Self::Preemptible => "PREEMPTIBLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1424,9 +1446,9 @@ pub mod task_group {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SchedulingPolicy::Unspecified => "SCHEDULING_POLICY_UNSPECIFIED",
-                SchedulingPolicy::AsSoonAsPossible => "AS_SOON_AS_POSSIBLE",
-                SchedulingPolicy::InOrder => "IN_ORDER",
+                Self::Unspecified => "SCHEDULING_POLICY_UNSPECIFIED",
+                Self::AsSoonAsPossible => "AS_SOON_AS_POSSIBLE",
+                Self::InOrder => "IN_ORDER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1623,7 +1645,13 @@ pub struct OperationMetadata {
 }
 /// Generated client implementations.
 pub mod batch_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Google Batch Service.
@@ -1718,8 +1746,7 @@ pub mod batch_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1743,8 +1770,7 @@ pub mod batch_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1769,8 +1795,7 @@ pub mod batch_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1797,8 +1822,7 @@ pub mod batch_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1822,8 +1846,7 @@ pub mod batch_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1850,8 +1873,7 @@ pub mod batch_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

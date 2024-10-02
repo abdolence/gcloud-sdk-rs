@@ -203,16 +203,16 @@ pub mod network_report_spec {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Dimension::Unspecified => "DIMENSION_UNSPECIFIED",
-                Dimension::Date => "DATE",
-                Dimension::Month => "MONTH",
-                Dimension::Week => "WEEK",
-                Dimension::AdUnit => "AD_UNIT",
-                Dimension::App => "APP",
-                Dimension::AdType => "AD_TYPE",
-                Dimension::Country => "COUNTRY",
-                Dimension::Format => "FORMAT",
-                Dimension::Platform => "PLATFORM",
+                Self::Unspecified => "DIMENSION_UNSPECIFIED",
+                Self::Date => "DATE",
+                Self::Month => "MONTH",
+                Self::Week => "WEEK",
+                Self::AdUnit => "AD_UNIT",
+                Self::App => "APP",
+                Self::AdType => "AD_TYPE",
+                Self::Country => "COUNTRY",
+                Self::Format => "FORMAT",
+                Self::Platform => "PLATFORM",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -295,16 +295,16 @@ pub mod network_report_spec {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Metric::Unspecified => "METRIC_UNSPECIFIED",
-                Metric::AdRequests => "AD_REQUESTS",
-                Metric::Clicks => "CLICKS",
-                Metric::EstimatedEarnings => "ESTIMATED_EARNINGS",
-                Metric::Impressions => "IMPRESSIONS",
-                Metric::ImpressionCtr => "IMPRESSION_CTR",
-                Metric::ImpressionRpm => "IMPRESSION_RPM",
-                Metric::MatchedRequests => "MATCHED_REQUESTS",
-                Metric::MatchRate => "MATCH_RATE",
-                Metric::ShowRate => "SHOW_RATE",
+                Self::Unspecified => "METRIC_UNSPECIFIED",
+                Self::AdRequests => "AD_REQUESTS",
+                Self::Clicks => "CLICKS",
+                Self::EstimatedEarnings => "ESTIMATED_EARNINGS",
+                Self::Impressions => "IMPRESSIONS",
+                Self::ImpressionCtr => "IMPRESSION_CTR",
+                Self::ImpressionRpm => "IMPRESSION_RPM",
+                Self::MatchedRequests => "MATCHED_REQUESTS",
+                Self::MatchRate => "MATCH_RATE",
+                Self::ShowRate => "SHOW_RATE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -506,18 +506,18 @@ pub mod mediation_report_spec {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Dimension::Unspecified => "DIMENSION_UNSPECIFIED",
-                Dimension::Date => "DATE",
-                Dimension::Month => "MONTH",
-                Dimension::Week => "WEEK",
-                Dimension::AdSource => "AD_SOURCE",
-                Dimension::AdSourceInstance => "AD_SOURCE_INSTANCE",
-                Dimension::AdUnit => "AD_UNIT",
-                Dimension::App => "APP",
-                Dimension::MediationGroup => "MEDIATION_GROUP",
-                Dimension::Country => "COUNTRY",
-                Dimension::Format => "FORMAT",
-                Dimension::Platform => "PLATFORM",
+                Self::Unspecified => "DIMENSION_UNSPECIFIED",
+                Self::Date => "DATE",
+                Self::Month => "MONTH",
+                Self::Week => "WEEK",
+                Self::AdSource => "AD_SOURCE",
+                Self::AdSourceInstance => "AD_SOURCE_INSTANCE",
+                Self::AdUnit => "AD_UNIT",
+                Self::App => "APP",
+                Self::MediationGroup => "MEDIATION_GROUP",
+                Self::Country => "COUNTRY",
+                Self::Format => "FORMAT",
+                Self::Platform => "PLATFORM",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -599,15 +599,15 @@ pub mod mediation_report_spec {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Metric::Unspecified => "METRIC_UNSPECIFIED",
-                Metric::AdRequests => "AD_REQUESTS",
-                Metric::Clicks => "CLICKS",
-                Metric::EstimatedEarnings => "ESTIMATED_EARNINGS",
-                Metric::Impressions => "IMPRESSIONS",
-                Metric::ImpressionCtr => "IMPRESSION_CTR",
-                Metric::MatchedRequests => "MATCHED_REQUESTS",
-                Metric::MatchRate => "MATCH_RATE",
-                Metric::ObservedEcpm => "OBSERVED_ECPM",
+                Self::Unspecified => "METRIC_UNSPECIFIED",
+                Self::AdRequests => "AD_REQUESTS",
+                Self::Clicks => "CLICKS",
+                Self::EstimatedEarnings => "ESTIMATED_EARNINGS",
+                Self::Impressions => "IMPRESSIONS",
+                Self::ImpressionCtr => "IMPRESSION_CTR",
+                Self::MatchedRequests => "MATCHED_REQUESTS",
+                Self::MatchRate => "MATCH_RATE",
+                Self::ObservedEcpm => "OBSERVED_ECPM",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -742,13 +742,13 @@ pub mod report_warning {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::DataBeforeAccountTimezoneChange => {
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::DataBeforeAccountTimezoneChange => {
                     "DATA_BEFORE_ACCOUNT_TIMEZONE_CHANGE"
                 }
-                Type::DataDelayed => "DATA_DELAYED",
-                Type::Other => "OTHER",
-                Type::ReportCurrencyNotAccountCurrency => {
+                Self::DataDelayed => "DATA_DELAYED",
+                Self::Other => "OTHER",
+                Self::ReportCurrencyNotAccountCurrency => {
                     "REPORT_CURRENCY_NOT_ACCOUNT_CURRENCY"
                 }
             }
@@ -853,9 +853,9 @@ impl SortOrder {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SortOrder::Unspecified => "SORT_ORDER_UNSPECIFIED",
-            SortOrder::Ascending => "ASCENDING",
-            SortOrder::Descending => "DESCENDING",
+            Self::Unspecified => "SORT_ORDER_UNSPECIFIED",
+            Self::Ascending => "ASCENDING",
+            Self::Descending => "DESCENDING",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1042,7 +1042,13 @@ pub mod generate_network_report_response {
 }
 /// Generated client implementations.
 pub mod ad_mob_api_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The AdMob API allows AdMob publishers programmatically get information about
@@ -1139,8 +1145,7 @@ pub mod ad_mob_api_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1171,8 +1176,7 @@ pub mod ad_mob_api_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1205,8 +1209,7 @@ pub mod ad_mob_api_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1239,8 +1242,7 @@ pub mod ad_mob_api_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

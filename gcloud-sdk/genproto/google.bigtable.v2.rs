@@ -1375,9 +1375,9 @@ pub mod read_rows_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RequestStatsView::Unspecified => "REQUEST_STATS_VIEW_UNSPECIFIED",
-                RequestStatsView::RequestStatsNone => "REQUEST_STATS_NONE",
-                RequestStatsView::RequestStatsFull => "REQUEST_STATS_FULL",
+                Self::Unspecified => "REQUEST_STATS_VIEW_UNSPECIFIED",
+                Self::RequestStatsNone => "REQUEST_STATS_NONE",
+                Self::RequestStatsFull => "REQUEST_STATS_FULL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1990,10 +1990,10 @@ pub mod read_change_stream_response {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Type::Unspecified => "TYPE_UNSPECIFIED",
-                    Type::User => "USER",
-                    Type::GarbageCollection => "GARBAGE_COLLECTION",
-                    Type::Continuation => "CONTINUATION",
+                    Self::Unspecified => "TYPE_UNSPECIFIED",
+                    Self::User => "USER",
+                    Self::GarbageCollection => "GARBAGE_COLLECTION",
+                    Self::Continuation => "CONTINUATION",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2171,7 +2171,13 @@ pub mod execute_query_response {
 }
 /// Generated client implementations.
 pub mod bigtable_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for reading from and writing to existing Bigtable tables.
@@ -2271,8 +2277,7 @@ pub mod bigtable_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2300,8 +2305,7 @@ pub mod bigtable_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2327,8 +2331,7 @@ pub mod bigtable_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2355,8 +2358,7 @@ pub mod bigtable_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2381,8 +2383,7 @@ pub mod bigtable_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2410,8 +2411,7 @@ pub mod bigtable_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2440,8 +2440,7 @@ pub mod bigtable_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2477,8 +2476,7 @@ pub mod bigtable_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2511,8 +2509,7 @@ pub mod bigtable_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2539,8 +2536,7 @@ pub mod bigtable_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

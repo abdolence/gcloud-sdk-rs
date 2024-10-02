@@ -459,10 +459,10 @@ pub mod pipeline_resources {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Type::Unspecified => "TYPE_UNSPECIFIED",
-                    Type::PersistentHdd => "PERSISTENT_HDD",
-                    Type::PersistentSsd => "PERSISTENT_SSD",
-                    Type::LocalSsd => "LOCAL_SSD",
+                    Self::Unspecified => "TYPE_UNSPECIFIED",
+                    Self::PersistentHdd => "PERSISTENT_HDD",
+                    Self::PersistentSsd => "PERSISTENT_SSD",
+                    Self::LocalSsd => "LOCAL_SSD",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -628,7 +628,13 @@ pub struct DockerExecutor {
 }
 /// Generated client implementations.
 pub mod pipelines_v1_alpha2_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// A service for running genomics pipelines.
@@ -726,8 +732,7 @@ pub mod pipelines_v1_alpha2_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -763,8 +768,7 @@ pub mod pipelines_v1_alpha2_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -793,8 +797,7 @@ pub mod pipelines_v1_alpha2_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -826,8 +829,7 @@ pub mod pipelines_v1_alpha2_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -856,8 +858,7 @@ pub mod pipelines_v1_alpha2_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -888,8 +889,7 @@ pub mod pipelines_v1_alpha2_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -918,8 +918,7 @@ pub mod pipelines_v1_alpha2_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

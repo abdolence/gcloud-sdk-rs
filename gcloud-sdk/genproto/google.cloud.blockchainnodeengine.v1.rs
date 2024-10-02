@@ -166,11 +166,9 @@ pub mod blockchain_node {
                 /// (if the ProtoBuf definition does not change) and safe for programmatic use.
                 pub fn as_str_name(&self) -> &'static str {
                     match self {
-                        GarbageCollectionMode::Unspecified => {
-                            "GARBAGE_COLLECTION_MODE_UNSPECIFIED"
-                        }
-                        GarbageCollectionMode::Full => "FULL",
-                        GarbageCollectionMode::Archive => "ARCHIVE",
+                        Self::Unspecified => "GARBAGE_COLLECTION_MODE_UNSPECIFIED",
+                        Self::Full => "FULL",
+                        Self::Archive => "ARCHIVE",
                     }
                 }
                 /// Creates an enum from field names used in the ProtoBuf definition.
@@ -266,11 +264,11 @@ pub mod blockchain_node {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Network::Unspecified => "NETWORK_UNSPECIFIED",
-                    Network::Mainnet => "MAINNET",
-                    Network::TestnetGoerliPrater => "TESTNET_GOERLI_PRATER",
-                    Network::TestnetSepolia => "TESTNET_SEPOLIA",
-                    Network::TestnetHolesky => "TESTNET_HOLESKY",
+                    Self::Unspecified => "NETWORK_UNSPECIFIED",
+                    Self::Mainnet => "MAINNET",
+                    Self::TestnetGoerliPrater => "TESTNET_GOERLI_PRATER",
+                    Self::TestnetSepolia => "TESTNET_SEPOLIA",
+                    Self::TestnetHolesky => "TESTNET_HOLESKY",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -322,10 +320,10 @@ pub mod blockchain_node {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    NodeType::Unspecified => "NODE_TYPE_UNSPECIFIED",
-                    NodeType::Light => "LIGHT",
-                    NodeType::Full => "FULL",
-                    NodeType::Archive => "ARCHIVE",
+                    Self::Unspecified => "NODE_TYPE_UNSPECIFIED",
+                    Self::Light => "LIGHT",
+                    Self::Full => "FULL",
+                    Self::Archive => "ARCHIVE",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -377,9 +375,9 @@ pub mod blockchain_node {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    ExecutionClient::Unspecified => "EXECUTION_CLIENT_UNSPECIFIED",
-                    ExecutionClient::Geth => "GETH",
-                    ExecutionClient::Erigon => "ERIGON",
+                    Self::Unspecified => "EXECUTION_CLIENT_UNSPECIFIED",
+                    Self::Geth => "GETH",
+                    Self::Erigon => "ERIGON",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -428,8 +426,8 @@ pub mod blockchain_node {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    ConsensusClient::Unspecified => "CONSENSUS_CLIENT_UNSPECIFIED",
-                    ConsensusClient::Lighthouse => "LIGHTHOUSE",
+                    Self::Unspecified => "CONSENSUS_CLIENT_UNSPECIFIED",
+                    Self::Lighthouse => "LIGHTHOUSE",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -475,8 +473,8 @@ pub mod blockchain_node {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                BlockchainType::Unspecified => "BLOCKCHAIN_TYPE_UNSPECIFIED",
-                BlockchainType::Ethereum => "ETHEREUM",
+                Self::Unspecified => "BLOCKCHAIN_TYPE_UNSPECIFIED",
+                Self::Ethereum => "ETHEREUM",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -529,15 +527,15 @@ pub mod blockchain_node {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Deleting => "DELETING",
-                State::Running => "RUNNING",
-                State::Error => "ERROR",
-                State::Updating => "UPDATING",
-                State::Repairing => "REPAIRING",
-                State::Reconciling => "RECONCILING",
-                State::Syncing => "SYNCING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Deleting => "DELETING",
+                Self::Running => "RUNNING",
+                Self::Error => "ERROR",
+                Self::Updating => "UPDATING",
+                Self::Repairing => "REPAIRING",
+                Self::Reconciling => "RECONCILING",
+                Self::Syncing => "SYNCING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -716,7 +714,13 @@ pub struct OperationMetadata {
 }
 /// Generated client implementations.
 pub mod blockchain_node_engine_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// This service is the control plane API for Blockchain Node Engine,
@@ -813,8 +817,7 @@ pub mod blockchain_node_engine_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -841,8 +844,7 @@ pub mod blockchain_node_engine_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -872,8 +874,7 @@ pub mod blockchain_node_engine_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -903,8 +904,7 @@ pub mod blockchain_node_engine_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -934,8 +934,7 @@ pub mod blockchain_node_engine_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

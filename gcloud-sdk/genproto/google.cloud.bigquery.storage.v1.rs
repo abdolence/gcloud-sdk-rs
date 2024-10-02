@@ -61,9 +61,9 @@ pub mod arrow_serialization_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CompressionCodec::CompressionUnspecified => "COMPRESSION_UNSPECIFIED",
-                CompressionCodec::Lz4Frame => "LZ4_FRAME",
-                CompressionCodec::Zstd => "ZSTD",
+                Self::CompressionUnspecified => "COMPRESSION_UNSPECIFIED",
+                Self::Lz4Frame => "LZ4_FRAME",
+                Self::Zstd => "ZSTD",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -295,23 +295,23 @@ pub mod table_field_schema {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::String => "STRING",
-                Type::Int64 => "INT64",
-                Type::Double => "DOUBLE",
-                Type::Struct => "STRUCT",
-                Type::Bytes => "BYTES",
-                Type::Bool => "BOOL",
-                Type::Timestamp => "TIMESTAMP",
-                Type::Date => "DATE",
-                Type::Time => "TIME",
-                Type::Datetime => "DATETIME",
-                Type::Geography => "GEOGRAPHY",
-                Type::Numeric => "NUMERIC",
-                Type::Bignumeric => "BIGNUMERIC",
-                Type::Interval => "INTERVAL",
-                Type::Json => "JSON",
-                Type::Range => "RANGE",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::String => "STRING",
+                Self::Int64 => "INT64",
+                Self::Double => "DOUBLE",
+                Self::Struct => "STRUCT",
+                Self::Bytes => "BYTES",
+                Self::Bool => "BOOL",
+                Self::Timestamp => "TIMESTAMP",
+                Self::Date => "DATE",
+                Self::Time => "TIME",
+                Self::Datetime => "DATETIME",
+                Self::Geography => "GEOGRAPHY",
+                Self::Numeric => "NUMERIC",
+                Self::Bignumeric => "BIGNUMERIC",
+                Self::Interval => "INTERVAL",
+                Self::Json => "JSON",
+                Self::Range => "RANGE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -364,10 +364,10 @@ pub mod table_field_schema {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Mode::Unspecified => "MODE_UNSPECIFIED",
-                Mode::Nullable => "NULLABLE",
-                Mode::Required => "REQUIRED",
-                Mode::Repeated => "REPEATED",
+                Self::Unspecified => "MODE_UNSPECIFIED",
+                Self::Nullable => "NULLABLE",
+                Self::Required => "REQUIRED",
+                Self::Repeated => "REPEATED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -580,10 +580,8 @@ pub mod read_session {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    ResponseCompressionCodec::Unspecified => {
-                        "RESPONSE_COMPRESSION_CODEC_UNSPECIFIED"
-                    }
-                    ResponseCompressionCodec::Lz4 => "RESPONSE_COMPRESSION_CODEC_LZ4",
+                    Self::Unspecified => "RESPONSE_COMPRESSION_CODEC_UNSPECIFIED",
+                    Self::Lz4 => "RESPONSE_COMPRESSION_CODEC_LZ4",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -696,10 +694,10 @@ pub mod write_stream {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::Committed => "COMMITTED",
-                Type::Pending => "PENDING",
-                Type::Buffered => "BUFFERED",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Committed => "COMMITTED",
+                Self::Pending => "PENDING",
+                Self::Buffered => "BUFFERED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -740,8 +738,8 @@ pub mod write_stream {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                WriteMode::Unspecified => "WRITE_MODE_UNSPECIFIED",
-                WriteMode::Insert => "INSERT",
+                Self::Unspecified => "WRITE_MODE_UNSPECIFIED",
+                Self::Insert => "INSERT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -774,9 +772,9 @@ impl DataFormat {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DataFormat::Unspecified => "DATA_FORMAT_UNSPECIFIED",
-            DataFormat::Avro => "AVRO",
-            DataFormat::Arrow => "ARROW",
+            Self::Unspecified => "DATA_FORMAT_UNSPECIFIED",
+            Self::Avro => "AVRO",
+            Self::Arrow => "ARROW",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -812,9 +810,9 @@ impl WriteStreamView {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            WriteStreamView::Unspecified => "WRITE_STREAM_VIEW_UNSPECIFIED",
-            WriteStreamView::Basic => "BASIC",
-            WriteStreamView::Full => "FULL",
+            Self::Unspecified => "WRITE_STREAM_VIEW_UNSPECIFIED",
+            Self::Basic => "BASIC",
+            Self::Full => "FULL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1173,11 +1171,9 @@ pub mod append_rows_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MissingValueInterpretation::Unspecified => {
-                    "MISSING_VALUE_INTERPRETATION_UNSPECIFIED"
-                }
-                MissingValueInterpretation::NullValue => "NULL_VALUE",
-                MissingValueInterpretation::DefaultValue => "DEFAULT_VALUE",
+                Self::Unspecified => "MISSING_VALUE_INTERPRETATION_UNSPECIFIED",
+                Self::NullValue => "NULL_VALUE",
+                Self::DefaultValue => "DEFAULT_VALUE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1408,23 +1404,21 @@ pub mod storage_error {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                StorageErrorCode::Unspecified => "STORAGE_ERROR_CODE_UNSPECIFIED",
-                StorageErrorCode::TableNotFound => "TABLE_NOT_FOUND",
-                StorageErrorCode::StreamAlreadyCommitted => "STREAM_ALREADY_COMMITTED",
-                StorageErrorCode::StreamNotFound => "STREAM_NOT_FOUND",
-                StorageErrorCode::InvalidStreamType => "INVALID_STREAM_TYPE",
-                StorageErrorCode::InvalidStreamState => "INVALID_STREAM_STATE",
-                StorageErrorCode::StreamFinalized => "STREAM_FINALIZED",
-                StorageErrorCode::SchemaMismatchExtraFields => {
-                    "SCHEMA_MISMATCH_EXTRA_FIELDS"
-                }
-                StorageErrorCode::OffsetAlreadyExists => "OFFSET_ALREADY_EXISTS",
-                StorageErrorCode::OffsetOutOfRange => "OFFSET_OUT_OF_RANGE",
-                StorageErrorCode::CmekNotProvided => "CMEK_NOT_PROVIDED",
-                StorageErrorCode::InvalidCmekProvided => "INVALID_CMEK_PROVIDED",
-                StorageErrorCode::CmekEncryptionError => "CMEK_ENCRYPTION_ERROR",
-                StorageErrorCode::KmsServiceError => "KMS_SERVICE_ERROR",
-                StorageErrorCode::KmsPermissionDenied => "KMS_PERMISSION_DENIED",
+                Self::Unspecified => "STORAGE_ERROR_CODE_UNSPECIFIED",
+                Self::TableNotFound => "TABLE_NOT_FOUND",
+                Self::StreamAlreadyCommitted => "STREAM_ALREADY_COMMITTED",
+                Self::StreamNotFound => "STREAM_NOT_FOUND",
+                Self::InvalidStreamType => "INVALID_STREAM_TYPE",
+                Self::InvalidStreamState => "INVALID_STREAM_STATE",
+                Self::StreamFinalized => "STREAM_FINALIZED",
+                Self::SchemaMismatchExtraFields => "SCHEMA_MISMATCH_EXTRA_FIELDS",
+                Self::OffsetAlreadyExists => "OFFSET_ALREADY_EXISTS",
+                Self::OffsetOutOfRange => "OFFSET_OUT_OF_RANGE",
+                Self::CmekNotProvided => "CMEK_NOT_PROVIDED",
+                Self::InvalidCmekProvided => "INVALID_CMEK_PROVIDED",
+                Self::CmekEncryptionError => "CMEK_ENCRYPTION_ERROR",
+                Self::KmsServiceError => "KMS_SERVICE_ERROR",
+                Self::KmsPermissionDenied => "KMS_PERMISSION_DENIED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1491,8 +1485,8 @@ pub mod row_error {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RowErrorCode::Unspecified => "ROW_ERROR_CODE_UNSPECIFIED",
-                RowErrorCode::FieldsError => "FIELDS_ERROR",
+                Self::Unspecified => "ROW_ERROR_CODE_UNSPECIFIED",
+                Self::FieldsError => "FIELDS_ERROR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1507,7 +1501,13 @@ pub mod row_error {
 }
 /// Generated client implementations.
 pub mod big_query_read_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// BigQuery Read API.
@@ -1620,8 +1620,7 @@ pub mod big_query_read_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1657,8 +1656,7 @@ pub mod big_query_read_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1699,8 +1697,7 @@ pub mod big_query_read_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1722,7 +1719,13 @@ pub mod big_query_read_client {
 }
 /// Generated client implementations.
 pub mod big_query_write_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// BigQuery Write API.
@@ -1825,8 +1828,7 @@ pub mod big_query_write_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1886,8 +1888,7 @@ pub mod big_query_write_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1914,8 +1915,7 @@ pub mod big_query_write_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1946,8 +1946,7 @@ pub mod big_query_write_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1982,8 +1981,7 @@ pub mod big_query_write_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2020,8 +2018,7 @@ pub mod big_query_write_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

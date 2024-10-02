@@ -111,9 +111,9 @@ pub mod compute_threat_list_diff_response {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ResponseType::Unspecified => "RESPONSE_TYPE_UNSPECIFIED",
-                ResponseType::Diff => "DIFF",
-                ResponseType::Reset => "RESET",
+                Self::Unspecified => "RESPONSE_TYPE_UNSPECIFIED",
+                Self::Diff => "DIFF",
+                Self::Reset => "RESET",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -347,10 +347,10 @@ pub mod threat_info {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    ConfidenceLevel::Unspecified => "CONFIDENCE_LEVEL_UNSPECIFIED",
-                    ConfidenceLevel::Low => "LOW",
-                    ConfidenceLevel::Medium => "MEDIUM",
-                    ConfidenceLevel::High => "HIGH",
+                    Self::Unspecified => "CONFIDENCE_LEVEL_UNSPECIFIED",
+                    Self::Low => "LOW",
+                    Self::Medium => "MEDIUM",
+                    Self::High => "HIGH",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -422,10 +422,10 @@ pub mod threat_info {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    JustificationLabel::Unspecified => "JUSTIFICATION_LABEL_UNSPECIFIED",
-                    JustificationLabel::ManualVerification => "MANUAL_VERIFICATION",
-                    JustificationLabel::UserReport => "USER_REPORT",
-                    JustificationLabel::AutomatedReport => "AUTOMATED_REPORT",
+                    Self::Unspecified => "JUSTIFICATION_LABEL_UNSPECIFIED",
+                    Self::ManualVerification => "MANUAL_VERIFICATION",
+                    Self::UserReport => "USER_REPORT",
+                    Self::AutomatedReport => "AUTOMATED_REPORT",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -470,10 +470,10 @@ pub mod threat_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AbuseType::Unspecified => "ABUSE_TYPE_UNSPECIFIED",
-                AbuseType::Malware => "MALWARE",
-                AbuseType::SocialEngineering => "SOCIAL_ENGINEERING",
-                AbuseType::UnwantedSoftware => "UNWANTED_SOFTWARE",
+                Self::Unspecified => "ABUSE_TYPE_UNSPECIFIED",
+                Self::Malware => "MALWARE",
+                Self::SocialEngineering => "SOCIAL_ENGINEERING",
+                Self::UnwantedSoftware => "UNWANTED_SOFTWARE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -533,11 +533,11 @@ pub mod threat_discovery {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Platform::Unspecified => "PLATFORM_UNSPECIFIED",
-                Platform::Android => "ANDROID",
-                Platform::Ios => "IOS",
-                Platform::Macos => "MACOS",
-                Platform::Windows => "WINDOWS",
+                Self::Unspecified => "PLATFORM_UNSPECIFIED",
+                Self::Android => "ANDROID",
+                Self::Ios => "IOS",
+                Self::Macos => "MACOS",
+                Self::Windows => "WINDOWS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -631,12 +631,12 @@ pub mod submit_uri_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Running => "RUNNING",
-                State::Succeeded => "SUCCEEDED",
-                State::Cancelled => "CANCELLED",
-                State::Failed => "FAILED",
-                State::Closed => "CLOSED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Running => "RUNNING",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Cancelled => "CANCELLED",
+                Self::Failed => "FAILED",
+                Self::Closed => "CLOSED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -677,11 +677,11 @@ impl ThreatType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ThreatType::Unspecified => "THREAT_TYPE_UNSPECIFIED",
-            ThreatType::Malware => "MALWARE",
-            ThreatType::SocialEngineering => "SOCIAL_ENGINEERING",
-            ThreatType::UnwantedSoftware => "UNWANTED_SOFTWARE",
-            ThreatType::SocialEngineeringExtendedCoverage => {
+            Self::Unspecified => "THREAT_TYPE_UNSPECIFIED",
+            Self::Malware => "MALWARE",
+            Self::SocialEngineering => "SOCIAL_ENGINEERING",
+            Self::UnwantedSoftware => "UNWANTED_SOFTWARE",
+            Self::SocialEngineeringExtendedCoverage => {
                 "SOCIAL_ENGINEERING_EXTENDED_COVERAGE"
             }
         }
@@ -718,9 +718,9 @@ impl CompressionType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            CompressionType::Unspecified => "COMPRESSION_TYPE_UNSPECIFIED",
-            CompressionType::Raw => "RAW",
-            CompressionType::Rice => "RICE",
+            Self::Unspecified => "COMPRESSION_TYPE_UNSPECIFIED",
+            Self::Raw => "RAW",
+            Self::Rice => "RICE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -735,7 +735,13 @@ impl CompressionType {
 }
 /// Generated client implementations.
 pub mod web_risk_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Web Risk API defines an interface to detect malicious URLs on your
@@ -837,8 +843,7 @@ pub mod web_risk_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -872,8 +877,7 @@ pub mod web_risk_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -907,8 +911,7 @@ pub mod web_risk_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -941,8 +944,7 @@ pub mod web_risk_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -981,8 +983,7 @@ pub mod web_risk_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

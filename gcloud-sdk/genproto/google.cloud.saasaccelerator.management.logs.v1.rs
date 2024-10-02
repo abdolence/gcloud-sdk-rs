@@ -50,10 +50,10 @@ pub mod notification_stage {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Stage::Unspecified => "STAGE_UNSPECIFIED",
-                Stage::Sent => "SENT",
-                Stage::SendFailure => "SEND_FAILURE",
-                Stage::Dropped => "DROPPED",
+                Self::Unspecified => "STAGE_UNSPECIFIED",
+                Self::Sent => "SENT",
+                Self::SendFailure => "SEND_FAILURE",
+                Self::Dropped => "DROPPED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -93,8 +93,8 @@ pub mod notification_stage {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Event::Unspecified => "EVENT_UNSPECIFIED",
-                Event::HealthStatusChange => "HEALTH_STATUS_CHANGE",
+                Self::Unspecified => "EVENT_UNSPECIFIED",
+                Self::HealthStatusChange => "HEALTH_STATUS_CHANGE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

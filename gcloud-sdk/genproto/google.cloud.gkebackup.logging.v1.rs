@@ -67,12 +67,12 @@ pub mod logged_backup {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::InProgress => "IN_PROGRESS",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
-                State::Deleting => "DELETING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::InProgress => "IN_PROGRESS",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::Deleting => "DELETING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -284,12 +284,12 @@ pub mod logged_restore {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::InProgress => "IN_PROGRESS",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
-                State::Deleting => "DELETING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::InProgress => "IN_PROGRESS",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::Deleting => "DELETING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -489,18 +489,10 @@ pub mod restore_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                VolumeDataRestorePolicy::Unspecified => {
-                    "VOLUME_DATA_RESTORE_POLICY_UNSPECIFIED"
-                }
-                VolumeDataRestorePolicy::RestoreVolumeDataFromBackup => {
-                    "RESTORE_VOLUME_DATA_FROM_BACKUP"
-                }
-                VolumeDataRestorePolicy::ReuseVolumeHandleFromBackup => {
-                    "REUSE_VOLUME_HANDLE_FROM_BACKUP"
-                }
-                VolumeDataRestorePolicy::NoVolumeDataRestoration => {
-                    "NO_VOLUME_DATA_RESTORATION"
-                }
+                Self::Unspecified => "VOLUME_DATA_RESTORE_POLICY_UNSPECIFIED",
+                Self::RestoreVolumeDataFromBackup => "RESTORE_VOLUME_DATA_FROM_BACKUP",
+                Self::ReuseVolumeHandleFromBackup => "REUSE_VOLUME_HANDLE_FROM_BACKUP",
+                Self::NoVolumeDataRestoration => "NO_VOLUME_DATA_RESTORATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -551,13 +543,9 @@ pub mod restore_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ClusterResourceConflictPolicy::Unspecified => {
-                    "CLUSTER_RESOURCE_CONFLICT_POLICY_UNSPECIFIED"
-                }
-                ClusterResourceConflictPolicy::UseExistingVersion => {
-                    "USE_EXISTING_VERSION"
-                }
-                ClusterResourceConflictPolicy::UseBackupVersion => "USE_BACKUP_VERSION",
+                Self::Unspecified => "CLUSTER_RESOURCE_CONFLICT_POLICY_UNSPECIFIED",
+                Self::UseExistingVersion => "USE_EXISTING_VERSION",
+                Self::UseBackupVersion => "USE_BACKUP_VERSION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -609,11 +597,9 @@ pub mod restore_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                NamespacedResourceRestoreMode::Unspecified => {
-                    "NAMESPACED_RESOURCE_RESTORE_MODE_UNSPECIFIED"
-                }
-                NamespacedResourceRestoreMode::DeleteAndRestore => "DELETE_AND_RESTORE",
-                NamespacedResourceRestoreMode::FailOnConflict => "FAIL_ON_CONFLICT",
+                Self::Unspecified => "NAMESPACED_RESOURCE_RESTORE_MODE_UNSPECIFIED",
+                Self::DeleteAndRestore => "DELETE_AND_RESTORE",
+                Self::FailOnConflict => "FAIL_ON_CONFLICT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -766,10 +752,10 @@ impl ChangeType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ChangeType::Unspecified => "CHANGE_TYPE_UNSPECIFIED",
-            ChangeType::Creation => "CREATION",
-            ChangeType::Update => "UPDATE",
-            ChangeType::Deletion => "DELETION",
+            Self::Unspecified => "CHANGE_TYPE_UNSPECIFIED",
+            Self::Creation => "CREATION",
+            Self::Update => "UPDATE",
+            Self::Deletion => "DELETION",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.

@@ -98,11 +98,11 @@ pub mod run {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unknown => "UNKNOWN",
-                State::Started => "STARTED",
-                State::Completed => "COMPLETED",
-                State::Failed => "FAILED",
-                State::Aborted => "ABORTED",
+                Self::Unknown => "UNKNOWN",
+                Self::Started => "STARTED",
+                Self::Completed => "COMPLETED",
+                Self::Failed => "FAILED",
+                Self::Aborted => "ABORTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -222,11 +222,11 @@ pub mod operation_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Pending => "PENDING",
-                State::Running => "RUNNING",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::Running => "RUNNING",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -269,9 +269,9 @@ pub mod operation_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::Delete => "DELETE",
-                Type::Create => "CREATE",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Delete => "DELETE",
+                Self::Create => "CREATE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -779,13 +779,13 @@ pub mod origin {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SourceType::Unspecified => "SOURCE_TYPE_UNSPECIFIED",
-                SourceType::Custom => "CUSTOM",
-                SourceType::Bigquery => "BIGQUERY",
-                SourceType::DataFusion => "DATA_FUSION",
-                SourceType::Composer => "COMPOSER",
-                SourceType::LookerStudio => "LOOKER_STUDIO",
-                SourceType::Dataproc => "DATAPROC",
+                Self::Unspecified => "SOURCE_TYPE_UNSPECIFIED",
+                Self::Custom => "CUSTOM",
+                Self::Bigquery => "BIGQUERY",
+                Self::DataFusion => "DATA_FUSION",
+                Self::Composer => "COMPOSER",
+                Self::LookerStudio => "LOOKER_STUDIO",
+                Self::Dataproc => "DATAPROC",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -805,7 +805,13 @@ pub mod origin {
 }
 /// Generated client implementations.
 pub mod lineage_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Lineage is used to track data flows between assets over time. You can
@@ -907,8 +913,7 @@ pub mod lineage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -935,8 +940,7 @@ pub mod lineage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -963,8 +967,7 @@ pub mod lineage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -991,8 +994,7 @@ pub mod lineage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1023,8 +1025,7 @@ pub mod lineage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1054,8 +1055,7 @@ pub mod lineage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1082,8 +1082,7 @@ pub mod lineage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1110,8 +1109,7 @@ pub mod lineage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1138,8 +1136,7 @@ pub mod lineage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1170,8 +1167,7 @@ pub mod lineage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1201,8 +1197,7 @@ pub mod lineage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1229,8 +1224,7 @@ pub mod lineage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1257,8 +1251,7 @@ pub mod lineage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1289,8 +1282,7 @@ pub mod lineage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1317,8 +1309,7 @@ pub mod lineage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1356,8 +1347,7 @@ pub mod lineage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1400,8 +1390,7 @@ pub mod lineage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

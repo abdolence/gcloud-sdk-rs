@@ -166,10 +166,10 @@ pub mod private_connection {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Created => "CREATED",
-                State::Failed => "FAILED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Created => "CREATED",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -506,9 +506,9 @@ pub mod json_file_format {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                JsonCompression::Unspecified => "JSON_COMPRESSION_UNSPECIFIED",
-                JsonCompression::NoCompression => "NO_COMPRESSION",
-                JsonCompression::Gzip => "GZIP",
+                Self::Unspecified => "JSON_COMPRESSION_UNSPECIFIED",
+                Self::NoCompression => "NO_COMPRESSION",
+                Self::Gzip => "GZIP",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -686,15 +686,15 @@ pub mod stream {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Created => "CREATED",
-                State::Running => "RUNNING",
-                State::Paused => "PAUSED",
-                State::Maintenance => "MAINTENANCE",
-                State::Failed => "FAILED",
-                State::FailedPermanently => "FAILED_PERMANENTLY",
-                State::Starting => "STARTING",
-                State::Draining => "DRAINING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Created => "CREATED",
+                Self::Running => "RUNNING",
+                Self::Paused => "PAUSED",
+                Self::Maintenance => "MAINTENANCE",
+                Self::Failed => "FAILED",
+                Self::FailedPermanently => "FAILED_PERMANENTLY",
+                Self::Starting => "STARTING",
+                Self::Draining => "DRAINING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -803,10 +803,10 @@ pub mod validation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Status::Unspecified => "STATUS_UNSPECIFIED",
-                Status::NotExecuted => "NOT_EXECUTED",
-                Status::Failed => "FAILED",
-                Status::Passed => "PASSED",
+                Self::Unspecified => "STATUS_UNSPECIFIED",
+                Self::NotExecuted => "NOT_EXECUTED",
+                Self::Failed => "FAILED",
+                Self::Passed => "PASSED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -870,9 +870,9 @@ pub mod validation_message {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Level::Unspecified => "LEVEL_UNSPECIFIED",
-                Level::Warning => "WARNING",
-                Level::Error => "ERROR",
+                Self::Unspecified => "LEVEL_UNSPECIFIED",
+                Self::Warning => "WARNING",
+                Self::Error => "ERROR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -902,8 +902,8 @@ impl GcsFileFormat {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            GcsFileFormat::Unspecified => "GCS_FILE_FORMAT_UNSPECIFIED",
-            GcsFileFormat::Avro => "AVRO",
+            Self::Unspecified => "GCS_FILE_FORMAT_UNSPECIFIED",
+            Self::Avro => "AVRO",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -933,9 +933,9 @@ impl SchemaFileFormat {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SchemaFileFormat::Unspecified => "SCHEMA_FILE_FORMAT_UNSPECIFIED",
-            SchemaFileFormat::NoSchemaFile => "NO_SCHEMA_FILE",
-            SchemaFileFormat::AvroSchemaFile => "AVRO_SCHEMA_FILE",
+            Self::Unspecified => "SCHEMA_FILE_FORMAT_UNSPECIFIED",
+            Self::NoSchemaFile => "NO_SCHEMA_FILE",
+            Self::AvroSchemaFile => "AVRO_SCHEMA_FILE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1546,7 +1546,13 @@ pub struct GetRouteRequest {
 }
 /// Generated client implementations.
 pub mod datastream_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Datastream service
@@ -1643,8 +1649,7 @@ pub mod datastream_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1674,8 +1679,7 @@ pub mod datastream_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1705,8 +1709,7 @@ pub mod datastream_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1736,8 +1739,7 @@ pub mod datastream_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1767,8 +1769,7 @@ pub mod datastream_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1801,8 +1802,7 @@ pub mod datastream_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1832,8 +1832,7 @@ pub mod datastream_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1860,8 +1859,7 @@ pub mod datastream_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1891,8 +1889,7 @@ pub mod datastream_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1922,8 +1919,7 @@ pub mod datastream_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1953,8 +1949,7 @@ pub mod datastream_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1984,8 +1979,7 @@ pub mod datastream_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2017,8 +2011,7 @@ pub mod datastream_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2048,8 +2041,7 @@ pub mod datastream_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2079,8 +2071,7 @@ pub mod datastream_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2111,8 +2102,7 @@ pub mod datastream_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2142,8 +2132,7 @@ pub mod datastream_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2174,8 +2163,7 @@ pub mod datastream_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2202,8 +2190,7 @@ pub mod datastream_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2234,8 +2221,7 @@ pub mod datastream_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2265,8 +2251,7 @@ pub mod datastream_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

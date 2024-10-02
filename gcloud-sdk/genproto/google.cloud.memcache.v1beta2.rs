@@ -162,11 +162,11 @@ pub mod instance {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    State::Unspecified => "STATE_UNSPECIFIED",
-                    State::Creating => "CREATING",
-                    State::Ready => "READY",
-                    State::Deleting => "DELETING",
-                    State::Updating => "UPDATING",
+                    Self::Unspecified => "STATE_UNSPECIFIED",
+                    Self::Creating => "CREATING",
+                    Self::Ready => "READY",
+                    Self::Deleting => "DELETING",
+                    Self::Updating => "UPDATING",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -218,8 +218,8 @@ pub mod instance {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Code::Unspecified => "CODE_UNSPECIFIED",
-                    Code::ZoneDistributionUnbalanced => "ZONE_DISTRIBUTION_UNBALANCED",
+                    Self::Unspecified => "CODE_UNSPECIFIED",
+                    Self::ZoneDistributionUnbalanced => "ZONE_DISTRIBUTION_UNBALANCED",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -269,12 +269,12 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Ready => "READY",
-                State::Updating => "UPDATING",
-                State::Deleting => "DELETING",
-                State::PerformingMaintenance => "PERFORMING_MAINTENANCE",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Ready => "READY",
+                Self::Updating => "UPDATING",
+                Self::Deleting => "DELETING",
+                Self::PerformingMaintenance => "PERFORMING_MAINTENANCE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -488,10 +488,10 @@ pub mod reschedule_maintenance_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RescheduleType::Unspecified => "RESCHEDULE_TYPE_UNSPECIFIED",
-                RescheduleType::Immediate => "IMMEDIATE",
-                RescheduleType::NextAvailableWindow => "NEXT_AVAILABLE_WINDOW",
-                RescheduleType::SpecificTime => "SPECIFIC_TIME",
+                Self::Unspecified => "RESCHEDULE_TYPE_UNSPECIFIED",
+                Self::Immediate => "IMMEDIATE",
+                Self::NextAvailableWindow => "NEXT_AVAILABLE_WINDOW",
+                Self::SpecificTime => "SPECIFIC_TIME",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -626,8 +626,8 @@ impl MemcacheVersion {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            MemcacheVersion::Unspecified => "MEMCACHE_VERSION_UNSPECIFIED",
-            MemcacheVersion::Memcache15 => "MEMCACHE_1_5",
+            Self::Unspecified => "MEMCACHE_VERSION_UNSPECIFIED",
+            Self::Memcache15 => "MEMCACHE_1_5",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -641,7 +641,13 @@ impl MemcacheVersion {
 }
 /// Generated client implementations.
 pub mod cloud_memcache_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Configures and manages Cloud Memorystore for Memcached instances.
@@ -751,8 +757,7 @@ pub mod cloud_memcache_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -779,8 +784,7 @@ pub mod cloud_memcache_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -810,8 +814,7 @@ pub mod cloud_memcache_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -841,8 +844,7 @@ pub mod cloud_memcache_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -875,8 +877,7 @@ pub mod cloud_memcache_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -906,8 +907,7 @@ pub mod cloud_memcache_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -938,8 +938,7 @@ pub mod cloud_memcache_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -969,8 +968,7 @@ pub mod cloud_memcache_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1000,8 +998,7 @@ pub mod cloud_memcache_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

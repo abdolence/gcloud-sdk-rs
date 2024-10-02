@@ -126,9 +126,9 @@ pub mod synonym_type {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MatchType::Unspecified => "UNSPECIFIED",
-                MatchType::ExactMatch => "EXACT_MATCH",
-                MatchType::FuzzyMatch => "FUZZY_MATCH",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::ExactMatch => "EXACT_MATCH",
+                Self::FuzzyMatch => "FUZZY_MATCH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

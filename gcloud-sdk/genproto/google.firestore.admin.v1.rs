@@ -83,10 +83,10 @@ pub mod backup {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Ready => "READY",
-                State::NotAvailable => "NOT_AVAILABLE",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Ready => "READY",
+                Self::NotAvailable => "NOT_AVAILABLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -120,6 +120,10 @@ pub struct Database {
     /// data contained by the database.
     #[prost(message, optional, tag = "6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The timestamp at which this database was deleted. Only set if
+    /// the database has been deleted.
+    #[prost(message, optional, tag = "7")]
+    pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The location of the database. Available locations are listed at
     /// <https://cloud.google.com/firestore/docs/locations.>
     #[prost(string, tag = "9")]
@@ -161,8 +165,8 @@ pub struct Database {
     #[prost(enumeration = "database::AppEngineIntegrationMode", tag = "19")]
     pub app_engine_integration_mode: i32,
     /// Output only. The key_prefix for this database. This key_prefix is used, in
-    /// combination with the project id ("<key prefix>~<project id>") to construct
-    /// the application id that is returned from the Cloud Datastore APIs in Google
+    /// combination with the project ID ("<key prefix>~<project id>") to construct
+    /// the application ID that is returned from the Cloud Datastore APIs in Google
     /// App Engine first generation runtimes.
     ///
     /// This value may be empty in which case the appid to use for URL-encoded keys
@@ -172,6 +176,16 @@ pub struct Database {
     /// State of delete protection for the database.
     #[prost(enumeration = "database::DeleteProtectionState", tag = "22")]
     pub delete_protection_state: i32,
+    /// Optional. Presence indicates CMEK is enabled for this database.
+    #[prost(message, optional, tag = "23")]
+    pub cmek_config: ::core::option::Option<database::CmekConfig>,
+    /// Output only. The database resource's prior database ID. This field is only
+    /// populated for deleted databases.
+    #[prost(string, tag = "25")]
+    pub previous_id: ::prost::alloc::string::String,
+    /// Output only. Information about the provenance of this database.
+    #[prost(message, optional, tag = "26")]
+    pub source_info: ::core::option::Option<database::SourceInfo>,
     /// This checksum is computed by the server based on the value of other
     /// fields, and may be sent on update and delete requests to ensure the
     /// client has an up-to-date value before proceeding.
@@ -180,6 +194,115 @@ pub struct Database {
 }
 /// Nested message and enum types in `Database`.
 pub mod database {
+    /// The CMEK (Customer Managed Encryption Key) configuration for a Firestore
+    /// database. If not present, the database is secured by the default Google
+    /// encryption key.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CmekConfig {
+        /// Required. Only keys in the same location as this database are allowed to
+        /// be used for encryption.
+        ///
+        /// For Firestore's nam5 multi-region, this corresponds to Cloud KMS
+        /// multi-region us. For Firestore's eur3 multi-region, this corresponds to
+        /// Cloud KMS multi-region europe. See
+        /// <https://cloud.google.com/kms/docs/locations.>
+        ///
+        /// The expected format is
+        /// `projects/{project_id}/locations/{kms_location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`.
+        #[prost(string, tag = "1")]
+        pub kms_key_name: ::prost::alloc::string::String,
+        /// Output only. Currently in-use [KMS key
+        /// versions](<https://cloud.google.com/kms/docs/resource-hierarchy#key_versions>).
+        /// During [key rotation](<https://cloud.google.com/kms/docs/key-rotation>),
+        /// there can be multiple in-use key versions.
+        ///
+        /// The expected format is
+        /// `projects/{project_id}/locations/{kms_location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{key_version}`.
+        #[prost(string, repeated, tag = "2")]
+        pub active_key_version: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// Information about the provenance of this database.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SourceInfo {
+        /// The associated long-running operation. This field may not be set after
+        /// the operation has completed. Format:
+        /// `projects/{project}/databases/{database}/operations/{operation}`.
+        #[prost(string, tag = "3")]
+        pub operation: ::prost::alloc::string::String,
+        /// The source from which this database is derived.
+        #[prost(oneof = "source_info::Source", tags = "1")]
+        pub source: ::core::option::Option<source_info::Source>,
+    }
+    /// Nested message and enum types in `SourceInfo`.
+    pub mod source_info {
+        /// Information about a backup that was used to restore a database.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct BackupSource {
+            /// The resource name of the backup that was used to restore this
+            /// database. Format:
+            /// `projects/{project}/locations/{location}/backups/{backup}`.
+            #[prost(string, tag = "1")]
+            pub backup: ::prost::alloc::string::String,
+        }
+        /// The source from which this database is derived.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Source {
+            /// If set, this database was restored from the specified backup (or a
+            /// snapshot thereof).
+            #[prost(message, tag = "1")]
+            Backup(BackupSource),
+        }
+    }
+    /// Encryption configuration for a new database being created from another
+    /// source.
+    ///
+    /// The source could be a [Backup][google.firestore.admin.v1.Backup] .
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct EncryptionConfig {
+        /// The method for encrypting the database.
+        #[prost(oneof = "encryption_config::EncryptionType", tags = "1, 2, 3")]
+        pub encryption_type: ::core::option::Option<encryption_config::EncryptionType>,
+    }
+    /// Nested message and enum types in `EncryptionConfig`.
+    pub mod encryption_config {
+        /// The configuration options for using Google default encryption.
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct GoogleDefaultEncryptionOptions {}
+        /// The configuration options for using the same encryption method as the
+        /// source.
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct SourceEncryptionOptions {}
+        /// The configuration options for using CMEK (Customer Managed Encryption
+        /// Key) encryption.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct CustomerManagedEncryptionOptions {
+            /// Required. Only keys in the same location as the database are allowed to
+            /// be used for encryption.
+            ///
+            /// For Firestore's nam5 multi-region, this corresponds to Cloud KMS
+            /// multi-region us. For Firestore's eur3 multi-region, this corresponds to
+            /// Cloud KMS multi-region europe. See
+            /// <https://cloud.google.com/kms/docs/locations.>
+            ///
+            /// The expected format is
+            /// `projects/{project_id}/locations/{kms_location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`.
+            #[prost(string, tag = "1")]
+            pub kms_key_name: ::prost::alloc::string::String,
+        }
+        /// The method for encrypting the database.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum EncryptionType {
+            /// Use Google default encryption.
+            #[prost(message, tag = "1")]
+            GoogleDefaultEncryption(GoogleDefaultEncryptionOptions),
+            /// The database will use the same encryption configuration as the source.
+            #[prost(message, tag = "2")]
+            UseSourceEncryption(SourceEncryptionOptions),
+            /// Use Customer Managed Encryption Keys (CMEK) for encryption.
+            #[prost(message, tag = "3")]
+            CustomerManagedEncryption(CustomerManagedEncryptionOptions),
+        }
+    }
     /// The type of the database.
     /// See <https://cloud.google.com/datastore/docs/firestore-or-datastore> for
     /// information about how to choose.
@@ -198,7 +321,7 @@ pub mod database {
     )]
     #[repr(i32)]
     pub enum DatabaseType {
-        /// The default value. This value is used if the database type is omitted.
+        /// Not used.
         Unspecified = 0,
         /// Firestore Native Mode
         FirestoreNative = 1,
@@ -212,9 +335,9 @@ pub mod database {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DatabaseType::Unspecified => "DATABASE_TYPE_UNSPECIFIED",
-                DatabaseType::FirestoreNative => "FIRESTORE_NATIVE",
-                DatabaseType::DatastoreMode => "DATASTORE_MODE",
+                Self::Unspecified => "DATABASE_TYPE_UNSPECIFIED",
+                Self::FirestoreNative => "FIRESTORE_NATIVE",
+                Self::DatastoreMode => "DATASTORE_MODE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -266,12 +389,10 @@ pub mod database {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ConcurrencyMode::Unspecified => "CONCURRENCY_MODE_UNSPECIFIED",
-                ConcurrencyMode::Optimistic => "OPTIMISTIC",
-                ConcurrencyMode::Pessimistic => "PESSIMISTIC",
-                ConcurrencyMode::OptimisticWithEntityGroups => {
-                    "OPTIMISTIC_WITH_ENTITY_GROUPS"
-                }
+                Self::Unspecified => "CONCURRENCY_MODE_UNSPECIFIED",
+                Self::Optimistic => "OPTIMISTIC",
+                Self::Pessimistic => "PESSIMISTIC",
+                Self::OptimisticWithEntityGroups => "OPTIMISTIC_WITH_ENTITY_GROUPS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -321,15 +442,9 @@ pub mod database {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PointInTimeRecoveryEnablement::Unspecified => {
-                    "POINT_IN_TIME_RECOVERY_ENABLEMENT_UNSPECIFIED"
-                }
-                PointInTimeRecoveryEnablement::PointInTimeRecoveryEnabled => {
-                    "POINT_IN_TIME_RECOVERY_ENABLED"
-                }
-                PointInTimeRecoveryEnablement::PointInTimeRecoveryDisabled => {
-                    "POINT_IN_TIME_RECOVERY_DISABLED"
-                }
+                Self::Unspecified => "POINT_IN_TIME_RECOVERY_ENABLEMENT_UNSPECIFIED",
+                Self::PointInTimeRecoveryEnabled => "POINT_IN_TIME_RECOVERY_ENABLED",
+                Self::PointInTimeRecoveryDisabled => "POINT_IN_TIME_RECOVERY_DISABLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -382,11 +497,9 @@ pub mod database {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AppEngineIntegrationMode::Unspecified => {
-                    "APP_ENGINE_INTEGRATION_MODE_UNSPECIFIED"
-                }
-                AppEngineIntegrationMode::Enabled => "ENABLED",
-                AppEngineIntegrationMode::Disabled => "DISABLED",
+                Self::Unspecified => "APP_ENGINE_INTEGRATION_MODE_UNSPECIFIED",
+                Self::Enabled => "ENABLED",
+                Self::Disabled => "DISABLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -427,15 +540,9 @@ pub mod database {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DeleteProtectionState::Unspecified => {
-                    "DELETE_PROTECTION_STATE_UNSPECIFIED"
-                }
-                DeleteProtectionState::DeleteProtectionDisabled => {
-                    "DELETE_PROTECTION_DISABLED"
-                }
-                DeleteProtectionState::DeleteProtectionEnabled => {
-                    "DELETE_PROTECTION_ENABLED"
-                }
+                Self::Unspecified => "DELETE_PROTECTION_STATE_UNSPECIFIED",
+                Self::DeleteProtectionDisabled => "DELETE_PROTECTION_DISABLED",
+                Self::DeleteProtectionEnabled => "DELETE_PROTECTION_ENABLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -561,9 +668,9 @@ pub mod index {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Order::Unspecified => "ORDER_UNSPECIFIED",
-                    Order::Ascending => "ASCENDING",
-                    Order::Descending => "DESCENDING",
+                    Self::Unspecified => "ORDER_UNSPECIFIED",
+                    Self::Ascending => "ASCENDING",
+                    Self::Descending => "DESCENDING",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -602,8 +709,8 @@ pub mod index {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    ArrayConfig::Unspecified => "ARRAY_CONFIG_UNSPECIFIED",
-                    ArrayConfig::Contains => "CONTAINS",
+                    Self::Unspecified => "ARRAY_CONFIG_UNSPECIFIED",
+                    Self::Contains => "CONTAINS",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -667,10 +774,10 @@ pub mod index {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                QueryScope::Unspecified => "QUERY_SCOPE_UNSPECIFIED",
-                QueryScope::Collection => "COLLECTION",
-                QueryScope::CollectionGroup => "COLLECTION_GROUP",
-                QueryScope::CollectionRecursive => "COLLECTION_RECURSIVE",
+                Self::Unspecified => "QUERY_SCOPE_UNSPECIFIED",
+                Self::Collection => "COLLECTION",
+                Self::CollectionGroup => "COLLECTION_GROUP",
+                Self::CollectionRecursive => "COLLECTION_RECURSIVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -712,8 +819,8 @@ pub mod index {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ApiScope::AnyApi => "ANY_API",
-                ApiScope::DatastoreModeApi => "DATASTORE_MODE_API",
+                Self::AnyApi => "ANY_API",
+                Self::DatastoreModeApi => "DATASTORE_MODE_API",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -770,10 +877,10 @@ pub mod index {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Ready => "READY",
-                State::NeedsRepair => "NEEDS_REPAIR",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Ready => "READY",
+                Self::NeedsRepair => "NEEDS_REPAIR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -912,10 +1019,10 @@ pub mod field {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    State::Unspecified => "STATE_UNSPECIFIED",
-                    State::Creating => "CREATING",
-                    State::Active => "ACTIVE",
-                    State::NeedsRepair => "NEEDS_REPAIR",
+                    Self::Unspecified => "STATE_UNSPECIFIED",
+                    Self::Creating => "CREATING",
+                    Self::Active => "ACTIVE",
+                    Self::NeedsRepair => "NEEDS_REPAIR",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1037,9 +1144,9 @@ pub mod field_operation_metadata {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    ChangeType::Unspecified => "CHANGE_TYPE_UNSPECIFIED",
-                    ChangeType::Add => "ADD",
-                    ChangeType::Remove => "REMOVE",
+                    Self::Unspecified => "CHANGE_TYPE_UNSPECIFIED",
+                    Self::Add => "ADD",
+                    Self::Remove => "REMOVE",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1090,9 +1197,9 @@ pub mod field_operation_metadata {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    ChangeType::Unspecified => "CHANGE_TYPE_UNSPECIFIED",
-                    ChangeType::Add => "ADD",
-                    ChangeType::Remove => "REMOVE",
+                    Self::Unspecified => "CHANGE_TYPE_UNSPECIFIED",
+                    Self::Add => "ADD",
+                    Self::Remove => "REMOVE",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1283,14 +1390,14 @@ impl OperationState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            OperationState::Unspecified => "OPERATION_STATE_UNSPECIFIED",
-            OperationState::Initializing => "INITIALIZING",
-            OperationState::Processing => "PROCESSING",
-            OperationState::Cancelling => "CANCELLING",
-            OperationState::Finalizing => "FINALIZING",
-            OperationState::Successful => "SUCCESSFUL",
-            OperationState::Failed => "FAILED",
-            OperationState::Cancelled => "CANCELLED",
+            Self::Unspecified => "OPERATION_STATE_UNSPECIFIED",
+            Self::Initializing => "INITIALIZING",
+            Self::Processing => "PROCESSING",
+            Self::Cancelling => "CANCELLING",
+            Self::Finalizing => "FINALIZING",
+            Self::Successful => "SUCCESSFUL",
+            Self::Failed => "FAILED",
+            Self::Cancelled => "CANCELLED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1402,7 +1509,7 @@ pub struct CreateDatabaseRequest {
     /// with first character a letter and the last a letter or a number. Must not
     /// be UUID-like /\[0-9a-f\]{8}(-\[0-9a-f\]{4}){3}-\[0-9a-f\]{12}/.
     ///
-    /// "(default)" database id is also valid.
+    /// "(default)" database ID is also valid.
     #[prost(string, tag = "3")]
     pub database_id: ::prost::alloc::string::String,
 }
@@ -1659,8 +1766,8 @@ pub struct ExportDocumentsRequest {
     /// `projects/{project_id}/databases/{database_id}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Which collection ids to export. Unspecified means all collections. Each
-    /// collection id in this list must be unique.
+    /// Which collection IDs to export. Unspecified means all collections. Each
+    /// collection ID in this list must be unique.
     #[prost(string, repeated, tag = "2")]
     pub collection_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The output URI. Currently only supports Google Cloud Storage URIs of the
@@ -1699,8 +1806,8 @@ pub struct ImportDocumentsRequest {
     /// `projects/{project_id}/databases/{database_id}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Which collection ids to import. Unspecified means all collections included
-    /// in the import. Each collection id in this list must be unique.
+    /// Which collection IDs to import. Unspecified means all collections included
+    /// in the import. Each collection ID in this list must be unique.
     #[prost(string, repeated, tag = "2")]
     pub collection_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Location of the exported files.
@@ -1808,7 +1915,7 @@ pub struct DeleteBackupRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for
-/// [FirestoreAdmin.RestoreDatabase][google.firestore.admin.v1.RestoreDatabase].
+/// [FirestoreAdmin.RestoreDatabase][google.firestore.admin.v1.FirestoreAdmin.RestoreDatabase].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreDatabaseRequest {
     /// Required. The project to restore the database in. Format is
@@ -1816,26 +1923,42 @@ pub struct RestoreDatabaseRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The ID to use for the database, which will become the final
-    /// component of the database's resource name. This database id must not be
+    /// component of the database's resource name. This database ID must not be
     /// associated with an existing database.
     ///
     /// This value should be 4-63 characters. Valid characters are /[a-z][0-9]-/
     /// with first character a letter and the last a letter or a number. Must not
     /// be UUID-like /\[0-9a-f\]{8}(-\[0-9a-f\]{4}){3}-\[0-9a-f\]{12}/.
     ///
-    /// "(default)" database id is also valid.
+    /// "(default)" database ID is also valid.
     #[prost(string, tag = "2")]
     pub database_id: ::prost::alloc::string::String,
     /// Required. Backup to restore from. Must be from the same project as the
     /// parent.
     ///
+    /// The restored database will be created in the same location as the source
+    /// backup.
+    ///
     /// Format is: `projects/{project_id}/locations/{location}/backups/{backup}`
     #[prost(string, tag = "3")]
     pub backup: ::prost::alloc::string::String,
+    /// Optional. Encryption configuration for the restored database.
+    ///
+    /// If this field is not specified, the restored database will use
+    /// the same encryption configuration as the backup, namely
+    /// [use_source_encryption][google.firestore.admin.v1.Database.EncryptionConfig.use_source_encryption].
+    #[prost(message, optional, tag = "9")]
+    pub encryption_config: ::core::option::Option<database::EncryptionConfig>,
 }
 /// Generated client implementations.
 pub mod firestore_admin_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The Cloud Firestore Admin API.
@@ -1962,8 +2085,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1993,8 +2115,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2021,8 +2142,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2049,8 +2169,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2077,8 +2196,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2123,8 +2241,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2162,8 +2279,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2203,8 +2319,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2238,8 +2353,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2276,8 +2390,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2307,8 +2420,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2335,8 +2447,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2366,8 +2477,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2397,8 +2507,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2428,8 +2537,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2456,8 +2564,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2487,8 +2594,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2515,8 +2621,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2562,8 +2667,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2592,8 +2696,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2620,8 +2723,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2651,8 +2753,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2679,8 +2780,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2707,8 +2807,7 @@ pub mod firestore_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

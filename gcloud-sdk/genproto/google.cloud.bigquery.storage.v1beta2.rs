@@ -55,9 +55,9 @@ pub mod arrow_serialization_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Format::Unspecified => "FORMAT_UNSPECIFIED",
-                Format::Arrow014 => "ARROW_0_14",
-                Format::Arrow015 => "ARROW_0_15",
+                Self::Unspecified => "FORMAT_UNSPECIFIED",
+                Self::Arrow014 => "ARROW_0_14",
+                Self::Arrow015 => "ARROW_0_15",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -187,22 +187,22 @@ pub mod table_field_schema {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::String => "STRING",
-                Type::Int64 => "INT64",
-                Type::Double => "DOUBLE",
-                Type::Struct => "STRUCT",
-                Type::Bytes => "BYTES",
-                Type::Bool => "BOOL",
-                Type::Timestamp => "TIMESTAMP",
-                Type::Date => "DATE",
-                Type::Time => "TIME",
-                Type::Datetime => "DATETIME",
-                Type::Geography => "GEOGRAPHY",
-                Type::Numeric => "NUMERIC",
-                Type::Bignumeric => "BIGNUMERIC",
-                Type::Interval => "INTERVAL",
-                Type::Json => "JSON",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::String => "STRING",
+                Self::Int64 => "INT64",
+                Self::Double => "DOUBLE",
+                Self::Struct => "STRUCT",
+                Self::Bytes => "BYTES",
+                Self::Bool => "BOOL",
+                Self::Timestamp => "TIMESTAMP",
+                Self::Date => "DATE",
+                Self::Time => "TIME",
+                Self::Datetime => "DATETIME",
+                Self::Geography => "GEOGRAPHY",
+                Self::Numeric => "NUMERIC",
+                Self::Bignumeric => "BIGNUMERIC",
+                Self::Interval => "INTERVAL",
+                Self::Json => "JSON",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -254,10 +254,10 @@ pub mod table_field_schema {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Mode::Unspecified => "MODE_UNSPECIFIED",
-                Mode::Nullable => "NULLABLE",
-                Mode::Required => "REQUIRED",
-                Mode::Repeated => "REPEATED",
+                Self::Unspecified => "MODE_UNSPECIFIED",
+                Self::Nullable => "NULLABLE",
+                Self::Required => "REQUIRED",
+                Self::Repeated => "REPEATED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -430,10 +430,10 @@ pub mod write_stream {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::Committed => "COMMITTED",
-                Type::Pending => "PENDING",
-                Type::Buffered => "BUFFERED",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Committed => "COMMITTED",
+                Self::Pending => "PENDING",
+                Self::Buffered => "BUFFERED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -467,9 +467,9 @@ impl DataFormat {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DataFormat::Unspecified => "DATA_FORMAT_UNSPECIFIED",
-            DataFormat::Avro => "AVRO",
-            DataFormat::Arrow => "ARROW",
+            Self::Unspecified => "DATA_FORMAT_UNSPECIFIED",
+            Self::Avro => "AVRO",
+            Self::Arrow => "ARROW",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -870,13 +870,13 @@ pub mod storage_error {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                StorageErrorCode::Unspecified => "STORAGE_ERROR_CODE_UNSPECIFIED",
-                StorageErrorCode::TableNotFound => "TABLE_NOT_FOUND",
-                StorageErrorCode::StreamAlreadyCommitted => "STREAM_ALREADY_COMMITTED",
-                StorageErrorCode::StreamNotFound => "STREAM_NOT_FOUND",
-                StorageErrorCode::InvalidStreamType => "INVALID_STREAM_TYPE",
-                StorageErrorCode::InvalidStreamState => "INVALID_STREAM_STATE",
-                StorageErrorCode::StreamFinalized => "STREAM_FINALIZED",
+                Self::Unspecified => "STORAGE_ERROR_CODE_UNSPECIFIED",
+                Self::TableNotFound => "TABLE_NOT_FOUND",
+                Self::StreamAlreadyCommitted => "STREAM_ALREADY_COMMITTED",
+                Self::StreamNotFound => "STREAM_NOT_FOUND",
+                Self::InvalidStreamType => "INVALID_STREAM_TYPE",
+                Self::InvalidStreamState => "INVALID_STREAM_STATE",
+                Self::StreamFinalized => "STREAM_FINALIZED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -896,7 +896,13 @@ pub mod storage_error {
 }
 /// Generated client implementations.
 pub mod big_query_read_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// BigQuery Read API.
@@ -1012,8 +1018,7 @@ pub mod big_query_read_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1049,8 +1054,7 @@ pub mod big_query_read_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1091,8 +1095,7 @@ pub mod big_query_read_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1114,7 +1117,13 @@ pub mod big_query_read_client {
 }
 /// Generated client implementations.
 pub mod big_query_write_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// BigQuery Write API.
@@ -1211,6 +1220,7 @@ pub mod big_query_write_client {
         /// CreateWriteStream. It is a stream that can be used simultaneously by any
         /// number of clients. Data written to this stream is considered committed as
         /// soon as an acknowledgement is received.
+        #[deprecated]
         pub async fn create_write_stream(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateWriteStreamRequest>,
@@ -1219,8 +1229,7 @@ pub mod big_query_write_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1257,6 +1266,7 @@ pub mod big_query_write_client {
         ///
         /// If the stream is of `PENDING` type, data will only be available for read
         /// operations after the stream is committed.
+        #[deprecated]
         pub async fn append_rows(
             &mut self,
             request: impl tonic::IntoStreamingRequest<Message = super::AppendRowsRequest>,
@@ -1268,8 +1278,7 @@ pub mod big_query_write_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1288,6 +1297,7 @@ pub mod big_query_write_client {
             self.inner.streaming(req, path, codec).await
         }
         /// Gets a write stream.
+        #[deprecated]
         pub async fn get_write_stream(
             &mut self,
             request: impl tonic::IntoRequest<super::GetWriteStreamRequest>,
@@ -1296,8 +1306,7 @@ pub mod big_query_write_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1317,6 +1326,7 @@ pub mod big_query_write_client {
         }
         /// Finalize a write stream so that no new data can be appended to the
         /// stream. Finalize is not supported on the '_default' stream.
+        #[deprecated]
         pub async fn finalize_write_stream(
             &mut self,
             request: impl tonic::IntoRequest<super::FinalizeWriteStreamRequest>,
@@ -1328,8 +1338,7 @@ pub mod big_query_write_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1352,6 +1361,7 @@ pub mod big_query_write_client {
         /// Streams must be finalized before commit and cannot be committed multiple
         /// times. Once a stream is committed, data in the stream becomes available
         /// for read operations.
+        #[deprecated]
         pub async fn batch_commit_write_streams(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchCommitWriteStreamsRequest>,
@@ -1363,8 +1373,7 @@ pub mod big_query_write_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1388,6 +1397,7 @@ pub mod big_query_write_client {
         /// Flush operation flushes up to any previously flushed offset in a BUFFERED
         /// stream, to the offset specified in the request.
         /// Flush is not supported on the _default stream, since it is not BUFFERED.
+        #[deprecated]
         pub async fn flush_rows(
             &mut self,
             request: impl tonic::IntoRequest<super::FlushRowsRequest>,
@@ -1399,8 +1409,7 @@ pub mod big_query_write_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

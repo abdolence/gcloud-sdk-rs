@@ -669,11 +669,11 @@ pub mod batch_operation_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Processing => "PROCESSING",
-                State::Successful => "SUCCESSFUL",
-                State::Failed => "FAILED",
-                State::Cancelled => "CANCELLED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Processing => "PROCESSING",
+                Self::Successful => "SUCCESSFUL",
+                Self::Failed => "FAILED",
+                Self::Cancelled => "CANCELLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -730,7 +730,13 @@ pub mod purge_products_request {
 }
 /// Generated client implementations.
 pub mod product_search_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Manages Products and ProductSets of reference images for use in product
@@ -845,8 +851,7 @@ pub mod product_search_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -881,8 +886,7 @@ pub mod product_search_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -913,8 +917,7 @@ pub mod product_search_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -948,8 +951,7 @@ pub mod product_search_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -979,8 +981,7 @@ pub mod product_search_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1014,8 +1015,7 @@ pub mod product_search_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1049,8 +1049,7 @@ pub mod product_search_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1081,8 +1080,7 @@ pub mod product_search_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1123,8 +1121,7 @@ pub mod product_search_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1155,8 +1152,7 @@ pub mod product_search_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1201,8 +1197,7 @@ pub mod product_search_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1235,8 +1230,7 @@ pub mod product_search_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1272,8 +1266,7 @@ pub mod product_search_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1304,8 +1297,7 @@ pub mod product_search_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1339,8 +1331,7 @@ pub mod product_search_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1367,8 +1358,7 @@ pub mod product_search_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1404,8 +1394,7 @@ pub mod product_search_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1445,8 +1434,7 @@ pub mod product_search_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1499,8 +1487,7 @@ pub mod product_search_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1703,12 +1690,12 @@ pub mod text_annotation {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    BreakType::Unknown => "UNKNOWN",
-                    BreakType::Space => "SPACE",
-                    BreakType::SureSpace => "SURE_SPACE",
-                    BreakType::EolSureSpace => "EOL_SURE_SPACE",
-                    BreakType::Hyphen => "HYPHEN",
-                    BreakType::LineBreak => "LINE_BREAK",
+                    Self::Unknown => "UNKNOWN",
+                    Self::Space => "SPACE",
+                    Self::SureSpace => "SURE_SPACE",
+                    Self::EolSureSpace => "EOL_SURE_SPACE",
+                    Self::Hyphen => "HYPHEN",
+                    Self::LineBreak => "LINE_BREAK",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1831,12 +1818,12 @@ pub mod block {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                BlockType::Unknown => "UNKNOWN",
-                BlockType::Text => "TEXT",
-                BlockType::Table => "TABLE",
-                BlockType::Picture => "PICTURE",
-                BlockType::Ruler => "RULER",
-                BlockType::Barcode => "BARCODE",
+                Self::Unknown => "UNKNOWN",
+                Self::Text => "TEXT",
+                Self::Table => "TABLE",
+                Self::Picture => "PICTURE",
+                Self::Ruler => "RULER",
+                Self::Barcode => "BARCODE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2106,19 +2093,19 @@ pub mod feature {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::FaceDetection => "FACE_DETECTION",
-                Type::LandmarkDetection => "LANDMARK_DETECTION",
-                Type::LogoDetection => "LOGO_DETECTION",
-                Type::LabelDetection => "LABEL_DETECTION",
-                Type::TextDetection => "TEXT_DETECTION",
-                Type::DocumentTextDetection => "DOCUMENT_TEXT_DETECTION",
-                Type::SafeSearchDetection => "SAFE_SEARCH_DETECTION",
-                Type::ImageProperties => "IMAGE_PROPERTIES",
-                Type::CropHints => "CROP_HINTS",
-                Type::WebDetection => "WEB_DETECTION",
-                Type::ProductSearch => "PRODUCT_SEARCH",
-                Type::ObjectLocalization => "OBJECT_LOCALIZATION",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::FaceDetection => "FACE_DETECTION",
+                Self::LandmarkDetection => "LANDMARK_DETECTION",
+                Self::LogoDetection => "LOGO_DETECTION",
+                Self::LabelDetection => "LABEL_DETECTION",
+                Self::TextDetection => "TEXT_DETECTION",
+                Self::DocumentTextDetection => "DOCUMENT_TEXT_DETECTION",
+                Self::SafeSearchDetection => "SAFE_SEARCH_DETECTION",
+                Self::ImageProperties => "IMAGE_PROPERTIES",
+                Self::CropHints => "CROP_HINTS",
+                Self::WebDetection => "WEB_DETECTION",
+                Self::ProductSearch => "PRODUCT_SEARCH",
+                Self::ObjectLocalization => "OBJECT_LOCALIZATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2368,41 +2355,41 @@ pub mod face_annotation {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Type::UnknownLandmark => "UNKNOWN_LANDMARK",
-                    Type::LeftEye => "LEFT_EYE",
-                    Type::RightEye => "RIGHT_EYE",
-                    Type::LeftOfLeftEyebrow => "LEFT_OF_LEFT_EYEBROW",
-                    Type::RightOfLeftEyebrow => "RIGHT_OF_LEFT_EYEBROW",
-                    Type::LeftOfRightEyebrow => "LEFT_OF_RIGHT_EYEBROW",
-                    Type::RightOfRightEyebrow => "RIGHT_OF_RIGHT_EYEBROW",
-                    Type::MidpointBetweenEyes => "MIDPOINT_BETWEEN_EYES",
-                    Type::NoseTip => "NOSE_TIP",
-                    Type::UpperLip => "UPPER_LIP",
-                    Type::LowerLip => "LOWER_LIP",
-                    Type::MouthLeft => "MOUTH_LEFT",
-                    Type::MouthRight => "MOUTH_RIGHT",
-                    Type::MouthCenter => "MOUTH_CENTER",
-                    Type::NoseBottomRight => "NOSE_BOTTOM_RIGHT",
-                    Type::NoseBottomLeft => "NOSE_BOTTOM_LEFT",
-                    Type::NoseBottomCenter => "NOSE_BOTTOM_CENTER",
-                    Type::LeftEyeTopBoundary => "LEFT_EYE_TOP_BOUNDARY",
-                    Type::LeftEyeRightCorner => "LEFT_EYE_RIGHT_CORNER",
-                    Type::LeftEyeBottomBoundary => "LEFT_EYE_BOTTOM_BOUNDARY",
-                    Type::LeftEyeLeftCorner => "LEFT_EYE_LEFT_CORNER",
-                    Type::RightEyeTopBoundary => "RIGHT_EYE_TOP_BOUNDARY",
-                    Type::RightEyeRightCorner => "RIGHT_EYE_RIGHT_CORNER",
-                    Type::RightEyeBottomBoundary => "RIGHT_EYE_BOTTOM_BOUNDARY",
-                    Type::RightEyeLeftCorner => "RIGHT_EYE_LEFT_CORNER",
-                    Type::LeftEyebrowUpperMidpoint => "LEFT_EYEBROW_UPPER_MIDPOINT",
-                    Type::RightEyebrowUpperMidpoint => "RIGHT_EYEBROW_UPPER_MIDPOINT",
-                    Type::LeftEarTragion => "LEFT_EAR_TRAGION",
-                    Type::RightEarTragion => "RIGHT_EAR_TRAGION",
-                    Type::LeftEyePupil => "LEFT_EYE_PUPIL",
-                    Type::RightEyePupil => "RIGHT_EYE_PUPIL",
-                    Type::ForeheadGlabella => "FOREHEAD_GLABELLA",
-                    Type::ChinGnathion => "CHIN_GNATHION",
-                    Type::ChinLeftGonion => "CHIN_LEFT_GONION",
-                    Type::ChinRightGonion => "CHIN_RIGHT_GONION",
+                    Self::UnknownLandmark => "UNKNOWN_LANDMARK",
+                    Self::LeftEye => "LEFT_EYE",
+                    Self::RightEye => "RIGHT_EYE",
+                    Self::LeftOfLeftEyebrow => "LEFT_OF_LEFT_EYEBROW",
+                    Self::RightOfLeftEyebrow => "RIGHT_OF_LEFT_EYEBROW",
+                    Self::LeftOfRightEyebrow => "LEFT_OF_RIGHT_EYEBROW",
+                    Self::RightOfRightEyebrow => "RIGHT_OF_RIGHT_EYEBROW",
+                    Self::MidpointBetweenEyes => "MIDPOINT_BETWEEN_EYES",
+                    Self::NoseTip => "NOSE_TIP",
+                    Self::UpperLip => "UPPER_LIP",
+                    Self::LowerLip => "LOWER_LIP",
+                    Self::MouthLeft => "MOUTH_LEFT",
+                    Self::MouthRight => "MOUTH_RIGHT",
+                    Self::MouthCenter => "MOUTH_CENTER",
+                    Self::NoseBottomRight => "NOSE_BOTTOM_RIGHT",
+                    Self::NoseBottomLeft => "NOSE_BOTTOM_LEFT",
+                    Self::NoseBottomCenter => "NOSE_BOTTOM_CENTER",
+                    Self::LeftEyeTopBoundary => "LEFT_EYE_TOP_BOUNDARY",
+                    Self::LeftEyeRightCorner => "LEFT_EYE_RIGHT_CORNER",
+                    Self::LeftEyeBottomBoundary => "LEFT_EYE_BOTTOM_BOUNDARY",
+                    Self::LeftEyeLeftCorner => "LEFT_EYE_LEFT_CORNER",
+                    Self::RightEyeTopBoundary => "RIGHT_EYE_TOP_BOUNDARY",
+                    Self::RightEyeRightCorner => "RIGHT_EYE_RIGHT_CORNER",
+                    Self::RightEyeBottomBoundary => "RIGHT_EYE_BOTTOM_BOUNDARY",
+                    Self::RightEyeLeftCorner => "RIGHT_EYE_LEFT_CORNER",
+                    Self::LeftEyebrowUpperMidpoint => "LEFT_EYEBROW_UPPER_MIDPOINT",
+                    Self::RightEyebrowUpperMidpoint => "RIGHT_EYEBROW_UPPER_MIDPOINT",
+                    Self::LeftEarTragion => "LEFT_EAR_TRAGION",
+                    Self::RightEarTragion => "RIGHT_EAR_TRAGION",
+                    Self::LeftEyePupil => "LEFT_EYE_PUPIL",
+                    Self::RightEyePupil => "RIGHT_EYE_PUPIL",
+                    Self::ForeheadGlabella => "FOREHEAD_GLABELLA",
+                    Self::ChinGnathion => "CHIN_GNATHION",
+                    Self::ChinLeftGonion => "CHIN_LEFT_GONION",
+                    Self::ChinRightGonion => "CHIN_RIGHT_GONION",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3031,11 +3018,11 @@ pub mod operation_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Created => "CREATED",
-                State::Running => "RUNNING",
-                State::Done => "DONE",
-                State::Cancelled => "CANCELLED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Created => "CREATED",
+                Self::Running => "RUNNING",
+                Self::Done => "DONE",
+                Self::Cancelled => "CANCELLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3076,12 +3063,12 @@ impl Likelihood {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            Likelihood::Unknown => "UNKNOWN",
-            Likelihood::VeryUnlikely => "VERY_UNLIKELY",
-            Likelihood::Unlikely => "UNLIKELY",
-            Likelihood::Possible => "POSSIBLE",
-            Likelihood::Likely => "LIKELY",
-            Likelihood::VeryLikely => "VERY_LIKELY",
+            Self::Unknown => "UNKNOWN",
+            Self::VeryUnlikely => "VERY_UNLIKELY",
+            Self::Unlikely => "UNLIKELY",
+            Self::Possible => "POSSIBLE",
+            Self::Likely => "LIKELY",
+            Self::VeryLikely => "VERY_LIKELY",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3099,7 +3086,13 @@ impl Likelihood {
 }
 /// Generated client implementations.
 pub mod image_annotator_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service that performs Google Cloud Vision API detection tasks over client
@@ -3197,8 +3190,7 @@ pub mod image_annotator_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3234,8 +3226,7 @@ pub mod image_annotator_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3273,8 +3264,7 @@ pub mod image_annotator_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3309,8 +3299,7 @@ pub mod image_annotator_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

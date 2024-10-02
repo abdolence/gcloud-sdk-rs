@@ -57,9 +57,9 @@ impl LinkVerificationState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            LinkVerificationState::Unspecified => "LINK_VERIFICATION_STATE_UNSPECIFIED",
-            LinkVerificationState::Verified => "LINK_VERIFICATION_STATE_VERIFIED",
-            LinkVerificationState::NotVerified => "LINK_VERIFICATION_STATE_NOT_VERIFIED",
+            Self::Unspecified => "LINK_VERIFICATION_STATE_UNSPECIFIED",
+            Self::Verified => "LINK_VERIFICATION_STATE_VERIFIED",
+            Self::NotVerified => "LINK_VERIFICATION_STATE_NOT_VERIFIED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -173,11 +173,9 @@ impl AnalyticsServiceLevel {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            AnalyticsServiceLevel::Unspecified => "ANALYTICS_SERVICE_LEVEL_UNSPECIFIED",
-            AnalyticsServiceLevel::Standard => "ANALYTICS_SERVICE_LEVEL_STANDARD",
-            AnalyticsServiceLevel::AnalyticsServiceLevel360 => {
-                "ANALYTICS_SERVICE_LEVEL_360"
-            }
+            Self::Unspecified => "ANALYTICS_SERVICE_LEVEL_UNSPECIFIED",
+            Self::Standard => "ANALYTICS_SERVICE_LEVEL_STANDARD",
+            Self::AnalyticsServiceLevel360 => "ANALYTICS_SERVICE_LEVEL_360",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -192,7 +190,13 @@ impl AnalyticsServiceLevel {
 }
 /// Generated client implementations.
 pub mod marketingplatform_admin_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service Interface for the Google Marketing Platform Admin API.
@@ -287,8 +291,7 @@ pub mod marketingplatform_admin_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -319,8 +322,7 @@ pub mod marketingplatform_admin_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -355,8 +357,7 @@ pub mod marketingplatform_admin_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -387,8 +388,7 @@ pub mod marketingplatform_admin_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -418,8 +418,7 @@ pub mod marketingplatform_admin_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

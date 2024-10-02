@@ -384,10 +384,10 @@ pub mod asset_reference {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AssetValidationState::Unspecified => "ASSET_VALIDATION_STATE_UNSPECIFIED",
-                AssetValidationState::Pending => "PENDING",
-                AssetValidationState::Valid => "VALID",
-                AssetValidationState::Invalid => "INVALID",
+                Self::Unspecified => "ASSET_VALIDATION_STATE_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::Valid => "VALID",
+                Self::Invalid => "INVALID",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -498,7 +498,13 @@ pub struct Version {
 }
 /// Generated client implementations.
 pub mod private_catalog_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// `PrivateCatalog` allows catalog consumers to retrieve `Catalog`, `Product`
@@ -615,8 +621,7 @@ pub mod private_catalog_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -647,8 +652,7 @@ pub mod private_catalog_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -679,8 +683,7 @@ pub mod private_catalog_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

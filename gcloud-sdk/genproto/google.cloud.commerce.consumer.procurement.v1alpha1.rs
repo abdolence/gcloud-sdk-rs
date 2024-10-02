@@ -188,13 +188,11 @@ impl LineItemChangeType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            LineItemChangeType::Unspecified => "LINE_ITEM_CHANGE_TYPE_UNSPECIFIED",
-            LineItemChangeType::Create => "LINE_ITEM_CHANGE_TYPE_CREATE",
-            LineItemChangeType::Update => "LINE_ITEM_CHANGE_TYPE_UPDATE",
-            LineItemChangeType::Cancel => "LINE_ITEM_CHANGE_TYPE_CANCEL",
-            LineItemChangeType::RevertCancellation => {
-                "LINE_ITEM_CHANGE_TYPE_REVERT_CANCELLATION"
-            }
+            Self::Unspecified => "LINE_ITEM_CHANGE_TYPE_UNSPECIFIED",
+            Self::Create => "LINE_ITEM_CHANGE_TYPE_CREATE",
+            Self::Update => "LINE_ITEM_CHANGE_TYPE_UPDATE",
+            Self::Cancel => "LINE_ITEM_CHANGE_TYPE_CANCEL",
+            Self::RevertCancellation => "LINE_ITEM_CHANGE_TYPE_REVERT_CANCELLATION",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -241,15 +239,13 @@ impl LineItemChangeState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            LineItemChangeState::Unspecified => "LINE_ITEM_CHANGE_STATE_UNSPECIFIED",
-            LineItemChangeState::PendingApproval => {
-                "LINE_ITEM_CHANGE_STATE_PENDING_APPROVAL"
-            }
-            LineItemChangeState::Approved => "LINE_ITEM_CHANGE_STATE_APPROVED",
-            LineItemChangeState::Completed => "LINE_ITEM_CHANGE_STATE_COMPLETED",
-            LineItemChangeState::Rejected => "LINE_ITEM_CHANGE_STATE_REJECTED",
-            LineItemChangeState::Abandoned => "LINE_ITEM_CHANGE_STATE_ABANDONED",
-            LineItemChangeState::Activating => "LINE_ITEM_CHANGE_STATE_ACTIVATING",
+            Self::Unspecified => "LINE_ITEM_CHANGE_STATE_UNSPECIFIED",
+            Self::PendingApproval => "LINE_ITEM_CHANGE_STATE_PENDING_APPROVAL",
+            Self::Approved => "LINE_ITEM_CHANGE_STATE_APPROVED",
+            Self::Completed => "LINE_ITEM_CHANGE_STATE_COMPLETED",
+            Self::Rejected => "LINE_ITEM_CHANGE_STATE_REJECTED",
+            Self::Abandoned => "LINE_ITEM_CHANGE_STATE_ABANDONED",
+            Self::Activating => "LINE_ITEM_CHANGE_STATE_ACTIVATING",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -287,16 +283,10 @@ impl LineItemChangeStateReasonType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            LineItemChangeStateReasonType::Unspecified => {
-                "LINE_ITEM_CHANGE_STATE_REASON_TYPE_UNSPECIFIED"
-            }
-            LineItemChangeStateReasonType::Expired => {
-                "LINE_ITEM_CHANGE_STATE_REASON_TYPE_EXPIRED"
-            }
-            LineItemChangeStateReasonType::UserCancelled => {
-                "LINE_ITEM_CHANGE_STATE_REASON_TYPE_USER_CANCELLED"
-            }
-            LineItemChangeStateReasonType::SystemCancelled => {
+            Self::Unspecified => "LINE_ITEM_CHANGE_STATE_REASON_TYPE_UNSPECIFIED",
+            Self::Expired => "LINE_ITEM_CHANGE_STATE_REASON_TYPE_EXPIRED",
+            Self::UserCancelled => "LINE_ITEM_CHANGE_STATE_REASON_TYPE_USER_CANCELLED",
+            Self::SystemCancelled => {
                 "LINE_ITEM_CHANGE_STATE_REASON_TYPE_SYSTEM_CANCELLED"
             }
         }
@@ -399,7 +389,13 @@ pub struct ListOrdersResponse {
 }
 /// Generated client implementations.
 pub mod consumer_procurement_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// ConsumerProcurementService allows customers to make purchases of products
@@ -518,8 +514,7 @@ pub mod consumer_procurement_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -548,8 +543,7 @@ pub mod consumer_procurement_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -581,8 +575,7 @@ pub mod consumer_procurement_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

@@ -46,14 +46,14 @@ pub mod add_on_widget_set {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                WidgetType::Unspecified => "WIDGET_TYPE_UNSPECIFIED",
-                WidgetType::DatePicker => "DATE_PICKER",
-                WidgetType::StyledButtons => "STYLED_BUTTONS",
-                WidgetType::PersistentForms => "PERSISTENT_FORMS",
-                WidgetType::FixedFooter => "FIXED_FOOTER",
-                WidgetType::UpdateSubjectAndRecipients => "UPDATE_SUBJECT_AND_RECIPIENTS",
-                WidgetType::GridWidget => "GRID_WIDGET",
-                WidgetType::AddonComposeUiAction => "ADDON_COMPOSE_UI_ACTION",
+                Self::Unspecified => "WIDGET_TYPE_UNSPECIFIED",
+                Self::DatePicker => "DATE_PICKER",
+                Self::StyledButtons => "STYLED_BUTTONS",
+                Self::PersistentForms => "PERSISTENT_FORMS",
+                Self::FixedFooter => "FIXED_FOOTER",
+                Self::UpdateSubjectAndRecipients => "UPDATE_SUBJECT_AND_RECIPIENTS",
+                Self::GridWidget => "GRID_WIDGET",
+                Self::AddonComposeUiAction => "ADDON_COMPOSE_UI_ACTION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -219,12 +219,10 @@ impl HttpAuthorizationHeader {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            HttpAuthorizationHeader::Unspecified => {
-                "HTTP_AUTHORIZATION_HEADER_UNSPECIFIED"
-            }
-            HttpAuthorizationHeader::SystemIdToken => "SYSTEM_ID_TOKEN",
-            HttpAuthorizationHeader::UserIdToken => "USER_ID_TOKEN",
-            HttpAuthorizationHeader::None => "NONE",
+            Self::Unspecified => "HTTP_AUTHORIZATION_HEADER_UNSPECIFIED",
+            Self::SystemIdToken => "SYSTEM_ID_TOKEN",
+            Self::UserIdToken => "USER_ID_TOKEN",
+            Self::None => "NONE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.

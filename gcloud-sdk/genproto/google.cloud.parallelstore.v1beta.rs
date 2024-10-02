@@ -3,7 +3,7 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Instance {
     /// Identifier. The resource name of the instance, in the format
-    /// `projects/{project}/locations/{location}/instances/{instance_id}`
+    /// `projects/{project}/locations/{location}/instances/{instance_id}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. The description of the instance. 2048 characters or less.
@@ -20,73 +20,63 @@ pub struct Instance {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. Cloud Labels are a flexible and lightweight mechanism for
     /// organizing cloud resources into groups that reflect a customer's
-    /// organizational needs and deployment strategies. Cloud Labels can be used to
-    /// filter collections of resources. They can be used to control how resource
-    /// metrics are aggregated. And they can be used as arguments to policy
-    /// management rules (e.g. route, firewall, load balancing, etc.).
-    ///
-    ///   * Label keys must be between 1 and 63 characters long and must conform to
-    ///     the following regular expression: `[a-z][a-z0-9_-]{0,62}`.
-    ///   * Label values must be between 0 and 63 characters long and must conform
-    ///     to the regular expression `\[a-z0-9_-\]{0,63}`.
-    ///   * No more than 64 labels can be associated with a given resource.
-    ///
-    /// See <https://goo.gl/xmQnxf> for more information on and examples of labels.
-    ///
-    /// If you plan to use labels in your own code, please note that additional
-    /// characters may be allowed in the future. Therefore, you are advised to use
-    /// an internal label representation, such as JSON, which doesn't rely upon
-    /// specific characters being disallowed.  For example, representing labels
-    /// as the string:  name + "_" + value  would prove problematic if we were to
-    /// allow "_" in a future release.
+    /// organizational needs and deployment strategies. See
+    /// <https://cloud.google.com/resource-manager/docs/labels-overview> for details.
     #[prost(map = "string, string", tag = "6")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Required. Immutable. Storage capacity of Parallelstore instance in
-    /// Gibibytes (GiB).
+    /// Required. Immutable. The instance's storage capacity in Gibibytes (GiB).
+    /// Allowed values are between 12000 and 100000, in multiples of 4000; e.g.,
+    /// 12000, 16000, 20000, ...
     #[prost(int64, tag = "8")]
     pub capacity_gib: i64,
-    /// Output only. The version of DAOS software running in the instance
+    /// Output only. The version of DAOS software running in the instance.
     #[prost(string, tag = "9")]
     pub daos_version: ::prost::alloc::string::String,
-    /// Output only. List of access_points.
-    /// Contains a list of IPv4 addresses used for client side configuration.
+    /// Output only. A list of IPv4 addresses used for client side configuration.
     #[prost(string, repeated, tag = "10")]
     pub access_points: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. Immutable. The name of the Google Compute Engine
+    /// Optional. Immutable. The name of the Compute Engine
     /// [VPC network](<https://cloud.google.com/vpc/docs/vpc>) to which the
     /// instance is connected.
     #[prost(string, tag = "11")]
     pub network: ::prost::alloc::string::String,
-    /// Optional. Immutable. Contains the id of the allocated IP address range
-    /// associated with the private service access connection for example,
-    /// "test-default" associated with IP range 10.0.0.0/29. If no range id is
-    /// provided all ranges will be considered.
+    /// Optional. Immutable. The ID of the IP address range being used by the
+    /// instance's VPC network. See [Configure a VPC
+    /// network](<https://cloud.google.com/parallelstore/docs/vpc#create_and_configure_the_vpc>).
+    /// If no ID is provided, all ranges are considered.
     #[prost(string, tag = "12")]
     pub reserved_ip_range: ::prost::alloc::string::String,
-    /// Output only. Immutable. Contains the id of the allocated IP address range
-    /// associated with the private service access connection for example,
-    /// "test-default" associated with IP range 10.0.0.0/29. This field is
-    /// populated by the service and and contains the value currently used by the
-    /// service.
+    /// Output only. Immutable. The ID of the IP address range being used by the
+    /// instance's VPC network. This field is populated by the service and contains
+    /// the value currently used by the service.
     #[prost(string, tag = "14")]
     pub effective_reserved_ip_range: ::prost::alloc::string::String,
-    /// Optional. Stripe level for files.
-    /// MIN better suited for small size files.
-    /// MAX higher throughput performance for larger files.
+    /// Optional. Stripe level for files. Allowed values are:
+    ///
+    /// * `FILE_STRIPE_LEVEL_MIN`: offers the best performance for small size
+    ///    files.
+    /// * `FILE_STRIPE_LEVEL_BALANCED`: balances performance for workloads
+    ///    involving a mix of small and large files.
+    /// * `FILE_STRIPE_LEVEL_MAX`: higher throughput performance for larger files.
     #[prost(enumeration = "FileStripeLevel", tag = "15")]
     pub file_stripe_level: i32,
-    /// Optional. Stripe level for directories.
-    /// MIN when directory has a small number of files.
-    /// MAX when directory has a large number of files.
+    /// Optional. Stripe level for directories. Allowed values are:
+    ///
+    /// * `DIRECTORY_STRIPE_LEVEL_MIN`: recommended when directories contain a
+    ///    small number of files.
+    /// * `DIRECTORY_STRIPE_LEVEL_BALANCED`: balances performance for workloads
+    ///    involving a mix of small and large directories.
+    /// * `DIRECTORY_STRIPE_LEVEL_MAX`: recommended for directories with a large
+    ///    number of files.
     #[prost(enumeration = "DirectoryStripeLevel", tag = "16")]
     pub directory_stripe_level: i32,
 }
 /// Nested message and enum types in `Instance`.
 pub mod instance {
-    /// Represents the different states of a Parallelstore instance.
+    /// The possible states of a Parallelstore instance.
     #[derive(
         Clone,
         Copy,
@@ -110,6 +100,8 @@ pub mod instance {
         Deleting = 3,
         /// The instance is not usable.
         Failed = 4,
+        /// The instance is being upgraded.
+        Upgrading = 5,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -118,11 +110,12 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Active => "ACTIVE",
-                State::Deleting => "DELETING",
-                State::Failed => "FAILED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Active => "ACTIVE",
+                Self::Deleting => "DELETING",
+                Self::Failed => "FAILED",
+                Self::Upgrading => "UPGRADING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -133,40 +126,41 @@ pub mod instance {
                 "ACTIVE" => Some(Self::Active),
                 "DELETING" => Some(Self::Deleting),
                 "FAILED" => Some(Self::Failed),
+                "UPGRADING" => Some(Self::Upgrading),
                 _ => None,
             }
         }
     }
 }
-/// Message for requesting list of Instances
+/// List instances request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesRequest {
     /// Required. The project and location for which to retrieve instance
     /// information, in the format `projects/{project_id}/locations/{location}`.
-    /// For Parallelstore locations map to Google Cloud zones, for example
-    /// **us-central1-a**.
-    /// To retrieve instance information for all locations, use "-" for the
-    /// `{location}` value.
+    ///
+    /// To retrieve instance information for all locations, use "-" as the value of
+    /// `{location}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server may return fewer items than
-    /// requested. If unspecified, server will pick an appropriate default.
+    /// requested. If unspecified, the server will pick an appropriate default.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. A token identifying a page of results the server should return.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. Filtering results
+    /// Optional. Filtering results.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
-    /// Optional. Hint for how to order the results
+    /// Optional. Hint for how to order the results.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// Message for response to listing Instances
+/// Response from
+/// [ListInstances][google.cloud.parallelstore.v1beta.Parallelstore.ListInstances].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesResponse {
-    /// The list of Parallelstore Instances
+    /// The list of Parallelstore instances.
     #[prost(message, repeated, tag = "1")]
     pub instances: ::prost::alloc::vec::Vec<Instance>,
     /// A token identifying a page of results the server should return.
@@ -176,7 +170,7 @@ pub struct ListInstancesResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Request to get an instance's details.
+/// Get an instance's details.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInstanceRequest {
     /// Required. The instance resource name, in the format
@@ -184,17 +178,15 @@ pub struct GetInstanceRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for
-/// [CreateInstance][google.cloud.parallelstore.v1beta.Parallelstore.CreateInstance]
+/// Create a new Parallelstore instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstanceRequest {
     /// Required. The instance's project and location, in the format
     /// `projects/{project}/locations/{location}`.
-    /// Locations map to Google Cloud zones, for example **us-west1-b**.
+    /// Locations map to Google Cloud zones; for example, `us-west1-b`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. The logical name of the Parallelstore instance in the user
-    /// project with the following restrictions:
+    /// Required. The name of the Parallelstore instance.
     ///
     /// * Must contain only lowercase letters, numbers, and hyphens.
     /// * Must start with a letter.
@@ -222,16 +214,16 @@ pub struct CreateInstanceRequest {
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Message for updating a Instance
+/// Update an instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInstanceRequest {
-    /// Required. Mask of fields to update .Field mask is used to specify the
+    /// Required. Mask of fields to update. Field mask is used to specify the
     /// fields to be overwritten in the Instance resource by the update. At least
     /// one path must be supplied in this field. The fields specified in the
     /// update_mask are relative to the resource, not the full request.
     #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// Required. The instance to update
+    /// Required. The instance to update.
     #[prost(message, optional, tag = "2")]
     pub instance: ::core::option::Option<Instance>,
     /// Optional. An optional request ID to identify requests. Specify a unique
@@ -250,7 +242,7 @@ pub struct UpdateInstanceRequest {
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Message for deleting a Instance
+/// Delete an instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInstanceRequest {
     /// Required. Name of the resource
@@ -272,7 +264,7 @@ pub struct DeleteInstanceRequest {
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Represents the metadata of the long-running operation.
+/// Long-running operation metadata.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
@@ -301,40 +293,41 @@ pub struct OperationMetadata {
     #[prost(string, tag = "7")]
     pub api_version: ::prost::alloc::string::String,
 }
-/// Google Cloud Storage as a source.
+/// Cloud Storage as the source of a data transfer.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SourceGcsBucket {
-    /// Required. URI to a Cloud Storage object in format:
-    /// 'gs://<bucket_name>/<path_inside_bucket>'.
+    /// Required. URI to a Cloud Storage bucket in the format:
+    /// `gs://<bucket_name>/<path_inside_bucket>`. The path inside the bucket is
+    /// optional.
     #[prost(string, tag = "1")]
     pub uri: ::prost::alloc::string::String,
 }
-/// Google Cloud Storage as a destination.
+/// Cloud Storage as the destination of a data transfer.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DestinationGcsBucket {
-    /// Required. URI to a Cloud Storage object in format:
-    /// 'gs://<bucket_name>/<path_inside_bucket>'.
+    /// Required. URI to a Cloud Storage bucket in the format:
+    /// `gs://<bucket_name>/<path_inside_bucket>`. The path inside the bucket is
+    /// optional.
     #[prost(string, tag = "1")]
     pub uri: ::prost::alloc::string::String,
 }
-/// Pa as a source.
+/// Parallelstore as the source of a data transfer.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SourceParallelstore {
     /// Optional. Root directory path to the Paralellstore filesystem, starting
-    /// with '/'. Defaults to '/' if unset.
+    /// with `/`. Defaults to `/` if unset.
     #[prost(string, tag = "1")]
     pub path: ::prost::alloc::string::String,
 }
-/// Parallelstore as a destination.
+/// Parallelstore as the destination of a data transfer.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DestinationParallelstore {
     /// Optional. Root directory path to the Paralellstore filesystem, starting
-    /// with '/'. Defaults to '/' if unset.
+    /// with `/`. Defaults to `/` if unset.
     #[prost(string, tag = "1")]
     pub path: ::prost::alloc::string::String,
 }
-/// Message representing the request importing data from parallelstore to Cloud
-/// Storage.
+/// Import data from Cloud Storage into a Parallelstore instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDataRequest {
     /// Required. Name of the resource.
@@ -355,30 +348,36 @@ pub struct ImportDataRequest {
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
-    /// Optional. User-specified Service Account (SA) credentials to be used when
+    /// Optional. User-specified service account credentials to be used when
     /// performing the transfer.
-    /// Format: `projects/{project_id}/serviceAccounts/{service_account}`
+    ///
+    /// Use one of the following formats:
+    ///
+    /// * {EMAIL_ADDRESS_OR_UNIQUE_ID}
+    /// * `projects/{PROJECT_ID_OR_NUMBER}/serviceAccounts/{EMAIL_ADDRESS_OR_UNIQUE_ID}`
+    /// * `projects/-/serviceAccounts/{EMAIL_ADDRESS_OR_UNIQUE_ID}
+    ///
     /// If unspecified, the Parallelstore service agent is used:
-    /// service-<PROJECT_NUMBER>@gcp-sa-parallelstore.iam.gserviceaccount.com)
+    /// `service-<PROJECT_NUMBER>@gcp-sa-parallelstore.iam.gserviceaccount.com`
     #[prost(string, tag = "5")]
     pub service_account: ::prost::alloc::string::String,
-    /// The source of the data being imported into the parallelstore instance.
+    /// The source of the data being imported into the Parallelstore instance.
     #[prost(oneof = "import_data_request::Source", tags = "2")]
     pub source: ::core::option::Option<import_data_request::Source>,
-    /// The destination of the data being imported into the parallelstore instance.
+    /// The Parallelstore instance into which to import data.
     #[prost(oneof = "import_data_request::Destination", tags = "3")]
     pub destination: ::core::option::Option<import_data_request::Destination>,
 }
 /// Nested message and enum types in `ImportDataRequest`.
 pub mod import_data_request {
-    /// The source of the data being imported into the parallelstore instance.
+    /// The source of the data being imported into the Parallelstore instance.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
-        /// Cloud Storage source.
+        /// The Cloud Storage source bucket and, optionally, path inside the bucket.
         #[prost(message, tag = "2")]
         SourceGcsBucket(super::SourceGcsBucket),
     }
-    /// The destination of the data being imported into the parallelstore instance.
+    /// The Parallelstore instance into which to import data.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Parallelstore destination.
@@ -386,8 +385,7 @@ pub mod import_data_request {
         DestinationParallelstore(super::DestinationParallelstore),
     }
 }
-/// Message representing the request exporting data from Cloud Storage to
-/// parallelstore.
+/// Export data from Parallelstore to Cloud Storage.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDataRequest {
     /// Required. Name of the resource.
@@ -410,28 +408,33 @@ pub struct ExportDataRequest {
     pub request_id: ::prost::alloc::string::String,
     /// Optional. User-specified Service Account (SA) credentials to be used when
     /// performing the transfer.
-    /// Format: `projects/{project_id}/serviceAccounts/{service_account}`
+    /// Use one of the following formats:
+    ///
+    /// * {EMAIL_ADDRESS_OR_UNIQUE_ID}
+    /// * `projects/{PROJECT_ID_OR_NUMBER}/serviceAccounts/{EMAIL_ADDRESS_OR_UNIQUE_ID}`
+    /// * `projects/-/serviceAccounts/{EMAIL_ADDRESS_OR_UNIQUE_ID}
+    ///
     /// If unspecified, the Parallelstore service agent is used:
-    /// service-<PROJECT_NUMBER>@gcp-sa-parallelstore.iam.gserviceaccount.com)
+    /// `service-<PROJECT_NUMBER>@gcp-sa-parallelstore.iam.gserviceaccount.com`
     #[prost(string, tag = "5")]
     pub service_account: ::prost::alloc::string::String,
-    /// The source of the data exported from the parallelstore instance.
+    /// The Parallelstore instance to export from.
     #[prost(oneof = "export_data_request::Source", tags = "2")]
     pub source: ::core::option::Option<export_data_request::Source>,
-    /// The destination of the data exported from the parallelstore instance.
+    /// The Cloud Storage bucket to export to.
     #[prost(oneof = "export_data_request::Destination", tags = "3")]
     pub destination: ::core::option::Option<export_data_request::Destination>,
 }
 /// Nested message and enum types in `ExportDataRequest`.
 pub mod export_data_request {
-    /// The source of the data exported from the parallelstore instance.
+    /// The Parallelstore instance to export from.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Parallelstore source.
         #[prost(message, tag = "2")]
         SourceParallelstore(super::SourceParallelstore),
     }
-    /// The destination of the data exported from the parallelstore instance.
+    /// The Cloud Storage bucket to export to.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Cloud Storage destination.
@@ -439,13 +442,13 @@ pub mod export_data_request {
         DestinationGcsBucket(super::DestinationGcsBucket),
     }
 }
-/// ImportDataResponse is the response returned from ImportData rpc.
+/// The response to a request to import data to Parallelstore.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ImportDataResponse {}
-/// ImportDataMetadata contains import data operation metadata
+/// Metadata related to the data import operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDataMetadata {
-    /// Contains the data transfer operation metadata.
+    /// Data transfer operation metadata.
     #[prost(message, optional, tag = "1")]
     pub operation_metadata: ::core::option::Option<TransferOperationMetadata>,
     /// Output only. The time the operation was created.
@@ -474,13 +477,13 @@ pub struct ImportDataMetadata {
     #[prost(string, tag = "8")]
     pub api_version: ::prost::alloc::string::String,
 }
-/// ExportDataResponse is the response returned from ExportData rpc
+/// The response to a request to export data from Parallelstore.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ExportDataResponse {}
-/// ExportDataMetadata contains export data operation metadata
+/// Metadata related to the data export operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDataMetadata {
-    /// Contains the data transfer operation metadata.
+    /// Data transfer operation metadata.
     #[prost(message, optional, tag = "1")]
     pub operation_metadata: ::core::option::Option<TransferOperationMetadata>,
     /// Output only. The time the operation was created.
@@ -509,10 +512,10 @@ pub struct ExportDataMetadata {
     #[prost(string, tag = "8")]
     pub api_version: ::prost::alloc::string::String,
 }
-/// Represents the metadata of the long-running operation.
+/// Long-running operation metadata related to a data transfer.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransferOperationMetadata {
-    /// Output only. Information about the progress of the transfer operation.
+    /// Output only. The progress of the transfer operation.
     #[prost(message, optional, tag = "3")]
     pub counters: ::core::option::Option<TransferCounters>,
     /// Output only. The type of transfer occurring.
@@ -594,9 +597,9 @@ impl TransferType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            TransferType::Unspecified => "TRANSFER_TYPE_UNSPECIFIED",
-            TransferType::Import => "IMPORT",
-            TransferType::Export => "EXPORT",
+            Self::Unspecified => "TRANSFER_TYPE_UNSPECIFIED",
+            Self::Import => "IMPORT",
+            Self::Export => "EXPORT",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -613,7 +616,7 @@ impl TransferType {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum FileStripeLevel {
-    /// Default file striping
+    /// If not set, FileStripeLevel will default to FILE_STRIPE_LEVEL_BALANCED
     Unspecified = 0,
     /// Minimum file striping
     Min = 1,
@@ -629,10 +632,10 @@ impl FileStripeLevel {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            FileStripeLevel::Unspecified => "FILE_STRIPE_LEVEL_UNSPECIFIED",
-            FileStripeLevel::Min => "FILE_STRIPE_LEVEL_MIN",
-            FileStripeLevel::Balanced => "FILE_STRIPE_LEVEL_BALANCED",
-            FileStripeLevel::Max => "FILE_STRIPE_LEVEL_MAX",
+            Self::Unspecified => "FILE_STRIPE_LEVEL_UNSPECIFIED",
+            Self::Min => "FILE_STRIPE_LEVEL_MIN",
+            Self::Balanced => "FILE_STRIPE_LEVEL_BALANCED",
+            Self::Max => "FILE_STRIPE_LEVEL_MAX",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -650,7 +653,7 @@ impl FileStripeLevel {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum DirectoryStripeLevel {
-    /// Default directory striping
+    /// If not set, DirectoryStripeLevel will default to DIRECTORY_STRIPE_LEVEL_MAX
     Unspecified = 0,
     /// Minimum directory striping
     Min = 1,
@@ -666,10 +669,10 @@ impl DirectoryStripeLevel {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DirectoryStripeLevel::Unspecified => "DIRECTORY_STRIPE_LEVEL_UNSPECIFIED",
-            DirectoryStripeLevel::Min => "DIRECTORY_STRIPE_LEVEL_MIN",
-            DirectoryStripeLevel::Balanced => "DIRECTORY_STRIPE_LEVEL_BALANCED",
-            DirectoryStripeLevel::Max => "DIRECTORY_STRIPE_LEVEL_MAX",
+            Self::Unspecified => "DIRECTORY_STRIPE_LEVEL_UNSPECIFIED",
+            Self::Min => "DIRECTORY_STRIPE_LEVEL_MIN",
+            Self::Balanced => "DIRECTORY_STRIPE_LEVEL_BALANCED",
+            Self::Max => "DIRECTORY_STRIPE_LEVEL_MAX",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -685,7 +688,13 @@ impl DirectoryStripeLevel {
 }
 /// Generated client implementations.
 pub mod parallelstore_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service describing handlers for resources
@@ -783,7 +792,7 @@ pub mod parallelstore_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Lists Instances in a given project and location.
+        /// Lists all instances in a given project and location.
         pub async fn list_instances(
             &mut self,
             request: impl tonic::IntoRequest<super::ListInstancesRequest>,
@@ -795,8 +804,7 @@ pub mod parallelstore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -814,7 +822,7 @@ pub mod parallelstore_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Gets details of a single Instance.
+        /// Gets details of a single instance.
         pub async fn get_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::GetInstanceRequest>,
@@ -823,8 +831,7 @@ pub mod parallelstore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -854,8 +861,7 @@ pub mod parallelstore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -873,7 +879,7 @@ pub mod parallelstore_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Updates the parameters of a single Instance.
+        /// Updates the parameters of a single instance.
         pub async fn update_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateInstanceRequest>,
@@ -885,8 +891,7 @@ pub mod parallelstore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -904,7 +909,7 @@ pub mod parallelstore_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Deletes a single Instance.
+        /// Deletes a single instance.
         pub async fn delete_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteInstanceRequest>,
@@ -916,8 +921,7 @@ pub mod parallelstore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -935,7 +939,7 @@ pub mod parallelstore_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// ImportData copies data from Cloud Storage to Parallelstore.
+        /// Copies data from Cloud Storage to Parallelstore.
         pub async fn import_data(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportDataRequest>,
@@ -947,8 +951,7 @@ pub mod parallelstore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -966,7 +969,7 @@ pub mod parallelstore_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// ExportData copies data from Parallelstore to Cloud Storage
+        /// Copies data from Parallelstore to Cloud Storage.
         pub async fn export_data(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportDataRequest>,
@@ -978,8 +981,7 @@ pub mod parallelstore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

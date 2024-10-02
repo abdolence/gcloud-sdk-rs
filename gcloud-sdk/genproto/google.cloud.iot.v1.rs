@@ -369,9 +369,9 @@ impl MqttState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            MqttState::Unspecified => "MQTT_STATE_UNSPECIFIED",
-            MqttState::MqttEnabled => "MQTT_ENABLED",
-            MqttState::MqttDisabled => "MQTT_DISABLED",
+            Self::Unspecified => "MQTT_STATE_UNSPECIFIED",
+            Self::MqttEnabled => "MQTT_ENABLED",
+            Self::MqttDisabled => "MQTT_DISABLED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -404,9 +404,9 @@ impl HttpState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            HttpState::Unspecified => "HTTP_STATE_UNSPECIFIED",
-            HttpState::HttpEnabled => "HTTP_ENABLED",
-            HttpState::HttpDisabled => "HTTP_DISABLED",
+            Self::Unspecified => "HTTP_STATE_UNSPECIFIED",
+            Self::HttpEnabled => "HTTP_ENABLED",
+            Self::HttpDisabled => "HTTP_DISABLED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -447,11 +447,11 @@ impl LogLevel {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            LogLevel::Unspecified => "LOG_LEVEL_UNSPECIFIED",
-            LogLevel::None => "NONE",
-            LogLevel::Error => "ERROR",
-            LogLevel::Info => "INFO",
-            LogLevel::Debug => "DEBUG",
+            Self::Unspecified => "LOG_LEVEL_UNSPECIFIED",
+            Self::None => "NONE",
+            Self::Error => "ERROR",
+            Self::Info => "INFO",
+            Self::Debug => "DEBUG",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -484,9 +484,9 @@ impl GatewayType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            GatewayType::Unspecified => "GATEWAY_TYPE_UNSPECIFIED",
-            GatewayType::Gateway => "GATEWAY",
-            GatewayType::NonGateway => "NON_GATEWAY",
+            Self::Unspecified => "GATEWAY_TYPE_UNSPECIFIED",
+            Self::Gateway => "GATEWAY",
+            Self::NonGateway => "NON_GATEWAY",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -525,12 +525,10 @@ impl GatewayAuthMethod {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            GatewayAuthMethod::Unspecified => "GATEWAY_AUTH_METHOD_UNSPECIFIED",
-            GatewayAuthMethod::AssociationOnly => "ASSOCIATION_ONLY",
-            GatewayAuthMethod::DeviceAuthTokenOnly => "DEVICE_AUTH_TOKEN_ONLY",
-            GatewayAuthMethod::AssociationAndDeviceAuthToken => {
-                "ASSOCIATION_AND_DEVICE_AUTH_TOKEN"
-            }
+            Self::Unspecified => "GATEWAY_AUTH_METHOD_UNSPECIFIED",
+            Self::AssociationOnly => "ASSOCIATION_ONLY",
+            Self::DeviceAuthTokenOnly => "DEVICE_AUTH_TOKEN_ONLY",
+            Self::AssociationAndDeviceAuthToken => "ASSOCIATION_AND_DEVICE_AUTH_TOKEN",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -565,10 +563,10 @@ impl PublicKeyCertificateFormat {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            PublicKeyCertificateFormat::UnspecifiedPublicKeyCertificateFormat => {
+            Self::UnspecifiedPublicKeyCertificateFormat => {
                 "UNSPECIFIED_PUBLIC_KEY_CERTIFICATE_FORMAT"
             }
-            PublicKeyCertificateFormat::X509CertificatePem => "X509_CERTIFICATE_PEM",
+            Self::X509CertificatePem => "X509_CERTIFICATE_PEM",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -616,13 +614,11 @@ impl PublicKeyFormat {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            PublicKeyFormat::UnspecifiedPublicKeyFormat => {
-                "UNSPECIFIED_PUBLIC_KEY_FORMAT"
-            }
-            PublicKeyFormat::RsaPem => "RSA_PEM",
-            PublicKeyFormat::RsaX509Pem => "RSA_X509_PEM",
-            PublicKeyFormat::Es256Pem => "ES256_PEM",
-            PublicKeyFormat::Es256X509Pem => "ES256_X509_PEM",
+            Self::UnspecifiedPublicKeyFormat => "UNSPECIFIED_PUBLIC_KEY_FORMAT",
+            Self::RsaPem => "RSA_PEM",
+            Self::RsaX509Pem => "RSA_X509_PEM",
+            Self::Es256Pem => "ES256_PEM",
+            Self::Es256X509Pem => "ES256_X509_PEM",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -973,7 +969,13 @@ pub struct UnbindDeviceFromGatewayRequest {
 pub struct UnbindDeviceFromGatewayResponse {}
 /// Generated client implementations.
 pub mod device_manager_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Internet of Things (IoT) service. Securely connect and manage IoT devices.
@@ -1066,8 +1068,7 @@ pub mod device_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1094,8 +1095,7 @@ pub mod device_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1122,8 +1122,7 @@ pub mod device_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1150,8 +1149,7 @@ pub mod device_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1181,8 +1179,7 @@ pub mod device_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1209,8 +1206,7 @@ pub mod device_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1234,8 +1230,7 @@ pub mod device_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1259,8 +1254,7 @@ pub mod device_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1284,8 +1278,7 @@ pub mod device_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1312,8 +1305,7 @@ pub mod device_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1339,8 +1331,7 @@ pub mod device_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1371,8 +1362,7 @@ pub mod device_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1403,8 +1393,7 @@ pub mod device_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1437,8 +1426,7 @@ pub mod device_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1469,8 +1457,7 @@ pub mod device_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1503,8 +1490,7 @@ pub mod device_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1546,8 +1532,7 @@ pub mod device_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1577,8 +1562,7 @@ pub mod device_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1608,8 +1592,7 @@ pub mod device_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

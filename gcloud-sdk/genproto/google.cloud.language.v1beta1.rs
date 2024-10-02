@@ -52,9 +52,9 @@ pub mod document {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::PlainText => "PLAIN_TEXT",
-                Type::Html => "HTML",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::PlainText => "PLAIN_TEXT",
+                Self::Html => "HTML",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -167,14 +167,14 @@ pub mod entity {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unknown => "UNKNOWN",
-                Type::Person => "PERSON",
-                Type::Location => "LOCATION",
-                Type::Organization => "ORGANIZATION",
-                Type::Event => "EVENT",
-                Type::WorkOfArt => "WORK_OF_ART",
-                Type::ConsumerGood => "CONSUMER_GOOD",
-                Type::Other => "OTHER",
+                Self::Unknown => "UNKNOWN",
+                Self::Person => "PERSON",
+                Self::Location => "LOCATION",
+                Self::Organization => "ORGANIZATION",
+                Self::Event => "EVENT",
+                Self::WorkOfArt => "WORK_OF_ART",
+                Self::ConsumerGood => "CONSUMER_GOOD",
+                Self::Other => "OTHER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -320,20 +320,20 @@ pub mod part_of_speech {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Tag::Unknown => "UNKNOWN",
-                Tag::Adj => "ADJ",
-                Tag::Adp => "ADP",
-                Tag::Adv => "ADV",
-                Tag::Conj => "CONJ",
-                Tag::Det => "DET",
-                Tag::Noun => "NOUN",
-                Tag::Num => "NUM",
-                Tag::Pron => "PRON",
-                Tag::Prt => "PRT",
-                Tag::Punct => "PUNCT",
-                Tag::Verb => "VERB",
-                Tag::X => "X",
-                Tag::Affix => "AFFIX",
+                Self::Unknown => "UNKNOWN",
+                Self::Adj => "ADJ",
+                Self::Adp => "ADP",
+                Self::Adv => "ADV",
+                Self::Conj => "CONJ",
+                Self::Det => "DET",
+                Self::Noun => "NOUN",
+                Self::Num => "NUM",
+                Self::Pron => "PRON",
+                Self::Prt => "PRT",
+                Self::Punct => "PUNCT",
+                Self::Verb => "VERB",
+                Self::X => "X",
+                Self::Affix => "AFFIX",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -387,10 +387,10 @@ pub mod part_of_speech {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Aspect::Unknown => "ASPECT_UNKNOWN",
-                Aspect::Perfective => "PERFECTIVE",
-                Aspect::Imperfective => "IMPERFECTIVE",
-                Aspect::Progressive => "PROGRESSIVE",
+                Self::Unknown => "ASPECT_UNKNOWN",
+                Self::Perfective => "PERFECTIVE",
+                Self::Imperfective => "IMPERFECTIVE",
+                Self::Progressive => "PROGRESSIVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -458,21 +458,21 @@ pub mod part_of_speech {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Case::Unknown => "CASE_UNKNOWN",
-                Case::Accusative => "ACCUSATIVE",
-                Case::Adverbial => "ADVERBIAL",
-                Case::Complementive => "COMPLEMENTIVE",
-                Case::Dative => "DATIVE",
-                Case::Genitive => "GENITIVE",
-                Case::Instrumental => "INSTRUMENTAL",
-                Case::Locative => "LOCATIVE",
-                Case::Nominative => "NOMINATIVE",
-                Case::Oblique => "OBLIQUE",
-                Case::Partitive => "PARTITIVE",
-                Case::Prepositional => "PREPOSITIONAL",
-                Case::ReflexiveCase => "REFLEXIVE_CASE",
-                Case::RelativeCase => "RELATIVE_CASE",
-                Case::Vocative => "VOCATIVE",
+                Self::Unknown => "CASE_UNKNOWN",
+                Self::Accusative => "ACCUSATIVE",
+                Self::Adverbial => "ADVERBIAL",
+                Self::Complementive => "COMPLEMENTIVE",
+                Self::Dative => "DATIVE",
+                Self::Genitive => "GENITIVE",
+                Self::Instrumental => "INSTRUMENTAL",
+                Self::Locative => "LOCATIVE",
+                Self::Nominative => "NOMINATIVE",
+                Self::Oblique => "OBLIQUE",
+                Self::Partitive => "PARTITIVE",
+                Self::Prepositional => "PREPOSITIONAL",
+                Self::ReflexiveCase => "REFLEXIVE_CASE",
+                Self::RelativeCase => "RELATIVE_CASE",
+                Self::Vocative => "VOCATIVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -546,18 +546,18 @@ pub mod part_of_speech {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Form::Unknown => "FORM_UNKNOWN",
-                Form::Adnomial => "ADNOMIAL",
-                Form::Auxiliary => "AUXILIARY",
-                Form::Complementizer => "COMPLEMENTIZER",
-                Form::FinalEnding => "FINAL_ENDING",
-                Form::Gerund => "GERUND",
-                Form::Realis => "REALIS",
-                Form::Irrealis => "IRREALIS",
-                Form::Short => "SHORT",
-                Form::Long => "LONG",
-                Form::Order => "ORDER",
-                Form::Specific => "SPECIFIC",
+                Self::Unknown => "FORM_UNKNOWN",
+                Self::Adnomial => "ADNOMIAL",
+                Self::Auxiliary => "AUXILIARY",
+                Self::Complementizer => "COMPLEMENTIZER",
+                Self::FinalEnding => "FINAL_ENDING",
+                Self::Gerund => "GERUND",
+                Self::Realis => "REALIS",
+                Self::Irrealis => "IRREALIS",
+                Self::Short => "SHORT",
+                Self::Long => "LONG",
+                Self::Order => "ORDER",
+                Self::Specific => "SPECIFIC",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -609,10 +609,10 @@ pub mod part_of_speech {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Gender::Unknown => "GENDER_UNKNOWN",
-                Gender::Feminine => "FEMININE",
-                Gender::Masculine => "MASCULINE",
-                Gender::Neuter => "NEUTER",
+                Self::Unknown => "GENDER_UNKNOWN",
+                Self::Feminine => "FEMININE",
+                Self::Masculine => "MASCULINE",
+                Self::Neuter => "NEUTER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -662,13 +662,13 @@ pub mod part_of_speech {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Mood::Unknown => "MOOD_UNKNOWN",
-                Mood::ConditionalMood => "CONDITIONAL_MOOD",
-                Mood::Imperative => "IMPERATIVE",
-                Mood::Indicative => "INDICATIVE",
-                Mood::Interrogative => "INTERROGATIVE",
-                Mood::Jussive => "JUSSIVE",
-                Mood::Subjunctive => "SUBJUNCTIVE",
+                Self::Unknown => "MOOD_UNKNOWN",
+                Self::ConditionalMood => "CONDITIONAL_MOOD",
+                Self::Imperative => "IMPERATIVE",
+                Self::Indicative => "INDICATIVE",
+                Self::Interrogative => "INTERROGATIVE",
+                Self::Jussive => "JUSSIVE",
+                Self::Subjunctive => "SUBJUNCTIVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -715,10 +715,10 @@ pub mod part_of_speech {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Number::Unknown => "NUMBER_UNKNOWN",
-                Number::Singular => "SINGULAR",
-                Number::Plural => "PLURAL",
-                Number::Dual => "DUAL",
+                Self::Unknown => "NUMBER_UNKNOWN",
+                Self::Singular => "SINGULAR",
+                Self::Plural => "PLURAL",
+                Self::Dual => "DUAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -764,11 +764,11 @@ pub mod part_of_speech {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Person::Unknown => "PERSON_UNKNOWN",
-                Person::First => "FIRST",
-                Person::Second => "SECOND",
-                Person::Third => "THIRD",
-                Person::ReflexivePerson => "REFLEXIVE_PERSON",
+                Self::Unknown => "PERSON_UNKNOWN",
+                Self::First => "FIRST",
+                Self::Second => "SECOND",
+                Self::Third => "THIRD",
+                Self::ReflexivePerson => "REFLEXIVE_PERSON",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -811,9 +811,9 @@ pub mod part_of_speech {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Proper::Unknown => "PROPER_UNKNOWN",
-                Proper::Proper => "PROPER",
-                Proper::NotProper => "NOT_PROPER",
+                Self::Unknown => "PROPER_UNKNOWN",
+                Self::Proper => "PROPER",
+                Self::NotProper => "NOT_PROPER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -855,9 +855,9 @@ pub mod part_of_speech {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Reciprocity::Unknown => "RECIPROCITY_UNKNOWN",
-                Reciprocity::Reciprocal => "RECIPROCAL",
-                Reciprocity::NonReciprocal => "NON_RECIPROCAL",
+                Self::Unknown => "RECIPROCITY_UNKNOWN",
+                Self::Reciprocal => "RECIPROCAL",
+                Self::NonReciprocal => "NON_RECIPROCAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -906,13 +906,13 @@ pub mod part_of_speech {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Tense::Unknown => "TENSE_UNKNOWN",
-                Tense::ConditionalTense => "CONDITIONAL_TENSE",
-                Tense::Future => "FUTURE",
-                Tense::Past => "PAST",
-                Tense::Present => "PRESENT",
-                Tense::Imperfect => "IMPERFECT",
-                Tense::Pluperfect => "PLUPERFECT",
+                Self::Unknown => "TENSE_UNKNOWN",
+                Self::ConditionalTense => "CONDITIONAL_TENSE",
+                Self::Future => "FUTURE",
+                Self::Past => "PAST",
+                Self::Present => "PRESENT",
+                Self::Imperfect => "IMPERFECT",
+                Self::Pluperfect => "PLUPERFECT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -960,10 +960,10 @@ pub mod part_of_speech {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Voice::Unknown => "VOICE_UNKNOWN",
-                Voice::Active => "ACTIVE",
-                Voice::Causative => "CAUSATIVE",
-                Voice::Passive => "PASSIVE",
+                Self::Unknown => "VOICE_UNKNOWN",
+                Self::Active => "ACTIVE",
+                Self::Causative => "CAUSATIVE",
+                Self::Passive => "PASSIVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1170,83 +1170,83 @@ pub mod dependency_edge {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Label::Unknown => "UNKNOWN",
-                Label::Abbrev => "ABBREV",
-                Label::Acomp => "ACOMP",
-                Label::Advcl => "ADVCL",
-                Label::Advmod => "ADVMOD",
-                Label::Amod => "AMOD",
-                Label::Appos => "APPOS",
-                Label::Attr => "ATTR",
-                Label::Aux => "AUX",
-                Label::Auxpass => "AUXPASS",
-                Label::Cc => "CC",
-                Label::Ccomp => "CCOMP",
-                Label::Conj => "CONJ",
-                Label::Csubj => "CSUBJ",
-                Label::Csubjpass => "CSUBJPASS",
-                Label::Dep => "DEP",
-                Label::Det => "DET",
-                Label::Discourse => "DISCOURSE",
-                Label::Dobj => "DOBJ",
-                Label::Expl => "EXPL",
-                Label::Goeswith => "GOESWITH",
-                Label::Iobj => "IOBJ",
-                Label::Mark => "MARK",
-                Label::Mwe => "MWE",
-                Label::Mwv => "MWV",
-                Label::Neg => "NEG",
-                Label::Nn => "NN",
-                Label::Npadvmod => "NPADVMOD",
-                Label::Nsubj => "NSUBJ",
-                Label::Nsubjpass => "NSUBJPASS",
-                Label::Num => "NUM",
-                Label::Number => "NUMBER",
-                Label::P => "P",
-                Label::Parataxis => "PARATAXIS",
-                Label::Partmod => "PARTMOD",
-                Label::Pcomp => "PCOMP",
-                Label::Pobj => "POBJ",
-                Label::Poss => "POSS",
-                Label::Postneg => "POSTNEG",
-                Label::Precomp => "PRECOMP",
-                Label::Preconj => "PRECONJ",
-                Label::Predet => "PREDET",
-                Label::Pref => "PREF",
-                Label::Prep => "PREP",
-                Label::Pronl => "PRONL",
-                Label::Prt => "PRT",
-                Label::Ps => "PS",
-                Label::Quantmod => "QUANTMOD",
-                Label::Rcmod => "RCMOD",
-                Label::Rcmodrel => "RCMODREL",
-                Label::Rdrop => "RDROP",
-                Label::Ref => "REF",
-                Label::Remnant => "REMNANT",
-                Label::Reparandum => "REPARANDUM",
-                Label::Root => "ROOT",
-                Label::Snum => "SNUM",
-                Label::Suff => "SUFF",
-                Label::Tmod => "TMOD",
-                Label::Topic => "TOPIC",
-                Label::Vmod => "VMOD",
-                Label::Vocative => "VOCATIVE",
-                Label::Xcomp => "XCOMP",
-                Label::Suffix => "SUFFIX",
-                Label::Title => "TITLE",
-                Label::Advphmod => "ADVPHMOD",
-                Label::Auxcaus => "AUXCAUS",
-                Label::Auxvv => "AUXVV",
-                Label::Dtmod => "DTMOD",
-                Label::Foreign => "FOREIGN",
-                Label::Kw => "KW",
-                Label::List => "LIST",
-                Label::Nomc => "NOMC",
-                Label::Nomcsubj => "NOMCSUBJ",
-                Label::Nomcsubjpass => "NOMCSUBJPASS",
-                Label::Numc => "NUMC",
-                Label::Cop => "COP",
-                Label::Dislocated => "DISLOCATED",
+                Self::Unknown => "UNKNOWN",
+                Self::Abbrev => "ABBREV",
+                Self::Acomp => "ACOMP",
+                Self::Advcl => "ADVCL",
+                Self::Advmod => "ADVMOD",
+                Self::Amod => "AMOD",
+                Self::Appos => "APPOS",
+                Self::Attr => "ATTR",
+                Self::Aux => "AUX",
+                Self::Auxpass => "AUXPASS",
+                Self::Cc => "CC",
+                Self::Ccomp => "CCOMP",
+                Self::Conj => "CONJ",
+                Self::Csubj => "CSUBJ",
+                Self::Csubjpass => "CSUBJPASS",
+                Self::Dep => "DEP",
+                Self::Det => "DET",
+                Self::Discourse => "DISCOURSE",
+                Self::Dobj => "DOBJ",
+                Self::Expl => "EXPL",
+                Self::Goeswith => "GOESWITH",
+                Self::Iobj => "IOBJ",
+                Self::Mark => "MARK",
+                Self::Mwe => "MWE",
+                Self::Mwv => "MWV",
+                Self::Neg => "NEG",
+                Self::Nn => "NN",
+                Self::Npadvmod => "NPADVMOD",
+                Self::Nsubj => "NSUBJ",
+                Self::Nsubjpass => "NSUBJPASS",
+                Self::Num => "NUM",
+                Self::Number => "NUMBER",
+                Self::P => "P",
+                Self::Parataxis => "PARATAXIS",
+                Self::Partmod => "PARTMOD",
+                Self::Pcomp => "PCOMP",
+                Self::Pobj => "POBJ",
+                Self::Poss => "POSS",
+                Self::Postneg => "POSTNEG",
+                Self::Precomp => "PRECOMP",
+                Self::Preconj => "PRECONJ",
+                Self::Predet => "PREDET",
+                Self::Pref => "PREF",
+                Self::Prep => "PREP",
+                Self::Pronl => "PRONL",
+                Self::Prt => "PRT",
+                Self::Ps => "PS",
+                Self::Quantmod => "QUANTMOD",
+                Self::Rcmod => "RCMOD",
+                Self::Rcmodrel => "RCMODREL",
+                Self::Rdrop => "RDROP",
+                Self::Ref => "REF",
+                Self::Remnant => "REMNANT",
+                Self::Reparandum => "REPARANDUM",
+                Self::Root => "ROOT",
+                Self::Snum => "SNUM",
+                Self::Suff => "SUFF",
+                Self::Tmod => "TMOD",
+                Self::Topic => "TOPIC",
+                Self::Vmod => "VMOD",
+                Self::Vocative => "VOCATIVE",
+                Self::Xcomp => "XCOMP",
+                Self::Suffix => "SUFFIX",
+                Self::Title => "TITLE",
+                Self::Advphmod => "ADVPHMOD",
+                Self::Auxcaus => "AUXCAUS",
+                Self::Auxvv => "AUXVV",
+                Self::Dtmod => "DTMOD",
+                Self::Foreign => "FOREIGN",
+                Self::Kw => "KW",
+                Self::List => "LIST",
+                Self::Nomc => "NOMC",
+                Self::Nomcsubj => "NOMCSUBJ",
+                Self::Nomcsubjpass => "NOMCSUBJPASS",
+                Self::Numc => "NUMC",
+                Self::Cop => "COP",
+                Self::Dislocated => "DISLOCATED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1375,9 +1375,9 @@ pub mod entity_mention {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unknown => "TYPE_UNKNOWN",
-                Type::Proper => "PROPER",
-                Type::Common => "COMMON",
+                Self::Unknown => "TYPE_UNKNOWN",
+                Self::Proper => "PROPER",
+                Self::Common => "COMMON",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1570,10 +1570,10 @@ impl EncodingType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            EncodingType::None => "NONE",
-            EncodingType::Utf8 => "UTF8",
-            EncodingType::Utf16 => "UTF16",
-            EncodingType::Utf32 => "UTF32",
+            Self::None => "NONE",
+            Self::Utf8 => "UTF8",
+            Self::Utf16 => "UTF16",
+            Self::Utf32 => "UTF32",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1589,7 +1589,13 @@ impl EncodingType {
 }
 /// Generated client implementations.
 pub mod language_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Provides text analysis operations such as sentiment analysis and entity
@@ -1686,8 +1692,7 @@ pub mod language_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1719,8 +1724,7 @@ pub mod language_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1752,8 +1756,7 @@ pub mod language_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1784,8 +1787,7 @@ pub mod language_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

@@ -111,10 +111,10 @@ pub mod address {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AddressType::UndefinedAddressType => "UNDEFINED_ADDRESS_TYPE",
-                AddressType::External => "EXTERNAL",
-                AddressType::Internal => "INTERNAL",
-                AddressType::UnspecifiedType => "UNSPECIFIED_TYPE",
+                Self::UndefinedAddressType => "UNDEFINED_ADDRESS_TYPE",
+                Self::External => "EXTERNAL",
+                Self::Internal => "INTERNAL",
+                Self::UnspecifiedType => "UNSPECIFIED_TYPE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -155,10 +155,10 @@ pub mod address {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                IpVersion::UndefinedIpVersion => "UNDEFINED_IP_VERSION",
-                IpVersion::Ipv4 => "IPV4",
-                IpVersion::Ipv6 => "IPV6",
-                IpVersion::UnspecifiedVersion => "UNSPECIFIED_VERSION",
+                Self::UndefinedIpVersion => "UNDEFINED_IP_VERSION",
+                Self::Ipv4 => "IPV4",
+                Self::Ipv6 => "IPV6",
+                Self::UnspecifiedVersion => "UNSPECIFIED_VERSION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -200,9 +200,9 @@ pub mod address {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                NetworkTier::UndefinedNetworkTier => "UNDEFINED_NETWORK_TIER",
-                NetworkTier::Premium => "PREMIUM",
-                NetworkTier::Standard => "STANDARD",
+                Self::UndefinedNetworkTier => "UNDEFINED_NETWORK_TIER",
+                Self::Premium => "PREMIUM",
+                Self::Standard => "STANDARD",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -247,11 +247,11 @@ pub mod address {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Purpose::UndefinedPurpose => "UNDEFINED_PURPOSE",
-                Purpose::DnsResolver => "DNS_RESOLVER",
-                Purpose::GceEndpoint => "GCE_ENDPOINT",
-                Purpose::NatAuto => "NAT_AUTO",
-                Purpose::VpcPeering => "VPC_PEERING",
+                Self::UndefinedPurpose => "UNDEFINED_PURPOSE",
+                Self::DnsResolver => "DNS_RESOLVER",
+                Self::GceEndpoint => "GCE_ENDPOINT",
+                Self::NatAuto => "NAT_AUTO",
+                Self::VpcPeering => "VPC_PEERING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -293,10 +293,10 @@ pub mod address {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Status::UndefinedStatus => "UNDEFINED_STATUS",
-                Status::InUse => "IN_USE",
-                Status::Reserved => "RESERVED",
-                Status::Reserving => "RESERVING",
+                Self::UndefinedStatus => "UNDEFINED_STATUS",
+                Self::InUse => "IN_USE",
+                Self::Reserved => "RESERVED",
+                Self::Reserving => "RESERVING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -630,10 +630,10 @@ pub mod operation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Status::UndefinedStatus => "UNDEFINED_STATUS",
-                Status::Done => "DONE",
-                Status::Pending => "PENDING",
-                Status::Running => "RUNNING",
+                Self::UndefinedStatus => "UNDEFINED_STATUS",
+                Self::Done => "DONE",
+                Self::Pending => "PENDING",
+                Self::Running => "RUNNING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -725,34 +725,34 @@ pub mod warning {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Code::UndefinedCode => "UNDEFINED_CODE",
-                Code::CleanupFailed => "CLEANUP_FAILED",
-                Code::DeprecatedResourceUsed => "DEPRECATED_RESOURCE_USED",
-                Code::DeprecatedTypeUsed => "DEPRECATED_TYPE_USED",
-                Code::DiskSizeLargerThanImageSize => "DISK_SIZE_LARGER_THAN_IMAGE_SIZE",
-                Code::ExperimentalTypeUsed => "EXPERIMENTAL_TYPE_USED",
-                Code::ExternalApiWarning => "EXTERNAL_API_WARNING",
-                Code::FieldValueOverriden => "FIELD_VALUE_OVERRIDEN",
-                Code::InjectedKernelsDeprecated => "INJECTED_KERNELS_DEPRECATED",
-                Code::MissingTypeDependency => "MISSING_TYPE_DEPENDENCY",
-                Code::NextHopAddressNotAssigned => "NEXT_HOP_ADDRESS_NOT_ASSIGNED",
-                Code::NextHopCannotIpForward => "NEXT_HOP_CANNOT_IP_FORWARD",
-                Code::NextHopInstanceNotFound => "NEXT_HOP_INSTANCE_NOT_FOUND",
-                Code::NextHopInstanceNotOnNetwork => "NEXT_HOP_INSTANCE_NOT_ON_NETWORK",
-                Code::NextHopNotRunning => "NEXT_HOP_NOT_RUNNING",
-                Code::NotCriticalError => "NOT_CRITICAL_ERROR",
-                Code::NoResultsOnPage => "NO_RESULTS_ON_PAGE",
-                Code::RequiredTosAgreement => "REQUIRED_TOS_AGREEMENT",
-                Code::ResourceInUseByOtherResourceWarning => {
+                Self::UndefinedCode => "UNDEFINED_CODE",
+                Self::CleanupFailed => "CLEANUP_FAILED",
+                Self::DeprecatedResourceUsed => "DEPRECATED_RESOURCE_USED",
+                Self::DeprecatedTypeUsed => "DEPRECATED_TYPE_USED",
+                Self::DiskSizeLargerThanImageSize => "DISK_SIZE_LARGER_THAN_IMAGE_SIZE",
+                Self::ExperimentalTypeUsed => "EXPERIMENTAL_TYPE_USED",
+                Self::ExternalApiWarning => "EXTERNAL_API_WARNING",
+                Self::FieldValueOverriden => "FIELD_VALUE_OVERRIDEN",
+                Self::InjectedKernelsDeprecated => "INJECTED_KERNELS_DEPRECATED",
+                Self::MissingTypeDependency => "MISSING_TYPE_DEPENDENCY",
+                Self::NextHopAddressNotAssigned => "NEXT_HOP_ADDRESS_NOT_ASSIGNED",
+                Self::NextHopCannotIpForward => "NEXT_HOP_CANNOT_IP_FORWARD",
+                Self::NextHopInstanceNotFound => "NEXT_HOP_INSTANCE_NOT_FOUND",
+                Self::NextHopInstanceNotOnNetwork => "NEXT_HOP_INSTANCE_NOT_ON_NETWORK",
+                Self::NextHopNotRunning => "NEXT_HOP_NOT_RUNNING",
+                Self::NotCriticalError => "NOT_CRITICAL_ERROR",
+                Self::NoResultsOnPage => "NO_RESULTS_ON_PAGE",
+                Self::RequiredTosAgreement => "REQUIRED_TOS_AGREEMENT",
+                Self::ResourceInUseByOtherResourceWarning => {
                     "RESOURCE_IN_USE_BY_OTHER_RESOURCE_WARNING"
                 }
-                Code::ResourceNotDeleted => "RESOURCE_NOT_DELETED",
-                Code::SchemaValidationIgnored => "SCHEMA_VALIDATION_IGNORED",
-                Code::SingleInstancePropertyTemplate => {
+                Self::ResourceNotDeleted => "RESOURCE_NOT_DELETED",
+                Self::SchemaValidationIgnored => "SCHEMA_VALIDATION_IGNORED",
+                Self::SingleInstancePropertyTemplate => {
                     "SINGLE_INSTANCE_PROPERTY_TEMPLATE"
                 }
-                Code::UndeclaredProperties => "UNDECLARED_PROPERTIES",
-                Code::Unreachable => "UNREACHABLE",
+                Self::UndeclaredProperties => "UNDECLARED_PROPERTIES",
+                Self::Unreachable => "UNREACHABLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -859,34 +859,34 @@ pub mod warnings {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Code::UndefinedCode => "UNDEFINED_CODE",
-                Code::CleanupFailed => "CLEANUP_FAILED",
-                Code::DeprecatedResourceUsed => "DEPRECATED_RESOURCE_USED",
-                Code::DeprecatedTypeUsed => "DEPRECATED_TYPE_USED",
-                Code::DiskSizeLargerThanImageSize => "DISK_SIZE_LARGER_THAN_IMAGE_SIZE",
-                Code::ExperimentalTypeUsed => "EXPERIMENTAL_TYPE_USED",
-                Code::ExternalApiWarning => "EXTERNAL_API_WARNING",
-                Code::FieldValueOverriden => "FIELD_VALUE_OVERRIDEN",
-                Code::InjectedKernelsDeprecated => "INJECTED_KERNELS_DEPRECATED",
-                Code::MissingTypeDependency => "MISSING_TYPE_DEPENDENCY",
-                Code::NextHopAddressNotAssigned => "NEXT_HOP_ADDRESS_NOT_ASSIGNED",
-                Code::NextHopCannotIpForward => "NEXT_HOP_CANNOT_IP_FORWARD",
-                Code::NextHopInstanceNotFound => "NEXT_HOP_INSTANCE_NOT_FOUND",
-                Code::NextHopInstanceNotOnNetwork => "NEXT_HOP_INSTANCE_NOT_ON_NETWORK",
-                Code::NextHopNotRunning => "NEXT_HOP_NOT_RUNNING",
-                Code::NotCriticalError => "NOT_CRITICAL_ERROR",
-                Code::NoResultsOnPage => "NO_RESULTS_ON_PAGE",
-                Code::RequiredTosAgreement => "REQUIRED_TOS_AGREEMENT",
-                Code::ResourceInUseByOtherResourceWarning => {
+                Self::UndefinedCode => "UNDEFINED_CODE",
+                Self::CleanupFailed => "CLEANUP_FAILED",
+                Self::DeprecatedResourceUsed => "DEPRECATED_RESOURCE_USED",
+                Self::DeprecatedTypeUsed => "DEPRECATED_TYPE_USED",
+                Self::DiskSizeLargerThanImageSize => "DISK_SIZE_LARGER_THAN_IMAGE_SIZE",
+                Self::ExperimentalTypeUsed => "EXPERIMENTAL_TYPE_USED",
+                Self::ExternalApiWarning => "EXTERNAL_API_WARNING",
+                Self::FieldValueOverriden => "FIELD_VALUE_OVERRIDEN",
+                Self::InjectedKernelsDeprecated => "INJECTED_KERNELS_DEPRECATED",
+                Self::MissingTypeDependency => "MISSING_TYPE_DEPENDENCY",
+                Self::NextHopAddressNotAssigned => "NEXT_HOP_ADDRESS_NOT_ASSIGNED",
+                Self::NextHopCannotIpForward => "NEXT_HOP_CANNOT_IP_FORWARD",
+                Self::NextHopInstanceNotFound => "NEXT_HOP_INSTANCE_NOT_FOUND",
+                Self::NextHopInstanceNotOnNetwork => "NEXT_HOP_INSTANCE_NOT_ON_NETWORK",
+                Self::NextHopNotRunning => "NEXT_HOP_NOT_RUNNING",
+                Self::NotCriticalError => "NOT_CRITICAL_ERROR",
+                Self::NoResultsOnPage => "NO_RESULTS_ON_PAGE",
+                Self::RequiredTosAgreement => "REQUIRED_TOS_AGREEMENT",
+                Self::ResourceInUseByOtherResourceWarning => {
                     "RESOURCE_IN_USE_BY_OTHER_RESOURCE_WARNING"
                 }
-                Code::ResourceNotDeleted => "RESOURCE_NOT_DELETED",
-                Code::SchemaValidationIgnored => "SCHEMA_VALIDATION_IGNORED",
-                Code::SingleInstancePropertyTemplate => {
+                Self::ResourceNotDeleted => "RESOURCE_NOT_DELETED",
+                Self::SchemaValidationIgnored => "SCHEMA_VALIDATION_IGNORED",
+                Self::SingleInstancePropertyTemplate => {
                     "SINGLE_INSTANCE_PROPERTY_TEMPLATE"
                 }
-                Code::UndeclaredProperties => "UNDECLARED_PROPERTIES",
-                Code::Unreachable => "UNREACHABLE",
+                Self::UndeclaredProperties => "UNDECLARED_PROPERTIES",
+                Self::Unreachable => "UNREACHABLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -931,7 +931,13 @@ pub mod warnings {
 }
 /// Generated client implementations.
 pub mod addresses_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     ///
@@ -1030,8 +1036,7 @@ pub mod addresses_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1058,8 +1063,7 @@ pub mod addresses_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1083,8 +1087,7 @@ pub mod addresses_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1108,8 +1111,7 @@ pub mod addresses_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1128,7 +1130,13 @@ pub mod addresses_client {
 }
 /// Generated client implementations.
 pub mod region_operations_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The RegionOperations API.
@@ -1221,8 +1229,7 @@ pub mod region_operations_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1253,8 +1260,7 @@ pub mod region_operations_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

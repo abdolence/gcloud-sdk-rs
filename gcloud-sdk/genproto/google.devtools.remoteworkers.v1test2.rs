@@ -342,11 +342,11 @@ pub mod admin_temp {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Command::Unspecified => "UNSPECIFIED",
-                Command::BotUpdate => "BOT_UPDATE",
-                Command::BotRestart => "BOT_RESTART",
-                Command::BotTerminate => "BOT_TERMINATE",
-                Command::HostRestart => "HOST_RESTART",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::BotUpdate => "BOT_UPDATE",
+                Self::BotRestart => "BOT_RESTART",
+                Self::BotTerminate => "BOT_TERMINATE",
+                Self::HostRestart => "HOST_RESTART",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -422,12 +422,12 @@ impl BotStatus {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            BotStatus::Unspecified => "BOT_STATUS_UNSPECIFIED",
-            BotStatus::Ok => "OK",
-            BotStatus::Unhealthy => "UNHEALTHY",
-            BotStatus::HostRebooting => "HOST_REBOOTING",
-            BotStatus::BotTerminating => "BOT_TERMINATING",
-            BotStatus::Initializing => "INITIALIZING",
+            Self::Unspecified => "BOT_STATUS_UNSPECIFIED",
+            Self::Ok => "OK",
+            Self::Unhealthy => "UNHEALTHY",
+            Self::HostRebooting => "HOST_REBOOTING",
+            Self::BotTerminating => "BOT_TERMINATING",
+            Self::Initializing => "INITIALIZING",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -472,11 +472,11 @@ impl LeaseState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            LeaseState::Unspecified => "LEASE_STATE_UNSPECIFIED",
-            LeaseState::Pending => "PENDING",
-            LeaseState::Active => "ACTIVE",
-            LeaseState::Completed => "COMPLETED",
-            LeaseState::Cancelled => "CANCELLED",
+            Self::Unspecified => "LEASE_STATE_UNSPECIFIED",
+            Self::Pending => "PENDING",
+            Self::Active => "ACTIVE",
+            Self::Completed => "COMPLETED",
+            Self::Cancelled => "CANCELLED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -493,7 +493,13 @@ impl LeaseState {
 }
 /// Generated client implementations.
 pub mod bots_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Design doc: https://goo.gl/oojM5H
@@ -614,8 +620,7 @@ pub mod bots_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -644,8 +649,7 @@ pub mod bots_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

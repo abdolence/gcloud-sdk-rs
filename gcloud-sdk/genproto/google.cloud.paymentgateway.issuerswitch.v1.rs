@@ -146,9 +146,9 @@ pub mod participant {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Persona::Unspecified => "PERSONA_UNSPECIFIED",
-                Persona::Entity => "ENTITY",
-                Persona::Person => "PERSON",
+                Self::Unspecified => "PERSONA_UNSPECIFIED",
+                Self::Entity => "ENTITY",
+                Self::Person => "PERSON",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -248,9 +248,9 @@ pub mod merchant_additional_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::Large => "LARGE",
-                Type::Small => "SMALL",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Large => "LARGE",
+                Self::Small => "SMALL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -291,9 +291,9 @@ pub mod merchant_additional_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Genre::Unspecified => "GENRE_UNSPECIFIED",
-                Genre::Offline => "OFFLINE",
-                Genre::Online => "ONLINE",
+                Self::Unspecified => "GENRE_UNSPECIFIED",
+                Self::Offline => "OFFLINE",
+                Self::Online => "ONLINE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -339,11 +339,11 @@ pub mod merchant_additional_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                OnboardingType::Unspecified => "ONBOARDING_TYPE_UNSPECIFIED",
-                OnboardingType::Aggregator => "AGGREGATOR",
-                OnboardingType::Bank => "BANK",
-                OnboardingType::Network => "NETWORK",
-                OnboardingType::Tpap => "TPAP",
+                Self::Unspecified => "ONBOARDING_TYPE_UNSPECIFIED",
+                Self::Aggregator => "AGGREGATOR",
+                Self::Bank => "BANK",
+                Self::Network => "NETWORK",
+                Self::Tpap => "TPAP",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -392,12 +392,12 @@ pub mod merchant_additional_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                OwnershipType::Unspecified => "OWNERSHIP_TYPE_UNSPECIFIED",
-                OwnershipType::Proprietary => "PROPRIETARY",
-                OwnershipType::Partnership => "PARTNERSHIP",
-                OwnershipType::Public => "PUBLIC",
-                OwnershipType::Private => "PRIVATE",
-                OwnershipType::Others => "OTHERS",
+                Self::Unspecified => "OWNERSHIP_TYPE_UNSPECIFIED",
+                Self::Proprietary => "PROPRIETARY",
+                Self::Partnership => "PARTNERSHIP",
+                Self::Public => "PUBLIC",
+                Self::Private => "PRIVATE",
+                Self::Others => "OTHERS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -471,22 +471,22 @@ impl ApiType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ApiType::Unspecified => "API_TYPE_UNSPECIFIED",
-            ApiType::Balance => "BALANCE",
-            ApiType::CheckStatus => "CHECK_STATUS",
-            ApiType::Complaint => "COMPLAINT",
-            ApiType::HeartBeat => "HEART_BEAT",
-            ApiType::InitiateRegistration => "INITIATE_REGISTRATION",
-            ApiType::ListAccounts => "LIST_ACCOUNTS",
-            ApiType::Mandate => "MANDATE",
-            ApiType::MandateConfirmation => "MANDATE_CONFIRMATION",
-            ApiType::SettlePayment => "SETTLE_PAYMENT",
-            ApiType::UpdateCredentials => "UPDATE_CREDENTIALS",
-            ApiType::ValidateRegistration => "VALIDATE_REGISTRATION",
-            ApiType::ValidateCustomer => "VALIDATE_CUSTOMER",
-            ApiType::Voucher => "VOUCHER",
-            ApiType::VoucherConfirmation => "VOUCHER_CONFIRMATION",
-            ApiType::Activation => "ACTIVATION",
+            Self::Unspecified => "API_TYPE_UNSPECIFIED",
+            Self::Balance => "BALANCE",
+            Self::CheckStatus => "CHECK_STATUS",
+            Self::Complaint => "COMPLAINT",
+            Self::HeartBeat => "HEART_BEAT",
+            Self::InitiateRegistration => "INITIATE_REGISTRATION",
+            Self::ListAccounts => "LIST_ACCOUNTS",
+            Self::Mandate => "MANDATE",
+            Self::MandateConfirmation => "MANDATE_CONFIRMATION",
+            Self::SettlePayment => "SETTLE_PAYMENT",
+            Self::UpdateCredentials => "UPDATE_CREDENTIALS",
+            Self::ValidateRegistration => "VALIDATE_REGISTRATION",
+            Self::ValidateCustomer => "VALIDATE_CUSTOMER",
+            Self::Voucher => "VOUCHER",
+            Self::VoucherConfirmation => "VOUCHER_CONFIRMATION",
+            Self::Activation => "ACTIVATION",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -609,40 +609,34 @@ impl TransactionType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            TransactionType::Unspecified => "TRANSACTION_TYPE_UNSPECIFIED",
-            TransactionType::Autoupdate => "TRANSACTION_TYPE_AUTOUPDATE",
-            TransactionType::BalanceCheck => "TRANSACTION_TYPE_BALANCE_CHECK",
-            TransactionType::BalanceEnquiry => "TRANSACTION_TYPE_BALANCE_ENQUIRY",
-            TransactionType::CheckStatus => "TRANSACTION_TYPE_CHECK_STATUS",
-            TransactionType::CheckTransaction => "TRANSACTION_TYPE_CHECK_TRANSACTION",
-            TransactionType::Complaint => "TRANSACTION_TYPE_COMPLAINT",
-            TransactionType::Create => "TRANSACTION_TYPE_CREATE",
-            TransactionType::Credit => "TRANSACTION_TYPE_CREDIT",
-            TransactionType::Debit => "TRANSACTION_TYPE_DEBIT",
-            TransactionType::Dispute => "TRANSACTION_TYPE_DISPUTE",
-            TransactionType::HeartBeat => "TRANSACTION_TYPE_HEART_BEAT",
-            TransactionType::ListAccounts => "TRANSACTION_TYPE_LIST_ACCOUNTS",
-            TransactionType::MandateNotification => {
-                "TRANSACTION_TYPE_MANDATE_NOTIFICATION"
-            }
-            TransactionType::Otp => "TRANSACTION_TYPE_OTP",
-            TransactionType::Pause => "TRANSACTION_TYPE_PAUSE",
-            TransactionType::Redeem => "TRANSACTION_TYPE_REDEEM",
-            TransactionType::Refund => "TRANSACTION_TYPE_REFUND",
-            TransactionType::RegisterMobile => "TRANSACTION_TYPE_REGISTER_MOBILE",
-            TransactionType::Reversal => "TRANSACTION_TYPE_REVERSAL",
-            TransactionType::Revoke => "TRANSACTION_TYPE_REVOKE",
-            TransactionType::StatusUpdate => "TRANSACTION_TYPE_STATUS_UPDATE",
-            TransactionType::Unpause => "TRANSACTION_TYPE_UNPAUSE",
-            TransactionType::Update => "TRANSACTION_TYPE_UPDATE",
-            TransactionType::UpdateCredentials => "TRANSACTION_TYPE_UPDATE_CREDENTIALS",
-            TransactionType::ValidateCustomer => "TRANSACTION_TYPE_VALIDATE_CUSTOMER",
-            TransactionType::ActivationInternational => {
-                "TRANSACTION_TYPE_ACTIVATION_INTERNATIONAL"
-            }
-            TransactionType::ActivationUpiServices => {
-                "TRANSACTION_TYPE_ACTIVATION_UPI_SERVICES"
-            }
+            Self::Unspecified => "TRANSACTION_TYPE_UNSPECIFIED",
+            Self::Autoupdate => "TRANSACTION_TYPE_AUTOUPDATE",
+            Self::BalanceCheck => "TRANSACTION_TYPE_BALANCE_CHECK",
+            Self::BalanceEnquiry => "TRANSACTION_TYPE_BALANCE_ENQUIRY",
+            Self::CheckStatus => "TRANSACTION_TYPE_CHECK_STATUS",
+            Self::CheckTransaction => "TRANSACTION_TYPE_CHECK_TRANSACTION",
+            Self::Complaint => "TRANSACTION_TYPE_COMPLAINT",
+            Self::Create => "TRANSACTION_TYPE_CREATE",
+            Self::Credit => "TRANSACTION_TYPE_CREDIT",
+            Self::Debit => "TRANSACTION_TYPE_DEBIT",
+            Self::Dispute => "TRANSACTION_TYPE_DISPUTE",
+            Self::HeartBeat => "TRANSACTION_TYPE_HEART_BEAT",
+            Self::ListAccounts => "TRANSACTION_TYPE_LIST_ACCOUNTS",
+            Self::MandateNotification => "TRANSACTION_TYPE_MANDATE_NOTIFICATION",
+            Self::Otp => "TRANSACTION_TYPE_OTP",
+            Self::Pause => "TRANSACTION_TYPE_PAUSE",
+            Self::Redeem => "TRANSACTION_TYPE_REDEEM",
+            Self::Refund => "TRANSACTION_TYPE_REFUND",
+            Self::RegisterMobile => "TRANSACTION_TYPE_REGISTER_MOBILE",
+            Self::Reversal => "TRANSACTION_TYPE_REVERSAL",
+            Self::Revoke => "TRANSACTION_TYPE_REVOKE",
+            Self::StatusUpdate => "TRANSACTION_TYPE_STATUS_UPDATE",
+            Self::Unpause => "TRANSACTION_TYPE_UNPAUSE",
+            Self::Update => "TRANSACTION_TYPE_UPDATE",
+            Self::UpdateCredentials => "TRANSACTION_TYPE_UPDATE_CREDENTIALS",
+            Self::ValidateCustomer => "TRANSACTION_TYPE_VALIDATE_CUSTOMER",
+            Self::ActivationInternational => "TRANSACTION_TYPE_ACTIVATION_INTERNATIONAL",
+            Self::ActivationUpiServices => "TRANSACTION_TYPE_ACTIVATION_UPI_SERVICES",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -769,39 +763,39 @@ impl XmlApiType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            XmlApiType::Unspecified => "XML_API_TYPE_UNSPECIFIED",
-            XmlApiType::ReqBalEnq => "REQ_BAL_ENQ",
-            XmlApiType::ReqChkTxn => "REQ_CHK_TXN",
-            XmlApiType::ReqComplaint => "REQ_COMPLAINT",
-            XmlApiType::ReqHbt => "REQ_HBT",
-            XmlApiType::ReqListAccount => "REQ_LIST_ACCOUNT",
-            XmlApiType::ReqMandate => "REQ_MANDATE",
-            XmlApiType::ReqMandateConfirmation => "REQ_MANDATE_CONFIRMATION",
-            XmlApiType::ReqOtp => "REQ_OTP",
-            XmlApiType::ReqPay => "REQ_PAY",
-            XmlApiType::ReqRegMob => "REQ_REG_MOB",
-            XmlApiType::ReqSetCre => "REQ_SET_CRE",
-            XmlApiType::ReqValCust => "REQ_VAL_CUST",
-            XmlApiType::ReqVoucher => "REQ_VOUCHER",
-            XmlApiType::ReqVoucherConfirmation => "REQ_VOUCHER_CONFIRMATION",
-            XmlApiType::ReqTxnConfirmation => "REQ_TXN_CONFIRMATION",
-            XmlApiType::RespBalEnq => "RESP_BAL_ENQ",
-            XmlApiType::RespChkTxn => "RESP_CHK_TXN",
-            XmlApiType::RespComplaint => "RESP_COMPLAINT",
-            XmlApiType::RespHbt => "RESP_HBT",
-            XmlApiType::RespListAccount => "RESP_LIST_ACCOUNT",
-            XmlApiType::RespMandate => "RESP_MANDATE",
-            XmlApiType::RespMandateConfirmation => "RESP_MANDATE_CONFIRMATION",
-            XmlApiType::RespOtp => "RESP_OTP",
-            XmlApiType::RespPay => "RESP_PAY",
-            XmlApiType::RespRegMob => "RESP_REG_MOB",
-            XmlApiType::RespSetCre => "RESP_SET_CRE",
-            XmlApiType::RespValCust => "RESP_VAL_CUST",
-            XmlApiType::RespVoucher => "RESP_VOUCHER",
-            XmlApiType::RespVoucherConfirmation => "RESP_VOUCHER_CONFIRMATION",
-            XmlApiType::RespTxnConfirmation => "RESP_TXN_CONFIRMATION",
-            XmlApiType::ReqActivation => "REQ_ACTIVATION",
-            XmlApiType::RespActivation => "RESP_ACTIVATION",
+            Self::Unspecified => "XML_API_TYPE_UNSPECIFIED",
+            Self::ReqBalEnq => "REQ_BAL_ENQ",
+            Self::ReqChkTxn => "REQ_CHK_TXN",
+            Self::ReqComplaint => "REQ_COMPLAINT",
+            Self::ReqHbt => "REQ_HBT",
+            Self::ReqListAccount => "REQ_LIST_ACCOUNT",
+            Self::ReqMandate => "REQ_MANDATE",
+            Self::ReqMandateConfirmation => "REQ_MANDATE_CONFIRMATION",
+            Self::ReqOtp => "REQ_OTP",
+            Self::ReqPay => "REQ_PAY",
+            Self::ReqRegMob => "REQ_REG_MOB",
+            Self::ReqSetCre => "REQ_SET_CRE",
+            Self::ReqValCust => "REQ_VAL_CUST",
+            Self::ReqVoucher => "REQ_VOUCHER",
+            Self::ReqVoucherConfirmation => "REQ_VOUCHER_CONFIRMATION",
+            Self::ReqTxnConfirmation => "REQ_TXN_CONFIRMATION",
+            Self::RespBalEnq => "RESP_BAL_ENQ",
+            Self::RespChkTxn => "RESP_CHK_TXN",
+            Self::RespComplaint => "RESP_COMPLAINT",
+            Self::RespHbt => "RESP_HBT",
+            Self::RespListAccount => "RESP_LIST_ACCOUNT",
+            Self::RespMandate => "RESP_MANDATE",
+            Self::RespMandateConfirmation => "RESP_MANDATE_CONFIRMATION",
+            Self::RespOtp => "RESP_OTP",
+            Self::RespPay => "RESP_PAY",
+            Self::RespRegMob => "RESP_REG_MOB",
+            Self::RespSetCre => "RESP_SET_CRE",
+            Self::RespValCust => "RESP_VAL_CUST",
+            Self::RespVoucher => "RESP_VOUCHER",
+            Self::RespVoucherConfirmation => "RESP_VOUCHER_CONFIRMATION",
+            Self::RespTxnConfirmation => "RESP_TXN_CONFIRMATION",
+            Self::ReqActivation => "REQ_ACTIVATION",
+            Self::RespActivation => "RESP_ACTIVATION",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1050,9 +1044,9 @@ pub mod case_response {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Result::Unspecified => "RESULT_UNSPECIFIED",
-                Result::Success => "SUCCESS",
-                Result::Failure => "FAILURE",
+                Self::Unspecified => "RESULT_UNSPECIFIED",
+                Self::Success => "SUCCESS",
+                Self::Failure => "FAILURE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1118,8 +1112,8 @@ pub mod raise_complaint_adjustment {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AdjustmentFlag::Unspecified => "ADJUSTMENT_FLAG_UNSPECIFIED",
-                AdjustmentFlag::Raise => "RAISE",
+                Self::Unspecified => "ADJUSTMENT_FLAG_UNSPECIFIED",
+                Self::Raise => "RAISE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1182,22 +1176,20 @@ pub mod raise_complaint_adjustment {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ReasonCode::Unspecified => "REASON_CODE_UNSPECIFIED",
-                ReasonCode::CustomerAccountNotReversed => "CUSTOMER_ACCOUNT_NOT_REVERSED",
-                ReasonCode::GoodsServicesNotProvided => "GOODS_SERVICES_NOT_PROVIDED",
-                ReasonCode::CustomerAccountNotCreditedBack => {
+                Self::Unspecified => "REASON_CODE_UNSPECIFIED",
+                Self::CustomerAccountNotReversed => "CUSTOMER_ACCOUNT_NOT_REVERSED",
+                Self::GoodsServicesNotProvided => "GOODS_SERVICES_NOT_PROVIDED",
+                Self::CustomerAccountNotCreditedBack => {
                     "CUSTOMER_ACCOUNT_NOT_CREDITED_BACK"
                 }
-                ReasonCode::BeneficiaryAccountNotCredited => {
-                    "BENEFICIARY_ACCOUNT_NOT_CREDITED"
-                }
-                ReasonCode::GoodsServicesCreditNotProcessed => {
+                Self::BeneficiaryAccountNotCredited => "BENEFICIARY_ACCOUNT_NOT_CREDITED",
+                Self::GoodsServicesCreditNotProcessed => {
                     "GOODS_SERVICES_CREDIT_NOT_PROCESSED"
                 }
-                ReasonCode::MerchantNotReceivedConfirmation => {
+                Self::MerchantNotReceivedConfirmation => {
                     "MERCHANT_NOT_RECEIVED_CONFIRMATION"
                 }
-                ReasonCode::PaidByAlternateMeans => "PAID_BY_ALTERNATE_MEANS",
+                Self::PaidByAlternateMeans => "PAID_BY_ALTERNATE_MEANS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1275,17 +1267,11 @@ pub mod resolve_complaint_adjustment {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AdjustmentFlag::Unspecified => "ADJUSTMENT_FLAG_UNSPECIFIED",
-                AdjustmentFlag::DebitReversalConfirmation => {
-                    "DEBIT_REVERSAL_CONFIRMATION"
-                }
-                AdjustmentFlag::Return => "RETURN",
-                AdjustmentFlag::RefundReversalConfirmation => {
-                    "REFUND_REVERSAL_CONFIRMATION"
-                }
-                AdjustmentFlag::TransactionCreditConfirmation => {
-                    "TRANSACTION_CREDIT_CONFIRMATION"
-                }
+                Self::Unspecified => "ADJUSTMENT_FLAG_UNSPECIFIED",
+                Self::DebitReversalConfirmation => "DEBIT_REVERSAL_CONFIRMATION",
+                Self::Return => "RETURN",
+                Self::RefundReversalConfirmation => "REFUND_REVERSAL_CONFIRMATION",
+                Self::TransactionCreditConfirmation => "TRANSACTION_CREDIT_CONFIRMATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1371,26 +1357,24 @@ pub mod resolve_complaint_adjustment {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ReasonCode::Unspecified => "REASON_CODE_UNSPECIFIED",
-                ReasonCode::ComplaintResolvedOnline => "COMPLAINT_RESOLVED_ONLINE",
-                ReasonCode::ComplaintResolvedNowOrManually => {
+                Self::Unspecified => "REASON_CODE_UNSPECIFIED",
+                Self::ComplaintResolvedOnline => "COMPLAINT_RESOLVED_ONLINE",
+                Self::ComplaintResolvedNowOrManually => {
                     "COMPLAINT_RESOLVED_NOW_OR_MANUALLY"
                 }
-                ReasonCode::OriginalTransactionNotDone => "ORIGINAL_TRANSACTION_NOT_DONE",
-                ReasonCode::RetAccountClosed => "RET_ACCOUNT_CLOSED",
-                ReasonCode::RetAccountDoesNotExist => "RET_ACCOUNT_DOES_NOT_EXIST",
-                ReasonCode::RetPartyInstructions => "RET_PARTY_INSTRUCTIONS",
-                ReasonCode::RetNriAccount => "RET_NRI_ACCOUNT",
-                ReasonCode::RetCreditFreezed => "RET_CREDIT_FREEZED",
-                ReasonCode::RetInvalidBeneficiaryDetails => {
-                    "RET_INVALID_BENEFICIARY_DETAILS"
-                }
-                ReasonCode::RetAnyOtherReason => "RET_ANY_OTHER_REASON",
-                ReasonCode::RetBeneficiaryCannotCredit => "RET_BENEFICIARY_CANNOT_CREDIT",
-                ReasonCode::RetMerchantNotReceivedConfirmation => {
+                Self::OriginalTransactionNotDone => "ORIGINAL_TRANSACTION_NOT_DONE",
+                Self::RetAccountClosed => "RET_ACCOUNT_CLOSED",
+                Self::RetAccountDoesNotExist => "RET_ACCOUNT_DOES_NOT_EXIST",
+                Self::RetPartyInstructions => "RET_PARTY_INSTRUCTIONS",
+                Self::RetNriAccount => "RET_NRI_ACCOUNT",
+                Self::RetCreditFreezed => "RET_CREDIT_FREEZED",
+                Self::RetInvalidBeneficiaryDetails => "RET_INVALID_BENEFICIARY_DETAILS",
+                Self::RetAnyOtherReason => "RET_ANY_OTHER_REASON",
+                Self::RetBeneficiaryCannotCredit => "RET_BENEFICIARY_CANNOT_CREDIT",
+                Self::RetMerchantNotReceivedConfirmation => {
                     "RET_MERCHANT_NOT_RECEIVED_CONFIRMATION"
                 }
-                ReasonCode::RrcCustomerAccountCredited => "RRC_CUSTOMER_ACCOUNT_CREDITED",
+                Self::RrcCustomerAccountCredited => "RRC_CUSTOMER_ACCOUNT_CREDITED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1484,19 +1468,15 @@ pub mod raise_dispute_adjustment {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AdjustmentFlag::Unspecified => "ADJUSTMENT_FLAG_UNSPECIFIED",
-                AdjustmentFlag::ChargebackRaise => "CHARGEBACK_RAISE",
-                AdjustmentFlag::FraudChargebackRaise => "FRAUD_CHARGEBACK_RAISE",
-                AdjustmentFlag::WrongCreditChargebackRaise => {
-                    "WRONG_CREDIT_CHARGEBACK_RAISE"
-                }
-                AdjustmentFlag::DeferredChargebackRaise => "DEFERRED_CHARGEBACK_RAISE",
-                AdjustmentFlag::PreArbitrationRaise => "PRE_ARBITRATION_RAISE",
-                AdjustmentFlag::DeferredPreArbitrationRaise => {
-                    "DEFERRED_PRE_ARBITRATION_RAISE"
-                }
-                AdjustmentFlag::ArbitrationRaise => "ARBITRATION_RAISE",
-                AdjustmentFlag::DeferredArbitrationRaise => "DEFERRED_ARBITRATION_RAISE",
+                Self::Unspecified => "ADJUSTMENT_FLAG_UNSPECIFIED",
+                Self::ChargebackRaise => "CHARGEBACK_RAISE",
+                Self::FraudChargebackRaise => "FRAUD_CHARGEBACK_RAISE",
+                Self::WrongCreditChargebackRaise => "WRONG_CREDIT_CHARGEBACK_RAISE",
+                Self::DeferredChargebackRaise => "DEFERRED_CHARGEBACK_RAISE",
+                Self::PreArbitrationRaise => "PRE_ARBITRATION_RAISE",
+                Self::DeferredPreArbitrationRaise => "DEFERRED_PRE_ARBITRATION_RAISE",
+                Self::ArbitrationRaise => "ARBITRATION_RAISE",
+                Self::DeferredArbitrationRaise => "DEFERRED_ARBITRATION_RAISE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1604,42 +1584,42 @@ pub mod raise_dispute_adjustment {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ReasonCode::Unspecified => "REASON_CODE_UNSPECIFIED",
-                ReasonCode::ChargebackRaiseRemitterDebitedBeneficiaryNotCredited => {
+                Self::Unspecified => "REASON_CODE_UNSPECIFIED",
+                Self::ChargebackRaiseRemitterDebitedBeneficiaryNotCredited => {
                     "CHARGEBACK_RAISE_REMITTER_DEBITED_BENEFICIARY_NOT_CREDITED"
                 }
-                ReasonCode::PreArbitrationRaiseBeneficiaryNotCredited => {
+                Self::PreArbitrationRaiseBeneficiaryNotCredited => {
                     "PRE_ARBITRATION_RAISE_BENEFICIARY_NOT_CREDITED"
                 }
-                ReasonCode::DeferredChargebackRaiseBeneficiaryNotCredited => {
+                Self::DeferredChargebackRaiseBeneficiaryNotCredited => {
                     "DEFERRED_CHARGEBACK_RAISE_BENEFICIARY_NOT_CREDITED"
                 }
-                ReasonCode::DeferredPreArbitrationRaiseBeneficiaryNotCredited => {
+                Self::DeferredPreArbitrationRaiseBeneficiaryNotCredited => {
                     "DEFERRED_PRE_ARBITRATION_RAISE_BENEFICIARY_NOT_CREDITED"
                 }
-                ReasonCode::DeferredArbitrationRaiseDeferredChargebackPreArbitrationRejected => {
+                Self::DeferredArbitrationRaiseDeferredChargebackPreArbitrationRejected => {
                     "DEFERRED_ARBITRATION_RAISE_DEFERRED_CHARGEBACK_PRE_ARBITRATION_REJECTED"
                 }
-                ReasonCode::ChargebackOnFraud => "CHARGEBACK_ON_FRAUD",
-                ReasonCode::GoodsServicesCreditNotProcessed => {
+                Self::ChargebackOnFraud => "CHARGEBACK_ON_FRAUD",
+                Self::GoodsServicesCreditNotProcessed => {
                     "GOODS_SERVICES_CREDIT_NOT_PROCESSED"
                 }
-                ReasonCode::GoodsServicesDefective => "GOODS_SERVICES_DEFECTIVE",
-                ReasonCode::PaidByAlternateMeans => "PAID_BY_ALTERNATE_MEANS",
-                ReasonCode::GoodsServicesNotReceived => "GOODS_SERVICES_NOT_RECEIVED",
-                ReasonCode::MerchantNotReceivedConfirmation => {
+                Self::GoodsServicesDefective => "GOODS_SERVICES_DEFECTIVE",
+                Self::PaidByAlternateMeans => "PAID_BY_ALTERNATE_MEANS",
+                Self::GoodsServicesNotReceived => "GOODS_SERVICES_NOT_RECEIVED",
+                Self::MerchantNotReceivedConfirmation => {
                     "MERCHANT_NOT_RECEIVED_CONFIRMATION"
                 }
-                ReasonCode::TransactionNotSteeled => "TRANSACTION_NOT_STEELED",
-                ReasonCode::DuplicateTransaction => "DUPLICATE_TRANSACTION",
-                ReasonCode::ChargebackCardHolderChargedMore => {
+                Self::TransactionNotSteeled => "TRANSACTION_NOT_STEELED",
+                Self::DuplicateTransaction => "DUPLICATE_TRANSACTION",
+                Self::ChargebackCardHolderChargedMore => {
                     "CHARGEBACK_CARD_HOLDER_CHARGED_MORE"
                 }
-                ReasonCode::CustomerClaimingGoodsServicesNotDelivered => {
+                Self::CustomerClaimingGoodsServicesNotDelivered => {
                     "CUSTOMER_CLAIMING_GOODS_SERVICES_NOT_DELIVERED"
                 }
-                ReasonCode::PartiesDenied => "PARTIES_DENIED",
-                ReasonCode::FundsTransferredToUnintendedBeneficiary => {
+                Self::PartiesDenied => "PARTIES_DENIED",
+                Self::FundsTransferredToUnintendedBeneficiary => {
                     "FUNDS_TRANSFERRED_TO_UNINTENDED_BENEFICIARY"
                 }
             }
@@ -1785,37 +1765,31 @@ pub mod resolve_dispute_adjustment {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AdjustmentFlag::Unspecified => "ADJUSTMENT_FLAG_UNSPECIFIED",
-                AdjustmentFlag::RePresentmentRaise => "RE_PRESENTMENT_RAISE",
-                AdjustmentFlag::DeferredRePresentmentRaise => {
-                    "DEFERRED_RE_PRESENTMENT_RAISE"
-                }
-                AdjustmentFlag::ChargebackAcceptance => "CHARGEBACK_ACCEPTANCE",
-                AdjustmentFlag::DeferredChargebackAcceptance => {
-                    "DEFERRED_CHARGEBACK_ACCEPTANCE"
-                }
-                AdjustmentFlag::PreArbitrationAcceptance => "PRE_ARBITRATION_ACCEPTANCE",
-                AdjustmentFlag::DeferredPreArbitrationAcceptance => {
+                Self::Unspecified => "ADJUSTMENT_FLAG_UNSPECIFIED",
+                Self::RePresentmentRaise => "RE_PRESENTMENT_RAISE",
+                Self::DeferredRePresentmentRaise => "DEFERRED_RE_PRESENTMENT_RAISE",
+                Self::ChargebackAcceptance => "CHARGEBACK_ACCEPTANCE",
+                Self::DeferredChargebackAcceptance => "DEFERRED_CHARGEBACK_ACCEPTANCE",
+                Self::PreArbitrationAcceptance => "PRE_ARBITRATION_ACCEPTANCE",
+                Self::DeferredPreArbitrationAcceptance => {
                     "DEFERRED_PRE_ARBITRATION_ACCEPTANCE"
                 }
-                AdjustmentFlag::PreArbitrationDeclined => "PRE_ARBITRATION_DECLINED",
-                AdjustmentFlag::DeferredPreArbitrationDeclined => {
+                Self::PreArbitrationDeclined => "PRE_ARBITRATION_DECLINED",
+                Self::DeferredPreArbitrationDeclined => {
                     "DEFERRED_PRE_ARBITRATION_DECLINED"
                 }
-                AdjustmentFlag::ArbitrationAcceptance => "ARBITRATION_ACCEPTANCE",
-                AdjustmentFlag::ArbitrationContinuation => "ARBITRATION_CONTINUATION",
-                AdjustmentFlag::ArbitrationWithdrawn => "ARBITRATION_WITHDRAWN",
-                AdjustmentFlag::ArbitrationVerdict => "ARBITRATION_VERDICT",
-                AdjustmentFlag::CreditAdjustment => "CREDIT_ADJUSTMENT",
-                AdjustmentFlag::FraudChargebackRepresentment => {
-                    "FRAUD_CHARGEBACK_REPRESENTMENT"
-                }
-                AdjustmentFlag::FraudChargebackAccept => "FRAUD_CHARGEBACK_ACCEPT",
-                AdjustmentFlag::WrongCreditRepresentment => "WRONG_CREDIT_REPRESENTMENT",
-                AdjustmentFlag::WrongCreditChargebackAcceptance => {
+                Self::ArbitrationAcceptance => "ARBITRATION_ACCEPTANCE",
+                Self::ArbitrationContinuation => "ARBITRATION_CONTINUATION",
+                Self::ArbitrationWithdrawn => "ARBITRATION_WITHDRAWN",
+                Self::ArbitrationVerdict => "ARBITRATION_VERDICT",
+                Self::CreditAdjustment => "CREDIT_ADJUSTMENT",
+                Self::FraudChargebackRepresentment => "FRAUD_CHARGEBACK_REPRESENTMENT",
+                Self::FraudChargebackAccept => "FRAUD_CHARGEBACK_ACCEPT",
+                Self::WrongCreditRepresentment => "WRONG_CREDIT_REPRESENTMENT",
+                Self::WrongCreditChargebackAcceptance => {
                     "WRONG_CREDIT_CHARGEBACK_ACCEPTANCE"
                 }
-                AdjustmentFlag::ManualAdjustment => "MANUAL_ADJUSTMENT",
+                Self::ManualAdjustment => "MANUAL_ADJUSTMENT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2017,116 +1991,114 @@ pub mod resolve_dispute_adjustment {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ReasonCode::Unspecified => "REASON_CODE_UNSPECIFIED",
-                ReasonCode::ChargebackBeneficiaryCannotCreditOrPreArbitrationDuplicateProcess => {
+                Self::Unspecified => "REASON_CODE_UNSPECIFIED",
+                Self::ChargebackBeneficiaryCannotCreditOrPreArbitrationDuplicateProcess => {
                     "CHARGEBACK_BENEFICIARY_CANNOT_CREDIT_OR_PRE_ARBITRATION_DUPLICATE_PROCESS"
                 }
-                ReasonCode::PreArbitrationDeclinedBeneficiaryCreditedOnline => {
+                Self::PreArbitrationDeclinedBeneficiaryCreditedOnline => {
                     "PRE_ARBITRATION_DECLINED_BENEFICIARY_CREDITED_ONLINE"
                 }
-                ReasonCode::PreArbitrationDeclinedBeneficiaryCreditedManually => {
+                Self::PreArbitrationDeclinedBeneficiaryCreditedManually => {
                     "PRE_ARBITRATION_DECLINED_BENEFICIARY_CREDITED_MANUALLY"
                 }
-                ReasonCode::DeferredChargebackAcceptanceAccountNotCreditedTccRaised => {
+                Self::DeferredChargebackAcceptanceAccountNotCreditedTccRaised => {
                     "DEFERRED_CHARGEBACK_ACCEPTANCE_ACCOUNT_NOT_CREDITED_TCC_RAISED"
                 }
-                ReasonCode::DeferredRePresentmentRaiseAccountCreditedTccRaised => {
+                Self::DeferredRePresentmentRaiseAccountCreditedTccRaised => {
                     "DEFERRED_RE_PRESENTMENT_RAISE_ACCOUNT_CREDITED_TCC_RAISED"
                 }
-                ReasonCode::DeferredPreArbitrationAcceptanceAccountNotCredited => {
+                Self::DeferredPreArbitrationAcceptanceAccountNotCredited => {
                     "DEFERRED_PRE_ARBITRATION_ACCEPTANCE_ACCOUNT_NOT_CREDITED"
                 }
-                ReasonCode::DeferredPreArbitrationDeclinedAccountCredited => {
+                Self::DeferredPreArbitrationDeclinedAccountCredited => {
                     "DEFERRED_PRE_ARBITRATION_DECLINED_ACCOUNT_CREDITED"
                 }
-                ReasonCode::FraudChargebackAcceptAmountRecoveredFromFraudulentAccount => {
+                Self::FraudChargebackAcceptAmountRecoveredFromFraudulentAccount => {
                     "FRAUD_CHARGEBACK_ACCEPT_AMOUNT_RECOVERED_FROM_FRAUDULENT_ACCOUNT"
                 }
-                ReasonCode::FraudChargebackRepresentmentLienMarkedInsufficientBalance => {
+                Self::FraudChargebackRepresentmentLienMarkedInsufficientBalance => {
                     "FRAUD_CHARGEBACK_REPRESENTMENT_LIEN_MARKED_INSUFFICIENT_BALANCE"
                 }
-                ReasonCode::FraudChargebackRepresentmentFirNotProvided => {
+                Self::FraudChargebackRepresentmentFirNotProvided => {
                     "FRAUD_CHARGEBACK_REPRESENTMENT_FIR_NOT_PROVIDED"
                 }
-                ReasonCode::FraudChargebackRepresentmentReasonOthers => {
+                Self::FraudChargebackRepresentmentReasonOthers => {
                     "FRAUD_CHARGEBACK_REPRESENTMENT_REASON_OTHERS"
                 }
-                ReasonCode::RePresentmentRaiseBeneficiaryCreditedOnline => {
+                Self::RePresentmentRaiseBeneficiaryCreditedOnline => {
                     "RE_PRESENTMENT_RAISE_BENEFICIARY_CREDITED_ONLINE"
                 }
-                ReasonCode::RePresentmentRaiseBeneficiaryCreditedManually => {
+                Self::RePresentmentRaiseBeneficiaryCreditedManually => {
                     "RE_PRESENTMENT_RAISE_BENEFICIARY_CREDITED_MANUALLY"
                 }
-                ReasonCode::CreditAdjustmentGoodsServicesCreditNotProcessed => {
+                Self::CreditAdjustmentGoodsServicesCreditNotProcessed => {
                     "CREDIT_ADJUSTMENT_GOODS_SERVICES_CREDIT_NOT_PROCESSED"
                 }
-                ReasonCode::CreditAdjustmentGoodsServicesDefective => {
+                Self::CreditAdjustmentGoodsServicesDefective => {
                     "CREDIT_ADJUSTMENT_GOODS_SERVICES_DEFECTIVE"
                 }
-                ReasonCode::CreditAdjustmentPaidByAlternateMeans => {
+                Self::CreditAdjustmentPaidByAlternateMeans => {
                     "CREDIT_ADJUSTMENT_PAID_BY_ALTERNATE_MEANS"
                 }
-                ReasonCode::CreditAdjustmentGoodsServicesNotReceived => {
+                Self::CreditAdjustmentGoodsServicesNotReceived => {
                     "CREDIT_ADJUSTMENT_GOODS_SERVICES_NOT_RECEIVED"
                 }
-                ReasonCode::CreditAdjustmentMerchantNotReceivedConfirmation => {
+                Self::CreditAdjustmentMerchantNotReceivedConfirmation => {
                     "CREDIT_ADJUSTMENT_MERCHANT_NOT_RECEIVED_CONFIRMATION"
                 }
-                ReasonCode::CreditAdjustmentDuplicateTransaction => {
+                Self::CreditAdjustmentDuplicateTransaction => {
                     "CREDIT_ADJUSTMENT_DUPLICATE_TRANSACTION"
                 }
-                ReasonCode::CreditAdjustmentReasonOthers => {
-                    "CREDIT_ADJUSTMENT_REASON_OTHERS"
-                }
-                ReasonCode::CreditAdjustmentNonMatchingAccountNumber => {
+                Self::CreditAdjustmentReasonOthers => "CREDIT_ADJUSTMENT_REASON_OTHERS",
+                Self::CreditAdjustmentNonMatchingAccountNumber => {
                     "CREDIT_ADJUSTMENT_NON_MATCHING_ACCOUNT_NUMBER"
                 }
-                ReasonCode::CreditAdjustmentCardHolderChargedMore => {
+                Self::CreditAdjustmentCardHolderChargedMore => {
                     "CREDIT_ADJUSTMENT_CARD_HOLDER_CHARGED_MORE"
                 }
-                ReasonCode::CreditAdjustmentCreditNotProcessed => {
+                Self::CreditAdjustmentCreditNotProcessed => {
                     "CREDIT_ADJUSTMENT_CREDIT_NOT_PROCESSED"
                 }
-                ReasonCode::CreditAdjustmentBeneficiaryCannotCredit => {
+                Self::CreditAdjustmentBeneficiaryCannotCredit => {
                     "CREDIT_ADJUSTMENT_BENEFICIARY_CANNOT_CREDIT"
                 }
-                ReasonCode::ChargebackAcceptanceMerchantCannotProvideService => {
+                Self::ChargebackAcceptanceMerchantCannotProvideService => {
                     "CHARGEBACK_ACCEPTANCE_MERCHANT_CANNOT_PROVIDE_SERVICE"
                 }
-                ReasonCode::RePresentmentRaiseGoodsServicesProvided => {
+                Self::RePresentmentRaiseGoodsServicesProvided => {
                     "RE_PRESENTMENT_RAISE_GOODS_SERVICES_PROVIDED"
                 }
-                ReasonCode::PreArbitrationDeclinedServicesProvidedLater => {
+                Self::PreArbitrationDeclinedServicesProvidedLater => {
                     "PRE_ARBITRATION_DECLINED_SERVICES_PROVIDED_LATER"
                 }
-                ReasonCode::PreArbitrationAcceptanceServicesNotProvidedByMerchant => {
+                Self::PreArbitrationAcceptanceServicesNotProvidedByMerchant => {
                     "PRE_ARBITRATION_ACCEPTANCE_SERVICES_NOT_PROVIDED_BY_MERCHANT"
                 }
-                ReasonCode::ArbitrationAcceptanceIllegibleFulfilment => {
+                Self::ArbitrationAcceptanceIllegibleFulfilment => {
                     "ARBITRATION_ACCEPTANCE_ILLEGIBLE_FULFILMENT"
                 }
-                ReasonCode::ArbitrationContinuationCustomerStillNotReceivedService => {
+                Self::ArbitrationContinuationCustomerStillNotReceivedService => {
                     "ARBITRATION_CONTINUATION_CUSTOMER_STILL_NOT_RECEIVED_SERVICE"
                 }
-                ReasonCode::ArbitrationWithdrawnCustomerReceivedServiceLater => {
+                Self::ArbitrationWithdrawnCustomerReceivedServiceLater => {
                     "ARBITRATION_WITHDRAWN_CUSTOMER_RECEIVED_SERVICE_LATER"
                 }
-                ReasonCode::ArbitrationVerdictPanelVerdict => {
+                Self::ArbitrationVerdictPanelVerdict => {
                     "ARBITRATION_VERDICT_PANEL_VERDICT"
                 }
-                ReasonCode::ManualAdjustmentReason => "MANUAL_ADJUSTMENT_REASON",
-                ReasonCode::AttributingCustomer => "ATTRIBUTING_CUSTOMER",
-                ReasonCode::AttributingTechnicalIssue => "ATTRIBUTING_TECHNICAL_ISSUE",
-                ReasonCode::WrongCreditChargebackAcceptanceAmountRecovered => {
+                Self::ManualAdjustmentReason => "MANUAL_ADJUSTMENT_REASON",
+                Self::AttributingCustomer => "ATTRIBUTING_CUSTOMER",
+                Self::AttributingTechnicalIssue => "ATTRIBUTING_TECHNICAL_ISSUE",
+                Self::WrongCreditChargebackAcceptanceAmountRecovered => {
                     "WRONG_CREDIT_CHARGEBACK_ACCEPTANCE_AMOUNT_RECOVERED"
                 }
-                ReasonCode::WrongCreditRepresentmentLienMarkedInsufficientBalance => {
+                Self::WrongCreditRepresentmentLienMarkedInsufficientBalance => {
                     "WRONG_CREDIT_REPRESENTMENT_LIEN_MARKED_INSUFFICIENT_BALANCE"
                 }
-                ReasonCode::WrongCreditRepresentmentCustomerInaccessible => {
+                Self::WrongCreditRepresentmentCustomerInaccessible => {
                     "WRONG_CREDIT_REPRESENTMENT_CUSTOMER_INACCESSIBLE"
                 }
-                ReasonCode::WrongCreditRepresentmentReasonOthers => {
+                Self::WrongCreditRepresentmentReasonOthers => {
                     "WRONG_CREDIT_REPRESENTMENT_REASON_OTHERS"
                 }
             }
@@ -2283,9 +2255,9 @@ impl TransactionSubType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            TransactionSubType::Unspecified => "TRANSACTION_SUB_TYPE_UNSPECIFIED",
-            TransactionSubType::Beneficiary => "TRANSACTION_SUB_TYPE_BENEFICIARY",
-            TransactionSubType::Remitter => "TRANSACTION_SUB_TYPE_REMITTER",
+            Self::Unspecified => "TRANSACTION_SUB_TYPE_UNSPECIFIED",
+            Self::Beneficiary => "TRANSACTION_SUB_TYPE_BENEFICIARY",
+            Self::Remitter => "TRANSACTION_SUB_TYPE_REMITTER",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2300,7 +2272,13 @@ impl TransactionSubType {
 }
 /// Generated client implementations.
 pub mod issuer_switch_resolutions_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Creates and resolves UPI complaints and disputes.
@@ -2404,8 +2382,7 @@ pub mod issuer_switch_resolutions_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2441,8 +2418,7 @@ pub mod issuer_switch_resolutions_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2478,8 +2454,7 @@ pub mod issuer_switch_resolutions_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2515,8 +2490,7 @@ pub mod issuer_switch_resolutions_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2694,10 +2668,10 @@ pub mod transaction_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
-                State::TimedOut => "TIMED_OUT",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::TimedOut => "TIMED_OUT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2765,14 +2739,14 @@ pub mod transaction_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TransactionSubType::Unspecified => "TRANSACTION_SUB_TYPE_UNSPECIFIED",
-                TransactionSubType::Collect => "COLLECT",
-                TransactionSubType::Debit => "DEBIT",
-                TransactionSubType::Pay => "PAY",
-                TransactionSubType::Beneficiary => "BENEFICIARY",
-                TransactionSubType::Remitter => "REMITTER",
-                TransactionSubType::Refund => "REFUND",
-                TransactionSubType::Credit => "CREDIT",
+                Self::Unspecified => "TRANSACTION_SUB_TYPE_UNSPECIFIED",
+                Self::Collect => "COLLECT",
+                Self::Debit => "DEBIT",
+                Self::Pay => "PAY",
+                Self::Beneficiary => "BENEFICIARY",
+                Self::Remitter => "REMITTER",
+                Self::Refund => "REFUND",
+                Self::Credit => "CREDIT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2880,9 +2854,9 @@ pub mod financial_transaction {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    PaymentRuleName::Unspecified => "PAYMENT_RULE_NAME_UNSPECIFIED",
-                    PaymentRuleName::ExpireAfter => "EXPIRE_AFTER",
-                    PaymentRuleName::MinAmount => "MIN_AMOUNT",
+                    Self::Unspecified => "PAYMENT_RULE_NAME_UNSPECIFIED",
+                    Self::ExpireAfter => "EXPIRE_AFTER",
+                    Self::MinAmount => "MIN_AMOUNT",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3001,19 +2975,17 @@ pub mod mandate_transaction {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RecurrencePatternType::Unspecified => {
-                    "RECURRENCE_PATTERN_TYPE_UNSPECIFIED"
-                }
-                RecurrencePatternType::AsPresented => "AS_PRESENTED",
-                RecurrencePatternType::Bimonthly => "BIMONTHLY",
-                RecurrencePatternType::Daily => "DAILY",
-                RecurrencePatternType::Fortnightly => "FORTNIGHTLY",
-                RecurrencePatternType::HalfYearly => "HALF_YEARLY",
-                RecurrencePatternType::Monthly => "MONTHLY",
-                RecurrencePatternType::OneTime => "ONE_TIME",
-                RecurrencePatternType::Quarterly => "QUARTERLY",
-                RecurrencePatternType::Weekly => "WEEKLY",
-                RecurrencePatternType::Yearly => "YEARLY",
+                Self::Unspecified => "RECURRENCE_PATTERN_TYPE_UNSPECIFIED",
+                Self::AsPresented => "AS_PRESENTED",
+                Self::Bimonthly => "BIMONTHLY",
+                Self::Daily => "DAILY",
+                Self::Fortnightly => "FORTNIGHTLY",
+                Self::HalfYearly => "HALF_YEARLY",
+                Self::Monthly => "MONTHLY",
+                Self::OneTime => "ONE_TIME",
+                Self::Quarterly => "QUARTERLY",
+                Self::Weekly => "WEEKLY",
+                Self::Yearly => "YEARLY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3064,10 +3036,10 @@ pub mod mandate_transaction {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RecurrenceRuleType::Unspecified => "RECURRENCE_RULE_TYPE_UNSPECIFIED",
-                RecurrenceRuleType::After => "AFTER",
-                RecurrenceRuleType::Before => "BEFORE",
-                RecurrenceRuleType::On => "ON",
+                Self::Unspecified => "RECURRENCE_RULE_TYPE_UNSPECIFIED",
+                Self::After => "AFTER",
+                Self::Before => "BEFORE",
+                Self::On => "ON",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3112,9 +3084,9 @@ pub mod mandate_transaction {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AmountRuleType::Unspecified => "AMOUNT_RULE_TYPE_UNSPECIFIED",
-                AmountRuleType::Exact => "EXACT",
-                AmountRuleType::Max => "MAX",
+                Self::Unspecified => "AMOUNT_RULE_TYPE_UNSPECIFIED",
+                Self::Exact => "EXACT",
+                Self::Max => "MAX",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3648,7 +3620,13 @@ pub struct ExportComplaintTransactionsMetadata {
 }
 /// Generated client implementations.
 pub mod issuer_switch_transactions_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Fetch the issuer switch participant.
@@ -3747,8 +3725,7 @@ pub mod issuer_switch_transactions_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3778,8 +3755,7 @@ pub mod issuer_switch_transactions_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3809,8 +3785,7 @@ pub mod issuer_switch_transactions_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3840,8 +3815,7 @@ pub mod issuer_switch_transactions_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4087,8 +4061,7 @@ pub mod issuer_switch_transactions_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4176,8 +4149,7 @@ pub mod issuer_switch_transactions_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4468,8 +4440,7 @@ pub mod issuer_switch_transactions_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4633,8 +4604,7 @@ pub mod issuer_switch_transactions_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4828,13 +4798,13 @@ pub mod issuer_participant {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Inactive => "INACTIVE",
-                State::Active => "ACTIVE",
-                State::MpinLocked => "MPIN_LOCKED",
-                State::MobileNumberChanged => "MOBILE_NUMBER_CHANGED",
-                State::NewRegistrationInitiated => "NEW_REGISTRATION_INITIATED",
-                State::ReRegistrationInitiated => "RE_REGISTRATION_INITIATED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Inactive => "INACTIVE",
+                Self::Active => "ACTIVE",
+                Self::MpinLocked => "MPIN_LOCKED",
+                Self::MobileNumberChanged => "MOBILE_NUMBER_CHANGED",
+                Self::NewRegistrationInitiated => "NEW_REGISTRATION_INITIATED",
+                Self::ReRegistrationInitiated => "RE_REGISTRATION_INITIATED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4913,7 +4883,13 @@ pub struct IssuerParticipants {
 }
 /// Generated client implementations.
 pub mod issuer_switch_participants_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// A service that allows for the management of participants in the issuer
@@ -5016,8 +4992,7 @@ pub mod issuer_switch_participants_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5071,8 +5046,7 @@ pub mod issuer_switch_participants_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5131,8 +5105,7 @@ pub mod issuer_switch_participants_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5191,8 +5164,7 @@ pub mod issuer_switch_participants_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5259,8 +5231,7 @@ pub mod issuer_switch_participants_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5346,8 +5317,8 @@ pub mod rule_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::List => "LIST",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::List => "LIST",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5566,7 +5537,13 @@ pub struct BatchDeleteRuleMetadataValuesRequest {
 }
 /// Generated client implementations.
 pub mod issuer_switch_rules_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Manages rules used by the issuer switch's rules engine.
@@ -5663,8 +5640,7 @@ pub mod issuer_switch_rules_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5694,8 +5670,7 @@ pub mod issuer_switch_rules_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5725,8 +5700,7 @@ pub mod issuer_switch_rules_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5757,8 +5731,7 @@ pub mod issuer_switch_rules_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5786,8 +5759,7 @@ pub mod issuer_switch_rules_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

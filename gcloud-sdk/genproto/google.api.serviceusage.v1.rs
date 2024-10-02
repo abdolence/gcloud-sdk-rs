@@ -98,9 +98,9 @@ impl State {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            State::Unspecified => "STATE_UNSPECIFIED",
-            State::Disabled => "DISABLED",
-            State::Enabled => "ENABLED",
+            Self::Unspecified => "STATE_UNSPECIFIED",
+            Self::Disabled => "DISABLED",
+            Self::Enabled => "ENABLED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -195,11 +195,9 @@ pub mod disable_service_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CheckIfServiceHasUsage::Unspecified => {
-                    "CHECK_IF_SERVICE_HAS_USAGE_UNSPECIFIED"
-                }
-                CheckIfServiceHasUsage::Skip => "SKIP",
-                CheckIfServiceHasUsage::Check => "CHECK",
+                Self::Unspecified => "CHECK_IF_SERVICE_HAS_USAGE_UNSPECIFIED",
+                Self::Skip => "SKIP",
+                Self::Check => "CHECK",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -348,7 +346,13 @@ pub struct BatchGetServicesResponse {
 }
 /// Generated client implementations.
 pub mod service_usage_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Enables services that service consumers want to use on Google Cloud Platform,
@@ -448,8 +452,7 @@ pub mod service_usage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -485,8 +488,7 @@ pub mod service_usage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -513,8 +515,7 @@ pub mod service_usage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -556,8 +557,7 @@ pub mod service_usage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -589,8 +589,7 @@ pub mod service_usage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -621,8 +620,7 @@ pub mod service_usage_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

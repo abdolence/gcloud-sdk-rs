@@ -66,9 +66,9 @@ pub mod discovered {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ContinuousAnalysis::Unspecified => "CONTINUOUS_ANALYSIS_UNSPECIFIED",
-                ContinuousAnalysis::Active => "ACTIVE",
-                ContinuousAnalysis::Inactive => "INACTIVE",
+                Self::Unspecified => "CONTINUOUS_ANALYSIS_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Inactive => "INACTIVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -117,12 +117,12 @@ pub mod discovered {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AnalysisStatus::Unspecified => "ANALYSIS_STATUS_UNSPECIFIED",
-                AnalysisStatus::Pending => "PENDING",
-                AnalysisStatus::Scanning => "SCANNING",
-                AnalysisStatus::FinishedSuccess => "FINISHED_SUCCESS",
-                AnalysisStatus::FinishedFailed => "FINISHED_FAILED",
-                AnalysisStatus::FinishedUnsupported => "FINISHED_UNSUPPORTED",
+                Self::Unspecified => "ANALYSIS_STATUS_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::Scanning => "SCANNING",
+                Self::FinishedSuccess => "FINISHED_SUCCESS",
+                Self::FinishedFailed => "FINISHED_FAILED",
+                Self::FinishedUnsupported => "FINISHED_UNSUPPORTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

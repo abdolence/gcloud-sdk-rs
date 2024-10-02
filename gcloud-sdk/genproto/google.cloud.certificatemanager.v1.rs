@@ -167,9 +167,9 @@ pub mod certificate_issuance_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                KeyAlgorithm::Unspecified => "KEY_ALGORITHM_UNSPECIFIED",
-                KeyAlgorithm::Rsa2048 => "RSA_2048",
-                KeyAlgorithm::EcdsaP256 => "ECDSA_P256",
+                Self::Unspecified => "KEY_ALGORITHM_UNSPECIFIED",
+                Self::Rsa2048 => "RSA_2048",
+                Self::EcdsaP256 => "ECDSA_P256",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -860,9 +860,9 @@ pub mod certificate {
                 /// (if the ProtoBuf definition does not change) and safe for programmatic use.
                 pub fn as_str_name(&self) -> &'static str {
                     match self {
-                        Reason::Unspecified => "REASON_UNSPECIFIED",
-                        Reason::AuthorizationIssue => "AUTHORIZATION_ISSUE",
-                        Reason::RateLimited => "RATE_LIMITED",
+                        Self::Unspecified => "REASON_UNSPECIFIED",
+                        Self::AuthorizationIssue => "AUTHORIZATION_ISSUE",
+                        Self::RateLimited => "RATE_LIMITED",
                     }
                 }
                 /// Creates an enum from field names used in the ProtoBuf definition.
@@ -934,10 +934,10 @@ pub mod certificate {
                 /// (if the ProtoBuf definition does not change) and safe for programmatic use.
                 pub fn as_str_name(&self) -> &'static str {
                     match self {
-                        State::Unspecified => "STATE_UNSPECIFIED",
-                        State::Authorizing => "AUTHORIZING",
-                        State::Authorized => "AUTHORIZED",
-                        State::Failed => "FAILED",
+                        Self::Unspecified => "STATE_UNSPECIFIED",
+                        Self::Authorizing => "AUTHORIZING",
+                        Self::Authorized => "AUTHORIZED",
+                        Self::Failed => "FAILED",
                     }
                 }
                 /// Creates an enum from field names used in the ProtoBuf definition.
@@ -984,10 +984,10 @@ pub mod certificate {
                 /// (if the ProtoBuf definition does not change) and safe for programmatic use.
                 pub fn as_str_name(&self) -> &'static str {
                     match self {
-                        FailureReason::Unspecified => "FAILURE_REASON_UNSPECIFIED",
-                        FailureReason::Config => "CONFIG",
-                        FailureReason::Caa => "CAA",
-                        FailureReason::RateLimited => "RATE_LIMITED",
+                        Self::Unspecified => "FAILURE_REASON_UNSPECIFIED",
+                        Self::Config => "CONFIG",
+                        Self::Caa => "CAA",
+                        Self::RateLimited => "RATE_LIMITED",
                     }
                 }
                 /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1038,10 +1038,10 @@ pub mod certificate {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    State::Unspecified => "STATE_UNSPECIFIED",
-                    State::Provisioning => "PROVISIONING",
-                    State::Failed => "FAILED",
-                    State::Active => "ACTIVE",
+                    Self::Unspecified => "STATE_UNSPECIFIED",
+                    Self::Provisioning => "PROVISIONING",
+                    Self::Failed => "FAILED",
+                    Self::Active => "ACTIVE",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1088,9 +1088,9 @@ pub mod certificate {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Scope::Default => "DEFAULT",
-                Scope::EdgeCache => "EDGE_CACHE",
-                Scope::AllRegions => "ALL_REGIONS",
+                Self::Default => "DEFAULT",
+                Self::EdgeCache => "EDGE_CACHE",
+                Self::AllRegions => "ALL_REGIONS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1247,8 +1247,8 @@ pub mod certificate_map_entry {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Matcher::Unspecified => "MATCHER_UNSPECIFIED",
-                Matcher::Primary => "PRIMARY",
+                Self::Unspecified => "MATCHER_UNSPECIFIED",
+                Self::Primary => "PRIMARY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1363,9 +1363,9 @@ pub mod dns_authorization {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::FixedRecord => "FIXED_RECORD",
-                Type::PerProjectRecord => "PER_PROJECT_RECORD",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::FixedRecord => "FIXED_RECORD",
+                Self::PerProjectRecord => "PER_PROJECT_RECORD",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1397,9 +1397,9 @@ impl ServingState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ServingState::Unspecified => "SERVING_STATE_UNSPECIFIED",
-            ServingState::Active => "ACTIVE",
-            ServingState::Pending => "PENDING",
+            Self::Unspecified => "SERVING_STATE_UNSPECIFIED",
+            Self::Active => "ACTIVE",
+            Self::Pending => "PENDING",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1414,7 +1414,13 @@ impl ServingState {
 }
 /// Generated client implementations.
 pub mod certificate_manager_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// API Overview
@@ -1535,8 +1541,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1563,8 +1568,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1594,8 +1598,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1625,8 +1628,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1656,8 +1658,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1687,8 +1688,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1715,8 +1715,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1746,8 +1745,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1777,8 +1775,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1810,8 +1807,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1841,8 +1837,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1872,8 +1867,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1903,8 +1897,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1934,8 +1927,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1965,8 +1957,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1996,8 +1987,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2027,8 +2017,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2058,8 +2047,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2089,8 +2077,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2120,8 +2107,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2153,8 +2139,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2184,8 +2169,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2217,8 +2201,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2250,8 +2233,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2281,8 +2263,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2309,8 +2290,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2340,8 +2320,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2371,8 +2350,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2402,8 +2380,7 @@ pub mod certificate_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

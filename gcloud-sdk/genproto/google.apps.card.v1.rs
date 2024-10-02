@@ -344,9 +344,9 @@ pub mod card {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DividerStyle::Unspecified => "DIVIDER_STYLE_UNSPECIFIED",
-                DividerStyle::SolidDivider => "SOLID_DIVIDER",
-                DividerStyle::NoDivider => "NO_DIVIDER",
+                Self::Unspecified => "DIVIDER_STYLE_UNSPECIFIED",
+                Self::SolidDivider => "SOLID_DIVIDER",
+                Self::NoDivider => "NO_DIVIDER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -395,9 +395,9 @@ pub mod card {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DisplayStyle::Unspecified => "DISPLAY_STYLE_UNSPECIFIED",
-                DisplayStyle::Peek => "PEEK",
-                DisplayStyle::Replace => "REPLACE",
+                Self::Unspecified => "DISPLAY_STYLE_UNSPECIFIED",
+                Self::Peek => "PEEK",
+                Self::Replace => "REPLACE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -458,8 +458,8 @@ pub mod widget {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ImageType::Square => "SQUARE",
-                ImageType::Circle => "CIRCLE",
+                Self::Square => "SQUARE",
+                Self::Circle => "CIRCLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -507,10 +507,10 @@ pub mod widget {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                HorizontalAlignment::Unspecified => "HORIZONTAL_ALIGNMENT_UNSPECIFIED",
-                HorizontalAlignment::Start => "START",
-                HorizontalAlignment::Center => "CENTER",
-                HorizontalAlignment::End => "END",
+                Self::Unspecified => "HORIZONTAL_ALIGNMENT_UNSPECIFIED",
+                Self::Start => "START",
+                Self::Center => "CENTER",
+                Self::End => "END",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -976,9 +976,9 @@ pub mod decorated_text {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    ControlType::Switch => "SWITCH",
-                    ControlType::Checkbox => "CHECKBOX",
-                    ControlType::CheckBox => "CHECK_BOX",
+                    Self::Switch => "SWITCH",
+                    Self::Checkbox => "CHECKBOX",
+                    Self::CheckBox => "CHECK_BOX",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1145,8 +1145,8 @@ pub mod text_input {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::SingleLine => "SINGLE_LINE",
-                Type::MultipleLine => "MULTIPLE_LINE",
+                Self::SingleLine => "SINGLE_LINE",
+                Self::MultipleLine => "MULTIPLE_LINE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1368,8 +1368,8 @@ pub mod selection_input {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    CommonDataSource::Unknown => "UNKNOWN",
-                    CommonDataSource::User => "USER",
+                    Self::Unknown => "UNKNOWN",
+                    Self::User => "USER",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1452,11 +1452,11 @@ pub mod selection_input {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SelectionType::CheckBox => "CHECK_BOX",
-                SelectionType::RadioButton => "RADIO_BUTTON",
-                SelectionType::Switch => "SWITCH",
-                SelectionType::Dropdown => "DROPDOWN",
-                SelectionType::MultiSelect => "MULTI_SELECT",
+                Self::CheckBox => "CHECK_BOX",
+                Self::RadioButton => "RADIO_BUTTON",
+                Self::Switch => "SWITCH",
+                Self::Dropdown => "DROPDOWN",
+                Self::MultiSelect => "MULTI_SELECT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1568,9 +1568,9 @@ pub mod date_time_picker {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DateTimePickerType::DateAndTime => "DATE_AND_TIME",
-                DateTimePickerType::DateOnly => "DATE_ONLY",
-                DateTimePickerType::TimeOnly => "TIME_ONLY",
+                Self::DateAndTime => "DATE_AND_TIME",
+                Self::DateOnly => "DATE_ONLY",
+                Self::TimeOnly => "TIME_ONLY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1855,11 +1855,11 @@ pub mod image_crop_style {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ImageCropType::Unspecified => "IMAGE_CROP_TYPE_UNSPECIFIED",
-                ImageCropType::Square => "SQUARE",
-                ImageCropType::Circle => "CIRCLE",
-                ImageCropType::RectangleCustom => "RECTANGLE_CUSTOM",
-                ImageCropType::Rectangle43 => "RECTANGLE_4_3",
+                Self::Unspecified => "IMAGE_CROP_TYPE_UNSPECIFIED",
+                Self::Square => "SQUARE",
+                Self::Circle => "CIRCLE",
+                Self::RectangleCustom => "RECTANGLE_CUSTOM",
+                Self::Rectangle43 => "RECTANGLE_4_3",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1925,9 +1925,9 @@ pub mod border_style {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                BorderType::Unspecified => "BORDER_TYPE_UNSPECIFIED",
-                BorderType::NoBorder => "NO_BORDER",
-                BorderType::Stroke => "STROKE",
+                Self::Unspecified => "BORDER_TYPE_UNSPECIFIED",
+                Self::NoBorder => "NO_BORDER",
+                Self::Stroke => "STROKE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2088,9 +2088,9 @@ pub mod grid {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    GridItemLayout::Unspecified => "GRID_ITEM_LAYOUT_UNSPECIFIED",
-                    GridItemLayout::TextBelow => "TEXT_BELOW",
-                    GridItemLayout::TextAbove => "TEXT_ABOVE",
+                    Self::Unspecified => "GRID_ITEM_LAYOUT_UNSPECIFIED",
+                    Self::TextBelow => "TEXT_BELOW",
+                    Self::TextAbove => "TEXT_ABOVE",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2245,11 +2245,9 @@ pub mod columns {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    HorizontalSizeStyle::Unspecified => {
-                        "HORIZONTAL_SIZE_STYLE_UNSPECIFIED"
-                    }
-                    HorizontalSizeStyle::FillAvailableSpace => "FILL_AVAILABLE_SPACE",
-                    HorizontalSizeStyle::FillMinimumSpace => "FILL_MINIMUM_SPACE",
+                    Self::Unspecified => "HORIZONTAL_SIZE_STYLE_UNSPECIFIED",
+                    Self::FillAvailableSpace => "FILL_AVAILABLE_SPACE",
+                    Self::FillMinimumSpace => "FILL_MINIMUM_SPACE",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2298,10 +2296,10 @@ pub mod columns {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    VerticalAlignment::Unspecified => "VERTICAL_ALIGNMENT_UNSPECIFIED",
-                    VerticalAlignment::Center => "CENTER",
-                    VerticalAlignment::Top => "TOP",
-                    VerticalAlignment::Bottom => "BOTTOM",
+                    Self::Unspecified => "VERTICAL_ALIGNMENT_UNSPECIFIED",
+                    Self::Center => "CENTER",
+                    Self::Top => "TOP",
+                    Self::Bottom => "BOTTOM",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2413,8 +2411,8 @@ pub mod open_link {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                OpenAs::FullSize => "FULL_SIZE",
-                OpenAs::Overlay => "OVERLAY",
+                Self::FullSize => "FULL_SIZE",
+                Self::Overlay => "OVERLAY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2466,8 +2464,8 @@ pub mod open_link {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                OnClose::Nothing => "NOTHING",
-                OnClose::Reload => "RELOAD",
+                Self::Nothing => "NOTHING",
+                Self::Reload => "RELOAD",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2593,8 +2591,8 @@ pub mod action {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                LoadIndicator::Spinner => "SPINNER",
-                LoadIndicator::None => "NONE",
+                Self::Spinner => "SPINNER",
+                Self::None => "NONE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2656,8 +2654,8 @@ pub mod action {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Interaction::Unspecified => "INTERACTION_UNSPECIFIED",
-                Interaction::OpenDialog => "OPEN_DIALOG",
+                Self::Unspecified => "INTERACTION_UNSPECIFIED",
+                Self::OpenDialog => "OPEN_DIALOG",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

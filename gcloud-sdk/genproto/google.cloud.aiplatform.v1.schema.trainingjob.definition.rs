@@ -95,11 +95,11 @@ pub mod auto_ml_image_classification_inputs {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ModelType::Unspecified => "MODEL_TYPE_UNSPECIFIED",
-                ModelType::Cloud => "CLOUD",
-                ModelType::MobileTfLowLatency1 => "MOBILE_TF_LOW_LATENCY_1",
-                ModelType::MobileTfVersatile1 => "MOBILE_TF_VERSATILE_1",
-                ModelType::MobileTfHighAccuracy1 => "MOBILE_TF_HIGH_ACCURACY_1",
+                Self::Unspecified => "MODEL_TYPE_UNSPECIFIED",
+                Self::Cloud => "CLOUD",
+                Self::MobileTfLowLatency1 => "MOBILE_TF_LOW_LATENCY_1",
+                Self::MobileTfVersatile1 => "MOBILE_TF_VERSATILE_1",
+                Self::MobileTfHighAccuracy1 => "MOBILE_TF_HIGH_ACCURACY_1",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -160,9 +160,9 @@ pub mod auto_ml_image_classification_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SuccessfulStopReason::Unspecified => "SUCCESSFUL_STOP_REASON_UNSPECIFIED",
-                SuccessfulStopReason::BudgetReached => "BUDGET_REACHED",
-                SuccessfulStopReason::ModelConverged => "MODEL_CONVERGED",
+                Self::Unspecified => "SUCCESSFUL_STOP_REASON_UNSPECIFIED",
+                Self::BudgetReached => "BUDGET_REACHED",
+                Self::ModelConverged => "MODEL_CONVERGED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -263,12 +263,12 @@ pub mod auto_ml_image_object_detection_inputs {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ModelType::Unspecified => "MODEL_TYPE_UNSPECIFIED",
-                ModelType::CloudHighAccuracy1 => "CLOUD_HIGH_ACCURACY_1",
-                ModelType::CloudLowLatency1 => "CLOUD_LOW_LATENCY_1",
-                ModelType::MobileTfLowLatency1 => "MOBILE_TF_LOW_LATENCY_1",
-                ModelType::MobileTfVersatile1 => "MOBILE_TF_VERSATILE_1",
-                ModelType::MobileTfHighAccuracy1 => "MOBILE_TF_HIGH_ACCURACY_1",
+                Self::Unspecified => "MODEL_TYPE_UNSPECIFIED",
+                Self::CloudHighAccuracy1 => "CLOUD_HIGH_ACCURACY_1",
+                Self::CloudLowLatency1 => "CLOUD_LOW_LATENCY_1",
+                Self::MobileTfLowLatency1 => "MOBILE_TF_LOW_LATENCY_1",
+                Self::MobileTfVersatile1 => "MOBILE_TF_VERSATILE_1",
+                Self::MobileTfHighAccuracy1 => "MOBILE_TF_HIGH_ACCURACY_1",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -330,9 +330,9 @@ pub mod auto_ml_image_object_detection_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SuccessfulStopReason::Unspecified => "SUCCESSFUL_STOP_REASON_UNSPECIFIED",
-                SuccessfulStopReason::BudgetReached => "BUDGET_REACHED",
-                SuccessfulStopReason::ModelConverged => "MODEL_CONVERGED",
+                Self::Unspecified => "SUCCESSFUL_STOP_REASON_UNSPECIFIED",
+                Self::BudgetReached => "BUDGET_REACHED",
+                Self::ModelConverged => "MODEL_CONVERGED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -421,10 +421,10 @@ pub mod auto_ml_image_segmentation_inputs {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ModelType::Unspecified => "MODEL_TYPE_UNSPECIFIED",
-                ModelType::CloudHighAccuracy1 => "CLOUD_HIGH_ACCURACY_1",
-                ModelType::CloudLowAccuracy1 => "CLOUD_LOW_ACCURACY_1",
-                ModelType::MobileTfLowLatency1 => "MOBILE_TF_LOW_LATENCY_1",
+                Self::Unspecified => "MODEL_TYPE_UNSPECIFIED",
+                Self::CloudHighAccuracy1 => "CLOUD_HIGH_ACCURACY_1",
+                Self::CloudLowAccuracy1 => "CLOUD_LOW_ACCURACY_1",
+                Self::MobileTfLowLatency1 => "MOBILE_TF_LOW_LATENCY_1",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -484,9 +484,9 @@ pub mod auto_ml_image_segmentation_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SuccessfulStopReason::Unspecified => "SUCCESSFUL_STOP_REASON_UNSPECIFIED",
-                SuccessfulStopReason::BudgetReached => "BUDGET_REACHED",
-                SuccessfulStopReason::ModelConverged => "MODEL_CONVERGED",
+                Self::Unspecified => "SUCCESSFUL_STOP_REASON_UNSPECIFIED",
+                Self::BudgetReached => "BUDGET_REACHED",
+                Self::ModelConverged => "MODEL_CONVERGED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -910,11 +910,11 @@ pub mod auto_ml_video_action_recognition_inputs {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ModelType::Unspecified => "MODEL_TYPE_UNSPECIFIED",
-                ModelType::Cloud => "CLOUD",
-                ModelType::MobileVersatile1 => "MOBILE_VERSATILE_1",
-                ModelType::MobileJetsonVersatile1 => "MOBILE_JETSON_VERSATILE_1",
-                ModelType::MobileCoralVersatile1 => "MOBILE_CORAL_VERSATILE_1",
+                Self::Unspecified => "MODEL_TYPE_UNSPECIFIED",
+                Self::Cloud => "CLOUD",
+                Self::MobileVersatile1 => "MOBILE_VERSATILE_1",
+                Self::MobileJetsonVersatile1 => "MOBILE_JETSON_VERSATILE_1",
+                Self::MobileCoralVersatile1 => "MOBILE_CORAL_VERSATILE_1",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -978,10 +978,10 @@ pub mod auto_ml_video_classification_inputs {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ModelType::Unspecified => "MODEL_TYPE_UNSPECIFIED",
-                ModelType::Cloud => "CLOUD",
-                ModelType::MobileVersatile1 => "MOBILE_VERSATILE_1",
-                ModelType::MobileJetsonVersatile1 => "MOBILE_JETSON_VERSATILE_1",
+                Self::Unspecified => "MODEL_TYPE_UNSPECIFIED",
+                Self::Cloud => "CLOUD",
+                Self::MobileVersatile1 => "MOBILE_VERSATILE_1",
+                Self::MobileJetsonVersatile1 => "MOBILE_JETSON_VERSATILE_1",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1052,13 +1052,13 @@ pub mod auto_ml_video_object_tracking_inputs {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ModelType::Unspecified => "MODEL_TYPE_UNSPECIFIED",
-                ModelType::Cloud => "CLOUD",
-                ModelType::MobileVersatile1 => "MOBILE_VERSATILE_1",
-                ModelType::MobileCoralVersatile1 => "MOBILE_CORAL_VERSATILE_1",
-                ModelType::MobileCoralLowLatency1 => "MOBILE_CORAL_LOW_LATENCY_1",
-                ModelType::MobileJetsonVersatile1 => "MOBILE_JETSON_VERSATILE_1",
-                ModelType::MobileJetsonLowLatency1 => "MOBILE_JETSON_LOW_LATENCY_1",
+                Self::Unspecified => "MODEL_TYPE_UNSPECIFIED",
+                Self::Cloud => "CLOUD",
+                Self::MobileVersatile1 => "MOBILE_VERSATILE_1",
+                Self::MobileCoralVersatile1 => "MOBILE_CORAL_VERSATILE_1",
+                Self::MobileCoralLowLatency1 => "MOBILE_CORAL_LOW_LATENCY_1",
+                Self::MobileJetsonVersatile1 => "MOBILE_JETSON_VERSATILE_1",
+                Self::MobileJetsonLowLatency1 => "MOBILE_JETSON_LOW_LATENCY_1",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

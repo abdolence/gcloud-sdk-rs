@@ -363,8 +363,8 @@ impl AnnotationSource {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            AnnotationSource::Unspecified => "ANNOTATION_SOURCE_UNSPECIFIED",
-            AnnotationSource::Operator => "OPERATOR",
+            Self::Unspecified => "ANNOTATION_SOURCE_UNSPECIFIED",
+            Self::Operator => "OPERATOR",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -392,9 +392,9 @@ impl AnnotationSentiment {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            AnnotationSentiment::Unspecified => "ANNOTATION_SENTIMENT_UNSPECIFIED",
-            AnnotationSentiment::Negative => "NEGATIVE",
-            AnnotationSentiment::Positive => "POSITIVE",
+            Self::Unspecified => "ANNOTATION_SENTIMENT_UNSPECIFIED",
+            Self::Negative => "NEGATIVE",
+            Self::Positive => "POSITIVE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -447,40 +447,24 @@ impl AnnotationType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            AnnotationType::Unspecified => "ANNOTATION_TYPE_UNSPECIFIED",
-            AnnotationType::ImageClassificationAnnotation => {
-                "IMAGE_CLASSIFICATION_ANNOTATION"
-            }
-            AnnotationType::ImageBoundingBoxAnnotation => "IMAGE_BOUNDING_BOX_ANNOTATION",
-            AnnotationType::ImageOrientedBoundingBoxAnnotation => {
+            Self::Unspecified => "ANNOTATION_TYPE_UNSPECIFIED",
+            Self::ImageClassificationAnnotation => "IMAGE_CLASSIFICATION_ANNOTATION",
+            Self::ImageBoundingBoxAnnotation => "IMAGE_BOUNDING_BOX_ANNOTATION",
+            Self::ImageOrientedBoundingBoxAnnotation => {
                 "IMAGE_ORIENTED_BOUNDING_BOX_ANNOTATION"
             }
-            AnnotationType::ImageBoundingPolyAnnotation => {
-                "IMAGE_BOUNDING_POLY_ANNOTATION"
-            }
-            AnnotationType::ImagePolylineAnnotation => "IMAGE_POLYLINE_ANNOTATION",
-            AnnotationType::ImageSegmentationAnnotation => {
-                "IMAGE_SEGMENTATION_ANNOTATION"
-            }
-            AnnotationType::VideoShotsClassificationAnnotation => {
+            Self::ImageBoundingPolyAnnotation => "IMAGE_BOUNDING_POLY_ANNOTATION",
+            Self::ImagePolylineAnnotation => "IMAGE_POLYLINE_ANNOTATION",
+            Self::ImageSegmentationAnnotation => "IMAGE_SEGMENTATION_ANNOTATION",
+            Self::VideoShotsClassificationAnnotation => {
                 "VIDEO_SHOTS_CLASSIFICATION_ANNOTATION"
             }
-            AnnotationType::VideoObjectTrackingAnnotation => {
-                "VIDEO_OBJECT_TRACKING_ANNOTATION"
-            }
-            AnnotationType::VideoObjectDetectionAnnotation => {
-                "VIDEO_OBJECT_DETECTION_ANNOTATION"
-            }
-            AnnotationType::VideoEventAnnotation => "VIDEO_EVENT_ANNOTATION",
-            AnnotationType::TextClassificationAnnotation => {
-                "TEXT_CLASSIFICATION_ANNOTATION"
-            }
-            AnnotationType::TextEntityExtractionAnnotation => {
-                "TEXT_ENTITY_EXTRACTION_ANNOTATION"
-            }
-            AnnotationType::GeneralClassificationAnnotation => {
-                "GENERAL_CLASSIFICATION_ANNOTATION"
-            }
+            Self::VideoObjectTrackingAnnotation => "VIDEO_OBJECT_TRACKING_ANNOTATION",
+            Self::VideoObjectDetectionAnnotation => "VIDEO_OBJECT_DETECTION_ANNOTATION",
+            Self::VideoEventAnnotation => "VIDEO_EVENT_ANNOTATION",
+            Self::TextClassificationAnnotation => "TEXT_CLASSIFICATION_ANNOTATION",
+            Self::TextEntityExtractionAnnotation => "TEXT_ENTITY_EXTRACTION_ANNOTATION",
+            Self::GeneralClassificationAnnotation => "GENERAL_CLASSIFICATION_ANNOTATION",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -777,10 +761,10 @@ impl StringAggregationType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            StringAggregationType::Unspecified => "STRING_AGGREGATION_TYPE_UNSPECIFIED",
-            StringAggregationType::MajorityVote => "MAJORITY_VOTE",
-            StringAggregationType::UnanimousVote => "UNANIMOUS_VOTE",
-            StringAggregationType::NoAggregation => "NO_AGGREGATION",
+            Self::Unspecified => "STRING_AGGREGATION_TYPE_UNSPECIFIED",
+            Self::MajorityVote => "MAJORITY_VOTE",
+            Self::UnanimousVote => "UNANIMOUS_VOTE",
+            Self::NoAggregation => "NO_AGGREGATION",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1151,11 +1135,11 @@ impl DataType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DataType::Unspecified => "DATA_TYPE_UNSPECIFIED",
-            DataType::Image => "IMAGE",
-            DataType::Video => "VIDEO",
-            DataType::Text => "TEXT",
-            DataType::GeneralData => "GENERAL_DATA",
+            Self::Unspecified => "DATA_TYPE_UNSPECIFIED",
+            Self::Image => "IMAGE",
+            Self::Video => "VIDEO",
+            Self::Text => "TEXT",
+            Self::GeneralData => "GENERAL_DATA",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1508,11 +1492,11 @@ pub mod evaluation_job {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Scheduled => "SCHEDULED",
-                State::Running => "RUNNING",
-                State::Paused => "PAUSED",
-                State::Stopped => "STOPPED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Scheduled => "SCHEDULED",
+                Self::Running => "RUNNING",
+                Self::Paused => "PAUSED",
+                Self::Stopped => "STOPPED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1973,13 +1957,13 @@ pub mod label_image_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Feature::Unspecified => "FEATURE_UNSPECIFIED",
-                Feature::Classification => "CLASSIFICATION",
-                Feature::BoundingBox => "BOUNDING_BOX",
-                Feature::OrientedBoundingBox => "ORIENTED_BOUNDING_BOX",
-                Feature::BoundingPoly => "BOUNDING_POLY",
-                Feature::Polyline => "POLYLINE",
-                Feature::Segmentation => "SEGMENTATION",
+                Self::Unspecified => "FEATURE_UNSPECIFIED",
+                Self::Classification => "CLASSIFICATION",
+                Self::BoundingBox => "BOUNDING_BOX",
+                Self::OrientedBoundingBox => "ORIENTED_BOUNDING_BOX",
+                Self::BoundingPoly => "BOUNDING_POLY",
+                Self::Polyline => "POLYLINE",
+                Self::Segmentation => "SEGMENTATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2073,11 +2057,11 @@ pub mod label_video_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Feature::Unspecified => "FEATURE_UNSPECIFIED",
-                Feature::Classification => "CLASSIFICATION",
-                Feature::ObjectDetection => "OBJECT_DETECTION",
-                Feature::ObjectTracking => "OBJECT_TRACKING",
-                Feature::Event => "EVENT",
+                Self::Unspecified => "FEATURE_UNSPECIFIED",
+                Self::Classification => "CLASSIFICATION",
+                Self::ObjectDetection => "OBJECT_DETECTION",
+                Self::ObjectTracking => "OBJECT_TRACKING",
+                Self::Event => "EVENT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2165,9 +2149,9 @@ pub mod label_text_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Feature::Unspecified => "FEATURE_UNSPECIFIED",
-                Feature::TextClassification => "TEXT_CLASSIFICATION",
-                Feature::TextEntityExtraction => "TEXT_ENTITY_EXTRACTION",
+                Self::Unspecified => "FEATURE_UNSPECIFIED",
+                Self::TextClassification => "TEXT_CLASSIFICATION",
+                Self::TextEntityExtraction => "TEXT_ENTITY_EXTRACTION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2592,7 +2576,13 @@ pub struct ListEvaluationJobsResponse {
 }
 /// Generated client implementations.
 pub mod data_labeling_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for the AI Platform Data Labeling API.
@@ -2685,8 +2675,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2713,8 +2702,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2744,8 +2732,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2772,8 +2759,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2807,8 +2793,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2838,8 +2823,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2867,8 +2851,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2899,8 +2882,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2930,8 +2912,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2961,8 +2942,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2989,8 +2969,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3021,8 +3000,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3053,8 +3031,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3085,8 +3062,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3113,8 +3089,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3144,8 +3119,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3175,8 +3149,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3206,8 +3179,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3237,8 +3209,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3265,8 +3236,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3296,8 +3266,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3324,8 +3293,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3355,8 +3323,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3383,8 +3350,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3412,8 +3378,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3443,8 +3408,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3476,8 +3440,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3504,8 +3467,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3537,8 +3499,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3565,8 +3526,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3594,8 +3554,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3623,8 +3582,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3651,8 +3609,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3683,8 +3640,7 @@ pub mod data_labeling_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

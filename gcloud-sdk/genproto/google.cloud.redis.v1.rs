@@ -259,15 +259,15 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Ready => "READY",
-                State::Updating => "UPDATING",
-                State::Deleting => "DELETING",
-                State::Repairing => "REPAIRING",
-                State::Maintenance => "MAINTENANCE",
-                State::Importing => "IMPORTING",
-                State::FailingOver => "FAILING_OVER",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Ready => "READY",
+                Self::Updating => "UPDATING",
+                Self::Deleting => "DELETING",
+                Self::Repairing => "REPAIRING",
+                Self::Maintenance => "MAINTENANCE",
+                Self::Importing => "IMPORTING",
+                Self::FailingOver => "FAILING_OVER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -314,9 +314,9 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Tier::Unspecified => "TIER_UNSPECIFIED",
-                Tier::Basic => "BASIC",
-                Tier::StandardHa => "STANDARD_HA",
+                Self::Unspecified => "TIER_UNSPECIFIED",
+                Self::Basic => "BASIC",
+                Self::StandardHa => "STANDARD_HA",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -359,9 +359,9 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ConnectMode::Unspecified => "CONNECT_MODE_UNSPECIFIED",
-                ConnectMode::DirectPeering => "DIRECT_PEERING",
-                ConnectMode::PrivateServiceAccess => "PRIVATE_SERVICE_ACCESS",
+                Self::Unspecified => "CONNECT_MODE_UNSPECIFIED",
+                Self::DirectPeering => "DIRECT_PEERING",
+                Self::PrivateServiceAccess => "PRIVATE_SERVICE_ACCESS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -402,11 +402,9 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TransitEncryptionMode::Unspecified => {
-                    "TRANSIT_ENCRYPTION_MODE_UNSPECIFIED"
-                }
-                TransitEncryptionMode::ServerAuthentication => "SERVER_AUTHENTICATION",
-                TransitEncryptionMode::Disabled => "DISABLED",
+                Self::Unspecified => "TRANSIT_ENCRYPTION_MODE_UNSPECIFIED",
+                Self::ServerAuthentication => "SERVER_AUTHENTICATION",
+                Self::Disabled => "DISABLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -450,9 +448,9 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ReadReplicasMode::Unspecified => "READ_REPLICAS_MODE_UNSPECIFIED",
-                ReadReplicasMode::ReadReplicasDisabled => "READ_REPLICAS_DISABLED",
-                ReadReplicasMode::ReadReplicasEnabled => "READ_REPLICAS_ENABLED",
+                Self::Unspecified => "READ_REPLICAS_MODE_UNSPECIFIED",
+                Self::ReadReplicasDisabled => "READ_REPLICAS_DISABLED",
+                Self::ReadReplicasEnabled => "READ_REPLICAS_ENABLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -491,8 +489,8 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SuspensionReason::Unspecified => "SUSPENSION_REASON_UNSPECIFIED",
-                SuspensionReason::CustomerManagedKeyIssue => "CUSTOMER_MANAGED_KEY_ISSUE",
+                Self::Unspecified => "SUSPENSION_REASON_UNSPECIFIED",
+                Self::CustomerManagedKeyIssue => "CUSTOMER_MANAGED_KEY_ISSUE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -560,9 +558,9 @@ pub mod persistence_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PersistenceMode::Unspecified => "PERSISTENCE_MODE_UNSPECIFIED",
-                PersistenceMode::Disabled => "DISABLED",
-                PersistenceMode::Rdb => "RDB",
+                Self::Unspecified => "PERSISTENCE_MODE_UNSPECIFIED",
+                Self::Disabled => "DISABLED",
+                Self::Rdb => "RDB",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -607,11 +605,11 @@ pub mod persistence_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SnapshotPeriod::Unspecified => "SNAPSHOT_PERIOD_UNSPECIFIED",
-                SnapshotPeriod::OneHour => "ONE_HOUR",
-                SnapshotPeriod::SixHours => "SIX_HOURS",
-                SnapshotPeriod::TwelveHours => "TWELVE_HOURS",
-                SnapshotPeriod::TwentyFourHours => "TWENTY_FOUR_HOURS",
+                Self::Unspecified => "SNAPSHOT_PERIOD_UNSPECIFIED",
+                Self::OneHour => "ONE_HOUR",
+                Self::SixHours => "SIX_HOURS",
+                Self::TwelveHours => "TWELVE_HOURS",
+                Self::TwentyFourHours => "TWENTY_FOUR_HOURS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -679,10 +677,10 @@ pub mod reschedule_maintenance_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RescheduleType::Unspecified => "RESCHEDULE_TYPE_UNSPECIFIED",
-                RescheduleType::Immediate => "IMMEDIATE",
-                RescheduleType::NextAvailableWindow => "NEXT_AVAILABLE_WINDOW",
-                RescheduleType::SpecificTime => "SPECIFIC_TIME",
+                Self::Unspecified => "RESCHEDULE_TYPE_UNSPECIFIED",
+                Self::Immediate => "IMMEDIATE",
+                Self::NextAvailableWindow => "NEXT_AVAILABLE_WINDOW",
+                Self::SpecificTime => "SPECIFIC_TIME",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1011,9 +1009,9 @@ pub mod failover_instance_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DataProtectionMode::Unspecified => "DATA_PROTECTION_MODE_UNSPECIFIED",
-                DataProtectionMode::LimitedDataLoss => "LIMITED_DATA_LOSS",
-                DataProtectionMode::ForceDataLoss => "FORCE_DATA_LOSS",
+                Self::Unspecified => "DATA_PROTECTION_MODE_UNSPECIFIED",
+                Self::LimitedDataLoss => "LIMITED_DATA_LOSS",
+                Self::ForceDataLoss => "FORCE_DATA_LOSS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1097,7 +1095,13 @@ pub struct TlsCertificate {
 }
 /// Generated client implementations.
 pub mod cloud_redis_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Configures and manages Cloud Memorystore for Redis instances
@@ -1215,8 +1219,7 @@ pub mod cloud_redis_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1240,8 +1243,7 @@ pub mod cloud_redis_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1270,8 +1272,7 @@ pub mod cloud_redis_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1312,8 +1313,7 @@ pub mod cloud_redis_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1344,8 +1344,7 @@ pub mod cloud_redis_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1373,8 +1372,7 @@ pub mod cloud_redis_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1411,8 +1409,7 @@ pub mod cloud_redis_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1444,8 +1441,7 @@ pub mod cloud_redis_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1473,8 +1469,7 @@ pub mod cloud_redis_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1505,8 +1500,7 @@ pub mod cloud_redis_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1534,8 +1528,7 @@ pub mod cloud_redis_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

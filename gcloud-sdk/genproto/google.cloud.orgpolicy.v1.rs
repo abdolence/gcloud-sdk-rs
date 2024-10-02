@@ -230,9 +230,9 @@ pub mod policy {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    AllValues::Unspecified => "ALL_VALUES_UNSPECIFIED",
-                    AllValues::Allow => "ALLOW",
-                    AllValues::Deny => "DENY",
+                    Self::Unspecified => "ALL_VALUES_UNSPECIFIED",
+                    Self::Allow => "ALLOW",
+                    Self::Deny => "DENY",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.

@@ -129,14 +129,14 @@ pub mod service {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Active => "ACTIVE",
-                State::Suspending => "SUSPENDING",
-                State::Suspended => "SUSPENDED",
-                State::Updating => "UPDATING",
-                State::Deleting => "DELETING",
-                State::Error => "ERROR",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Active => "ACTIVE",
+                Self::Suspending => "SUSPENDING",
+                Self::Suspended => "SUSPENDED",
+                Self::Updating => "UPDATING",
+                Self::Deleting => "DELETING",
+                Self::Error => "ERROR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -184,9 +184,9 @@ pub mod service {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Tier::Unspecified => "TIER_UNSPECIFIED",
-                Tier::Developer => "DEVELOPER",
-                Tier::Enterprise => "ENTERPRISE",
+                Self::Unspecified => "TIER_UNSPECIFIED",
+                Self::Developer => "DEVELOPER",
+                Self::Enterprise => "ENTERPRISE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -232,9 +232,9 @@ pub mod service {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ReleaseChannel::Unspecified => "RELEASE_CHANNEL_UNSPECIFIED",
-                ReleaseChannel::Canary => "CANARY",
-                ReleaseChannel::Stable => "STABLE",
+                Self::Unspecified => "RELEASE_CHANNEL_UNSPECIFIED",
+                Self::Canary => "CANARY",
+                Self::Stable => "STABLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -275,9 +275,9 @@ pub mod service {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DatabaseType::Unspecified => "DATABASE_TYPE_UNSPECIFIED",
-                DatabaseType::Mysql => "MYSQL",
-                DatabaseType::Spanner => "SPANNER",
+                Self::Unspecified => "DATABASE_TYPE_UNSPECIFIED",
+                Self::Mysql => "MYSQL",
+                Self::Spanner => "SPANNER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -383,9 +383,9 @@ pub mod hive_metastore_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                EndpointProtocol::Unspecified => "ENDPOINT_PROTOCOL_UNSPECIFIED",
-                EndpointProtocol::Thrift => "THRIFT",
-                EndpointProtocol::Grpc => "GRPC",
+                Self::Unspecified => "ENDPOINT_PROTOCOL_UNSPECIFIED",
+                Self::Thrift => "THRIFT",
+                Self::Grpc => "GRPC",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -548,9 +548,9 @@ pub mod telemetry_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                LogFormat::Unspecified => "LOG_FORMAT_UNSPECIFIED",
-                LogFormat::Legacy => "LEGACY",
-                LogFormat::Json => "JSON",
+                Self::Unspecified => "LOG_FORMAT_UNSPECIFIED",
+                Self::Legacy => "LEGACY",
+                Self::Json => "JSON",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -652,8 +652,8 @@ pub mod metadata_import {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    DatabaseType::Unspecified => "DATABASE_TYPE_UNSPECIFIED",
-                    DatabaseType::Mysql => "MYSQL",
+                    Self::Unspecified => "DATABASE_TYPE_UNSPECIFIED",
+                    Self::Mysql => "MYSQL",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -699,11 +699,11 @@ pub mod metadata_import {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Running => "RUNNING",
-                State::Succeeded => "SUCCEEDED",
-                State::Updating => "UPDATING",
-                State::Failed => "FAILED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Running => "RUNNING",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Updating => "UPDATING",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -778,11 +778,11 @@ pub mod metadata_export {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Running => "RUNNING",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
-                State::Cancelled => "CANCELLED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Running => "RUNNING",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::Cancelled => "CANCELLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -870,12 +870,12 @@ pub mod backup {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Deleting => "DELETING",
-                State::Active => "ACTIVE",
-                State::Failed => "FAILED",
-                State::Restoring => "RESTORING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Deleting => "DELETING",
+                Self::Active => "ACTIVE",
+                Self::Failed => "FAILED",
+                Self::Restoring => "RESTORING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -952,11 +952,11 @@ pub mod restore {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Running => "RUNNING",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
-                State::Cancelled => "CANCELLED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Running => "RUNNING",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::Cancelled => "CANCELLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -999,9 +999,9 @@ pub mod restore {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RestoreType::Unspecified => "RESTORE_TYPE_UNSPECIFIED",
-                RestoreType::Full => "FULL",
-                RestoreType::MetadataOnly => "METADATA_ONLY",
+                Self::Unspecified => "RESTORE_TYPE_UNSPECIFIED",
+                Self::Full => "FULL",
+                Self::MetadataOnly => "METADATA_ONLY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1059,12 +1059,12 @@ pub mod scaling_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                InstanceSize::Unspecified => "INSTANCE_SIZE_UNSPECIFIED",
-                InstanceSize::ExtraSmall => "EXTRA_SMALL",
-                InstanceSize::Small => "SMALL",
-                InstanceSize::Medium => "MEDIUM",
-                InstanceSize::Large => "LARGE",
-                InstanceSize::ExtraLarge => "EXTRA_LARGE",
+                Self::Unspecified => "INSTANCE_SIZE_UNSPECIFIED",
+                Self::ExtraSmall => "EXTRA_SMALL",
+                Self::Small => "SMALL",
+                Self::Medium => "MEDIUM",
+                Self::Large => "LARGE",
+                Self::ExtraLarge => "EXTRA_LARGE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1669,9 +1669,9 @@ pub mod database_dump_spec {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::Mysql => "MYSQL",
-                Type::Avro => "AVRO",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Mysql => "MYSQL",
+                Self::Avro => "AVRO",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1778,7 +1778,13 @@ pub struct AlterMetadataResourceLocationRequest {
 pub struct AlterMetadataResourceLocationResponse {}
 /// Generated client implementations.
 pub mod dataproc_metastore_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Configures and manages metastore services.
@@ -1890,8 +1896,7 @@ pub mod dataproc_metastore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1918,8 +1923,7 @@ pub mod dataproc_metastore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1949,8 +1953,7 @@ pub mod dataproc_metastore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1980,8 +1983,7 @@ pub mod dataproc_metastore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2011,8 +2013,7 @@ pub mod dataproc_metastore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2042,8 +2043,7 @@ pub mod dataproc_metastore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2070,8 +2070,7 @@ pub mod dataproc_metastore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2101,8 +2100,7 @@ pub mod dataproc_metastore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2133,8 +2131,7 @@ pub mod dataproc_metastore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2164,8 +2161,7 @@ pub mod dataproc_metastore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2195,8 +2191,7 @@ pub mod dataproc_metastore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2226,8 +2221,7 @@ pub mod dataproc_metastore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2254,8 +2248,7 @@ pub mod dataproc_metastore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2285,8 +2278,7 @@ pub mod dataproc_metastore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2316,8 +2308,7 @@ pub mod dataproc_metastore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2347,8 +2338,7 @@ pub mod dataproc_metastore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2378,8 +2368,7 @@ pub mod dataproc_metastore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2412,8 +2401,7 @@ pub mod dataproc_metastore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2518,12 +2506,12 @@ pub mod federation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Active => "ACTIVE",
-                State::Updating => "UPDATING",
-                State::Deleting => "DELETING",
-                State::Error => "ERROR",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Active => "ACTIVE",
+                Self::Updating => "UPDATING",
+                Self::Deleting => "DELETING",
+                Self::Error => "ERROR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2587,9 +2575,9 @@ pub mod backend_metastore {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MetastoreType::Unspecified => "METASTORE_TYPE_UNSPECIFIED",
-                MetastoreType::Bigquery => "BIGQUERY",
-                MetastoreType::DataprocMetastore => "DATAPROC_METASTORE",
+                Self::Unspecified => "METASTORE_TYPE_UNSPECIFIED",
+                Self::Bigquery => "BIGQUERY",
+                Self::DataprocMetastore => "DATAPROC_METASTORE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2754,7 +2742,13 @@ pub struct DeleteFederationRequest {
 }
 /// Generated client implementations.
 pub mod dataproc_metastore_federation_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Configures and manages metastore federation services.
@@ -2864,8 +2858,7 @@ pub mod dataproc_metastore_federation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2892,8 +2885,7 @@ pub mod dataproc_metastore_federation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2923,8 +2915,7 @@ pub mod dataproc_metastore_federation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2954,8 +2945,7 @@ pub mod dataproc_metastore_federation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2985,8 +2975,7 @@ pub mod dataproc_metastore_federation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

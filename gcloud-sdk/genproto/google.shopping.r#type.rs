@@ -44,9 +44,9 @@ pub mod weight {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                WeightUnit::Unspecified => "WEIGHT_UNIT_UNSPECIFIED",
-                WeightUnit::Pound => "POUND",
-                WeightUnit::Kilogram => "KILOGRAM",
+                Self::Unspecified => "WEIGHT_UNIT_UNSPECIFIED",
+                Self::Pound => "POUND",
+                Self::Kilogram => "KILOGRAM",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -136,13 +136,13 @@ pub mod destination {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DestinationEnum::Unspecified => "DESTINATION_ENUM_UNSPECIFIED",
-                DestinationEnum::ShoppingAds => "SHOPPING_ADS",
-                DestinationEnum::DisplayAds => "DISPLAY_ADS",
-                DestinationEnum::LocalInventoryAds => "LOCAL_INVENTORY_ADS",
-                DestinationEnum::FreeListings => "FREE_LISTINGS",
-                DestinationEnum::FreeLocalListings => "FREE_LOCAL_LISTINGS",
-                DestinationEnum::YoutubeShopping => "YOUTUBE_SHOPPING",
+                Self::Unspecified => "DESTINATION_ENUM_UNSPECIFIED",
+                Self::ShoppingAds => "SHOPPING_ADS",
+                Self::DisplayAds => "DISPLAY_ADS",
+                Self::LocalInventoryAds => "LOCAL_INVENTORY_ADS",
+                Self::FreeListings => "FREE_LISTINGS",
+                Self::FreeLocalListings => "FREE_LOCAL_LISTINGS",
+                Self::YoutubeShopping => "YOUTUBE_SHOPPING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -233,25 +233,21 @@ pub mod reporting_context {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ReportingContextEnum::Unspecified => "REPORTING_CONTEXT_ENUM_UNSPECIFIED",
-                ReportingContextEnum::ShoppingAds => "SHOPPING_ADS",
-                ReportingContextEnum::DiscoveryAds => "DISCOVERY_ADS",
-                ReportingContextEnum::DemandGenAds => "DEMAND_GEN_ADS",
-                ReportingContextEnum::DemandGenAdsDiscoverSurface => {
-                    "DEMAND_GEN_ADS_DISCOVER_SURFACE"
-                }
-                ReportingContextEnum::VideoAds => "VIDEO_ADS",
-                ReportingContextEnum::DisplayAds => "DISPLAY_ADS",
-                ReportingContextEnum::LocalInventoryAds => "LOCAL_INVENTORY_ADS",
-                ReportingContextEnum::VehicleInventoryAds => "VEHICLE_INVENTORY_ADS",
-                ReportingContextEnum::FreeListings => "FREE_LISTINGS",
-                ReportingContextEnum::FreeLocalListings => "FREE_LOCAL_LISTINGS",
-                ReportingContextEnum::FreeLocalVehicleListings => {
-                    "FREE_LOCAL_VEHICLE_LISTINGS"
-                }
-                ReportingContextEnum::YoutubeShopping => "YOUTUBE_SHOPPING",
-                ReportingContextEnum::CloudRetail => "CLOUD_RETAIL",
-                ReportingContextEnum::LocalCloudRetail => "LOCAL_CLOUD_RETAIL",
+                Self::Unspecified => "REPORTING_CONTEXT_ENUM_UNSPECIFIED",
+                Self::ShoppingAds => "SHOPPING_ADS",
+                Self::DiscoveryAds => "DISCOVERY_ADS",
+                Self::DemandGenAds => "DEMAND_GEN_ADS",
+                Self::DemandGenAdsDiscoverSurface => "DEMAND_GEN_ADS_DISCOVER_SURFACE",
+                Self::VideoAds => "VIDEO_ADS",
+                Self::DisplayAds => "DISPLAY_ADS",
+                Self::LocalInventoryAds => "LOCAL_INVENTORY_ADS",
+                Self::VehicleInventoryAds => "VEHICLE_INVENTORY_ADS",
+                Self::FreeListings => "FREE_LISTINGS",
+                Self::FreeLocalListings => "FREE_LOCAL_LISTINGS",
+                Self::FreeLocalVehicleListings => "FREE_LOCAL_VEHICLE_LISTINGS",
+                Self::YoutubeShopping => "YOUTUBE_SHOPPING",
+                Self::CloudRetail => "CLOUD_RETAIL",
+                Self::LocalCloudRetail => "LOCAL_CLOUD_RETAIL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -314,9 +310,9 @@ pub mod channel {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ChannelEnum::Unspecified => "CHANNEL_ENUM_UNSPECIFIED",
-                ChannelEnum::Online => "ONLINE",
-                ChannelEnum::Local => "LOCAL",
+                Self::Unspecified => "CHANNEL_ENUM_UNSPECIFIED",
+                Self::Online => "ONLINE",
+                Self::Local => "LOCAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

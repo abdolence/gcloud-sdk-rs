@@ -192,11 +192,11 @@ impl ResolutionStatus {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ResolutionStatus::Unspecified => "RESOLUTION_STATUS_UNSPECIFIED",
-            ResolutionStatus::Open => "OPEN",
-            ResolutionStatus::Acknowledged => "ACKNOWLEDGED",
-            ResolutionStatus::Resolved => "RESOLVED",
-            ResolutionStatus::Muted => "MUTED",
+            Self::Unspecified => "RESOLUTION_STATUS_UNSPECIFIED",
+            Self::Open => "OPEN",
+            Self::Acknowledged => "ACKNOWLEDGED",
+            Self::Resolved => "RESOLVED",
+            Self::Muted => "MUTED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -245,7 +245,13 @@ pub struct UpdateGroupRequest {
 }
 /// Generated client implementations.
 pub mod error_group_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for retrieving and updating individual error groups.
@@ -338,8 +344,7 @@ pub mod error_group_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -367,8 +372,7 @@ pub mod error_group_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -675,12 +679,12 @@ pub mod query_time_range {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Period::Unspecified => "PERIOD_UNSPECIFIED",
-                Period::Period1Hour => "PERIOD_1_HOUR",
-                Period::Period6Hours => "PERIOD_6_HOURS",
-                Period::Period1Day => "PERIOD_1_DAY",
-                Period::Period1Week => "PERIOD_1_WEEK",
-                Period::Period30Days => "PERIOD_30_DAYS",
+                Self::Unspecified => "PERIOD_UNSPECIFIED",
+                Self::Period1Hour => "PERIOD_1_HOUR",
+                Self::Period6Hours => "PERIOD_6_HOURS",
+                Self::Period1Day => "PERIOD_1_DAY",
+                Self::Period1Week => "PERIOD_1_WEEK",
+                Self::Period30Days => "PERIOD_30_DAYS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -770,11 +774,9 @@ impl TimedCountAlignment {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            TimedCountAlignment::ErrorCountAlignmentUnspecified => {
-                "ERROR_COUNT_ALIGNMENT_UNSPECIFIED"
-            }
-            TimedCountAlignment::AlignmentEqualRounded => "ALIGNMENT_EQUAL_ROUNDED",
-            TimedCountAlignment::AlignmentEqualAtEnd => "ALIGNMENT_EQUAL_AT_END",
+            Self::ErrorCountAlignmentUnspecified => "ERROR_COUNT_ALIGNMENT_UNSPECIFIED",
+            Self::AlignmentEqualRounded => "ALIGNMENT_EQUAL_ROUNDED",
+            Self::AlignmentEqualAtEnd => "ALIGNMENT_EQUAL_AT_END",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -812,11 +814,11 @@ impl ErrorGroupOrder {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ErrorGroupOrder::GroupOrderUnspecified => "GROUP_ORDER_UNSPECIFIED",
-            ErrorGroupOrder::CountDesc => "COUNT_DESC",
-            ErrorGroupOrder::LastSeenDesc => "LAST_SEEN_DESC",
-            ErrorGroupOrder::CreatedDesc => "CREATED_DESC",
-            ErrorGroupOrder::AffectedUsersDesc => "AFFECTED_USERS_DESC",
+            Self::GroupOrderUnspecified => "GROUP_ORDER_UNSPECIFIED",
+            Self::CountDesc => "COUNT_DESC",
+            Self::LastSeenDesc => "LAST_SEEN_DESC",
+            Self::CreatedDesc => "CREATED_DESC",
+            Self::AffectedUsersDesc => "AFFECTED_USERS_DESC",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -833,7 +835,13 @@ impl ErrorGroupOrder {
 }
 /// Generated client implementations.
 pub mod error_stats_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// An API for retrieving and managing error statistics as well as data for
@@ -930,8 +938,7 @@ pub mod error_stats_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -961,8 +968,7 @@ pub mod error_stats_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -992,8 +998,7 @@ pub mod error_stats_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1079,7 +1084,13 @@ pub struct ReportedErrorEvent {
 }
 /// Generated client implementations.
 pub mod report_errors_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// An API for reporting error events.
@@ -1194,8 +1205,7 @@ pub mod report_errors_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

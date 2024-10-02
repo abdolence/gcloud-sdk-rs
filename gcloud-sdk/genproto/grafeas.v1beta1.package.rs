@@ -120,10 +120,10 @@ pub mod version {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                VersionKind::Unspecified => "VERSION_KIND_UNSPECIFIED",
-                VersionKind::Normal => "NORMAL",
-                VersionKind::Minimum => "MINIMUM",
-                VersionKind::Maximum => "MAXIMUM",
+                Self::Unspecified => "VERSION_KIND_UNSPECIFIED",
+                Self::Normal => "NORMAL",
+                Self::Minimum => "MINIMUM",
+                Self::Maximum => "MAXIMUM",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -156,9 +156,9 @@ impl Architecture {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            Architecture::Unspecified => "ARCHITECTURE_UNSPECIFIED",
-            Architecture::X86 => "X86",
-            Architecture::X64 => "X64",
+            Self::Unspecified => "ARCHITECTURE_UNSPECIFIED",
+            Self::X86 => "X86",
+            Self::X64 => "X64",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.

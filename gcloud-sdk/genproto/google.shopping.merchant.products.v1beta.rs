@@ -818,10 +818,10 @@ pub mod product_status {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Severity::Unspecified => "SEVERITY_UNSPECIFIED",
-                    Severity::NotImpacted => "NOT_IMPACTED",
-                    Severity::Demoted => "DEMOTED",
-                    Severity::Disapproved => "DISAPPROVED",
+                    Self::Unspecified => "SEVERITY_UNSPECIFIED",
+                    Self::NotImpacted => "NOT_IMPACTED",
+                    Self::Demoted => "DEMOTED",
+                    Self::Disapproved => "DISAPPROVED",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -898,9 +898,9 @@ impl SubscriptionPeriod {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SubscriptionPeriod::Unspecified => "SUBSCRIPTION_PERIOD_UNSPECIFIED",
-            SubscriptionPeriod::Month => "MONTH",
-            SubscriptionPeriod::Year => "YEAR",
+            Self::Unspecified => "SUBSCRIPTION_PERIOD_UNSPECIFIED",
+            Self::Month => "MONTH",
+            Self::Year => "YEAR",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1038,7 +1038,13 @@ pub struct DeleteProductInputRequest {
 }
 /// Generated client implementations.
 pub mod product_inputs_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service to use ProductInput resource.
@@ -1137,8 +1143,7 @@ pub mod product_inputs_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1168,8 +1173,7 @@ pub mod product_inputs_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1312,7 +1316,13 @@ pub struct ListProductsResponse {
 }
 /// Generated client implementations.
 pub mod products_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service to use Product resource.
@@ -1409,8 +1419,7 @@ pub mod products_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1445,8 +1454,7 @@ pub mod products_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

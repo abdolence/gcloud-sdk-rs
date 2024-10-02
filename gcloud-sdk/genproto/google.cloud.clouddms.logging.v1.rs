@@ -119,22 +119,22 @@ pub mod logged_migration_job {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Maintenance => "MAINTENANCE",
-                State::Draft => "DRAFT",
-                State::Creating => "CREATING",
-                State::NotStarted => "NOT_STARTED",
-                State::Running => "RUNNING",
-                State::Failed => "FAILED",
-                State::Completed => "COMPLETED",
-                State::Deleting => "DELETING",
-                State::Stopping => "STOPPING",
-                State::Stopped => "STOPPED",
-                State::Deleted => "DELETED",
-                State::Updating => "UPDATING",
-                State::Starting => "STARTING",
-                State::Restarting => "RESTARTING",
-                State::Resuming => "RESUMING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Maintenance => "MAINTENANCE",
+                Self::Draft => "DRAFT",
+                Self::Creating => "CREATING",
+                Self::NotStarted => "NOT_STARTED",
+                Self::Running => "RUNNING",
+                Self::Failed => "FAILED",
+                Self::Completed => "COMPLETED",
+                Self::Deleting => "DELETING",
+                Self::Stopping => "STOPPING",
+                Self::Stopped => "STOPPED",
+                Self::Deleted => "DELETED",
+                Self::Updating => "UPDATING",
+                Self::Starting => "STARTING",
+                Self::Restarting => "RESTARTING",
+                Self::Resuming => "RESUMING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -194,14 +194,12 @@ pub mod logged_migration_job {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Phase::Unspecified => "PHASE_UNSPECIFIED",
-                Phase::FullDump => "FULL_DUMP",
-                Phase::Cdc => "CDC",
-                Phase::PromoteInProgress => "PROMOTE_IN_PROGRESS",
-                Phase::WaitingForSourceWritesToStop => {
-                    "WAITING_FOR_SOURCE_WRITES_TO_STOP"
-                }
-                Phase::PreparingTheDump => "PREPARING_THE_DUMP",
+                Self::Unspecified => "PHASE_UNSPECIFIED",
+                Self::FullDump => "FULL_DUMP",
+                Self::Cdc => "CDC",
+                Self::PromoteInProgress => "PROMOTE_IN_PROGRESS",
+                Self::WaitingForSourceWritesToStop => "WAITING_FOR_SOURCE_WRITES_TO_STOP",
+                Self::PreparingTheDump => "PREPARING_THE_DUMP",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -247,9 +245,9 @@ pub mod logged_migration_job {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::OneTime => "ONE_TIME",
-                Type::Continuous => "CONTINUOUS",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::OneTime => "ONE_TIME",
+                Self::Continuous => "CONTINUOUS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -292,10 +290,10 @@ pub mod logged_migration_job {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ConnectivityType::Unspecified => "CONNECTIVITY_TYPE_UNSPECIFIED",
-                ConnectivityType::StaticIp => "STATIC_IP",
-                ConnectivityType::ReverseSsh => "REVERSE_SSH",
-                ConnectivityType::VpcPeering => "VPC_PEERING",
+                Self::Unspecified => "CONNECTIVITY_TYPE_UNSPECIFIED",
+                Self::StaticIp => "STATIC_IP",
+                Self::ReverseSsh => "REVERSE_SSH",
+                Self::VpcPeering => "VPC_PEERING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -354,11 +352,11 @@ pub mod my_sql_connection_profile {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Version::Unspecified => "VERSION_UNSPECIFIED",
-                Version::V55 => "V5_5",
-                Version::V56 => "V5_6",
-                Version::V57 => "V5_7",
-                Version::V80 => "V8_0",
+                Self::Unspecified => "VERSION_UNSPECIFIED",
+                Self::V55 => "V5_5",
+                Self::V56 => "V5_6",
+                Self::V57 => "V5_7",
+                Self::V80 => "V8_0",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -420,12 +418,12 @@ pub mod postgre_sql_connection_profile {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Version::Unspecified => "VERSION_UNSPECIFIED",
-                Version::V96 => "V9_6",
-                Version::V11 => "V11",
-                Version::V10 => "V10",
-                Version::V12 => "V12",
-                Version::V13 => "V13",
+                Self::Unspecified => "VERSION_UNSPECIFIED",
+                Self::V96 => "V9_6",
+                Self::V11 => "V11",
+                Self::V10 => "V10",
+                Self::V12 => "V12",
+                Self::V13 => "V13",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -488,10 +486,10 @@ pub mod oracle_connection_profile {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ConnectivityType::Unspecified => "CONNECTIVITY_TYPE_UNSPECIFIED",
-                ConnectivityType::StaticServiceIp => "STATIC_SERVICE_IP",
-                ConnectivityType::ForwardSshTunnel => "FORWARD_SSH_TUNNEL",
-                ConnectivityType::PrivateConnectivity => "PRIVATE_CONNECTIVITY",
+                Self::Unspecified => "CONNECTIVITY_TYPE_UNSPECIFIED",
+                Self::StaticServiceIp => "STATIC_SERVICE_IP",
+                Self::ForwardSshTunnel => "FORWARD_SSH_TUNNEL",
+                Self::PrivateConnectivity => "PRIVATE_CONNECTIVITY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -580,14 +578,14 @@ pub mod logged_connection_profile {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Draft => "DRAFT",
-                State::Creating => "CREATING",
-                State::Ready => "READY",
-                State::Updating => "UPDATING",
-                State::Deleting => "DELETING",
-                State::Deleted => "DELETED",
-                State::Failed => "FAILED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Draft => "DRAFT",
+                Self::Creating => "CREATING",
+                Self::Ready => "READY",
+                Self::Updating => "UPDATING",
+                Self::Deleting => "DELETING",
+                Self::Deleted => "DELETED",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -752,13 +750,13 @@ pub mod logged_private_connection {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Created => "CREATED",
-                State::Failed => "FAILED",
-                State::Deleting => "DELETING",
-                State::FailedToDelete => "FAILED_TO_DELETE",
-                State::Deleted => "DELETED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Created => "CREATED",
+                Self::Failed => "FAILED",
+                Self::Deleting => "DELETING",
+                Self::FailedToDelete => "FAILED_TO_DELETE",
+                Self::Deleted => "DELETED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -845,12 +843,12 @@ impl DatabaseEngine {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DatabaseEngine::Unspecified => "DATABASE_ENGINE_UNSPECIFIED",
-            DatabaseEngine::Mysql => "MYSQL",
-            DatabaseEngine::Postgresql => "POSTGRESQL",
-            DatabaseEngine::Sqlserver => "SQLSERVER",
-            DatabaseEngine::Oracle => "ORACLE",
-            DatabaseEngine::Spanner => "SPANNER",
+            Self::Unspecified => "DATABASE_ENGINE_UNSPECIFIED",
+            Self::Mysql => "MYSQL",
+            Self::Postgresql => "POSTGRESQL",
+            Self::Sqlserver => "SQLSERVER",
+            Self::Oracle => "ORACLE",
+            Self::Spanner => "SPANNER",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -888,11 +886,11 @@ impl DatabaseProvider {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DatabaseProvider::Unspecified => "DATABASE_PROVIDER_UNSPECIFIED",
-            DatabaseProvider::Cloudsql => "CLOUDSQL",
-            DatabaseProvider::Rds => "RDS",
-            DatabaseProvider::Aurora => "AURORA",
-            DatabaseProvider::Alloydb => "ALLOYDB",
+            Self::Unspecified => "DATABASE_PROVIDER_UNSPECIFIED",
+            Self::Cloudsql => "CLOUDSQL",
+            Self::Rds => "RDS",
+            Self::Aurora => "AURORA",
+            Self::Alloydb => "ALLOYDB",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.

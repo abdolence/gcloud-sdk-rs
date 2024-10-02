@@ -117,9 +117,9 @@ pub mod account_manager_transaction_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -190,9 +190,9 @@ pub mod account_manager_participant {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Persona::Unspecified => "PERSONA_UNSPECIFIED",
-                Persona::Entity => "ENTITY",
-                Persona::Person => "PERSON",
+                Self::Unspecified => "PERSONA_UNSPECIFIED",
+                Self::Entity => "ENTITY",
+                Self::Person => "PERSON",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -260,9 +260,9 @@ pub mod account_manager_transaction_reconciliation_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ReconciliationState::Unspecified => "RECONCILIATION_STATE_UNSPECIFIED",
-                ReconciliationState::Succeeded => "SUCCEEDED",
-                ReconciliationState::Failed => "FAILED",
+                Self::Unspecified => "RECONCILIATION_STATE_UNSPECIFIED",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -433,13 +433,11 @@ impl AccountManagerTransactionType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            AccountManagerTransactionType::Unspecified => {
-                "ACCOUNT_MANAGER_TRANSACTION_TYPE_UNSPECIFIED"
-            }
-            AccountManagerTransactionType::Credit => "CREDIT",
-            AccountManagerTransactionType::CreditReversal => "CREDIT_REVERSAL",
-            AccountManagerTransactionType::Debit => "DEBIT",
-            AccountManagerTransactionType::DebitReversal => "DEBIT_REVERSAL",
+            Self::Unspecified => "ACCOUNT_MANAGER_TRANSACTION_TYPE_UNSPECIFIED",
+            Self::Credit => "CREDIT",
+            Self::CreditReversal => "CREDIT_REVERSAL",
+            Self::Debit => "DEBIT",
+            Self::DebitReversal => "DEBIT_REVERSAL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -456,7 +454,13 @@ impl AccountManagerTransactionType {
 }
 /// Generated client implementations.
 pub mod account_manager_transactions_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Lists and exports transactions processed by the account manager.
@@ -656,8 +660,7 @@ pub mod account_manager_transactions_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -689,8 +692,7 @@ pub mod account_manager_transactions_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -723,8 +725,7 @@ pub mod account_manager_transactions_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -810,9 +811,9 @@ pub mod managed_account {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Active => "ACTIVE",
-                State::Deactivated => "DEACTIVATED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Deactivated => "DEACTIVATED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -853,11 +854,9 @@ pub mod managed_account {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AccountReconciliationState::Unspecified => {
-                    "ACCOUNT_RECONCILIATION_STATE_UNSPECIFIED"
-                }
-                AccountReconciliationState::Succeeded => "SUCCEEDED",
-                AccountReconciliationState::Failed => "FAILED",
+                Self::Unspecified => "ACCOUNT_RECONCILIATION_STATE_UNSPECIFIED",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -919,7 +918,13 @@ pub struct GetManagedAccountRequest {
 }
 /// Generated client implementations.
 pub mod managed_accounts_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Reconciles and provide balance information for an account within the account
@@ -1018,8 +1023,7 @@ pub mod managed_accounts_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1046,8 +1050,7 @@ pub mod managed_accounts_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

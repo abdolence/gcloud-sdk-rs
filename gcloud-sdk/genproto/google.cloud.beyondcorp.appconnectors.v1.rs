@@ -105,11 +105,11 @@ impl HealthStatus {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            HealthStatus::Unspecified => "HEALTH_STATUS_UNSPECIFIED",
-            HealthStatus::Healthy => "HEALTHY",
-            HealthStatus::Unhealthy => "UNHEALTHY",
-            HealthStatus::Unresponsive => "UNRESPONSIVE",
-            HealthStatus::Degraded => "DEGRADED",
+            Self::Unspecified => "HEALTH_STATUS_UNSPECIFIED",
+            Self::Healthy => "HEALTHY",
+            Self::Unhealthy => "UNHEALTHY",
+            Self::Unresponsive => "UNRESPONSIVE",
+            Self::Degraded => "DEGRADED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -403,12 +403,12 @@ pub mod app_connector {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Created => "CREATED",
-                State::Updating => "UPDATING",
-                State::Deleting => "DELETING",
-                State::Down => "DOWN",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Created => "CREATED",
+                Self::Updating => "UPDATING",
+                Self::Deleting => "DELETING",
+                Self::Down => "DOWN",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -456,7 +456,13 @@ pub struct AppConnectorOperationMetadata {
 }
 /// Generated client implementations.
 pub mod app_connectors_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// API Overview:
@@ -565,8 +571,7 @@ pub mod app_connectors_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -593,8 +598,7 @@ pub mod app_connectors_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -624,8 +628,7 @@ pub mod app_connectors_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -655,8 +658,7 @@ pub mod app_connectors_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -686,8 +688,7 @@ pub mod app_connectors_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -717,8 +718,7 @@ pub mod app_connectors_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

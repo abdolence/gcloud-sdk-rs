@@ -489,9 +489,9 @@ pub mod s3_compatible_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AuthMethod::Unspecified => "AUTH_METHOD_UNSPECIFIED",
-                AuthMethod::AwsSignatureV4 => "AUTH_METHOD_AWS_SIGNATURE_V4",
-                AuthMethod::AwsSignatureV2 => "AUTH_METHOD_AWS_SIGNATURE_V2",
+                Self::Unspecified => "AUTH_METHOD_UNSPECIFIED",
+                Self::AwsSignatureV4 => "AUTH_METHOD_AWS_SIGNATURE_V4",
+                Self::AwsSignatureV2 => "AUTH_METHOD_AWS_SIGNATURE_V2",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -534,9 +534,9 @@ pub mod s3_compatible_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RequestModel::Unspecified => "REQUEST_MODEL_UNSPECIFIED",
-                RequestModel::VirtualHostedStyle => "REQUEST_MODEL_VIRTUAL_HOSTED_STYLE",
-                RequestModel::PathStyle => "REQUEST_MODEL_PATH_STYLE",
+                Self::Unspecified => "REQUEST_MODEL_UNSPECIFIED",
+                Self::VirtualHostedStyle => "REQUEST_MODEL_VIRTUAL_HOSTED_STYLE",
+                Self::PathStyle => "REQUEST_MODEL_PATH_STYLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -579,9 +579,9 @@ pub mod s3_compatible_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                NetworkProtocol::Unspecified => "NETWORK_PROTOCOL_UNSPECIFIED",
-                NetworkProtocol::Https => "NETWORK_PROTOCOL_HTTPS",
-                NetworkProtocol::Http => "NETWORK_PROTOCOL_HTTP",
+                Self::Unspecified => "NETWORK_PROTOCOL_UNSPECIFIED",
+                Self::Https => "NETWORK_PROTOCOL_HTTPS",
+                Self::Http => "NETWORK_PROTOCOL_HTTP",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -622,9 +622,9 @@ pub mod s3_compatible_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ListApi::Unspecified => "LIST_API_UNSPECIFIED",
-                ListApi::ListObjectsV2 => "LIST_OBJECTS_V2",
-                ListApi::ListObjects => "LIST_OBJECTS",
+                Self::Unspecified => "LIST_API_UNSPECIFIED",
+                Self::ListObjectsV2 => "LIST_OBJECTS_V2",
+                Self::ListObjects => "LIST_OBJECTS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -700,10 +700,10 @@ pub mod agent_pool {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Created => "CREATED",
-                State::Deleting => "DELETING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Created => "CREATED",
+                Self::Deleting => "DELETING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -787,10 +787,10 @@ pub mod transfer_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                OverwriteWhen::Unspecified => "OVERWRITE_WHEN_UNSPECIFIED",
-                OverwriteWhen::Different => "DIFFERENT",
-                OverwriteWhen::Never => "NEVER",
-                OverwriteWhen::Always => "ALWAYS",
+                Self::Unspecified => "OVERWRITE_WHEN_UNSPECIFIED",
+                Self::Different => "DIFFERENT",
+                Self::Never => "NEVER",
+                Self::Always => "ALWAYS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -976,9 +976,9 @@ pub mod metadata_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Symlink::Unspecified => "SYMLINK_UNSPECIFIED",
-                Symlink::Skip => "SYMLINK_SKIP",
-                Symlink::Preserve => "SYMLINK_PRESERVE",
+                Self::Unspecified => "SYMLINK_UNSPECIFIED",
+                Self::Skip => "SYMLINK_SKIP",
+                Self::Preserve => "SYMLINK_PRESERVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1019,9 +1019,9 @@ pub mod metadata_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Mode::Unspecified => "MODE_UNSPECIFIED",
-                Mode::Skip => "MODE_SKIP",
-                Mode::Preserve => "MODE_PRESERVE",
+                Self::Unspecified => "MODE_UNSPECIFIED",
+                Self::Skip => "MODE_SKIP",
+                Self::Preserve => "MODE_PRESERVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1062,9 +1062,9 @@ pub mod metadata_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Gid::Unspecified => "GID_UNSPECIFIED",
-                Gid::Skip => "GID_SKIP",
-                Gid::Number => "GID_NUMBER",
+                Self::Unspecified => "GID_UNSPECIFIED",
+                Self::Skip => "GID_SKIP",
+                Self::Number => "GID_NUMBER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1105,9 +1105,9 @@ pub mod metadata_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Uid::Unspecified => "UID_UNSPECIFIED",
-                Uid::Skip => "UID_SKIP",
-                Uid::Number => "UID_NUMBER",
+                Self::Unspecified => "UID_UNSPECIFIED",
+                Self::Skip => "UID_SKIP",
+                Self::Number => "UID_NUMBER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1152,9 +1152,9 @@ pub mod metadata_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Acl::Unspecified => "ACL_UNSPECIFIED",
-                Acl::DestinationBucketDefault => "ACL_DESTINATION_BUCKET_DEFAULT",
-                Acl::Preserve => "ACL_PRESERVE",
+                Self::Unspecified => "ACL_UNSPECIFIED",
+                Self::DestinationBucketDefault => "ACL_DESTINATION_BUCKET_DEFAULT",
+                Self::Preserve => "ACL_PRESERVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1206,15 +1206,15 @@ pub mod metadata_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                StorageClass::Unspecified => "STORAGE_CLASS_UNSPECIFIED",
-                StorageClass::DestinationBucketDefault => {
+                Self::Unspecified => "STORAGE_CLASS_UNSPECIFIED",
+                Self::DestinationBucketDefault => {
                     "STORAGE_CLASS_DESTINATION_BUCKET_DEFAULT"
                 }
-                StorageClass::Preserve => "STORAGE_CLASS_PRESERVE",
-                StorageClass::Standard => "STORAGE_CLASS_STANDARD",
-                StorageClass::Nearline => "STORAGE_CLASS_NEARLINE",
-                StorageClass::Coldline => "STORAGE_CLASS_COLDLINE",
-                StorageClass::Archive => "STORAGE_CLASS_ARCHIVE",
+                Self::Preserve => "STORAGE_CLASS_PRESERVE",
+                Self::Standard => "STORAGE_CLASS_STANDARD",
+                Self::Nearline => "STORAGE_CLASS_NEARLINE",
+                Self::Coldline => "STORAGE_CLASS_COLDLINE",
+                Self::Archive => "STORAGE_CLASS_ARCHIVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1261,9 +1261,9 @@ pub mod metadata_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TemporaryHold::Unspecified => "TEMPORARY_HOLD_UNSPECIFIED",
-                TemporaryHold::Skip => "TEMPORARY_HOLD_SKIP",
-                TemporaryHold::Preserve => "TEMPORARY_HOLD_PRESERVE",
+                Self::Unspecified => "TEMPORARY_HOLD_UNSPECIFIED",
+                Self::Skip => "TEMPORARY_HOLD_SKIP",
+                Self::Preserve => "TEMPORARY_HOLD_PRESERVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1306,9 +1306,9 @@ pub mod metadata_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                KmsKey::Unspecified => "KMS_KEY_UNSPECIFIED",
-                KmsKey::DestinationBucketDefault => "KMS_KEY_DESTINATION_BUCKET_DEFAULT",
-                KmsKey::Preserve => "KMS_KEY_PRESERVE",
+                Self::Unspecified => "KMS_KEY_UNSPECIFIED",
+                Self::DestinationBucketDefault => "KMS_KEY_DESTINATION_BUCKET_DEFAULT",
+                Self::Preserve => "KMS_KEY_PRESERVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1355,11 +1355,9 @@ pub mod metadata_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TimeCreated::Unspecified => "TIME_CREATED_UNSPECIFIED",
-                TimeCreated::Skip => "TIME_CREATED_SKIP",
-                TimeCreated::PreserveAsCustomTime => {
-                    "TIME_CREATED_PRESERVE_AS_CUSTOM_TIME"
-                }
+                Self::Unspecified => "TIME_CREATED_UNSPECIFIED",
+                Self::Skip => "TIME_CREATED_SKIP",
+                Self::PreserveAsCustomTime => "TIME_CREATED_PRESERVE_AS_CUSTOM_TIME",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1598,10 +1596,10 @@ pub mod transfer_job {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Status::Unspecified => "STATUS_UNSPECIFIED",
-                Status::Enabled => "ENABLED",
-                Status::Disabled => "DISABLED",
-                Status::Deleted => "DELETED",
+                Self::Unspecified => "STATUS_UNSPECIFIED",
+                Self::Enabled => "ENABLED",
+                Self::Disabled => "DISABLED",
+                Self::Deleted => "DELETED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1809,10 +1807,10 @@ pub mod notification_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                EventType::Unspecified => "EVENT_TYPE_UNSPECIFIED",
-                EventType::TransferOperationSuccess => "TRANSFER_OPERATION_SUCCESS",
-                EventType::TransferOperationFailed => "TRANSFER_OPERATION_FAILED",
-                EventType::TransferOperationAborted => "TRANSFER_OPERATION_ABORTED",
+                Self::Unspecified => "EVENT_TYPE_UNSPECIFIED",
+                Self::TransferOperationSuccess => "TRANSFER_OPERATION_SUCCESS",
+                Self::TransferOperationFailed => "TRANSFER_OPERATION_FAILED",
+                Self::TransferOperationAborted => "TRANSFER_OPERATION_ABORTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1856,9 +1854,9 @@ pub mod notification_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PayloadFormat::Unspecified => "PAYLOAD_FORMAT_UNSPECIFIED",
-                PayloadFormat::None => "NONE",
-                PayloadFormat::Json => "JSON",
+                Self::Unspecified => "PAYLOAD_FORMAT_UNSPECIFIED",
+                Self::None => "NONE",
+                Self::Json => "JSON",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1928,10 +1926,10 @@ pub mod logging_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                LoggableAction::Unspecified => "LOGGABLE_ACTION_UNSPECIFIED",
-                LoggableAction::Find => "FIND",
-                LoggableAction::Delete => "DELETE",
-                LoggableAction::Copy => "COPY",
+                Self::Unspecified => "LOGGABLE_ACTION_UNSPECIFIED",
+                Self::Find => "FIND",
+                Self::Delete => "DELETE",
+                Self::Copy => "COPY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1975,9 +1973,9 @@ pub mod logging_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                LoggableActionState::Unspecified => "LOGGABLE_ACTION_STATE_UNSPECIFIED",
-                LoggableActionState::Succeeded => "SUCCEEDED",
-                LoggableActionState::Failed => "FAILED",
+                Self::Unspecified => "LOGGABLE_ACTION_STATE_UNSPECIFIED",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2068,14 +2066,14 @@ pub mod transfer_operation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Status::Unspecified => "STATUS_UNSPECIFIED",
-                Status::InProgress => "IN_PROGRESS",
-                Status::Paused => "PAUSED",
-                Status::Success => "SUCCESS",
-                Status::Failed => "FAILED",
-                Status::Aborted => "ABORTED",
-                Status::Queued => "QUEUED",
-                Status::Suspending => "SUSPENDING",
+                Self::Unspecified => "STATUS_UNSPECIFIED",
+                Self::InProgress => "IN_PROGRESS",
+                Self::Paused => "PAUSED",
+                Self::Success => "SUCCESS",
+                Self::Failed => "FAILED",
+                Self::Aborted => "ABORTED",
+                Self::Queued => "QUEUED",
+                Self::Suspending => "SUSPENDING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2330,7 +2328,13 @@ pub struct ListAgentPoolsResponse {
 }
 /// Generated client implementations.
 pub mod storage_transfer_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Storage Transfer Service and its protos.
@@ -2437,8 +2441,7 @@ pub mod storage_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2465,8 +2468,7 @@ pub mod storage_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2500,8 +2502,7 @@ pub mod storage_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2528,8 +2529,7 @@ pub mod storage_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2559,8 +2559,7 @@ pub mod storage_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2587,8 +2586,7 @@ pub mod storage_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2615,8 +2613,7 @@ pub mod storage_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2649,8 +2646,7 @@ pub mod storage_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2678,8 +2674,7 @@ pub mod storage_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2706,8 +2701,7 @@ pub mod storage_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2734,8 +2728,7 @@ pub mod storage_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2762,8 +2755,7 @@ pub mod storage_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2793,8 +2785,7 @@ pub mod storage_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2821,8 +2812,7 @@ pub mod storage_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

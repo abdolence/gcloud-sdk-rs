@@ -359,9 +359,9 @@ pub mod recognizer {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Active => "ACTIVE",
-                State::Deleted => "DELETED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Deleted => "DELETED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -467,10 +467,10 @@ pub mod explicit_decoding_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AudioEncoding::Unspecified => "AUDIO_ENCODING_UNSPECIFIED",
-                AudioEncoding::Linear16 => "LINEAR16",
-                AudioEncoding::Mulaw => "MULAW",
-                AudioEncoding::Alaw => "ALAW",
+                Self::Unspecified => "AUDIO_ENCODING_UNSPECIFIED",
+                Self::Linear16 => "LINEAR16",
+                Self::Mulaw => "MULAW",
+                Self::Alaw => "ALAW",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -592,10 +592,8 @@ pub mod recognition_features {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MultiChannelMode::Unspecified => "MULTI_CHANNEL_MODE_UNSPECIFIED",
-                MultiChannelMode::SeparateRecognitionPerChannel => {
-                    "SEPARATE_RECOGNITION_PER_CHANNEL"
-                }
+                Self::Unspecified => "MULTI_CHANNEL_MODE_UNSPECIFIED",
+                Self::SeparateRecognitionPerChannel => "SEPARATE_RECOGNITION_PER_CHANNEL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1112,8 +1110,8 @@ pub mod batch_recognize_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ProcessingStrategy::Unspecified => "PROCESSING_STRATEGY_UNSPECIFIED",
-                ProcessingStrategy::DynamicBatching => "DYNAMIC_BATCHING",
+                Self::Unspecified => "PROCESSING_STRATEGY_UNSPECIFIED",
+                Self::DynamicBatching => "DYNAMIC_BATCHING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1509,10 +1507,10 @@ pub mod streaming_recognize_response {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SpeechEventType::Unspecified => "SPEECH_EVENT_TYPE_UNSPECIFIED",
-                SpeechEventType::EndOfSingleUtterance => "END_OF_SINGLE_UTTERANCE",
-                SpeechEventType::SpeechActivityBegin => "SPEECH_ACTIVITY_BEGIN",
-                SpeechEventType::SpeechActivityEnd => "SPEECH_ACTIVITY_END",
+                Self::Unspecified => "SPEECH_EVENT_TYPE_UNSPECIFIED",
+                Self::EndOfSingleUtterance => "END_OF_SINGLE_UTTERANCE",
+                Self::SpeechActivityBegin => "SPEECH_ACTIVITY_BEGIN",
+                Self::SpeechActivityEnd => "SPEECH_ACTIVITY_END",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1676,9 +1674,9 @@ pub mod custom_class {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Active => "ACTIVE",
-                State::Deleted => "DELETED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Deleted => "DELETED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1821,9 +1819,9 @@ pub mod phrase_set {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Active => "ACTIVE",
-                State::Deleted => "DELETED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Deleted => "DELETED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2107,7 +2105,13 @@ pub struct UndeletePhraseSetRequest {
 }
 /// Generated client implementations.
 pub mod speech_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Enables speech transcription and resource management.
@@ -2203,8 +2207,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2231,8 +2234,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2259,8 +2261,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2287,8 +2288,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2315,8 +2315,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2343,8 +2342,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2375,8 +2373,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2404,8 +2401,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2437,8 +2433,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2462,8 +2457,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2485,8 +2479,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2513,8 +2506,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2541,8 +2533,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2567,8 +2558,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2595,8 +2585,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2623,8 +2612,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2651,8 +2639,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2682,8 +2669,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2710,8 +2696,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2736,8 +2721,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2764,8 +2748,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2792,8 +2775,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2820,8 +2802,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2915,8 +2896,8 @@ pub mod access_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ConstraintType::Unspecified => "CONSTRAINT_TYPE_UNSPECIFIED",
-                ConstraintType::ResourceLocationsOrgPolicyCreateConstraint => {
+                Self::Unspecified => "CONSTRAINT_TYPE_UNSPECIFIED",
+                Self::ResourceLocationsOrgPolicyCreateConstraint => {
                     "RESOURCE_LOCATIONS_ORG_POLICY_CREATE_CONSTRAINT"
                 }
             }

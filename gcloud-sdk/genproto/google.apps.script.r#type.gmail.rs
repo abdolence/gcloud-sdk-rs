@@ -108,9 +108,9 @@ pub mod compose_trigger {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DraftAccess::Unspecified => "UNSPECIFIED",
-                DraftAccess::None => "NONE",
-                DraftAccess::Metadata => "METADATA",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::None => "NONE",
+                Self::Metadata => "METADATA",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

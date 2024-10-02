@@ -57,12 +57,12 @@ pub mod abuse_event {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DetectionType::Unspecified => "DETECTION_TYPE_UNSPECIFIED",
-                DetectionType::CryptoMining => "CRYPTO_MINING",
-                DetectionType::LeakedCredentials => "LEAKED_CREDENTIALS",
-                DetectionType::Phishing => "PHISHING",
-                DetectionType::Malware => "MALWARE",
-                DetectionType::NoAbuse => "NO_ABUSE",
+                Self::Unspecified => "DETECTION_TYPE_UNSPECIFIED",
+                Self::CryptoMining => "CRYPTO_MINING",
+                Self::LeakedCredentials => "LEAKED_CREDENTIALS",
+                Self::Phishing => "PHISHING",
+                Self::Malware => "MALWARE",
+                Self::NoAbuse => "NO_ABUSE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -115,12 +115,12 @@ pub mod abuse_event {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ActionType::Unspecified => "ACTION_TYPE_UNSPECIFIED",
-                ActionType::Notify => "NOTIFY",
-                ActionType::ProjectSuspension => "PROJECT_SUSPENSION",
-                ActionType::Reinstate => "REINSTATE",
-                ActionType::Warn => "WARN",
-                ActionType::ResourceSuspension => "RESOURCE_SUSPENSION",
+                Self::Unspecified => "ACTION_TYPE_UNSPECIFIED",
+                Self::Notify => "NOTIFY",
+                Self::ProjectSuspension => "PROJECT_SUSPENSION",
+                Self::Reinstate => "REINSTATE",
+                Self::Warn => "WARN",
+                Self::ResourceSuspension => "RESOURCE_SUSPENSION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -174,6 +174,10 @@ pub struct CryptoMiningEvent {
     /// Detected end time of the cryptocurrency mining.
     #[prost(message, optional, tag = "3")]
     pub detected_mining_end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The IP address(es) of the VM associated with the cryptocurrency mining.
+    /// This field may be empty if this information is not available.
+    #[prost(string, repeated, tag = "4")]
+    pub vm_ip: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Information about the leaked client credentials observed on the monitored
 /// resource.

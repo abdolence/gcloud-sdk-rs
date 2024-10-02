@@ -35,9 +35,9 @@ impl FulfillmentPeriod {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            FulfillmentPeriod::Unspecified => "FULFILLMENT_PERIOD_UNSPECIFIED",
-            FulfillmentPeriod::Normal => "FULFILLMENT_PERIOD_NORMAL",
-            FulfillmentPeriod::Extended => "FULFILLMENT_PERIOD_EXTENDED",
+            Self::Unspecified => "FULFILLMENT_PERIOD_UNSPECIFIED",
+            Self::Normal => "FULFILLMENT_PERIOD_NORMAL",
+            Self::Extended => "FULFILLMENT_PERIOD_EXTENDED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -116,10 +116,10 @@ pub mod replica_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ReplicaType::TypeUnspecified => "TYPE_UNSPECIFIED",
-                ReplicaType::ReadWrite => "READ_WRITE",
-                ReplicaType::ReadOnly => "READ_ONLY",
-                ReplicaType::Witness => "WITNESS",
+                Self::TypeUnspecified => "TYPE_UNSPECIFIED",
+                Self::ReadWrite => "READ_WRITE",
+                Self::ReadOnly => "READ_ONLY",
+                Self::Witness => "WITNESS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -249,9 +249,9 @@ pub mod instance_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::GoogleManaged => "GOOGLE_MANAGED",
-                Type::UserManaged => "USER_MANAGED",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::GoogleManaged => "GOOGLE_MANAGED",
+                Self::UserManaged => "USER_MANAGED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -293,9 +293,9 @@ pub mod instance_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Ready => "READY",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Ready => "READY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -520,9 +520,9 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Ready => "READY",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Ready => "READY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -566,10 +566,10 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Edition::Unspecified => "EDITION_UNSPECIFIED",
-                Edition::Standard => "STANDARD",
-                Edition::Enterprise => "ENTERPRISE",
-                Edition::EnterprisePlus => "ENTERPRISE_PLUS",
+                Self::Unspecified => "EDITION_UNSPECIFIED",
+                Self::Standard => "STANDARD",
+                Self::Enterprise => "ENTERPRISE",
+                Self::EnterprisePlus => "ENTERPRISE_PLUS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1089,9 +1089,9 @@ pub mod instance_partition {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Ready => "READY",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Ready => "READY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1421,7 +1421,13 @@ pub struct MoveInstanceMetadata {
 }
 /// Generated client implementations.
 pub mod instance_admin_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Cloud Spanner Instance Admin API
@@ -1537,8 +1543,7 @@ pub mod instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1565,8 +1570,7 @@ pub mod instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1636,8 +1640,7 @@ pub mod instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1710,8 +1713,7 @@ pub mod instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1745,8 +1747,7 @@ pub mod instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1786,8 +1787,7 @@ pub mod instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1817,8 +1817,7 @@ pub mod instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1848,8 +1847,7 @@ pub mod instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1876,8 +1874,7 @@ pub mod instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1940,8 +1937,7 @@ pub mod instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2010,8 +2006,7 @@ pub mod instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2048,8 +2043,7 @@ pub mod instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2085,8 +2079,7 @@ pub mod instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2122,8 +2115,7 @@ pub mod instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2162,8 +2154,7 @@ pub mod instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2193,8 +2184,7 @@ pub mod instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2260,8 +2250,7 @@ pub mod instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2294,8 +2283,7 @@ pub mod instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2368,8 +2356,7 @@ pub mod instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2415,8 +2402,7 @@ pub mod instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2506,8 +2492,7 @@ pub mod instance_admin_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

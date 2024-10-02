@@ -183,12 +183,10 @@ pub mod binding_explanation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RolePermission::Unspecified => "ROLE_PERMISSION_UNSPECIFIED",
-                RolePermission::Included => "ROLE_PERMISSION_INCLUDED",
-                RolePermission::NotIncluded => "ROLE_PERMISSION_NOT_INCLUDED",
-                RolePermission::UnknownInfoDenied => {
-                    "ROLE_PERMISSION_UNKNOWN_INFO_DENIED"
-                }
+                Self::Unspecified => "ROLE_PERMISSION_UNSPECIFIED",
+                Self::Included => "ROLE_PERMISSION_INCLUDED",
+                Self::NotIncluded => "ROLE_PERMISSION_NOT_INCLUDED",
+                Self::UnknownInfoDenied => "ROLE_PERMISSION_UNKNOWN_INFO_DENIED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -241,11 +239,11 @@ pub mod binding_explanation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Membership::Unspecified => "MEMBERSHIP_UNSPECIFIED",
-                Membership::Included => "MEMBERSHIP_INCLUDED",
-                Membership::NotIncluded => "MEMBERSHIP_NOT_INCLUDED",
-                Membership::UnknownInfoDenied => "MEMBERSHIP_UNKNOWN_INFO_DENIED",
-                Membership::UnknownUnsupported => "MEMBERSHIP_UNKNOWN_UNSUPPORTED",
+                Self::Unspecified => "MEMBERSHIP_UNSPECIFIED",
+                Self::Included => "MEMBERSHIP_INCLUDED",
+                Self::NotIncluded => "MEMBERSHIP_NOT_INCLUDED",
+                Self::UnknownInfoDenied => "MEMBERSHIP_UNKNOWN_INFO_DENIED",
+                Self::UnknownUnsupported => "MEMBERSHIP_UNKNOWN_UNSUPPORTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -285,11 +283,11 @@ impl AccessState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            AccessState::Unspecified => "ACCESS_STATE_UNSPECIFIED",
-            AccessState::Granted => "GRANTED",
-            AccessState::NotGranted => "NOT_GRANTED",
-            AccessState::UnknownConditional => "UNKNOWN_CONDITIONAL",
-            AccessState::UnknownInfoDenied => "UNKNOWN_INFO_DENIED",
+            Self::Unspecified => "ACCESS_STATE_UNSPECIFIED",
+            Self::Granted => "GRANTED",
+            Self::NotGranted => "NOT_GRANTED",
+            Self::UnknownConditional => "UNKNOWN_CONDITIONAL",
+            Self::UnknownInfoDenied => "UNKNOWN_INFO_DENIED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -326,9 +324,9 @@ impl HeuristicRelevance {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            HeuristicRelevance::Unspecified => "HEURISTIC_RELEVANCE_UNSPECIFIED",
-            HeuristicRelevance::Normal => "NORMAL",
-            HeuristicRelevance::High => "HIGH",
+            Self::Unspecified => "HEURISTIC_RELEVANCE_UNSPECIFIED",
+            Self::Normal => "NORMAL",
+            Self::High => "HIGH",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -376,7 +374,13 @@ pub struct TroubleshootIamPolicyResponse {
 }
 /// Generated client implementations.
 pub mod iam_checker_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// IAM Policy Troubleshooter service.
@@ -476,8 +480,7 @@ pub mod iam_checker_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

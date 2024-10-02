@@ -201,12 +201,12 @@ pub mod entitlement {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Available => "AVAILABLE",
-                State::Deleting => "DELETING",
-                State::Deleted => "DELETED",
-                State::Updating => "UPDATING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Available => "AVAILABLE",
+                Self::Deleting => "DELETING",
+                Self::Deleted => "DELETED",
+                Self::Updating => "UPDATING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -434,9 +434,9 @@ pub mod search_entitlements_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CallerAccessType::Unspecified => "CALLER_ACCESS_TYPE_UNSPECIFIED",
-                CallerAccessType::GrantRequester => "GRANT_REQUESTER",
-                CallerAccessType::GrantApprover => "GRANT_APPROVER",
+                Self::Unspecified => "CALLER_ACCESS_TYPE_UNSPECIFIED",
+                Self::GrantRequester => "GRANT_REQUESTER",
+                Self::GrantApprover => "GRANT_APPROVER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -811,17 +811,17 @@ pub mod grant {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::ApprovalAwaited => "APPROVAL_AWAITED",
-                State::Denied => "DENIED",
-                State::Scheduled => "SCHEDULED",
-                State::Activating => "ACTIVATING",
-                State::Active => "ACTIVE",
-                State::ActivationFailed => "ACTIVATION_FAILED",
-                State::Expired => "EXPIRED",
-                State::Revoking => "REVOKING",
-                State::Revoked => "REVOKED",
-                State::Ended => "ENDED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::ApprovalAwaited => "APPROVAL_AWAITED",
+                Self::Denied => "DENIED",
+                Self::Scheduled => "SCHEDULED",
+                Self::Activating => "ACTIVATING",
+                Self::Active => "ACTIVE",
+                Self::ActivationFailed => "ACTIVATION_FAILED",
+                Self::Expired => "EXPIRED",
+                Self::Revoking => "REVOKING",
+                Self::Revoked => "REVOKED",
+                Self::Ended => "ENDED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -946,12 +946,10 @@ pub mod search_grants_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CallerRelationshipType::Unspecified => {
-                    "CALLER_RELATIONSHIP_TYPE_UNSPECIFIED"
-                }
-                CallerRelationshipType::HadCreated => "HAD_CREATED",
-                CallerRelationshipType::CanApprove => "CAN_APPROVE",
-                CallerRelationshipType::HadApproved => "HAD_APPROVED",
+                Self::Unspecified => "CALLER_RELATIONSHIP_TYPE_UNSPECIFIED",
+                Self::HadCreated => "HAD_CREATED",
+                Self::CanApprove => "CAN_APPROVE",
+                Self::HadApproved => "HAD_APPROVED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1074,7 +1072,13 @@ pub struct OperationMetadata {
 }
 /// Generated client implementations.
 pub mod privileged_access_manager_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// This API allows customers to manage temporary, request based privileged
@@ -1193,8 +1197,7 @@ pub mod privileged_access_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1224,8 +1227,7 @@ pub mod privileged_access_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1256,8 +1258,7 @@ pub mod privileged_access_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1284,8 +1285,7 @@ pub mod privileged_access_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1316,8 +1316,7 @@ pub mod privileged_access_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1349,8 +1348,7 @@ pub mod privileged_access_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1399,8 +1397,7 @@ pub mod privileged_access_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1430,8 +1427,7 @@ pub mod privileged_access_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1462,8 +1458,7 @@ pub mod privileged_access_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1490,8 +1485,7 @@ pub mod privileged_access_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1518,8 +1512,7 @@ pub mod privileged_access_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1548,8 +1541,7 @@ pub mod privileged_access_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1578,8 +1570,7 @@ pub mod privileged_access_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1610,8 +1601,7 @@ pub mod privileged_access_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

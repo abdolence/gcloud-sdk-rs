@@ -95,11 +95,9 @@ pub mod policy {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                GlobalPolicyEvaluationMode::Unspecified => {
-                    "GLOBAL_POLICY_EVALUATION_MODE_UNSPECIFIED"
-                }
-                GlobalPolicyEvaluationMode::Enable => "ENABLE",
-                GlobalPolicyEvaluationMode::Disable => "DISABLE",
+                Self::Unspecified => "GLOBAL_POLICY_EVALUATION_MODE_UNSPECIFIED",
+                Self::Enable => "ENABLE",
+                Self::Disable => "DISABLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -185,10 +183,10 @@ pub mod admission_rule {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                EvaluationMode::Unspecified => "EVALUATION_MODE_UNSPECIFIED",
-                EvaluationMode::AlwaysAllow => "ALWAYS_ALLOW",
-                EvaluationMode::RequireAttestation => "REQUIRE_ATTESTATION",
-                EvaluationMode::AlwaysDeny => "ALWAYS_DENY",
+                Self::Unspecified => "EVALUATION_MODE_UNSPECIFIED",
+                Self::AlwaysAllow => "ALWAYS_ALLOW",
+                Self::RequireAttestation => "REQUIRE_ATTESTATION",
+                Self::AlwaysDeny => "ALWAYS_DENY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -232,11 +230,9 @@ pub mod admission_rule {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                EnforcementMode::Unspecified => "ENFORCEMENT_MODE_UNSPECIFIED",
-                EnforcementMode::EnforcedBlockAndAuditLog => {
-                    "ENFORCED_BLOCK_AND_AUDIT_LOG"
-                }
-                EnforcementMode::DryrunAuditLogOnly => "DRYRUN_AUDIT_LOG_ONLY",
+                Self::Unspecified => "ENFORCEMENT_MODE_UNSPECIFIED",
+                Self::EnforcedBlockAndAuditLog => "ENFORCED_BLOCK_AND_AUDIT_LOG",
+                Self::DryrunAuditLogOnly => "DRYRUN_AUDIT_LOG_ONLY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -386,26 +382,18 @@ pub mod pkix_public_key {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SignatureAlgorithm::Unspecified => "SIGNATURE_ALGORITHM_UNSPECIFIED",
-                SignatureAlgorithm::RsaPss2048Sha256 => "RSA_PSS_2048_SHA256",
-                SignatureAlgorithm::RsaPss3072Sha256 => "RSA_PSS_3072_SHA256",
-                SignatureAlgorithm::RsaPss4096Sha256 => "RSA_PSS_4096_SHA256",
-                SignatureAlgorithm::RsaPss4096Sha512 => "RSA_PSS_4096_SHA512",
-                SignatureAlgorithm::RsaSignPkcs12048Sha256 => {
-                    "RSA_SIGN_PKCS1_2048_SHA256"
-                }
-                SignatureAlgorithm::RsaSignPkcs13072Sha256 => {
-                    "RSA_SIGN_PKCS1_3072_SHA256"
-                }
-                SignatureAlgorithm::RsaSignPkcs14096Sha256 => {
-                    "RSA_SIGN_PKCS1_4096_SHA256"
-                }
-                SignatureAlgorithm::RsaSignPkcs14096Sha512 => {
-                    "RSA_SIGN_PKCS1_4096_SHA512"
-                }
-                SignatureAlgorithm::EcdsaP256Sha256 => "ECDSA_P256_SHA256",
-                SignatureAlgorithm::EcdsaP384Sha384 => "ECDSA_P384_SHA384",
-                SignatureAlgorithm::EcdsaP521Sha512 => "ECDSA_P521_SHA512",
+                Self::Unspecified => "SIGNATURE_ALGORITHM_UNSPECIFIED",
+                Self::RsaPss2048Sha256 => "RSA_PSS_2048_SHA256",
+                Self::RsaPss3072Sha256 => "RSA_PSS_3072_SHA256",
+                Self::RsaPss4096Sha256 => "RSA_PSS_4096_SHA256",
+                Self::RsaPss4096Sha512 => "RSA_PSS_4096_SHA512",
+                Self::RsaSignPkcs12048Sha256 => "RSA_SIGN_PKCS1_2048_SHA256",
+                Self::RsaSignPkcs13072Sha256 => "RSA_SIGN_PKCS1_3072_SHA256",
+                Self::RsaSignPkcs14096Sha256 => "RSA_SIGN_PKCS1_4096_SHA256",
+                Self::RsaSignPkcs14096Sha512 => "RSA_SIGN_PKCS1_4096_SHA512",
+                Self::EcdsaP256Sha256 => "ECDSA_P256_SHA256",
+                Self::EcdsaP384Sha384 => "ECDSA_P384_SHA384",
+                Self::EcdsaP521Sha512 => "ECDSA_P521_SHA512",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -632,9 +620,9 @@ pub mod validate_attestation_occurrence_response {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Result::Unspecified => "RESULT_UNSPECIFIED",
-                Result::Verified => "VERIFIED",
-                Result::AttestationNotVerifiable => "ATTESTATION_NOT_VERIFIABLE",
+                Self::Unspecified => "RESULT_UNSPECIFIED",
+                Self::Verified => "VERIFIED",
+                Self::AttestationNotVerifiable => "ATTESTATION_NOT_VERIFIABLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -650,7 +638,13 @@ pub mod validate_attestation_occurrence_response {
 }
 /// Generated client implementations.
 pub mod binauthz_management_service_v1_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Google Cloud Management Service for Binary Authorization admission policies
@@ -757,8 +751,7 @@ pub mod binauthz_management_service_v1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -789,8 +782,7 @@ pub mod binauthz_management_service_v1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -820,8 +812,7 @@ pub mod binauthz_management_service_v1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -849,8 +840,7 @@ pub mod binauthz_management_service_v1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -878,8 +868,7 @@ pub mod binauthz_management_service_v1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -910,8 +899,7 @@ pub mod binauthz_management_service_v1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -939,8 +927,7 @@ pub mod binauthz_management_service_v1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -962,7 +949,13 @@ pub mod binauthz_management_service_v1_client {
 }
 /// Generated client implementations.
 pub mod system_policy_v1_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// API for working with the system policy.
@@ -1055,8 +1048,7 @@ pub mod system_policy_v1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1078,7 +1070,13 @@ pub mod system_policy_v1_client {
 }
 /// Generated client implementations.
 pub mod validation_helper_v1_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// BinAuthz Attestor verification
@@ -1175,8 +1173,7 @@ pub mod validation_helper_v1_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

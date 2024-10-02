@@ -94,11 +94,11 @@ pub mod report {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Priority::SeverityUnspecified => "SEVERITY_UNSPECIFIED",
-                Priority::Critical => "CRITICAL",
-                Priority::High => "HIGH",
-                Priority::Medium => "MEDIUM",
-                Priority::Low => "LOW",
+                Self::SeverityUnspecified => "SEVERITY_UNSPECIFIED",
+                Self::Critical => "CRITICAL",
+                Self::High => "HIGH",
+                Self::Medium => "MEDIUM",
+                Self::Low => "LOW",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -139,10 +139,10 @@ pub mod report {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::ReportTypeUnspecified => "REPORT_TYPE_UNSPECIFIED",
-                Type::Info => "INFO",
-                Type::Warning => "WARNING",
-                Type::Error => "ERROR",
+                Self::ReportTypeUnspecified => "REPORT_TYPE_UNSPECIFIED",
+                Self::Info => "INFO",
+                Self::Warning => "WARNING",
+                Self::Error => "ERROR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -182,10 +182,10 @@ pub mod report {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ReportStatus::Unspecified => "REPORT_STATUS_UNSPECIFIED",
-                ReportStatus::Active => "ACTIVE",
-                ReportStatus::Fixed => "FIXED",
-                ReportStatus::Dismissed => "DISMISSED",
+                Self::Unspecified => "REPORT_STATUS_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Fixed => "FIXED",
+                Self::Dismissed => "DISMISSED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -227,12 +227,12 @@ pub mod report {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ReportGroup::CategoryUnspecified => "CATEGORY_UNSPECIFIED",
-                ReportGroup::VpcNetwork => "VPC_NETWORK",
-                ReportGroup::NetworkServices => "NETWORK_SERVICES",
-                ReportGroup::KubernetesEngine => "KUBERNETES_ENGINE",
-                ReportGroup::HybridConnectivity => "HYBRID_CONNECTIVITY",
-                ReportGroup::ManagedServices => "MANAGED_SERVICES",
+                Self::CategoryUnspecified => "CATEGORY_UNSPECIFIED",
+                Self::VpcNetwork => "VPC_NETWORK",
+                Self::NetworkServices => "NETWORK_SERVICES",
+                Self::KubernetesEngine => "KUBERNETES_ENGINE",
+                Self::HybridConnectivity => "HYBRID_CONNECTIVITY",
+                Self::ManagedServices => "MANAGED_SERVICES",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -308,113 +308,109 @@ impl ReportCauseCode {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ReportCauseCode::Unspecified => "REPORT_CAUSE_CODE_UNSPECIFIED",
-            ReportCauseCode::RouteInvalidNextHopVmIpForwardingDisabled => {
+            Self::Unspecified => "REPORT_CAUSE_CODE_UNSPECIFIED",
+            Self::RouteInvalidNextHopVmIpForwardingDisabled => {
                 "ROUTE_INVALID_NEXT_HOP_VM_IP_FORWARDING_DISABLED"
             }
-            ReportCauseCode::RouteInvalidNextHopVmDeleted => {
-                "ROUTE_INVALID_NEXT_HOP_VM_DELETED"
-            }
-            ReportCauseCode::RouteInvalidNextHopVmStopped => {
-                "ROUTE_INVALID_NEXT_HOP_VM_STOPPED"
-            }
-            ReportCauseCode::RouteInvalidNextHopIlbMisconfigured => {
+            Self::RouteInvalidNextHopVmDeleted => "ROUTE_INVALID_NEXT_HOP_VM_DELETED",
+            Self::RouteInvalidNextHopVmStopped => "ROUTE_INVALID_NEXT_HOP_VM_STOPPED",
+            Self::RouteInvalidNextHopIlbMisconfigured => {
                 "ROUTE_INVALID_NEXT_HOP_ILB_MISCONFIGURED"
             }
-            ReportCauseCode::RouteInvalidNextHopVpnTunnelDeleted => {
+            Self::RouteInvalidNextHopVpnTunnelDeleted => {
                 "ROUTE_INVALID_NEXT_HOP_VPN_TUNNEL_DELETED"
             }
-            ReportCauseCode::RouteInvalidNextHopIlbBackendIpForwardingDisabled => {
+            Self::RouteInvalidNextHopIlbBackendIpForwardingDisabled => {
                 "ROUTE_INVALID_NEXT_HOP_ILB_BACKEND_IP_FORWARDING_DISABLED"
             }
-            ReportCauseCode::RouteInvalidNextHopIlbVipNotAssigned => {
+            Self::RouteInvalidNextHopIlbVipNotAssigned => {
                 "ROUTE_INVALID_NEXT_HOP_ILB_VIP_NOT_ASSIGNED"
             }
-            ReportCauseCode::IpUtilizationIpAllocationRatioHigh => {
+            Self::IpUtilizationIpAllocationRatioHigh => {
                 "IP_UTILIZATION_IP_ALLOCATION_RATIO_HIGH"
             }
-            ReportCauseCode::IpUtilizationIpAllocationSummary => {
+            Self::IpUtilizationIpAllocationSummary => {
                 "IP_UTILIZATION_IP_ALLOCATION_SUMMARY"
             }
-            ReportCauseCode::GkeNodeToControlPlaneBlockedByRoutingIssue => {
+            Self::GkeNodeToControlPlaneBlockedByRoutingIssue => {
                 "GKE_NODE_TO_CONTROL_PLANE_BLOCKED_BY_ROUTING_ISSUE"
             }
-            ReportCauseCode::GkeNodeToControlPlanePublicEndpointBlockedByEgressFirewall => {
+            Self::GkeNodeToControlPlanePublicEndpointBlockedByEgressFirewall => {
                 "GKE_NODE_TO_CONTROL_PLANE_PUBLIC_ENDPOINT_BLOCKED_BY_EGRESS_FIREWALL"
             }
-            ReportCauseCode::GkeNodeToControlPlanePrivateEndpointBlockedByEgressFirewall => {
+            Self::GkeNodeToControlPlanePrivateEndpointBlockedByEgressFirewall => {
                 "GKE_NODE_TO_CONTROL_PLANE_PRIVATE_ENDPOINT_BLOCKED_BY_EGRESS_FIREWALL"
             }
-            ReportCauseCode::GkeControlPlaneToNodeBlockedByRoutingIssue => {
+            Self::GkeControlPlaneToNodeBlockedByRoutingIssue => {
                 "GKE_CONTROL_PLANE_TO_NODE_BLOCKED_BY_ROUTING_ISSUE"
             }
-            ReportCauseCode::GkeControlPlaneToNodeBlockedByIngressFirewallOnNode => {
+            Self::GkeControlPlaneToNodeBlockedByIngressFirewallOnNode => {
                 "GKE_CONTROL_PLANE_TO_NODE_BLOCKED_BY_INGRESS_FIREWALL_ON_NODE"
             }
-            ReportCauseCode::GkeIpUtilizationPodRangesAllocationHigh => {
+            Self::GkeIpUtilizationPodRangesAllocationHigh => {
                 "GKE_IP_UTILIZATION_POD_RANGES_ALLOCATION_HIGH"
             }
-            ReportCauseCode::GkeIpUtilizationPodRangesAllocationLimitesAutoscaling => {
+            Self::GkeIpUtilizationPodRangesAllocationLimitesAutoscaling => {
                 "GKE_IP_UTILIZATION_POD_RANGES_ALLOCATION_LIMITES_AUTOSCALING"
             }
-            ReportCauseCode::GkeNodeServiceAccountServiceAccountDisabled => {
+            Self::GkeNodeServiceAccountServiceAccountDisabled => {
                 "GKE_NODE_SERVICE_ACCOUNT_SERVICE_ACCOUNT_DISABLED"
             }
-            ReportCauseCode::GkeNodeServiceAccountDefaultServiceAccountUsed => {
+            Self::GkeNodeServiceAccountDefaultServiceAccountUsed => {
                 "GKE_NODE_SERVICE_ACCOUNT_DEFAULT_SERVICE_ACCOUNT_USED"
             }
-            ReportCauseCode::GkeNodeServiceAccountBadOauthScopes => {
+            Self::GkeNodeServiceAccountBadOauthScopes => {
                 "GKE_NODE_SERVICE_ACCOUNT_BAD_OAUTH_SCOPES"
             }
-            ReportCauseCode::CloudSqlPrivateIpBlockedByEgressFirewall => {
+            Self::CloudSqlPrivateIpBlockedByEgressFirewall => {
                 "CLOUD_SQL_PRIVATE_IP_BLOCKED_BY_EGRESS_FIREWALL"
             }
-            ReportCauseCode::CloudSqlPrivateIpBlockedByRoutingIssue => {
+            Self::CloudSqlPrivateIpBlockedByRoutingIssue => {
                 "CLOUD_SQL_PRIVATE_IP_BLOCKED_BY_ROUTING_ISSUE"
             }
-            ReportCauseCode::CloudSqlPrivateIpInstanceNotRunning => {
+            Self::CloudSqlPrivateIpInstanceNotRunning => {
                 "CLOUD_SQL_PRIVATE_IP_INSTANCE_NOT_RUNNING"
             }
-            ReportCauseCode::DynamicRouteShadowedFullyShadowedBySubnetRoute => {
+            Self::DynamicRouteShadowedFullyShadowedBySubnetRoute => {
                 "DYNAMIC_ROUTE_SHADOWED_FULLY_SHADOWED_BY_SUBNET_ROUTE"
             }
-            ReportCauseCode::DynamicRouteShadowedFullyShadowedByPeeringSubnetRoute => {
+            Self::DynamicRouteShadowedFullyShadowedByPeeringSubnetRoute => {
                 "DYNAMIC_ROUTE_SHADOWED_FULLY_SHADOWED_BY_PEERING_SUBNET_ROUTE"
             }
-            ReportCauseCode::DynamicRouteShadowedFullyShadowedByStaticRoute => {
+            Self::DynamicRouteShadowedFullyShadowedByStaticRoute => {
                 "DYNAMIC_ROUTE_SHADOWED_FULLY_SHADOWED_BY_STATIC_ROUTE"
             }
-            ReportCauseCode::DynamicRouteShadowedFullyShadowedByPeeringStaticRoute => {
+            Self::DynamicRouteShadowedFullyShadowedByPeeringStaticRoute => {
                 "DYNAMIC_ROUTE_SHADOWED_FULLY_SHADOWED_BY_PEERING_STATIC_ROUTE"
             }
-            ReportCauseCode::DynamicRouteShadowedPartiallyShadowedBySubnetRoute => {
+            Self::DynamicRouteShadowedPartiallyShadowedBySubnetRoute => {
                 "DYNAMIC_ROUTE_SHADOWED_PARTIALLY_SHADOWED_BY_SUBNET_ROUTE"
             }
-            ReportCauseCode::DynamicRouteShadowedPartiallyShadowedByPeeringSubnetRoute => {
+            Self::DynamicRouteShadowedPartiallyShadowedByPeeringSubnetRoute => {
                 "DYNAMIC_ROUTE_SHADOWED_PARTIALLY_SHADOWED_BY_PEERING_SUBNET_ROUTE"
             }
-            ReportCauseCode::DynamicRouteShadowedPartiallyShadowedByStaticRoute => {
+            Self::DynamicRouteShadowedPartiallyShadowedByStaticRoute => {
                 "DYNAMIC_ROUTE_SHADOWED_PARTIALLY_SHADOWED_BY_STATIC_ROUTE"
             }
-            ReportCauseCode::DynamicRouteShadowedPartiallyShadowedByPeeringStaticRoute => {
+            Self::DynamicRouteShadowedPartiallyShadowedByPeeringStaticRoute => {
                 "DYNAMIC_ROUTE_SHADOWED_PARTIALLY_SHADOWED_BY_PEERING_STATIC_ROUTE"
             }
-            ReportCauseCode::LoadBalancerHealthCheckFirewallHealthCheckFirewallNotConfigured => {
+            Self::LoadBalancerHealthCheckFirewallHealthCheckFirewallNotConfigured => {
                 "LOAD_BALANCER_HEALTH_CHECK_FIREWALL_HEALTH_CHECK_FIREWALL_NOT_CONFIGURED"
             }
-            ReportCauseCode::LoadBalancerHealthCheckFirewallHealthCheckRangeBlocked => {
+            Self::LoadBalancerHealthCheckFirewallHealthCheckRangeBlocked => {
                 "LOAD_BALANCER_HEALTH_CHECK_FIREWALL_HEALTH_CHECK_RANGE_BLOCKED"
             }
-            ReportCauseCode::LoadBalancerHealthCheckFirewallFirewallConfigInconsistent => {
+            Self::LoadBalancerHealthCheckFirewallFirewallConfigInconsistent => {
                 "LOAD_BALANCER_HEALTH_CHECK_FIREWALL_FIREWALL_CONFIG_INCONSISTENT"
             }
-            ReportCauseCode::LoadBalancerHealthCheckFirewallHealthCheckRangePartiallyBlocked => {
+            Self::LoadBalancerHealthCheckFirewallHealthCheckRangePartiallyBlocked => {
                 "LOAD_BALANCER_HEALTH_CHECK_FIREWALL_HEALTH_CHECK_RANGE_PARTIALLY_BLOCKED"
             }
-            ReportCauseCode::LoadBalancerBestPracticesBackendServiceBalancingModeBreaksSessionAffinity => {
+            Self::LoadBalancerBestPracticesBackendServiceBalancingModeBreaksSessionAffinity => {
                 "LOAD_BALANCER_BEST_PRACTICES_BACKEND_SERVICE_BALANCING_MODE_BREAKS_SESSION_AFFINITY"
             }
-            ReportCauseCode::LoadBalancerBestPracticesBackendServiceHealthCheckPortMismatch => {
+            Self::LoadBalancerBestPracticesBackendServiceHealthCheckPortMismatch => {
                 "LOAD_BALANCER_BEST_PRACTICES_BACKEND_SERVICE_HEALTH_CHECK_PORT_MISMATCH"
             }
         }

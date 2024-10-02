@@ -246,11 +246,9 @@ pub mod bucket {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    PublicAccessPrevention::Unspecified => {
-                        "PUBLIC_ACCESS_PREVENTION_UNSPECIFIED"
-                    }
-                    PublicAccessPrevention::Enforced => "ENFORCED",
-                    PublicAccessPrevention::Inherited => "INHERITED",
+                    Self::Unspecified => "PUBLIC_ACCESS_PREVENTION_UNSPECIFIED",
+                    Self::Enforced => "ENFORCED",
+                    Self::Inherited => "INHERITED",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -629,9 +627,9 @@ pub mod common_enums {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Projection::Unspecified => "PROJECTION_UNSPECIFIED",
-                Projection::NoAcl => "NO_ACL",
-                Projection::Full => "FULL",
+                Self::Unspecified => "PROJECTION_UNSPECIFIED",
+                Self::NoAcl => "NO_ACL",
+                Self::Full => "FULL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -681,18 +679,12 @@ pub mod common_enums {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PredefinedBucketAcl::Unspecified => "PREDEFINED_BUCKET_ACL_UNSPECIFIED",
-                PredefinedBucketAcl::BucketAclAuthenticatedRead => {
-                    "BUCKET_ACL_AUTHENTICATED_READ"
-                }
-                PredefinedBucketAcl::BucketAclPrivate => "BUCKET_ACL_PRIVATE",
-                PredefinedBucketAcl::BucketAclProjectPrivate => {
-                    "BUCKET_ACL_PROJECT_PRIVATE"
-                }
-                PredefinedBucketAcl::BucketAclPublicRead => "BUCKET_ACL_PUBLIC_READ",
-                PredefinedBucketAcl::BucketAclPublicReadWrite => {
-                    "BUCKET_ACL_PUBLIC_READ_WRITE"
-                }
+                Self::Unspecified => "PREDEFINED_BUCKET_ACL_UNSPECIFIED",
+                Self::BucketAclAuthenticatedRead => "BUCKET_ACL_AUTHENTICATED_READ",
+                Self::BucketAclPrivate => "BUCKET_ACL_PRIVATE",
+                Self::BucketAclProjectPrivate => "BUCKET_ACL_PROJECT_PRIVATE",
+                Self::BucketAclPublicRead => "BUCKET_ACL_PUBLIC_READ",
+                Self::BucketAclPublicReadWrite => "BUCKET_ACL_PUBLIC_READ_WRITE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -749,21 +741,15 @@ pub mod common_enums {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PredefinedObjectAcl::Unspecified => "PREDEFINED_OBJECT_ACL_UNSPECIFIED",
-                PredefinedObjectAcl::ObjectAclAuthenticatedRead => {
-                    "OBJECT_ACL_AUTHENTICATED_READ"
-                }
-                PredefinedObjectAcl::ObjectAclBucketOwnerFullControl => {
+                Self::Unspecified => "PREDEFINED_OBJECT_ACL_UNSPECIFIED",
+                Self::ObjectAclAuthenticatedRead => "OBJECT_ACL_AUTHENTICATED_READ",
+                Self::ObjectAclBucketOwnerFullControl => {
                     "OBJECT_ACL_BUCKET_OWNER_FULL_CONTROL"
                 }
-                PredefinedObjectAcl::ObjectAclBucketOwnerRead => {
-                    "OBJECT_ACL_BUCKET_OWNER_READ"
-                }
-                PredefinedObjectAcl::ObjectAclPrivate => "OBJECT_ACL_PRIVATE",
-                PredefinedObjectAcl::ObjectAclProjectPrivate => {
-                    "OBJECT_ACL_PROJECT_PRIVATE"
-                }
-                PredefinedObjectAcl::ObjectAclPublicRead => "OBJECT_ACL_PUBLIC_READ",
+                Self::ObjectAclBucketOwnerRead => "OBJECT_ACL_BUCKET_OWNER_READ",
+                Self::ObjectAclPrivate => "OBJECT_ACL_PRIVATE",
+                Self::ObjectAclProjectPrivate => "OBJECT_ACL_PROJECT_PRIVATE",
+                Self::ObjectAclPublicRead => "OBJECT_ACL_PUBLIC_READ",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

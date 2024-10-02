@@ -241,9 +241,9 @@ impl NotificationView {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            NotificationView::Unspecified => "NOTIFICATION_VIEW_UNSPECIFIED",
-            NotificationView::Basic => "BASIC",
-            NotificationView::Full => "FULL",
+            Self::Unspecified => "NOTIFICATION_VIEW_UNSPECIFIED",
+            Self::Basic => "BASIC",
+            Self::Full => "FULL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -281,10 +281,10 @@ impl LocalizationState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            LocalizationState::Unspecified => "LOCALIZATION_STATE_UNSPECIFIED",
-            LocalizationState::NotApplicable => "LOCALIZATION_STATE_NOT_APPLICABLE",
-            LocalizationState::Pending => "LOCALIZATION_STATE_PENDING",
-            LocalizationState::Completed => "LOCALIZATION_STATE_COMPLETED",
+            Self::Unspecified => "LOCALIZATION_STATE_UNSPECIFIED",
+            Self::NotApplicable => "LOCALIZATION_STATE_NOT_APPLICABLE",
+            Self::Pending => "LOCALIZATION_STATE_PENDING",
+            Self::Completed => "LOCALIZATION_STATE_COMPLETED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -320,13 +320,13 @@ impl NotificationType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            NotificationType::Unspecified => "NOTIFICATION_TYPE_UNSPECIFIED",
-            NotificationType::SecurityPrivacyAdvisory => {
+            Self::Unspecified => "NOTIFICATION_TYPE_UNSPECIFIED",
+            Self::SecurityPrivacyAdvisory => {
                 "NOTIFICATION_TYPE_SECURITY_PRIVACY_ADVISORY"
             }
-            NotificationType::SensitiveActions => "NOTIFICATION_TYPE_SENSITIVE_ACTIONS",
-            NotificationType::SecurityMsa => "NOTIFICATION_TYPE_SECURITY_MSA",
-            NotificationType::ThreatHorizons => "NOTIFICATION_TYPE_THREAT_HORIZONS",
+            Self::SensitiveActions => "NOTIFICATION_TYPE_SENSITIVE_ACTIONS",
+            Self::SecurityMsa => "NOTIFICATION_TYPE_SECURITY_MSA",
+            Self::ThreatHorizons => "NOTIFICATION_TYPE_THREAT_HORIZONS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -345,7 +345,13 @@ impl NotificationType {
 }
 /// Generated client implementations.
 pub mod advisory_notifications_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service to manage Security and Privacy Notifications.
@@ -443,8 +449,7 @@ pub mod advisory_notifications_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -471,8 +476,7 @@ pub mod advisory_notifications_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -499,8 +503,7 @@ pub mod advisory_notifications_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -527,8 +530,7 @@ pub mod advisory_notifications_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

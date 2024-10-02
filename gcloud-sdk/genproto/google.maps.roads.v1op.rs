@@ -82,10 +82,10 @@ impl TravelMode {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            TravelMode::Unspecified => "TRAVEL_MODE_UNSPECIFIED",
-            TravelMode::Driving => "DRIVING",
-            TravelMode::Cycling => "CYCLING",
-            TravelMode::Walking => "WALKING",
+            Self::Unspecified => "TRAVEL_MODE_UNSPECIFIED",
+            Self::Driving => "DRIVING",
+            Self::Cycling => "CYCLING",
+            Self::Walking => "WALKING",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -101,7 +101,13 @@ impl TravelMode {
 }
 /// Generated client implementations.
 pub mod roads_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The Roads API maps one or more GPS coordinates to the geometry of the road
@@ -200,8 +206,7 @@ pub mod roads_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -229,8 +234,7 @@ pub mod roads_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

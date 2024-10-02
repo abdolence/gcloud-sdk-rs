@@ -256,10 +256,10 @@ pub mod entity_result {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ResultType::Unspecified => "RESULT_TYPE_UNSPECIFIED",
-                ResultType::Full => "FULL",
-                ResultType::Projection => "PROJECTION",
-                ResultType::KeyOnly => "KEY_ONLY",
+                Self::Unspecified => "RESULT_TYPE_UNSPECIFIED",
+                Self::Full => "FULL",
+                Self::Projection => "PROJECTION",
+                Self::KeyOnly => "KEY_ONLY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -380,9 +380,9 @@ pub mod property_order {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Direction::Unspecified => "DIRECTION_UNSPECIFIED",
-                Direction::Ascending => "ASCENDING",
-                Direction::Descending => "DESCENDING",
+                Self::Unspecified => "DIRECTION_UNSPECIFIED",
+                Self::Ascending => "ASCENDING",
+                Self::Descending => "DESCENDING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -455,8 +455,8 @@ pub mod composite_filter {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Operator::Unspecified => "OPERATOR_UNSPECIFIED",
-                Operator::And => "AND",
+                Self::Unspecified => "OPERATOR_UNSPECIFIED",
+                Self::And => "AND",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -520,13 +520,13 @@ pub mod property_filter {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Operator::Unspecified => "OPERATOR_UNSPECIFIED",
-                Operator::LessThan => "LESS_THAN",
-                Operator::LessThanOrEqual => "LESS_THAN_OR_EQUAL",
-                Operator::GreaterThan => "GREATER_THAN",
-                Operator::GreaterThanOrEqual => "GREATER_THAN_OR_EQUAL",
-                Operator::Equal => "EQUAL",
-                Operator::HasAncestor => "HAS_ANCESTOR",
+                Self::Unspecified => "OPERATOR_UNSPECIFIED",
+                Self::LessThan => "LESS_THAN",
+                Self::LessThanOrEqual => "LESS_THAN_OR_EQUAL",
+                Self::GreaterThan => "GREATER_THAN",
+                Self::GreaterThanOrEqual => "GREATER_THAN_OR_EQUAL",
+                Self::Equal => "EQUAL",
+                Self::HasAncestor => "HAS_ANCESTOR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -666,11 +666,11 @@ pub mod query_result_batch {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MoreResultsType::Unspecified => "MORE_RESULTS_TYPE_UNSPECIFIED",
-                MoreResultsType::NotFinished => "NOT_FINISHED",
-                MoreResultsType::MoreResultsAfterLimit => "MORE_RESULTS_AFTER_LIMIT",
-                MoreResultsType::MoreResultsAfterCursor => "MORE_RESULTS_AFTER_CURSOR",
-                MoreResultsType::NoMoreResults => "NO_MORE_RESULTS",
+                Self::Unspecified => "MORE_RESULTS_TYPE_UNSPECIFIED",
+                Self::NotFinished => "NOT_FINISHED",
+                Self::MoreResultsAfterLimit => "MORE_RESULTS_AFTER_LIMIT",
+                Self::MoreResultsAfterCursor => "MORE_RESULTS_AFTER_CURSOR",
+                Self::NoMoreResults => "NO_MORE_RESULTS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -863,9 +863,9 @@ pub mod commit_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Mode::Unspecified => "MODE_UNSPECIFIED",
-                Mode::Transactional => "TRANSACTIONAL",
-                Mode::NonTransactional => "NON_TRANSACTIONAL",
+                Self::Unspecified => "MODE_UNSPECIFIED",
+                Self::Transactional => "TRANSACTIONAL",
+                Self::NonTransactional => "NON_TRANSACTIONAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1060,9 +1060,9 @@ pub mod read_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ReadConsistency::Unspecified => "READ_CONSISTENCY_UNSPECIFIED",
-                ReadConsistency::Strong => "STRONG",
-                ReadConsistency::Eventual => "EVENTUAL",
+                Self::Unspecified => "READ_CONSISTENCY_UNSPECIFIED",
+                Self::Strong => "STRONG",
+                Self::Eventual => "EVENTUAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1131,7 +1131,13 @@ pub mod transaction_options {
 }
 /// Generated client implementations.
 pub mod datastore_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Each RPC normalizes the partition IDs of the keys in its input entities,
@@ -1230,8 +1236,7 @@ pub mod datastore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1256,8 +1261,7 @@ pub mod datastore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1284,8 +1288,7 @@ pub mod datastore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1313,8 +1316,7 @@ pub mod datastore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1339,8 +1341,7 @@ pub mod datastore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1368,8 +1369,7 @@ pub mod datastore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1397,8 +1397,7 @@ pub mod datastore_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

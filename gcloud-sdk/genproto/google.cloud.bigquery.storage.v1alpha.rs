@@ -16,8 +16,8 @@ pub struct FieldSchema {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StorageDescriptor {
     /// Optional. The physical location of the metastore partition
-    /// (e.g. 'gs://spark-dataproc-data/pangea-data/case_sensitive/' or
-    /// 'gs://spark-dataproc-data/pangea-data/*').
+    /// (e.g. `gs://spark-dataproc-data/pangea-data/case_sensitive/` or
+    /// `gs://spark-dataproc-data/pangea-data/*`).
     #[prost(string, tag = "1")]
     pub location_uri: ::prost::alloc::string::String,
     /// Optional. Specifies the fully qualified class name of the InputFormat
@@ -250,7 +250,7 @@ pub mod list_metastore_partitions_response {
     }
 }
 /// The top-level message sent by the client to the
-/// [Partitions.StreamMetastorePartitions]() method.
+/// [Partitions.StreamMetastorePartitions][] method.
 /// Follows the default gRPC streaming maximum size of 4 MB.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamMetastorePartitionsRequest {
@@ -274,7 +274,7 @@ pub struct StreamMetastorePartitionsRequest {
     pub skip_existing_partitions: bool,
 }
 /// This is the response message sent by the server
-/// to the client for the [Partitions.StreamMetastorePartitions]() method when
+/// to the client for the [Partitions.StreamMetastorePartitions][] method when
 /// the commit is successful. Server will close the stream after sending this
 /// message.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -305,7 +305,13 @@ pub struct BatchSizeTooLargeError {
 }
 /// Generated client implementations.
 pub mod metastore_partition_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// BigQuery Metastore Partition Service API.
@@ -407,8 +413,7 @@ pub mod metastore_partition_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -437,8 +442,7 @@ pub mod metastore_partition_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -470,8 +474,7 @@ pub mod metastore_partition_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -501,8 +504,7 @@ pub mod metastore_partition_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -541,8 +543,7 @@ pub mod metastore_partition_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

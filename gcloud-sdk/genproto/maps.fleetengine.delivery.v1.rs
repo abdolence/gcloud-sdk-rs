@@ -228,21 +228,15 @@ impl DeliveryVehicleLocationSensor {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DeliveryVehicleLocationSensor::UnknownSensor => "UNKNOWN_SENSOR",
-            DeliveryVehicleLocationSensor::Gps => "GPS",
-            DeliveryVehicleLocationSensor::Network => "NETWORK",
-            DeliveryVehicleLocationSensor::Passive => "PASSIVE",
-            DeliveryVehicleLocationSensor::RoadSnappedLocationProvider => {
-                "ROAD_SNAPPED_LOCATION_PROVIDER"
-            }
-            DeliveryVehicleLocationSensor::CustomerSuppliedLocation => {
-                "CUSTOMER_SUPPLIED_LOCATION"
-            }
-            DeliveryVehicleLocationSensor::FleetEngineLocation => "FLEET_ENGINE_LOCATION",
-            DeliveryVehicleLocationSensor::FusedLocationProvider => {
-                "FUSED_LOCATION_PROVIDER"
-            }
-            DeliveryVehicleLocationSensor::CoreLocation => "CORE_LOCATION",
+            Self::UnknownSensor => "UNKNOWN_SENSOR",
+            Self::Gps => "GPS",
+            Self::Network => "NETWORK",
+            Self::Passive => "PASSIVE",
+            Self::RoadSnappedLocationProvider => "ROAD_SNAPPED_LOCATION_PROVIDER",
+            Self::CustomerSuppliedLocation => "CUSTOMER_SUPPLIED_LOCATION",
+            Self::FleetEngineLocation => "FLEET_ENGINE_LOCATION",
+            Self::FusedLocationProvider => "FUSED_LOCATION_PROVIDER",
+            Self::CoreLocation => "CORE_LOCATION",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -284,17 +278,11 @@ impl DeliveryVehicleNavigationStatus {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DeliveryVehicleNavigationStatus::UnknownNavigationStatus => {
-                "UNKNOWN_NAVIGATION_STATUS"
-            }
-            DeliveryVehicleNavigationStatus::NoGuidance => "NO_GUIDANCE",
-            DeliveryVehicleNavigationStatus::EnrouteToDestination => {
-                "ENROUTE_TO_DESTINATION"
-            }
-            DeliveryVehicleNavigationStatus::OffRoute => "OFF_ROUTE",
-            DeliveryVehicleNavigationStatus::ArrivedAtDestination => {
-                "ARRIVED_AT_DESTINATION"
-            }
+            Self::UnknownNavigationStatus => "UNKNOWN_NAVIGATION_STATUS",
+            Self::NoGuidance => "NO_GUIDANCE",
+            Self::EnrouteToDestination => "ENROUTE_TO_DESTINATION",
+            Self::OffRoute => "OFF_ROUTE",
+            Self::ArrivedAtDestination => "ARRIVED_AT_DESTINATION",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -449,11 +437,11 @@ pub mod delivery_vehicle {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DeliveryVehicleType::Unspecified => "DELIVERY_VEHICLE_TYPE_UNSPECIFIED",
-                DeliveryVehicleType::Auto => "AUTO",
-                DeliveryVehicleType::TwoWheeler => "TWO_WHEELER",
-                DeliveryVehicleType::Bicycle => "BICYCLE",
-                DeliveryVehicleType::Pedestrian => "PEDESTRIAN",
+                Self::Unspecified => "DELIVERY_VEHICLE_TYPE_UNSPECIFIED",
+                Self::Auto => "AUTO",
+                Self::TwoWheeler => "TWO_WHEELER",
+                Self::Bicycle => "BICYCLE",
+                Self::Pedestrian => "PEDESTRIAN",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -601,10 +589,10 @@ pub mod vehicle_stop {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::New => "NEW",
-                State::Enroute => "ENROUTE",
-                State::Arrived => "ARRIVED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::New => "NEW",
+                Self::Enroute => "ENROUTE",
+                Self::Arrived => "ARRIVED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -704,10 +692,10 @@ pub mod delivery_request_header {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SdkType::Unspecified => "SDK_TYPE_UNSPECIFIED",
-                SdkType::Consumer => "CONSUMER",
-                SdkType::Driver => "DRIVER",
-                SdkType::Javascript => "JAVASCRIPT",
+                Self::Unspecified => "SDK_TYPE_UNSPECIFIED",
+                Self::Consumer => "CONSUMER",
+                Self::Driver => "DRIVER",
+                Self::Javascript => "JAVASCRIPT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -751,10 +739,10 @@ pub mod delivery_request_header {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Platform::Unspecified => "PLATFORM_UNSPECIFIED",
-                Platform::Android => "ANDROID",
-                Platform::Ios => "IOS",
-                Platform::Web => "WEB",
+                Self::Unspecified => "PLATFORM_UNSPECIFIED",
+                Self::Android => "ANDROID",
+                Self::Ios => "IOS",
+                Self::Web => "WEB",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -932,11 +920,11 @@ pub mod task {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::Pickup => "PICKUP",
-                Type::Delivery => "DELIVERY",
-                Type::ScheduledStop => "SCHEDULED_STOP",
-                Type::Unavailable => "UNAVAILABLE",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Pickup => "PICKUP",
+                Self::Delivery => "DELIVERY",
+                Self::ScheduledStop => "SCHEDULED_STOP",
+                Self::Unavailable => "UNAVAILABLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -980,9 +968,9 @@ pub mod task {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Open => "OPEN",
-                State::Closed => "CLOSED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Open => "OPEN",
+                Self::Closed => "CLOSED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1024,9 +1012,9 @@ pub mod task {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TaskOutcome::Unspecified => "TASK_OUTCOME_UNSPECIFIED",
-                TaskOutcome::Succeeded => "SUCCEEDED",
-                TaskOutcome::Failed => "FAILED",
+                Self::Unspecified => "TASK_OUTCOME_UNSPECIFIED",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1068,11 +1056,9 @@ pub mod task {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TaskOutcomeLocationSource::Unspecified => {
-                    "TASK_OUTCOME_LOCATION_SOURCE_UNSPECIFIED"
-                }
-                TaskOutcomeLocationSource::Provider => "PROVIDER",
-                TaskOutcomeLocationSource::LastVehicleLocation => "LAST_VEHICLE_LOCATION",
+                Self::Unspecified => "TASK_OUTCOME_LOCATION_SOURCE_UNSPECIFIED",
+                Self::Provider => "PROVIDER",
+                Self::LastVehicleLocation => "LAST_VEHICLE_LOCATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1507,7 +1493,7 @@ pub struct ListTasksRequest {
     /// <http://aip.dev/160> for examples of filter syntax. If you don't specify a
     /// value, or if you filter on an empty string, then all Tasks are returned.
     /// For information about the Task properties that you can filter on, see [List
-    /// tasks](<https://developers.google.com/maps/documentation/transportation-logistics/last-mile-fleet-solution/fleet-performance/fleet-engine/deliveries_api#list-tasks>).
+    /// tasks](<https://developers.google.com/maps/documentation/mobility/fleet-engine/journeys/tasks/find-tasks#filter_listed_tasks>).
     #[prost(string, tag = "6")]
     pub filter: ::prost::alloc::string::String,
 }
@@ -1547,7 +1533,13 @@ pub struct GetTaskTrackingInfoRequest {
 }
 /// Generated client implementations.
 pub mod delivery_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The Last Mile Delivery service.
@@ -1643,8 +1635,7 @@ pub mod delivery_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1674,8 +1665,7 @@ pub mod delivery_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1711,8 +1701,7 @@ pub mod delivery_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1742,8 +1731,7 @@ pub mod delivery_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1770,8 +1758,7 @@ pub mod delivery_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1798,8 +1785,7 @@ pub mod delivery_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1826,8 +1812,7 @@ pub mod delivery_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1857,8 +1842,7 @@ pub mod delivery_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1888,8 +1872,7 @@ pub mod delivery_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1919,8 +1902,7 @@ pub mod delivery_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

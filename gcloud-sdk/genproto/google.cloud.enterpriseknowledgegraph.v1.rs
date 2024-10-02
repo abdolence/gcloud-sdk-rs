@@ -31,16 +31,16 @@ impl JobState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            JobState::Unspecified => "JOB_STATE_UNSPECIFIED",
-            JobState::Pending => "JOB_STATE_PENDING",
-            JobState::Running => "JOB_STATE_RUNNING",
-            JobState::Succeeded => "JOB_STATE_SUCCEEDED",
-            JobState::Failed => "JOB_STATE_FAILED",
-            JobState::Cancelled => "JOB_STATE_CANCELLED",
-            JobState::KnowledgeExtraction => "JOB_STATE_KNOWLEDGE_EXTRACTION",
-            JobState::ReconPreprocessing => "JOB_STATE_RECON_PREPROCESSING",
-            JobState::Clustering => "JOB_STATE_CLUSTERING",
-            JobState::ExportingClusters => "JOB_STATE_EXPORTING_CLUSTERS",
+            Self::Unspecified => "JOB_STATE_UNSPECIFIED",
+            Self::Pending => "JOB_STATE_PENDING",
+            Self::Running => "JOB_STATE_RUNNING",
+            Self::Succeeded => "JOB_STATE_SUCCEEDED",
+            Self::Failed => "JOB_STATE_FAILED",
+            Self::Cancelled => "JOB_STATE_CANCELLED",
+            Self::KnowledgeExtraction => "JOB_STATE_KNOWLEDGE_EXTRACTION",
+            Self::ReconPreprocessing => "JOB_STATE_RECON_PREPROCESSING",
+            Self::Clustering => "JOB_STATE_CLUSTERING",
+            Self::ExportingClusters => "JOB_STATE_EXPORTING_CLUSTERS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -111,13 +111,13 @@ pub mod common_operation_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Running => "RUNNING",
-                State::Cancelling => "CANCELLING",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
-                State::Cancelled => "CANCELLED",
-                State::Pending => "PENDING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Running => "RUNNING",
+                Self::Cancelling => "CANCELLING",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::Cancelled => "CANCELLED",
+                Self::Pending => "PENDING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -192,14 +192,14 @@ pub mod input_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                EntityType::Unspecified => "ENTITY_TYPE_UNSPECIFIED",
-                EntityType::People => "PEOPLE",
-                EntityType::Establishment => "ESTABLISHMENT",
-                EntityType::Property => "PROPERTY",
-                EntityType::Product => "PRODUCT",
-                EntityType::Organization => "ORGANIZATION",
-                EntityType::LocalBusiness => "LOCAL_BUSINESS",
-                EntityType::Person => "PERSON",
+                Self::Unspecified => "ENTITY_TYPE_UNSPECIFIED",
+                Self::People => "PEOPLE",
+                Self::Establishment => "ESTABLISHMENT",
+                Self::Property => "PROPERTY",
+                Self::Product => "PRODUCT",
+                Self::Organization => "ORGANIZATION",
+                Self::LocalBusiness => "LOCAL_BUSINESS",
+                Self::Person => "PERSON",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -558,7 +558,13 @@ pub struct SearchPublicKgResponse {
 }
 /// Generated client implementations.
 pub mod enterprise_knowledge_graph_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// APIs for enterprise knowledge graph product.
@@ -657,8 +663,7 @@ pub mod enterprise_knowledge_graph_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -688,8 +693,7 @@ pub mod enterprise_knowledge_graph_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -719,8 +723,7 @@ pub mod enterprise_knowledge_graph_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -748,8 +751,7 @@ pub mod enterprise_knowledge_graph_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -778,8 +780,7 @@ pub mod enterprise_knowledge_graph_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -806,8 +807,7 @@ pub mod enterprise_knowledge_graph_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -834,8 +834,7 @@ pub mod enterprise_knowledge_graph_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -865,8 +864,7 @@ pub mod enterprise_knowledge_graph_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -896,8 +894,7 @@ pub mod enterprise_knowledge_graph_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

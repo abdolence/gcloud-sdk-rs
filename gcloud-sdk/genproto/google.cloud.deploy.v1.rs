@@ -17,6 +17,8 @@ pub enum Type {
     ResourceDeleted = 6,
     /// Rollout updated.
     RolloutUpdate = 7,
+    /// Deploy Policy evaluation.
+    DeployPolicyEvaluation = 8,
     /// Deprecated: This field is never used. Use release_render log type instead.
     RenderStatuesChange = 2,
 }
@@ -27,14 +29,15 @@ impl Type {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            Type::Unspecified => "TYPE_UNSPECIFIED",
-            Type::PubsubNotificationFailure => "TYPE_PUBSUB_NOTIFICATION_FAILURE",
-            Type::ResourceStateChange => "TYPE_RESOURCE_STATE_CHANGE",
-            Type::ProcessAborted => "TYPE_PROCESS_ABORTED",
-            Type::RestrictionViolated => "TYPE_RESTRICTION_VIOLATED",
-            Type::ResourceDeleted => "TYPE_RESOURCE_DELETED",
-            Type::RolloutUpdate => "TYPE_ROLLOUT_UPDATE",
-            Type::RenderStatuesChange => "TYPE_RENDER_STATUES_CHANGE",
+            Self::Unspecified => "TYPE_UNSPECIFIED",
+            Self::PubsubNotificationFailure => "TYPE_PUBSUB_NOTIFICATION_FAILURE",
+            Self::ResourceStateChange => "TYPE_RESOURCE_STATE_CHANGE",
+            Self::ProcessAborted => "TYPE_PROCESS_ABORTED",
+            Self::RestrictionViolated => "TYPE_RESTRICTION_VIOLATED",
+            Self::ResourceDeleted => "TYPE_RESOURCE_DELETED",
+            Self::RolloutUpdate => "TYPE_ROLLOUT_UPDATE",
+            Self::DeployPolicyEvaluation => "TYPE_DEPLOY_POLICY_EVALUATION",
+            Self::RenderStatuesChange => "TYPE_RENDER_STATUES_CHANGE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -47,6 +50,7 @@ impl Type {
             "TYPE_RESTRICTION_VIOLATED" => Some(Self::RestrictionViolated),
             "TYPE_RESOURCE_DELETED" => Some(Self::ResourceDeleted),
             "TYPE_ROLLOUT_UPDATE" => Some(Self::RolloutUpdate),
+            "TYPE_DEPLOY_POLICY_EVALUATION" => Some(Self::DeployPolicyEvaluation),
             "TYPE_RENDER_STATUES_CHANGE" => Some(Self::RenderStatuesChange),
             _ => None,
         }
@@ -735,6 +739,10 @@ pub struct RollbackTargetRequest {
     /// with a `RollbackTargetResponse`.
     #[prost(bool, tag = "7")]
     pub validate_only: bool,
+    /// Optional. Deploy policies to override. Format is
+    /// `projects/{project}/locations/{location}/deployPolicies/{deploy_policy}`.
+    #[prost(string, repeated, tag = "9")]
+    pub override_deploy_policy: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The response object from `RollbackTarget`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -924,14 +932,12 @@ pub mod execution_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ExecutionEnvironmentUsage::Unspecified => {
-                    "EXECUTION_ENVIRONMENT_USAGE_UNSPECIFIED"
-                }
-                ExecutionEnvironmentUsage::Render => "RENDER",
-                ExecutionEnvironmentUsage::Deploy => "DEPLOY",
-                ExecutionEnvironmentUsage::Verify => "VERIFY",
-                ExecutionEnvironmentUsage::Predeploy => "PREDEPLOY",
-                ExecutionEnvironmentUsage::Postdeploy => "POSTDEPLOY",
+                Self::Unspecified => "EXECUTION_ENVIRONMENT_USAGE_UNSPECIFIED",
+                Self::Render => "RENDER",
+                Self::Deploy => "DEPLOY",
+                Self::Verify => "VERIFY",
+                Self::Predeploy => "PREDEPLOY",
+                Self::Postdeploy => "POSTDEPLOY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1520,7 +1526,168 @@ pub struct DeleteCustomTargetTypeRequest {
     #[prost(string, tag = "5")]
     pub etag: ::prost::alloc::string::String,
 }
-/// Contains criteria for selecting Targets.
+/// A `DeployPolicy` resource in the Cloud Deploy API.
+///
+/// A `DeployPolicy` inhibits manual or automation-driven actions within a
+/// Delivery Pipeline or Target.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeployPolicy {
+    /// Output only. Name of the `DeployPolicy`. Format is
+    /// `projects/{project}/locations/{location}/deployPolicies/{deployPolicy}`.
+    /// The `deployPolicy` component must match `[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Unique identifier of the `DeployPolicy`.
+    #[prost(string, tag = "2")]
+    pub uid: ::prost::alloc::string::String,
+    /// Description of the `DeployPolicy`. Max length is 255 characters.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// User annotations. These attributes can only be set and used by the
+    /// user, and not by Cloud Deploy. Annotations must meet the following
+    /// constraints:
+    ///
+    /// * Annotations are key/value pairs.
+    /// * Valid annotation keys have two segments: an optional prefix and name,
+    /// separated by a slash (`/`).
+    /// * The name segment is required and must be 63 characters or less,
+    /// beginning and ending with an alphanumeric character (`\[a-z0-9A-Z\]`) with
+    /// dashes (`-`), underscores (`_`), dots (`.`), and alphanumerics between.
+    /// * The prefix is optional. If specified, the prefix must be a DNS subdomain:
+    /// a series of DNS labels separated by dots(`.`), not longer than 253
+    /// characters in total, followed by a slash (`/`).
+    ///
+    /// See
+    /// <https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/#syntax-and-character-set>
+    /// for more details.
+    #[prost(map = "string, string", tag = "4")]
+    pub annotations: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Labels are attributes that can be set and used by both the
+    /// user and by Cloud Deploy. Labels must meet the following constraints:
+    ///
+    /// * Keys and values can contain only lowercase letters, numeric characters,
+    /// underscores, and dashes.
+    /// * All characters must use UTF-8 encoding, and international characters are
+    /// allowed.
+    /// * Keys must start with a lowercase letter or international character.
+    /// * Each resource is limited to a maximum of 64 labels.
+    ///
+    /// Both keys and values are additionally constrained to be <= 128 bytes.
+    #[prost(map = "string, string", tag = "5")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. Time at which the deploy policy was created.
+    #[prost(message, optional, tag = "6")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Most recent time at which the deploy policy was updated.
+    #[prost(message, optional, tag = "7")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// When suspended, the policy will not prevent actions from occurring, even
+    /// if the action violates the policy.
+    #[prost(bool, tag = "8")]
+    pub suspended: bool,
+    /// Required. Selected resources to which the policy will be applied. At least
+    /// one selector is required. If one selector matches the resource the policy
+    /// applies. For example, if there are two selectors and the action being
+    /// attempted matches one of them, the policy will apply to that action.
+    #[prost(message, repeated, tag = "12")]
+    pub selectors: ::prost::alloc::vec::Vec<DeployPolicyResourceSelector>,
+    /// Required. Rules to apply. At least one rule must be present.
+    #[prost(message, repeated, tag = "10")]
+    pub rules: ::prost::alloc::vec::Vec<PolicyRule>,
+    /// The weak etag of the `Automation` resource.
+    /// This checksum is computed by the server based on the value of other
+    /// fields, and may be sent on update and delete requests to ensure the
+    /// client has an up-to-date value before proceeding.
+    #[prost(string, tag = "11")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `DeployPolicy`.
+pub mod deploy_policy {
+    /// What invoked the action. Filters enforcing the policy depending on what
+    /// invoked the action.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Invoker {
+        /// Unspecified.
+        Unspecified = 0,
+        /// The action is user-driven. For example, creating a rollout manually via a
+        /// gcloud create command.
+        User = 1,
+        /// Automated action by Cloud Deploy.
+        DeployAutomation = 2,
+    }
+    impl Invoker {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "INVOKER_UNSPECIFIED",
+                Self::User => "USER",
+                Self::DeployAutomation => "DEPLOY_AUTOMATION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INVOKER_UNSPECIFIED" => Some(Self::Unspecified),
+                "USER" => Some(Self::User),
+                "DEPLOY_AUTOMATION" => Some(Self::DeployAutomation),
+                _ => None,
+            }
+        }
+    }
+}
+/// Contains information on the resources to select for a deploy policy.
+/// Attributes provided must all match the resource in order for policy
+/// restrictions to apply. For example, if delivery pipelines attributes given
+/// are an id "prod" and labels "foo: bar", a delivery pipeline resource must
+/// match both that id and have that label in order to be subject to the policy.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeployPolicyResourceSelector {
+    /// Optional. Contains attributes about a delivery pipeline.
+    #[prost(message, optional, tag = "1")]
+    pub delivery_pipeline: ::core::option::Option<DeliveryPipelineAttribute>,
+    /// Optional. Contains attributes about a target.
+    #[prost(message, optional, tag = "2")]
+    pub target: ::core::option::Option<TargetAttribute>,
+}
+/// Contains criteria for selecting DeliveryPipelines.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeliveryPipelineAttribute {
+    /// ID of the `DeliveryPipeline`. The value of this field could be one of the
+    /// following:
+    ///
+    /// * The last segment of a pipeline name
+    /// * "*", all delivery pipelines in a location
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    /// DeliveryPipeline labels.
+    #[prost(map = "string, string", tag = "2")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+}
+/// Contains criteria for selecting Targets. This could be used to select targets
+/// for a Deploy Policy or for an Automation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetAttribute {
     /// ID of the `Target`. The value of this field could be one of the
@@ -1536,6 +1703,202 @@ pub struct TargetAttribute {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+}
+/// Deploy Policy rule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PolicyRule {
+    #[prost(oneof = "policy_rule::Rule", tags = "2")]
+    pub rule: ::core::option::Option<policy_rule::Rule>,
+}
+/// Nested message and enum types in `PolicyRule`.
+pub mod policy_rule {
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Rule {
+        /// Rollout restrictions.
+        #[prost(message, tag = "2")]
+        RolloutRestriction(super::RolloutRestriction),
+    }
+}
+/// Rollout restrictions.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RolloutRestriction {
+    /// Required. Restriction rule ID. Required and must be unique within a
+    /// DeployPolicy. The format is `[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?`.
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    /// Optional. What invoked the action. If left empty, all invoker types will be
+    /// restricted.
+    #[prost(
+        enumeration = "deploy_policy::Invoker",
+        repeated,
+        packed = "false",
+        tag = "2"
+    )]
+    pub invokers: ::prost::alloc::vec::Vec<i32>,
+    /// Optional. Rollout actions to be restricted as part of the policy. If left
+    /// empty, all actions will be restricted.
+    #[prost(
+        enumeration = "rollout_restriction::RolloutActions",
+        repeated,
+        packed = "false",
+        tag = "3"
+    )]
+    pub actions: ::prost::alloc::vec::Vec<i32>,
+    /// Required. Time window within which actions are restricted.
+    #[prost(message, optional, tag = "4")]
+    pub time_windows: ::core::option::Option<TimeWindows>,
+}
+/// Nested message and enum types in `RolloutRestriction`.
+pub mod rollout_restriction {
+    /// Rollout actions to be restricted as part of the policy.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RolloutActions {
+        /// Unspecified.
+        Unspecified = 0,
+        /// Advance the rollout to the next phase.
+        Advance = 1,
+        /// Approve the rollout.
+        Approve = 2,
+        /// Cancel the rollout.
+        Cancel = 3,
+        /// Create a rollout.
+        Create = 4,
+        /// Ignore a job result on the rollout.
+        IgnoreJob = 5,
+        /// Retry a job for a rollout.
+        RetryJob = 6,
+        /// Rollback a rollout.
+        Rollback = 7,
+        /// Terminate a jobrun.
+        TerminateJobrun = 8,
+    }
+    impl RolloutActions {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ROLLOUT_ACTIONS_UNSPECIFIED",
+                Self::Advance => "ADVANCE",
+                Self::Approve => "APPROVE",
+                Self::Cancel => "CANCEL",
+                Self::Create => "CREATE",
+                Self::IgnoreJob => "IGNORE_JOB",
+                Self::RetryJob => "RETRY_JOB",
+                Self::Rollback => "ROLLBACK",
+                Self::TerminateJobrun => "TERMINATE_JOBRUN",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ROLLOUT_ACTIONS_UNSPECIFIED" => Some(Self::Unspecified),
+                "ADVANCE" => Some(Self::Advance),
+                "APPROVE" => Some(Self::Approve),
+                "CANCEL" => Some(Self::Cancel),
+                "CREATE" => Some(Self::Create),
+                "IGNORE_JOB" => Some(Self::IgnoreJob),
+                "RETRY_JOB" => Some(Self::RetryJob),
+                "ROLLBACK" => Some(Self::Rollback),
+                "TERMINATE_JOBRUN" => Some(Self::TerminateJobrun),
+                _ => None,
+            }
+        }
+    }
+}
+/// Time windows within which actions are restricted. See the
+/// [documentation](<https://cloud.google.com/deploy/docs/deploy-policy#dates_times>)
+/// for more information on how to configure dates/times.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TimeWindows {
+    /// Required. The time zone in IANA format [IANA Time Zone
+    /// Database](<https://www.iana.org/time-zones>) (e.g. America/New_York).
+    #[prost(string, tag = "1")]
+    pub time_zone: ::prost::alloc::string::String,
+    /// Optional. One-time windows within which actions are restricted.
+    #[prost(message, repeated, tag = "2")]
+    pub one_time_windows: ::prost::alloc::vec::Vec<OneTimeWindow>,
+    /// Optional. Recurring weekly windows within which actions are restricted.
+    #[prost(message, repeated, tag = "3")]
+    pub weekly_windows: ::prost::alloc::vec::Vec<WeeklyWindow>,
+}
+/// One-time window within which actions are restricted. For example, blocking
+/// actions over New Year's Eve from December 31st at 5pm to January 1st at 9am.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct OneTimeWindow {
+    /// Required. Start date.
+    #[prost(message, optional, tag = "1")]
+    pub start_date: ::core::option::Option<super::super::super::r#type::Date>,
+    /// Required. Start time (inclusive). Use 00:00 for the beginning of the day.
+    #[prost(message, optional, tag = "2")]
+    pub start_time: ::core::option::Option<super::super::super::r#type::TimeOfDay>,
+    /// Required. End date.
+    #[prost(message, optional, tag = "3")]
+    pub end_date: ::core::option::Option<super::super::super::r#type::Date>,
+    /// Required. End time (exclusive). You may use 24:00 for the end of the day.
+    #[prost(message, optional, tag = "4")]
+    pub end_time: ::core::option::Option<super::super::super::r#type::TimeOfDay>,
+}
+/// Weekly windows. For example, blocking actions every Saturday and Sunday.
+/// Another example would be blocking actions every weekday from 5pm to midnight.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WeeklyWindow {
+    /// Optional. Days of week. If left empty, all days of the week will be
+    /// included.
+    #[prost(
+        enumeration = "super::super::super::r#type::DayOfWeek",
+        repeated,
+        packed = "false",
+        tag = "1"
+    )]
+    pub days_of_week: ::prost::alloc::vec::Vec<i32>,
+    /// Optional. Start time (inclusive). Use 00:00 for the beginning of the day.
+    /// If you specify start_time you must also specify end_time. If left empty,
+    /// this will block for the entire day for the days specified in days_of_week.
+    #[prost(message, optional, tag = "2")]
+    pub start_time: ::core::option::Option<super::super::super::r#type::TimeOfDay>,
+    /// Optional. End time (exclusive). Use 24:00 to indicate midnight. If you
+    /// specify end_time you must also specify start_time. If left empty, this will
+    /// block for the entire day for the days specified in days_of_week.
+    #[prost(message, optional, tag = "3")]
+    pub end_time: ::core::option::Option<super::super::super::r#type::TimeOfDay>,
+}
+/// Returned from an action if one or more policies were
+/// violated, and therefore the action was prevented. Contains information about
+/// what policies were violated and why.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PolicyViolation {
+    /// Policy violation details.
+    #[prost(message, repeated, tag = "1")]
+    pub policy_violation_details: ::prost::alloc::vec::Vec<PolicyViolationDetails>,
+}
+/// Policy violation details.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PolicyViolationDetails {
+    /// Name of the policy that was violated.
+    /// Policy resource will be in the format of
+    /// `projects/{project}/locations/{location}/policies/{policy}`.
+    #[prost(string, tag = "1")]
+    pub policy: ::prost::alloc::string::String,
+    /// Id of the rule that triggered the policy violation.
+    #[prost(string, tag = "2")]
+    pub rule_id: ::prost::alloc::string::String,
+    /// User readable message about why the request violated a policy. This is not
+    /// intended for machine parsing.
+    #[prost(string, tag = "3")]
+    pub failure_message: ::prost::alloc::string::String,
 }
 /// A `Release` resource in the Cloud Deploy API.
 ///
@@ -1706,10 +2069,10 @@ pub mod release {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    TargetRenderState::Unspecified => "TARGET_RENDER_STATE_UNSPECIFIED",
-                    TargetRenderState::Succeeded => "SUCCEEDED",
-                    TargetRenderState::Failed => "FAILED",
-                    TargetRenderState::InProgress => "IN_PROGRESS",
+                    Self::Unspecified => "TARGET_RENDER_STATE_UNSPECIFIED",
+                    Self::Succeeded => "SUCCEEDED",
+                    Self::Failed => "FAILED",
+                    Self::InProgress => "IN_PROGRESS",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1770,20 +2133,16 @@ pub mod release {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    FailureCause::Unspecified => "FAILURE_CAUSE_UNSPECIFIED",
-                    FailureCause::CloudBuildUnavailable => "CLOUD_BUILD_UNAVAILABLE",
-                    FailureCause::ExecutionFailed => "EXECUTION_FAILED",
-                    FailureCause::CloudBuildRequestFailed => "CLOUD_BUILD_REQUEST_FAILED",
-                    FailureCause::VerificationConfigNotFound => {
-                        "VERIFICATION_CONFIG_NOT_FOUND"
-                    }
-                    FailureCause::CustomActionNotFound => "CUSTOM_ACTION_NOT_FOUND",
-                    FailureCause::DeploymentStrategyNotSupported => {
+                    Self::Unspecified => "FAILURE_CAUSE_UNSPECIFIED",
+                    Self::CloudBuildUnavailable => "CLOUD_BUILD_UNAVAILABLE",
+                    Self::ExecutionFailed => "EXECUTION_FAILED",
+                    Self::CloudBuildRequestFailed => "CLOUD_BUILD_REQUEST_FAILED",
+                    Self::VerificationConfigNotFound => "VERIFICATION_CONFIG_NOT_FOUND",
+                    Self::CustomActionNotFound => "CUSTOM_ACTION_NOT_FOUND",
+                    Self::DeploymentStrategyNotSupported => {
                         "DEPLOYMENT_STRATEGY_NOT_SUPPORTED"
                     }
-                    FailureCause::RenderFeatureNotSupported => {
-                        "RENDER_FEATURE_NOT_SUPPORTED"
-                    }
+                    Self::RenderFeatureNotSupported => "RENDER_FEATURE_NOT_SUPPORTED",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1882,10 +2241,10 @@ pub mod release {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RenderState::Unspecified => "RENDER_STATE_UNSPECIFIED",
-                RenderState::Succeeded => "SUCCEEDED",
-                RenderState::Failed => "FAILED",
-                RenderState::InProgress => "IN_PROGRESS",
+                Self::Unspecified => "RENDER_STATE_UNSPECIFIED",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::InProgress => "IN_PROGRESS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1899,6 +2258,162 @@ pub mod release {
             }
         }
     }
+}
+/// The request object for `CreateDeployPolicy`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateDeployPolicyRequest {
+    /// Required. The parent collection in which the `DeployPolicy` must be
+    /// created. The format is `projects/{project_id}/locations/{location_name}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. ID of the `DeployPolicy`.
+    #[prost(string, tag = "2")]
+    pub deploy_policy_id: ::prost::alloc::string::String,
+    /// Required. The `DeployPolicy` to create.
+    #[prost(message, optional, tag = "3")]
+    pub deploy_policy: ::core::option::Option<DeployPolicy>,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server knows to ignore the
+    /// request if it has already been completed. The server guarantees that for
+    /// at least 60 minutes after the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request ID,
+    /// the server can check if original operation with the same request ID was
+    /// received, and if so, will ignore the second request. This prevents clients
+    /// from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. If set to true, the request is validated and the user is provided
+    /// with an expected result, but no actual change is made.
+    #[prost(bool, tag = "5")]
+    pub validate_only: bool,
+}
+/// The request object for `UpdateDeployPolicy`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateDeployPolicyRequest {
+    /// Required. Field mask is used to specify the fields to be overwritten by the
+    /// update in the `DeployPolicy` resource. The fields specified in the
+    /// update_mask are relative to the resource, not the full request. A field
+    /// will be overwritten if it's in the mask. If the user doesn't provide a mask
+    /// then all fields are overwritten.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. The `DeployPolicy` to update.
+    #[prost(message, optional, tag = "2")]
+    pub deploy_policy: ::core::option::Option<DeployPolicy>,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server knows to ignore the
+    /// request if it has already been completed. The server guarantees that for
+    /// at least 60 minutes after the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request ID,
+    /// the server can check if original operation with the same request ID was
+    /// received, and if so, will ignore the second request. This prevents clients
+    /// from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. If set to true, updating a `DeployPolicy` that does not exist
+    /// will result in the creation of a new `DeployPolicy`.
+    #[prost(bool, tag = "4")]
+    pub allow_missing: bool,
+    /// Optional. If set to true, the request is validated and the user is provided
+    /// with an expected result, but no actual change is made.
+    #[prost(bool, tag = "5")]
+    pub validate_only: bool,
+}
+/// The request object for `DeleteDeployPolicy`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteDeployPolicyRequest {
+    /// Required. The name of the `DeployPolicy` to delete. The format is
+    /// `projects/{project_id}/locations/{location_name}/deployPolicies/{deploy_policy_name}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server knows to ignore the
+    /// request if it has already been completed. The server guarantees that for
+    /// at least 60 minutes after the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request ID,
+    /// the server can check if original operation with the same request ID was
+    /// received, and if so, will ignore the second request. This prevents clients
+    /// from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. If set to true, then deleting an already deleted or non-existing
+    /// `DeployPolicy` will succeed.
+    #[prost(bool, tag = "3")]
+    pub allow_missing: bool,
+    /// Optional. If set, validate the request and preview the review, but do not
+    /// actually post it.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
+    /// Optional. This checksum is computed by the server based on the value of
+    /// other fields, and may be sent on update and delete requests to ensure the
+    /// client has an up-to-date value before proceeding.
+    #[prost(string, tag = "5")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// The request object for `ListDeployPolicies`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDeployPoliciesRequest {
+    /// Required. The parent, which owns this collection of deploy policies. Format
+    /// must be `projects/{project_id}/locations/{location_name}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of deploy policies to return. The service may return
+    /// fewer than this value. If unspecified, at most 50 deploy policies will
+    /// be returned. The maximum value is 1000; values above 1000 will be set
+    /// to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListDeployPolicies` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other provided parameters match
+    /// the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Filter deploy policies to be returned. See <https://google.aip.dev/160> for
+    /// more details. All fields can be used in the filter.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Field to sort by. See <https://google.aip.dev/132#ordering> for more details.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// The response object from `ListDeployPolicies`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDeployPoliciesResponse {
+    /// The `DeployPolicy` objects.
+    #[prost(message, repeated, tag = "1")]
+    pub deploy_policies: ::prost::alloc::vec::Vec<DeployPolicy>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// The request object for `GetDeployPolicy`
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetDeployPolicyRequest {
+    /// Required. Name of the `DeployPolicy`. Format must be
+    /// `projects/{project_id}/locations/{location_name}/deployPolicies/{deploy_policy_name}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// Description of an a image to use during Skaffold rendering.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2072,6 +2587,10 @@ pub struct CreateReleaseRequest {
     /// with an expected result, but no actual change is made.
     #[prost(bool, tag = "5")]
     pub validate_only: bool,
+    /// Optional. Deploy policies to override. Format is
+    /// `projects/{project}/locations/{location}/deployPolicies/{deployPolicy}`.
+    #[prost(string, repeated, tag = "6")]
+    pub override_deploy_policy: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A `Rollout` resource in the Cloud Deploy API.
 ///
@@ -2210,11 +2729,11 @@ pub mod rollout {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ApprovalState::Unspecified => "APPROVAL_STATE_UNSPECIFIED",
-                ApprovalState::NeedsApproval => "NEEDS_APPROVAL",
-                ApprovalState::DoesNotNeedApproval => "DOES_NOT_NEED_APPROVAL",
-                ApprovalState::Approved => "APPROVED",
-                ApprovalState::Rejected => "REJECTED",
+                Self::Unspecified => "APPROVAL_STATE_UNSPECIFIED",
+                Self::NeedsApproval => "NEEDS_APPROVAL",
+                Self::DoesNotNeedApproval => "DOES_NOT_NEED_APPROVAL",
+                Self::Approved => "APPROVED",
+                Self::Rejected => "REJECTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2274,17 +2793,17 @@ pub mod rollout {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
-                State::InProgress => "IN_PROGRESS",
-                State::PendingApproval => "PENDING_APPROVAL",
-                State::ApprovalRejected => "APPROVAL_REJECTED",
-                State::Pending => "PENDING",
-                State::PendingRelease => "PENDING_RELEASE",
-                State::Cancelling => "CANCELLING",
-                State::Cancelled => "CANCELLED",
-                State::Halted => "HALTED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::InProgress => "IN_PROGRESS",
+                Self::PendingApproval => "PENDING_APPROVAL",
+                Self::ApprovalRejected => "APPROVAL_REJECTED",
+                Self::Pending => "PENDING",
+                Self::PendingRelease => "PENDING_RELEASE",
+                Self::Cancelling => "CANCELLING",
+                Self::Cancelled => "CANCELLED",
+                Self::Halted => "HALTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2349,19 +2868,15 @@ pub mod rollout {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FailureCause::Unspecified => "FAILURE_CAUSE_UNSPECIFIED",
-                FailureCause::CloudBuildUnavailable => "CLOUD_BUILD_UNAVAILABLE",
-                FailureCause::ExecutionFailed => "EXECUTION_FAILED",
-                FailureCause::DeadlineExceeded => "DEADLINE_EXCEEDED",
-                FailureCause::ReleaseFailed => "RELEASE_FAILED",
-                FailureCause::ReleaseAbandoned => "RELEASE_ABANDONED",
-                FailureCause::VerificationConfigNotFound => {
-                    "VERIFICATION_CONFIG_NOT_FOUND"
-                }
-                FailureCause::CloudBuildRequestFailed => "CLOUD_BUILD_REQUEST_FAILED",
-                FailureCause::OperationFeatureNotSupported => {
-                    "OPERATION_FEATURE_NOT_SUPPORTED"
-                }
+                Self::Unspecified => "FAILURE_CAUSE_UNSPECIFIED",
+                Self::CloudBuildUnavailable => "CLOUD_BUILD_UNAVAILABLE",
+                Self::ExecutionFailed => "EXECUTION_FAILED",
+                Self::DeadlineExceeded => "DEADLINE_EXCEEDED",
+                Self::ReleaseFailed => "RELEASE_FAILED",
+                Self::ReleaseAbandoned => "RELEASE_ABANDONED",
+                Self::VerificationConfigNotFound => "VERIFICATION_CONFIG_NOT_FOUND",
+                Self::CloudBuildRequestFailed => "CLOUD_BUILD_REQUEST_FAILED",
+                Self::OperationFeatureNotSupported => "OPERATION_FEATURE_NOT_SUPPORTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2528,13 +3043,13 @@ pub mod phase {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Pending => "PENDING",
-                State::InProgress => "IN_PROGRESS",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
-                State::Aborted => "ABORTED",
-                State::Skipped => "SKIPPED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::InProgress => "IN_PROGRESS",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::Aborted => "ABORTED",
+                Self::Skipped => "SKIPPED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2651,15 +3166,15 @@ pub mod job {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Pending => "PENDING",
-                State::Disabled => "DISABLED",
-                State::InProgress => "IN_PROGRESS",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
-                State::Aborted => "ABORTED",
-                State::Skipped => "SKIPPED",
-                State::Ignored => "IGNORED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::Disabled => "DISABLED",
+                Self::InProgress => "IN_PROGRESS",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::Aborted => "ABORTED",
+                Self::Skipped => "SKIPPED",
+                Self::Ignored => "IGNORED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2810,6 +3325,10 @@ pub struct CreateRolloutRequest {
     /// with an expected result, but no actual change is made.
     #[prost(bool, tag = "5")]
     pub validate_only: bool,
+    /// Optional. Deploy policies to override. Format is
+    /// `projects/{project}/locations/{location}/deployPolicies/{deployPolicy}`.
+    #[prost(string, repeated, tag = "6")]
+    pub override_deploy_policy: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The starting phase ID for the `Rollout`. If empty the `Rollout`
     /// will start at the first phase.
     #[prost(string, tag = "7")]
@@ -2854,6 +3373,10 @@ pub struct ApproveRolloutRequest {
     /// Required. True = approve; false = reject
     #[prost(bool, tag = "2")]
     pub approved: bool,
+    /// Optional. Deploy policies to override. Format is
+    /// `projects/{project}/locations/{location}/deployPolicies/{deployPolicy}`.
+    #[prost(string, repeated, tag = "3")]
+    pub override_deploy_policy: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The response object from `ApproveRollout`.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -2868,6 +3391,10 @@ pub struct AdvanceRolloutRequest {
     /// Required. The phase ID to advance the `Rollout` to.
     #[prost(string, tag = "2")]
     pub phase_id: ::prost::alloc::string::String,
+    /// Optional. Deploy policies to override. Format is
+    /// `projects/{project}/locations/{location}/deployPolicies/{deployPolicy}`.
+    #[prost(string, repeated, tag = "3")]
+    pub override_deploy_policy: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The response object from `AdvanceRollout`.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -2879,6 +3406,10 @@ pub struct CancelRolloutRequest {
     /// `projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/{rollout}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. Deploy policies to override. Format is
+    /// `projects/{project}/locations/{location}/deployPolicies/{deployPolicy}`.
+    #[prost(string, repeated, tag = "2")]
+    pub override_deploy_policy: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The response object from `CancelRollout`.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -2896,6 +3427,10 @@ pub struct IgnoreJobRequest {
     /// Required. The job ID for the Job to ignore.
     #[prost(string, tag = "3")]
     pub job_id: ::prost::alloc::string::String,
+    /// Optional. Deploy policies to override. Format is
+    /// `projects/{project}/locations/{location}/deployPolicies/{deployPolicy}`.
+    #[prost(string, repeated, tag = "4")]
+    pub override_deploy_policy: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The response object from `IgnoreJob`.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -2913,6 +3448,10 @@ pub struct RetryJobRequest {
     /// Required. The job ID for the Job to retry.
     #[prost(string, tag = "3")]
     pub job_id: ::prost::alloc::string::String,
+    /// Optional. Deploy policies to override. Format is
+    /// `projects/{project}/locations/{location}/deployPolicies/{deployPolicy}`.
+    #[prost(string, repeated, tag = "4")]
+    pub override_deploy_policy: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The response object from 'RetryJob'.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -3003,12 +3542,12 @@ pub mod job_run {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::InProgress => "IN_PROGRESS",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
-                State::Terminating => "TERMINATING",
-                State::Terminated => "TERMINATED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::InProgress => "IN_PROGRESS",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::Terminating => "TERMINATING",
+                Self::Terminated => "TERMINATED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3112,13 +3651,13 @@ pub mod deploy_job_run {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FailureCause::Unspecified => "FAILURE_CAUSE_UNSPECIFIED",
-                FailureCause::CloudBuildUnavailable => "CLOUD_BUILD_UNAVAILABLE",
-                FailureCause::ExecutionFailed => "EXECUTION_FAILED",
-                FailureCause::DeadlineExceeded => "DEADLINE_EXCEEDED",
-                FailureCause::MissingResourcesForCanary => "MISSING_RESOURCES_FOR_CANARY",
-                FailureCause::CloudBuildRequestFailed => "CLOUD_BUILD_REQUEST_FAILED",
-                FailureCause::DeployFeatureNotSupported => "DEPLOY_FEATURE_NOT_SUPPORTED",
+                Self::Unspecified => "FAILURE_CAUSE_UNSPECIFIED",
+                Self::CloudBuildUnavailable => "CLOUD_BUILD_UNAVAILABLE",
+                Self::ExecutionFailed => "EXECUTION_FAILED",
+                Self::DeadlineExceeded => "DEADLINE_EXCEEDED",
+                Self::MissingResourcesForCanary => "MISSING_RESOURCES_FOR_CANARY",
+                Self::CloudBuildRequestFailed => "CLOUD_BUILD_REQUEST_FAILED",
+                Self::DeployFeatureNotSupported => "DEPLOY_FEATURE_NOT_SUPPORTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3200,14 +3739,12 @@ pub mod verify_job_run {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FailureCause::Unspecified => "FAILURE_CAUSE_UNSPECIFIED",
-                FailureCause::CloudBuildUnavailable => "CLOUD_BUILD_UNAVAILABLE",
-                FailureCause::ExecutionFailed => "EXECUTION_FAILED",
-                FailureCause::DeadlineExceeded => "DEADLINE_EXCEEDED",
-                FailureCause::VerificationConfigNotFound => {
-                    "VERIFICATION_CONFIG_NOT_FOUND"
-                }
-                FailureCause::CloudBuildRequestFailed => "CLOUD_BUILD_REQUEST_FAILED",
+                Self::Unspecified => "FAILURE_CAUSE_UNSPECIFIED",
+                Self::CloudBuildUnavailable => "CLOUD_BUILD_UNAVAILABLE",
+                Self::ExecutionFailed => "EXECUTION_FAILED",
+                Self::DeadlineExceeded => "DEADLINE_EXCEEDED",
+                Self::VerificationConfigNotFound => "VERIFICATION_CONFIG_NOT_FOUND",
+                Self::CloudBuildRequestFailed => "CLOUD_BUILD_REQUEST_FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3279,11 +3816,11 @@ pub mod predeploy_job_run {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FailureCause::Unspecified => "FAILURE_CAUSE_UNSPECIFIED",
-                FailureCause::CloudBuildUnavailable => "CLOUD_BUILD_UNAVAILABLE",
-                FailureCause::ExecutionFailed => "EXECUTION_FAILED",
-                FailureCause::DeadlineExceeded => "DEADLINE_EXCEEDED",
-                FailureCause::CloudBuildRequestFailed => "CLOUD_BUILD_REQUEST_FAILED",
+                Self::Unspecified => "FAILURE_CAUSE_UNSPECIFIED",
+                Self::CloudBuildUnavailable => "CLOUD_BUILD_UNAVAILABLE",
+                Self::ExecutionFailed => "EXECUTION_FAILED",
+                Self::DeadlineExceeded => "DEADLINE_EXCEEDED",
+                Self::CloudBuildRequestFailed => "CLOUD_BUILD_REQUEST_FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3354,11 +3891,11 @@ pub mod postdeploy_job_run {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FailureCause::Unspecified => "FAILURE_CAUSE_UNSPECIFIED",
-                FailureCause::CloudBuildUnavailable => "CLOUD_BUILD_UNAVAILABLE",
-                FailureCause::ExecutionFailed => "EXECUTION_FAILED",
-                FailureCause::DeadlineExceeded => "DEADLINE_EXCEEDED",
-                FailureCause::CloudBuildRequestFailed => "CLOUD_BUILD_REQUEST_FAILED",
+                Self::Unspecified => "FAILURE_CAUSE_UNSPECIFIED",
+                Self::CloudBuildUnavailable => "CLOUD_BUILD_UNAVAILABLE",
+                Self::ExecutionFailed => "EXECUTION_FAILED",
+                Self::DeadlineExceeded => "DEADLINE_EXCEEDED",
+                Self::CloudBuildRequestFailed => "CLOUD_BUILD_REQUEST_FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3455,6 +3992,10 @@ pub struct TerminateJobRunRequest {
     /// `projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/{rollout}/jobRuns/{jobRun}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. Deploy policies to override. Format is
+    /// `projects/{project}/locations/{location}/deployPolicies/{deployPolicy}`.
+    #[prost(string, repeated, tag = "2")]
+    pub override_deploy_policy: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The response object from `TerminateJobRun`.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -3899,6 +4440,10 @@ pub struct AutomationRun {
     /// only when an explanation is needed.
     #[prost(string, tag = "9")]
     pub state_description: ::prost::alloc::string::String,
+    /// Output only. Contains information about what policies prevented the
+    /// `AutomationRun` from proceeding.
+    #[prost(message, optional, tag = "10")]
+    pub policy_violation: ::core::option::Option<PolicyViolation>,
     /// Output only. Time the `AutomationRun` expires. An `AutomationRun` expires
     /// after 14 days from its creation date.
     #[prost(message, optional, tag = "11")]
@@ -3955,13 +4500,13 @@ pub mod automation_run {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Succeeded => "SUCCEEDED",
-                State::Cancelled => "CANCELLED",
-                State::Failed => "FAILED",
-                State::InProgress => "IN_PROGRESS",
-                State::Pending => "PENDING",
-                State::Aborted => "ABORTED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Cancelled => "CANCELLED",
+                Self::Failed => "FAILED",
+                Self::InProgress => "IN_PROGRESS",
+                Self::Pending => "PENDING",
+                Self::Aborted => "ABORTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4194,12 +4739,10 @@ impl SkaffoldSupportState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SkaffoldSupportState::Unspecified => "SKAFFOLD_SUPPORT_STATE_UNSPECIFIED",
-            SkaffoldSupportState::Supported => "SKAFFOLD_SUPPORT_STATE_SUPPORTED",
-            SkaffoldSupportState::MaintenanceMode => {
-                "SKAFFOLD_SUPPORT_STATE_MAINTENANCE_MODE"
-            }
-            SkaffoldSupportState::Unsupported => "SKAFFOLD_SUPPORT_STATE_UNSUPPORTED",
+            Self::Unspecified => "SKAFFOLD_SUPPORT_STATE_UNSPECIFIED",
+            Self::Supported => "SKAFFOLD_SUPPORT_STATE_SUPPORTED",
+            Self::MaintenanceMode => "SKAFFOLD_SUPPORT_STATE_MAINTENANCE_MODE",
+            Self::Unsupported => "SKAFFOLD_SUPPORT_STATE_UNSUPPORTED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4231,9 +4774,9 @@ impl BackoffMode {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            BackoffMode::Unspecified => "BACKOFF_MODE_UNSPECIFIED",
-            BackoffMode::Linear => "BACKOFF_MODE_LINEAR",
-            BackoffMode::Exponential => "BACKOFF_MODE_EXPONENTIAL",
+            Self::Unspecified => "BACKOFF_MODE_UNSPECIFIED",
+            Self::Linear => "BACKOFF_MODE_LINEAR",
+            Self::Exponential => "BACKOFF_MODE_EXPONENTIAL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4272,13 +4815,13 @@ impl RepairState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            RepairState::Unspecified => "REPAIR_STATE_UNSPECIFIED",
-            RepairState::Succeeded => "REPAIR_STATE_SUCCEEDED",
-            RepairState::Cancelled => "REPAIR_STATE_CANCELLED",
-            RepairState::Failed => "REPAIR_STATE_FAILED",
-            RepairState::InProgress => "REPAIR_STATE_IN_PROGRESS",
-            RepairState::Pending => "REPAIR_STATE_PENDING",
-            RepairState::Aborted => "REPAIR_STATE_ABORTED",
+            Self::Unspecified => "REPAIR_STATE_UNSPECIFIED",
+            Self::Succeeded => "REPAIR_STATE_SUCCEEDED",
+            Self::Cancelled => "REPAIR_STATE_CANCELLED",
+            Self::Failed => "REPAIR_STATE_FAILED",
+            Self::InProgress => "REPAIR_STATE_IN_PROGRESS",
+            Self::Pending => "REPAIR_STATE_PENDING",
+            Self::Aborted => "REPAIR_STATE_ABORTED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4297,7 +4840,13 @@ impl RepairState {
 }
 /// Generated client implementations.
 pub mod cloud_deploy_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// CloudDeploy service creates and manages Continuous Delivery operations
@@ -4394,8 +4943,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4425,8 +4973,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4456,8 +5003,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4487,8 +5033,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4518,8 +5063,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4549,8 +5093,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4577,8 +5120,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4605,8 +5147,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4633,8 +5174,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4661,8 +5201,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4689,8 +5228,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4717,8 +5255,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4748,8 +5285,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4779,8 +5315,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4810,8 +5345,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4841,8 +5375,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4872,8 +5405,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4897,8 +5429,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4925,8 +5456,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4956,8 +5486,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4975,6 +5504,153 @@ pub mod cloud_deploy_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Creates a new DeployPolicy in a given project and location.
+        pub async fn create_deploy_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateDeployPolicyRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.deploy.v1.CloudDeploy/CreateDeployPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.deploy.v1.CloudDeploy",
+                        "CreateDeployPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the parameters of a single DeployPolicy.
+        pub async fn update_deploy_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateDeployPolicyRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.deploy.v1.CloudDeploy/UpdateDeployPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.deploy.v1.CloudDeploy",
+                        "UpdateDeployPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single DeployPolicy.
+        pub async fn delete_deploy_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteDeployPolicyRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.deploy.v1.CloudDeploy/DeleteDeployPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.deploy.v1.CloudDeploy",
+                        "DeleteDeployPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists DeployPolicies in a given project and location.
+        pub async fn list_deploy_policies(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListDeployPoliciesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListDeployPoliciesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.deploy.v1.CloudDeploy/ListDeployPolicies",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.deploy.v1.CloudDeploy",
+                        "ListDeployPolicies",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single DeployPolicy.
+        pub async fn get_deploy_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetDeployPolicyRequest>,
+        ) -> std::result::Result<tonic::Response<super::DeployPolicy>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.deploy.v1.CloudDeploy/GetDeployPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.deploy.v1.CloudDeploy",
+                        "GetDeployPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Approves a Rollout.
         pub async fn approve_rollout(
             &mut self,
@@ -4987,8 +5663,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5018,8 +5693,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5049,8 +5723,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5080,8 +5753,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5105,8 +5777,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5133,8 +5804,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5164,8 +5834,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5192,8 +5861,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5220,8 +5888,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5245,8 +5912,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5273,8 +5939,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5301,8 +5966,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5329,8 +5993,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5360,8 +6023,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5391,8 +6053,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5419,8 +6080,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5450,8 +6110,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5478,8 +6137,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5509,8 +6167,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5543,8 +6200,7 @@ pub mod cloud_deploy_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5599,6 +6255,153 @@ pub struct DeliveryPipelineNotificationEvent {
     /// Type of this notification, e.g. for a Pub/Sub failure.
     #[prost(enumeration = "Type", tag = "3")]
     pub r#type: i32,
+}
+/// Payload proto for "clouddeploy.googleapis.com/deploypolicy_evaluation"
+/// Platform Log event that describes the deploy policy evaluation event.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeployPolicyEvaluationEvent {
+    /// Debug message for when a deploy policy event occurs.
+    #[prost(string, tag = "1")]
+    pub message: ::prost::alloc::string::String,
+    /// Rule type (e.g. Restrict Rollouts).
+    #[prost(string, tag = "2")]
+    pub rule_type: ::prost::alloc::string::String,
+    /// Rule id.
+    #[prost(string, tag = "3")]
+    pub rule: ::prost::alloc::string::String,
+    /// Unique identifier of the `Delivery Pipeline`.
+    #[prost(string, tag = "4")]
+    pub pipeline_uid: ::prost::alloc::string::String,
+    /// The name of the `Delivery Pipeline`.
+    #[prost(string, tag = "5")]
+    pub delivery_pipeline: ::prost::alloc::string::String,
+    /// Unique identifier of the `Target`. This is an optional field, as a `Target`
+    /// may not always be applicable to a policy.
+    #[prost(string, tag = "6")]
+    pub target_uid: ::prost::alloc::string::String,
+    /// The name of the `Target`. This is an optional field, as a `Target` may not
+    /// always be applicable to a policy.
+    #[prost(string, tag = "7")]
+    pub target: ::prost::alloc::string::String,
+    /// What invoked the action (e.g. a user or automation).
+    #[prost(enumeration = "deploy_policy::Invoker", tag = "8")]
+    pub invoker: i32,
+    /// The name of the `DeployPolicy`.
+    #[prost(string, tag = "9")]
+    pub deploy_policy: ::prost::alloc::string::String,
+    /// Unique identifier of the `DeployPolicy`.
+    #[prost(string, tag = "10")]
+    pub deploy_policy_uid: ::prost::alloc::string::String,
+    /// Whether the request is allowed. Allowed is set as true if:
+    /// (1) the request complies with the policy; or
+    /// (2) the request doesn't comply with the policy but the policy was
+    /// overridden; or
+    /// (3) the request doesn't comply with the policy but the policy was suspended
+    #[prost(bool, tag = "11")]
+    pub allowed: bool,
+    /// The policy verdict of the request.
+    #[prost(enumeration = "deploy_policy_evaluation_event::PolicyVerdict", tag = "12")]
+    pub verdict: i32,
+    /// Things that could have overridden the policy verdict. Overrides together
+    /// with verdict decide whether the request is allowed.
+    #[prost(
+        enumeration = "deploy_policy_evaluation_event::PolicyVerdictOverride",
+        repeated,
+        tag = "13"
+    )]
+    pub overrides: ::prost::alloc::vec::Vec<i32>,
+}
+/// Nested message and enum types in `DeployPolicyEvaluationEvent`.
+pub mod deploy_policy_evaluation_event {
+    /// The policy verdict of the request.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PolicyVerdict {
+        /// This should never happen.
+        Unspecified = 0,
+        /// Allowed by policy. This enum value is not currently used but may be used
+        /// in the future. Currently logs are only generated when a request is denied
+        /// by policy.
+        AllowedByPolicy = 1,
+        /// Denied by policy.
+        DeniedByPolicy = 2,
+    }
+    impl PolicyVerdict {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "POLICY_VERDICT_UNSPECIFIED",
+                Self::AllowedByPolicy => "ALLOWED_BY_POLICY",
+                Self::DeniedByPolicy => "DENIED_BY_POLICY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "POLICY_VERDICT_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALLOWED_BY_POLICY" => Some(Self::AllowedByPolicy),
+                "DENIED_BY_POLICY" => Some(Self::DeniedByPolicy),
+                _ => None,
+            }
+        }
+    }
+    /// Things that could have overridden the policy verdict. When overrides are
+    /// used, the request will be allowed even if it is DENIED_BY_POLICY.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PolicyVerdictOverride {
+        /// This should never happen.
+        Unspecified = 0,
+        /// The policy was overridden.
+        PolicyOverridden = 1,
+        /// The policy was suspended.
+        PolicySuspended = 2,
+    }
+    impl PolicyVerdictOverride {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "POLICY_VERDICT_OVERRIDE_UNSPECIFIED",
+                Self::PolicyOverridden => "POLICY_OVERRIDDEN",
+                Self::PolicySuspended => "POLICY_SUSPENDED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "POLICY_VERDICT_OVERRIDE_UNSPECIFIED" => Some(Self::Unspecified),
+                "POLICY_OVERRIDDEN" => Some(Self::PolicyOverridden),
+                "POLICY_SUSPENDED" => Some(Self::PolicySuspended),
+                _ => None,
+            }
+        }
+    }
 }
 /// Payload proto for "clouddeploy.googleapis.com/deploypolicy_notification".
 /// Platform Log event that describes the failure to send a pub/sub notification
@@ -5809,20 +6612,20 @@ pub mod rollout_update_event {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RolloutUpdateType::Unspecified => "ROLLOUT_UPDATE_TYPE_UNSPECIFIED",
-                RolloutUpdateType::Pending => "PENDING",
-                RolloutUpdateType::PendingRelease => "PENDING_RELEASE",
-                RolloutUpdateType::InProgress => "IN_PROGRESS",
-                RolloutUpdateType::Cancelling => "CANCELLING",
-                RolloutUpdateType::Cancelled => "CANCELLED",
-                RolloutUpdateType::Halted => "HALTED",
-                RolloutUpdateType::Succeeded => "SUCCEEDED",
-                RolloutUpdateType::Failed => "FAILED",
-                RolloutUpdateType::ApprovalRequired => "APPROVAL_REQUIRED",
-                RolloutUpdateType::Approved => "APPROVED",
-                RolloutUpdateType::Rejected => "REJECTED",
-                RolloutUpdateType::AdvanceRequired => "ADVANCE_REQUIRED",
-                RolloutUpdateType::Advanced => "ADVANCED",
+                Self::Unspecified => "ROLLOUT_UPDATE_TYPE_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::PendingRelease => "PENDING_RELEASE",
+                Self::InProgress => "IN_PROGRESS",
+                Self::Cancelling => "CANCELLING",
+                Self::Cancelled => "CANCELLED",
+                Self::Halted => "HALTED",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::ApprovalRequired => "APPROVAL_REQUIRED",
+                Self::Approved => "APPROVED",
+                Self::Rejected => "REJECTED",
+                Self::AdvanceRequired => "ADVANCE_REQUIRED",
+                Self::Advanced => "ADVANCED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

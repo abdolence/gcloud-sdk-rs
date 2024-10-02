@@ -119,11 +119,11 @@ pub mod engine_call_log {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Begun => "BEGUN",
-                State::Succeeded => "SUCCEEDED",
-                State::ExceptionRaised => "EXCEPTION_RAISED",
-                State::ExceptionHandled => "EXCEPTION_HANDLED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Begun => "BEGUN",
+                Self::Succeeded => "SUCCEEDED",
+                Self::ExceptionRaised => "EXCEPTION_RAISED",
+                Self::ExceptionHandled => "EXCEPTION_HANDLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -230,11 +230,11 @@ pub mod executions_system_log {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Active => "ACTIVE",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
-                State::Cancelled => "CANCELLED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::Cancelled => "CANCELLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

@@ -53,9 +53,9 @@ pub mod apt_artifact {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PackageType::Unspecified => "PACKAGE_TYPE_UNSPECIFIED",
-                PackageType::Binary => "BINARY",
-                PackageType::Source => "SOURCE",
+                Self::Unspecified => "PACKAGE_TYPE_UNSPECIFIED",
+                Self::Binary => "BINARY",
+                Self::Source => "SOURCE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -452,9 +452,9 @@ pub mod hash {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                HashType::Unspecified => "HASH_TYPE_UNSPECIFIED",
-                HashType::Sha256 => "SHA256",
-                HashType::Md5 => "MD5",
+                Self::Unspecified => "HASH_TYPE_UNSPECIFIED",
+                Self::Sha256 => "SHA256",
+                Self::Md5 => "MD5",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -672,10 +672,10 @@ pub mod cleanup_policy_condition {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TagState::Unspecified => "TAG_STATE_UNSPECIFIED",
-                TagState::Tagged => "TAGGED",
-                TagState::Untagged => "UNTAGGED",
-                TagState::Any => "ANY",
+                Self::Unspecified => "TAG_STATE_UNSPECIFIED",
+                Self::Tagged => "TAGGED",
+                Self::Untagged => "UNTAGGED",
+                Self::Any => "ANY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -743,9 +743,9 @@ pub mod cleanup_policy {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Action::Unspecified => "ACTION_UNSPECIFIED",
-                Action::Delete => "DELETE",
-                Action::Keep => "KEEP",
+                Self::Unspecified => "ACTION_UNSPECIFIED",
+                Self::Delete => "DELETE",
+                Self::Keep => "KEEP",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -857,8 +857,8 @@ pub mod remote_repository_config {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    PublicRepository::Unspecified => "PUBLIC_REPOSITORY_UNSPECIFIED",
-                    PublicRepository::DockerHub => "DOCKER_HUB",
+                    Self::Unspecified => "PUBLIC_REPOSITORY_UNSPECIFIED",
+                    Self::DockerHub => "DOCKER_HUB",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -915,8 +915,8 @@ pub mod remote_repository_config {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    PublicRepository::Unspecified => "PUBLIC_REPOSITORY_UNSPECIFIED",
-                    PublicRepository::MavenCentral => "MAVEN_CENTRAL",
+                    Self::Unspecified => "PUBLIC_REPOSITORY_UNSPECIFIED",
+                    Self::MavenCentral => "MAVEN_CENTRAL",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -972,8 +972,8 @@ pub mod remote_repository_config {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    PublicRepository::Unspecified => "PUBLIC_REPOSITORY_UNSPECIFIED",
-                    PublicRepository::Npmjs => "NPMJS",
+                    Self::Unspecified => "PUBLIC_REPOSITORY_UNSPECIFIED",
+                    Self::Npmjs => "NPMJS",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1029,8 +1029,8 @@ pub mod remote_repository_config {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    PublicRepository::Unspecified => "PUBLIC_REPOSITORY_UNSPECIFIED",
-                    PublicRepository::Pypi => "PYPI",
+                    Self::Unspecified => "PUBLIC_REPOSITORY_UNSPECIFIED",
+                    Self::Pypi => "PYPI",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1101,9 +1101,9 @@ pub mod remote_repository_config {
                 /// (if the ProtoBuf definition does not change) and safe for programmatic use.
                 pub fn as_str_name(&self) -> &'static str {
                     match self {
-                        RepositoryBase::Unspecified => "REPOSITORY_BASE_UNSPECIFIED",
-                        RepositoryBase::Debian => "DEBIAN",
-                        RepositoryBase::Ubuntu => "UBUNTU",
+                        Self::Unspecified => "REPOSITORY_BASE_UNSPECIFIED",
+                        Self::Debian => "DEBIAN",
+                        Self::Ubuntu => "UBUNTU",
                     }
                 }
                 /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1184,13 +1184,13 @@ pub mod remote_repository_config {
                 /// (if the ProtoBuf definition does not change) and safe for programmatic use.
                 pub fn as_str_name(&self) -> &'static str {
                     match self {
-                        RepositoryBase::Unspecified => "REPOSITORY_BASE_UNSPECIFIED",
-                        RepositoryBase::Centos => "CENTOS",
-                        RepositoryBase::CentosDebug => "CENTOS_DEBUG",
-                        RepositoryBase::CentosVault => "CENTOS_VAULT",
-                        RepositoryBase::CentosStream => "CENTOS_STREAM",
-                        RepositoryBase::Rocky => "ROCKY",
-                        RepositoryBase::Epel => "EPEL",
+                        Self::Unspecified => "REPOSITORY_BASE_UNSPECIFIED",
+                        Self::Centos => "CENTOS",
+                        Self::CentosDebug => "CENTOS_DEBUG",
+                        Self::CentosVault => "CENTOS_VAULT",
+                        Self::CentosStream => "CENTOS_STREAM",
+                        Self::Rocky => "ROCKY",
+                        Self::Epel => "EPEL",
                     }
                 }
                 /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1354,9 +1354,9 @@ pub mod repository {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    VersionPolicy::Unspecified => "VERSION_POLICY_UNSPECIFIED",
-                    VersionPolicy::Release => "RELEASE",
-                    VersionPolicy::Snapshot => "SNAPSHOT",
+                    Self::Unspecified => "VERSION_POLICY_UNSPECIFIED",
+                    Self::Release => "RELEASE",
+                    Self::Snapshot => "SNAPSHOT",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1421,15 +1421,15 @@ pub mod repository {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Format::Unspecified => "FORMAT_UNSPECIFIED",
-                Format::Docker => "DOCKER",
-                Format::Maven => "MAVEN",
-                Format::Npm => "NPM",
-                Format::Apt => "APT",
-                Format::Yum => "YUM",
-                Format::Python => "PYTHON",
-                Format::Kfp => "KFP",
-                Format::Go => "GO",
+                Self::Unspecified => "FORMAT_UNSPECIFIED",
+                Self::Docker => "DOCKER",
+                Self::Maven => "MAVEN",
+                Self::Npm => "NPM",
+                Self::Apt => "APT",
+                Self::Yum => "YUM",
+                Self::Python => "PYTHON",
+                Self::Kfp => "KFP",
+                Self::Go => "GO",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1479,10 +1479,10 @@ pub mod repository {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Mode::Unspecified => "MODE_UNSPECIFIED",
-                Mode::StandardRepository => "STANDARD_REPOSITORY",
-                Mode::VirtualRepository => "VIRTUAL_REPOSITORY",
-                Mode::RemoteRepository => "REMOTE_REPOSITORY",
+                Self::Unspecified => "MODE_UNSPECIFIED",
+                Self::StandardRepository => "STANDARD_REPOSITORY",
+                Self::VirtualRepository => "VIRTUAL_REPOSITORY",
+                Self::RemoteRepository => "REMOTE_REPOSITORY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1633,14 +1633,10 @@ pub mod project_settings {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RedirectionState::Unspecified => "REDIRECTION_STATE_UNSPECIFIED",
-                RedirectionState::RedirectionFromGcrIoDisabled => {
-                    "REDIRECTION_FROM_GCR_IO_DISABLED"
-                }
-                RedirectionState::RedirectionFromGcrIoEnabled => {
-                    "REDIRECTION_FROM_GCR_IO_ENABLED"
-                }
-                RedirectionState::RedirectionFromGcrIoFinalized => {
+                Self::Unspecified => "REDIRECTION_STATE_UNSPECIFIED",
+                Self::RedirectionFromGcrIoDisabled => "REDIRECTION_FROM_GCR_IO_DISABLED",
+                Self::RedirectionFromGcrIoEnabled => "REDIRECTION_FROM_GCR_IO_ENABLED",
+                Self::RedirectionFromGcrIoFinalized => {
                     "REDIRECTION_FROM_GCR_IO_FINALIZED"
                 }
             }
@@ -1898,9 +1894,9 @@ impl VersionView {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            VersionView::Unspecified => "VERSION_VIEW_UNSPECIFIED",
-            VersionView::Basic => "BASIC",
-            VersionView::Full => "FULL",
+            Self::Unspecified => "VERSION_VIEW_UNSPECIFIED",
+            Self::Basic => "BASIC",
+            Self::Full => "FULL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1964,9 +1960,9 @@ pub mod vpcsc_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                VpcscPolicy::Unspecified => "VPCSC_POLICY_UNSPECIFIED",
-                VpcscPolicy::Deny => "DENY",
-                VpcscPolicy::Allow => "ALLOW",
+                Self::Unspecified => "VPCSC_POLICY_UNSPECIFIED",
+                Self::Deny => "DENY",
+                Self::Allow => "ALLOW",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2043,9 +2039,9 @@ pub mod yum_artifact {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PackageType::Unspecified => "PACKAGE_TYPE_UNSPECIFIED",
-                PackageType::Binary => "BINARY",
-                PackageType::Source => "SOURCE",
+                Self::Unspecified => "PACKAGE_TYPE_UNSPECIFIED",
+                Self::Binary => "BINARY",
+                Self::Source => "SOURCE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2127,7 +2123,13 @@ pub struct ImportYumArtifactsMetadata {}
 pub struct OperationMetadata {}
 /// Generated client implementations.
 pub mod artifact_registry_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The Artifact Registry API service.
@@ -2235,8 +2237,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2263,8 +2264,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2294,8 +2294,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2322,8 +2321,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2353,8 +2351,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2381,8 +2378,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2412,8 +2408,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2440,8 +2435,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2474,8 +2468,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2508,8 +2501,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2539,8 +2531,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2567,8 +2558,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2599,8 +2589,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2627,8 +2616,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2660,8 +2648,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2691,8 +2678,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2719,8 +2705,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2751,8 +2736,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2782,8 +2766,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2810,8 +2793,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2842,8 +2824,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2874,8 +2855,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2905,8 +2885,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2933,8 +2912,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2964,8 +2942,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2992,8 +2969,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3020,8 +2996,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3048,8 +3023,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3076,8 +3050,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3109,8 +3082,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3142,8 +3114,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3177,8 +3148,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3208,8 +3178,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3239,8 +3208,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3267,8 +3235,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3295,8 +3262,7 @@ pub mod artifact_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

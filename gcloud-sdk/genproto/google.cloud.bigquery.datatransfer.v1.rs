@@ -30,6 +30,80 @@ pub struct ScheduleOptions {
     #[prost(message, optional, tag = "2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// V2 options customizing different types of data transfer schedule.
+/// This field supports existing time-based and manual transfer schedule. Also
+/// supports Event-Driven transfer schedule. ScheduleOptionsV2 cannot be used
+/// together with ScheduleOptions/Schedule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ScheduleOptionsV2 {
+    /// Data transfer schedules.
+    #[prost(oneof = "schedule_options_v2::Schedule", tags = "1, 2, 3")]
+    pub schedule: ::core::option::Option<schedule_options_v2::Schedule>,
+}
+/// Nested message and enum types in `ScheduleOptionsV2`.
+pub mod schedule_options_v2 {
+    /// Data transfer schedules.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Schedule {
+        /// Time based transfer schedule options. This is the default schedule
+        /// option.
+        #[prost(message, tag = "1")]
+        TimeBasedSchedule(super::TimeBasedSchedule),
+        /// Manual transfer schedule. If set, the transfer run will not be
+        /// auto-scheduled by the system, unless the client invokes
+        /// StartManualTransferRuns.  This is equivalent to
+        /// disable_auto_scheduling = true.
+        #[prost(message, tag = "2")]
+        ManualSchedule(super::ManualSchedule),
+        /// Event driven transfer schedule options. If set, the transfer will be
+        /// scheduled upon events arrial.
+        #[prost(message, tag = "3")]
+        EventDrivenSchedule(super::EventDrivenSchedule),
+    }
+}
+/// Options customizing the time based transfer schedule.
+/// Options are migrated from the original ScheduleOptions message.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TimeBasedSchedule {
+    /// Data transfer schedule.
+    /// If the data source does not support a custom schedule, this should be
+    /// empty. If it is empty, the default value for the data source will be used.
+    /// The specified times are in UTC.
+    /// Examples of valid format:
+    /// `1st,3rd monday of month 15:30`,
+    /// `every wed,fri of jan,jun 13:15`, and
+    /// `first sunday of quarter 00:00`.
+    /// See more explanation about the format here:
+    /// <https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format>
+    ///
+    /// NOTE: The minimum interval time between recurring transfers depends on the
+    /// data source; refer to the documentation for your data source.
+    #[prost(string, tag = "1")]
+    pub schedule: ::prost::alloc::string::String,
+    /// Specifies time to start scheduling transfer runs. The first run will be
+    /// scheduled at or after the start time according to a recurrence pattern
+    /// defined in the schedule string. The start time can be changed at any
+    /// moment.
+    #[prost(message, optional, tag = "2")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Defines time to stop scheduling transfer runs. A transfer run cannot be
+    /// scheduled at or after the end time. The end time can be changed at any
+    /// moment.
+    #[prost(message, optional, tag = "3")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Options customizing manual transfers schedule.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ManualSchedule {}
+/// Options customizing EventDriven transfers schedule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EventDrivenSchedule {
+    /// Pub/Sub subscription name used to receive events.
+    /// Only Google Cloud Storage data source support this option.
+    /// Format: projects/{project}/subscriptions/{subscription}
+    #[prost(string, tag = "1")]
+    pub pubsub_subscription: ::prost::alloc::string::String,
+}
 /// Information about a user.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserInfo {
@@ -86,6 +160,11 @@ pub struct TransferConfig {
     /// Options customizing the data transfer schedule.
     #[prost(message, optional, tag = "24")]
     pub schedule_options: ::core::option::Option<ScheduleOptions>,
+    /// Options customizing different types of data transfer schedule.
+    /// This field replaces "schedule" and "schedule_options" fields.
+    /// ScheduleOptionsV2 cannot be used together with ScheduleOptions/Schedule.
+    #[prost(message, optional, tag = "31")]
+    pub schedule_options_v2: ::core::option::Option<ScheduleOptionsV2>,
     /// The number of days to look back to automatically refresh the data.
     /// For example, if `data_refresh_window_days = 10`, then every day
     /// BigQuery reingests data for \[today-10, today-1\], rather than ingesting data
@@ -136,6 +215,10 @@ pub struct TransferConfig {
     /// otherwise try to apply project default keys if it is absent.
     #[prost(message, optional, tag = "28")]
     pub encryption_configuration: ::core::option::Option<EncryptionConfiguration>,
+    /// Output only. Error code with detailed information about reason of the
+    /// latest config failure.
+    #[prost(message, optional, tag = "32")]
+    pub error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// The desination of the transfer config.
     #[prost(oneof = "transfer_config::Destination", tags = "2")]
     pub destination: ::core::option::Option<transfer_config::Destination>,
@@ -281,10 +364,10 @@ pub mod transfer_message {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MessageSeverity::Unspecified => "MESSAGE_SEVERITY_UNSPECIFIED",
-                MessageSeverity::Info => "INFO",
-                MessageSeverity::Warning => "WARNING",
-                MessageSeverity::Error => "ERROR",
+                Self::Unspecified => "MESSAGE_SEVERITY_UNSPECIFIED",
+                Self::Info => "INFO",
+                Self::Warning => "WARNING",
+                Self::Error => "ERROR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -318,9 +401,9 @@ impl TransferType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            TransferType::Unspecified => "TRANSFER_TYPE_UNSPECIFIED",
-            TransferType::Batch => "BATCH",
-            TransferType::Streaming => "STREAMING",
+            Self::Unspecified => "TRANSFER_TYPE_UNSPECIFIED",
+            Self::Batch => "BATCH",
+            Self::Streaming => "STREAMING",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -358,12 +441,12 @@ impl TransferState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            TransferState::Unspecified => "TRANSFER_STATE_UNSPECIFIED",
-            TransferState::Pending => "PENDING",
-            TransferState::Running => "RUNNING",
-            TransferState::Succeeded => "SUCCEEDED",
-            TransferState::Failed => "FAILED",
-            TransferState::Cancelled => "CANCELLED",
+            Self::Unspecified => "TRANSFER_STATE_UNSPECIFIED",
+            Self::Pending => "PENDING",
+            Self::Running => "RUNNING",
+            Self::Succeeded => "SUCCEEDED",
+            Self::Failed => "FAILED",
+            Self::Cancelled => "CANCELLED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -474,14 +557,14 @@ pub mod data_source_parameter {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::String => "STRING",
-                Type::Integer => "INTEGER",
-                Type::Double => "DOUBLE",
-                Type::Boolean => "BOOLEAN",
-                Type::Record => "RECORD",
-                Type::PlusPage => "PLUS_PAGE",
-                Type::List => "LIST",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::String => "STRING",
+                Self::Integer => "INTEGER",
+                Self::Double => "DOUBLE",
+                Self::Boolean => "BOOLEAN",
+                Self::Record => "RECORD",
+                Self::PlusPage => "PLUS_PAGE",
+                Self::List => "LIST",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -608,12 +691,10 @@ pub mod data_source {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AuthorizationType::Unspecified => "AUTHORIZATION_TYPE_UNSPECIFIED",
-                AuthorizationType::AuthorizationCode => "AUTHORIZATION_CODE",
-                AuthorizationType::GooglePlusAuthorizationCode => {
-                    "GOOGLE_PLUS_AUTHORIZATION_CODE"
-                }
-                AuthorizationType::FirstPartyOauth => "FIRST_PARTY_OAUTH",
+                Self::Unspecified => "AUTHORIZATION_TYPE_UNSPECIFIED",
+                Self::AuthorizationCode => "AUTHORIZATION_CODE",
+                Self::GooglePlusAuthorizationCode => "GOOGLE_PLUS_AUTHORIZATION_CODE",
+                Self::FirstPartyOauth => "FIRST_PARTY_OAUTH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -661,9 +742,9 @@ pub mod data_source {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DataRefreshType::Unspecified => "DATA_REFRESH_TYPE_UNSPECIFIED",
-                DataRefreshType::SlidingWindow => "SLIDING_WINDOW",
-                DataRefreshType::CustomSlidingWindow => "CUSTOM_SLIDING_WINDOW",
+                Self::Unspecified => "DATA_REFRESH_TYPE_UNSPECIFIED",
+                Self::SlidingWindow => "SLIDING_WINDOW",
+                Self::CustomSlidingWindow => "CUSTOM_SLIDING_WINDOW",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -724,6 +805,11 @@ pub struct ListDataSourcesResponse {
 /// associated with the user id corresponding to the authorization info.
 /// Otherwise, the transfer configuration will be associated with the calling
 /// user.
+///
+/// When using a cross project service account for creating a transfer config,
+/// you must enable cross project service account usage. For more information,
+/// see [Disable attachment of service accounts to resources in other
+/// projects](<https://cloud.google.com/resource-manager/docs/organization-policy/restricting-service-accounts#disable_cross_project_service_accounts>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTransferConfigRequest {
     /// Required. The BigQuery project id where the transfer configuration should
@@ -788,6 +874,11 @@ pub struct CreateTransferConfigRequest {
 }
 /// A request to update a transfer configuration. To update the user id of the
 /// transfer configuration, authorization info needs to be provided.
+///
+/// When using a cross project service account for updating a transfer config,
+/// you must enable cross project service account usage. For more information,
+/// see [Disable attachment of service accounts to resources in other
+/// projects](<https://cloud.google.com/resource-manager/docs/organization-policy/restricting-service-accounts#disable_cross_project_service_accounts>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTransferConfigRequest {
     /// Required. Data transfer configuration to create.
@@ -974,8 +1065,8 @@ pub mod list_transfer_runs_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RunAttempt::Unspecified => "RUN_ATTEMPT_UNSPECIFIED",
-                RunAttempt::Latest => "LATEST",
+                Self::Unspecified => "RUN_ATTEMPT_UNSPECIFIED",
+                Self::Latest => "LATEST",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1167,7 +1258,13 @@ pub struct UnenrollDataSourcesRequest {
 }
 /// Generated client implementations.
 pub mod data_transfer_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// This API allows users to manage their data transfers into BigQuery.
@@ -1260,8 +1357,7 @@ pub mod data_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1291,8 +1387,7 @@ pub mod data_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1319,8 +1414,7 @@ pub mod data_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1348,8 +1442,7 @@ pub mod data_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1377,8 +1470,7 @@ pub mod data_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1405,8 +1497,7 @@ pub mod data_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1437,8 +1528,7 @@ pub mod data_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1461,6 +1551,7 @@ pub mod data_transfer_service_client {
         /// range, one transfer run is created.
         /// Note that runs are created per UTC time in the time range.
         /// DEPRECATED: use StartManualTransferRuns instead.
+        #[deprecated]
         pub async fn schedule_transfer_runs(
             &mut self,
             request: impl tonic::IntoRequest<super::ScheduleTransferRunsRequest>,
@@ -1472,8 +1563,7 @@ pub mod data_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1506,8 +1596,7 @@ pub mod data_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1534,8 +1623,7 @@ pub mod data_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1562,8 +1650,7 @@ pub mod data_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1593,8 +1680,7 @@ pub mod data_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1624,8 +1710,7 @@ pub mod data_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1656,8 +1741,7 @@ pub mod data_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1691,8 +1775,7 @@ pub mod data_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1723,8 +1806,7 @@ pub mod data_transfer_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

@@ -749,9 +749,9 @@ impl StreamAnnotationType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            StreamAnnotationType::Unspecified => "STREAM_ANNOTATION_TYPE_UNSPECIFIED",
-            StreamAnnotationType::ActiveZone => "STREAM_ANNOTATION_TYPE_ACTIVE_ZONE",
-            StreamAnnotationType::CrossingLine => "STREAM_ANNOTATION_TYPE_CROSSING_LINE",
+            Self::Unspecified => "STREAM_ANNOTATION_TYPE_UNSPECIFIED",
+            Self::ActiveZone => "STREAM_ANNOTATION_TYPE_ACTIVE_ZONE",
+            Self::CrossingLine => "STREAM_ANNOTATION_TYPE_CROSSING_LINE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -834,11 +834,11 @@ pub mod cluster {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Provisioning => "PROVISIONING",
-                State::Running => "RUNNING",
-                State::Stopping => "STOPPING",
-                State::Error => "ERROR",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Provisioning => "PROVISIONING",
+                Self::Running => "RUNNING",
+                Self::Stopping => "STOPPING",
+                Self::Error => "ERROR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -921,7 +921,13 @@ pub struct ClusterInfo {
 }
 /// Generated client implementations.
 pub mod health_check_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// HealthCheckService provides an interface for Vertex AI Vision Cluster Health
@@ -1018,8 +1024,7 @@ pub mod health_check_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1341,12 +1346,12 @@ pub mod run_status {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Initializing => "INITIALIZING",
-                State::Running => "RUNNING",
-                State::Completed => "COMPLETED",
-                State::Failed => "FAILED",
-                State::Pending => "PENDING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Initializing => "INITIALIZING",
+                Self::Running => "RUNNING",
+                Self::Completed => "COMPLETED",
+                Self::Failed => "FAILED",
+                Self::Pending => "PENDING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1383,9 +1388,9 @@ impl RunMode {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            RunMode::Unspecified => "RUN_MODE_UNSPECIFIED",
-            RunMode::Live => "LIVE",
-            RunMode::Submission => "SUBMISSION",
+            Self::Unspecified => "RUN_MODE_UNSPECIFIED",
+            Self::Live => "LIVE",
+            Self::Submission => "SUBMISSION",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1985,9 +1990,9 @@ impl Registry {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            Registry::Unspecified => "REGISTRY_UNSPECIFIED",
-            Registry::Public => "PUBLIC",
-            Registry::Private => "PRIVATE",
+            Self::Unspecified => "REGISTRY_UNSPECIFIED",
+            Self::Public => "PUBLIC",
+            Self::Private => "PRIVATE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2002,7 +2007,13 @@ impl Registry {
 }
 /// Generated client implementations.
 pub mod live_video_analytics_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service describing handlers for resources. The service enables clients to run
@@ -2099,8 +2110,7 @@ pub mod live_video_analytics_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2130,8 +2140,7 @@ pub mod live_video_analytics_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2161,8 +2170,7 @@ pub mod live_video_analytics_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2189,8 +2197,7 @@ pub mod live_video_analytics_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2220,8 +2227,7 @@ pub mod live_video_analytics_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2251,8 +2257,7 @@ pub mod live_video_analytics_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2282,8 +2287,7 @@ pub mod live_video_analytics_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2313,8 +2317,7 @@ pub mod live_video_analytics_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2341,8 +2344,7 @@ pub mod live_video_analytics_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2372,8 +2374,7 @@ pub mod live_video_analytics_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2403,8 +2404,7 @@ pub mod live_video_analytics_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2434,8 +2434,7 @@ pub mod live_video_analytics_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2465,8 +2464,7 @@ pub mod live_video_analytics_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2493,8 +2491,7 @@ pub mod live_video_analytics_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2524,8 +2521,7 @@ pub mod live_video_analytics_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2555,8 +2551,7 @@ pub mod live_video_analytics_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2586,8 +2581,7 @@ pub mod live_video_analytics_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2618,8 +2612,7 @@ pub mod live_video_analytics_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3479,17 +3472,17 @@ pub mod application {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Created => "CREATED",
-                State::Deploying => "DEPLOYING",
-                State::Deployed => "DEPLOYED",
-                State::Undeploying => "UNDEPLOYING",
-                State::Deleted => "DELETED",
-                State::Error => "ERROR",
-                State::Creating => "CREATING",
-                State::Updating => "UPDATING",
-                State::Deleting => "DELETING",
-                State::Fixing => "FIXING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Created => "CREATED",
+                Self::Deploying => "DEPLOYING",
+                Self::Deployed => "DEPLOYED",
+                Self::Undeploying => "UNDEPLOYING",
+                Self::Deleted => "DELETED",
+                Self::Error => "ERROR",
+                Self::Creating => "CREATING",
+                Self::Updating => "UPDATING",
+                Self::Deleting => "DELETING",
+                Self::Fixing => "FIXING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3538,9 +3531,9 @@ pub mod application {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                BillingMode::Unspecified => "BILLING_MODE_UNSPECIFIED",
-                BillingMode::Payg => "PAYG",
-                BillingMode::Monthly => "MONTHLY",
+                Self::Unspecified => "BILLING_MODE_UNSPECIFIED",
+                Self::Payg => "PAYG",
+                Self::Monthly => "MONTHLY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3823,10 +3816,10 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                InstanceType::Unspecified => "INSTANCE_TYPE_UNSPECIFIED",
-                InstanceType::StreamingPrediction => "STREAMING_PREDICTION",
-                InstanceType::BatchPrediction => "BATCH_PREDICTION",
-                InstanceType::OnlinePrediction => "ONLINE_PREDICTION",
+                Self::Unspecified => "INSTANCE_TYPE_UNSPECIFIED",
+                Self::StreamingPrediction => "STREAMING_PREDICTION",
+                Self::BatchPrediction => "BATCH_PREDICTION",
+                Self::OnlinePrediction => "ONLINE_PREDICTION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3886,18 +3879,18 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Created => "CREATED",
-                State::Deploying => "DEPLOYING",
-                State::Deployed => "DEPLOYED",
-                State::Undeploying => "UNDEPLOYING",
-                State::Deleted => "DELETED",
-                State::Error => "ERROR",
-                State::Updating => "UPDATING",
-                State::Deleting => "DELETING",
-                State::Fixing => "FIXING",
-                State::Finished => "FINISHED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Created => "CREATED",
+                Self::Deploying => "DEPLOYING",
+                Self::Deployed => "DEPLOYED",
+                Self::Undeploying => "UNDEPLOYING",
+                Self::Deleted => "DELETED",
+                Self::Error => "ERROR",
+                Self::Updating => "UPDATING",
+                Self::Deleting => "DELETING",
+                Self::Fixing => "FIXING",
+                Self::Finished => "FINISHED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4033,10 +4026,10 @@ pub mod processor {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ProcessorType::Unspecified => "PROCESSOR_TYPE_UNSPECIFIED",
-                ProcessorType::Pretrained => "PRETRAINED",
-                ProcessorType::Custom => "CUSTOM",
-                ProcessorType::Connector => "CONNECTOR",
+                Self::Unspecified => "PROCESSOR_TYPE_UNSPECIFIED",
+                Self::Pretrained => "PRETRAINED",
+                Self::Custom => "CUSTOM",
+                Self::Connector => "CONNECTOR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4081,11 +4074,11 @@ pub mod processor {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ProcessorState::Unspecified => "PROCESSOR_STATE_UNSPECIFIED",
-                ProcessorState::Creating => "CREATING",
-                ProcessorState::Active => "ACTIVE",
-                ProcessorState::Deleting => "DELETING",
-                ProcessorState::Failed => "FAILED",
+                Self::Unspecified => "PROCESSOR_STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Active => "ACTIVE",
+                Self::Deleting => "DELETING",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4305,10 +4298,10 @@ pub mod custom_processor_source_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SourceType::Unspecified => "SOURCE_TYPE_UNSPECIFIED",
-                SourceType::VertexAutoml => "VERTEX_AUTOML",
-                SourceType::VertexCustom => "VERTEX_CUSTOM",
-                SourceType::ProductRecognizer => "PRODUCT_RECOGNIZER",
+                Self::Unspecified => "SOURCE_TYPE_UNSPECIFIED",
+                Self::VertexAutoml => "VERTEX_AUTOML",
+                Self::VertexCustom => "VERTEX_CUSTOM",
+                Self::ProductRecognizer => "PRODUCT_RECOGNIZER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4539,9 +4532,9 @@ pub mod person_blur_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PersonBlurType::Unspecified => "PERSON_BLUR_TYPE_UNSPECIFIED",
-                PersonBlurType::FullOcculusion => "FULL_OCCULUSION",
-                PersonBlurType::BlurFilter => "BLUR_FILTER",
+                Self::Unspecified => "PERSON_BLUR_TYPE_UNSPECIFIED",
+                Self::FullOcculusion => "FULL_OCCULUSION",
+                Self::BlurFilter => "BLUR_FILTER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4936,11 +4929,9 @@ pub mod tag_parsing_config {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    EntityMatchingStrategy::Unspecified => {
-                        "ENTITY_MATCHING_STRATEGY_UNSPECIFIED"
-                    }
-                    EntityMatchingStrategy::MultiLineMatching => "MULTI_LINE_MATCHING",
-                    EntityMatchingStrategy::MaxOverlapArea => "MAX_OVERLAP_AREA",
+                    Self::Unspecified => "ENTITY_MATCHING_STRATEGY_UNSPECIFIED",
+                    Self::MultiLineMatching => "MULTI_LINE_MATCHING",
+                    Self::MaxOverlapArea => "MAX_OVERLAP_AREA",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4991,18 +4982,18 @@ impl ModelType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ModelType::Unspecified => "MODEL_TYPE_UNSPECIFIED",
-            ModelType::ImageClassification => "IMAGE_CLASSIFICATION",
-            ModelType::ObjectDetection => "OBJECT_DETECTION",
-            ModelType::VideoClassification => "VIDEO_CLASSIFICATION",
-            ModelType::VideoObjectTracking => "VIDEO_OBJECT_TRACKING",
-            ModelType::VideoActionRecognition => "VIDEO_ACTION_RECOGNITION",
-            ModelType::OccupancyCounting => "OCCUPANCY_COUNTING",
-            ModelType::PersonBlur => "PERSON_BLUR",
-            ModelType::VertexCustom => "VERTEX_CUSTOM",
-            ModelType::ProductRecognizer => "PRODUCT_RECOGNIZER",
-            ModelType::TagRecognizer => "TAG_RECOGNIZER",
-            ModelType::SynthId => "SYNTH_ID",
+            Self::Unspecified => "MODEL_TYPE_UNSPECIFIED",
+            Self::ImageClassification => "IMAGE_CLASSIFICATION",
+            Self::ObjectDetection => "OBJECT_DETECTION",
+            Self::VideoClassification => "VIDEO_CLASSIFICATION",
+            Self::VideoObjectTracking => "VIDEO_OBJECT_TRACKING",
+            Self::VideoActionRecognition => "VIDEO_ACTION_RECOGNITION",
+            Self::OccupancyCounting => "OCCUPANCY_COUNTING",
+            Self::PersonBlur => "PERSON_BLUR",
+            Self::VertexCustom => "VERTEX_CUSTOM",
+            Self::ProductRecognizer => "PRODUCT_RECOGNIZER",
+            Self::TagRecognizer => "TAG_RECOGNIZER",
+            Self::SynthId => "SYNTH_ID",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5054,15 +5045,15 @@ impl AcceleratorType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            AcceleratorType::Unspecified => "ACCELERATOR_TYPE_UNSPECIFIED",
-            AcceleratorType::NvidiaTeslaK80 => "NVIDIA_TESLA_K80",
-            AcceleratorType::NvidiaTeslaP100 => "NVIDIA_TESLA_P100",
-            AcceleratorType::NvidiaTeslaV100 => "NVIDIA_TESLA_V100",
-            AcceleratorType::NvidiaTeslaP4 => "NVIDIA_TESLA_P4",
-            AcceleratorType::NvidiaTeslaT4 => "NVIDIA_TESLA_T4",
-            AcceleratorType::NvidiaTeslaA100 => "NVIDIA_TESLA_A100",
-            AcceleratorType::TpuV2 => "TPU_V2",
-            AcceleratorType::TpuV3 => "TPU_V3",
+            Self::Unspecified => "ACCELERATOR_TYPE_UNSPECIFIED",
+            Self::NvidiaTeslaK80 => "NVIDIA_TESLA_K80",
+            Self::NvidiaTeslaP100 => "NVIDIA_TESLA_P100",
+            Self::NvidiaTeslaV100 => "NVIDIA_TESLA_V100",
+            Self::NvidiaTeslaP4 => "NVIDIA_TESLA_P4",
+            Self::NvidiaTeslaT4 => "NVIDIA_TESLA_T4",
+            Self::NvidiaTeslaA100 => "NVIDIA_TESLA_A100",
+            Self::TpuV2 => "TPU_V2",
+            Self::TpuV3 => "TPU_V3",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5105,11 +5096,11 @@ impl DataType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            DataType::Unspecified => "DATA_TYPE_UNSPECIFIED",
-            DataType::Video => "VIDEO",
-            DataType::Image => "IMAGE",
-            DataType::Proto => "PROTO",
-            DataType::Placeholder => "PLACEHOLDER",
+            Self::Unspecified => "DATA_TYPE_UNSPECIFIED",
+            Self::Video => "VIDEO",
+            Self::Image => "IMAGE",
+            Self::Proto => "PROTO",
+            Self::Placeholder => "PLACEHOLDER",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5126,7 +5117,13 @@ impl DataType {
 }
 /// Generated client implementations.
 pub mod app_platform_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service describing handlers for resources
@@ -5222,8 +5219,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5250,8 +5246,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5281,8 +5276,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5312,8 +5306,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5343,8 +5336,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5374,8 +5366,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5405,8 +5396,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5439,8 +5429,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5472,8 +5461,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5505,8 +5493,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5536,8 +5523,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5564,8 +5550,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5598,8 +5583,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5631,8 +5615,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5665,8 +5648,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5696,8 +5678,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5721,8 +5702,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5749,8 +5729,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5780,8 +5759,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5811,8 +5789,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5842,8 +5819,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5874,8 +5850,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5902,8 +5877,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5933,8 +5907,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5964,8 +5937,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5995,8 +5967,7 @@ pub mod app_platform_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6013,94 +5984,6 @@ pub mod app_platform_client {
                     ),
                 );
             self.inner.unary(req, path, codec).await
-        }
-    }
-}
-/// Generated client implementations.
-pub mod prediction_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
-    use tonic::codegen::*;
-    use tonic::codegen::http::Uri;
-    /// A service for online prediction.
-    #[derive(Debug, Clone)]
-    pub struct PredictionServiceClient<T> {
-        inner: tonic::client::Grpc<T>,
-    }
-    impl PredictionServiceClient<tonic::transport::Channel> {
-        /// Attempt to create a new client by connecting to a given endpoint.
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
-    impl<T> PredictionServiceClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
-    {
-        pub fn new(inner: T) -> Self {
-            let inner = tonic::client::Grpc::new(inner);
-            Self { inner }
-        }
-        pub fn with_origin(inner: T, origin: Uri) -> Self {
-            let inner = tonic::client::Grpc::with_origin(inner, origin);
-            Self { inner }
-        }
-        pub fn with_interceptor<F>(
-            inner: T,
-            interceptor: F,
-        ) -> PredictionServiceClient<InterceptedService<T, F>>
-        where
-            F: tonic::service::Interceptor,
-            T::ResponseBody: Default,
-            T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
-                Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
-                >,
-            >,
-            <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
-        {
-            PredictionServiceClient::new(InterceptedService::new(inner, interceptor))
-        }
-        /// Compress requests with the given encoding.
-        ///
-        /// This requires the server to support it otherwise it might respond with an
-        /// error.
-        #[must_use]
-        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
-            self.inner = self.inner.send_compressed(encoding);
-            self
-        }
-        /// Enable decompressing responses.
-        #[must_use]
-        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
-            self.inner = self.inner.accept_compressed(encoding);
-            self
-        }
-        /// Limits the maximum size of a decoded message.
-        ///
-        /// Default: `4MB`
-        #[must_use]
-        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
-            self.inner = self.inner.max_decoding_message_size(limit);
-            self
-        }
-        /// Limits the maximum size of an encoded message.
-        ///
-        /// Default: `usize::MAX`
-        #[must_use]
-        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
-            self.inner = self.inner.max_encoding_message_size(limit);
-            self
         }
     }
 }
@@ -6675,9 +6558,9 @@ impl LeaseType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            LeaseType::Unspecified => "LEASE_TYPE_UNSPECIFIED",
-            LeaseType::Reader => "LEASE_TYPE_READER",
-            LeaseType::Writer => "LEASE_TYPE_WRITER",
+            Self::Unspecified => "LEASE_TYPE_UNSPECIFIED",
+            Self::Reader => "LEASE_TYPE_READER",
+            Self::Writer => "LEASE_TYPE_WRITER",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6692,7 +6575,13 @@ impl LeaseType {
 }
 /// Generated client implementations.
 pub mod streaming_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Streaming service for receiving and sending packets.
@@ -6790,8 +6679,7 @@ pub mod streaming_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6823,8 +6711,7 @@ pub mod streaming_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6856,8 +6743,7 @@ pub mod streaming_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6884,8 +6770,7 @@ pub mod streaming_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6912,8 +6797,7 @@ pub mod streaming_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6943,8 +6827,7 @@ pub mod streaming_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7067,9 +6950,9 @@ pub mod event {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Clock::Unspecified => "CLOCK_UNSPECIFIED",
-                Clock::Capture => "CAPTURE",
-                Clock::Ingest => "INGEST",
+                Self::Unspecified => "CLOCK_UNSPECIFIED",
+                Self::Capture => "CAPTURE",
+                Self::Ingest => "INGEST",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7706,7 +7589,13 @@ pub struct MaterializeChannelRequest {
 }
 /// Generated client implementations.
 pub mod streams_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service describing handlers for resources.
@@ -7805,8 +7694,7 @@ pub mod streams_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7833,8 +7721,7 @@ pub mod streams_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7864,8 +7751,7 @@ pub mod streams_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7895,8 +7781,7 @@ pub mod streams_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7926,8 +7811,7 @@ pub mod streams_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7957,8 +7841,7 @@ pub mod streams_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7985,8 +7868,7 @@ pub mod streams_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8016,8 +7898,7 @@ pub mod streams_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8047,8 +7928,7 @@ pub mod streams_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8078,8 +7958,7 @@ pub mod streams_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8109,8 +7988,7 @@ pub mod streams_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8140,8 +8018,7 @@ pub mod streams_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8171,8 +8048,7 @@ pub mod streams_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8199,8 +8075,7 @@ pub mod streams_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8230,8 +8105,7 @@ pub mod streams_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8261,8 +8135,7 @@ pub mod streams_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8292,8 +8165,7 @@ pub mod streams_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8323,8 +8195,7 @@ pub mod streams_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8351,8 +8222,7 @@ pub mod streams_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8382,8 +8252,7 @@ pub mod streams_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8413,8 +8282,7 @@ pub mod streams_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8444,8 +8312,7 @@ pub mod streams_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8475,8 +8342,7 @@ pub mod streams_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -8750,10 +8616,10 @@ pub mod analyze_asset_metadata {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    State::Unspecified => "STATE_UNSPECIFIED",
-                    State::InProgress => "IN_PROGRESS",
-                    State::Succeeded => "SUCCEEDED",
-                    State::Failed => "FAILED",
+                    Self::Unspecified => "STATE_UNSPECIFIED",
+                    Self::InProgress => "IN_PROGRESS",
+                    Self::Succeeded => "SUCCEEDED",
+                    Self::Failed => "FAILED",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -8814,10 +8680,10 @@ pub mod indexing_status {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::InProgress => "IN_PROGRESS",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::InProgress => "IN_PROGRESS",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9006,8 +8872,8 @@ pub mod search_capability {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::EmbeddingSearch => "EMBEDDING_SEARCH",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::EmbeddingSearch => "EMBEDDING_SEARCH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9250,8 +9116,8 @@ pub mod collection_item {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::Asset => "ASSET",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Asset => "ASSET",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9448,10 +9314,10 @@ pub mod index {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Created => "CREATED",
-                State::Updating => "UPDATING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Created => "CREATED",
+                Self::Updating => "UPDATING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9556,10 +9422,10 @@ pub mod corpus {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::StreamVideo => "STREAM_VIDEO",
-                Type::Image => "IMAGE",
-                Type::VideoOnDemand => "VIDEO_ON_DEMAND",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::StreamVideo => "STREAM_VIDEO",
+                Self::Image => "IMAGE",
+                Self::VideoOnDemand => "VIDEO_ON_DEMAND",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9867,9 +9733,9 @@ pub mod data_schema_details {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    SearchStrategyType::NoSearch => "NO_SEARCH",
-                    SearchStrategyType::ExactSearch => "EXACT_SEARCH",
-                    SearchStrategyType::SmartSearch => "SMART_SEARCH",
+                    Self::NoSearch => "NO_SEARCH",
+                    Self::ExactSearch => "EXACT_SEARCH",
+                    Self::SmartSearch => "SMART_SEARCH",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -9987,16 +9853,16 @@ pub mod data_schema_details {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DataType::Unspecified => "DATA_TYPE_UNSPECIFIED",
-                DataType::Integer => "INTEGER",
-                DataType::Float => "FLOAT",
-                DataType::String => "STRING",
-                DataType::Datetime => "DATETIME",
-                DataType::GeoCoordinate => "GEO_COORDINATE",
-                DataType::ProtoAny => "PROTO_ANY",
-                DataType::Boolean => "BOOLEAN",
-                DataType::List => "LIST",
-                DataType::CustomizedStruct => "CUSTOMIZED_STRUCT",
+                Self::Unspecified => "DATA_TYPE_UNSPECIFIED",
+                Self::Integer => "INTEGER",
+                Self::Float => "FLOAT",
+                Self::String => "STRING",
+                Self::Datetime => "DATETIME",
+                Self::GeoCoordinate => "GEO_COORDINATE",
+                Self::ProtoAny => "PROTO_ANY",
+                Self::Boolean => "BOOLEAN",
+                Self::List => "LIST",
+                Self::CustomizedStruct => "CUSTOMIZED_STRUCT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -10044,9 +9910,9 @@ pub mod data_schema_details {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Granularity::Unspecified => "GRANULARITY_UNSPECIFIED",
-                Granularity::AssetLevel => "GRANULARITY_ASSET_LEVEL",
-                Granularity::PartitionLevel => "GRANULARITY_PARTITION_LEVEL",
+                Self::Unspecified => "GRANULARITY_UNSPECIFIED",
+                Self::AssetLevel => "GRANULARITY_ASSET_LEVEL",
+                Self::PartitionLevel => "GRANULARITY_PARTITION_LEVEL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -10573,11 +10439,11 @@ pub mod index_endpoint {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Created => "CREATED",
-                State::Updating => "UPDATING",
-                State::Failed => "FAILED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Created => "CREATED",
+                Self::Updating => "UPDATING",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -10867,10 +10733,10 @@ pub mod facet_property {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Granularity::Unspecified => "GRANULARITY_UNSPECIFIED",
-                    Granularity::Year => "YEAR",
-                    Granularity::Month => "MONTH",
-                    Granularity::Day => "DAY",
+                    Self::Unspecified => "GRANULARITY_UNSPECIFIED",
+                    Self::Year => "YEAR",
+                    Self::Month => "MONTH",
+                    Self::Day => "DAY",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -11167,8 +11033,8 @@ pub mod ingest_asset_request {
                 /// (if the ProtoBuf definition does not change) and safe for programmatic use.
                 pub fn as_str_name(&self) -> &'static str {
                     match self {
-                        ContainerFormat::Unspecified => "CONTAINER_FORMAT_UNSPECIFIED",
-                        ContainerFormat::Mp4 => "CONTAINER_FORMAT_MP4",
+                        Self::Unspecified => "CONTAINER_FORMAT_UNSPECIFIED",
+                        Self::Mp4 => "CONTAINER_FORMAT_MP4",
                     }
                 }
                 /// Creates an enum from field names used in the ProtoBuf definition.
@@ -11462,9 +11328,9 @@ pub mod schema_key_sorting_strategy {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    AggregateMethod::Unspecified => "AGGREGATE_METHOD_UNSPECIFIED",
-                    AggregateMethod::Largest => "AGGREGATE_METHOD_LARGEST",
-                    AggregateMethod::Smallest => "AGGREGATE_METHOD_SMALLEST",
+                    Self::Unspecified => "AGGREGATE_METHOD_UNSPECIFIED",
+                    Self::Largest => "AGGREGATE_METHOD_LARGEST",
+                    Self::Smallest => "AGGREGATE_METHOD_SMALLEST",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -11764,11 +11630,11 @@ impl FacetBucketType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            FacetBucketType::Unspecified => "FACET_BUCKET_TYPE_UNSPECIFIED",
-            FacetBucketType::Value => "FACET_BUCKET_TYPE_VALUE",
-            FacetBucketType::Datetime => "FACET_BUCKET_TYPE_DATETIME",
-            FacetBucketType::FixedRange => "FACET_BUCKET_TYPE_FIXED_RANGE",
-            FacetBucketType::CustomRange => "FACET_BUCKET_TYPE_CUSTOM_RANGE",
+            Self::Unspecified => "FACET_BUCKET_TYPE_UNSPECIFIED",
+            Self::Value => "FACET_BUCKET_TYPE_VALUE",
+            Self::Datetime => "FACET_BUCKET_TYPE_DATETIME",
+            Self::FixedRange => "FACET_BUCKET_TYPE_FIXED_RANGE",
+            Self::CustomRange => "FACET_BUCKET_TYPE_CUSTOM_RANGE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -11785,7 +11651,13 @@ impl FacetBucketType {
 }
 /// Generated client implementations.
 pub mod warehouse_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service that manages media content + metadata for streaming.
@@ -11878,8 +11750,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11903,8 +11774,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11928,8 +11798,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11956,8 +11825,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -11984,8 +11852,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12021,8 +11888,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12051,8 +11917,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12082,8 +11947,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12111,8 +11975,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12140,8 +12003,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12171,8 +12033,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12202,8 +12063,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12232,8 +12092,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12257,8 +12116,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12285,8 +12143,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12314,8 +12171,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12342,8 +12198,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12367,8 +12222,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12392,8 +12246,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12420,8 +12273,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12446,8 +12298,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12474,8 +12325,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12502,8 +12352,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12530,8 +12379,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12558,8 +12406,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12586,8 +12433,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12617,8 +12463,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12645,8 +12490,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12673,8 +12517,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12704,8 +12547,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12732,8 +12574,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12760,8 +12601,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12796,8 +12636,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12829,8 +12668,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12859,8 +12697,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12892,8 +12729,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12931,8 +12767,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -12972,8 +12807,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -13000,8 +12834,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -13031,8 +12864,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -13062,8 +12894,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -13090,8 +12921,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -13118,8 +12948,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -13146,8 +12975,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -13174,8 +13002,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -13205,8 +13032,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -13236,8 +13062,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -13264,8 +13089,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -13295,8 +13119,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -13323,8 +13146,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -13354,8 +13176,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -13385,8 +13206,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -13416,8 +13236,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -13447,8 +13266,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -13475,8 +13293,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -13506,8 +13323,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -13537,8 +13353,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -13565,8 +13380,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -13593,8 +13407,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -13624,8 +13437,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -13655,8 +13467,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -13686,8 +13497,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -13717,8 +13527,7 @@ pub mod warehouse_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

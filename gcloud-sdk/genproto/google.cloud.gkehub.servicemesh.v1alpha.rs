@@ -82,10 +82,10 @@ pub mod analysis_message_base {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Level::Unspecified => "LEVEL_UNSPECIFIED",
-                Level::Error => "ERROR",
-                Level::Warning => "WARNING",
-                Level::Info => "INFO",
+                Self::Unspecified => "LEVEL_UNSPECIFIED",
+                Self::Error => "ERROR",
+                Self::Warning => "WARNING",
+                Self::Info => "INFO",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

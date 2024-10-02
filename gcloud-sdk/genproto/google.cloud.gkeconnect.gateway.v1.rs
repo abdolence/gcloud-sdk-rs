@@ -59,8 +59,8 @@ pub mod generate_credentials_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                OperatingSystem::Unspecified => "OPERATING_SYSTEM_UNSPECIFIED",
-                OperatingSystem::Windows => "OPERATING_SYSTEM_WINDOWS",
+                Self::Unspecified => "OPERATING_SYSTEM_UNSPECIFIED",
+                Self::Windows => "OPERATING_SYSTEM_WINDOWS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -86,7 +86,13 @@ pub struct GenerateCredentialsResponse {
 }
 /// Generated client implementations.
 pub mod gateway_control_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// GatewayControl is the control plane API for Connect Gateway.
@@ -183,8 +189,7 @@ pub mod gateway_control_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

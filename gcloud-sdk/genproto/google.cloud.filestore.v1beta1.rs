@@ -70,8 +70,8 @@ pub mod network_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AddressMode::Unspecified => "ADDRESS_MODE_UNSPECIFIED",
-                AddressMode::ModeIpv4 => "MODE_IPV4",
+                Self::Unspecified => "ADDRESS_MODE_UNSPECIFIED",
+                Self::ModeIpv4 => "MODE_IPV4",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -113,9 +113,9 @@ pub mod network_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ConnectMode::Unspecified => "CONNECT_MODE_UNSPECIFIED",
-                ConnectMode::DirectPeering => "DIRECT_PEERING",
-                ConnectMode::PrivateServiceAccess => "PRIVATE_SERVICE_ACCESS",
+                Self::Unspecified => "CONNECT_MODE_UNSPECIFIED",
+                Self::DirectPeering => "DIRECT_PEERING",
+                Self::PrivateServiceAccess => "PRIVATE_SERVICE_ACCESS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -234,9 +234,9 @@ pub mod nfs_export_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AccessMode::Unspecified => "ACCESS_MODE_UNSPECIFIED",
-                AccessMode::ReadOnly => "READ_ONLY",
-                AccessMode::ReadWrite => "READ_WRITE",
+                Self::Unspecified => "ACCESS_MODE_UNSPECIFIED",
+                Self::ReadOnly => "READ_ONLY",
+                Self::ReadWrite => "READ_WRITE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -277,9 +277,9 @@ pub mod nfs_export_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SquashMode::Unspecified => "SQUASH_MODE_UNSPECIFIED",
-                SquashMode::NoRootSquash => "NO_ROOT_SQUASH",
-                SquashMode::RootSquash => "ROOT_SQUASH",
+                Self::Unspecified => "SQUASH_MODE_UNSPECIFIED",
+                Self::NoRootSquash => "NO_ROOT_SQUASH",
+                Self::RootSquash => "ROOT_SQUASH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -329,11 +329,11 @@ pub mod nfs_export_options {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SecurityFlavor::Unspecified => "SECURITY_FLAVOR_UNSPECIFIED",
-                SecurityFlavor::AuthSys => "AUTH_SYS",
-                SecurityFlavor::Krb5 => "KRB5",
-                SecurityFlavor::Krb5i => "KRB5I",
-                SecurityFlavor::Krb5p => "KRB5P",
+                Self::Unspecified => "SECURITY_FLAVOR_UNSPECIFIED",
+                Self::AuthSys => "AUTH_SYS",
+                Self::Krb5 => "KRB5",
+                Self::Krb5i => "KRB5I",
+                Self::Krb5p => "KRB5P",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -516,17 +516,17 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Ready => "READY",
-                State::Repairing => "REPAIRING",
-                State::Deleting => "DELETING",
-                State::Error => "ERROR",
-                State::Restoring => "RESTORING",
-                State::Suspended => "SUSPENDED",
-                State::Reverting => "REVERTING",
-                State::Suspending => "SUSPENDING",
-                State::Resuming => "RESUMING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Ready => "READY",
+                Self::Repairing => "REPAIRING",
+                Self::Deleting => "DELETING",
+                Self::Error => "ERROR",
+                Self::Restoring => "RESTORING",
+                Self::Suspended => "SUSPENDED",
+                Self::Reverting => "REVERTING",
+                Self::Suspending => "SUSPENDING",
+                Self::Resuming => "RESUMING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -595,15 +595,15 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Tier::Unspecified => "TIER_UNSPECIFIED",
-                Tier::Standard => "STANDARD",
-                Tier::Premium => "PREMIUM",
-                Tier::BasicHdd => "BASIC_HDD",
-                Tier::BasicSsd => "BASIC_SSD",
-                Tier::HighScaleSsd => "HIGH_SCALE_SSD",
-                Tier::Enterprise => "ENTERPRISE",
-                Tier::Zonal => "ZONAL",
-                Tier::Regional => "REGIONAL",
+                Self::Unspecified => "TIER_UNSPECIFIED",
+                Self::Standard => "STANDARD",
+                Self::Premium => "PREMIUM",
+                Self::BasicHdd => "BASIC_HDD",
+                Self::BasicSsd => "BASIC_SSD",
+                Self::HighScaleSsd => "HIGH_SCALE_SSD",
+                Self::Enterprise => "ENTERPRISE",
+                Self::Zonal => "ZONAL",
+                Self::Regional => "REGIONAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -648,8 +648,8 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SuspensionReason::Unspecified => "SUSPENSION_REASON_UNSPECIFIED",
-                SuspensionReason::KmsKeyIssue => "KMS_KEY_ISSUE",
+                Self::Unspecified => "SUSPENSION_REASON_UNSPECIFIED",
+                Self::KmsKeyIssue => "KMS_KEY_ISSUE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -690,9 +690,9 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FileProtocol::Unspecified => "FILE_PROTOCOL_UNSPECIFIED",
-                FileProtocol::NfsV3 => "NFS_V3",
-                FileProtocol::NfsV41 => "NFS_V4_1",
+                Self::Unspecified => "FILE_PROTOCOL_UNSPECIFIED",
+                Self::NfsV3 => "NFS_V3",
+                Self::NfsV41 => "NFS_V4_1",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -909,10 +909,10 @@ pub mod snapshot {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Ready => "READY",
-                State::Deleting => "DELETING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Ready => "READY",
+                Self::Deleting => "DELETING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1100,12 +1100,12 @@ pub mod backup {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Finalizing => "FINALIZING",
-                State::Ready => "READY",
-                State::Deleting => "DELETING",
-                State::Invalid => "INVALID",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Finalizing => "FINALIZING",
+                Self::Ready => "READY",
+                Self::Deleting => "DELETING",
+                Self::Invalid => "INVALID",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1285,10 +1285,10 @@ pub mod share {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Ready => "READY",
-                State::Deleting => "DELETING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Ready => "READY",
+                Self::Deleting => "DELETING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1405,7 +1405,13 @@ pub struct UpdateShareRequest {
 }
 /// Generated client implementations.
 pub mod cloud_filestore_manager_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Configures and manages Filestore resources.
@@ -1521,8 +1527,7 @@ pub mod cloud_filestore_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1549,8 +1554,7 @@ pub mod cloud_filestore_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1583,8 +1587,7 @@ pub mod cloud_filestore_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1614,8 +1617,7 @@ pub mod cloud_filestore_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1649,8 +1651,7 @@ pub mod cloud_filestore_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1680,8 +1681,7 @@ pub mod cloud_filestore_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1711,8 +1711,7 @@ pub mod cloud_filestore_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1743,8 +1742,7 @@ pub mod cloud_filestore_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1771,8 +1769,7 @@ pub mod cloud_filestore_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1802,8 +1799,7 @@ pub mod cloud_filestore_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1833,8 +1829,7 @@ pub mod cloud_filestore_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1864,8 +1859,7 @@ pub mod cloud_filestore_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1896,8 +1890,7 @@ pub mod cloud_filestore_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1924,8 +1917,7 @@ pub mod cloud_filestore_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1955,8 +1947,7 @@ pub mod cloud_filestore_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1986,8 +1977,7 @@ pub mod cloud_filestore_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2017,8 +2007,7 @@ pub mod cloud_filestore_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2048,8 +2037,7 @@ pub mod cloud_filestore_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2076,8 +2064,7 @@ pub mod cloud_filestore_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2107,8 +2094,7 @@ pub mod cloud_filestore_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2138,8 +2124,7 @@ pub mod cloud_filestore_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2169,8 +2154,7 @@ pub mod cloud_filestore_manager_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

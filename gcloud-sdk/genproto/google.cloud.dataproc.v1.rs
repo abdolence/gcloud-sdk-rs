@@ -266,7 +266,13 @@ pub struct ListAutoscalingPoliciesResponse {
 }
 /// Generated client implementations.
 pub mod autoscaling_policy_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The API interface for managing autoscaling policies in the
@@ -365,8 +371,7 @@ pub mod autoscaling_policy_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -399,8 +404,7 @@ pub mod autoscaling_policy_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -430,8 +434,7 @@ pub mod autoscaling_policy_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -461,8 +464,7 @@ pub mod autoscaling_policy_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -490,8 +492,7 @@ pub mod autoscaling_policy_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -877,11 +878,11 @@ pub mod gke_node_pool_target {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Role::Unspecified => "ROLE_UNSPECIFIED",
-                Role::Default => "DEFAULT",
-                Role::Controller => "CONTROLLER",
-                Role::SparkDriver => "SPARK_DRIVER",
-                Role::SparkExecutor => "SPARK_EXECUTOR",
+                Self::Unspecified => "ROLE_UNSPECIFIED",
+                Self::Default => "DEFAULT",
+                Self::Controller => "CONTROLLER",
+                Self::SparkDriver => "SPARK_DRIVER",
+                Self::SparkExecutor => "SPARK_EXECUTOR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1058,10 +1059,10 @@ pub mod autotuning_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Scenario::Unspecified => "SCENARIO_UNSPECIFIED",
-                Scenario::Scaling => "SCALING",
-                Scenario::BroadcastHashJoin => "BROADCAST_HASH_JOIN",
-                Scenario::Memory => "MEMORY",
+                Self::Unspecified => "SCENARIO_UNSPECIFIED",
+                Self::Scaling => "SCALING",
+                Self::BroadcastHashJoin => "BROADCAST_HASH_JOIN",
+                Self::Memory => "MEMORY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1096,10 +1097,11 @@ pub struct PyPiRepositoryConfig {
 pub enum Component {
     /// Unspecified component. Specifying this will cause Cluster creation to fail.
     Unspecified = 0,
-    /// The Anaconda python distribution. The Anaconda component is not supported
-    /// in the Dataproc \[2.0 image\]
-    /// (/<https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-release-2.0>).
-    /// The 2.0 image is pre-installed with Miniconda.
+    /// The Anaconda component is no longer supported or applicable to
+    /// \[supported Dataproc on Compute Engine image versions\]
+    /// (<https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-version-clusters#supported-dataproc-image-versions>).
+    /// It cannot be activated on clusters created with supported Dataproc on
+    /// Compute Engine image versions.
     Anaconda = 5,
     /// Docker
     Docker = 13,
@@ -1135,21 +1137,21 @@ impl Component {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            Component::Unspecified => "COMPONENT_UNSPECIFIED",
-            Component::Anaconda => "ANACONDA",
-            Component::Docker => "DOCKER",
-            Component::Druid => "DRUID",
-            Component::Flink => "FLINK",
-            Component::Hbase => "HBASE",
-            Component::HiveWebhcat => "HIVE_WEBHCAT",
-            Component::Hudi => "HUDI",
-            Component::Jupyter => "JUPYTER",
-            Component::Presto => "PRESTO",
-            Component::Trino => "TRINO",
-            Component::Ranger => "RANGER",
-            Component::Solr => "SOLR",
-            Component::Zeppelin => "ZEPPELIN",
-            Component::Zookeeper => "ZOOKEEPER",
+            Self::Unspecified => "COMPONENT_UNSPECIFIED",
+            Self::Anaconda => "ANACONDA",
+            Self::Docker => "DOCKER",
+            Self::Druid => "DRUID",
+            Self::Flink => "FLINK",
+            Self::Hbase => "HBASE",
+            Self::HiveWebhcat => "HIVE_WEBHCAT",
+            Self::Hudi => "HUDI",
+            Self::Jupyter => "JUPYTER",
+            Self::Presto => "PRESTO",
+            Self::Trino => "TRINO",
+            Self::Ranger => "RANGER",
+            Self::Solr => "SOLR",
+            Self::Zeppelin => "ZEPPELIN",
+            Self::Zookeeper => "ZOOKEEPER",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1193,9 +1195,9 @@ impl FailureAction {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            FailureAction::Unspecified => "FAILURE_ACTION_UNSPECIFIED",
-            FailureAction::NoAction => "NO_ACTION",
-            FailureAction::Delete => "DELETE",
+            Self::Unspecified => "FAILURE_ACTION_UNSPECIFIED",
+            Self::NoAction => "NO_ACTION",
+            Self::Delete => "DELETE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1295,6 +1297,11 @@ pub struct ListBatchesResponse {
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Output only. List of Batches that could not be included in the response.
+    /// Attempting to get one of these resources may indicate why it was not
+    /// included in the list response.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A request to delete a batch workload.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1413,13 +1420,13 @@ pub mod batch {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Pending => "PENDING",
-                State::Running => "RUNNING",
-                State::Cancelling => "CANCELLING",
-                State::Cancelled => "CANCELLED",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::Running => "RUNNING",
+                Self::Cancelling => "CANCELLING",
+                Self::Cancelled => "CANCELLED",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1580,7 +1587,13 @@ pub struct SparkSqlBatch {
 }
 /// Generated client implementations.
 pub mod batch_controller_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The BatchController provides methods to manage batch workloads.
@@ -1676,8 +1689,7 @@ pub mod batch_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1704,8 +1716,7 @@ pub mod batch_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1735,8 +1746,7 @@ pub mod batch_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1764,8 +1774,7 @@ pub mod batch_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1844,8 +1853,8 @@ pub mod batch_operation_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                BatchOperationType::Unspecified => "BATCH_OPERATION_TYPE_UNSPECIFIED",
-                BatchOperationType::Batch => "BATCH",
+                Self::Unspecified => "BATCH_OPERATION_TYPE_UNSPECIFIED",
+                Self::Batch => "BATCH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1921,10 +1930,10 @@ pub mod session_operation_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SessionOperationType::Unspecified => "SESSION_OPERATION_TYPE_UNSPECIFIED",
-                SessionOperationType::Create => "CREATE",
-                SessionOperationType::Terminate => "TERMINATE",
-                SessionOperationType::Delete => "DELETE",
+                Self::Unspecified => "SESSION_OPERATION_TYPE_UNSPECIFIED",
+                Self::Create => "CREATE",
+                Self::Terminate => "TERMINATE",
+                Self::Delete => "DELETE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1987,10 +1996,10 @@ pub mod cluster_operation_status {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unknown => "UNKNOWN",
-                State::Pending => "PENDING",
-                State::Running => "RUNNING",
-                State::Done => "DONE",
+                Self::Unknown => "UNKNOWN",
+                Self::Pending => "PENDING",
+                Self::Running => "RUNNING",
+                Self::Done => "DONE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2107,13 +2116,11 @@ pub mod node_group_operation_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                NodeGroupOperationType::Unspecified => {
-                    "NODE_GROUP_OPERATION_TYPE_UNSPECIFIED"
-                }
-                NodeGroupOperationType::Create => "CREATE",
-                NodeGroupOperationType::Update => "UPDATE",
-                NodeGroupOperationType::Delete => "DELETE",
-                NodeGroupOperationType::Resize => "RESIZE",
+                Self::Unspecified => "NODE_GROUP_OPERATION_TYPE_UNSPECIFIED",
+                Self::Create => "CREATE",
+                Self::Update => "UPDATE",
+                Self::Delete => "DELETE",
+                Self::Resize => "RESIZE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2357,10 +2364,41 @@ pub struct AutoscalingConfig {
 /// Encryption settings for the cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EncryptionConfig {
-    /// Optional. The Cloud KMS key name to use for PD disk encryption for all
-    /// instances in the cluster.
+    /// Optional. The Cloud KMS key resource name to use for persistent disk
+    /// encryption for all instances in the cluster. See [Use CMEK with cluster
+    /// data]
+    /// (<https://cloud.google.com//dataproc/docs/concepts/configuring-clusters/customer-managed-encryption#use_cmek_with_cluster_data>)
+    /// for more information.
     #[prost(string, tag = "1")]
     pub gce_pd_kms_key_name: ::prost::alloc::string::String,
+    /// Optional. The Cloud KMS key resource name to use for cluster persistent
+    /// disk and job argument encryption. See \[Use CMEK with cluster data\]
+    /// (<https://cloud.google.com//dataproc/docs/concepts/configuring-clusters/customer-managed-encryption#use_cmek_with_cluster_data>)
+    /// for more information.
+    ///
+    /// When this key resource name is provided, the following job arguments of
+    /// the following job types submitted to the cluster are encrypted using CMEK:
+    ///
+    /// * [FlinkJob
+    /// args](<https://cloud.google.com/dataproc/docs/reference/rest/v1/FlinkJob>)
+    /// * [HadoopJob
+    /// args](<https://cloud.google.com/dataproc/docs/reference/rest/v1/HadoopJob>)
+    /// * [SparkJob
+    /// args](<https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkJob>)
+    /// * [SparkRJob
+    /// args](<https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkRJob>)
+    /// * [PySparkJob
+    /// args](<https://cloud.google.com/dataproc/docs/reference/rest/v1/PySparkJob>)
+    /// * [SparkSqlJob](<https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkSqlJob>)
+    ///    scriptVariables and queryList.queries
+    /// * [HiveJob](<https://cloud.google.com/dataproc/docs/reference/rest/v1/HiveJob>)
+    ///    scriptVariables and queryList.queries
+    /// * [PigJob](<https://cloud.google.com/dataproc/docs/reference/rest/v1/PigJob>)
+    ///    scriptVariables and queryList.queries
+    /// * [PrestoJob](<https://cloud.google.com/dataproc/docs/reference/rest/v1/PrestoJob>)
+    ///    scriptVariables and queryList.queries
+    #[prost(string, tag = "2")]
+    pub kms_key: ::prost::alloc::string::String,
 }
 /// Common config settings for resources of Compute Engine cluster
 /// instances, applicable to all instances in the cluster.
@@ -2401,12 +2439,22 @@ pub struct GceClusterConfig {
     /// * `sub0`
     #[prost(string, tag = "6")]
     pub subnetwork_uri: ::prost::alloc::string::String,
-    /// Optional. If true, all instances in the cluster will only have internal IP
-    /// addresses. By default, clusters are not restricted to internal IP
-    /// addresses, and will have ephemeral external IP addresses assigned to each
-    /// instance. This `internal_ip_only` restriction can only be enabled for
-    /// subnetwork enabled networks, and all off-cluster dependencies must be
-    /// configured to be accessible without external IP addresses.
+    /// Optional. This setting applies to subnetwork-enabled networks. It is set to
+    /// `true` by default in clusters created with image versions 2.2.x.
+    ///
+    /// When set to `true`:
+    ///
+    /// * All cluster VMs have internal IP addresses.
+    /// * \[Google Private Access\]
+    /// (<https://cloud.google.com/vpc/docs/private-google-access>)
+    /// must be enabled to access Dataproc and other Google Cloud APIs.
+    /// * Off-cluster dependencies must be configured to be accessible
+    /// without external IP addresses.
+    ///
+    /// When set to `false`:
+    ///
+    /// * Cluster VMs are not restricted to internal IP addresses.
+    /// * Ephemeral external IP addresses are assigned to each cluster VM.
     #[prost(bool, optional, tag = "7")]
     pub internal_ip_only: ::core::option::Option<bool>,
     /// Optional. The type of IPv6 access for a cluster.
@@ -2441,8 +2489,8 @@ pub struct GceClusterConfig {
     /// * <https://www.googleapis.com/auth/devstorage.full_control>
     #[prost(string, repeated, tag = "3")]
     pub service_account_scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// The Compute Engine tags to add to all instances (see [Tagging
-    /// instances](<https://cloud.google.com/compute/docs/label-or-tag-resources#tags>)).
+    /// The Compute Engine network tags to add to all instances (see [Tagging
+    /// instances](<https://cloud.google.com/vpc/docs/add-remove-network-tags>)).
     #[prost(string, repeated, tag = "4")]
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The Compute Engine metadata entries to add to all instances (see
@@ -2511,14 +2559,10 @@ pub mod gce_cluster_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PrivateIpv6GoogleAccess::Unspecified => {
-                    "PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED"
-                }
-                PrivateIpv6GoogleAccess::InheritFromSubnetwork => {
-                    "INHERIT_FROM_SUBNETWORK"
-                }
-                PrivateIpv6GoogleAccess::Outbound => "OUTBOUND",
-                PrivateIpv6GoogleAccess::Bidirectional => "BIDIRECTIONAL",
+                Self::Unspecified => "PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED",
+                Self::InheritFromSubnetwork => "INHERIT_FROM_SUBNETWORK",
+                Self::Outbound => "OUTBOUND",
+                Self::Bidirectional => "BIDIRECTIONAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2731,10 +2775,10 @@ pub mod instance_group_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Preemptibility::Unspecified => "PREEMPTIBILITY_UNSPECIFIED",
-                Preemptibility::NonPreemptible => "NON_PREEMPTIBLE",
-                Preemptibility::Preemptible => "PREEMPTIBLE",
-                Preemptibility::Spot => "SPOT",
+                Self::Unspecified => "PREEMPTIBILITY_UNSPECIFIED",
+                Self::NonPreemptible => "NON_PREEMPTIBLE",
+                Self::Preemptible => "PREEMPTIBLE",
+                Self::Spot => "SPOT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2849,15 +2893,15 @@ pub struct AcceleratorConfig {
     ///
     /// Examples:
     ///
-    /// * `<https://www.googleapis.com/compute/v1/projects/\[project_id\]/zones/\[zone\]/acceleratorTypes/nvidia-tesla-k80`>
-    /// * `projects/\[project_id\]/zones/\[zone\]/acceleratorTypes/nvidia-tesla-k80`
-    /// * `nvidia-tesla-k80`
+    /// * `<https://www.googleapis.com/compute/v1/projects/\[project_id\]/zones/\[zone\]/acceleratorTypes/nvidia-tesla-t4`>
+    /// * `projects/\[project_id\]/zones/\[zone\]/acceleratorTypes/nvidia-tesla-t4`
+    /// * `nvidia-tesla-t4`
     ///
     /// **Auto Zone Exception**: If you are using the Dataproc
     /// [Auto Zone
     /// Placement](<https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement>)
     /// feature, you must use the short name of the accelerator type
-    /// resource, for example, `nvidia-tesla-k80`.
+    /// resource, for example, `nvidia-tesla-t4`.
     #[prost(string, tag = "1")]
     pub accelerator_type_uri: ::prost::alloc::string::String,
     /// The number of the accelerator cards of this type exposed to this instance.
@@ -2967,8 +3011,8 @@ pub mod node_group {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Role::Unspecified => "ROLE_UNSPECIFIED",
-                Role::Driver => "DRIVER",
+                Self::Unspecified => "ROLE_UNSPECIFIED",
+                Self::Driver => "DRIVER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3067,17 +3111,17 @@ pub mod cluster_status {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unknown => "UNKNOWN",
-                State::Creating => "CREATING",
-                State::Running => "RUNNING",
-                State::Error => "ERROR",
-                State::ErrorDueToUpdate => "ERROR_DUE_TO_UPDATE",
-                State::Deleting => "DELETING",
-                State::Updating => "UPDATING",
-                State::Stopping => "STOPPING",
-                State::Stopped => "STOPPED",
-                State::Starting => "STARTING",
-                State::Repairing => "REPAIRING",
+                Self::Unknown => "UNKNOWN",
+                Self::Creating => "CREATING",
+                Self::Running => "RUNNING",
+                Self::Error => "ERROR",
+                Self::ErrorDueToUpdate => "ERROR_DUE_TO_UPDATE",
+                Self::Deleting => "DELETING",
+                Self::Updating => "UPDATING",
+                Self::Stopping => "STOPPING",
+                Self::Stopped => "STOPPED",
+                Self::Starting => "STARTING",
+                Self::Repairing => "REPAIRING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3133,9 +3177,9 @@ pub mod cluster_status {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Substate::Unspecified => "UNSPECIFIED",
-                Substate::Unhealthy => "UNHEALTHY",
-                Substate::StaleStatus => "STALE_STATUS",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unhealthy => "UNHEALTHY",
+                Self::StaleStatus => "STALE_STATUS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3171,7 +3215,7 @@ pub struct KerberosConfig {
     /// principal password.
     #[prost(string, tag = "2")]
     pub root_principal_password_uri: ::prost::alloc::string::String,
-    /// Optional. The uri of the KMS key used to encrypt various sensitive
+    /// Optional. The URI of the KMS key used to encrypt sensitive
     /// files.
     #[prost(string, tag = "3")]
     pub kms_key_uri: ::prost::alloc::string::String,
@@ -3247,7 +3291,7 @@ pub struct IdentityConfig {
 pub struct SoftwareConfig {
     /// Optional. The version of software inside the cluster. It must be one of the
     /// supported [Dataproc
-    /// Versions](<https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported_dataproc_versions>),
+    /// Versions](<https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported-dataproc-image-versions>),
     /// such as "1.2" (including a subminor version, such as "1.2.29"), or the
     /// ["preview"
     /// version](<https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions>).
@@ -3430,6 +3474,8 @@ pub mod dataproc_metric_config {
         Hiveserver2 = 6,
         /// hivemetastore metric source
         Hivemetastore = 7,
+        /// flink metric source
+        Flink = 8,
     }
     impl MetricSource {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3438,14 +3484,15 @@ pub mod dataproc_metric_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MetricSource::Unspecified => "METRIC_SOURCE_UNSPECIFIED",
-                MetricSource::MonitoringAgentDefaults => "MONITORING_AGENT_DEFAULTS",
-                MetricSource::Hdfs => "HDFS",
-                MetricSource::Spark => "SPARK",
-                MetricSource::Yarn => "YARN",
-                MetricSource::SparkHistoryServer => "SPARK_HISTORY_SERVER",
-                MetricSource::Hiveserver2 => "HIVESERVER2",
-                MetricSource::Hivemetastore => "HIVEMETASTORE",
+                Self::Unspecified => "METRIC_SOURCE_UNSPECIFIED",
+                Self::MonitoringAgentDefaults => "MONITORING_AGENT_DEFAULTS",
+                Self::Hdfs => "HDFS",
+                Self::Spark => "SPARK",
+                Self::Yarn => "YARN",
+                Self::SparkHistoryServer => "SPARK_HISTORY_SERVER",
+                Self::Hiveserver2 => "HIVESERVER2",
+                Self::Hivemetastore => "HIVEMETASTORE",
+                Self::Flink => "FLINK",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3459,6 +3506,7 @@ pub mod dataproc_metric_config {
                 "SPARK_HISTORY_SERVER" => Some(Self::SparkHistoryServer),
                 "HIVESERVER2" => Some(Self::Hiveserver2),
                 "HIVEMETASTORE" => Some(Self::Hivemetastore),
+                "FLINK" => Some(Self::Flink),
                 _ => None,
             }
         }
@@ -3718,12 +3766,12 @@ pub struct ListClustersRequest {
     /// where **field** is one of `status.state`, `clusterName`, or `labels.\[KEY\]`,
     /// and `\[KEY\]` is a label key. **value** can be `*` to match all values.
     /// `status.state` can be one of the following: `ACTIVE`, `INACTIVE`,
-    /// `CREATING`, `RUNNING`, `ERROR`, `DELETING`, or `UPDATING`. `ACTIVE`
-    /// contains the `CREATING`, `UPDATING`, and `RUNNING` states. `INACTIVE`
-    /// contains the `DELETING` and `ERROR` states.
-    /// `clusterName` is the name of the cluster provided at creation time.
-    /// Only the logical `AND` operator is supported; space-separated items are
-    /// treated as having an implicit `AND` operator.
+    /// `CREATING`, `RUNNING`, `ERROR`, `DELETING`, `UPDATING`, `STOPPING`, or
+    /// `STOPPED`. `ACTIVE` contains the `CREATING`, `UPDATING`, and `RUNNING`
+    /// states. `INACTIVE` contains the `DELETING`, `ERROR`, `STOPPING`, and
+    /// `STOPPED` states. `clusterName` is the name of the cluster provided at
+    /// creation time. Only the logical `AND` operator is supported;
+    /// space-separated items are treated as having an implicit `AND` operator.
     ///
     /// Example filter:
     ///
@@ -3763,7 +3811,7 @@ pub struct DiagnoseClusterRequest {
     /// Required. The cluster name.
     #[prost(string, tag = "2")]
     pub cluster_name: ::prost::alloc::string::String,
-    /// Optional. The output Cloud Storage directory for the diagnostic
+    /// Optional. (Optional) The output Cloud Storage directory for the diagnostic
     /// tarball. If not specified, a task-specific directory in the cluster's
     /// staging bucket will be used.
     #[prost(string, tag = "4")]
@@ -3819,9 +3867,9 @@ pub mod diagnose_cluster_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TarballAccess::Unspecified => "TARBALL_ACCESS_UNSPECIFIED",
-                TarballAccess::GoogleCloudSupport => "GOOGLE_CLOUD_SUPPORT",
-                TarballAccess::GoogleDataprocDiagnose => "GOOGLE_DATAPROC_DIAGNOSE",
+                Self::Unspecified => "TARBALL_ACCESS_UNSPECIFIED",
+                Self::GoogleCloudSupport => "GOOGLE_CLOUD_SUPPORT",
+                Self::GoogleDataprocDiagnose => "GOOGLE_DATAPROC_DIAGNOSE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3889,10 +3937,10 @@ pub mod reservation_affinity {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::NoReservation => "NO_RESERVATION",
-                Type::AnyReservation => "ANY_RESERVATION",
-                Type::SpecificReservation => "SPECIFIC_RESERVATION",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::NoReservation => "NO_RESERVATION",
+                Self::AnyReservation => "ANY_RESERVATION",
+                Self::SpecificReservation => "SPECIFIC_RESERVATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3909,7 +3957,13 @@ pub mod reservation_affinity {
 }
 /// Generated client implementations.
 pub mod cluster_controller_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The ClusterControllerService provides methods to manage clusters
@@ -4008,8 +4062,7 @@ pub mod cluster_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4044,8 +4097,7 @@ pub mod cluster_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4075,8 +4127,7 @@ pub mod cluster_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4106,8 +4157,7 @@ pub mod cluster_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4139,8 +4189,7 @@ pub mod cluster_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4167,8 +4216,7 @@ pub mod cluster_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4198,8 +4246,7 @@ pub mod cluster_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4235,8 +4282,7 @@ pub mod cluster_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4259,7 +4305,7 @@ pub mod cluster_controller_client {
 /// The runtime logging config of the job.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoggingConfig {
-    /// The per-package log levels for the driver. This may include
+    /// The per-package log levels for the driver. This can include
     /// "root" package name to configure rootLogger.
     /// Examples:
     /// - 'com.google = FATAL'
@@ -4315,15 +4361,15 @@ pub mod logging_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Level::Unspecified => "LEVEL_UNSPECIFIED",
-                Level::All => "ALL",
-                Level::Trace => "TRACE",
-                Level::Debug => "DEBUG",
-                Level::Info => "INFO",
-                Level::Warn => "WARN",
-                Level::Error => "ERROR",
-                Level::Fatal => "FATAL",
-                Level::Off => "OFF",
+                Self::Unspecified => "LEVEL_UNSPECIFIED",
+                Self::All => "ALL",
+                Self::Trace => "TRACE",
+                Self::Debug => "DEBUG",
+                Self::Info => "INFO",
+                Self::Warn => "WARN",
+                Self::Error => "ERROR",
+                Self::Fatal => "FATAL",
+                Self::Off => "OFF",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4352,7 +4398,7 @@ pub mod logging_config {
 pub struct HadoopJob {
     /// Optional. The arguments to pass to the driver. Do not
     /// include arguments, such as `-libjars` or `-Dfoo=bar`, that can be set as
-    /// job properties, since a collision may occur that causes an incorrect job
+    /// job properties, since a collision might occur that causes an incorrect job
     /// submission.
     #[prost(string, repeated, tag = "3")]
     pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -4371,7 +4417,7 @@ pub struct HadoopJob {
     #[prost(string, repeated, tag = "6")]
     pub archive_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. A mapping of property names to values, used to configure Hadoop.
-    /// Properties that conflict with values set by the Dataproc API may be
+    /// Properties that conflict with values set by the Dataproc API might be
     /// overwritten. Can include properties set in `/etc/hadoop/conf/*-site` and
     /// classes in user code.
     #[prost(map = "string, string", tag = "7")]
@@ -4433,7 +4479,7 @@ pub struct SparkJob {
     #[prost(string, repeated, tag = "6")]
     pub archive_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. A mapping of property names to values, used to configure Spark.
-    /// Properties that conflict with values set by the Dataproc API may be
+    /// Properties that conflict with values set by the Dataproc API might be
     /// overwritten. Can include properties set in
     /// /etc/spark/conf/spark-defaults.conf and classes in user code.
     #[prost(map = "string, string", tag = "7")]
@@ -4447,8 +4493,9 @@ pub struct SparkJob {
     /// Required. The specification of the main method to call to drive the job.
     /// Specify either the jar file that contains the main class or the main class
     /// name. To pass both a main jar and a main class in that jar, add the jar to
-    /// `CommonJob.jar_file_uris`, and then specify the main class name in
-    /// `main_class`.
+    /// [jarFileUris][google.cloud.dataproc.v1.SparkJob.jar_file_uris], and then
+    /// specify the main class name in
+    /// [mainClass][google.cloud.dataproc.v1.SparkJob.main_class].
     #[prost(oneof = "spark_job::Driver", tags = "1, 2")]
     pub driver: ::core::option::Option<spark_job::Driver>,
 }
@@ -4457,15 +4504,17 @@ pub mod spark_job {
     /// Required. The specification of the main method to call to drive the job.
     /// Specify either the jar file that contains the main class or the main class
     /// name. To pass both a main jar and a main class in that jar, add the jar to
-    /// `CommonJob.jar_file_uris`, and then specify the main class name in
-    /// `main_class`.
+    /// [jarFileUris][google.cloud.dataproc.v1.SparkJob.jar_file_uris], and then
+    /// specify the main class name in
+    /// [mainClass][google.cloud.dataproc.v1.SparkJob.main_class].
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Driver {
         /// The HCFS URI of the jar file that contains the main class.
         #[prost(string, tag = "1")]
         MainJarFileUri(::prost::alloc::string::String),
         /// The name of the driver's main class. The jar file that contains the class
-        /// must be in the default CLASSPATH or specified in `jar_file_uris`.
+        /// must be in the default CLASSPATH or specified in
+        /// SparkJob.jar_file_uris.
         #[prost(string, tag = "2")]
         MainClass(::prost::alloc::string::String),
     }
@@ -4503,7 +4552,7 @@ pub struct PySparkJob {
     #[prost(string, repeated, tag = "6")]
     pub archive_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. A mapping of property names to values, used to configure PySpark.
-    /// Properties that conflict with values set by the Dataproc API may be
+    /// Properties that conflict with values set by the Dataproc API might be
     /// overwritten. Can include properties set in
     /// /etc/spark/conf/spark-defaults.conf and classes in user code.
     #[prost(map = "string, string", tag = "7")]
@@ -4552,7 +4601,7 @@ pub struct HiveJob {
         ::prost::alloc::string::String,
     >,
     /// Optional. A mapping of property names and values, used to configure Hive.
-    /// Properties that conflict with values set by the Dataproc API may be
+    /// Properties that conflict with values set by the Dataproc API might be
     /// overwritten. Can include properties set in `/etc/hadoop/conf/*-site.xml`,
     /// /etc/hive/conf/hive-site.xml, and classes in user code.
     #[prost(map = "string, string", tag = "5")]
@@ -4597,7 +4646,7 @@ pub struct SparkSqlJob {
     >,
     /// Optional. A mapping of property names to values, used to configure
     /// Spark SQL's SparkConf. Properties that conflict with values set by the
-    /// Dataproc API may be overwritten.
+    /// Dataproc API might be overwritten.
     #[prost(map = "string, string", tag = "4")]
     pub properties: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -4645,7 +4694,7 @@ pub struct PigJob {
         ::prost::alloc::string::String,
     >,
     /// Optional. A mapping of property names to values, used to configure Pig.
-    /// Properties that conflict with values set by the Dataproc API may be
+    /// Properties that conflict with values set by the Dataproc API might be
     /// overwritten. Can include properties set in `/etc/hadoop/conf/*-site.xml`,
     /// /etc/pig/conf/pig.properties, and classes in user code.
     #[prost(map = "string, string", tag = "5")]
@@ -4703,7 +4752,7 @@ pub struct SparkRJob {
     #[prost(string, repeated, tag = "4")]
     pub archive_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. A mapping of property names to values, used to configure SparkR.
-    /// Properties that conflict with values set by the Dataproc API may be
+    /// Properties that conflict with values set by the Dataproc API might be
     /// overwritten. Can include properties set in
     /// /etc/spark/conf/spark-defaults.conf and classes in user code.
     #[prost(map = "string, string", tag = "5")]
@@ -4813,6 +4862,63 @@ pub mod trino_job {
         QueryList(super::QueryList),
     }
 }
+/// A Dataproc job for running Apache Flink applications on YARN.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FlinkJob {
+    /// Optional. The arguments to pass to the driver. Do not include arguments,
+    /// such as `--conf`, that can be set as job properties, since a collision
+    /// might occur that causes an incorrect job submission.
+    #[prost(string, repeated, tag = "3")]
+    pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. HCFS URIs of jar files to add to the CLASSPATHs of the
+    /// Flink driver and tasks.
+    #[prost(string, repeated, tag = "4")]
+    pub jar_file_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. HCFS URI of the savepoint, which contains the last saved progress
+    /// for starting the current job.
+    #[prost(string, tag = "9")]
+    pub savepoint_uri: ::prost::alloc::string::String,
+    /// Optional. A mapping of property names to values, used to configure Flink.
+    /// Properties that conflict with values set by the Dataproc API might be
+    /// overwritten. Can include properties set in
+    /// `/etc/flink/conf/flink-defaults.conf` and classes in user code.
+    #[prost(map = "string, string", tag = "7")]
+    pub properties: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. The runtime log config for job execution.
+    #[prost(message, optional, tag = "8")]
+    pub logging_config: ::core::option::Option<LoggingConfig>,
+    /// Required. The specification of the main method to call to drive the job.
+    /// Specify either the jar file that contains the main class or the main class
+    /// name. To pass both a main jar and a main class in the jar, add the jar to
+    /// [jarFileUris][google.cloud.dataproc.v1.FlinkJob.jar_file_uris], and then
+    /// specify the main class name in
+    /// [mainClass][google.cloud.dataproc.v1.FlinkJob.main_class].
+    #[prost(oneof = "flink_job::Driver", tags = "1, 2")]
+    pub driver: ::core::option::Option<flink_job::Driver>,
+}
+/// Nested message and enum types in `FlinkJob`.
+pub mod flink_job {
+    /// Required. The specification of the main method to call to drive the job.
+    /// Specify either the jar file that contains the main class or the main class
+    /// name. To pass both a main jar and a main class in the jar, add the jar to
+    /// [jarFileUris][google.cloud.dataproc.v1.FlinkJob.jar_file_uris], and then
+    /// specify the main class name in
+    /// [mainClass][google.cloud.dataproc.v1.FlinkJob.main_class].
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Driver {
+        /// The HCFS URI of the jar file that contains the main class.
+        #[prost(string, tag = "1")]
+        MainJarFileUri(::prost::alloc::string::String),
+        /// The name of the driver's main class. The jar file that contains the class
+        /// must be in the default CLASSPATH or specified in
+        /// [jarFileUris][google.cloud.dataproc.v1.FlinkJob.jar_file_uris].
+        #[prost(string, tag = "2")]
+        MainClass(::prost::alloc::string::String),
+    }
+}
 /// Dataproc job config.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobPlacement {
@@ -4838,7 +4944,7 @@ pub struct JobStatus {
     #[prost(enumeration = "job_status::State", tag = "1")]
     pub state: i32,
     /// Optional. Output only. Job state details, such as an error
-    /// description if the state is <code>ERROR</code>.
+    /// description if the state is `ERROR`.
     #[prost(string, tag = "2")]
     pub details: ::prost::alloc::string::String,
     /// Output only. The time when this state was entered.
@@ -4898,16 +5004,16 @@ pub mod job_status {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Pending => "PENDING",
-                State::SetupDone => "SETUP_DONE",
-                State::Running => "RUNNING",
-                State::CancelPending => "CANCEL_PENDING",
-                State::CancelStarted => "CANCEL_STARTED",
-                State::Cancelled => "CANCELLED",
-                State::Done => "DONE",
-                State::Error => "ERROR",
-                State::AttemptFailure => "ATTEMPT_FAILURE",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::SetupDone => "SETUP_DONE",
+                Self::Running => "RUNNING",
+                Self::CancelPending => "CANCEL_PENDING",
+                Self::CancelStarted => "CANCEL_STARTED",
+                Self::Cancelled => "CANCELLED",
+                Self::Done => "DONE",
+                Self::Error => "ERROR",
+                Self::AttemptFailure => "ATTEMPT_FAILURE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4947,13 +5053,13 @@ pub mod job_status {
         ///
         /// Applies to RUNNING state.
         Submitted = 1,
-        /// The Job has been received and is awaiting execution (it may be waiting
+        /// The Job has been received and is awaiting execution (it might be waiting
         /// for a condition to be met). See the "details" field for the reason for
         /// the delay.
         ///
         /// Applies to RUNNING state.
         Queued = 2,
-        /// The agent-reported status is out of date, which may be caused by a
+        /// The agent-reported status is out of date, which can be caused by a
         /// loss of communication between the agent and Dataproc. If the
         /// agent does not send a timely update, the job will fail.
         ///
@@ -4967,10 +5073,10 @@ pub mod job_status {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Substate::Unspecified => "UNSPECIFIED",
-                Substate::Submitted => "SUBMITTED",
-                Substate::Queued => "QUEUED",
-                Substate::StaleStatus => "STALE_STATUS",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Submitted => "SUBMITTED",
+                Self::Queued => "QUEUED",
+                Self::StaleStatus => "STALE_STATUS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5067,15 +5173,15 @@ pub mod yarn_application {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::New => "NEW",
-                State::NewSaving => "NEW_SAVING",
-                State::Submitted => "SUBMITTED",
-                State::Accepted => "ACCEPTED",
-                State::Running => "RUNNING",
-                State::Finished => "FINISHED",
-                State::Failed => "FAILED",
-                State::Killed => "KILLED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::New => "NEW",
+                Self::NewSaving => "NEW_SAVING",
+                Self::Submitted => "SUBMITTED",
+                Self::Accepted => "ACCEPTED",
+                Self::Running => "RUNNING",
+                Self::Finished => "FINISHED",
+                Self::Failed => "FAILED",
+                Self::Killed => "KILLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5109,7 +5215,7 @@ pub struct Job {
     #[prost(message, optional, tag = "2")]
     pub placement: ::core::option::Option<JobPlacement>,
     /// Output only. The job status. Additional application-specific
-    /// status information may be contained in the <code>type_job</code>
+    /// status information might be contained in the <code>type_job</code>
     /// and <code>yarn_applications</code> fields.
     #[prost(message, optional, tag = "8")]
     pub status: ::core::option::Option<JobStatus>,
@@ -5119,7 +5225,7 @@ pub struct Job {
     /// Output only. The collection of YARN applications spun up by this job.
     ///
     /// **Beta** Feature: This report is available for testing purposes only. It
-    /// may be changed before final release.
+    /// might be changed before final release.
     #[prost(message, repeated, tag = "9")]
     pub yarn_applications: ::prost::alloc::vec::Vec<YarnApplication>,
     /// Output only. A URI pointing to the location of the stdout of the job's
@@ -5127,14 +5233,14 @@ pub struct Job {
     #[prost(string, tag = "17")]
     pub driver_output_resource_uri: ::prost::alloc::string::String,
     /// Output only. If present, the location of miscellaneous control files
-    /// which may be used as part of job setup and handling. If not present,
-    /// control files may be placed in the same location as `driver_output_uri`.
+    /// which can be used as part of job setup and handling. If not present,
+    /// control files might be placed in the same location as `driver_output_uri`.
     #[prost(string, tag = "15")]
     pub driver_control_files_uri: ::prost::alloc::string::String,
     /// Optional. The labels to associate with this job.
     /// Label **keys** must contain 1 to 63 characters, and must conform to
     /// [RFC 1035](<https://www.ietf.org/rfc/rfc1035.txt>).
-    /// Label **values** may be empty, but, if present, must contain 1 to 63
+    /// Label **values** can be empty, but, if present, must contain 1 to 63
     /// characters, and must conform to [RFC
     /// 1035](<https://www.ietf.org/rfc/rfc1035.txt>). No more than 32 labels can be
     /// associated with a job.
@@ -5148,7 +5254,7 @@ pub struct Job {
     pub scheduling: ::core::option::Option<JobScheduling>,
     /// Output only. A UUID that uniquely identifies a job within the project
     /// over time. This is in contrast to a user-settable reference.job_id that
-    /// may be reused over time.
+    /// might be reused over time.
     #[prost(string, tag = "22")]
     pub job_uuid: ::prost::alloc::string::String,
     /// Output only. Indicates whether the job is completed. If the value is
@@ -5161,7 +5267,7 @@ pub struct Job {
     #[prost(message, optional, tag = "27")]
     pub driver_scheduling_config: ::core::option::Option<DriverSchedulingConfig>,
     /// Required. The application/framework-specific portion of the job.
-    #[prost(oneof = "job::TypeJob", tags = "3, 4, 5, 6, 7, 21, 12, 23, 28")]
+    #[prost(oneof = "job::TypeJob", tags = "3, 4, 5, 6, 7, 21, 12, 23, 28, 29")]
     pub type_job: ::core::option::Option<job::TypeJob>,
 }
 /// Nested message and enum types in `Job`.
@@ -5196,6 +5302,9 @@ pub mod job {
         /// Optional. Job is a Trino job.
         #[prost(message, tag = "28")]
         TrinoJob(super::TrinoJob),
+        /// Optional. Job is a Flink job.
+        #[prost(message, tag = "29")]
+        FlinkJob(super::FlinkJob),
     }
 }
 /// Driver scheduling configuration.
@@ -5211,12 +5320,12 @@ pub struct DriverSchedulingConfig {
 /// Job scheduling options.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct JobScheduling {
-    /// Optional. Maximum number of times per hour a driver may be restarted as
+    /// Optional. Maximum number of times per hour a driver can be restarted as
     /// a result of driver exiting with non-zero code before job is
     /// reported failed.
     ///
-    /// A job may be reported as thrashing if the driver exits with a non-zero code
-    /// four times within a 10-minute window.
+    /// A job might be reported as thrashing if the driver exits with a non-zero
+    /// code four times within a 10-minute window.
     ///
     /// Maximum value is 10.
     ///
@@ -5225,7 +5334,7 @@ pub struct JobScheduling {
     /// (<https://cloud.google.com/dataproc/docs/concepts/workflows/using-workflows#adding_jobs_to_a_template>).
     #[prost(int32, tag = "1")]
     pub max_failures_per_hour: i32,
-    /// Optional. Maximum total number of times a driver may be restarted as a
+    /// Optional. Maximum total number of times a driver can be restarted as a
     /// result of the driver exiting with a non-zero code. After the maximum number
     /// is reached, the job will be reported as failed.
     ///
@@ -5371,9 +5480,9 @@ pub mod list_jobs_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                JobStateMatcher::All => "ALL",
-                JobStateMatcher::Active => "ACTIVE",
-                JobStateMatcher::NonActive => "NON_ACTIVE",
+                Self::All => "ALL",
+                Self::Active => "ACTIVE",
+                Self::NonActive => "NON_ACTIVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5423,6 +5532,12 @@ pub struct ListJobsResponse {
     /// `page_token` in a subsequent <code>ListJobsRequest</code>.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Output only. List of jobs with
+    /// [kms_key][google.cloud.dataproc.v1.EncryptionConfig.kms_key]-encrypted
+    /// parameters that could not be decrypted. A response to a `jobs.get` request
+    /// may indicate the reason for the decryption failure for a specific job.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A request to cancel a job.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5454,7 +5569,13 @@ pub struct DeleteJobRequest {
 }
 /// Generated client implementations.
 pub mod job_controller_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The JobController provides methods to manage jobs.
@@ -5547,8 +5668,7 @@ pub mod job_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5578,8 +5698,7 @@ pub mod job_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5606,8 +5725,7 @@ pub mod job_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5634,8 +5752,7 @@ pub mod job_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5659,8 +5776,7 @@ pub mod job_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5691,8 +5807,7 @@ pub mod job_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5720,8 +5835,7 @@ pub mod job_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5826,7 +5940,13 @@ pub struct GetNodeGroupRequest {
 }
 /// Generated client implementations.
 pub mod node_group_controller_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The `NodeGroupControllerService` provides methods to manage node groups
@@ -5925,8 +6045,7 @@ pub mod node_group_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5958,8 +6077,7 @@ pub mod node_group_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5987,8 +6105,7 @@ pub mod node_group_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6065,12 +6182,13 @@ pub struct ListSessionsRequest {
     /// A filter is a logical expression constraining the values of various fields
     /// in each session resource. Filters are case sensitive, and may contain
     /// multiple clauses combined with logical operators (AND, OR).
-    /// Supported fields are `session_id`, `session_uuid`, `state`, and
-    /// `create_time`.
+    /// Supported fields are `session_id`, `session_uuid`, `state`, `create_time`,
+    /// and `labels`.
     ///
     /// Example: `state = ACTIVE and create_time < "2023-01-01T00:00:00Z"`
     /// is a filter for sessions in an ACTIVE state that were created before
-    /// 2023-01-01.
+    /// 2023-01-01. `state = ACTIVE and labels.environment=production` is a filter
+    /// for sessions in an ACTIVE state that have a production environment label.
     ///
     /// See <https://google.aip.dev/assets/misc/ebnf-filtering.txt> for a detailed
     /// description of the filter syntax and a list of supported comparators.
@@ -6192,7 +6310,7 @@ pub struct Session {
     #[prost(string, tag = "16")]
     pub session_template: ::prost::alloc::string::String,
     /// The session configuration.
-    #[prost(oneof = "session::SessionConfig", tags = "4")]
+    #[prost(oneof = "session::SessionConfig", tags = "4, 17")]
     pub session_config: ::core::option::Option<session::SessionConfig>,
 }
 /// Nested message and enum types in `Session`.
@@ -6246,12 +6364,12 @@ pub mod session {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Active => "ACTIVE",
-                State::Terminating => "TERMINATING",
-                State::Terminated => "TERMINATED",
-                State::Failed => "FAILED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Active => "ACTIVE",
+                Self::Terminating => "TERMINATING",
+                Self::Terminated => "TERMINATED",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6273,6 +6391,9 @@ pub mod session {
         /// Optional. Jupyter session config.
         #[prost(message, tag = "4")]
         JupyterSession(super::JupyterConfig),
+        /// Optional. Spark Connect session config.
+        #[prost(message, tag = "17")]
+        SparkConnectSession(super::SparkConnectConfig),
     }
 }
 /// Jupyter configuration for an interactive session.
@@ -6315,9 +6436,9 @@ pub mod jupyter_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Kernel::Unspecified => "KERNEL_UNSPECIFIED",
-                Kernel::Python => "PYTHON",
-                Kernel::Scala => "SCALA",
+                Self::Unspecified => "KERNEL_UNSPECIFIED",
+                Self::Python => "PYTHON",
+                Self::Scala => "SCALA",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6331,9 +6452,18 @@ pub mod jupyter_config {
         }
     }
 }
+/// Spark Connect configuration for an interactive session.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct SparkConnectConfig {}
 /// Generated client implementations.
 pub mod session_controller_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The `SessionController` provides methods to manage interactive sessions.
@@ -6429,8 +6559,7 @@ pub mod session_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6457,8 +6586,7 @@ pub mod session_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6488,8 +6616,7 @@ pub mod session_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6519,8 +6646,7 @@ pub mod session_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6551,8 +6677,7 @@ pub mod session_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6676,7 +6801,7 @@ pub struct SessionTemplate {
     #[prost(string, tag = "12")]
     pub uuid: ::prost::alloc::string::String,
     /// The session configuration.
-    #[prost(oneof = "session_template::SessionConfig", tags = "3")]
+    #[prost(oneof = "session_template::SessionConfig", tags = "3, 11")]
     pub session_config: ::core::option::Option<session_template::SessionConfig>,
 }
 /// Nested message and enum types in `SessionTemplate`.
@@ -6687,11 +6812,20 @@ pub mod session_template {
         /// Optional. Jupyter session config.
         #[prost(message, tag = "3")]
         JupyterSession(super::JupyterConfig),
+        /// Optional. Spark Connect session config.
+        #[prost(message, tag = "11")]
+        SparkConnectSession(super::SparkConnectConfig),
     }
 }
 /// Generated client implementations.
 pub mod session_template_controller_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The SessionTemplateController provides methods to manage session templates.
@@ -6789,8 +6923,7 @@ pub mod session_template_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6820,8 +6953,7 @@ pub mod session_template_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6851,8 +6983,7 @@ pub mod session_template_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6882,8 +7013,7 @@ pub mod session_template_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6910,8 +7040,7 @@ pub mod session_template_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7005,6 +7134,47 @@ pub struct WorkflowTemplate {
     /// the cluster is deleted.
     #[prost(message, optional, tag = "10")]
     pub dag_timeout: ::core::option::Option<::prost_types::Duration>,
+    /// Optional. Encryption settings for encrypting workflow template job
+    /// arguments.
+    #[prost(message, optional, tag = "11")]
+    pub encryption_config: ::core::option::Option<workflow_template::EncryptionConfig>,
+}
+/// Nested message and enum types in `WorkflowTemplate`.
+pub mod workflow_template {
+    /// Encryption settings for encrypting workflow template job arguments.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct EncryptionConfig {
+        /// Optional. The Cloud KMS key name to use for encrypting
+        /// workflow template job arguments.
+        ///
+        /// When this this key is provided, the following workflow template
+        /// \[job arguments\]
+        /// (<https://cloud.google.com/dataproc/docs/concepts/workflows/use-workflows#adding_jobs_to_a_template>),
+        /// if present, are
+        /// [CMEK
+        /// encrypted](<https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/customer-managed-encryption#use_cmek_with_workflow_template_data>):
+        ///
+        /// * [FlinkJob
+        /// args](<https://cloud.google.com/dataproc/docs/reference/rest/v1/FlinkJob>)
+        /// * [HadoopJob
+        /// args](<https://cloud.google.com/dataproc/docs/reference/rest/v1/HadoopJob>)
+        /// * [SparkJob
+        /// args](<https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkJob>)
+        /// * [SparkRJob
+        /// args](<https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkRJob>)
+        /// * [PySparkJob
+        /// args](<https://cloud.google.com/dataproc/docs/reference/rest/v1/PySparkJob>)
+        /// * [SparkSqlJob](<https://cloud.google.com/dataproc/docs/reference/rest/v1/SparkSqlJob>)
+        ///    scriptVariables and queryList.queries
+        /// * [HiveJob](<https://cloud.google.com/dataproc/docs/reference/rest/v1/HiveJob>)
+        ///    scriptVariables and queryList.queries
+        /// * [PigJob](<https://cloud.google.com/dataproc/docs/reference/rest/v1/PigJob>)
+        ///    scriptVariables and queryList.queries
+        /// * [PrestoJob](<https://cloud.google.com/dataproc/docs/reference/rest/v1/PrestoJob>)
+        ///    scriptVariables and queryList.queries
+        #[prost(string, tag = "1")]
+        pub kms_key: ::prost::alloc::string::String,
+    }
 }
 /// Specifies workflow execution target.
 ///
@@ -7120,7 +7290,7 @@ pub struct OrderedJob {
     #[prost(string, repeated, tag = "10")]
     pub prerequisite_step_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. The job definition.
-    #[prost(oneof = "ordered_job::JobType", tags = "2, 3, 4, 5, 6, 11, 7, 12")]
+    #[prost(oneof = "ordered_job::JobType", tags = "2, 3, 4, 5, 6, 11, 7, 12, 13, 14")]
     pub job_type: ::core::option::Option<ordered_job::JobType>,
 }
 /// Nested message and enum types in `OrderedJob`.
@@ -7152,6 +7322,12 @@ pub mod ordered_job {
         /// Optional. Job is a Presto job.
         #[prost(message, tag = "12")]
         PrestoJob(super::PrestoJob),
+        /// Optional. Job is a Trino job.
+        #[prost(message, tag = "13")]
+        TrinoJob(super::TrinoJob),
+        /// Optional. Job is a Flink job.
+        #[prost(message, tag = "14")]
+        FlinkJob(super::FlinkJob),
     }
 }
 /// A configurable parameter that replaces one or more fields in the template.
@@ -7361,10 +7537,10 @@ pub mod workflow_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unknown => "UNKNOWN",
-                State::Pending => "PENDING",
-                State::Running => "RUNNING",
-                State::Done => "DONE",
+                Self::Unknown => "UNKNOWN",
+                Self::Pending => "PENDING",
+                Self::Running => "RUNNING",
+                Self::Done => "DONE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7455,12 +7631,12 @@ pub mod workflow_node {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                NodeState::Unspecified => "NODE_STATE_UNSPECIFIED",
-                NodeState::Blocked => "BLOCKED",
-                NodeState::Runnable => "RUNNABLE",
-                NodeState::Running => "RUNNING",
-                NodeState::Completed => "COMPLETED",
-                NodeState::Failed => "FAILED",
+                Self::Unspecified => "NODE_STATE_UNSPECIFIED",
+                Self::Blocked => "BLOCKED",
+                Self::Runnable => "RUNNABLE",
+                Self::Running => "RUNNING",
+                Self::Completed => "COMPLETED",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7633,6 +7809,11 @@ pub struct ListWorkflowTemplatesResponse {
     /// page_token in a subsequent <code>ListWorkflowTemplatesRequest</code>.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Output only. List of workflow templates that could not be included in the
+    /// response. Attempting to get one of these resources may indicate why it was
+    /// not included in the list response.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A request to delete a workflow template.
 ///
@@ -7659,7 +7840,13 @@ pub struct DeleteWorkflowTemplateRequest {
 }
 /// Generated client implementations.
 pub mod workflow_template_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The API interface for managing Workflow Templates in the
@@ -7758,8 +7945,7 @@ pub mod workflow_template_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7792,8 +7978,7 @@ pub mod workflow_template_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7842,8 +8027,7 @@ pub mod workflow_template_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7899,8 +8083,7 @@ pub mod workflow_template_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7931,8 +8114,7 @@ pub mod workflow_template_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7962,8 +8144,7 @@ pub mod workflow_template_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -7990,8 +8171,7 @@ pub mod workflow_template_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

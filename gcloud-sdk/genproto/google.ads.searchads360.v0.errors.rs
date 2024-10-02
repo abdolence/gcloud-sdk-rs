@@ -73,40 +73,32 @@ pub mod authentication_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AuthenticationError::Unspecified => "UNSPECIFIED",
-                AuthenticationError::Unknown => "UNKNOWN",
-                AuthenticationError::AuthenticationError => "AUTHENTICATION_ERROR",
-                AuthenticationError::ClientCustomerIdInvalid => {
-                    "CLIENT_CUSTOMER_ID_INVALID"
-                }
-                AuthenticationError::CustomerNotFound => "CUSTOMER_NOT_FOUND",
-                AuthenticationError::GoogleAccountDeleted => "GOOGLE_ACCOUNT_DELETED",
-                AuthenticationError::GoogleAccountCookieInvalid => {
-                    "GOOGLE_ACCOUNT_COOKIE_INVALID"
-                }
-                AuthenticationError::GoogleAccountAuthenticationFailed => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::AuthenticationError => "AUTHENTICATION_ERROR",
+                Self::ClientCustomerIdInvalid => "CLIENT_CUSTOMER_ID_INVALID",
+                Self::CustomerNotFound => "CUSTOMER_NOT_FOUND",
+                Self::GoogleAccountDeleted => "GOOGLE_ACCOUNT_DELETED",
+                Self::GoogleAccountCookieInvalid => "GOOGLE_ACCOUNT_COOKIE_INVALID",
+                Self::GoogleAccountAuthenticationFailed => {
                     "GOOGLE_ACCOUNT_AUTHENTICATION_FAILED"
                 }
-                AuthenticationError::GoogleAccountUserAndAdsUserMismatch => {
+                Self::GoogleAccountUserAndAdsUserMismatch => {
                     "GOOGLE_ACCOUNT_USER_AND_ADS_USER_MISMATCH"
                 }
-                AuthenticationError::LoginCookieRequired => "LOGIN_COOKIE_REQUIRED",
-                AuthenticationError::NotAdsUser => "NOT_ADS_USER",
-                AuthenticationError::OauthTokenInvalid => "OAUTH_TOKEN_INVALID",
-                AuthenticationError::OauthTokenExpired => "OAUTH_TOKEN_EXPIRED",
-                AuthenticationError::OauthTokenDisabled => "OAUTH_TOKEN_DISABLED",
-                AuthenticationError::OauthTokenRevoked => "OAUTH_TOKEN_REVOKED",
-                AuthenticationError::OauthTokenHeaderInvalid => {
-                    "OAUTH_TOKEN_HEADER_INVALID"
-                }
-                AuthenticationError::LoginCookieInvalid => "LOGIN_COOKIE_INVALID",
-                AuthenticationError::UserIdInvalid => "USER_ID_INVALID",
-                AuthenticationError::TwoStepVerificationNotEnrolled => {
+                Self::LoginCookieRequired => "LOGIN_COOKIE_REQUIRED",
+                Self::NotAdsUser => "NOT_ADS_USER",
+                Self::OauthTokenInvalid => "OAUTH_TOKEN_INVALID",
+                Self::OauthTokenExpired => "OAUTH_TOKEN_EXPIRED",
+                Self::OauthTokenDisabled => "OAUTH_TOKEN_DISABLED",
+                Self::OauthTokenRevoked => "OAUTH_TOKEN_REVOKED",
+                Self::OauthTokenHeaderInvalid => "OAUTH_TOKEN_HEADER_INVALID",
+                Self::LoginCookieInvalid => "LOGIN_COOKIE_INVALID",
+                Self::UserIdInvalid => "USER_ID_INVALID",
+                Self::TwoStepVerificationNotEnrolled => {
                     "TWO_STEP_VERIFICATION_NOT_ENROLLED"
                 }
-                AuthenticationError::AdvancedProtectionNotEnrolled => {
-                    "ADVANCED_PROTECTION_NOT_ENROLLED"
-                }
+                Self::AdvancedProtectionNotEnrolled => "ADVANCED_PROTECTION_NOT_ENROLLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -207,23 +199,21 @@ pub mod authorization_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AuthorizationError::Unspecified => "UNSPECIFIED",
-                AuthorizationError::Unknown => "UNKNOWN",
-                AuthorizationError::UserPermissionDenied => "USER_PERMISSION_DENIED",
-                AuthorizationError::ProjectDisabled => "PROJECT_DISABLED",
-                AuthorizationError::AuthorizationError => "AUTHORIZATION_ERROR",
-                AuthorizationError::ActionNotPermitted => "ACTION_NOT_PERMITTED",
-                AuthorizationError::IncompleteSignup => "INCOMPLETE_SIGNUP",
-                AuthorizationError::CustomerNotEnabled => "CUSTOMER_NOT_ENABLED",
-                AuthorizationError::MissingTos => "MISSING_TOS",
-                AuthorizationError::InvalidLoginCustomerIdServingCustomerIdCombination => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::UserPermissionDenied => "USER_PERMISSION_DENIED",
+                Self::ProjectDisabled => "PROJECT_DISABLED",
+                Self::AuthorizationError => "AUTHORIZATION_ERROR",
+                Self::ActionNotPermitted => "ACTION_NOT_PERMITTED",
+                Self::IncompleteSignup => "INCOMPLETE_SIGNUP",
+                Self::CustomerNotEnabled => "CUSTOMER_NOT_ENABLED",
+                Self::MissingTos => "MISSING_TOS",
+                Self::InvalidLoginCustomerIdServingCustomerIdCombination => {
                     "INVALID_LOGIN_CUSTOMER_ID_SERVING_CUSTOMER_ID_COMBINATION"
                 }
-                AuthorizationError::ServiceAccessDenied => "SERVICE_ACCESS_DENIED",
-                AuthorizationError::AccessDeniedForAccountType => {
-                    "ACCESS_DENIED_FOR_ACCOUNT_TYPE"
-                }
-                AuthorizationError::MetricAccessDenied => "METRIC_ACCESS_DENIED",
+                Self::ServiceAccessDenied => "SERVICE_ACCESS_DENIED",
+                Self::AccessDeniedForAccountType => "ACCESS_DENIED_FOR_ACCOUNT_TYPE",
+                Self::MetricAccessDenied => "METRIC_ACCESS_DENIED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -286,12 +276,10 @@ pub mod custom_column_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CustomColumnError::Unspecified => "UNSPECIFIED",
-                CustomColumnError::Unknown => "UNKNOWN",
-                CustomColumnError::CustomColumnNotFound => "CUSTOM_COLUMN_NOT_FOUND",
-                CustomColumnError::CustomColumnNotAvailable => {
-                    "CUSTOM_COLUMN_NOT_AVAILABLE"
-                }
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::CustomColumnNotFound => "CUSTOM_COLUMN_NOT_FOUND",
+                Self::CustomColumnNotAvailable => "CUSTOM_COLUMN_NOT_AVAILABLE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -357,28 +345,22 @@ pub mod date_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DateError::Unspecified => "UNSPECIFIED",
-                DateError::Unknown => "UNKNOWN",
-                DateError::InvalidFieldValuesInDate => "INVALID_FIELD_VALUES_IN_DATE",
-                DateError::InvalidFieldValuesInDateTime => {
-                    "INVALID_FIELD_VALUES_IN_DATE_TIME"
-                }
-                DateError::InvalidStringDate => "INVALID_STRING_DATE",
-                DateError::InvalidStringDateTimeMicros => {
-                    "INVALID_STRING_DATE_TIME_MICROS"
-                }
-                DateError::InvalidStringDateTimeSeconds => {
-                    "INVALID_STRING_DATE_TIME_SECONDS"
-                }
-                DateError::InvalidStringDateTimeSecondsWithOffset => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidFieldValuesInDate => "INVALID_FIELD_VALUES_IN_DATE",
+                Self::InvalidFieldValuesInDateTime => "INVALID_FIELD_VALUES_IN_DATE_TIME",
+                Self::InvalidStringDate => "INVALID_STRING_DATE",
+                Self::InvalidStringDateTimeMicros => "INVALID_STRING_DATE_TIME_MICROS",
+                Self::InvalidStringDateTimeSeconds => "INVALID_STRING_DATE_TIME_SECONDS",
+                Self::InvalidStringDateTimeSecondsWithOffset => {
                     "INVALID_STRING_DATE_TIME_SECONDS_WITH_OFFSET"
                 }
-                DateError::EarlierThanMinimumDate => "EARLIER_THAN_MINIMUM_DATE",
-                DateError::LaterThanMaximumDate => "LATER_THAN_MAXIMUM_DATE",
-                DateError::DateRangeMinimumDateLaterThanMaximumDate => {
+                Self::EarlierThanMinimumDate => "EARLIER_THAN_MINIMUM_DATE",
+                Self::LaterThanMaximumDate => "LATER_THAN_MAXIMUM_DATE",
+                Self::DateRangeMinimumDateLaterThanMaximumDate => {
                     "DATE_RANGE_MINIMUM_DATE_LATER_THAN_MAXIMUM_DATE"
                 }
-                DateError::DateRangeMinimumAndMaximumDatesBothNull => {
+                Self::DateRangeMinimumAndMaximumDatesBothNull => {
                     "DATE_RANGE_MINIMUM_AND_MAXIMUM_DATES_BOTH_NULL"
                 }
             }
@@ -456,15 +438,13 @@ pub mod date_range_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DateRangeError::Unspecified => "UNSPECIFIED",
-                DateRangeError::Unknown => "UNKNOWN",
-                DateRangeError::InvalidDate => "INVALID_DATE",
-                DateRangeError::StartDateAfterEndDate => "START_DATE_AFTER_END_DATE",
-                DateRangeError::CannotSetDateToPast => "CANNOT_SET_DATE_TO_PAST",
-                DateRangeError::AfterMaximumAllowableDate => {
-                    "AFTER_MAXIMUM_ALLOWABLE_DATE"
-                }
-                DateRangeError::CannotModifyStartDateIfAlreadyStarted => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidDate => "INVALID_DATE",
+                Self::StartDateAfterEndDate => "START_DATE_AFTER_END_DATE",
+                Self::CannotSetDateToPast => "CANNOT_SET_DATE_TO_PAST",
+                Self::AfterMaximumAllowableDate => "AFTER_MAXIMUM_ALLOWABLE_DATE",
+                Self::CannotModifyStartDateIfAlreadyStarted => {
                     "CANNOT_MODIFY_START_DATE_IF_ALREADY_STARTED"
                 }
             }
@@ -521,10 +501,10 @@ pub mod distinct_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DistinctError::Unspecified => "UNSPECIFIED",
-                DistinctError::Unknown => "UNKNOWN",
-                DistinctError::DuplicateElement => "DUPLICATE_ELEMENT",
-                DistinctError::DuplicateType => "DUPLICATE_TYPE",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::DuplicateElement => "DUPLICATE_ELEMENT",
+                Self::DuplicateType => "DUPLICATE_TYPE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -574,12 +554,12 @@ pub mod header_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                HeaderError::Unspecified => "UNSPECIFIED",
-                HeaderError::Unknown => "UNKNOWN",
-                HeaderError::InvalidUserSelectedCustomerId => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidUserSelectedCustomerId => {
                     "INVALID_USER_SELECTED_CUSTOMER_ID"
                 }
-                HeaderError::InvalidLoginCustomerId => "INVALID_LOGIN_CUSTOMER_ID",
+                Self::InvalidLoginCustomerId => "INVALID_LOGIN_CUSTOMER_ID",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -637,12 +617,12 @@ pub mod internal_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                InternalError::Unspecified => "UNSPECIFIED",
-                InternalError::Unknown => "UNKNOWN",
-                InternalError::InternalError => "INTERNAL_ERROR",
-                InternalError::ErrorCodeNotPublished => "ERROR_CODE_NOT_PUBLISHED",
-                InternalError::TransientError => "TRANSIENT_ERROR",
-                InternalError::DeadlineExceeded => "DEADLINE_EXCEEDED",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InternalError => "INTERNAL_ERROR",
+                Self::ErrorCodeNotPublished => "ERROR_CODE_NOT_PUBLISHED",
+                Self::TransientError => "TRANSIENT_ERROR",
+                Self::DeadlineExceeded => "DEADLINE_EXCEEDED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -692,9 +672,9 @@ pub mod invalid_parameter_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                InvalidParameterError::Unspecified => "UNSPECIFIED",
-                InvalidParameterError::Unknown => "UNKNOWN",
-                InvalidParameterError::InvalidCurrencyCode => "INVALID_CURRENCY_CODE",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::InvalidCurrencyCode => "INVALID_CURRENCY_CODE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -867,105 +847,97 @@ pub mod query_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                QueryError::Unspecified => "UNSPECIFIED",
-                QueryError::Unknown => "UNKNOWN",
-                QueryError::QueryError => "QUERY_ERROR",
-                QueryError::BadEnumConstant => "BAD_ENUM_CONSTANT",
-                QueryError::BadEscapeSequence => "BAD_ESCAPE_SEQUENCE",
-                QueryError::BadFieldName => "BAD_FIELD_NAME",
-                QueryError::BadLimitValue => "BAD_LIMIT_VALUE",
-                QueryError::BadNumber => "BAD_NUMBER",
-                QueryError::BadOperator => "BAD_OPERATOR",
-                QueryError::BadParameterName => "BAD_PARAMETER_NAME",
-                QueryError::BadParameterValue => "BAD_PARAMETER_VALUE",
-                QueryError::BadResourceTypeInFromClause => {
-                    "BAD_RESOURCE_TYPE_IN_FROM_CLAUSE"
-                }
-                QueryError::BadSymbol => "BAD_SYMBOL",
-                QueryError::BadValue => "BAD_VALUE",
-                QueryError::DateRangeTooWide => "DATE_RANGE_TOO_WIDE",
-                QueryError::DateRangeTooNarrow => "DATE_RANGE_TOO_NARROW",
-                QueryError::ExpectedAnd => "EXPECTED_AND",
-                QueryError::ExpectedBy => "EXPECTED_BY",
-                QueryError::ExpectedDimensionFieldInSelectClause => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::QueryError => "QUERY_ERROR",
+                Self::BadEnumConstant => "BAD_ENUM_CONSTANT",
+                Self::BadEscapeSequence => "BAD_ESCAPE_SEQUENCE",
+                Self::BadFieldName => "BAD_FIELD_NAME",
+                Self::BadLimitValue => "BAD_LIMIT_VALUE",
+                Self::BadNumber => "BAD_NUMBER",
+                Self::BadOperator => "BAD_OPERATOR",
+                Self::BadParameterName => "BAD_PARAMETER_NAME",
+                Self::BadParameterValue => "BAD_PARAMETER_VALUE",
+                Self::BadResourceTypeInFromClause => "BAD_RESOURCE_TYPE_IN_FROM_CLAUSE",
+                Self::BadSymbol => "BAD_SYMBOL",
+                Self::BadValue => "BAD_VALUE",
+                Self::DateRangeTooWide => "DATE_RANGE_TOO_WIDE",
+                Self::DateRangeTooNarrow => "DATE_RANGE_TOO_NARROW",
+                Self::ExpectedAnd => "EXPECTED_AND",
+                Self::ExpectedBy => "EXPECTED_BY",
+                Self::ExpectedDimensionFieldInSelectClause => {
                     "EXPECTED_DIMENSION_FIELD_IN_SELECT_CLAUSE"
                 }
-                QueryError::ExpectedFiltersOnDateRange => {
-                    "EXPECTED_FILTERS_ON_DATE_RANGE"
-                }
-                QueryError::ExpectedFrom => "EXPECTED_FROM",
-                QueryError::ExpectedList => "EXPECTED_LIST",
-                QueryError::ExpectedReferencedFieldInSelectClause => {
+                Self::ExpectedFiltersOnDateRange => "EXPECTED_FILTERS_ON_DATE_RANGE",
+                Self::ExpectedFrom => "EXPECTED_FROM",
+                Self::ExpectedList => "EXPECTED_LIST",
+                Self::ExpectedReferencedFieldInSelectClause => {
                     "EXPECTED_REFERENCED_FIELD_IN_SELECT_CLAUSE"
                 }
-                QueryError::ExpectedSelect => "EXPECTED_SELECT",
-                QueryError::ExpectedSingleValue => "EXPECTED_SINGLE_VALUE",
-                QueryError::ExpectedValueWithBetweenOperator => {
+                Self::ExpectedSelect => "EXPECTED_SELECT",
+                Self::ExpectedSingleValue => "EXPECTED_SINGLE_VALUE",
+                Self::ExpectedValueWithBetweenOperator => {
                     "EXPECTED_VALUE_WITH_BETWEEN_OPERATOR"
                 }
-                QueryError::InvalidDateFormat => "INVALID_DATE_FORMAT",
-                QueryError::MisalignedDateForFilter => "MISALIGNED_DATE_FOR_FILTER",
-                QueryError::InvalidStringValue => "INVALID_STRING_VALUE",
-                QueryError::InvalidValueWithBetweenOperator => {
+                Self::InvalidDateFormat => "INVALID_DATE_FORMAT",
+                Self::MisalignedDateForFilter => "MISALIGNED_DATE_FOR_FILTER",
+                Self::InvalidStringValue => "INVALID_STRING_VALUE",
+                Self::InvalidValueWithBetweenOperator => {
                     "INVALID_VALUE_WITH_BETWEEN_OPERATOR"
                 }
-                QueryError::InvalidValueWithDuringOperator => {
+                Self::InvalidValueWithDuringOperator => {
                     "INVALID_VALUE_WITH_DURING_OPERATOR"
                 }
-                QueryError::InvalidValueWithLikeOperator => {
-                    "INVALID_VALUE_WITH_LIKE_OPERATOR"
-                }
-                QueryError::OperatorFieldMismatch => "OPERATOR_FIELD_MISMATCH",
-                QueryError::ProhibitedEmptyListInCondition => {
+                Self::InvalidValueWithLikeOperator => "INVALID_VALUE_WITH_LIKE_OPERATOR",
+                Self::OperatorFieldMismatch => "OPERATOR_FIELD_MISMATCH",
+                Self::ProhibitedEmptyListInCondition => {
                     "PROHIBITED_EMPTY_LIST_IN_CONDITION"
                 }
-                QueryError::ProhibitedEnumConstant => "PROHIBITED_ENUM_CONSTANT",
-                QueryError::ProhibitedFieldCombinationInSelectClause => {
+                Self::ProhibitedEnumConstant => "PROHIBITED_ENUM_CONSTANT",
+                Self::ProhibitedFieldCombinationInSelectClause => {
                     "PROHIBITED_FIELD_COMBINATION_IN_SELECT_CLAUSE"
                 }
-                QueryError::ProhibitedFieldInOrderByClause => {
+                Self::ProhibitedFieldInOrderByClause => {
                     "PROHIBITED_FIELD_IN_ORDER_BY_CLAUSE"
                 }
-                QueryError::ProhibitedFieldInSelectClause => {
+                Self::ProhibitedFieldInSelectClause => {
                     "PROHIBITED_FIELD_IN_SELECT_CLAUSE"
                 }
-                QueryError::ProhibitedFieldInWhereClause => {
-                    "PROHIBITED_FIELD_IN_WHERE_CLAUSE"
-                }
-                QueryError::ProhibitedResourceTypeInFromClause => {
+                Self::ProhibitedFieldInWhereClause => "PROHIBITED_FIELD_IN_WHERE_CLAUSE",
+                Self::ProhibitedResourceTypeInFromClause => {
                     "PROHIBITED_RESOURCE_TYPE_IN_FROM_CLAUSE"
                 }
-                QueryError::ProhibitedResourceTypeInSelectClause => {
+                Self::ProhibitedResourceTypeInSelectClause => {
                     "PROHIBITED_RESOURCE_TYPE_IN_SELECT_CLAUSE"
                 }
-                QueryError::ProhibitedResourceTypeInWhereClause => {
+                Self::ProhibitedResourceTypeInWhereClause => {
                     "PROHIBITED_RESOURCE_TYPE_IN_WHERE_CLAUSE"
                 }
-                QueryError::ProhibitedMetricInSelectOrWhereClause => {
+                Self::ProhibitedMetricInSelectOrWhereClause => {
                     "PROHIBITED_METRIC_IN_SELECT_OR_WHERE_CLAUSE"
                 }
-                QueryError::ProhibitedSegmentInSelectOrWhereClause => {
+                Self::ProhibitedSegmentInSelectOrWhereClause => {
                     "PROHIBITED_SEGMENT_IN_SELECT_OR_WHERE_CLAUSE"
                 }
-                QueryError::ProhibitedSegmentWithMetricInSelectOrWhereClause => {
+                Self::ProhibitedSegmentWithMetricInSelectOrWhereClause => {
                     "PROHIBITED_SEGMENT_WITH_METRIC_IN_SELECT_OR_WHERE_CLAUSE"
                 }
-                QueryError::LimitValueTooLow => "LIMIT_VALUE_TOO_LOW",
-                QueryError::ProhibitedNewlineInString => "PROHIBITED_NEWLINE_IN_STRING",
-                QueryError::ProhibitedValueCombinationInList => {
+                Self::LimitValueTooLow => "LIMIT_VALUE_TOO_LOW",
+                Self::ProhibitedNewlineInString => "PROHIBITED_NEWLINE_IN_STRING",
+                Self::ProhibitedValueCombinationInList => {
                     "PROHIBITED_VALUE_COMBINATION_IN_LIST"
                 }
-                QueryError::ProhibitedValueCombinationWithBetweenOperator => {
+                Self::ProhibitedValueCombinationWithBetweenOperator => {
                     "PROHIBITED_VALUE_COMBINATION_WITH_BETWEEN_OPERATOR"
                 }
-                QueryError::StringNotTerminated => "STRING_NOT_TERMINATED",
-                QueryError::TooManySegments => "TOO_MANY_SEGMENTS",
-                QueryError::UnexpectedEndOfQuery => "UNEXPECTED_END_OF_QUERY",
-                QueryError::UnexpectedFromClause => "UNEXPECTED_FROM_CLAUSE",
-                QueryError::UnrecognizedField => "UNRECOGNIZED_FIELD",
-                QueryError::UnexpectedInput => "UNEXPECTED_INPUT",
-                QueryError::RequestedMetricsForManager => "REQUESTED_METRICS_FOR_MANAGER",
-                QueryError::FilterHasTooManyValues => "FILTER_HAS_TOO_MANY_VALUES",
+                Self::StringNotTerminated => "STRING_NOT_TERMINATED",
+                Self::TooManySegments => "TOO_MANY_SEGMENTS",
+                Self::UnexpectedEndOfQuery => "UNEXPECTED_END_OF_QUERY",
+                Self::UnexpectedFromClause => "UNEXPECTED_FROM_CLAUSE",
+                Self::UnrecognizedField => "UNRECOGNIZED_FIELD",
+                Self::UnexpectedInput => "UNEXPECTED_INPUT",
+                Self::RequestedMetricsForManager => "REQUESTED_METRICS_FOR_MANAGER",
+                Self::FilterHasTooManyValues => "FILTER_HAS_TOO_MANY_VALUES",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1110,12 +1082,10 @@ pub mod quota_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                QuotaError::Unspecified => "UNSPECIFIED",
-                QuotaError::Unknown => "UNKNOWN",
-                QuotaError::ResourceExhausted => "RESOURCE_EXHAUSTED",
-                QuotaError::ResourceTemporarilyExhausted => {
-                    "RESOURCE_TEMPORARILY_EXHAUSTED"
-                }
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::ResourceExhausted => "RESOURCE_EXHAUSTED",
+                Self::ResourceTemporarilyExhausted => "RESOURCE_TEMPORARILY_EXHAUSTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1221,49 +1191,49 @@ pub mod request_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RequestError::Unspecified => "UNSPECIFIED",
-                RequestError::Unknown => "UNKNOWN",
-                RequestError::ResourceNameMissing => "RESOURCE_NAME_MISSING",
-                RequestError::ResourceNameMalformed => "RESOURCE_NAME_MALFORMED",
-                RequestError::BadResourceId => "BAD_RESOURCE_ID",
-                RequestError::InvalidProductName => "INVALID_PRODUCT_NAME",
-                RequestError::InvalidCustomerId => "INVALID_CUSTOMER_ID",
-                RequestError::OperationRequired => "OPERATION_REQUIRED",
-                RequestError::ResourceNotFound => "RESOURCE_NOT_FOUND",
-                RequestError::InvalidPageToken => "INVALID_PAGE_TOKEN",
-                RequestError::ExpiredPageToken => "EXPIRED_PAGE_TOKEN",
-                RequestError::InvalidPageSize => "INVALID_PAGE_SIZE",
-                RequestError::RequiredFieldMissing => "REQUIRED_FIELD_MISSING",
-                RequestError::ImmutableField => "IMMUTABLE_FIELD",
-                RequestError::TooManyMutateOperations => "TOO_MANY_MUTATE_OPERATIONS",
-                RequestError::CannotBeExecutedByManagerAccount => {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::ResourceNameMissing => "RESOURCE_NAME_MISSING",
+                Self::ResourceNameMalformed => "RESOURCE_NAME_MALFORMED",
+                Self::BadResourceId => "BAD_RESOURCE_ID",
+                Self::InvalidProductName => "INVALID_PRODUCT_NAME",
+                Self::InvalidCustomerId => "INVALID_CUSTOMER_ID",
+                Self::OperationRequired => "OPERATION_REQUIRED",
+                Self::ResourceNotFound => "RESOURCE_NOT_FOUND",
+                Self::InvalidPageToken => "INVALID_PAGE_TOKEN",
+                Self::ExpiredPageToken => "EXPIRED_PAGE_TOKEN",
+                Self::InvalidPageSize => "INVALID_PAGE_SIZE",
+                Self::RequiredFieldMissing => "REQUIRED_FIELD_MISSING",
+                Self::ImmutableField => "IMMUTABLE_FIELD",
+                Self::TooManyMutateOperations => "TOO_MANY_MUTATE_OPERATIONS",
+                Self::CannotBeExecutedByManagerAccount => {
                     "CANNOT_BE_EXECUTED_BY_MANAGER_ACCOUNT"
                 }
-                RequestError::CannotModifyForeignField => "CANNOT_MODIFY_FOREIGN_FIELD",
-                RequestError::InvalidEnumValue => "INVALID_ENUM_VALUE",
-                RequestError::LoginCustomerIdParameterMissing => {
+                Self::CannotModifyForeignField => "CANNOT_MODIFY_FOREIGN_FIELD",
+                Self::InvalidEnumValue => "INVALID_ENUM_VALUE",
+                Self::LoginCustomerIdParameterMissing => {
                     "LOGIN_CUSTOMER_ID_PARAMETER_MISSING"
                 }
-                RequestError::LoginOrLinkedCustomerIdParameterRequired => {
+                Self::LoginOrLinkedCustomerIdParameterRequired => {
                     "LOGIN_OR_LINKED_CUSTOMER_ID_PARAMETER_REQUIRED"
                 }
-                RequestError::ValidateOnlyRequestHasPageToken => {
+                Self::ValidateOnlyRequestHasPageToken => {
                     "VALIDATE_ONLY_REQUEST_HAS_PAGE_TOKEN"
                 }
-                RequestError::CannotReturnSummaryRowForRequestWithoutMetrics => {
+                Self::CannotReturnSummaryRowForRequestWithoutMetrics => {
                     "CANNOT_RETURN_SUMMARY_ROW_FOR_REQUEST_WITHOUT_METRICS"
                 }
-                RequestError::CannotReturnSummaryRowForValidateOnlyRequests => {
+                Self::CannotReturnSummaryRowForValidateOnlyRequests => {
                     "CANNOT_RETURN_SUMMARY_ROW_FOR_VALIDATE_ONLY_REQUESTS"
                 }
-                RequestError::InconsistentReturnSummaryRowValue => {
+                Self::InconsistentReturnSummaryRowValue => {
                     "INCONSISTENT_RETURN_SUMMARY_ROW_VALUE"
                 }
-                RequestError::TotalResultsCountNotOriginallyRequested => {
+                Self::TotalResultsCountNotOriginallyRequested => {
                     "TOTAL_RESULTS_COUNT_NOT_ORIGINALLY_REQUESTED"
                 }
-                RequestError::RpcDeadlineTooShort => "RPC_DEADLINE_TOO_SHORT",
-                RequestError::ProductNotSupported => "PRODUCT_NOT_SUPPORTED",
+                Self::RpcDeadlineTooShort => "RPC_DEADLINE_TOO_SHORT",
+                Self::ProductNotSupported => "PRODUCT_NOT_SUPPORTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1354,12 +1324,10 @@ pub mod size_limit_error_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SizeLimitError::Unspecified => "UNSPECIFIED",
-                SizeLimitError::Unknown => "UNKNOWN",
-                SizeLimitError::RequestSizeLimitExceeded => "REQUEST_SIZE_LIMIT_EXCEEDED",
-                SizeLimitError::ResponseSizeLimitExceeded => {
-                    "RESPONSE_SIZE_LIMIT_EXCEEDED"
-                }
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::RequestSizeLimitExceeded => "REQUEST_SIZE_LIMIT_EXCEEDED",
+                Self::ResponseSizeLimitExceeded => "RESPONSE_SIZE_LIMIT_EXCEEDED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1557,10 +1525,10 @@ pub mod quota_error_details {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                QuotaRateScope::Unspecified => "UNSPECIFIED",
-                QuotaRateScope::Unknown => "UNKNOWN",
-                QuotaRateScope::Account => "ACCOUNT",
-                QuotaRateScope::Developer => "DEVELOPER",
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::Account => "ACCOUNT",
+                Self::Developer => "DEVELOPER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

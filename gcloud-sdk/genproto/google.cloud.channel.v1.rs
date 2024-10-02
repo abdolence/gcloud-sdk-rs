@@ -62,9 +62,9 @@ pub mod edu_data {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                InstituteType::Unspecified => "INSTITUTE_TYPE_UNSPECIFIED",
-                InstituteType::K12 => "K12",
-                InstituteType::University => "UNIVERSITY",
+                Self::Unspecified => "INSTITUTE_TYPE_UNSPECIFIED",
+                Self::K12 => "K12",
+                Self::University => "UNIVERSITY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -115,14 +115,14 @@ pub mod edu_data {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                InstituteSize::Unspecified => "INSTITUTE_SIZE_UNSPECIFIED",
-                InstituteSize::Size1100 => "SIZE_1_100",
-                InstituteSize::Size101500 => "SIZE_101_500",
-                InstituteSize::Size5011000 => "SIZE_501_1000",
-                InstituteSize::Size10012000 => "SIZE_1001_2000",
-                InstituteSize::Size20015000 => "SIZE_2001_5000",
-                InstituteSize::Size500110000 => "SIZE_5001_10000",
-                InstituteSize::Size10001OrMore => "SIZE_10001_OR_MORE",
+                Self::Unspecified => "INSTITUTE_SIZE_UNSPECIFIED",
+                Self::Size1100 => "SIZE_1_100",
+                Self::Size101500 => "SIZE_101_500",
+                Self::Size5011000 => "SIZE_501_1000",
+                Self::Size10012000 => "SIZE_1001_2000",
+                Self::Size20015000 => "SIZE_2001_5000",
+                Self::Size500110000 => "SIZE_5001_10000",
+                Self::Size10001OrMore => "SIZE_10001_OR_MORE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -203,9 +203,9 @@ pub mod cloud_identity_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CustomerType::Unspecified => "CUSTOMER_TYPE_UNSPECIFIED",
-                CustomerType::Domain => "DOMAIN",
-                CustomerType::Team => "TEAM",
+                Self::Unspecified => "CUSTOMER_TYPE_UNSPECIFIED",
+                Self::Domain => "DOMAIN",
+                Self::Team => "TEAM",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -314,9 +314,9 @@ impl ChannelPartnerLinkView {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ChannelPartnerLinkView::Unspecified => "UNSPECIFIED",
-            ChannelPartnerLinkView::Basic => "BASIC",
-            ChannelPartnerLinkView::Full => "FULL",
+            Self::Unspecified => "UNSPECIFIED",
+            Self::Basic => "BASIC",
+            Self::Full => "FULL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -352,13 +352,11 @@ impl ChannelPartnerLinkState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ChannelPartnerLinkState::Unspecified => {
-                "CHANNEL_PARTNER_LINK_STATE_UNSPECIFIED"
-            }
-            ChannelPartnerLinkState::Invited => "INVITED",
-            ChannelPartnerLinkState::Active => "ACTIVE",
-            ChannelPartnerLinkState::Revoked => "REVOKED",
-            ChannelPartnerLinkState::Suspended => "SUSPENDED",
+            Self::Unspecified => "CHANNEL_PARTNER_LINK_STATE_UNSPECIFIED",
+            Self::Invited => "INVITED",
+            Self::Active => "ACTIVE",
+            Self::Revoked => "REVOKED",
+            Self::Suspended => "SUSPENDED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -529,8 +527,8 @@ impl MediaType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            MediaType::Unspecified => "MEDIA_TYPE_UNSPECIFIED",
-            MediaType::Image => "MEDIA_TYPE_IMAGE",
+            Self::Unspecified => "MEDIA_TYPE_UNSPECIFIED",
+            Self::Image => "MEDIA_TYPE_IMAGE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -643,11 +641,11 @@ pub mod parameter_definition {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ParameterType::Unspecified => "PARAMETER_TYPE_UNSPECIFIED",
-                ParameterType::Int64 => "INT64",
-                ParameterType::String => "STRING",
-                ParameterType::Double => "DOUBLE",
-                ParameterType::Boolean => "BOOLEAN",
+                Self::Unspecified => "PARAMETER_TYPE_UNSPECIFIED",
+                Self::Int64 => "INT64",
+                Self::String => "STRING",
+                Self::Double => "DOUBLE",
+                Self::Boolean => "BOOLEAN",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -810,12 +808,10 @@ impl PromotionalOrderType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            PromotionalOrderType::PromotionalTypeUnspecified => {
-                "PROMOTIONAL_TYPE_UNSPECIFIED"
-            }
-            PromotionalOrderType::NewUpgrade => "NEW_UPGRADE",
-            PromotionalOrderType::Transfer => "TRANSFER",
-            PromotionalOrderType::PromotionSwitch => "PROMOTION_SWITCH",
+            Self::PromotionalTypeUnspecified => "PROMOTIONAL_TYPE_UNSPECIFIED",
+            Self::NewUpgrade => "NEW_UPGRADE",
+            Self::Transfer => "TRANSFER",
+            Self::PromotionSwitch => "PROMOTION_SWITCH",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -853,12 +849,12 @@ impl PaymentPlan {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            PaymentPlan::Unspecified => "PAYMENT_PLAN_UNSPECIFIED",
-            PaymentPlan::Commitment => "COMMITMENT",
-            PaymentPlan::Flexible => "FLEXIBLE",
-            PaymentPlan::Free => "FREE",
-            PaymentPlan::Trial => "TRIAL",
-            PaymentPlan::Offline => "OFFLINE",
+            Self::Unspecified => "PAYMENT_PLAN_UNSPECIFIED",
+            Self::Commitment => "COMMITMENT",
+            Self::Flexible => "FLEXIBLE",
+            Self::Free => "FREE",
+            Self::Trial => "TRIAL",
+            Self::Offline => "OFFLINE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -892,9 +888,9 @@ impl PaymentType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            PaymentType::Unspecified => "PAYMENT_TYPE_UNSPECIFIED",
-            PaymentType::Prepay => "PREPAY",
-            PaymentType::Postpay => "POSTPAY",
+            Self::Unspecified => "PAYMENT_TYPE_UNSPECIFIED",
+            Self::Prepay => "PREPAY",
+            Self::Postpay => "POSTPAY",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -940,14 +936,14 @@ impl ResourceType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ResourceType::Unspecified => "RESOURCE_TYPE_UNSPECIFIED",
-            ResourceType::Seat => "SEAT",
-            ResourceType::Mau => "MAU",
-            ResourceType::Gb => "GB",
-            ResourceType::LicensedUser => "LICENSED_USER",
-            ResourceType::Minutes => "MINUTES",
-            ResourceType::IaasUsage => "IAAS_USAGE",
-            ResourceType::Subscription => "SUBSCRIPTION",
+            Self::Unspecified => "RESOURCE_TYPE_UNSPECIFIED",
+            Self::Seat => "SEAT",
+            Self::Mau => "MAU",
+            Self::Gb => "GB",
+            Self::LicensedUser => "LICENSED_USER",
+            Self::Minutes => "MINUTES",
+            Self::IaasUsage => "IAAS_USAGE",
+            Self::Subscription => "SUBSCRIPTION",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -985,10 +981,10 @@ impl PeriodType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            PeriodType::Unspecified => "PERIOD_TYPE_UNSPECIFIED",
-            PeriodType::Day => "DAY",
-            PeriodType::Month => "MONTH",
-            PeriodType::Year => "YEAR",
+            Self::Unspecified => "PERIOD_TYPE_UNSPECIFIED",
+            Self::Day => "DAY",
+            Self::Month => "MONTH",
+            Self::Year => "YEAR",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1108,9 +1104,9 @@ pub mod entitlement {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ProvisioningState::Unspecified => "PROVISIONING_STATE_UNSPECIFIED",
-                ProvisioningState::Active => "ACTIVE",
-                ProvisioningState::Suspended => "SUSPENDED",
+                Self::Unspecified => "PROVISIONING_STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Suspended => "SUSPENDED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1160,12 +1156,12 @@ pub mod entitlement {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SuspensionReason::Unspecified => "SUSPENSION_REASON_UNSPECIFIED",
-                SuspensionReason::ResellerInitiated => "RESELLER_INITIATED",
-                SuspensionReason::TrialEnded => "TRIAL_ENDED",
-                SuspensionReason::RenewalWithTypeCancel => "RENEWAL_WITH_TYPE_CANCEL",
-                SuspensionReason::PendingTosAcceptance => "PENDING_TOS_ACCEPTANCE",
-                SuspensionReason::Other => "OTHER",
+                Self::Unspecified => "SUSPENSION_REASON_UNSPECIFIED",
+                Self::ResellerInitiated => "RESELLER_INITIATED",
+                Self::TrialEnded => "TRIAL_ENDED",
+                Self::RenewalWithTypeCancel => "RENEWAL_WITH_TYPE_CANCEL",
+                Self::PendingTosAcceptance => "PENDING_TOS_ACCEPTANCE",
+                Self::Other => "OTHER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1331,11 +1327,11 @@ pub mod transfer_eligibility {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Reason::Unspecified => "REASON_UNSPECIFIED",
-                Reason::PendingTosAcceptance => "PENDING_TOS_ACCEPTANCE",
-                Reason::SkuNotEligible => "SKU_NOT_ELIGIBLE",
-                Reason::SkuSuspended => "SKU_SUSPENDED",
-                Reason::ChannelPartnerNotAuthorizedForSku => {
+                Self::Unspecified => "REASON_UNSPECIFIED",
+                Self::PendingTosAcceptance => "PENDING_TOS_ACCEPTANCE",
+                Self::SkuNotEligible => "SKU_NOT_ELIGIBLE",
+                Self::SkuSuspended => "SKU_SUSPENDED",
+                Self::ChannelPartnerNotAuthorizedForSku => {
                     "CHANNEL_PARTNER_NOT_AUTHORIZED_FOR_SKU"
                 }
             }
@@ -1450,21 +1446,21 @@ pub mod entitlement_change {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ChangeType::Unspecified => "CHANGE_TYPE_UNSPECIFIED",
-                ChangeType::Created => "CREATED",
-                ChangeType::PricePlanSwitched => "PRICE_PLAN_SWITCHED",
-                ChangeType::CommitmentChanged => "COMMITMENT_CHANGED",
-                ChangeType::Renewed => "RENEWED",
-                ChangeType::Suspended => "SUSPENDED",
-                ChangeType::Activated => "ACTIVATED",
-                ChangeType::Cancelled => "CANCELLED",
-                ChangeType::SkuChanged => "SKU_CHANGED",
-                ChangeType::RenewalSettingChanged => "RENEWAL_SETTING_CHANGED",
-                ChangeType::PaidSubscriptionStarted => "PAID_SUBSCRIPTION_STARTED",
-                ChangeType::LicenseCapChanged => "LICENSE_CAP_CHANGED",
-                ChangeType::SuspensionDetailsChanged => "SUSPENSION_DETAILS_CHANGED",
-                ChangeType::TrialEndDateExtended => "TRIAL_END_DATE_EXTENDED",
-                ChangeType::TrialStarted => "TRIAL_STARTED",
+                Self::Unspecified => "CHANGE_TYPE_UNSPECIFIED",
+                Self::Created => "CREATED",
+                Self::PricePlanSwitched => "PRICE_PLAN_SWITCHED",
+                Self::CommitmentChanged => "COMMITMENT_CHANGED",
+                Self::Renewed => "RENEWED",
+                Self::Suspended => "SUSPENDED",
+                Self::Activated => "ACTIVATED",
+                Self::Cancelled => "CANCELLED",
+                Self::SkuChanged => "SKU_CHANGED",
+                Self::RenewalSettingChanged => "RENEWAL_SETTING_CHANGED",
+                Self::PaidSubscriptionStarted => "PAID_SUBSCRIPTION_STARTED",
+                Self::LicenseCapChanged => "LICENSE_CAP_CHANGED",
+                Self::SuspensionDetailsChanged => "SUSPENSION_DETAILS_CHANGED",
+                Self::TrialEndDateExtended => "TRIAL_END_DATE_EXTENDED",
+                Self::TrialStarted => "TRIAL_STARTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1521,13 +1517,11 @@ pub mod entitlement_change {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                OperatorType::Unspecified => "OPERATOR_TYPE_UNSPECIFIED",
-                OperatorType::CustomerServiceRepresentative => {
-                    "CUSTOMER_SERVICE_REPRESENTATIVE"
-                }
-                OperatorType::System => "SYSTEM",
-                OperatorType::Customer => "CUSTOMER",
-                OperatorType::Reseller => "RESELLER",
+                Self::Unspecified => "OPERATOR_TYPE_UNSPECIFIED",
+                Self::CustomerServiceRepresentative => "CUSTOMER_SERVICE_REPRESENTATIVE",
+                Self::System => "SYSTEM",
+                Self::Customer => "CUSTOMER",
+                Self::Reseller => "RESELLER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1576,10 +1570,10 @@ pub mod entitlement_change {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CancellationReason::Unspecified => "CANCELLATION_REASON_UNSPECIFIED",
-                CancellationReason::ServiceTerminated => "SERVICE_TERMINATED",
-                CancellationReason::RelationshipEnded => "RELATIONSHIP_ENDED",
-                CancellationReason::PartialTransfer => "PARTIAL_TRANSFER",
+                Self::Unspecified => "CANCELLATION_REASON_UNSPECIFIED",
+                Self::ServiceTerminated => "SERVICE_TERMINATED",
+                Self::RelationshipEnded => "RELATIONSHIP_ENDED",
+                Self::PartialTransfer => "PARTIAL_TRANSFER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1628,15 +1622,11 @@ pub mod entitlement_change {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ActivationReason::Unspecified => "ACTIVATION_REASON_UNSPECIFIED",
-                ActivationReason::ResellerRevokedSuspension => {
-                    "RESELLER_REVOKED_SUSPENSION"
-                }
-                ActivationReason::CustomerAcceptedPendingTos => {
-                    "CUSTOMER_ACCEPTED_PENDING_TOS"
-                }
-                ActivationReason::RenewalSettingsChanged => "RENEWAL_SETTINGS_CHANGED",
-                ActivationReason::OtherActivationReason => "OTHER_ACTIVATION_REASON",
+                Self::Unspecified => "ACTIVATION_REASON_UNSPECIFIED",
+                Self::ResellerRevokedSuspension => "RESELLER_REVOKED_SUSPENSION",
+                Self::CustomerAcceptedPendingTos => "CUSTOMER_ACCEPTED_PENDING_TOS",
+                Self::RenewalSettingsChanged => "RENEWAL_SETTINGS_CHANGED",
+                Self::OtherActivationReason => "OTHER_ACTIVATION_REASON",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1724,20 +1714,18 @@ pub mod operation_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                OperationType::Unspecified => "OPERATION_TYPE_UNSPECIFIED",
-                OperationType::CreateEntitlement => "CREATE_ENTITLEMENT",
-                OperationType::ChangeRenewalSettings => "CHANGE_RENEWAL_SETTINGS",
-                OperationType::StartPaidService => "START_PAID_SERVICE",
-                OperationType::ActivateEntitlement => "ACTIVATE_ENTITLEMENT",
-                OperationType::SuspendEntitlement => "SUSPEND_ENTITLEMENT",
-                OperationType::CancelEntitlement => "CANCEL_ENTITLEMENT",
-                OperationType::TransferEntitlements => "TRANSFER_ENTITLEMENTS",
-                OperationType::TransferEntitlementsToGoogle => {
-                    "TRANSFER_ENTITLEMENTS_TO_GOOGLE"
-                }
-                OperationType::ChangeOffer => "CHANGE_OFFER",
-                OperationType::ChangeParameters => "CHANGE_PARAMETERS",
-                OperationType::ProvisionCloudIdentity => "PROVISION_CLOUD_IDENTITY",
+                Self::Unspecified => "OPERATION_TYPE_UNSPECIFIED",
+                Self::CreateEntitlement => "CREATE_ENTITLEMENT",
+                Self::ChangeRenewalSettings => "CHANGE_RENEWAL_SETTINGS",
+                Self::StartPaidService => "START_PAID_SERVICE",
+                Self::ActivateEntitlement => "ACTIVATE_ENTITLEMENT",
+                Self::SuspendEntitlement => "SUSPEND_ENTITLEMENT",
+                Self::CancelEntitlement => "CANCEL_ENTITLEMENT",
+                Self::TransferEntitlements => "TRANSFER_ENTITLEMENTS",
+                Self::TransferEntitlementsToGoogle => "TRANSFER_ENTITLEMENTS_TO_GOOGLE",
+                Self::ChangeOffer => "CHANGE_OFFER",
+                Self::ChangeParameters => "CHANGE_PARAMETERS",
+                Self::ProvisionCloudIdentity => "PROVISION_CLOUD_IDENTITY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1996,13 +1984,13 @@ pub mod column {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DataType::Unspecified => "DATA_TYPE_UNSPECIFIED",
-                DataType::String => "STRING",
-                DataType::Int => "INT",
-                DataType::Decimal => "DECIMAL",
-                DataType::Money => "MONEY",
-                DataType::Date => "DATE",
-                DataType::DateTime => "DATE_TIME",
+                Self::Unspecified => "DATA_TYPE_UNSPECIFIED",
+                Self::String => "STRING",
+                Self::Int => "INT",
+                Self::Decimal => "DECIMAL",
+                Self::Money => "MONEY",
+                Self::Date => "DATE",
+                Self::DateTime => "DATE_TIME",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2149,11 +2137,11 @@ pub mod report_status {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Started => "STARTED",
-                State::Writing => "WRITING",
-                State::Available => "AVAILABLE",
-                State::Failed => "FAILED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Started => "STARTED",
+                Self::Writing => "WRITING",
+                Self::Available => "AVAILABLE",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2196,7 +2184,13 @@ pub struct Report {
 }
 /// Generated client implementations.
 pub mod cloud_channel_reports_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// CloudChannelReportsService lets Google Cloud resellers and
@@ -2318,6 +2312,7 @@ pub mod cloud_channel_reports_service_client {
         /// Deprecated: Please use [Export Channel Services data to
         /// BigQuery](https://cloud.google.com/channel/docs/rebilling/export-data-to-bigquery)
         /// instead.
+        #[deprecated]
         pub async fn run_report_job(
             &mut self,
             request: impl tonic::IntoRequest<super::RunReportJobRequest>,
@@ -2329,8 +2324,7 @@ pub mod cloud_channel_reports_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2354,6 +2348,7 @@ pub mod cloud_channel_reports_service_client {
         /// Deprecated: Please use [Export Channel Services data to
         /// BigQuery](https://cloud.google.com/channel/docs/rebilling/export-data-to-bigquery)
         /// instead.
+        #[deprecated]
         pub async fn fetch_report_results(
             &mut self,
             request: impl tonic::IntoRequest<super::FetchReportResultsRequest>,
@@ -2365,8 +2360,7 @@ pub mod cloud_channel_reports_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2390,6 +2384,7 @@ pub mod cloud_channel_reports_service_client {
         /// Deprecated: Please use [Export Channel Services data to
         /// BigQuery](https://cloud.google.com/channel/docs/rebilling/export-data-to-bigquery)
         /// instead.
+        #[deprecated]
         pub async fn list_reports(
             &mut self,
             request: impl tonic::IntoRequest<super::ListReportsRequest>,
@@ -2401,8 +2396,7 @@ pub mod cloud_channel_reports_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2629,9 +2623,9 @@ impl RebillingBasis {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            RebillingBasis::Unspecified => "REBILLING_BASIS_UNSPECIFIED",
-            RebillingBasis::CostAtList => "COST_AT_LIST",
-            RebillingBasis::DirectCustomerCost => "DIRECT_CUSTOMER_COST",
+            Self::Unspecified => "REBILLING_BASIS_UNSPECIFIED",
+            Self::CostAtList => "COST_AT_LIST",
+            Self::DirectCustomerCost => "DIRECT_CUSTOMER_COST",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3921,9 +3915,9 @@ pub mod list_purchasable_skus_request {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    ChangeType::Unspecified => "CHANGE_TYPE_UNSPECIFIED",
-                    ChangeType::Upgrade => "UPGRADE",
-                    ChangeType::Downgrade => "DOWNGRADE",
+                    Self::Unspecified => "CHANGE_TYPE_UNSPECIFIED",
+                    Self::Upgrade => "UPGRADE",
+                    Self::Downgrade => "DOWNGRADE",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4214,7 +4208,13 @@ pub struct ListEntitlementChangesResponse {
 }
 /// Generated client implementations.
 pub mod cloud_channel_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// CloudChannelService lets Google cloud resellers and distributors manage
@@ -4339,8 +4339,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4379,8 +4378,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4430,8 +4428,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4473,8 +4470,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4513,8 +4509,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4550,8 +4545,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4597,8 +4591,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4651,8 +4644,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4692,8 +4684,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4741,8 +4732,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4793,8 +4783,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4831,8 +4820,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4900,8 +4888,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -4953,8 +4940,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5006,8 +4992,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5057,8 +5042,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5111,8 +5095,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5162,8 +5145,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5218,8 +5200,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5275,8 +5256,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5337,8 +5317,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5396,8 +5375,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5438,8 +5416,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5483,8 +5460,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5536,8 +5512,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5588,8 +5563,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5635,8 +5609,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5690,8 +5663,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5762,8 +5734,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5824,8 +5795,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5868,8 +5838,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5917,8 +5886,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -5973,8 +5941,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6048,8 +6015,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6112,8 +6078,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6158,8 +6123,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6207,8 +6171,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6256,8 +6219,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6293,8 +6255,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6328,8 +6289,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6363,8 +6323,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6398,8 +6357,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6437,8 +6395,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6479,8 +6436,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6521,8 +6477,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6569,8 +6524,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6620,8 +6574,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6667,8 +6620,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6713,8 +6665,7 @@ pub mod cloud_channel_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -6775,9 +6726,9 @@ pub mod customer_event {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::PrimaryDomainChanged => "PRIMARY_DOMAIN_CHANGED",
-                Type::PrimaryDomainVerified => "PRIMARY_DOMAIN_VERIFIED",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::PrimaryDomainChanged => "PRIMARY_DOMAIN_CHANGED",
+                Self::PrimaryDomainVerified => "PRIMARY_DOMAIN_VERIFIED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6855,19 +6806,19 @@ pub mod entitlement_event {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::Created => "CREATED",
-                Type::PricePlanSwitched => "PRICE_PLAN_SWITCHED",
-                Type::CommitmentChanged => "COMMITMENT_CHANGED",
-                Type::Renewed => "RENEWED",
-                Type::Suspended => "SUSPENDED",
-                Type::Activated => "ACTIVATED",
-                Type::Cancelled => "CANCELLED",
-                Type::SkuChanged => "SKU_CHANGED",
-                Type::RenewalSettingChanged => "RENEWAL_SETTING_CHANGED",
-                Type::PaidServiceStarted => "PAID_SERVICE_STARTED",
-                Type::LicenseAssignmentChanged => "LICENSE_ASSIGNMENT_CHANGED",
-                Type::LicenseCapChanged => "LICENSE_CAP_CHANGED",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Created => "CREATED",
+                Self::PricePlanSwitched => "PRICE_PLAN_SWITCHED",
+                Self::CommitmentChanged => "COMMITMENT_CHANGED",
+                Self::Renewed => "RENEWED",
+                Self::Suspended => "SUSPENDED",
+                Self::Activated => "ACTIVATED",
+                Self::Cancelled => "CANCELLED",
+                Self::SkuChanged => "SKU_CHANGED",
+                Self::RenewalSettingChanged => "RENEWAL_SETTING_CHANGED",
+                Self::PaidServiceStarted => "PAID_SERVICE_STARTED",
+                Self::LicenseAssignmentChanged => "LICENSE_ASSIGNMENT_CHANGED",
+                Self::LicenseCapChanged => "LICENSE_CAP_CHANGED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

@@ -64,9 +64,9 @@ pub mod folder {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                LifecycleState::Unspecified => "LIFECYCLE_STATE_UNSPECIFIED",
-                LifecycleState::Active => "ACTIVE",
-                LifecycleState::DeleteRequested => "DELETE_REQUESTED",
+                Self::Unspecified => "LIFECYCLE_STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::DeleteRequested => "DELETE_REQUESTED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -277,9 +277,9 @@ pub mod folder_operation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                OperationType::Unspecified => "OPERATION_TYPE_UNSPECIFIED",
-                OperationType::Create => "CREATE",
-                OperationType::Move => "MOVE",
+                Self::Unspecified => "OPERATION_TYPE_UNSPECIFIED",
+                Self::Create => "CREATE",
+                Self::Move => "MOVE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -295,7 +295,13 @@ pub mod folder_operation {
 }
 /// Generated client implementations.
 pub mod folders_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Manages Cloud Resource Folders.
@@ -399,8 +405,7 @@ pub mod folders_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -435,8 +440,7 @@ pub mod folders_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -467,8 +471,7 @@ pub mod folders_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -524,8 +527,7 @@ pub mod folders_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -566,8 +568,7 @@ pub mod folders_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -613,8 +614,7 @@ pub mod folders_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -649,8 +649,7 @@ pub mod folders_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -686,8 +685,7 @@ pub mod folders_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -723,8 +721,7 @@ pub mod folders_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -760,8 +757,7 @@ pub mod folders_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -799,8 +795,7 @@ pub mod folders_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

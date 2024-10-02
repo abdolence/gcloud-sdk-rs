@@ -63,8 +63,8 @@ pub mod volume_type_enum {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                VolumeType::Unspecified => "VOLUME_TYPE_UNSPECIFIED",
-                VolumeType::GcePersistentDisk => "GCE_PERSISTENT_DISK",
+                Self::Unspecified => "VOLUME_TYPE_UNSPECIFIED",
+                Self::GcePersistentDisk => "GCE_PERSISTENT_DISK",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -303,12 +303,12 @@ pub mod backup {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::InProgress => "IN_PROGRESS",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
-                State::Deleting => "DELETING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::InProgress => "IN_PROGRESS",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::Deleting => "DELETING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -606,13 +606,13 @@ pub mod backup_plan {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::ClusterPending => "CLUSTER_PENDING",
-                State::Provisioning => "PROVISIONING",
-                State::Ready => "READY",
-                State::Failed => "FAILED",
-                State::Deactivated => "DEACTIVATED",
-                State::Deleting => "DELETING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::ClusterPending => "CLUSTER_PENDING",
+                Self::Provisioning => "PROVISIONING",
+                Self::Ready => "READY",
+                Self::Failed => "FAILED",
+                Self::Deactivated => "DEACTIVATED",
+                Self::Deleting => "DELETING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -868,12 +868,12 @@ pub mod restore {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::InProgress => "IN_PROGRESS",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
-                State::Deleting => "DELETING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::InProgress => "IN_PROGRESS",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::Deleting => "DELETING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1137,13 +1137,13 @@ pub mod restore_config {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Op::Unspecified => "OP_UNSPECIFIED",
-                    Op::Remove => "REMOVE",
-                    Op::Move => "MOVE",
-                    Op::Copy => "COPY",
-                    Op::Add => "ADD",
-                    Op::Test => "TEST",
-                    Op::Replace => "REPLACE",
+                    Self::Unspecified => "OP_UNSPECIFIED",
+                    Self::Remove => "REMOVE",
+                    Self::Move => "MOVE",
+                    Self::Copy => "COPY",
+                    Self::Add => "ADD",
+                    Self::Test => "TEST",
+                    Self::Replace => "REPLACE",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1296,18 +1296,10 @@ pub mod restore_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                VolumeDataRestorePolicy::Unspecified => {
-                    "VOLUME_DATA_RESTORE_POLICY_UNSPECIFIED"
-                }
-                VolumeDataRestorePolicy::RestoreVolumeDataFromBackup => {
-                    "RESTORE_VOLUME_DATA_FROM_BACKUP"
-                }
-                VolumeDataRestorePolicy::ReuseVolumeHandleFromBackup => {
-                    "REUSE_VOLUME_HANDLE_FROM_BACKUP"
-                }
-                VolumeDataRestorePolicy::NoVolumeDataRestoration => {
-                    "NO_VOLUME_DATA_RESTORATION"
-                }
+                Self::Unspecified => "VOLUME_DATA_RESTORE_POLICY_UNSPECIFIED",
+                Self::RestoreVolumeDataFromBackup => "RESTORE_VOLUME_DATA_FROM_BACKUP",
+                Self::ReuseVolumeHandleFromBackup => "REUSE_VOLUME_HANDLE_FROM_BACKUP",
+                Self::NoVolumeDataRestoration => "NO_VOLUME_DATA_RESTORATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1358,13 +1350,9 @@ pub mod restore_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ClusterResourceConflictPolicy::Unspecified => {
-                    "CLUSTER_RESOURCE_CONFLICT_POLICY_UNSPECIFIED"
-                }
-                ClusterResourceConflictPolicy::UseExistingVersion => {
-                    "USE_EXISTING_VERSION"
-                }
-                ClusterResourceConflictPolicy::UseBackupVersion => "USE_BACKUP_VERSION",
+                Self::Unspecified => "CLUSTER_RESOURCE_CONFLICT_POLICY_UNSPECIFIED",
+                Self::UseExistingVersion => "USE_EXISTING_VERSION",
+                Self::UseBackupVersion => "USE_BACKUP_VERSION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1446,20 +1434,12 @@ pub mod restore_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                NamespacedResourceRestoreMode::Unspecified => {
-                    "NAMESPACED_RESOURCE_RESTORE_MODE_UNSPECIFIED"
-                }
-                NamespacedResourceRestoreMode::DeleteAndRestore => "DELETE_AND_RESTORE",
-                NamespacedResourceRestoreMode::FailOnConflict => "FAIL_ON_CONFLICT",
-                NamespacedResourceRestoreMode::MergeSkipOnConflict => {
-                    "MERGE_SKIP_ON_CONFLICT"
-                }
-                NamespacedResourceRestoreMode::MergeReplaceVolumeOnConflict => {
-                    "MERGE_REPLACE_VOLUME_ON_CONFLICT"
-                }
-                NamespacedResourceRestoreMode::MergeReplaceOnConflict => {
-                    "MERGE_REPLACE_ON_CONFLICT"
-                }
+                Self::Unspecified => "NAMESPACED_RESOURCE_RESTORE_MODE_UNSPECIFIED",
+                Self::DeleteAndRestore => "DELETE_AND_RESTORE",
+                Self::FailOnConflict => "FAIL_ON_CONFLICT",
+                Self::MergeSkipOnConflict => "MERGE_SKIP_ON_CONFLICT",
+                Self::MergeReplaceVolumeOnConflict => "MERGE_REPLACE_VOLUME_ON_CONFLICT",
+                Self::MergeReplaceOnConflict => "MERGE_REPLACE_ON_CONFLICT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1666,11 +1646,11 @@ pub mod restore_plan {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::ClusterPending => "CLUSTER_PENDING",
-                State::Ready => "READY",
-                State::Failed => "FAILED",
-                State::Deleting => "DELETING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::ClusterPending => "CLUSTER_PENDING",
+                Self::Ready => "READY",
+                Self::Failed => "FAILED",
+                Self::Deleting => "DELETING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1776,8 +1756,8 @@ pub mod volume_backup {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                VolumeBackupFormat::Unspecified => "VOLUME_BACKUP_FORMAT_UNSPECIFIED",
-                VolumeBackupFormat::GcePersistentDisk => "GCE_PERSISTENT_DISK",
+                Self::Unspecified => "VOLUME_BACKUP_FORMAT_UNSPECIFIED",
+                Self::GcePersistentDisk => "GCE_PERSISTENT_DISK",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1831,13 +1811,13 @@ pub mod volume_backup {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Snapshotting => "SNAPSHOTTING",
-                State::Uploading => "UPLOADING",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
-                State::Deleting => "DELETING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Snapshotting => "SNAPSHOTTING",
+                Self::Uploading => "UPLOADING",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::Deleting => "DELETING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1936,8 +1916,8 @@ pub mod volume_restore {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                VolumeType::Unspecified => "VOLUME_TYPE_UNSPECIFIED",
-                VolumeType::GcePersistentDisk => "GCE_PERSISTENT_DISK",
+                Self::Unspecified => "VOLUME_TYPE_UNSPECIFIED",
+                Self::GcePersistentDisk => "GCE_PERSISTENT_DISK",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1984,12 +1964,12 @@ pub mod volume_restore {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Restoring => "RESTORING",
-                State::Succeeded => "SUCCEEDED",
-                State::Failed => "FAILED",
-                State::Deleting => "DELETING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Restoring => "RESTORING",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::Deleting => "DELETING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2595,7 +2575,13 @@ pub struct GetBackupIndexDownloadUrlResponse {
 }
 /// Generated client implementations.
 pub mod backup_for_gke_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// BackupForGKE allows Kubernetes administrators to configure, execute, and
@@ -2692,8 +2678,7 @@ pub mod backup_for_gke_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2723,8 +2708,7 @@ pub mod backup_for_gke_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2751,8 +2735,7 @@ pub mod backup_for_gke_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2782,8 +2765,7 @@ pub mod backup_for_gke_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2813,8 +2795,7 @@ pub mod backup_for_gke_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2844,8 +2825,7 @@ pub mod backup_for_gke_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2875,8 +2855,7 @@ pub mod backup_for_gke_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2903,8 +2882,7 @@ pub mod backup_for_gke_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2934,8 +2912,7 @@ pub mod backup_for_gke_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2965,8 +2942,7 @@ pub mod backup_for_gke_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2996,8 +2972,7 @@ pub mod backup_for_gke_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3024,8 +2999,7 @@ pub mod backup_for_gke_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3055,8 +3029,7 @@ pub mod backup_for_gke_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3086,8 +3059,7 @@ pub mod backup_for_gke_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3114,8 +3086,7 @@ pub mod backup_for_gke_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3145,8 +3116,7 @@ pub mod backup_for_gke_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3176,8 +3146,7 @@ pub mod backup_for_gke_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3207,8 +3176,7 @@ pub mod backup_for_gke_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3238,8 +3206,7 @@ pub mod backup_for_gke_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3266,8 +3233,7 @@ pub mod backup_for_gke_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3297,8 +3263,7 @@ pub mod backup_for_gke_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3328,8 +3293,7 @@ pub mod backup_for_gke_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3359,8 +3323,7 @@ pub mod backup_for_gke_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3387,8 +3350,7 @@ pub mod backup_for_gke_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3418,8 +3380,7 @@ pub mod backup_for_gke_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

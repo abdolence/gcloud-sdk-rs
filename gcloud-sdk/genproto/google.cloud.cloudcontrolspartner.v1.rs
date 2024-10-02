@@ -122,15 +122,15 @@ pub mod access_reason {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::CustomerInitiatedSupport => "CUSTOMER_INITIATED_SUPPORT",
-                Type::GoogleInitiatedService => "GOOGLE_INITIATED_SERVICE",
-                Type::GoogleInitiatedReview => "GOOGLE_INITIATED_REVIEW",
-                Type::ThirdPartyDataRequest => "THIRD_PARTY_DATA_REQUEST",
-                Type::GoogleResponseToProductionAlert => {
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::CustomerInitiatedSupport => "CUSTOMER_INITIATED_SUPPORT",
+                Self::GoogleInitiatedService => "GOOGLE_INITIATED_SERVICE",
+                Self::GoogleInitiatedReview => "GOOGLE_INITIATED_REVIEW",
+                Self::ThirdPartyDataRequest => "THIRD_PARTY_DATA_REQUEST",
+                Self::GoogleResponseToProductionAlert => {
                     "GOOGLE_RESPONSE_TO_PRODUCTION_ALERT"
                 }
-                Type::CloudInitiatedAccess => "CLOUD_INITIATED_ACCESS",
+                Self::CloudInitiatedAccess => "CLOUD_INITIATED_ACCESS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -172,11 +172,11 @@ impl CompletionState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            CompletionState::Unspecified => "COMPLETION_STATE_UNSPECIFIED",
-            CompletionState::Pending => "PENDING",
-            CompletionState::Succeeded => "SUCCEEDED",
-            CompletionState::Failed => "FAILED",
-            CompletionState::NotApplicable => "NOT_APPLICABLE",
+            Self::Unspecified => "COMPLETION_STATE_UNSPECIFIED",
+            Self::Pending => "PENDING",
+            Self::Succeeded => "SUCCEEDED",
+            Self::Failed => "FAILED",
+            Self::NotApplicable => "NOT_APPLICABLE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -264,19 +264,17 @@ pub mod workload {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Partner::Unspecified => "PARTNER_UNSPECIFIED",
-                Partner::LocalControlsByS3ns => "PARTNER_LOCAL_CONTROLS_BY_S3NS",
-                Partner::SovereignControlsByTSystems => {
+                Self::Unspecified => "PARTNER_UNSPECIFIED",
+                Self::LocalControlsByS3ns => "PARTNER_LOCAL_CONTROLS_BY_S3NS",
+                Self::SovereignControlsByTSystems => {
                     "PARTNER_SOVEREIGN_CONTROLS_BY_T_SYSTEMS"
                 }
-                Partner::SovereignControlsBySiaMinsait => {
+                Self::SovereignControlsBySiaMinsait => {
                     "PARTNER_SOVEREIGN_CONTROLS_BY_SIA_MINSAIT"
                 }
-                Partner::SovereignControlsByPsn => "PARTNER_SOVEREIGN_CONTROLS_BY_PSN",
-                Partner::SovereignControlsByCntxt => {
-                    "PARTNER_SOVEREIGN_CONTROLS_BY_CNTXT"
-                }
-                Partner::SovereignControlsByCntxtNoEkm => {
+                Self::SovereignControlsByPsn => "PARTNER_SOVEREIGN_CONTROLS_BY_PSN",
+                Self::SovereignControlsByCntxt => "PARTNER_SOVEREIGN_CONTROLS_BY_CNTXT",
+                Self::SovereignControlsByCntxtNoEkm => {
                     "PARTNER_SOVEREIGN_CONTROLS_BY_CNTXT_NO_EKM"
                 }
             }
@@ -402,9 +400,9 @@ pub mod workload_onboarding_step {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Step::Unspecified => "STEP_UNSPECIFIED",
-                Step::EkmProvisioned => "EKM_PROVISIONED",
-                Step::SignedAccessApprovalConfigured => {
+                Self::Unspecified => "STEP_UNSPECIFIED",
+                Self::EkmProvisioned => "EKM_PROVISIONED",
+                Self::SignedAccessApprovalConfigured => {
                     "SIGNED_ACCESS_APPROVAL_CONFIGURED"
                 }
             }
@@ -429,13 +427,13 @@ pub struct Customer {
     /// `organizations/{organization}/locations/{location}/customers/{customer}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The customer organization's display name. E.g. "google.com".
+    /// Required. Display name for the customer
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Container for customer onboarding steps
+    /// Output only. Container for customer onboarding steps
     #[prost(message, optional, tag = "3")]
     pub customer_onboarding_state: ::core::option::Option<CustomerOnboardingState>,
-    /// Indicates whether a customer is fully onboarded
+    /// Output only. Indicates whether a customer is fully onboarded
     #[prost(bool, tag = "4")]
     pub is_onboarded: bool,
 }
@@ -536,9 +534,9 @@ pub mod customer_onboarding_step {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Step::Unspecified => "STEP_UNSPECIFIED",
-                Step::KajEnrollment => "KAJ_ENROLLMENT",
-                Step::CustomerEnvironment => "CUSTOMER_ENVIRONMENT",
+                Self::Unspecified => "STEP_UNSPECIFIED",
+                Self::KajEnrollment => "KAJ_ENROLLMENT",
+                Self::CustomerEnvironment => "CUSTOMER_ENVIRONMENT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -630,11 +628,11 @@ pub mod ekm_connection {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ConnectionState::Unspecified => "CONNECTION_STATE_UNSPECIFIED",
-                ConnectionState::Available => "AVAILABLE",
-                ConnectionState::NotAvailable => "NOT_AVAILABLE",
-                ConnectionState::Error => "ERROR",
-                ConnectionState::PermissionDenied => "PERMISSION_DENIED",
+                Self::Unspecified => "CONNECTION_STATE_UNSPECIFIED",
+                Self::Available => "AVAILABLE",
+                Self::NotAvailable => "NOT_AVAILABLE",
+                Self::Error => "ERROR",
+                Self::PermissionDenied => "PERMISSION_DENIED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -686,6 +684,8 @@ pub mod partner_permissions {
         AccessApprovalRequests = 3,
         /// Permission for External Key Manager connection status
         AssuredWorkloadsEkmConnectionStatus = 4,
+        /// Permission for support case details for Access Transparency log entries
+        AccessTransparencyLogsSupportCaseViewer = 5,
     }
     impl Permission {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -694,14 +694,17 @@ pub mod partner_permissions {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Permission::Unspecified => "PERMISSION_UNSPECIFIED",
-                Permission::AccessTransparencyAndEmergencyAccessLogs => {
+                Self::Unspecified => "PERMISSION_UNSPECIFIED",
+                Self::AccessTransparencyAndEmergencyAccessLogs => {
                     "ACCESS_TRANSPARENCY_AND_EMERGENCY_ACCESS_LOGS"
                 }
-                Permission::AssuredWorkloadsMonitoring => "ASSURED_WORKLOADS_MONITORING",
-                Permission::AccessApprovalRequests => "ACCESS_APPROVAL_REQUESTS",
-                Permission::AssuredWorkloadsEkmConnectionStatus => {
+                Self::AssuredWorkloadsMonitoring => "ASSURED_WORKLOADS_MONITORING",
+                Self::AccessApprovalRequests => "ACCESS_APPROVAL_REQUESTS",
+                Self::AssuredWorkloadsEkmConnectionStatus => {
                     "ASSURED_WORKLOADS_EKM_CONNECTION_STATUS"
+                }
+                Self::AccessTransparencyLogsSupportCaseViewer => {
+                    "ACCESS_TRANSPARENCY_LOGS_SUPPORT_CASE_VIEWER"
                 }
             }
         }
@@ -716,6 +719,9 @@ pub mod partner_permissions {
                 "ACCESS_APPROVAL_REQUESTS" => Some(Self::AccessApprovalRequests),
                 "ASSURED_WORKLOADS_EKM_CONNECTION_STATUS" => {
                     Some(Self::AssuredWorkloadsEkmConnectionStatus)
+                }
+                "ACCESS_TRANSPARENCY_LOGS_SUPPORT_CASE_VIEWER" => {
+                    Some(Self::AccessTransparencyLogsSupportCaseViewer)
                 }
                 _ => None,
             }
@@ -829,11 +835,11 @@ pub mod ekm_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                EkmSolution::Unspecified => "EKM_SOLUTION_UNSPECIFIED",
-                EkmSolution::Fortanix => "FORTANIX",
-                EkmSolution::Futurex => "FUTUREX",
-                EkmSolution::Thales => "THALES",
-                EkmSolution::Virtru => "VIRTRU",
+                Self::Unspecified => "EKM_SOLUTION_UNSPECIFIED",
+                Self::Fortanix => "FORTANIX",
+                Self::Futurex => "FUTUREX",
+                Self::Thales => "THALES",
+                Self::Virtru => "VIRTRU",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -880,7 +886,13 @@ pub struct OperationMetadata {
 }
 /// Generated client implementations.
 pub mod cloud_controls_partner_core_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service describing handlers for resources
@@ -975,8 +987,7 @@ pub mod cloud_controls_partner_core_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1006,8 +1017,7 @@ pub mod cloud_controls_partner_core_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1034,8 +1044,7 @@ pub mod cloud_controls_partner_core_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1065,8 +1074,7 @@ pub mod cloud_controls_partner_core_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1093,8 +1101,7 @@ pub mod cloud_controls_partner_core_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1124,8 +1131,7 @@ pub mod cloud_controls_partner_core_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1145,6 +1151,7 @@ pub mod cloud_controls_partner_core_client {
         }
         /// Deprecated: Only returns access approval requests directly associated with
         /// an assured workload folder.
+        #[deprecated]
         pub async fn list_access_approval_requests(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAccessApprovalRequestsRequest>,
@@ -1156,8 +1163,7 @@ pub mod cloud_controls_partner_core_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1184,8 +1190,7 @@ pub mod cloud_controls_partner_core_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1354,20 +1359,20 @@ pub mod violation {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    RemediationType::Unspecified => "REMEDIATION_TYPE_UNSPECIFIED",
-                    RemediationType::RemediationBooleanOrgPolicyViolation => {
+                    Self::Unspecified => "REMEDIATION_TYPE_UNSPECIFIED",
+                    Self::RemediationBooleanOrgPolicyViolation => {
                         "REMEDIATION_BOOLEAN_ORG_POLICY_VIOLATION"
                     }
-                    RemediationType::RemediationListAllowedValuesOrgPolicyViolation => {
+                    Self::RemediationListAllowedValuesOrgPolicyViolation => {
                         "REMEDIATION_LIST_ALLOWED_VALUES_ORG_POLICY_VIOLATION"
                     }
-                    RemediationType::RemediationListDeniedValuesOrgPolicyViolation => {
+                    Self::RemediationListDeniedValuesOrgPolicyViolation => {
                         "REMEDIATION_LIST_DENIED_VALUES_ORG_POLICY_VIOLATION"
                     }
-                    RemediationType::RemediationRestrictCmekCryptoKeyProjectsOrgPolicyViolation => {
+                    Self::RemediationRestrictCmekCryptoKeyProjectsOrgPolicyViolation => {
                         "REMEDIATION_RESTRICT_CMEK_CRYPTO_KEY_PROJECTS_ORG_POLICY_VIOLATION"
                     }
-                    RemediationType::RemediationResourceViolation => {
+                    Self::RemediationResourceViolation => {
                         "REMEDIATION_RESOURCE_VIOLATION"
                     }
                 }
@@ -1428,10 +1433,10 @@ pub mod violation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Resolved => "RESOLVED",
-                State::Unresolved => "UNRESOLVED",
-                State::Exception => "EXCEPTION",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Resolved => "RESOLVED",
+                Self::Unresolved => "UNRESOLVED",
+                Self::Exception => "EXCEPTION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1499,7 +1504,13 @@ pub struct GetViolationRequest {
 }
 /// Generated client implementations.
 pub mod cloud_controls_partner_monitoring_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service describing handlers for resources
@@ -1603,8 +1614,7 @@ pub mod cloud_controls_partner_monitoring_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1631,8 +1641,7 @@ pub mod cloud_controls_partner_monitoring_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

@@ -76,14 +76,14 @@ pub mod client_info {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Platform::Unspecified => "PLATFORM_UNSPECIFIED",
-                Platform::Editor => "EDITOR",
-                Platform::MacOs => "MAC_OS",
-                Platform::Windows => "WINDOWS",
-                Platform::Linux => "LINUX",
-                Platform::Android => "ANDROID",
-                Platform::Ios => "IOS",
-                Platform::WebGl => "WEB_GL",
+                Self::Unspecified => "PLATFORM_UNSPECIFIED",
+                Self::Editor => "EDITOR",
+                Self::MacOs => "MAC_OS",
+                Self::Windows => "WINDOWS",
+                Self::Linux => "LINUX",
+                Self::Android => "ANDROID",
+                Self::Ios => "IOS",
+                Self::WebGl => "WEB_GL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

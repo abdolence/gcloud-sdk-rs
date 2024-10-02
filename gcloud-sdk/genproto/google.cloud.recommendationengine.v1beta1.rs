@@ -222,10 +222,10 @@ pub mod product_catalog_item {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                StockState::Unspecified => "STOCK_STATE_UNSPECIFIED",
-                StockState::OutOfStock => "OUT_OF_STOCK",
-                StockState::Preorder => "PREORDER",
-                StockState::Backorder => "BACKORDER",
+                Self::Unspecified => "STOCK_STATE_UNSPECIFIED",
+                Self::OutOfStock => "OUT_OF_STOCK",
+                Self::Preorder => "PREORDER",
+                Self::Backorder => "BACKORDER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -363,10 +363,10 @@ pub mod user_event {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                EventSource::Unspecified => "EVENT_SOURCE_UNSPECIFIED",
-                EventSource::Automl => "AUTOML",
-                EventSource::Ecommerce => "ECOMMERCE",
-                EventSource::BatchUpload => "BATCH_UPLOAD",
+                Self::Unspecified => "EVENT_SOURCE_UNSPECIFIED",
+                Self::Automl => "AUTOML",
+                Self::Ecommerce => "ECOMMERCE",
+                Self::BatchUpload => "BATCH_UPLOAD",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -861,7 +861,13 @@ pub struct DeleteCatalogItemRequest {
 }
 /// Generated client implementations.
 pub mod catalog_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for ingesting catalog information of the customer's website.
@@ -954,8 +960,7 @@ pub mod catalog_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -982,8 +987,7 @@ pub mod catalog_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1013,8 +1017,7 @@ pub mod catalog_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1042,8 +1045,7 @@ pub mod catalog_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1070,8 +1072,7 @@ pub mod catalog_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1106,8 +1107,7 @@ pub mod catalog_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1185,7 +1185,13 @@ pub struct DeletePredictionApiKeyRegistrationRequest {
 }
 /// Generated client implementations.
 pub mod prediction_api_key_registry_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for registering API keys for use with the `predict` method. If you
@@ -1289,8 +1295,7 @@ pub mod prediction_api_key_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1322,8 +1327,7 @@ pub mod prediction_api_key_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1352,8 +1356,7 @@ pub mod prediction_api_key_registry_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1536,7 +1539,13 @@ pub mod predict_response {
 }
 /// Generated client implementations.
 pub mod prediction_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for making recommendation prediction.
@@ -1635,8 +1644,7 @@ pub mod prediction_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1809,7 +1817,13 @@ pub struct ListUserEventsResponse {
 }
 /// Generated client implementations.
 pub mod user_event_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for ingesting end user actions on the customer website.
@@ -1902,8 +1916,7 @@ pub mod user_event_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1937,8 +1950,7 @@ pub mod user_event_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1968,8 +1980,7 @@ pub mod user_event_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2002,8 +2013,7 @@ pub mod user_event_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2039,8 +2049,7 @@ pub mod user_event_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

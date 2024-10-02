@@ -77,9 +77,9 @@ pub mod attached_disk {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DiskMode::Unspecified => "DISK_MODE_UNSPECIFIED",
-                DiskMode::ReadWrite => "READ_WRITE",
-                DiskMode::ReadOnly => "READ_ONLY",
+                Self::Unspecified => "DISK_MODE_UNSPECIFIED",
+                Self::ReadWrite => "READ_WRITE",
+                Self::ReadOnly => "READ_ONLY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -310,21 +310,21 @@ pub mod node {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Ready => "READY",
-                State::Restarting => "RESTARTING",
-                State::Reimaging => "REIMAGING",
-                State::Deleting => "DELETING",
-                State::Repairing => "REPAIRING",
-                State::Stopped => "STOPPED",
-                State::Stopping => "STOPPING",
-                State::Starting => "STARTING",
-                State::Preempted => "PREEMPTED",
-                State::Terminated => "TERMINATED",
-                State::Hiding => "HIDING",
-                State::Hidden => "HIDDEN",
-                State::Unhiding => "UNHIDING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Ready => "READY",
+                Self::Restarting => "RESTARTING",
+                Self::Reimaging => "REIMAGING",
+                Self::Deleting => "DELETING",
+                Self::Repairing => "REPAIRING",
+                Self::Stopped => "STOPPED",
+                Self::Stopping => "STOPPING",
+                Self::Starting => "STARTING",
+                Self::Preempted => "PREEMPTED",
+                Self::Terminated => "TERMINATED",
+                Self::Hiding => "HIDING",
+                Self::Hidden => "HIDDEN",
+                Self::Unhiding => "UNHIDING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -383,11 +383,11 @@ pub mod node {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Health::Unspecified => "HEALTH_UNSPECIFIED",
-                Health::Healthy => "HEALTHY",
-                Health::Timeout => "TIMEOUT",
-                Health::UnhealthyTensorflow => "UNHEALTHY_TENSORFLOW",
-                Health::UnhealthyMaintenance => "UNHEALTHY_MAINTENANCE",
+                Self::Unspecified => "HEALTH_UNSPECIFIED",
+                Self::Healthy => "HEALTHY",
+                Self::Timeout => "TIMEOUT",
+                Self::UnhealthyTensorflow => "UNHEALTHY_TENSORFLOW",
+                Self::UnhealthyMaintenance => "UNHEALTHY_MAINTENANCE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -434,11 +434,11 @@ pub mod node {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ApiVersion::Unspecified => "API_VERSION_UNSPECIFIED",
-                ApiVersion::V1Alpha1 => "V1_ALPHA1",
-                ApiVersion::V1 => "V1",
-                ApiVersion::V2Alpha1 => "V2_ALPHA1",
-                ApiVersion::V2 => "V2",
+                Self::Unspecified => "API_VERSION_UNSPECIFIED",
+                Self::V1Alpha1 => "V1_ALPHA1",
+                Self::V1 => "V1",
+                Self::V2Alpha1 => "V2_ALPHA1",
+                Self::V2 => "V2",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -743,13 +743,13 @@ pub mod symptom {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SymptomType::Unspecified => "SYMPTOM_TYPE_UNSPECIFIED",
-                SymptomType::LowMemory => "LOW_MEMORY",
-                SymptomType::OutOfMemory => "OUT_OF_MEMORY",
-                SymptomType::ExecuteTimedOut => "EXECUTE_TIMED_OUT",
-                SymptomType::MeshBuildFail => "MESH_BUILD_FAIL",
-                SymptomType::HbmOutOfMemory => "HBM_OUT_OF_MEMORY",
-                SymptomType::ProjectAbuse => "PROJECT_ABUSE",
+                Self::Unspecified => "SYMPTOM_TYPE_UNSPECIFIED",
+                Self::LowMemory => "LOW_MEMORY",
+                Self::OutOfMemory => "OUT_OF_MEMORY",
+                Self::ExecuteTimedOut => "EXECUTE_TIMED_OUT",
+                Self::MeshBuildFail => "MESH_BUILD_FAIL",
+                Self::HbmOutOfMemory => "HBM_OUT_OF_MEMORY",
+                Self::ProjectAbuse => "PROJECT_ABUSE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -831,10 +831,10 @@ pub mod accelerator_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::V2 => "V2",
-                Type::V3 => "V3",
-                Type::V4 => "V4",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::V2 => "V2",
+                Self::V3 => "V3",
+                Self::V4 => "V4",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -858,7 +858,13 @@ pub struct ShieldedInstanceConfig {
 }
 /// Generated client implementations.
 pub mod tpu_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Manages TPU nodes and other resources
@@ -956,8 +962,7 @@ pub mod tpu_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -979,8 +984,7 @@ pub mod tpu_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1005,8 +1009,7 @@ pub mod tpu_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1031,8 +1034,7 @@ pub mod tpu_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1057,8 +1059,7 @@ pub mod tpu_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1083,8 +1084,7 @@ pub mod tpu_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1109,8 +1109,7 @@ pub mod tpu_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1135,8 +1134,7 @@ pub mod tpu_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1163,8 +1161,7 @@ pub mod tpu_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1191,8 +1188,7 @@ pub mod tpu_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1219,8 +1215,7 @@ pub mod tpu_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1244,8 +1239,7 @@ pub mod tpu_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1270,8 +1264,7 @@ pub mod tpu_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

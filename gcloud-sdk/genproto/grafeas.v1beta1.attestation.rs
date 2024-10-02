@@ -63,8 +63,8 @@ pub mod pgp_signed_attestation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ContentType::Unspecified => "CONTENT_TYPE_UNSPECIFIED",
-                ContentType::SimpleSigningJson => "SIMPLE_SIGNING_JSON",
+                Self::Unspecified => "CONTENT_TYPE_UNSPECIFIED",
+                Self::SimpleSigningJson => "SIMPLE_SIGNING_JSON",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -161,8 +161,8 @@ pub mod generic_signed_attestation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ContentType::Unspecified => "CONTENT_TYPE_UNSPECIFIED",
-                ContentType::SimpleSigningJson => "SIMPLE_SIGNING_JSON",
+                Self::Unspecified => "CONTENT_TYPE_UNSPECIFIED",
+                Self::SimpleSigningJson => "SIMPLE_SIGNING_JSON",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

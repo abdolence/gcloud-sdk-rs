@@ -604,16 +604,16 @@ pub mod recognition_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AudioEncoding::EncodingUnspecified => "ENCODING_UNSPECIFIED",
-                AudioEncoding::Linear16 => "LINEAR16",
-                AudioEncoding::Flac => "FLAC",
-                AudioEncoding::Mulaw => "MULAW",
-                AudioEncoding::Amr => "AMR",
-                AudioEncoding::AmrWb => "AMR_WB",
-                AudioEncoding::OggOpus => "OGG_OPUS",
-                AudioEncoding::SpeexWithHeaderByte => "SPEEX_WITH_HEADER_BYTE",
-                AudioEncoding::Mp3 => "MP3",
-                AudioEncoding::WebmOpus => "WEBM_OPUS",
+                Self::EncodingUnspecified => "ENCODING_UNSPECIFIED",
+                Self::Linear16 => "LINEAR16",
+                Self::Flac => "FLAC",
+                Self::Mulaw => "MULAW",
+                Self::Amr => "AMR",
+                Self::AmrWb => "AMR_WB",
+                Self::OggOpus => "OGG_OPUS",
+                Self::SpeexWithHeaderByte => "SPEEX_WITH_HEADER_BYTE",
+                Self::Mp3 => "MP3",
+                Self::WebmOpus => "WEBM_OPUS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -749,15 +749,15 @@ pub mod recognition_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                InteractionType::Unspecified => "INTERACTION_TYPE_UNSPECIFIED",
-                InteractionType::Discussion => "DISCUSSION",
-                InteractionType::Presentation => "PRESENTATION",
-                InteractionType::PhoneCall => "PHONE_CALL",
-                InteractionType::Voicemail => "VOICEMAIL",
-                InteractionType::ProfessionallyProduced => "PROFESSIONALLY_PRODUCED",
-                InteractionType::VoiceSearch => "VOICE_SEARCH",
-                InteractionType::VoiceCommand => "VOICE_COMMAND",
-                InteractionType::Dictation => "DICTATION",
+                Self::Unspecified => "INTERACTION_TYPE_UNSPECIFIED",
+                Self::Discussion => "DISCUSSION",
+                Self::Presentation => "PRESENTATION",
+                Self::PhoneCall => "PHONE_CALL",
+                Self::Voicemail => "VOICEMAIL",
+                Self::ProfessionallyProduced => "PROFESSIONALLY_PRODUCED",
+                Self::VoiceSearch => "VOICE_SEARCH",
+                Self::VoiceCommand => "VOICE_COMMAND",
+                Self::Dictation => "DICTATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -808,10 +808,10 @@ pub mod recognition_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MicrophoneDistance::Unspecified => "MICROPHONE_DISTANCE_UNSPECIFIED",
-                MicrophoneDistance::Nearfield => "NEARFIELD",
-                MicrophoneDistance::Midfield => "MIDFIELD",
-                MicrophoneDistance::Farfield => "FARFIELD",
+                Self::Unspecified => "MICROPHONE_DISTANCE_UNSPECIFIED",
+                Self::Nearfield => "NEARFIELD",
+                Self::Midfield => "MIDFIELD",
+                Self::Farfield => "FARFIELD",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -853,9 +853,9 @@ pub mod recognition_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                OriginalMediaType::Unspecified => "ORIGINAL_MEDIA_TYPE_UNSPECIFIED",
-                OriginalMediaType::Audio => "AUDIO",
-                OriginalMediaType::Video => "VIDEO",
+                Self::Unspecified => "ORIGINAL_MEDIA_TYPE_UNSPECIFIED",
+                Self::Audio => "AUDIO",
+                Self::Video => "VIDEO",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -904,13 +904,13 @@ pub mod recognition_metadata {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RecordingDeviceType::Unspecified => "RECORDING_DEVICE_TYPE_UNSPECIFIED",
-                RecordingDeviceType::Smartphone => "SMARTPHONE",
-                RecordingDeviceType::Pc => "PC",
-                RecordingDeviceType::PhoneLine => "PHONE_LINE",
-                RecordingDeviceType::Vehicle => "VEHICLE",
-                RecordingDeviceType::OtherOutdoorDevice => "OTHER_OUTDOOR_DEVICE",
-                RecordingDeviceType::OtherIndoorDevice => "OTHER_INDOOR_DEVICE",
+                Self::Unspecified => "RECORDING_DEVICE_TYPE_UNSPECIFIED",
+                Self::Smartphone => "SMARTPHONE",
+                Self::Pc => "PC",
+                Self::PhoneLine => "PHONE_LINE",
+                Self::Vehicle => "VEHICLE",
+                Self::OtherOutdoorDevice => "OTHER_OUTDOOR_DEVICE",
+                Self::OtherIndoorDevice => "OTHER_INDOOR_DEVICE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1190,11 +1190,11 @@ pub mod streaming_recognize_response {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SpeechEventType::SpeechEventUnspecified => "SPEECH_EVENT_UNSPECIFIED",
-                SpeechEventType::EndOfSingleUtterance => "END_OF_SINGLE_UTTERANCE",
-                SpeechEventType::SpeechActivityBegin => "SPEECH_ACTIVITY_BEGIN",
-                SpeechEventType::SpeechActivityEnd => "SPEECH_ACTIVITY_END",
-                SpeechEventType::SpeechActivityTimeout => "SPEECH_ACTIVITY_TIMEOUT",
+                Self::SpeechEventUnspecified => "SPEECH_EVENT_UNSPECIFIED",
+                Self::EndOfSingleUtterance => "END_OF_SINGLE_UTTERANCE",
+                Self::SpeechActivityBegin => "SPEECH_ACTIVITY_BEGIN",
+                Self::SpeechActivityEnd => "SPEECH_ACTIVITY_END",
+                Self::SpeechActivityTimeout => "SPEECH_ACTIVITY_TIMEOUT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1350,7 +1350,13 @@ pub struct SpeechAdaptationInfo {
 }
 /// Generated client implementations.
 pub mod speech_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service that implements Google Cloud Speech API.
@@ -1447,8 +1453,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1480,8 +1485,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1514,8 +1518,7 @@ pub mod speech_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1757,7 +1760,13 @@ pub struct DeleteCustomClassRequest {
 }
 /// Generated client implementations.
 pub mod adaptation_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service that implements Google Cloud Speech Adaptation API.
@@ -1852,8 +1861,7 @@ pub mod adaptation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1880,8 +1888,7 @@ pub mod adaptation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1911,8 +1918,7 @@ pub mod adaptation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1939,8 +1945,7 @@ pub mod adaptation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1967,8 +1972,7 @@ pub mod adaptation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1995,8 +1999,7 @@ pub mod adaptation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2023,8 +2026,7 @@ pub mod adaptation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2054,8 +2056,7 @@ pub mod adaptation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2082,8 +2083,7 @@ pub mod adaptation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -2110,8 +2110,7 @@ pub mod adaptation_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

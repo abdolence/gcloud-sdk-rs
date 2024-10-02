@@ -256,11 +256,11 @@ pub mod cluster {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Active => "ACTIVE",
-                State::Updating => "UPDATING",
-                State::Deleting => "DELETING",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Active => "ACTIVE",
+                Self::Updating => "UPDATING",
+                Self::Deleting => "DELETING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -451,11 +451,11 @@ pub mod cluster_persistence_config {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    SnapshotPeriod::Unspecified => "SNAPSHOT_PERIOD_UNSPECIFIED",
-                    SnapshotPeriod::OneHour => "ONE_HOUR",
-                    SnapshotPeriod::SixHours => "SIX_HOURS",
-                    SnapshotPeriod::TwelveHours => "TWELVE_HOURS",
-                    SnapshotPeriod::TwentyFourHours => "TWENTY_FOUR_HOURS",
+                    Self::Unspecified => "SNAPSHOT_PERIOD_UNSPECIFIED",
+                    Self::OneHour => "ONE_HOUR",
+                    Self::SixHours => "SIX_HOURS",
+                    Self::TwelveHours => "TWELVE_HOURS",
+                    Self::TwentyFourHours => "TWENTY_FOUR_HOURS",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -513,10 +513,10 @@ pub mod cluster_persistence_config {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    AppendFsync::Unspecified => "APPEND_FSYNC_UNSPECIFIED",
-                    AppendFsync::No => "NO",
-                    AppendFsync::Everysec => "EVERYSEC",
-                    AppendFsync::Always => "ALWAYS",
+                    Self::Unspecified => "APPEND_FSYNC_UNSPECIFIED",
+                    Self::No => "NO",
+                    Self::Everysec => "EVERYSEC",
+                    Self::Always => "ALWAYS",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -561,10 +561,10 @@ pub mod cluster_persistence_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                PersistenceMode::Unspecified => "PERSISTENCE_MODE_UNSPECIFIED",
-                PersistenceMode::Disabled => "DISABLED",
-                PersistenceMode::Rdb => "RDB",
-                PersistenceMode::Aof => "AOF",
+                Self::Unspecified => "PERSISTENCE_MODE_UNSPECIFIED",
+                Self::Disabled => "DISABLED",
+                Self::Rdb => "RDB",
+                Self::Aof => "AOF",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -627,9 +627,9 @@ pub mod zone_distribution_config {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ZoneDistributionMode::Unspecified => "ZONE_DISTRIBUTION_MODE_UNSPECIFIED",
-                ZoneDistributionMode::MultiZone => "MULTI_ZONE",
-                ZoneDistributionMode::SingleZone => "SINGLE_ZONE",
+                Self::Unspecified => "ZONE_DISTRIBUTION_MODE_UNSPECIFIED",
+                Self::MultiZone => "MULTI_ZONE",
+                Self::SingleZone => "SINGLE_ZONE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -661,9 +661,9 @@ impl AuthorizationMode {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            AuthorizationMode::AuthModeUnspecified => "AUTH_MODE_UNSPECIFIED",
-            AuthorizationMode::AuthModeIamAuth => "AUTH_MODE_IAM_AUTH",
-            AuthorizationMode::AuthModeDisabled => "AUTH_MODE_DISABLED",
+            Self::AuthModeUnspecified => "AUTH_MODE_UNSPECIFIED",
+            Self::AuthModeIamAuth => "AUTH_MODE_IAM_AUTH",
+            Self::AuthModeDisabled => "AUTH_MODE_DISABLED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -697,11 +697,11 @@ impl NodeType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            NodeType::Unspecified => "NODE_TYPE_UNSPECIFIED",
-            NodeType::RedisSharedCoreNano => "REDIS_SHARED_CORE_NANO",
-            NodeType::RedisHighmemMedium => "REDIS_HIGHMEM_MEDIUM",
-            NodeType::RedisHighmemXlarge => "REDIS_HIGHMEM_XLARGE",
-            NodeType::RedisStandardSmall => "REDIS_STANDARD_SMALL",
+            Self::Unspecified => "NODE_TYPE_UNSPECIFIED",
+            Self::RedisSharedCoreNano => "REDIS_SHARED_CORE_NANO",
+            Self::RedisHighmemMedium => "REDIS_HIGHMEM_MEDIUM",
+            Self::RedisHighmemXlarge => "REDIS_HIGHMEM_XLARGE",
+            Self::RedisStandardSmall => "REDIS_STANDARD_SMALL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -734,11 +734,9 @@ impl TransitEncryptionMode {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            TransitEncryptionMode::Unspecified => "TRANSIT_ENCRYPTION_MODE_UNSPECIFIED",
-            TransitEncryptionMode::Disabled => "TRANSIT_ENCRYPTION_MODE_DISABLED",
-            TransitEncryptionMode::ServerAuthentication => {
-                "TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION"
-            }
+            Self::Unspecified => "TRANSIT_ENCRYPTION_MODE_UNSPECIFIED",
+            Self::Disabled => "TRANSIT_ENCRYPTION_MODE_DISABLED",
+            Self::ServerAuthentication => "TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -755,7 +753,13 @@ impl TransitEncryptionMode {
 }
 /// Generated client implementations.
 pub mod cloud_redis_cluster_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Configures and manages Cloud Memorystore for Redis clusters
@@ -879,8 +883,7 @@ pub mod cloud_redis_cluster_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -907,8 +910,7 @@ pub mod cloud_redis_cluster_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -942,8 +944,7 @@ pub mod cloud_redis_cluster_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -974,8 +975,7 @@ pub mod cloud_redis_cluster_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1012,8 +1012,7 @@ pub mod cloud_redis_cluster_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1045,8 +1044,7 @@ pub mod cloud_redis_cluster_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

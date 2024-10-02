@@ -72,10 +72,10 @@ pub mod alias_context {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Kind::Unspecified => "KIND_UNSPECIFIED",
-                Kind::Fixed => "FIXED",
-                Kind::Movable => "MOVABLE",
-                Kind::Other => "OTHER",
+                Self::Unspecified => "KIND_UNSPECIFIED",
+                Self::Fixed => "FIXED",
+                Self::Movable => "MOVABLE",
+                Self::Other => "OTHER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

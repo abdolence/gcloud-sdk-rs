@@ -118,9 +118,9 @@ pub mod system_event {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::UserDeletion => "USER_DELETION",
-                Type::TrashAutoPurge => "TRASH_AUTO_PURGE",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::UserDeletion => "USER_DELETION",
+                Self::TrashAutoPurge => "TRASH_AUTO_PURGE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -316,10 +316,10 @@ pub mod drive_item {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Type::Unspecified => "TYPE_UNSPECIFIED",
-                    Type::MyDriveRoot => "MY_DRIVE_ROOT",
-                    Type::TeamDriveRoot => "TEAM_DRIVE_ROOT",
-                    Type::StandardFolder => "STANDARD_FOLDER",
+                    Self::Unspecified => "TYPE_UNSPECIFIED",
+                    Self::MyDriveRoot => "MY_DRIVE_ROOT",
+                    Self::TeamDriveRoot => "TEAM_DRIVE_ROOT",
+                    Self::StandardFolder => "STANDARD_FOLDER",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -376,10 +376,10 @@ pub mod drive_item {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Type::Unspecified => "TYPE_UNSPECIFIED",
-                    Type::MyDriveRoot => "MY_DRIVE_ROOT",
-                    Type::SharedDriveRoot => "SHARED_DRIVE_ROOT",
-                    Type::StandardFolder => "STANDARD_FOLDER",
+                    Self::Unspecified => "TYPE_UNSPECIFIED",
+                    Self::MyDriveRoot => "MY_DRIVE_ROOT",
+                    Self::SharedDriveRoot => "SHARED_DRIVE_ROOT",
+                    Self::StandardFolder => "STANDARD_FOLDER",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -701,9 +701,9 @@ pub mod delete {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::Trash => "TRASH",
-                Type::PermanentDelete => "PERMANENT_DELETE",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Trash => "TRASH",
+                Self::PermanentDelete => "PERMANENT_DELETE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -752,8 +752,8 @@ pub mod restore {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::Untrash => "UNTRASH",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Untrash => "UNTRASH",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -842,14 +842,14 @@ pub mod permission {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Role::Unspecified => "ROLE_UNSPECIFIED",
-                Role::Owner => "OWNER",
-                Role::Organizer => "ORGANIZER",
-                Role::FileOrganizer => "FILE_ORGANIZER",
-                Role::Editor => "EDITOR",
-                Role::Commenter => "COMMENTER",
-                Role::Viewer => "VIEWER",
-                Role::PublishedViewer => "PUBLISHED_VIEWER",
+                Self::Unspecified => "ROLE_UNSPECIFIED",
+                Self::Owner => "OWNER",
+                Self::Organizer => "ORGANIZER",
+                Self::FileOrganizer => "FILE_ORGANIZER",
+                Self::Editor => "EDITOR",
+                Self::Commenter => "COMMENTER",
+                Self::Viewer => "VIEWER",
+                Self::PublishedViewer => "PUBLISHED_VIEWER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -941,13 +941,13 @@ pub mod comment {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Subtype::Unspecified => "SUBTYPE_UNSPECIFIED",
-                    Subtype::Added => "ADDED",
-                    Subtype::Deleted => "DELETED",
-                    Subtype::ReplyAdded => "REPLY_ADDED",
-                    Subtype::ReplyDeleted => "REPLY_DELETED",
-                    Subtype::Resolved => "RESOLVED",
-                    Subtype::Reopened => "REOPENED",
+                    Self::Unspecified => "SUBTYPE_UNSPECIFIED",
+                    Self::Added => "ADDED",
+                    Self::Deleted => "DELETED",
+                    Self::ReplyAdded => "REPLY_ADDED",
+                    Self::ReplyDeleted => "REPLY_DELETED",
+                    Self::Resolved => "RESOLVED",
+                    Self::Reopened => "REOPENED",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1015,14 +1015,14 @@ pub mod comment {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Subtype::Unspecified => "SUBTYPE_UNSPECIFIED",
-                    Subtype::Added => "ADDED",
-                    Subtype::Deleted => "DELETED",
-                    Subtype::ReplyAdded => "REPLY_ADDED",
-                    Subtype::ReplyDeleted => "REPLY_DELETED",
-                    Subtype::Resolved => "RESOLVED",
-                    Subtype::Reopened => "REOPENED",
-                    Subtype::Reassigned => "REASSIGNED",
+                    Self::Unspecified => "SUBTYPE_UNSPECIFIED",
+                    Self::Added => "ADDED",
+                    Self::Deleted => "DELETED",
+                    Self::ReplyAdded => "REPLY_ADDED",
+                    Self::ReplyDeleted => "REPLY_DELETED",
+                    Self::Resolved => "RESOLVED",
+                    Self::Reopened => "REOPENED",
+                    Self::Reassigned => "REASSIGNED",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1090,15 +1090,15 @@ pub mod comment {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Subtype::Unspecified => "SUBTYPE_UNSPECIFIED",
-                    Subtype::Added => "ADDED",
-                    Subtype::Deleted => "DELETED",
-                    Subtype::ReplyAdded => "REPLY_ADDED",
-                    Subtype::ReplyDeleted => "REPLY_DELETED",
-                    Subtype::Accepted => "ACCEPTED",
-                    Subtype::Rejected => "REJECTED",
-                    Subtype::AcceptDeleted => "ACCEPT_DELETED",
-                    Subtype::RejectDeleted => "REJECT_DELETED",
+                    Self::Unspecified => "SUBTYPE_UNSPECIFIED",
+                    Self::Added => "ADDED",
+                    Self::Deleted => "DELETED",
+                    Self::ReplyAdded => "REPLY_ADDED",
+                    Self::ReplyDeleted => "REPLY_DELETED",
+                    Self::Accepted => "ACCEPTED",
+                    Self::Rejected => "REJECTED",
+                    Self::AcceptDeleted => "ACCEPT_DELETED",
+                    Self::RejectDeleted => "REJECT_DELETED",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1169,9 +1169,9 @@ pub mod data_leak_prevention_change {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::Flagged => "FLAGGED",
-                Type::Cleared => "CLEARED",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Flagged => "FLAGGED",
+                Self::Cleared => "CLEARED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1222,9 +1222,9 @@ pub mod application_reference {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::UnspecifiedReferenceType => "UNSPECIFIED_REFERENCE_TYPE",
-                Type::Link => "LINK",
-                Type::Discuss => "DISCUSS",
+                Self::UnspecifiedReferenceType => "UNSPECIFIED_REFERENCE_TYPE",
+                Self::Link => "LINK",
+                Self::Discuss => "DISCUSS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1297,12 +1297,12 @@ pub mod settings_change {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Feature::Unspecified => "FEATURE_UNSPECIFIED",
-                    Feature::SharingOutsideDomain => "SHARING_OUTSIDE_DOMAIN",
-                    Feature::DirectSharing => "DIRECT_SHARING",
-                    Feature::ItemDuplication => "ITEM_DUPLICATION",
-                    Feature::DriveFileStream => "DRIVE_FILE_STREAM",
-                    Feature::FileOrganizerCanShareFolders => {
+                    Self::Unspecified => "FEATURE_UNSPECIFIED",
+                    Self::SharingOutsideDomain => "SHARING_OUTSIDE_DOMAIN",
+                    Self::DirectSharing => "DIRECT_SHARING",
+                    Self::ItemDuplication => "ITEM_DUPLICATION",
+                    Self::DriveFileStream => "DRIVE_FILE_STREAM",
+                    Self::FileOrganizerCanShareFolders => {
                         "FILE_ORGANIZER_CAN_SHARE_FOLDERS"
                     }
                 }
@@ -1350,9 +1350,9 @@ pub mod settings_change {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Restriction::Unspecified => "RESTRICTION_UNSPECIFIED",
-                    Restriction::Unrestricted => "UNRESTRICTED",
-                    Restriction::FullyRestricted => "FULLY_RESTRICTED",
+                    Self::Unspecified => "RESTRICTION_UNSPECIFIED",
+                    Self::Unrestricted => "UNRESTRICTED",
+                    Self::FullyRestricted => "FULLY_RESTRICTED",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1556,11 +1556,11 @@ pub mod applied_label_change {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    Type::Unspecified => "TYPE_UNSPECIFIED",
-                    Type::LabelAdded => "LABEL_ADDED",
-                    Type::LabelRemoved => "LABEL_REMOVED",
-                    Type::LabelFieldValueChanged => "LABEL_FIELD_VALUE_CHANGED",
-                    Type::LabelAppliedByItemCreate => "LABEL_APPLIED_BY_ITEM_CREATE",
+                    Self::Unspecified => "TYPE_UNSPECIFIED",
+                    Self::LabelAdded => "LABEL_ADDED",
+                    Self::LabelRemoved => "LABEL_REMOVED",
+                    Self::LabelFieldValueChanged => "LABEL_FIELD_VALUE_CHANGED",
+                    Self::LabelAppliedByItemCreate => "LABEL_APPLIED_BY_ITEM_CREATE",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1731,7 +1731,13 @@ pub mod drive_activity {
 }
 /// Generated client implementations.
 pub mod drive_activity_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for querying activity on Drive items. Activity is user
@@ -1829,8 +1835,7 @@ pub mod drive_activity_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

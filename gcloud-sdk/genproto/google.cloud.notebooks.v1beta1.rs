@@ -124,10 +124,10 @@ pub mod reservation_affinity {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::NoReservation => "NO_RESERVATION",
-                Type::AnyReservation => "ANY_RESERVATION",
-                Type::SpecificReservation => "SPECIFIC_RESERVATION",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::NoReservation => "NO_RESERVATION",
+                Self::AnyReservation => "ANY_RESERVATION",
+                Self::SpecificReservation => "SPECIFIC_RESERVATION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -344,17 +344,17 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AcceleratorType::Unspecified => "ACCELERATOR_TYPE_UNSPECIFIED",
-                AcceleratorType::NvidiaTeslaK80 => "NVIDIA_TESLA_K80",
-                AcceleratorType::NvidiaTeslaP100 => "NVIDIA_TESLA_P100",
-                AcceleratorType::NvidiaTeslaV100 => "NVIDIA_TESLA_V100",
-                AcceleratorType::NvidiaTeslaP4 => "NVIDIA_TESLA_P4",
-                AcceleratorType::NvidiaTeslaT4 => "NVIDIA_TESLA_T4",
-                AcceleratorType::NvidiaTeslaT4Vws => "NVIDIA_TESLA_T4_VWS",
-                AcceleratorType::NvidiaTeslaP100Vws => "NVIDIA_TESLA_P100_VWS",
-                AcceleratorType::NvidiaTeslaP4Vws => "NVIDIA_TESLA_P4_VWS",
-                AcceleratorType::TpuV2 => "TPU_V2",
-                AcceleratorType::TpuV3 => "TPU_V3",
+                Self::Unspecified => "ACCELERATOR_TYPE_UNSPECIFIED",
+                Self::NvidiaTeslaK80 => "NVIDIA_TESLA_K80",
+                Self::NvidiaTeslaP100 => "NVIDIA_TESLA_P100",
+                Self::NvidiaTeslaV100 => "NVIDIA_TESLA_V100",
+                Self::NvidiaTeslaP4 => "NVIDIA_TESLA_P4",
+                Self::NvidiaTeslaT4 => "NVIDIA_TESLA_T4",
+                Self::NvidiaTeslaT4Vws => "NVIDIA_TESLA_T4_VWS",
+                Self::NvidiaTeslaP100Vws => "NVIDIA_TESLA_P100_VWS",
+                Self::NvidiaTeslaP4Vws => "NVIDIA_TESLA_P4_VWS",
+                Self::TpuV2 => "TPU_V2",
+                Self::TpuV3 => "TPU_V3",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -422,18 +422,18 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Starting => "STARTING",
-                State::Provisioning => "PROVISIONING",
-                State::Active => "ACTIVE",
-                State::Stopping => "STOPPING",
-                State::Stopped => "STOPPED",
-                State::Deleted => "DELETED",
-                State::Upgrading => "UPGRADING",
-                State::Initializing => "INITIALIZING",
-                State::Registering => "REGISTERING",
-                State::Suspending => "SUSPENDING",
-                State::Suspended => "SUSPENDED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Starting => "STARTING",
+                Self::Provisioning => "PROVISIONING",
+                Self::Active => "ACTIVE",
+                Self::Stopping => "STOPPING",
+                Self::Stopped => "STOPPED",
+                Self::Deleted => "DELETED",
+                Self::Upgrading => "UPGRADING",
+                Self::Initializing => "INITIALIZING",
+                Self::Registering => "REGISTERING",
+                Self::Suspending => "SUSPENDING",
+                Self::Suspended => "SUSPENDED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -485,10 +485,10 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DiskType::Unspecified => "DISK_TYPE_UNSPECIFIED",
-                DiskType::PdStandard => "PD_STANDARD",
-                DiskType::PdSsd => "PD_SSD",
-                DiskType::PdBalanced => "PD_BALANCED",
+                Self::Unspecified => "DISK_TYPE_UNSPECIFIED",
+                Self::PdStandard => "PD_STANDARD",
+                Self::PdSsd => "PD_SSD",
+                Self::PdBalanced => "PD_BALANCED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -530,9 +530,9 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DiskEncryption::Unspecified => "DISK_ENCRYPTION_UNSPECIFIED",
-                DiskEncryption::Gmek => "GMEK",
-                DiskEncryption::Cmek => "CMEK",
+                Self::Unspecified => "DISK_ENCRYPTION_UNSPECIFIED",
+                Self::Gmek => "GMEK",
+                Self::Cmek => "CMEK",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -574,9 +574,9 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                NicType::UnspecifiedNicType => "UNSPECIFIED_NIC_TYPE",
-                NicType::VirtioNet => "VIRTIO_NET",
-                NicType::Gvnic => "GVNIC",
+                Self::UnspecifiedNicType => "UNSPECIFIED_NIC_TYPE",
+                Self::VirtioNet => "VIRTIO_NET",
+                Self::Gvnic => "GVNIC",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -902,7 +902,13 @@ pub struct DeleteEnvironmentRequest {
 }
 /// Generated client implementations.
 pub mod notebook_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// API v1beta1 service for Cloud AI Platform Notebooks.
@@ -998,8 +1004,7 @@ pub mod notebook_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1026,8 +1031,7 @@ pub mod notebook_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1057,8 +1061,7 @@ pub mod notebook_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1091,8 +1094,7 @@ pub mod notebook_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1122,8 +1124,7 @@ pub mod notebook_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1153,8 +1154,7 @@ pub mod notebook_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1184,8 +1184,7 @@ pub mod notebook_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1215,8 +1214,7 @@ pub mod notebook_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1246,8 +1244,7 @@ pub mod notebook_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1277,8 +1274,7 @@ pub mod notebook_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1308,8 +1304,7 @@ pub mod notebook_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1342,8 +1337,7 @@ pub mod notebook_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1363,6 +1357,7 @@ pub mod notebook_service_client {
         }
         /// Check if a notebook instance is upgradable.
         /// Deprecated. Please consider using v1.
+        #[deprecated]
         pub async fn is_instance_upgradeable(
             &mut self,
             request: impl tonic::IntoRequest<super::IsInstanceUpgradeableRequest>,
@@ -1374,8 +1369,7 @@ pub mod notebook_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1395,6 +1389,7 @@ pub mod notebook_service_client {
         }
         /// Upgrades a notebook instance to the latest version.
         /// Deprecated. Please consider using v1.
+        #[deprecated]
         pub async fn upgrade_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::UpgradeInstanceRequest>,
@@ -1406,8 +1401,7 @@ pub mod notebook_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1428,6 +1422,7 @@ pub mod notebook_service_client {
         /// Allows notebook instances to
         /// call this endpoint to upgrade themselves. Do not use this method directly.
         /// Deprecated. Please consider using v1.
+        #[deprecated]
         pub async fn upgrade_instance_internal(
             &mut self,
             request: impl tonic::IntoRequest<super::UpgradeInstanceInternalRequest>,
@@ -1439,8 +1434,7 @@ pub mod notebook_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1470,8 +1464,7 @@ pub mod notebook_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1498,8 +1491,7 @@ pub mod notebook_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1529,8 +1521,7 @@ pub mod notebook_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1560,8 +1551,7 @@ pub mod notebook_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

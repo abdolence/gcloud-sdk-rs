@@ -274,9 +274,9 @@ impl Insight {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            Insight::Unspecified => "INSIGHT_UNSPECIFIED",
-            Insight::Count => "INSIGHT_COUNT",
-            Insight::Places => "INSIGHT_PLACES",
+            Self::Unspecified => "INSIGHT_UNSPECIFIED",
+            Self::Count => "INSIGHT_COUNT",
+            Self::Places => "INSIGHT_PLACES",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -309,10 +309,10 @@ impl OperatingStatus {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            OperatingStatus::Unspecified => "OPERATING_STATUS_UNSPECIFIED",
-            OperatingStatus::Operational => "OPERATING_STATUS_OPERATIONAL",
-            OperatingStatus::PermanentlyClosed => "OPERATING_STATUS_PERMANENTLY_CLOSED",
-            OperatingStatus::TemporarilyClosed => "OPERATING_STATUS_TEMPORARILY_CLOSED",
+            Self::Unspecified => "OPERATING_STATUS_UNSPECIFIED",
+            Self::Operational => "OPERATING_STATUS_OPERATIONAL",
+            Self::PermanentlyClosed => "OPERATING_STATUS_PERMANENTLY_CLOSED",
+            Self::TemporarilyClosed => "OPERATING_STATUS_TEMPORARILY_CLOSED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -350,12 +350,12 @@ impl PriceLevel {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            PriceLevel::Unspecified => "PRICE_LEVEL_UNSPECIFIED",
-            PriceLevel::Free => "PRICE_LEVEL_FREE",
-            PriceLevel::Inexpensive => "PRICE_LEVEL_INEXPENSIVE",
-            PriceLevel::Moderate => "PRICE_LEVEL_MODERATE",
-            PriceLevel::Expensive => "PRICE_LEVEL_EXPENSIVE",
-            PriceLevel::VeryExpensive => "PRICE_LEVEL_VERY_EXPENSIVE",
+            Self::Unspecified => "PRICE_LEVEL_UNSPECIFIED",
+            Self::Free => "PRICE_LEVEL_FREE",
+            Self::Inexpensive => "PRICE_LEVEL_INEXPENSIVE",
+            Self::Moderate => "PRICE_LEVEL_MODERATE",
+            Self::Expensive => "PRICE_LEVEL_EXPENSIVE",
+            Self::VeryExpensive => "PRICE_LEVEL_VERY_EXPENSIVE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -373,10 +373,16 @@ impl PriceLevel {
 }
 /// Generated client implementations.
 pub mod area_insights_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// Service definition for the Area Insights API.
+    /// Service definition for the Places Insights API.
     #[derive(Debug, Clone)]
     pub struct AreaInsightsClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -479,8 +485,7 @@ pub mod area_insights_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

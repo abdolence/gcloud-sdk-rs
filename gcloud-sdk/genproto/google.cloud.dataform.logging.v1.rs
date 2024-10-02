@@ -51,10 +51,10 @@ pub mod workflow_invocation_completion_log_entry {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TerminalState::Unspecified => "TERMINAL_STATE_UNSPECIFIED",
-                TerminalState::Succeeded => "SUCCEEDED",
-                TerminalState::Cancelled => "CANCELLED",
-                TerminalState::Failed => "FAILED",
+                Self::Unspecified => "TERMINAL_STATE_UNSPECIFIED",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Cancelled => "CANCELLED",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

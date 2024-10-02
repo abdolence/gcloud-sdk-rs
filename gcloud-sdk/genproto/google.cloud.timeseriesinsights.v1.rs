@@ -106,14 +106,14 @@ pub mod data_set {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Unknown => "UNKNOWN",
-                State::Pending => "PENDING",
-                State::Loading => "LOADING",
-                State::Loaded => "LOADED",
-                State::Unloading => "UNLOADING",
-                State::Unloaded => "UNLOADED",
-                State::Failed => "FAILED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::Pending => "PENDING",
+                Self::Loading => "LOADING",
+                Self::Loaded => "LOADED",
+                Self::Unloading => "UNLOADING",
+                Self::Unloaded => "UNLOADED",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -402,12 +402,12 @@ pub mod forecast_params {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Period::Unspecified => "PERIOD_UNSPECIFIED",
-                Period::Hourly => "HOURLY",
-                Period::Daily => "DAILY",
-                Period::Weekly => "WEEKLY",
-                Period::Monthly => "MONTHLY",
-                Period::Yearly => "YEARLY",
+                Self::Unspecified => "PERIOD_UNSPECIFIED",
+                Self::Hourly => "HOURLY",
+                Self::Daily => "DAILY",
+                Self::Weekly => "WEEKLY",
+                Self::Monthly => "MONTHLY",
+                Self::Yearly => "YEARLY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -742,9 +742,9 @@ pub mod timeseries_params {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AggregationMethod::Unspecified => "AGGREGATION_METHOD_UNSPECIFIED",
-                AggregationMethod::Sum => "SUM",
-                AggregationMethod::Average => "AVERAGE",
+                Self::Unspecified => "AGGREGATION_METHOD_UNSPECIFIED",
+                Self::Sum => "SUM",
+                Self::Average => "AVERAGE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -886,7 +886,13 @@ pub struct EvaluateTimeseriesRequest {
 }
 /// Generated client implementations.
 pub mod timeseries_insights_controller_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     #[derive(Debug, Clone)]
@@ -987,8 +993,7 @@ pub mod timeseries_insights_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1020,8 +1025,7 @@ pub mod timeseries_insights_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1051,8 +1055,7 @@ pub mod timeseries_insights_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1082,8 +1085,7 @@ pub mod timeseries_insights_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1114,8 +1116,7 @@ pub mod timeseries_insights_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1142,8 +1143,7 @@ pub mod timeseries_insights_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1170,8 +1170,7 @@ pub mod timeseries_insights_controller_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

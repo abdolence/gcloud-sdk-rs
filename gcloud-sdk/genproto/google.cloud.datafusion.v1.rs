@@ -66,9 +66,9 @@ pub mod version {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::Preview => "TYPE_PREVIEW",
-                Type::GeneralAvailability => "TYPE_GENERAL_AVAILABILITY",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Preview => "TYPE_PREVIEW",
+                Self::GeneralAvailability => "TYPE_GENERAL_AVAILABILITY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -128,10 +128,10 @@ pub mod accelerator {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                AcceleratorType::Unspecified => "ACCELERATOR_TYPE_UNSPECIFIED",
-                AcceleratorType::Cdc => "CDC",
-                AcceleratorType::Healthcare => "HEALTHCARE",
-                AcceleratorType::CcaiInsights => "CCAI_INSIGHTS",
+                Self::Unspecified => "ACCELERATOR_TYPE_UNSPECIFIED",
+                Self::Cdc => "CDC",
+                Self::Healthcare => "HEALTHCARE",
+                Self::CcaiInsights => "CCAI_INSIGHTS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -176,10 +176,10 @@ pub mod accelerator {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Enabled => "ENABLED",
-                State::Disabled => "DISABLED",
-                State::Unknown => "UNKNOWN",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Enabled => "ENABLED",
+                Self::Disabled => "DISABLED",
+                Self::Unknown => "UNKNOWN",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -360,10 +360,10 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Type::Unspecified => "TYPE_UNSPECIFIED",
-                Type::Basic => "BASIC",
-                Type::Enterprise => "ENTERPRISE",
-                Type::Developer => "DEVELOPER",
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Basic => "BASIC",
+                Self::Enterprise => "ENTERPRISE",
+                Self::Developer => "DEVELOPER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -422,17 +422,17 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Active => "ACTIVE",
-                State::Failed => "FAILED",
-                State::Deleting => "DELETING",
-                State::Upgrading => "UPGRADING",
-                State::Restarting => "RESTARTING",
-                State::Updating => "UPDATING",
-                State::AutoUpdating => "AUTO_UPDATING",
-                State::AutoUpgrading => "AUTO_UPGRADING",
-                State::Disabled => "DISABLED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Active => "ACTIVE",
+                Self::Failed => "FAILED",
+                Self::Deleting => "DELETING",
+                Self::Upgrading => "UPGRADING",
+                Self::Restarting => "RESTARTING",
+                Self::Updating => "UPDATING",
+                Self::AutoUpdating => "AUTO_UPDATING",
+                Self::AutoUpgrading => "AUTO_UPGRADING",
+                Self::Disabled => "DISABLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -479,8 +479,8 @@ pub mod instance {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                DisabledReason::Unspecified => "DISABLED_REASON_UNSPECIFIED",
-                DisabledReason::KmsKeyIssue => "KMS_KEY_ISSUE",
+                Self::Unspecified => "DISABLED_REASON_UNSPECIFIED",
+                Self::KmsKeyIssue => "KMS_KEY_ISSUE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -657,7 +657,13 @@ pub struct OperationMetadata {
 }
 /// Generated client implementations.
 pub mod data_fusion_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service for creating and managing Data Fusion instances.
@@ -756,8 +762,7 @@ pub mod data_fusion_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -787,8 +792,7 @@ pub mod data_fusion_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -815,8 +819,7 @@ pub mod data_fusion_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -846,8 +849,7 @@ pub mod data_fusion_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -877,8 +879,7 @@ pub mod data_fusion_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -908,8 +909,7 @@ pub mod data_fusion_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -940,8 +940,7 @@ pub mod data_fusion_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

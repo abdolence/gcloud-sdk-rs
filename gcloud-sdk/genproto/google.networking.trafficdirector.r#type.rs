@@ -73,17 +73,17 @@ pub mod traffic_director_log_entry {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ClientType::Unspecified => "CLIENT_TYPE_UNSPECIFIED",
-                ClientType::Envoy => "ENVOY",
-                ClientType::GrpcJava => "GRPC_JAVA",
-                ClientType::GrpcCpp => "GRPC_CPP",
-                ClientType::GrpcPython => "GRPC_PYTHON",
-                ClientType::GrpcGo => "GRPC_GO",
-                ClientType::GrpcRuby => "GRPC_RUBY",
-                ClientType::GrpcPhp => "GRPC_PHP",
-                ClientType::GrpcNode => "GRPC_NODE",
-                ClientType::GrpcCsharp => "GRPC_CSHARP",
-                ClientType::Unknown => "UNKNOWN",
+                Self::Unspecified => "CLIENT_TYPE_UNSPECIFIED",
+                Self::Envoy => "ENVOY",
+                Self::GrpcJava => "GRPC_JAVA",
+                Self::GrpcCpp => "GRPC_CPP",
+                Self::GrpcPython => "GRPC_PYTHON",
+                Self::GrpcGo => "GRPC_GO",
+                Self::GrpcRuby => "GRPC_RUBY",
+                Self::GrpcPhp => "GRPC_PHP",
+                Self::GrpcNode => "GRPC_NODE",
+                Self::GrpcCsharp => "GRPC_CSHARP",
+                Self::Unknown => "UNKNOWN",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -132,9 +132,9 @@ pub mod traffic_director_log_entry {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                TransportApiVersion::Unspecified => "TRANSPORT_API_VERSION_UNSPECIFIED",
-                TransportApiVersion::V2 => "V2",
-                TransportApiVersion::V3 => "V3",
+                Self::Unspecified => "TRANSPORT_API_VERSION_UNSPECIFIED",
+                Self::V2 => "V2",
+                Self::V3 => "V3",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.

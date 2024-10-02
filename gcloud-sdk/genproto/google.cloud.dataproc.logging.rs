@@ -129,13 +129,13 @@ impl AutoscalerState {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            AutoscalerState::Unspecified => "AUTOSCALER_STATE_UNSPECIFIED",
-            AutoscalerState::Cooldown => "COOLDOWN",
-            AutoscalerState::Recommending => "RECOMMENDING",
-            AutoscalerState::Scaling => "SCALING",
-            AutoscalerState::Stopped => "STOPPED",
-            AutoscalerState::Failed => "FAILED",
-            AutoscalerState::Initializing => "INITIALIZING",
+            Self::Unspecified => "AUTOSCALER_STATE_UNSPECIFIED",
+            Self::Cooldown => "COOLDOWN",
+            Self::Recommending => "RECOMMENDING",
+            Self::Scaling => "SCALING",
+            Self::Stopped => "STOPPED",
+            Self::Failed => "FAILED",
+            Self::Initializing => "INITIALIZING",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -177,13 +177,13 @@ impl ScalingDecisionType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ScalingDecisionType::Unspecified => "SCALING_DECISION_TYPE_UNSPECIFIED",
-            ScalingDecisionType::ScaleUp => "SCALE_UP",
-            ScalingDecisionType::ScaleDown => "SCALE_DOWN",
-            ScalingDecisionType::NoScale => "NO_SCALE",
-            ScalingDecisionType::Mixed => "MIXED",
-            ScalingDecisionType::Cancel => "CANCEL",
-            ScalingDecisionType::DoNotCancel => "DO_NOT_CANCEL",
+            Self::Unspecified => "SCALING_DECISION_TYPE_UNSPECIFIED",
+            Self::ScaleUp => "SCALE_UP",
+            Self::ScaleDown => "SCALE_DOWN",
+            Self::NoScale => "NO_SCALE",
+            Self::Mixed => "MIXED",
+            Self::Cancel => "CANCEL",
+            Self::DoNotCancel => "DO_NOT_CANCEL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -226,17 +226,11 @@ impl ConstrainingFactor {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ConstrainingFactor::Unspecified => "CONSTRAINING_FACTOR_UNSPECIFIED",
-            ConstrainingFactor::ScalingCappedDueToLackOfQuota => {
-                "SCALING_CAPPED_DUE_TO_LACK_OF_QUOTA"
-            }
-            ConstrainingFactor::ReachedMaximumClusterSize => {
-                "REACHED_MAXIMUM_CLUSTER_SIZE"
-            }
-            ConstrainingFactor::ReachedMinimumClusterSize => {
-                "REACHED_MINIMUM_CLUSTER_SIZE"
-            }
-            ConstrainingFactor::SecondaryScaledownSingleRequestLimitReached => {
+            Self::Unspecified => "CONSTRAINING_FACTOR_UNSPECIFIED",
+            Self::ScalingCappedDueToLackOfQuota => "SCALING_CAPPED_DUE_TO_LACK_OF_QUOTA",
+            Self::ReachedMaximumClusterSize => "REACHED_MAXIMUM_CLUSTER_SIZE",
+            Self::ReachedMinimumClusterSize => "REACHED_MINIMUM_CLUSTER_SIZE",
+            Self::SecondaryScaledownSingleRequestLimitReached => {
                 "SECONDARY_SCALEDOWN_SINGLE_REQUEST_LIMIT_REACHED"
             }
         }
@@ -277,10 +271,10 @@ impl MetricType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            MetricType::Unspecified => "METRIC_TYPE_UNSPECIFIED",
-            MetricType::YarnMemory => "YARN_MEMORY",
-            MetricType::YarnCores => "YARN_CORES",
-            MetricType::SparkExecutors => "SPARK_EXECUTORS",
+            Self::Unspecified => "METRIC_TYPE_UNSPECIFIED",
+            Self::YarnMemory => "YARN_MEMORY",
+            Self::YarnCores => "YARN_CORES",
+            Self::SparkExecutors => "SPARK_EXECUTORS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -370,12 +364,8 @@ impl ReconciliationDecisionType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ReconciliationDecisionType::Unspecified => {
-                "RECONCILIATION_DECISION_TYPE_UNSPECIFIED"
-            }
-            ReconciliationDecisionType::ReconciliationTerminateSession => {
-                "RECONCILIATION_TERMINATE_SESSION"
-            }
+            Self::Unspecified => "RECONCILIATION_DECISION_TYPE_UNSPECIFIED",
+            Self::ReconciliationTerminateSession => "RECONCILIATION_TERMINATE_SESSION",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.

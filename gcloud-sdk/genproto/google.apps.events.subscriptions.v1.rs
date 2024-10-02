@@ -148,10 +148,10 @@ pub mod subscription {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Active => "ACTIVE",
-                State::Suspended => "SUSPENDED",
-                State::Deleted => "DELETED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Suspended => "SUSPENDED",
+                Self::Deleted => "DELETED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -211,14 +211,14 @@ pub mod subscription {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ErrorType::Unspecified => "ERROR_TYPE_UNSPECIFIED",
-                ErrorType::UserScopeRevoked => "USER_SCOPE_REVOKED",
-                ErrorType::ResourceDeleted => "RESOURCE_DELETED",
-                ErrorType::UserAuthorizationFailure => "USER_AUTHORIZATION_FAILURE",
-                ErrorType::EndpointPermissionDenied => "ENDPOINT_PERMISSION_DENIED",
-                ErrorType::EndpointNotFound => "ENDPOINT_NOT_FOUND",
-                ErrorType::EndpointResourceExhausted => "ENDPOINT_RESOURCE_EXHAUSTED",
-                ErrorType::Other => "OTHER",
+                Self::Unspecified => "ERROR_TYPE_UNSPECIFIED",
+                Self::UserScopeRevoked => "USER_SCOPE_REVOKED",
+                Self::ResourceDeleted => "RESOURCE_DELETED",
+                Self::UserAuthorizationFailure => "USER_AUTHORIZATION_FAILURE",
+                Self::EndpointPermissionDenied => "ENDPOINT_PERMISSION_DENIED",
+                Self::EndpointNotFound => "ENDPOINT_NOT_FOUND",
+                Self::EndpointResourceExhausted => "ENDPOINT_RESOURCE_EXHAUSTED",
+                Self::Other => "OTHER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -480,7 +480,13 @@ pub struct DeleteSubscriptionMetadata {}
 pub struct ReactivateSubscriptionMetadata {}
 /// Generated client implementations.
 pub mod subscriptions_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// A service that manages subscriptions to Google Workspace events.
@@ -578,8 +584,7 @@ pub mod subscriptions_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -611,8 +616,7 @@ pub mod subscriptions_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -641,8 +645,7 @@ pub mod subscriptions_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -674,8 +677,7 @@ pub mod subscriptions_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -707,8 +709,7 @@ pub mod subscriptions_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -744,8 +745,7 @@ pub mod subscriptions_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

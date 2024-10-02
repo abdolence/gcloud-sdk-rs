@@ -80,9 +80,9 @@ pub mod restrict_allowed_resources_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                RestrictionType::Unspecified => "RESTRICTION_TYPE_UNSPECIFIED",
-                RestrictionType::AllowAllGcpResources => "ALLOW_ALL_GCP_RESOURCES",
-                RestrictionType::AllowCompliantResources => "ALLOW_COMPLIANT_RESOURCES",
+                Self::Unspecified => "RESTRICTION_TYPE_UNSPECIFIED",
+                Self::AllowAllGcpResources => "ALLOW_ALL_GCP_RESOURCES",
+                Self::AllowCompliantResources => "ALLOW_COMPLIANT_RESOURCES",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -352,11 +352,11 @@ pub mod workload {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    ResourceType::Unspecified => "RESOURCE_TYPE_UNSPECIFIED",
-                    ResourceType::ConsumerProject => "CONSUMER_PROJECT",
-                    ResourceType::ConsumerFolder => "CONSUMER_FOLDER",
-                    ResourceType::EncryptionKeysProject => "ENCRYPTION_KEYS_PROJECT",
-                    ResourceType::Keyring => "KEYRING",
+                    Self::Unspecified => "RESOURCE_TYPE_UNSPECIFIED",
+                    Self::ConsumerProject => "CONSUMER_PROJECT",
+                    Self::ConsumerFolder => "CONSUMER_FOLDER",
+                    Self::EncryptionKeysProject => "ENCRYPTION_KEYS_PROJECT",
+                    Self::Keyring => "KEYRING",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -482,9 +482,9 @@ pub mod workload {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    SetupState::Unspecified => "SETUP_STATE_UNSPECIFIED",
-                    SetupState::StatusPending => "STATUS_PENDING",
-                    SetupState::StatusComplete => "STATUS_COMPLETE",
+                    Self::Unspecified => "SETUP_STATE_UNSPECIFIED",
+                    Self::StatusPending => "STATUS_PENDING",
+                    Self::StatusComplete => "STATUS_COMPLETE",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -532,15 +532,15 @@ pub mod workload {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    SetupError::Unspecified => "SETUP_ERROR_UNSPECIFIED",
-                    SetupError::ErrorInvalidBaseSetup => "ERROR_INVALID_BASE_SETUP",
-                    SetupError::ErrorMissingExternalSigningKey => {
+                    Self::Unspecified => "SETUP_ERROR_UNSPECIFIED",
+                    Self::ErrorInvalidBaseSetup => "ERROR_INVALID_BASE_SETUP",
+                    Self::ErrorMissingExternalSigningKey => {
                         "ERROR_MISSING_EXTERNAL_SIGNING_KEY"
                     }
-                    SetupError::ErrorNotAllServicesEnrolled => {
+                    Self::ErrorNotAllServicesEnrolled => {
                         "ERROR_NOT_ALL_SERVICES_ENROLLED"
                     }
-                    SetupError::ErrorSetupCheckFailed => "ERROR_SETUP_CHECK_FAILED",
+                    Self::ErrorSetupCheckFailed => "ERROR_SETUP_CHECK_FAILED",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -606,18 +606,18 @@ pub mod workload {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                ComplianceRegime::Unspecified => "COMPLIANCE_REGIME_UNSPECIFIED",
-                ComplianceRegime::Il4 => "IL4",
-                ComplianceRegime::Cjis => "CJIS",
-                ComplianceRegime::FedrampHigh => "FEDRAMP_HIGH",
-                ComplianceRegime::FedrampModerate => "FEDRAMP_MODERATE",
-                ComplianceRegime::UsRegionalAccess => "US_REGIONAL_ACCESS",
-                ComplianceRegime::Hipaa => "HIPAA",
-                ComplianceRegime::Hitrust => "HITRUST",
-                ComplianceRegime::EuRegionsAndSupport => "EU_REGIONS_AND_SUPPORT",
-                ComplianceRegime::CaRegionsAndSupport => "CA_REGIONS_AND_SUPPORT",
-                ComplianceRegime::Itar => "ITAR",
-                ComplianceRegime::AuRegionsAndUsSupport => "AU_REGIONS_AND_US_SUPPORT",
+                Self::Unspecified => "COMPLIANCE_REGIME_UNSPECIFIED",
+                Self::Il4 => "IL4",
+                Self::Cjis => "CJIS",
+                Self::FedrampHigh => "FEDRAMP_HIGH",
+                Self::FedrampModerate => "FEDRAMP_MODERATE",
+                Self::UsRegionalAccess => "US_REGIONAL_ACCESS",
+                Self::Hipaa => "HIPAA",
+                Self::Hitrust => "HITRUST",
+                Self::EuRegionsAndSupport => "EU_REGIONS_AND_SUPPORT",
+                Self::CaRegionsAndSupport => "CA_REGIONS_AND_SUPPORT",
+                Self::Itar => "ITAR",
+                Self::AuRegionsAndUsSupport => "AU_REGIONS_AND_US_SUPPORT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -667,9 +667,9 @@ pub mod workload {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                KajEnrollmentState::Unspecified => "KAJ_ENROLLMENT_STATE_UNSPECIFIED",
-                KajEnrollmentState::Pending => "KAJ_ENROLLMENT_STATE_PENDING",
-                KajEnrollmentState::Complete => "KAJ_ENROLLMENT_STATE_COMPLETE",
+                Self::Unspecified => "KAJ_ENROLLMENT_STATE_UNSPECIFIED",
+                Self::Pending => "KAJ_ENROLLMENT_STATE_PENDING",
+                Self::Complete => "KAJ_ENROLLMENT_STATE_COMPLETE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -722,7 +722,13 @@ pub struct CreateWorkloadOperationMetadata {
 }
 /// Generated client implementations.
 pub mod assured_workloads_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service to manage AssuredWorkloads.
@@ -820,8 +826,7 @@ pub mod assured_workloads_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -851,8 +856,7 @@ pub mod assured_workloads_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -887,8 +891,7 @@ pub mod assured_workloads_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -920,8 +923,7 @@ pub mod assured_workloads_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -948,8 +950,7 @@ pub mod assured_workloads_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -980,8 +981,7 @@ pub mod assured_workloads_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1011,8 +1011,7 @@ pub mod assured_workloads_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

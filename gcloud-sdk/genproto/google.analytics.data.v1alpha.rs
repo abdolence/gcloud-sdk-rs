@@ -261,13 +261,13 @@ pub mod string_filter {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MatchType::Unspecified => "MATCH_TYPE_UNSPECIFIED",
-                MatchType::Exact => "EXACT",
-                MatchType::BeginsWith => "BEGINS_WITH",
-                MatchType::EndsWith => "ENDS_WITH",
-                MatchType::Contains => "CONTAINS",
-                MatchType::FullRegexp => "FULL_REGEXP",
-                MatchType::PartialRegexp => "PARTIAL_REGEXP",
+                Self::Unspecified => "MATCH_TYPE_UNSPECIFIED",
+                Self::Exact => "EXACT",
+                Self::BeginsWith => "BEGINS_WITH",
+                Self::EndsWith => "ENDS_WITH",
+                Self::Contains => "CONTAINS",
+                Self::FullRegexp => "FULL_REGEXP",
+                Self::PartialRegexp => "PARTIAL_REGEXP",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -342,12 +342,12 @@ pub mod numeric_filter {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Operation::Unspecified => "OPERATION_UNSPECIFIED",
-                Operation::Equal => "EQUAL",
-                Operation::LessThan => "LESS_THAN",
-                Operation::LessThanOrEqual => "LESS_THAN_OR_EQUAL",
-                Operation::GreaterThan => "GREATER_THAN",
-                Operation::GreaterThanOrEqual => "GREATER_THAN_OR_EQUAL",
+                Self::Unspecified => "OPERATION_UNSPECIFIED",
+                Self::Equal => "EQUAL",
+                Self::LessThan => "LESS_THAN",
+                Self::LessThanOrEqual => "LESS_THAN_OR_EQUAL",
+                Self::GreaterThan => "GREATER_THAN",
+                Self::GreaterThanOrEqual => "GREATER_THAN_OR_EQUAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -432,12 +432,10 @@ pub mod order_by {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    OrderType::Unspecified => "ORDER_TYPE_UNSPECIFIED",
-                    OrderType::Alphanumeric => "ALPHANUMERIC",
-                    OrderType::CaseInsensitiveAlphanumeric => {
-                        "CASE_INSENSITIVE_ALPHANUMERIC"
-                    }
-                    OrderType::Numeric => "NUMERIC",
+                    Self::Unspecified => "ORDER_TYPE_UNSPECIFIED",
+                    Self::Alphanumeric => "ALPHANUMERIC",
+                    Self::CaseInsensitiveAlphanumeric => "CASE_INSENSITIVE_ALPHANUMERIC",
+                    Self::Numeric => "NUMERIC",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -636,10 +634,10 @@ pub mod cohorts_range {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Granularity::Unspecified => "GRANULARITY_UNSPECIFIED",
-                Granularity::Daily => "DAILY",
-                Granularity::Weekly => "WEEKLY",
-                Granularity::Monthly => "MONTHLY",
+                Self::Unspecified => "GRANULARITY_UNSPECIFIED",
+                Self::Daily => "DAILY",
+                Self::Weekly => "WEEKLY",
+                Self::Monthly => "MONTHLY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1259,7 +1257,7 @@ pub struct EventSegmentExclusion {
 /// Another segment might be users who purchase a particular line of products or
 /// who visit a specific part of your site or trigger certain events in your app.
 ///
-/// To learn more, see [GA4 Segment
+/// To learn more, see [Segment
 /// Builder](<https://support.google.com/analytics/answer/9304353>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Segment {
@@ -1773,16 +1771,10 @@ impl UserCriteriaScoping {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            UserCriteriaScoping::Unspecified => "USER_CRITERIA_SCOPING_UNSPECIFIED",
-            UserCriteriaScoping::UserCriteriaWithinSameEvent => {
-                "USER_CRITERIA_WITHIN_SAME_EVENT"
-            }
-            UserCriteriaScoping::UserCriteriaWithinSameSession => {
-                "USER_CRITERIA_WITHIN_SAME_SESSION"
-            }
-            UserCriteriaScoping::UserCriteriaAcrossAllSessions => {
-                "USER_CRITERIA_ACROSS_ALL_SESSIONS"
-            }
+            Self::Unspecified => "USER_CRITERIA_SCOPING_UNSPECIFIED",
+            Self::UserCriteriaWithinSameEvent => "USER_CRITERIA_WITHIN_SAME_EVENT",
+            Self::UserCriteriaWithinSameSession => "USER_CRITERIA_WITHIN_SAME_SESSION",
+            Self::UserCriteriaAcrossAllSessions => "USER_CRITERIA_ACROSS_ALL_SESSIONS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1821,9 +1813,9 @@ impl UserExclusionDuration {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            UserExclusionDuration::Unspecified => "USER_EXCLUSION_DURATION_UNSPECIFIED",
-            UserExclusionDuration::UserExclusionTemporary => "USER_EXCLUSION_TEMPORARY",
-            UserExclusionDuration::UserExclusionPermanent => "USER_EXCLUSION_PERMANENT",
+            Self::Unspecified => "USER_EXCLUSION_DURATION_UNSPECIFIED",
+            Self::UserExclusionTemporary => "USER_EXCLUSION_TEMPORARY",
+            Self::UserExclusionPermanent => "USER_EXCLUSION_PERMANENT",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1857,11 +1849,9 @@ impl SessionCriteriaScoping {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SessionCriteriaScoping::Unspecified => "SESSION_CRITERIA_SCOPING_UNSPECIFIED",
-            SessionCriteriaScoping::SessionCriteriaWithinSameEvent => {
-                "SESSION_CRITERIA_WITHIN_SAME_EVENT"
-            }
-            SessionCriteriaScoping::SessionCriteriaWithinSameSession => {
+            Self::Unspecified => "SESSION_CRITERIA_SCOPING_UNSPECIFIED",
+            Self::SessionCriteriaWithinSameEvent => "SESSION_CRITERIA_WITHIN_SAME_EVENT",
+            Self::SessionCriteriaWithinSameSession => {
                 "SESSION_CRITERIA_WITHIN_SAME_SESSION"
             }
         }
@@ -1901,15 +1891,9 @@ impl SessionExclusionDuration {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            SessionExclusionDuration::Unspecified => {
-                "SESSION_EXCLUSION_DURATION_UNSPECIFIED"
-            }
-            SessionExclusionDuration::SessionExclusionTemporary => {
-                "SESSION_EXCLUSION_TEMPORARY"
-            }
-            SessionExclusionDuration::SessionExclusionPermanent => {
-                "SESSION_EXCLUSION_PERMANENT"
-            }
+            Self::Unspecified => "SESSION_EXCLUSION_DURATION_UNSPECIFIED",
+            Self::SessionExclusionTemporary => "SESSION_EXCLUSION_TEMPORARY",
+            Self::SessionExclusionPermanent => "SESSION_EXCLUSION_PERMANENT",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1940,10 +1924,8 @@ impl EventCriteriaScoping {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            EventCriteriaScoping::Unspecified => "EVENT_CRITERIA_SCOPING_UNSPECIFIED",
-            EventCriteriaScoping::EventCriteriaWithinSameEvent => {
-                "EVENT_CRITERIA_WITHIN_SAME_EVENT"
-            }
+            Self::Unspecified => "EVENT_CRITERIA_SCOPING_UNSPECIFIED",
+            Self::EventCriteriaWithinSameEvent => "EVENT_CRITERIA_WITHIN_SAME_EVENT",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1975,10 +1957,8 @@ impl EventExclusionDuration {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            EventExclusionDuration::Unspecified => "EVENT_EXCLUSION_DURATION_UNSPECIFIED",
-            EventExclusionDuration::EventExclusionPermanent => {
-                "EVENT_EXCLUSION_PERMANENT"
-            }
+            Self::Unspecified => "EVENT_EXCLUSION_DURATION_UNSPECIFIED",
+            Self::EventExclusionPermanent => "EVENT_EXCLUSION_PERMANENT",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2012,11 +1992,11 @@ impl MetricAggregation {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            MetricAggregation::Unspecified => "METRIC_AGGREGATION_UNSPECIFIED",
-            MetricAggregation::Total => "TOTAL",
-            MetricAggregation::Minimum => "MINIMUM",
-            MetricAggregation::Maximum => "MAXIMUM",
-            MetricAggregation::Count => "COUNT",
+            Self::Unspecified => "METRIC_AGGREGATION_UNSPECIFIED",
+            Self::Total => "TOTAL",
+            Self::Minimum => "MINIMUM",
+            Self::Maximum => "MAXIMUM",
+            Self::Count => "COUNT",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2069,19 +2049,19 @@ impl MetricType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            MetricType::Unspecified => "METRIC_TYPE_UNSPECIFIED",
-            MetricType::TypeInteger => "TYPE_INTEGER",
-            MetricType::TypeFloat => "TYPE_FLOAT",
-            MetricType::TypeSeconds => "TYPE_SECONDS",
-            MetricType::TypeMilliseconds => "TYPE_MILLISECONDS",
-            MetricType::TypeMinutes => "TYPE_MINUTES",
-            MetricType::TypeHours => "TYPE_HOURS",
-            MetricType::TypeStandard => "TYPE_STANDARD",
-            MetricType::TypeCurrency => "TYPE_CURRENCY",
-            MetricType::TypeFeet => "TYPE_FEET",
-            MetricType::TypeMiles => "TYPE_MILES",
-            MetricType::TypeMeters => "TYPE_METERS",
-            MetricType::TypeKilometers => "TYPE_KILOMETERS",
+            Self::Unspecified => "METRIC_TYPE_UNSPECIFIED",
+            Self::TypeInteger => "TYPE_INTEGER",
+            Self::TypeFloat => "TYPE_FLOAT",
+            Self::TypeSeconds => "TYPE_SECONDS",
+            Self::TypeMilliseconds => "TYPE_MILLISECONDS",
+            Self::TypeMinutes => "TYPE_MINUTES",
+            Self::TypeHours => "TYPE_HOURS",
+            Self::TypeStandard => "TYPE_STANDARD",
+            Self::TypeCurrency => "TYPE_CURRENCY",
+            Self::TypeFeet => "TYPE_FEET",
+            Self::TypeMiles => "TYPE_MILES",
+            Self::TypeMeters => "TYPE_METERS",
+            Self::TypeKilometers => "TYPE_KILOMETERS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2104,8 +2084,8 @@ impl MetricType {
         }
     }
 }
-/// Categories of data that you may be restricted from viewing on certain GA4
-/// properties.
+/// Categories of data that you may be restricted from viewing on certain
+/// Google Analytics properties.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum RestrictedMetricType {
@@ -2123,9 +2103,9 @@ impl RestrictedMetricType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            RestrictedMetricType::Unspecified => "RESTRICTED_METRIC_TYPE_UNSPECIFIED",
-            RestrictedMetricType::CostData => "COST_DATA",
-            RestrictedMetricType::RevenueData => "REVENUE_DATA",
+            Self::Unspecified => "RESTRICTED_METRIC_TYPE_UNSPECIFIED",
+            Self::CostData => "COST_DATA",
+            Self::RevenueData => "REVENUE_DATA",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2311,6 +2291,30 @@ pub struct ListRecurringAudienceListsResponse {
     #[prost(string, optional, tag = "2")]
     pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
 }
+/// A request to return the PropertyQuotasSnapshot for a given category.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetPropertyQuotasSnapshotRequest {
+    /// Required. Quotas from this property will be listed in the response.
+    /// Format: `properties/{property}/propertyQuotasSnapshot`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Current state of all Property Quotas organized by quota category.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PropertyQuotasSnapshot {
+    /// Identifier. The property quota snapshot resource name.
+    #[prost(string, tag = "4")]
+    pub name: ::prost::alloc::string::String,
+    /// Property Quota for core property tokens
+    #[prost(message, optional, tag = "1")]
+    pub core_property_quota: ::core::option::Option<PropertyQuota>,
+    /// Property Quota for realtime property tokens
+    #[prost(message, optional, tag = "2")]
+    pub realtime_property_quota: ::core::option::Option<PropertyQuota>,
+    /// Property Quota for funnel property tokens
+    #[prost(message, optional, tag = "3")]
+    pub funnel_property_quota: ::core::option::Option<PropertyQuota>,
+}
 /// A request to retrieve configuration metadata about a specific audience list.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAudienceListRequest {
@@ -2472,10 +2476,10 @@ pub mod audience_list {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::Creating => "CREATING",
-                State::Active => "ACTIVE",
-                State::Failed => "FAILED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Active => "ACTIVE",
+                Self::Failed => "FAILED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2645,9 +2649,9 @@ pub mod audience_dimension_value {
 /// The request for a funnel report.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunFunnelReportRequest {
-    /// Optional. A Google Analytics GA4 property identifier whose events are
-    /// tracked. Specified in the URL path and not the body. To learn more, see
-    /// [where to find your Property
+    /// Optional. A Google Analytics property identifier whose events are tracked.
+    /// Specified in the URL path and not the body. To learn more, see [where to
+    /// find your Property
     /// ID](<https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>).
     /// Within a batch request, this property should either be unspecified or
     /// consistent with the batch-level property.
@@ -2753,11 +2757,9 @@ pub mod run_funnel_report_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                FunnelVisualizationType::Unspecified => {
-                    "FUNNEL_VISUALIZATION_TYPE_UNSPECIFIED"
-                }
-                FunnelVisualizationType::StandardFunnel => "STANDARD_FUNNEL",
-                FunnelVisualizationType::TrendedFunnel => "TRENDED_FUNNEL",
+                Self::Unspecified => "FUNNEL_VISUALIZATION_TYPE_UNSPECIFIED",
+                Self::StandardFunnel => "STANDARD_FUNNEL",
+                Self::TrendedFunnel => "TRENDED_FUNNEL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2806,7 +2808,7 @@ pub struct RunFunnelReportResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportTask {
     /// Output only. Identifier. The report task resource name assigned during
-    /// creation. Format: `properties/{property}/reportTasks/{report_task}`
+    /// creation. Format: "properties/{property}/reportTasks/{report_task}"
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. A report definition to fetch report data, which describes the
@@ -2900,7 +2902,7 @@ pub mod report_task {
         /// not separately removed by a filter.
         ///
         /// Regardless of this `keep_empty_rows` setting, only data recorded by the
-        /// Google Analytics (GA4) property can be displayed in a report.
+        /// Google Analytics property can be displayed in a report.
         ///
         /// For example if a property never logs a `purchase` event, then a query for
         /// the `eventName` dimension and  `eventCount` metric will not have a row
@@ -2986,10 +2988,10 @@ pub mod report_task {
             /// (if the ProtoBuf definition does not change) and safe for programmatic use.
             pub fn as_str_name(&self) -> &'static str {
                 match self {
-                    State::Unspecified => "STATE_UNSPECIFIED",
-                    State::Creating => "CREATING",
-                    State::Active => "ACTIVE",
-                    State::Failed => "FAILED",
+                    Self::Unspecified => "STATE_UNSPECIFIED",
+                    Self::Creating => "CREATING",
+                    Self::Active => "ACTIVE",
+                    Self::Failed => "FAILED",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3122,7 +3124,13 @@ pub struct ListReportTasksResponse {
 }
 /// Generated client implementations.
 pub mod alpha_analytics_data_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Google Analytics reporting data service.
@@ -3233,8 +3241,7 @@ pub mod alpha_analytics_data_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3287,8 +3294,7 @@ pub mod alpha_analytics_data_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3335,8 +3341,7 @@ pub mod alpha_analytics_data_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3384,8 +3389,7 @@ pub mod alpha_analytics_data_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3423,8 +3427,7 @@ pub mod alpha_analytics_data_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3467,8 +3470,7 @@ pub mod alpha_analytics_data_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3515,8 +3517,7 @@ pub mod alpha_analytics_data_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3556,8 +3557,7 @@ pub mod alpha_analytics_data_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3598,8 +3598,7 @@ pub mod alpha_analytics_data_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3617,10 +3616,47 @@ pub mod alpha_analytics_data_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Get all property quotas organized by quota category for a given property.
+        /// This will charge 1 property quota from the category with the most quota.
+        pub async fn get_property_quotas_snapshot(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetPropertyQuotasSnapshotRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::PropertyQuotasSnapshot>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.data.v1alpha.AlphaAnalyticsData/GetPropertyQuotasSnapshot",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.data.v1alpha.AlphaAnalyticsData",
+                        "GetPropertyQuotasSnapshot",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Initiates the creation of a report task. This method quickly
         /// returns a report task and initiates a long running
         /// asynchronous request to form a customized report of your Google Analytics
         /// event data.
+        ///
+        /// A report task will be retained and available for querying for 72 hours
+        /// after it has been created.
+        ///
+        /// A report task created by one user can be listed and queried by all users
+        /// who have access to the property.
         pub async fn create_report_task(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateReportTaskRequest>,
@@ -3632,8 +3668,7 @@ pub mod alpha_analytics_data_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3667,8 +3702,7 @@ pub mod alpha_analytics_data_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3697,8 +3731,7 @@ pub mod alpha_analytics_data_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -3728,8 +3761,7 @@ pub mod alpha_analytics_data_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;

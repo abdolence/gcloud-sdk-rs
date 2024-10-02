@@ -74,7 +74,13 @@ pub struct ListAttachmentsResponse {
 }
 /// Generated client implementations.
 pub mod case_attachment_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// A service to manage file attachment for Google Cloud support cases.
@@ -170,8 +176,7 @@ pub mod case_attachment_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -293,12 +298,12 @@ pub mod case {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                State::Unspecified => "STATE_UNSPECIFIED",
-                State::New => "NEW",
-                State::InProgressGoogleSupport => "IN_PROGRESS_GOOGLE_SUPPORT",
-                State::ActionRequired => "ACTION_REQUIRED",
-                State::SolutionProvided => "SOLUTION_PROVIDED",
-                State::Closed => "CLOSED",
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::New => "NEW",
+                Self::InProgressGoogleSupport => "IN_PROGRESS_GOOGLE_SUPPORT",
+                Self::ActionRequired => "ACTION_REQUIRED",
+                Self::SolutionProvided => "SOLUTION_PROVIDED",
+                Self::Closed => "CLOSED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -351,12 +356,12 @@ pub mod case {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Priority::Unspecified => "PRIORITY_UNSPECIFIED",
-                Priority::P0 => "P0",
-                Priority::P1 => "P1",
-                Priority::P2 => "P2",
-                Priority::P3 => "P3",
-                Priority::P4 => "P4",
+                Self::Unspecified => "PRIORITY_UNSPECIFIED",
+                Self::P0 => "P0",
+                Self::P1 => "P1",
+                Self::P2 => "P2",
+                Self::P3 => "P3",
+                Self::P4 => "P4",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -430,10 +435,10 @@ pub mod escalation {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                Reason::Unspecified => "REASON_UNSPECIFIED",
-                Reason::ResolutionTime => "RESOLUTION_TIME",
-                Reason::TechnicalExpertise => "TECHNICAL_EXPERTISE",
-                Reason::BusinessImpact => "BUSINESS_IMPACT",
+                Self::Unspecified => "REASON_UNSPECIFIED",
+                Self::ResolutionTime => "RESOLUTION_TIME",
+                Self::TechnicalExpertise => "TECHNICAL_EXPERTISE",
+                Self::BusinessImpact => "BUSINESS_IMPACT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -642,7 +647,13 @@ pub struct SearchCaseClassificationsResponse {
 }
 /// Generated client implementations.
 pub mod case_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// A service to manage Google Cloud support cases.
@@ -735,8 +746,7 @@ pub mod case_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -768,8 +778,7 @@ pub mod case_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -796,8 +805,7 @@ pub mod case_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -823,8 +831,7 @@ pub mod case_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -848,8 +855,7 @@ pub mod case_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -879,8 +885,7 @@ pub mod case_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -907,8 +912,7 @@ pub mod case_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -938,8 +942,7 @@ pub mod case_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1019,7 +1022,13 @@ pub struct CreateCommentRequest {
 }
 /// Generated client implementations.
 pub mod comment_service_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// A service to manage comments on cases.
@@ -1115,8 +1124,7 @@ pub mod comment_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
@@ -1144,8 +1152,7 @@ pub mod comment_service_client {
                 .ready()
                 .await
                 .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
+                    tonic::Status::unknown(
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
