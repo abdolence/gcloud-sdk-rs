@@ -8684,13 +8684,14 @@ pub struct TableDataProfile {
     /// locations.
     #[prost(string, tag = "29")]
     pub dataset_location: ::prost::alloc::string::String,
-    /// If the resource is BigQuery, the  dataset ID.
+    /// If the resource is BigQuery, the dataset ID.
     #[prost(string, tag = "25")]
     pub dataset_id: ::prost::alloc::string::String,
-    /// If the resource is BigQuery, the BigQuery table ID.
+    /// The table ID.
     #[prost(string, tag = "26")]
     pub table_id: ::prost::alloc::string::String,
-    /// The resource name of the resource profiled.
+    /// The Cloud Asset Inventory resource that was profiled in order to generate
+    /// this TableDataProfile.
     /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
     #[prost(string, tag = "3")]
     pub full_resource: ::prost::alloc::string::String,
@@ -8865,15 +8866,15 @@ pub struct ColumnDataProfile {
     /// The Google Cloud project ID that owns the profiled resource.
     #[prost(string, tag = "19")]
     pub dataset_project_id: ::prost::alloc::string::String,
-    /// The BigQuery location where the dataset's data is stored.
+    /// If supported, the location where the dataset's data is stored.
     /// See <https://cloud.google.com/bigquery/docs/locations> for supported
-    /// locations.
+    /// BigQuery locations.
     #[prost(string, tag = "20")]
     pub dataset_location: ::prost::alloc::string::String,
-    /// The BigQuery dataset ID.
+    /// The BigQuery dataset ID, if the resource profiled is a BigQuery table.
     #[prost(string, tag = "21")]
     pub dataset_id: ::prost::alloc::string::String,
-    /// The BigQuery table ID.
+    /// The table ID.
     #[prost(string, tag = "22")]
     pub table_id: ::prost::alloc::string::String,
     /// The name of the column.
@@ -10147,8 +10148,8 @@ impl ProfileGeneration {
         }
     }
 }
-/// Over time new types may be added. Currently VIEW, MATERIALIZED_VIEW,
-/// and SNAPSHOT are not supported.
+/// Over time new types may be added. Currently VIEW, MATERIALIZED_VIEW, and
+/// non-BigLake external tables are not supported.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum BigQueryTableTypeCollection {
@@ -10193,8 +10194,8 @@ impl BigQueryTableTypeCollection {
         }
     }
 }
-/// Over time new types may be added. Currently VIEW, MATERIALIZED_VIEW,
-/// SNAPSHOT, and non-BigLake external tables are not supported.
+/// Over time new types may be added. Currently VIEW, MATERIALIZED_VIEW, and
+/// non-BigLake external tables are not supported.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum BigQueryTableType {
@@ -10204,6 +10205,8 @@ pub enum BigQueryTableType {
     Table = 1,
     /// A table that references data stored in Cloud Storage.
     ExternalBigLake = 2,
+    /// A snapshot of a BigQuery table.
+    Snapshot = 3,
 }
 impl BigQueryTableType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -10215,6 +10218,7 @@ impl BigQueryTableType {
             Self::Unspecified => "BIG_QUERY_TABLE_TYPE_UNSPECIFIED",
             Self::Table => "BIG_QUERY_TABLE_TYPE_TABLE",
             Self::ExternalBigLake => "BIG_QUERY_TABLE_TYPE_EXTERNAL_BIG_LAKE",
+            Self::Snapshot => "BIG_QUERY_TABLE_TYPE_SNAPSHOT",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -10223,6 +10227,7 @@ impl BigQueryTableType {
             "BIG_QUERY_TABLE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
             "BIG_QUERY_TABLE_TYPE_TABLE" => Some(Self::Table),
             "BIG_QUERY_TABLE_TYPE_EXTERNAL_BIG_LAKE" => Some(Self::ExternalBigLake),
+            "BIG_QUERY_TABLE_TYPE_SNAPSHOT" => Some(Self::Snapshot),
             _ => None,
         }
     }
@@ -10821,13 +10826,9 @@ pub mod dlp_service_client {
     )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// The Cloud Data Loss Prevention (DLP) API is a service that allows clients
-    /// to detect the presence of Personally Identifiable Information (PII) and other
-    /// privacy-sensitive data in user-supplied, unstructured data streams, like text
-    /// blocks or images.
-    /// The service also includes methods for sensitive data redaction and
-    /// scheduling of data scans on Google Cloud Platform based data sets.
-    ///
+    /// Sensitive Data Protection provides access to a powerful sensitive data
+    /// inspection, classification, and de-identification platform that works
+    /// on text, images, and Google Cloud storage repositories.
     /// To learn more about concepts and find how-to guides see
     /// https://cloud.google.com/sensitive-data-protection/docs/.
     #[derive(Debug, Clone)]

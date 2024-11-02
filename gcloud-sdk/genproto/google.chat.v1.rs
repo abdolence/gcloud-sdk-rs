@@ -1737,6 +1737,13 @@ pub struct Space {
     /// Resource name of the space.
     ///
     /// Format: `spaces/{space}`
+    ///
+    /// Where `{space}` represents the system-assigned ID for the space. You can
+    /// obtain the space ID by calling the
+    /// [`spaces.list()`](<https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces/list>)
+    /// method or from the space URL. For example, if the space URL
+    /// is `<https://mail.google.com/mail/u/0/#chat/space/AAAAAAAAA`,> the space ID
+    /// is `AAAAAAAAA`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Deprecated: Use `space_type` instead.
@@ -1758,11 +1765,11 @@ pub struct Space {
     #[prost(bool, tag = "5")]
     pub threaded: bool,
     /// The space's display name. Required when [creating a
-    /// space](<https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces/create>).
-    /// If you receive the error message `ALREADY_EXISTS` when creating a space or
-    /// updating the `displayName`, try a different `displayName`. An
-    /// existing space within the Google Workspace organization might already use
-    /// this display name.
+    /// space](<https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces/create>)
+    /// with a `spaceType` of `SPACE`. If you receive the error message
+    /// `ALREADY_EXISTS` when creating a space or updating the `displayName`, try a
+    /// different `displayName`. An existing space within the Google Workspace
+    /// organization might already use this display name.
     ///
     /// For direct messages, this field might be empty.
     ///
@@ -1776,15 +1783,6 @@ pub struct Space {
     ///    * The authenticated user uses a consumer account (unmanaged user
     ///      account). By default, a space created by a consumer account permits any
     ///      Google Chat user.
-    ///
-    ///    * The space is used to \[import data to Google Chat\]
-    ///      (<https://developers.google.com/chat/api/guides/import-data-overview>)
-    ///      because import mode spaces must only permit members from the same
-    ///      Google Workspace organization. However, as part of the [Google
-    ///      Workspace Developer Preview
-    ///      Program](<https://developers.google.com/workspace/preview>), import mode
-    ///      spaces can permit any Google Chat user so this field can then be set
-    ///      for import mode spaces.
     ///
     /// For existing spaces, this field is output only.
     #[prost(bool, tag = "8")]
@@ -1837,6 +1835,13 @@ pub struct Space {
     /// Output only. The URI for a user to access the space.
     #[prost(string, tag = "25")]
     pub space_uri: ::prost::alloc::string::String,
+    /// Represents the \[permission settings\]
+    /// (<https://support.google.com/chat/answer/13340792>) of a space. Only
+    /// populated when the `space_type` is `SPACE`.
+    #[prost(oneof = "space::SpacePermissionSettings", tags = "26, 27")]
+    pub space_permission_settings: ::core::option::Option<
+        space::SpacePermissionSettings,
+    >,
 }
 /// Nested message and enum types in `Space`.
 pub mod space {
@@ -1875,14 +1880,19 @@ pub mod space {
         pub access_state: i32,
         /// Optional. The resource name of the [target
         /// audience](<https://support.google.com/a/answer/9934697>) who can discover
-        /// the space, join the space, and preview the messages in the space. For
-        /// details, see [Make a space discoverable to a target
+        /// the space, join the space, and preview the messages in the space. If
+        /// unset, only users or Google Groups who have been individually invited or
+        /// added to the space can access it. For details, see [Make a space
+        /// discoverable to a target
         /// audience](<https://developers.google.com/workspace/chat/space-target-audience>).
         ///
         /// Format: `audiences/{audience}`
         ///
         /// To use the default target audience for the Google Workspace organization,
         /// set to `audiences/default`.
+        ///
+        /// This field is not populated when using the `chat.bot` scope with [app
+        /// authentication](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>).
         #[prost(string, tag = "3")]
         pub audience: ::prost::alloc::string::String,
     }
@@ -1904,11 +1914,15 @@ pub mod space {
         pub enum AccessState {
             /// Access state is unknown or not supported in this API.
             Unspecified = 0,
-            /// Space is discoverable by added or invited members or groups.
+            /// Only users or Google Groups that have been individually added or
+            /// invited by other users or Google Workspace administrators can discover
+            /// and access the space.
             Private = 1,
-            /// Space is discoverable by the selected [target
-            /// audience](<https://support.google.com/a/answer/9934697>), as well as
-            /// added or invited members or groups.
+            /// A space manager has granted a target audience access to
+            /// the space. Users or Google Groups that have been individually added or
+            /// invited to the space can also discover and access the space. To learn
+            /// more, see [Make a space discoverable to specific
+            /// users](<https://developers.google.com/workspace/chat/space-target-audience>).
             Discoverable = 2,
         }
         impl AccessState {
@@ -1933,6 +1947,48 @@ pub mod space {
                 }
             }
         }
+    }
+    /// [Permission settings](<https://support.google.com/chat/answer/13340792>)
+    /// that you can specify when updating an existing named space.
+    ///
+    /// To set permission settings when creating a space, specify the
+    /// `PredefinedPermissionSettings` field in your request.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct PermissionSettings {
+        /// Setting for managing members and groups in a space.
+        #[prost(message, optional, tag = "1")]
+        pub manage_members_and_groups: ::core::option::Option<PermissionSetting>,
+        /// Setting for updating space name, avatar, description and guidelines.
+        #[prost(message, optional, tag = "2")]
+        pub modify_space_details: ::core::option::Option<PermissionSetting>,
+        /// Setting for toggling space history on and off.
+        #[prost(message, optional, tag = "3")]
+        pub toggle_history: ::core::option::Option<PermissionSetting>,
+        /// Setting for using @all in a space.
+        #[prost(message, optional, tag = "4")]
+        pub use_at_mention_all: ::core::option::Option<PermissionSetting>,
+        /// Setting for managing apps in a space.
+        #[prost(message, optional, tag = "5")]
+        pub manage_apps: ::core::option::Option<PermissionSetting>,
+        /// Setting for managing webhooks in a space.
+        #[prost(message, optional, tag = "6")]
+        pub manage_webhooks: ::core::option::Option<PermissionSetting>,
+        /// Output only. Setting for posting messages in a space.
+        #[prost(message, optional, tag = "7")]
+        pub post_messages: ::core::option::Option<PermissionSetting>,
+        /// Setting for replying to messages in a space.
+        #[prost(message, optional, tag = "8")]
+        pub reply_messages: ::core::option::Option<PermissionSetting>,
+    }
+    /// Represents a space permission setting.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct PermissionSetting {
+        /// Whether spaces managers have this permission.
+        #[prost(bool, tag = "1")]
+        pub managers_allowed: bool,
+        /// Whether non-manager members have this permission.
+        #[prost(bool, tag = "2")]
+        pub members_allowed: bool,
     }
     /// Deprecated: Use `SpaceType` instead.
     #[derive(
@@ -2079,16 +2135,85 @@ pub mod space {
             }
         }
     }
+    /// Predefined permission settings that you can only specify when creating a
+    /// named space. More settings might be added in the future.
+    /// For details about permission settings for named spaces, see [Learn about
+    /// spaces](<https://support.google.com/chat/answer/7659784>).
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PredefinedPermissionSettings {
+        /// Unspecified. Don't use.
+        Unspecified = 0,
+        /// Setting to make the space a collaboration space where all members can
+        /// post messages.
+        CollaborationSpace = 1,
+        /// Setting to make the space an announcement space where only space managers
+        /// can post messages.
+        AnnouncementSpace = 2,
+    }
+    impl PredefinedPermissionSettings {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PREDEFINED_PERMISSION_SETTINGS_UNSPECIFIED",
+                Self::CollaborationSpace => "COLLABORATION_SPACE",
+                Self::AnnouncementSpace => "ANNOUNCEMENT_SPACE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PREDEFINED_PERMISSION_SETTINGS_UNSPECIFIED" => Some(Self::Unspecified),
+                "COLLABORATION_SPACE" => Some(Self::CollaborationSpace),
+                "ANNOUNCEMENT_SPACE" => Some(Self::AnnouncementSpace),
+                _ => None,
+            }
+        }
+    }
+    /// Represents the \[permission settings\]
+    /// (<https://support.google.com/chat/answer/13340792>) of a space. Only
+    /// populated when the `space_type` is `SPACE`.
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    pub enum SpacePermissionSettings {
+        /// Optional. Input only. Predefined space permission settings, input only
+        /// when creating a space. If the field is not set, a collaboration space is
+        /// created. After you create the space, settings are populated in the
+        /// `PermissionSettings` field.
+        #[prost(enumeration = "PredefinedPermissionSettings", tag = "26")]
+        PredefinedPermissionSettings(i32),
+        /// Optional. Space permission settings for existing spaces. Input for
+        /// updating exact space permission settings, where existing permission
+        /// settings are replaced. Output lists current permission settings.
+        #[prost(message, tag = "27")]
+        PermissionSettings(PermissionSettings),
+    }
 }
-/// A request to create a named space.
+/// A request to create a named space with no members.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSpaceRequest {
     /// Required. The `displayName` and `spaceType` fields must be populated.  Only
     /// `SpaceType.SPACE` is supported.
     ///
-    /// If you receive the error message `ALREADY_EXISTS` when creating a space,
+    /// If you receive the error message `ALREADY_EXISTS`,
     /// try a different `displayName`. An existing space within the Google
     /// Workspace organization might already use this display name.
+    ///
+    /// If you're a member of the [Developer Preview
+    /// program](<https://developers.google.com/workspace/preview>),
+    /// `SpaceType.GROUP_CHAT` can be used if `importMode` is set to true.
     ///
     /// The space `name` is assigned on the server so anything specified in this
     /// field will be ignored.
@@ -2150,6 +2275,8 @@ pub struct ListSpacesRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSpacesResponse {
     /// List of spaces in the requested (or first) page.
+    /// Note: The `permissionSettings` field is not returned in the Space
+    /// object for list requests.
     #[prost(message, repeated, tag = "1")]
     pub spaces: ::prost::alloc::vec::Vec<Space>,
     /// You can send a token as `pageToken` to retrieve the next page of
@@ -2207,54 +2334,64 @@ pub struct UpdateSpaceRequest {
     /// Required. The updated field paths, comma separated if there are
     /// multiple.
     ///
-    /// Currently supported field paths:
+    /// You can update the following fields for a space:
     ///
-    /// - `display_name` (Only supports changing the display name of a space with
-    /// the `SPACE` type, or when also including the `space_type` mask to change a
-    /// `GROUP_CHAT` space type to `SPACE`. Trying to update the display name of a
-    /// `GROUP_CHAT` or a `DIRECT_MESSAGE` space results in an invalid argument
-    /// error. If you receive the error message `ALREADY_EXISTS` when updating the
-    /// `displayName`, try a different `displayName`. An existing space within the
-    /// Google Workspace organization might already use this display name.)
+    /// `space_details`: Updates the space's description. Supports up to 150
+    /// characters.
     ///
-    /// - `space_type` (Only supports changing a `GROUP_CHAT` space type to
+    /// `display_name`: Only supports updating the display name for spaces where
+    /// `spaceType` field is `SPACE`.
+    ///   If you receive the error message `ALREADY_EXISTS`, try a different
+    ///   value. An existing space within the
+    /// Google Workspace organization might already use this display name.
+    ///
+    /// `space_type`: Only supports changing a `GROUP_CHAT` space type to
     /// `SPACE`. Include `display_name` together
     /// with `space_type` in the update mask and ensure that the specified space
     /// has a non-empty display name and the `SPACE` space type. Including the
     /// `space_type` mask and the `SPACE` type in the specified space when updating
     /// the display name is optional if the existing space already has the `SPACE`
     /// type. Trying to update the space type in other ways results in an invalid
-    /// argument error).
-    /// `space_type` is not supported with admin access.
+    /// argument error.
+    /// `space_type` is not supported with `useAdminAccess`.
     ///
-    /// - `space_details`
+    /// `space_history_state`: Updates [space history
+    /// settings](<https://support.google.com/chat/answer/7664687>) by turning
+    /// history on or off for the space. Only supported if history settings are
+    /// enabled for the Google Workspace organization. To update the
+    /// space history state, you must omit all other field masks in your request.
+    /// `space_history_state` is not supported with `useAdminAccess`.
     ///
-    /// - `space_history_state` (Supports [turning history on or off for the
-    /// space](<https://support.google.com/chat/answer/7664687>) if [the organization
-    /// allows users to change their history
-    /// setting](<https://support.google.com/a/answer/7664184>).
-    /// Warning: mutually exclusive with all other field paths.)
-    /// `space_history_state` is not supported with admin access.
-    ///
-    /// - `access_settings.audience` (Supports changing the [access
+    /// `access_settings.audience`: Updates the [access
     /// setting](<https://support.google.com/chat/answer/11971020>) of who can
-    /// discover the space, join the space, and preview the messages in space. If
-    /// no audience is specified in the access setting, the space's access setting
-    /// is updated to private. Warning: mutually exclusive with all other field
-    /// paths.)
-    /// `access_settings.audience` is not supported with admin access.
+    /// discover the space, join the space, and preview the messages in named space
+    /// where `spaceType` field is `SPACE`. If the existing space has a
+    /// target audience, you can remove the audience and restrict space access by
+    /// omitting a value for this field mask. To update access settings for a
+    /// space, the authenticating user must be a space manager and omit all other
+    /// field masks in your request. You can't update this field if the space is in
+    /// [import
+    /// mode](<https://developers.google.com/workspace/chat/import-data-overview>).
+    /// To learn more, see [Make a space discoverable to specific
+    /// users](<https://developers.google.com/workspace/chat/space-target-audience>).
+    /// `access_settings.audience` is not supported with `useAdminAccess`.
     ///
-    /// - Developer Preview: Supports changing the [permission
-    /// settings](<https://support.google.com/chat/answer/13340792>) of a space,
-    /// supported field paths
-    /// include: `permission_settings.manage_members_and_groups`,
-    /// `permission_settings.modify_space_details`,
-    /// `permission_settings.toggle_history`,
-    /// `permission_settings.use_at_mention_all`,
-    /// `permission_settings.manage_apps`, `permission_settings.manage_webhooks`,
-    /// `permission_settings.reply_messages`
-    ///   (Warning: mutually exclusive with all other non-permission settings field
-    /// paths). `permission_settings` is not supported with admin access.
+    /// `permission_settings`: Supports changing the
+    /// [permission settings](<https://support.google.com/chat/answer/13340792>)
+    /// of a space.
+    /// When updating permission settings, you can only specify
+    /// `permissionSettings` field masks; you cannot update other field masks
+    /// at the same time. `permissionSettings` is not supported with
+    /// `useAdminAccess`.
+    /// The supported field masks include:
+    ///
+    /// - `permission_settings.manageMembersAndGroups`
+    /// - `permission_settings.modifySpaceDetails`
+    /// - `permission_settings.toggleHistory`
+    /// - `permission_settings.useAtMentionAll`
+    /// - `permission_settings.manageApps`
+    /// - `permission_settings.manageWebhooks`
+    /// - `permission_settings.replyMessages`
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// When `true`, the method runs using the user's Google Workspace
@@ -2507,8 +2644,8 @@ pub struct Message {
     /// user](<https://developers.google.com/workspace/chat/format-messages#messages-@mention>),
     /// or everyone in the space.
     ///
-    /// To learn about creating text messages, see [Send a text
-    /// message](<https://developers.google.com/workspace/chat/create-messages#create-text-messages>).
+    /// To learn about creating text messages, see [Send a
+    /// message](<https://developers.google.com/workspace/chat/create-messages>).
     #[prost(string, tag = "4")]
     pub text: ::prost::alloc::string::String,
     /// Output only. Contains the message `text` with markups added to communicate
@@ -2552,8 +2689,8 @@ pub struct Message {
     /// user](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>),
     /// the messages can't contain cards.
     ///
-    /// To learn about cards and how to create them, see [Send card
-    /// messages](<https://developers.google.com/workspace/chat/create-messages#create>).
+    /// To learn how to create a message that contains cards, see [Send a
+    /// message](<https://developers.google.com/workspace/chat/create-messages>).
     ///
     /// [Card builder](<https://addons.gsuite.google.com/uikit/builder>)
     #[prost(message, repeated, tag = "22")]
@@ -2617,16 +2754,17 @@ pub struct Message {
     pub emoji_reaction_summaries: ::prost::alloc::vec::Vec<EmojiReactionSummary>,
     /// Immutable. Input for creating a message, otherwise output only. The user
     /// that can view the message. When set, the message is private and only
-    /// visible to the specified user and the Chat app. Link previews and
-    /// attachments aren't supported for private messages.
+    /// visible to the specified user and the Chat app. To include this field in
+    /// your request, you must call the Chat API using [app
+    /// authentication](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>)
+    /// and omit the following:
     ///
-    /// Only Chat apps can send private messages. If your Chat app [authenticates
-    /// as a
-    /// user](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>)
-    /// to send a message, the message can't be private and must omit this field.
+    /// * [Attachments](<https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.messages.attachments>)
+    /// * [Accessory
+    /// widgets](<https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.messages#Message.AccessoryWidget>)
     ///
-    /// For details, see [Send private messages to Google Chat
-    /// users](<https://developers.google.com/workspace/chat/private-messages>).
+    /// For details, see [Send a message
+    /// privately](<https://developers.google.com/workspace/chat/create-messages#private>).
     #[prost(message, optional, tag = "36")]
     pub private_message_viewer: ::core::option::Option<User>,
     /// Output only. Information about a deleted message. A message is deleted when
@@ -2681,7 +2819,7 @@ pub struct QuotedMessageMetadata {
 /// field to determine what happens if no matching thread is found.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Thread {
-    /// Output only. Resource name of the thread.
+    /// Resource name of the thread.
     ///
     /// Example: `spaces/{space}/threads/{thread}`
     #[prost(string, tag = "1")]
@@ -3578,6 +3716,8 @@ pub struct ListSpaceEventsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSpaceEventsResponse {
     /// Results are returned in chronological order (oldest event first).
+    /// Note: The `permissionSettings` field is not returned in the Space
+    /// object for list requests.
     #[prost(message, repeated, tag = "1")]
     pub space_events: ::prost::alloc::vec::Vec<SpaceEvent>,
     /// Continuation token used to fetch more events.
@@ -3854,18 +3994,30 @@ pub mod chat_service_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Creates a message in a Google Chat space. The maximum message size,
-        /// including text and cards, is 32,000 bytes. For an example, see [Send a
+        /// Creates a message in a Google Chat space. For an example, see [Send a
         /// message](https://developers.google.com/workspace/chat/create-messages).
         ///
-        /// Calling this method requires
-        /// [authentication](https://developers.google.com/workspace/chat/authenticate-authorize)
-        /// and supports the following authentication types:
+        /// The `create()` method requires either user or app authentication. Chat
+        /// attributes the message sender differently depending on the type of
+        /// authentication that you use in your request.
         ///
-        /// - For text messages, user authentication or app authentication are
-        /// supported.
-        /// - For card messages, only app authentication is supported. (Only Chat apps
-        /// can create card messages.)
+        /// The following image shows how Chat attributes a message when you use app
+        /// authentication. Chat displays the Chat app as the message
+        /// sender. The content of the message can contain text (`text`), cards
+        /// (`cardsV2`), and accessory widgets (`accessoryWidgets`).
+        ///
+        /// ![Message sent with app
+        /// authentication](https://developers.google.com/workspace/chat/images/message-app-auth.svg)
+        ///
+        /// The following image shows how Chat attributes a message when you use user
+        /// authentication. Chat displays the user as the message sender and attributes
+        /// the Chat app to the message by displaying its name. The content of message
+        /// can only contain text (`text`).
+        ///
+        /// ![Message sent with user
+        /// authentication](https://developers.google.com/workspace/chat/images/message-user-auth.svg)
+        ///
+        /// The maximum message size, including the message contents, is 32,000 bytes.
         pub async fn create_message(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateMessageRequest>,
@@ -3888,8 +4040,12 @@ pub mod chat_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Lists messages in a space that the caller is a member of, including
-        /// messages from blocked members and spaces. For an example, see
-        /// [List messages](/chat/api/guides/v1/messages/list).
+        /// messages from blocked members and spaces. If you list messages from a
+        /// space with no messages, the response is an empty object. When using a
+        /// REST/HTTP interface, the response contains an empty JSON object, `{}`.
+        /// For an example, see
+        /// [List
+        /// messages](https://developers.google.com/workspace/chat/api/guides/v1/messages/list).
         /// Requires [user
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
         pub async fn list_messages(
@@ -4266,13 +4422,18 @@ pub mod chat_service_client {
                 .insert(GrpcMethod::new("google.chat.v1.ChatService", "GetSpace"));
             self.inner.unary(req, path, codec).await
         }
-        /// Creates a named space. Spaces grouped by topics aren't supported. For an
-        /// example, see [Create a
+        /// Creates a space with no members. Can be used to create a named space.
+        /// Spaces grouped by topics aren't supported. For an example, see
+        /// [Create a
         /// space](https://developers.google.com/workspace/chat/create-spaces).
         ///
         ///  If you receive the error message `ALREADY_EXISTS` when creating
         ///  a space, try a different `displayName`. An existing space within
         ///  the Google Workspace organization might already use this display name.
+        ///
+        /// If you're a member of the [Developer Preview
+        /// program](https://developers.google.com/workspace/preview), you can create a
+        /// group chat in import mode using `spaceType.GROUP_CHAT`.
         ///
         /// Requires [user
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
@@ -4504,40 +4665,25 @@ pub mod chat_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Creates a human membership or app membership for the calling app. Creating
-        /// memberships for other apps isn't supported. For an example, see
-        /// [Invite or add a user or a Google Chat app to a
-        /// space](https://developers.google.com/workspace/chat/create-members).
+        /// Creates a membership for the calling Chat app, a user, or a Google Group.
+        /// Creating memberships for other Chat apps isn't supported.
         /// When creating a membership, if the specified member has their auto-accept
         /// policy turned off, then they're invited, and must accept the space
         /// invitation before joining. Otherwise, creating a membership adds the member
-        /// directly to the specified space. Requires [user
+        /// directly to the specified space.
+        /// Requires [user
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
         ///
-        /// To specify the member to add, set the `membership.member.name` for the
-        /// human or app member, or set the `membership.group_member.name` for the
-        /// group member.
+        /// For example usage, see:
         ///
-        /// - To add the calling app to a space or a direct message between two human
-        ///   users, use `users/app`. Unable to add other
-        ///   apps to the space.
+        /// - [Invite or add a user to a
+        /// space](https://developers.google.com/workspace/chat/create-members#create-user-membership).
         ///
-        /// - To add a human user, use `users/{user}`, where `{user}` can be the email
-        /// address for the user. For users in the same Workspace organization `{user}`
-        /// can also be the `id` for the person from the People API, or the `id` for
-        /// the user in the Directory API. For example, if the People API Person
-        /// profile ID for `user@example.com` is `123456789`, you can add the user to
-        /// the space by setting the `membership.member.name` to
-        /// `users/user@example.com` or `users/123456789`.
+        /// - [Invite or add a Google Group to a
+        /// space](https://developers.google.com/workspace/chat/create-members#create-group-membership).
         ///
-        /// - To add or invite a Google group in a named space, use
-        /// `groups/{group}`, where `{group}` is the `id` for the group from the Cloud
-        /// Identity Groups API. For example, you can use [Cloud Identity Groups lookup
-        /// API](https://cloud.google.com/identity/docs/reference/rest/v1/groups/lookup)
-        /// to retrieve the ID `123456789` for group email `group@example.com`, then
-        /// you can add or invite the group to a named space by setting the
-        /// `membership.group_member.name` to `groups/123456789`. Group email is not
-        /// supported, and Google groups can only be added as members in named spaces.
+        /// - [Add the Chat app to a
+        /// space](https://developers.google.com/workspace/chat/create-members#create-membership-calling-api).
         pub async fn create_membership(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateMembershipRequest>,
@@ -4799,6 +4945,9 @@ pub mod chat_service_client {
         /// if you request an event about a new message but the message was later
         /// updated, the server returns the updated `Message` resource in the event
         /// payload.
+        ///
+        /// Note: The `permissionSettings` field is not returned in the Space
+        /// object of the Space event data for this request.
         ///
         /// Requires [user
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).

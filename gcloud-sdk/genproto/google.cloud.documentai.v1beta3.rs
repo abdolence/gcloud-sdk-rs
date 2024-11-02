@@ -1566,13 +1566,15 @@ pub struct GcsPrefix {
 /// The common config to specify a set of documents used as input.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDocumentsInputConfig {
-    /// The source.
+    /// The source. Make sure that the caller of the API has storage.objects.get
+    /// access to the buckets.
     #[prost(oneof = "batch_documents_input_config::Source", tags = "1, 2")]
     pub source: ::core::option::Option<batch_documents_input_config::Source>,
 }
 /// Nested message and enum types in `BatchDocumentsInputConfig`.
 pub mod batch_documents_input_config {
-    /// The source.
+    /// The source. Make sure that the caller of the API has storage.objects.get
+    /// access to the buckets.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// The set of documents that match the specified Cloud Storage `gcs_prefix`.
@@ -2196,6 +2198,12 @@ pub struct DatasetSchema {
     /// Optional. Schema of the dataset.
     #[prost(message, optional, tag = "3")]
     pub document_schema: ::core::option::Option<DocumentSchema>,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "4")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "5")]
+    pub satisfies_pzi: bool,
 }
 /// Dataset documents that the batch operation will be applied to.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2952,8 +2960,9 @@ pub struct ProcessOptions {
     /// If a page range is set, only the given pages are extracted and processed
     /// from the document. In the output document,
     /// [Document.Page.page_number][google.cloud.documentai.v1beta3.Document.Page.page_number]
-    /// refers to the page number in the original document. This configuration
-    /// only applies to sync requests.
+    /// refers to the page number in the original document.
+    /// This configuration only applies to online processing with
+    /// [ProcessDocument][google.cloud.documentai.v1beta3.DocumentProcessorService.ProcessDocument].
     #[prost(oneof = "process_options::PageRange", tags = "5, 6, 7")]
     pub page_range: ::core::option::Option<process_options::PageRange>,
 }
@@ -3000,8 +3009,9 @@ pub mod process_options {
     /// If a page range is set, only the given pages are extracted and processed
     /// from the document. In the output document,
     /// [Document.Page.page_number][google.cloud.documentai.v1beta3.Document.Page.page_number]
-    /// refers to the page number in the original document. This configuration
-    /// only applies to sync requests.
+    /// refers to the page number in the original document.
+    /// This configuration only applies to online processing with
+    /// [ProcessDocument][google.cloud.documentai.v1beta3.DocumentProcessorService.ProcessDocument].
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PageRange {
         /// Which pages to process (1-indexed).

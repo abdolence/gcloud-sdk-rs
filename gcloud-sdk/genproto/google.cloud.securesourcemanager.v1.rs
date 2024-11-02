@@ -83,6 +83,13 @@ pub mod instance {
         /// `projects/{project}/regions/{region}/serviceAttachments/{service_attachment}`.
         #[prost(string, tag = "4")]
         pub ssh_service_attachment: ::prost::alloc::string::String,
+        /// Optional. Additional allowed projects for setting up PSC connections.
+        /// Instance host project is automatically allowed and does not need to be
+        /// included in this list.
+        #[prost(string, repeated, tag = "6")]
+        pub psc_allowed_projects: ::prost::alloc::vec::Vec<
+            ::prost::alloc::string::String,
+        >,
     }
     /// Secure Source Manager instance state.
     #[derive(
@@ -199,8 +206,10 @@ pub struct Repository {
     /// Optional. The name of the instance in which the repository is hosted,
     /// formatted as
     /// `projects/{project_number}/locations/{location_id}/instances/{instance_id}`
-    /// For data plane CreateRepository requests, this field is output only.
-    /// For control plane CreateRepository requests, this field is used as input.
+    /// When creating repository via
+    /// securesourcemanager.googleapis.com (Control Plane API), this field is used
+    /// as input. When creating repository via *.sourcemanager.dev (Data Plane
+    /// API), this field is output only.
     #[prost(string, tag = "3")]
     pub instance: ::prost::alloc::string::String,
     /// Output only. Unique identifier of the repository.
@@ -381,6 +390,83 @@ pub mod repository {
         pub readme: ::prost::alloc::string::String,
     }
 }
+/// Metadata of a BranchRule. BranchRule is the protection rule to enforce
+/// pre-defined rules on desginated branches within a repository.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BranchRule {
+    /// Optional. A unique identifier for a BranchRule. The name should be of the
+    /// format:
+    /// `projects/{project}/locations/{location}/repositories/{repository}/branchRules/{branch_rule}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Unique identifier of the repository.
+    #[prost(string, tag = "2")]
+    pub uid: ::prost::alloc::string::String,
+    /// Output only. Create timestamp.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Update timestamp.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. User annotations. These attributes can only be set and used by
+    /// the user. See <https://google.aip.dev/128#annotations> for more details such
+    /// as format and size limitations.
+    #[prost(map = "string, string", tag = "5")]
+    pub annotations: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. This checksum is computed by the server based on the value of
+    /// other fields, and may be sent on update and delete requests to ensure the
+    /// client has an up-to-date value before proceeding.
+    #[prost(string, tag = "6")]
+    pub etag: ::prost::alloc::string::String,
+    /// Optional. The pattern of the branch that can match to this BranchRule.
+    /// Specified as regex.
+    /// .* for all branches. Examples: main, (main|release.*).
+    /// Current MVP phase only support `.*` for wildcard.
+    #[prost(string, tag = "7")]
+    pub include_pattern: ::prost::alloc::string::String,
+    /// Optional. Determines if the branch rule is disabled or not.
+    #[prost(bool, tag = "8")]
+    pub disabled: bool,
+    /// Optional. Determines if the branch rule requires a pull request or not.
+    #[prost(bool, tag = "9")]
+    pub require_pull_request: bool,
+    /// Optional. The minimum number of reviews required for the branch rule to be
+    /// matched.
+    #[prost(int32, tag = "10")]
+    pub minimum_reviews_count: i32,
+    /// Optional. The minimum number of approvals required for the branch rule to
+    /// be matched.
+    #[prost(int32, tag = "11")]
+    pub minimum_approvals_count: i32,
+    /// Optional. Determines if require comments resolved before merging to the
+    /// branch.
+    #[prost(bool, tag = "12")]
+    pub require_comments_resolved: bool,
+    /// Optional. Determines if allow stale reviews or approvals before merging to
+    /// the branch.
+    #[prost(bool, tag = "15")]
+    pub allow_stale_reviews: bool,
+    /// Optional. Determines if require linear history before merging to the
+    /// branch.
+    #[prost(bool, tag = "13")]
+    pub require_linear_history: bool,
+    /// Optional. List of required status checks before merging to the branch.
+    #[prost(message, repeated, tag = "14")]
+    pub required_status_checks: ::prost::alloc::vec::Vec<branch_rule::Check>,
+}
+/// Nested message and enum types in `BranchRule`.
+pub mod branch_rule {
+    /// Check is a type for status check.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Check {
+        /// Required. The context of the check.
+        #[prost(string, tag = "1")]
+        pub context: ::prost::alloc::string::String,
+    }
+}
 /// ListInstancesRequest is the request to list instances.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesRequest {
@@ -515,6 +601,15 @@ pub struct ListRepositoriesRequest {
     /// Optional. Filter results.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
+    /// Optional. The name of the instance in which the repository is hosted,
+    /// formatted as
+    /// `projects/{project_number}/locations/{location_id}/instances/{instance_id}`.
+    /// When listing repositories via
+    /// securesourcemanager.googleapis.com (Control Plane API), this field is
+    /// required. When listing repositories via *.sourcemanager.dev (Data Plane
+    /// API), this field is ignored.
+    #[prost(string, tag = "5")]
+    pub instance: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRepositoriesResponse {
@@ -562,6 +657,72 @@ pub struct DeleteRepositoryRequest {
     /// succeed but no action will be taken on the server.
     #[prost(bool, tag = "2")]
     pub allow_missing: bool,
+}
+/// GetBranchRuleRequest is the request for getting a branch rule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetBranchRuleRequest {
+    /// Required. Name of the repository to retrieve.
+    /// The format is
+    /// `projects/{project}/locations/{location}/repositories/{repository}/branchRules/{branch_rule}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// CreateBranchRuleRequest is the request to create a branch rule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateBranchRuleRequest {
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    #[prost(message, optional, tag = "2")]
+    pub branch_rule: ::core::option::Option<BranchRule>,
+    #[prost(string, tag = "3")]
+    pub branch_rule_id: ::prost::alloc::string::String,
+}
+/// ListBranchRulesRequest is the request to list branch rules.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListBranchRulesRequest {
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// DeleteBranchRuleRequest is the request to delete a branch rule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteBranchRuleRequest {
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. If set to true, and the branch rule is not found, the request
+    /// will succeed but no action will be taken on the server.
+    #[prost(bool, tag = "2")]
+    pub allow_missing: bool,
+}
+/// UpdateBranchRuleRequest is the request to update a branchRule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateBranchRuleRequest {
+    #[prost(message, optional, tag = "1")]
+    pub branch_rule: ::core::option::Option<BranchRule>,
+    /// Optional. If set, validate the request and preview the review, but do not
+    /// actually post it.  (<https://google.aip.dev/163,> for declarative friendly)
+    #[prost(bool, tag = "2")]
+    pub validate_only: bool,
+    /// Required. Field mask is used to specify the fields to be overwritten in the
+    /// branchRule resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask.
+    /// The special value "*" means full replacement.
+    #[prost(message, optional, tag = "3")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// ListBranchRulesResponse is the response to listing branchRules.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListBranchRulesResponse {
+    /// The list of branch rules.
+    #[prost(message, repeated, tag = "1")]
+    pub branch_rules: ::prost::alloc::vec::Vec<BranchRule>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod secure_source_manager_client {
@@ -1011,6 +1172,153 @@ pub mod secure_source_manager_client {
                     GrpcMethod::new(
                         "google.cloud.securesourcemanager.v1.SecureSourceManager",
                         "TestIamPermissionsRepo",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// CreateBranchRule creates a branch rule in a given repository.
+        pub async fn create_branch_rule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateBranchRuleRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/CreateBranchRule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "CreateBranchRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// ListBranchRules lists branch rules in a given repository.
+        pub async fn list_branch_rules(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListBranchRulesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListBranchRulesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/ListBranchRules",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "ListBranchRules",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// GetBranchRule gets a branch rule.
+        pub async fn get_branch_rule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetBranchRuleRequest>,
+        ) -> std::result::Result<tonic::Response<super::BranchRule>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/GetBranchRule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "GetBranchRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// UpdateBranchRule updates a branch rule.
+        pub async fn update_branch_rule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateBranchRuleRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/UpdateBranchRule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "UpdateBranchRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// DeleteBranchRule deletes a branch rule.
+        pub async fn delete_branch_rule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteBranchRuleRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/DeleteBranchRule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "DeleteBranchRule",
                     ),
                 );
             self.inner.unary(req, path, codec).await

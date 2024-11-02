@@ -93,6 +93,9 @@ pub struct Cluster {
     pub external_load_balancer_ipv6_address_pools: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
     >,
+    /// Output only. The current connection state of the cluster.
+    #[prost(message, optional, tag = "27")]
+    pub connection_state: ::core::option::Option<cluster::ConnectionState>,
 }
 /// Nested message and enum types in `Cluster`.
 pub mod cluster {
@@ -131,6 +134,13 @@ pub mod cluster {
             /// Policy configuration about how user applications are deployed.
             #[prost(enumeration = "SharedDeploymentPolicy", tag = "4")]
             pub shared_deployment_policy: i32,
+            /// Optional. Name for the storage schema of control plane nodes.
+            ///
+            /// Warning: Configurable node local storage schema feature is an
+            /// experimental feature, and is not recommended for general use
+            /// in production clusters/nodepools.
+            #[prost(string, tag = "5")]
+            pub control_plane_node_storage_schema: ::prost::alloc::string::String,
         }
         /// Represents the policy configuration about how user applications are
         /// deployed.
@@ -200,6 +210,11 @@ pub mod cluster {
         /// Optional. Config for Ingress.
         #[prost(message, optional, tag = "1")]
         pub ingress: ::core::option::Option<system_addons_config::Ingress>,
+        /// Optional. Config for VM Service.
+        #[prost(message, optional, tag = "4")]
+        pub vm_service_config: ::core::option::Option<
+            system_addons_config::VmServiceConfig,
+        >,
     }
     /// Nested message and enum types in `SystemAddonsConfig`.
     pub mod system_addons_config {
@@ -215,12 +230,18 @@ pub mod cluster {
             #[prost(string, tag = "2")]
             pub ipv4_vip: ::prost::alloc::string::String,
         }
+        /// VMServiceConfig defines the configuration for GDCE VM Service.
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct VmServiceConfig {
+            /// Optional. Whether VMM is enabled.
+            #[prost(bool, tag = "1")]
+            pub vmm_enabled: bool,
+        }
     }
-    /// Configuration for Customer-managed KMS key support for remote control plane
-    /// cluster disk encryption.
+    /// Configuration for Customer-managed KMS key support for control plane nodes.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ControlPlaneEncryption {
-        /// Immutable. The Cloud KMS CryptoKey e.g.
+        /// Optional. The Cloud KMS CryptoKey e.g.
         /// projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{cryptoKey}
         /// to use for protecting control plane disks. If not specified, a
         /// Google-managed key will be used instead.
@@ -242,6 +263,9 @@ pub mod cluster {
         /// error status reported by Cloud KMS.
         #[prost(message, optional, tag = "4")]
         pub kms_status: ::core::option::Option<super::super::super::super::rpc::Status>,
+        /// Output only. The current resource state associated with the cmek.
+        #[prost(enumeration = "super::ResourceState", tag = "5")]
+        pub resource_state: i32,
     }
     /// A Maintenance Event is an operation that could cause temporary disruptions
     /// to the cluster workloads, including Google-driven or user-initiated cluster
@@ -426,6 +450,68 @@ pub mod cluster {
         /// means not allowed. The maximum is 7 days.
         #[prost(message, optional, tag = "1")]
         pub offline_reboot_ttl: ::core::option::Option<::prost_types::Duration>,
+    }
+    /// ConnectionState holds the current connection state from the cluster to
+    /// Google.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct ConnectionState {
+        /// Output only. The current connection state.
+        #[prost(enumeration = "connection_state::State", tag = "1")]
+        pub state: i32,
+        /// Output only. The time when the connection state was last changed.
+        #[prost(message, optional, tag = "2")]
+        pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    }
+    /// Nested message and enum types in `ConnectionState`.
+    pub mod connection_state {
+        /// The connection state.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum State {
+            /// Unknown connection state.
+            Unspecified = 0,
+            /// This cluster is currently disconnected from Google.
+            Disconnected = 1,
+            /// This cluster is currently connected to Google.
+            Connected = 2,
+            /// This cluster is currently connected to Google, but may have recently
+            /// reconnected after a disconnection. It is still syncing back.
+            ConnectedAndSyncing = 3,
+        }
+        impl State {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "STATE_UNSPECIFIED",
+                    Self::Disconnected => "DISCONNECTED",
+                    Self::Connected => "CONNECTED",
+                    Self::ConnectedAndSyncing => "CONNECTED_AND_SYNCING",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "DISCONNECTED" => Some(Self::Disconnected),
+                    "CONNECTED" => Some(Self::Connected),
+                    "CONNECTED_AND_SYNCING" => Some(Self::ConnectedAndSyncing),
+                    _ => None,
+                }
+            }
+        }
     }
     /// Indicates the status of the cluster.
     #[derive(
@@ -630,7 +716,7 @@ pub mod node_pool {
     /// Configuration for CMEK support for edge machine local disk encryption.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct LocalDiskEncryption {
-        /// Immutable. The Cloud KMS CryptoKey e.g.
+        /// Optional. The Cloud KMS CryptoKey e.g.
         /// projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{cryptoKey}
         /// to use for protecting node local disks. If not specified, a
         /// Google-managed key will be used instead.
@@ -652,6 +738,9 @@ pub mod node_pool {
         /// error status reported by Cloud KMS.
         #[prost(message, optional, tag = "4")]
         pub kms_status: ::core::option::Option<super::super::super::super::rpc::Status>,
+        /// Output only. The current resource state associated with the cmek.
+        #[prost(enumeration = "super::ResourceState", tag = "5")]
+        pub resource_state: i32,
     }
     /// Configuration for each node in the NodePool
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -662,6 +751,13 @@ pub mod node_pool {
             ::prost::alloc::string::String,
             ::prost::alloc::string::String,
         >,
+        /// Optional. Name for the storage schema of worker nodes.
+        ///
+        /// Warning: Configurable node local storage schema feature is an
+        /// experimental feature, and is not recommended for general use
+        /// in production clusters/nodepools.
+        #[prost(string, tag = "2")]
+        pub node_storage_schema: ::prost::alloc::string::String,
     }
 }
 /// A Google Distributed Cloud Edge machine capable of acting as a Kubernetes
@@ -762,12 +858,7 @@ pub mod vpn_connection {
         /// the cluster project.
         #[prost(string, tag = "1")]
         pub project_id: ::prost::alloc::string::String,
-        /// Optional. The service account in the VPC project configured by user. It
-        /// is used to create/delete Cloud Router and Cloud HA VPNs for VPN
-        /// connection. If this SA is changed during/after a VPN connection is
-        /// created, you need to remove the Cloud Router and Cloud VPN resources in
-        /// |project_id|. It is in the form of
-        /// service-{project_number}@gcp-sa-edgecontainer.iam.gserviceaccount.com.
+        /// Optional. Deprecated: do not use.
         #[deprecated]
         #[prost(string, tag = "2")]
         pub service_account: ::prost::alloc::string::String,
@@ -917,6 +1008,9 @@ pub struct ZoneMetadata {
     /// The map keyed by rack name and has value of RackType.
     #[prost(map = "string, enumeration(zone_metadata::RackType)", tag = "2")]
     pub rack_types: ::std::collections::HashMap<::prost::alloc::string::String, i32>,
+    /// Config data for the zone.
+    #[prost(message, optional, tag = "3")]
+    pub config_data: ::core::option::Option<ConfigData>,
 }
 /// Nested message and enum types in `ZoneMetadata`.
 pub mod zone_metadata {
@@ -966,6 +1060,20 @@ pub mod zone_metadata {
         }
     }
 }
+/// Config data holds all the config related data for the zone.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConfigData {
+    /// list of available v4 ip pools for external loadbalancer
+    #[prost(string, repeated, tag = "1")]
+    pub available_external_lb_pools_ipv4: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+    /// list of available v6 ip pools for external loadbalancer
+    #[prost(string, repeated, tag = "2")]
+    pub available_external_lb_pools_ipv6: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+}
 /// Represents quota for Edge Container resources.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Quota {
@@ -985,6 +1093,12 @@ pub struct MaintenancePolicy {
     /// Specifies the maintenance window in which maintenance may be performed.
     #[prost(message, optional, tag = "1")]
     pub window: ::core::option::Option<MaintenanceWindow>,
+    /// Optional. Exclusions to automatic maintenance. Non-emergency maintenance
+    /// should not occur in these windows. Each exclusion has a unique name and may
+    /// be active or expired. The max number of maintenance exclusions allowed at a
+    /// given time is 3.
+    #[prost(message, repeated, tag = "2")]
+    pub maintenance_exclusions: ::prost::alloc::vec::Vec<MaintenanceExclusionWindow>,
 }
 /// Maintenance window configuration
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1004,6 +1118,16 @@ pub struct RecurringTimeWindow {
     /// end time.
     #[prost(string, tag = "2")]
     pub recurrence: ::prost::alloc::string::String,
+}
+/// Represents a maintenance exclusion window.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MaintenanceExclusionWindow {
+    /// Optional. The time window.
+    #[prost(message, optional, tag = "1")]
+    pub window: ::core::option::Option<TimeWindow>,
+    /// Optional. A unique (per cluster) id for the window.
+    #[prost(string, tag = "2")]
+    pub id: ::prost::alloc::string::String,
 }
 /// Represents an arbitrary window of time.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -1081,6 +1205,39 @@ impl KmsKeyState {
         }
     }
 }
+/// Represents if the resource is in lock down state or pending.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ResourceState {
+    /// Default value.
+    Unspecified = 0,
+    /// The resource is in LOCK DOWN state.
+    LockDown = 1,
+    /// The resource is pending lock down.
+    LockDownPending = 2,
+}
+impl ResourceState {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "RESOURCE_STATE_UNSPECIFIED",
+            Self::LockDown => "RESOURCE_STATE_LOCK_DOWN",
+            Self::LockDownPending => "RESOURCE_STATE_LOCK_DOWN_PENDING",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "RESOURCE_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "RESOURCE_STATE_LOCK_DOWN" => Some(Self::LockDown),
+            "RESOURCE_STATE_LOCK_DOWN_PENDING" => Some(Self::LockDownPending),
+            _ => None,
+        }
+    }
+}
 /// Long-running operation metadata for Edge Container API methods.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
@@ -1112,6 +1269,51 @@ pub struct OperationMetadata {
     /// information for the end user to receive.
     #[prost(string, repeated, tag = "8")]
     pub warnings: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Machine-readable status of the operation, if any.
+    #[prost(enumeration = "operation_metadata::StatusReason", tag = "9")]
+    pub status_reason: i32,
+}
+/// Nested message and enum types in `OperationMetadata`.
+pub mod operation_metadata {
+    /// Indicates the reason for the status of the operation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum StatusReason {
+        /// Reason unknown.
+        Unspecified = 0,
+        /// The cluster upgrade is currently paused.
+        UpgradePaused = 1,
+    }
+    impl StatusReason {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATUS_REASON_UNSPECIFIED",
+                Self::UpgradePaused => "UPGRADE_PAUSED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATUS_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "UPGRADE_PAUSED" => Some(Self::UpgradePaused),
+                _ => None,
+            }
+        }
+    }
 }
 /// Lists clusters in a location.
 #[derive(Clone, PartialEq, ::prost::Message)]
