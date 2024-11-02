@@ -1379,8 +1379,8 @@ pub struct ListKeyHandlesRequest {
     /// [KeyHandles][google.cloud.kms.v1.KeyHandle] can subsequently be obtained by
     /// including the
     /// [ListKeyHandlesResponse.next_page_token][google.cloud.kms.v1.ListKeyHandlesResponse.next_page_token]
-    /// in a subsequent request.  If unspecified, at most
-    /// 100 [KeyHandles][google.cloud.kms.v1.KeyHandle] will be returned.
+    /// in a subsequent request.  If unspecified, at most 100
+    /// [KeyHandles][google.cloud.kms.v1.KeyHandle] will be returned.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. Optional pagination token, returned earlier via

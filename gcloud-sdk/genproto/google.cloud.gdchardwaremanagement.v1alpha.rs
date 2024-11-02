@@ -229,7 +229,7 @@ pub struct Site {
     /// Required. Contact information for this site.
     #[prost(message, optional, tag = "5")]
     pub organization_contact: ::core::option::Option<OrganizationContact>,
-    /// Required. A URL to the Google Maps address location of the site.
+    /// Optional. A URL to the Google Maps address location of the site.
     /// An example value is `<https://goo.gl/maps/xxxxxxxxx`.>
     #[prost(string, tag = "6")]
     pub google_maps_pin_uri: ::prost::alloc::string::String,
@@ -432,9 +432,9 @@ pub struct Hardware {
     /// Format: `projects/{project}/locations/{location}/zones/{zone}`
     #[prost(string, tag = "15")]
     pub zone: ::prost::alloc::string::String,
-    /// Optional. Requested installation date for this hardware. This is
-    /// auto-populated when the order is accepted, if the hardware's HardwareGroup
-    /// specifies this. It can also be filled in by the customer.
+    /// Optional. Requested installation date for this hardware. If not specified,
+    /// this is auto-populated from the order's fulfillment_time upon submission or
+    /// from the HardwareGroup's requested_installation_date upon order acceptance.
     #[prost(message, optional, tag = "16")]
     pub requested_installation_date: ::core::option::Option<
         super::super::super::r#type::Date,
@@ -445,9 +445,110 @@ pub struct Hardware {
     pub actual_installation_date: ::core::option::Option<
         super::super::super::r#type::Date,
     >,
+    /// Output only. Per machine asset information needed for turnup.
+    #[prost(message, repeated, tag = "20")]
+    pub machine_infos: ::prost::alloc::vec::Vec<hardware::MachineInfo>,
 }
 /// Nested message and enum types in `Hardware`.
 pub mod hardware {
+    /// Message to describe the MAC address of a machine.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MacAddress {
+        /// Output only. Address string.
+        #[prost(string, tag = "1")]
+        pub address: ::prost::alloc::string::String,
+        /// Output only. Address type for this MAC address.
+        #[prost(enumeration = "mac_address::AddressType", tag = "2")]
+        pub r#type: i32,
+    }
+    /// Nested message and enum types in `MacAddress`.
+    pub mod mac_address {
+        /// Enum for the different types of MAC address.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum AddressType {
+            /// Unspecified address type.
+            Unspecified = 0,
+            /// Address of a network interface card.
+            Nic = 1,
+            /// Address of a baseboard management controller.
+            Bmc = 2,
+            /// Address of a virtual interface.
+            Virtual = 3,
+        }
+        impl AddressType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "ADDRESS_TYPE_UNSPECIFIED",
+                    Self::Nic => "NIC",
+                    Self::Bmc => "BMC",
+                    Self::Virtual => "VIRTUAL",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "ADDRESS_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "NIC" => Some(Self::Nic),
+                    "BMC" => Some(Self::Bmc),
+                    "VIRTUAL" => Some(Self::Virtual),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Information about individual disks on a machine.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DiskInfo {
+        /// Output only. Disk manufacturer.
+        #[prost(string, tag = "1")]
+        pub manufacturer: ::prost::alloc::string::String,
+        /// Output only. Disk slot number.
+        #[prost(int32, tag = "2")]
+        pub slot: i32,
+        /// Output only. Disk serial number.
+        #[prost(string, tag = "3")]
+        pub serial_number: ::prost::alloc::string::String,
+        /// Output only. Disk PSID.
+        #[prost(string, tag = "4")]
+        pub psid: ::prost::alloc::string::String,
+        /// Output only. Disk part number.
+        #[prost(string, tag = "5")]
+        pub part_number: ::prost::alloc::string::String,
+        /// Output only. Disk model number.
+        #[prost(string, tag = "6")]
+        pub model_number: ::prost::alloc::string::String,
+    }
+    /// Information about individual machines vendors will provide during turnup.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MachineInfo {
+        /// Output only. Machine service tag.
+        #[prost(string, tag = "1")]
+        pub service_tag: ::prost::alloc::string::String,
+        /// Output only. Each associated MAC address.
+        #[prost(message, repeated, tag = "2")]
+        pub mac_addresses: ::prost::alloc::vec::Vec<MacAddress>,
+        /// Output only. Machine name.
+        #[prost(string, tag = "3")]
+        pub name: ::prost::alloc::string::String,
+        /// Output only. Information for each disk installed.
+        #[prost(message, repeated, tag = "4")]
+        pub disk_infos: ::prost::alloc::vec::Vec<DiskInfo>,
+    }
     /// Valid states for hardware.
     #[derive(
         Clone,
@@ -1058,7 +1159,7 @@ pub mod hardware_physical_info {
 /// Information for installation of a Hardware.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HardwareInstallationInfo {
-    /// Optional. Location of the rack in the site e.g. Floor 2, Room 201, Row 7,
+    /// Required. Location of the rack in the site e.g. Floor 2, Room 201, Row 7,
     /// Rack 3.
     #[prost(string, tag = "1")]
     pub rack_location: ::prost::alloc::string::String,
@@ -1374,6 +1475,10 @@ impl Entity {
 pub struct ListOrdersRequest {
     /// Required. The project and location to list orders in.
     /// Format: `projects/{project}/locations/{location}`
+    ///
+    /// To list orders across all locations, substitute `-` (the hyphen or
+    /// dash character) for the location and check the unreachable field in
+    /// the response message.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server may return fewer items than
@@ -1399,7 +1504,8 @@ pub struct ListOrdersResponse {
     /// A token identifying a page of results the server should return.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
-    /// Locations that could not be reached.
+    /// Locations that could not be reached. Only used for queries to the wildcard
+    /// location `-`. If non-empty, it indicates that the results are incomplete.
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -1549,6 +1655,10 @@ pub mod submit_order_request {
 pub struct ListSitesRequest {
     /// Required. The project and location to list sites in.
     /// Format: `projects/{project}/locations/{location}`
+    ///
+    /// To list sites across all locations, substitute `-` (the hyphen or
+    /// dash character) for the location and check the unreachable field in
+    /// the response message.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server may return fewer items than
@@ -1574,7 +1684,8 @@ pub struct ListSitesResponse {
     /// A token identifying a page of results the server should return.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
-    /// Locations that could not be reached.
+    /// Locations that could not be reached. Only used for queries to the wildcard
+    /// location `-`. If non-empty, it indicates that the results are incomplete.
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -1626,6 +1737,18 @@ pub struct UpdateSiteRequest {
     /// Optional. An optional unique identifier for this request. See
     /// [AIP-155](<https://google.aip.dev/155>).
     #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// A request to delete a site.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteSiteRequest {
+    /// Required. The name of the site.
+    /// Format: `projects/{project}/locations/{location}/sites/{site}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. An optional unique identifier for this request. See
+    /// [AIP-155](<https://google.aip.dev/155>).
+    #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// A request to list hardware groups.
@@ -1732,6 +1855,10 @@ pub struct DeleteHardwareGroupRequest {
 pub struct ListHardwareRequest {
     /// Required. The project and location to list hardware in.
     /// Format: `projects/{project}/locations/{location}`
+    ///
+    /// To list hardware across all locations, substitute `-` (the hyphen or
+    /// dash character) for the location and check the unreachable field in
+    /// the response message.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server may return fewer items than
@@ -1757,7 +1884,8 @@ pub struct ListHardwareResponse {
     /// A token identifying a page of results the server should return.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
-    /// Locations that could not be reached.
+    /// Locations that could not be reached. Only used for queries to the wildcard
+    /// location `-`. If non-empty, it indicates that the results are incomplete.
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -1993,6 +2121,10 @@ pub struct GetChangeLogEntryRequest {
 pub struct ListSkusRequest {
     /// Required. The project and location to list SKUs in.
     /// Format: `projects/{project}/locations/{location}`
+    ///
+    /// To list SKUs across all locations, substitute `-` (the hyphen or
+    /// dash character) for the location and check the unreachable field in
+    /// the response message.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server may return fewer items than
@@ -2018,7 +2150,8 @@ pub struct ListSkusResponse {
     /// A token identifying a page of results the server should return.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
-    /// Locations that could not be reached.
+    /// Locations that could not be reached. Only used for queries to the wildcard
+    /// location `-`. If non-empty, it indicates that the results are incomplete.
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -2035,6 +2168,10 @@ pub struct GetSkuRequest {
 pub struct ListZonesRequest {
     /// Required. The project and location to list zones in.
     /// Format: `projects/{project}/locations/{location}`
+    ///
+    /// To list zones across all locations, substitute `-` (the hyphen or
+    /// dash character) for the location and check the unreachable field in
+    /// the response message.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server may return fewer items than
@@ -2060,7 +2197,8 @@ pub struct ListZonesResponse {
     /// A token identifying a page of results the server should return.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
-    /// Locations that could not be reached.
+    /// Locations that could not be reached. Only used for queries to the wildcard
+    /// location `-`. If non-empty, it indicates that the results are incomplete.
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -2598,6 +2736,36 @@ pub mod gdc_hardware_management_client {
                     GrpcMethod::new(
                         "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
                         "UpdateSite",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a site.
+        pub async fn delete_site(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteSiteRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement/DeleteSite",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.gdchardwaremanagement.v1alpha.GDCHardwareManagement",
+                        "DeleteSite",
                     ),
                 );
             self.inner.unary(req, path, codec).await

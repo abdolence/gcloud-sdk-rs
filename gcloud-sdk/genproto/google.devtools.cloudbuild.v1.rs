@@ -2768,6 +2768,11 @@ pub struct PrivatePoolV1Config {
     /// Network configuration for the pool.
     #[prost(message, optional, tag = "2")]
     pub network_config: ::core::option::Option<private_pool_v1_config::NetworkConfig>,
+    /// Immutable. Private Service Connect(PSC) Network configuration for the pool.
+    #[prost(message, optional, tag = "5")]
+    pub private_service_connect: ::core::option::Option<
+        private_pool_v1_config::PrivateServiceConnect,
+    >,
 }
 /// Nested message and enum types in `PrivatePoolV1Config`.
 pub mod private_pool_v1_config {
@@ -2863,6 +2868,37 @@ pub mod private_pool_v1_config {
                 }
             }
         }
+    }
+    /// Defines the Private Service Connect network configuration for the pool.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PrivateServiceConnect {
+        /// Required. Immutable. The network attachment that the worker network
+        /// interface is peered to. Must be in the format
+        /// `projects/{project}/regions/{region}/networkAttachments/{networkAttachment}`.
+        /// The region of network attachment must be the same as the worker pool.
+        /// See [Network
+        /// Attachments](<https://cloud.google.com/vpc/docs/about-network-attachments>)
+        #[prost(string, tag = "1")]
+        pub network_attachment: ::prost::alloc::string::String,
+        /// Required. Immutable. Disable public IP on the primary network interface.
+        ///
+        /// If true, workers are created without any public address, which prevents
+        /// network egress to public IPs unless a network proxy is configured.
+        /// If false, workers are created with a public address which allows for
+        /// public internet egress. The public address only applies to traffic
+        /// through the primary network interface.
+        /// If `route_all_traffic` is set to true, all traffic will go through the
+        /// non-primary network interface, this boolean has no effect.
+        #[prost(bool, tag = "2")]
+        pub public_ip_address_disabled: bool,
+        /// Immutable. Route all traffic through PSC interface. Enable this if you
+        /// want full control of traffic in the private pool. Configure Cloud NAT for
+        /// the subnet of network attachment if you need to access public Internet.
+        ///
+        /// If false, Only route private IPs, e.g. 10.0.0.0/8, 172.16.0.0/12, and
+        /// 192.168.0.0/16 through PSC interface.
+        #[prost(bool, tag = "3")]
+        pub route_all_traffic: bool,
     }
 }
 /// Request to create a new `WorkerPool`.

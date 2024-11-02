@@ -123,8 +123,8 @@ pub struct Contact {
     /// for a list of supported languages.
     #[prost(string, tag = "4")]
     pub language_tag: ::prost::alloc::string::String,
-    /// The validity of the contact. A contact is considered valid if it is the
-    /// correct recipient for notifications for a particular resource.
+    /// Output only. The validity of the contact. A contact is considered valid if
+    /// it is the correct recipient for notifications for a particular resource.
     #[prost(enumeration = "ValidationState", tag = "8")]
     pub validation_state: i32,
     /// The last time the validation_state was updated, either manually or

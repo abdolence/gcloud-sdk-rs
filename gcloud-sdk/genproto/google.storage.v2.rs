@@ -268,6 +268,13 @@ pub struct RestoreObjectRequest {
     /// Required. The specific revision of the object to restore.
     #[prost(int64, tag = "3")]
     pub generation: i64,
+    /// Optional. Restore token used to differentiate soft-deleted objects with the
+    /// same name and generation. Only applicable for hierarchical namespace
+    /// buckets. This parameter is optional, and is only required in the rare case
+    /// when there are multiple soft-deleted objects with the same name and
+    /// generation.
+    #[prost(string, tag = "11")]
+    pub restore_token: ::prost::alloc::string::String,
     /// Makes the operation conditional on whether the object's current generation
     /// matches the given value. Setting to 0 makes the operation succeed only if
     /// there are no live versions of the object.
@@ -416,6 +423,13 @@ pub struct GetObjectRequest {
     /// * may be used to mean "all fields".
     #[prost(message, optional, tag = "10")]
     pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. Restore token used to differentiate soft-deleted objects with the
+    /// same name and generation. Only applicable for hierarchical namespace
+    /// buckets and if soft_deleted is set to true. This parameter is optional, and
+    /// is only required in the rare case when there are multiple soft-deleted
+    /// objects with the same name and generation.
+    #[prost(string, tag = "12")]
+    pub restore_token: ::prost::alloc::string::String,
 }
 /// Response message for ReadObject.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1002,153 +1016,6 @@ pub struct UpdateObjectRequest {
     /// A set of parameters common to Storage API requests concerning an object.
     #[prost(message, optional, tag = "8")]
     pub common_object_request_params: ::core::option::Option<CommonObjectRequestParams>,
-}
-/// Request message for GetServiceAccount.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetServiceAccountRequest {
-    /// Required. Project ID, in the format of "projects/{projectIdentifier}".
-    /// {projectIdentifier} can be the project ID or project number.
-    #[prost(string, tag = "1")]
-    pub project: ::prost::alloc::string::String,
-}
-/// A service account, owned by Cloud Storage, which may be used when taking
-/// action on behalf of a given project, for example to publish Pub/Sub
-/// notifications or to retrieve security keys.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ServiceAccount {
-    /// The ID of the notification.
-    #[prost(string, tag = "1")]
-    pub email_address: ::prost::alloc::string::String,
-}
-/// Request message for CreateHmacKey.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateHmacKeyRequest {
-    /// Required. The project that the HMAC-owning service account lives in, in the
-    /// format of "projects/{projectIdentifier}". {projectIdentifier} can be the
-    /// project ID or project number.
-    #[prost(string, tag = "1")]
-    pub project: ::prost::alloc::string::String,
-    /// Required. The service account to create the HMAC for.
-    #[prost(string, tag = "2")]
-    pub service_account_email: ::prost::alloc::string::String,
-}
-/// Create hmac response.  The only time the secret for an HMAC will be returned.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateHmacKeyResponse {
-    /// Key metadata.
-    #[prost(message, optional, tag = "1")]
-    pub metadata: ::core::option::Option<HmacKeyMetadata>,
-    /// HMAC key secret material.
-    /// In raw bytes format (not base64-encoded).
-    #[prost(bytes = "vec", tag = "3")]
-    pub secret_key_bytes: ::prost::alloc::vec::Vec<u8>,
-}
-/// Request object to delete a given HMAC key.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteHmacKeyRequest {
-    /// Required. The identifying key for the HMAC to delete.
-    #[prost(string, tag = "1")]
-    pub access_id: ::prost::alloc::string::String,
-    /// Required. The project that owns the HMAC key, in the format of
-    /// "projects/{projectIdentifier}".
-    /// {projectIdentifier} can be the project ID or project number.
-    #[prost(string, tag = "2")]
-    pub project: ::prost::alloc::string::String,
-}
-/// Request object to get metadata on a given HMAC key.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetHmacKeyRequest {
-    /// Required. The identifying key for the HMAC to delete.
-    #[prost(string, tag = "1")]
-    pub access_id: ::prost::alloc::string::String,
-    /// Required. The project the HMAC key lies in, in the format of
-    /// "projects/{projectIdentifier}".
-    /// {projectIdentifier} can be the project ID or project number.
-    #[prost(string, tag = "2")]
-    pub project: ::prost::alloc::string::String,
-}
-/// Request to fetch a list of HMAC keys under a given project.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListHmacKeysRequest {
-    /// Required. The project to list HMAC keys for, in the format of
-    /// "projects/{projectIdentifier}".
-    /// {projectIdentifier} can be the project ID or project number.
-    #[prost(string, tag = "1")]
-    pub project: ::prost::alloc::string::String,
-    /// The maximum number of keys to return.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// A previously returned token from ListHmacKeysResponse to get the next page.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-    /// If set, filters to only return HMAC keys for specified service account.
-    #[prost(string, tag = "4")]
-    pub service_account_email: ::prost::alloc::string::String,
-    /// If set, return deleted keys that have not yet been wiped out.
-    #[prost(bool, tag = "5")]
-    pub show_deleted_keys: bool,
-}
-/// Hmac key list response with next page information.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListHmacKeysResponse {
-    /// The list of items.
-    #[prost(message, repeated, tag = "1")]
-    pub hmac_keys: ::prost::alloc::vec::Vec<HmacKeyMetadata>,
-    /// The continuation token, used to page through large result sets. Provide
-    /// this value in a subsequent request to return the next page of results.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// Request object to update an HMAC key state.
-/// HmacKeyMetadata.state is required and the only writable field in
-/// UpdateHmacKey operation. Specifying fields other than state will result in an
-/// error.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateHmacKeyRequest {
-    /// Required. The HMAC key to update.
-    /// If present, the hmac_key's `id` field will be used to identify the key.
-    /// Otherwise, the hmac_key's access_id and project fields will be used to
-    /// identify the key.
-    #[prost(message, optional, tag = "1")]
-    pub hmac_key: ::core::option::Option<HmacKeyMetadata>,
-    /// Update mask for hmac_key.
-    /// Not specifying any fields will mean only the `state` field is updated to
-    /// the value specified in `hmac_key`.
-    #[prost(message, optional, tag = "3")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-}
-/// Hmac Key Metadata, which includes all information other than the secret.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct HmacKeyMetadata {
-    /// Immutable. Resource name ID of the key in the format
-    /// {projectIdentifier}/{accessId}.
-    /// {projectIdentifier} can be the project ID or project number.
-    #[prost(string, tag = "1")]
-    pub id: ::prost::alloc::string::String,
-    /// Immutable. Globally unique id for keys.
-    #[prost(string, tag = "2")]
-    pub access_id: ::prost::alloc::string::String,
-    /// Immutable. Identifies the project that owns the service account of the
-    /// specified HMAC key, in the format "projects/{projectIdentifier}".
-    /// {projectIdentifier} can be the project ID or project number.
-    #[prost(string, tag = "3")]
-    pub project: ::prost::alloc::string::String,
-    /// Output only. Email of the service account the key authenticates as.
-    #[prost(string, tag = "4")]
-    pub service_account_email: ::prost::alloc::string::String,
-    /// Optional. State of the key. One of ACTIVE, INACTIVE, or DELETED.
-    /// Writable, can be updated by UpdateHmacKey operation.
-    #[prost(string, tag = "5")]
-    pub state: ::prost::alloc::string::String,
-    /// Output only. The creation time of the HMAC key.
-    #[prost(message, optional, tag = "6")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The last modification time of the HMAC key metadata.
-    #[prost(message, optional, tag = "7")]
-    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Optional. The etag of the HMAC key.
-    #[prost(string, tag = "8")]
-    pub etag: ::prost::alloc::string::String,
 }
 /// Parameters that can be passed to any object request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1885,6 +1752,11 @@ pub struct Object {
     /// versioning.
     #[prost(int64, tag = "3")]
     pub generation: i64,
+    /// Output only. Restore token used to differentiate deleted objects with the
+    /// same name and generation. This field is output only, and only set for
+    /// deleted objects in HNS buckets.
+    #[prost(string, optional, tag = "35")]
+    pub restore_token: ::core::option::Option<::prost::alloc::string::String>,
     /// Output only. The version of the metadata for this generation of this
     /// object. Used for preconditions and for detecting changes in metadata. A
     /// metageneration number is only meaningful in the context of a particular
@@ -2122,100 +1994,6 @@ pub struct ContentRange {
     /// The complete length of the object data.
     #[prost(int64, tag = "3")]
     pub complete_length: i64,
-}
-/// Request message for DeleteNotificationConfig.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteNotificationConfigRequest {
-    /// Required. The parent bucket of the NotificationConfig.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Request message for GetNotificationConfig.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetNotificationConfigRequest {
-    /// Required. The parent bucket of the NotificationConfig.
-    /// Format:
-    /// `projects/{project}/buckets/{bucket}/notificationConfigs/{notificationConfig}`
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Request message for CreateNotificationConfig.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateNotificationConfigRequest {
-    /// Required. The bucket to which this NotificationConfig belongs.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. Properties of the NotificationConfig to be inserted.
-    #[prost(message, optional, tag = "2")]
-    pub notification_config: ::core::option::Option<NotificationConfig>,
-}
-/// Request message for ListNotifications.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListNotificationConfigsRequest {
-    /// Required. Name of a Google Cloud Storage bucket.
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Optional. The maximum number of NotificationConfigs to return. The service
-    /// may return fewer than this value. The default value is 100. Specifying a
-    /// value above 100 will result in a page_size of 100.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// Optional. A page token, received from a previous `ListNotificationConfigs`
-    /// call. Provide this to retrieve the subsequent page.
-    ///
-    /// When paginating, all other parameters provided to `ListNotificationConfigs`
-    /// must match the call that provided the page token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-}
-/// The result of a call to ListNotificationConfigs
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListNotificationConfigsResponse {
-    /// The list of items.
-    #[prost(message, repeated, tag = "1")]
-    pub notification_configs: ::prost::alloc::vec::Vec<NotificationConfig>,
-    /// A token, which can be sent as `page_token` to retrieve the next page.
-    /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// A directive to publish Pub/Sub notifications upon changes to a bucket.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct NotificationConfig {
-    /// Required. The resource name of this NotificationConfig.
-    /// Format:
-    /// `projects/{project}/buckets/{bucket}/notificationConfigs/{notificationConfig}`
-    /// The `{project}` portion may be `_` for globally unique buckets.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Required. The Pub/Sub topic to which this subscription publishes. Formatted
-    /// as:
-    /// '//pubsub.googleapis.com/projects/{project-identifier}/topics/{my-topic}'
-    #[prost(string, tag = "2")]
-    pub topic: ::prost::alloc::string::String,
-    /// Optional. The etag of the NotificationConfig.
-    /// If included in the metadata of GetNotificationConfigRequest, the operation
-    /// will only be performed if the etag matches that of the NotificationConfig.
-    #[prost(string, tag = "7")]
-    pub etag: ::prost::alloc::string::String,
-    /// Optional. If present, only send notifications about listed event types. If
-    /// empty, sent notifications for all event types.
-    #[prost(string, repeated, tag = "3")]
-    pub event_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. A list of additional attributes to attach to each Pub/Sub
-    /// message published for this NotificationConfig.
-    #[prost(map = "string, string", tag = "4")]
-    pub custom_attributes: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        ::prost::alloc::string::String,
-    >,
-    /// Optional. If present, only apply this NotificationConfig to object names
-    /// that begin with this prefix.
-    #[prost(string, tag = "5")]
-    pub object_name_prefix: ::prost::alloc::string::String,
-    /// Required. The desired content of the Payload.
-    #[prost(string, tag = "6")]
-    pub payload_format: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod storage_client {
@@ -2980,279 +2758,6 @@ pub mod storage_client {
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new("google.storage.v2.Storage", "QueryWriteStatus"),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Retrieves the name of a project's Google Cloud Storage service account.
-        #[deprecated]
-        pub async fn get_service_account(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetServiceAccountRequest>,
-        ) -> std::result::Result<tonic::Response<super::ServiceAccount>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.storage.v2.Storage/GetServiceAccount",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new("google.storage.v2.Storage", "GetServiceAccount"),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Creates a new HMAC key for the given service account.
-        #[deprecated]
-        pub async fn create_hmac_key(
-            &mut self,
-            request: impl tonic::IntoRequest<super::CreateHmacKeyRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::CreateHmacKeyResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.storage.v2.Storage/CreateHmacKey",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(GrpcMethod::new("google.storage.v2.Storage", "CreateHmacKey"));
-            self.inner.unary(req, path, codec).await
-        }
-        /// Deletes a given HMAC key.  Key must be in an INACTIVE state.
-        #[deprecated]
-        pub async fn delete_hmac_key(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DeleteHmacKeyRequest>,
-        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.storage.v2.Storage/DeleteHmacKey",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(GrpcMethod::new("google.storage.v2.Storage", "DeleteHmacKey"));
-            self.inner.unary(req, path, codec).await
-        }
-        /// Gets an existing HMAC key metadata for the given id.
-        #[deprecated]
-        pub async fn get_hmac_key(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetHmacKeyRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::HmacKeyMetadata>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.storage.v2.Storage/GetHmacKey",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(GrpcMethod::new("google.storage.v2.Storage", "GetHmacKey"));
-            self.inner.unary(req, path, codec).await
-        }
-        /// Lists HMAC keys under a given project with the additional filters provided.
-        #[deprecated]
-        pub async fn list_hmac_keys(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListHmacKeysRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListHmacKeysResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.storage.v2.Storage/ListHmacKeys",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(GrpcMethod::new("google.storage.v2.Storage", "ListHmacKeys"));
-            self.inner.unary(req, path, codec).await
-        }
-        /// Updates a given HMAC key state between ACTIVE and INACTIVE.
-        #[deprecated]
-        pub async fn update_hmac_key(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateHmacKeyRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::HmacKeyMetadata>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.storage.v2.Storage/UpdateHmacKey",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(GrpcMethod::new("google.storage.v2.Storage", "UpdateHmacKey"));
-            self.inner.unary(req, path, codec).await
-        }
-        /// Permanently deletes a NotificationConfig.
-        #[deprecated]
-        pub async fn delete_notification_config(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DeleteNotificationConfigRequest>,
-        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.storage.v2.Storage/DeleteNotificationConfig",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.storage.v2.Storage",
-                        "DeleteNotificationConfig",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// View a NotificationConfig.
-        #[deprecated]
-        pub async fn get_notification_config(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetNotificationConfigRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::NotificationConfig>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.storage.v2.Storage/GetNotificationConfig",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new("google.storage.v2.Storage", "GetNotificationConfig"),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Creates a NotificationConfig for a given bucket.
-        /// These NotificationConfigs, when triggered, publish messages to the
-        /// specified Pub/Sub topics. See
-        /// https://cloud.google.com/storage/docs/pubsub-notifications.
-        #[deprecated]
-        pub async fn create_notification_config(
-            &mut self,
-            request: impl tonic::IntoRequest<super::CreateNotificationConfigRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::NotificationConfig>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.storage.v2.Storage/CreateNotificationConfig",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.storage.v2.Storage",
-                        "CreateNotificationConfig",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Retrieves a list of NotificationConfigs for a given bucket.
-        #[deprecated]
-        pub async fn list_notification_configs(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListNotificationConfigsRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListNotificationConfigsResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.storage.v2.Storage/ListNotificationConfigs",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.storage.v2.Storage",
-                        "ListNotificationConfigs",
-                    ),
                 );
             self.inner.unary(req, path, codec).await
         }

@@ -269,6 +269,11 @@ pub struct AdGroup {
     /// Output only. The resource names of labels attached to this ad group.
     #[prost(string, repeated, tag = "49")]
     pub labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. The resource names of effective labels attached to this ad
+    /// group. An effective label is a label inherited or directly assigned to this
+    /// ad group.
+    #[prost(string, repeated, tag = "66")]
+    pub effective_labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. ID of the ad group in the external engine account. This field
     /// is for non-Google Ads account only, for example, Yahoo Japan, Microsoft,
     /// Baidu etc. For Google Ads entity, use "ad_group.id" instead.
@@ -629,6 +634,26 @@ pub struct AdGroupCriterionLabel {
     pub label: ::core::option::Option<::prost::alloc::string::String>,
     /// Output only. The ID of the Customer which owns the label.
     #[prost(int64, optional, tag = "6")]
+    pub owner_customer_id: ::core::option::Option<i64>,
+}
+/// A relationship between an ad group and an effective label.
+/// An effective label is a label inherited or directly assigned to this
+/// ad group.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdGroupEffectiveLabel {
+    /// Immutable. The resource name of the ad group effective label.
+    /// Ad group effective label resource names have the form:
+    /// `customers/{customer_id}/adGroupEffectiveLabels/{ad_group_id}~{label_id}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Immutable. The ad group to which the effective label is attached.
+    #[prost(string, optional, tag = "2")]
+    pub ad_group: ::core::option::Option<::prost::alloc::string::String>,
+    /// Immutable. The effective label assigned to the ad group.
+    #[prost(string, optional, tag = "3")]
+    pub label: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The ID of the Customer which owns the effective label.
+    #[prost(int64, optional, tag = "4")]
     pub owner_customer_id: ::core::option::Option<i64>,
 }
 /// A relationship between an ad group and a label.
@@ -1324,10 +1349,15 @@ pub struct Campaign {
     /// The setting for ads geotargeting.
     #[prost(message, optional, tag = "47")]
     pub geo_target_type_setting: ::core::option::Option<campaign::GeoTargetTypeSetting>,
+    /// Output only. The resource names of effective labels attached to this
+    /// campaign. An effective label is a label inherited or directly assigned to
+    /// this campaign.
+    #[prost(string, repeated, tag = "95")]
+    pub effective_labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. The resource names of labels attached to this campaign.
     #[prost(string, repeated, tag = "61")]
     pub labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// The budget of the campaign.
+    /// The resource name of the campaign budget of the campaign.
     #[prost(string, optional, tag = "62")]
     pub campaign_budget: ::core::option::Option<::prost::alloc::string::String>,
     /// Output only. The type of bidding strategy.
@@ -1536,7 +1566,8 @@ pub mod campaign {
     /// AdvertisingChannelSubType.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SelectiveOptimization {
-        /// The selected set of conversion actions for optimizing this campaign.
+        /// The selected set of resource names for conversion actions for optimizing
+        /// this campaign.
         #[prost(string, repeated, tag = "2")]
         pub conversion_actions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
@@ -1558,7 +1589,7 @@ pub mod campaign {
     /// standard, that is embedded into the campaign.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum CampaignBiddingStrategy {
-        /// Portfolio bidding strategy used by campaign.
+        /// The resource name of the portfolio bidding strategy used by the campaign.
         #[prost(string, tag = "67")]
         BiddingStrategy(::prost::alloc::string::String),
         /// Standard Manual CPA bidding strategy.
@@ -1782,6 +1813,26 @@ pub mod campaign_criterion {
         #[prost(message, tag = "34")]
         LocationGroup(super::super::common::LocationGroupInfo),
     }
+}
+/// Represents a relationship between a campaign and an effective label.
+/// An effective label is a label inherited or directly assigned to this
+/// campaign.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CampaignEffectiveLabel {
+    /// Immutable. Name of the resource.
+    /// CampaignEffectivelabel resource names have the form:
+    /// `customers/{customer_id}/campaignEffectiveLabels/{campaign_id}~{label_id}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Immutable. The campaign to which the effective label is attached.
+    #[prost(string, optional, tag = "2")]
+    pub campaign: ::core::option::Option<::prost::alloc::string::String>,
+    /// Immutable. The effective label assigned to the campaign.
+    #[prost(string, optional, tag = "3")]
+    pub label: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The ID of the Customer which owns the effective label.
+    #[prost(int64, optional, tag = "4")]
+    pub owner_customer_id: ::core::option::Option<i64>,
 }
 /// Represents a relationship between a campaign and a label.
 #[derive(Clone, PartialEq, ::prost::Message)]

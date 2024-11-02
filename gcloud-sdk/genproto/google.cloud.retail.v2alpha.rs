@@ -68,6 +68,114 @@ pub mod export_errors_config {
         GcsPrefix(::prost::alloc::string::String),
     }
 }
+/// Request message for ExportProducts method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportProductsRequest {
+    /// Required. Resource name of a [Branch][google.cloud.retail.v2alpha.Branch],
+    /// and `default_branch` for branch_id component is supported. For example
+    ///   `projects/1234/locations/global/catalogs/default_catalog/branches/default_branch`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The output location of the data.
+    #[prost(message, optional, tag = "2")]
+    pub output_config: ::core::option::Option<OutputConfig>,
+    /// A filtering expression to specify restrictions on returned events.
+    /// The expression is a sequence of terms. Each term applies a restriction to
+    /// the returned products. Use this expression to restrict results to a
+    /// specific time range, tag, or stock state or to filter products by product
+    /// type.
+    /// For example, `lastModifiedTime > "2012-04-23T18:25:43.511Z"
+    /// lastModifiedTime<"2012-04-23T18:25:43.511Z" productType=primary`
+    ///
+    ///    We expect only four types of fields:
+    ///
+    ///     * `lastModifiedTime`: This can be specified twice, once with a
+    ///       less than operator and once with a greater than operator. The
+    ///       `lastModifiedTime` restriction should result in one, contiguous,
+    ///       valid, last-modified, time range.
+    ///
+    ///     * `productType`: Supported values are `primary` and `variant`. The
+    ///     Boolean operators `OR` and `NOT` are supported if the expression is
+    ///     enclosed in parentheses and must be separated from the
+    ///       `productType` values by a space.
+    ///
+    ///     * `availability`: Supported values are `IN_STOCK`, `OUT_OF_STOCK`,
+    ///     `PREORDER`, and `BACKORDER`. Boolean operators `OR` and `NOT` are
+    ///     supported if the expression is enclosed in parentheses and must be
+    ///     separated from the `availability` values by a space.
+    ///
+    ///     * `Tag expressions`: Restricts output to products that match all of the
+    ///       specified tags. Boolean operators `OR` and `NOT` are supported if the
+    ///       expression is enclosed in parentheses and the operators are separated
+    ///       from the tag values by a space. Also supported is '`-"tagA"`', which
+    ///       is equivalent to '`NOT "tagA"`'. Tag values must be double-quoted,
+    ///       UTF-8 encoded strings and have a size limit of 1,000 characters.
+    ///
+    ///    Some examples of valid filters expressions:
+    ///
+    ///    * Example 1: `lastModifiedTime > "2012-04-23T18:25:43.511Z"
+    ///              lastModifiedTime < "2012-04-23T18:30:43.511Z"`
+    ///    * Example 2: `lastModifiedTime > "2012-04-23T18:25:43.511Z"
+    ///              productType = "variant"`
+    ///    * Example 3: `tag=("Red" OR "Blue") tag="New-Arrival"
+    ///              tag=(NOT "promotional")
+    ///              productType = "primary" lastModifiedTime <
+    ///              "2018-04-23T18:30:43.511Z"`
+    ///    * Example 4: `lastModifiedTime > "2012-04-23T18:25:43.511Z"`
+    ///    * Example 5: `availability = (IN_STOCK OR BACKORDER)`
+    #[prost(string, tag = "3")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Request message for the `ExportUserEvents` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportUserEventsRequest {
+    /// Required. Resource name of a
+    /// [Catalog][google.cloud.retail.v2alpha.Catalog]. For example
+    /// `projects/1234/locations/global/catalogs/default_catalog`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The output location of the data.
+    #[prost(message, optional, tag = "2")]
+    pub output_config: ::core::option::Option<OutputConfig>,
+    /// A filtering expression to specify restrictions on returned events.
+    /// The expression is a sequence of terms. Each term applies a restriction to
+    /// the returned user events. Use this expression to restrict results to a
+    /// specific time range or to filter events by eventType.
+    /// For example, `eventTime > "2012-04-23T18:25:43.511Z"
+    /// eventsMissingCatalogItems eventTime<"2012-04-23T18:25:43.511Z"
+    /// eventType=search`
+    ///
+    ///    We expect only three types of fields:
+    ///
+    ///     * `eventTime`: This can be specified twice, once with a
+    ///       less than operator and once with a greater than operator. The
+    ///       `eventTime` restriction should result in one, contiguous, valid,
+    ///       `eventTime` range.
+    ///
+    ///     * `eventType`: Boolean operators `OR` and `NOT` are supported if the
+    ///       expression is enclosed in parentheses and the operators are separated
+    ///       from the tag values by a space.
+    ///
+    ///     * `eventsMissingCatalogItems`: This restricts results
+    ///       to events for which catalog items were not found in the catalog. The
+    ///       default behavior is to return only those events for which catalog
+    ///       items were found.
+    ///
+    ///    Some examples of valid filters expressions:
+    ///
+    ///    * Example 1: `eventTime > "2012-04-23T18:25:43.511Z"
+    ///              eventTime < "2012-04-23T18:30:43.511Z"`
+    ///    * Example 2: `eventTime > "2012-04-23T18:25:43.511Z"
+    ///              eventType = detail-page-view`
+    ///    * Example 3: `eventsMissingCatalogItems
+    ///              eventType = (NOT search) eventTime <
+    ///              "2018-04-23T18:30:43.511Z"`
+    ///    * Example 4: `eventTime > "2012-04-23T18:25:43.511Z"`
+    ///    * Example 5: `eventType = (detail-page-view OR search)`
+    ///    * Example 6: `eventsMissingCatalogItems`
+    #[prost(string, tag = "3")]
+    pub filter: ::prost::alloc::string::String,
+}
 /// Request message for the `ExportAnalyticsMetrics` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportAnalyticsMetricsRequest {
@@ -581,7 +689,7 @@ pub mod rule {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ForceReturnFacetAction {
         /// Each instance corresponds to a force return attribute for the given
-        /// condition. There can't be more 3 instances here.
+        /// condition. There can't be more 15 instances here.
         #[prost(message, repeated, tag = "1")]
         pub facet_position_adjustments: ::prost::alloc::vec::Vec<
             force_return_facet_action::FacetPositionAdjustment,
@@ -1571,6 +1679,15 @@ pub struct Product {
     /// [Product][google.cloud.retail.v2alpha.Product]. Default to
     /// [Availability.IN_STOCK][google.cloud.retail.v2alpha.Product.Availability.IN_STOCK].
     ///
+    /// For primary products with variants set the availability of the primary as
+    /// [Availability.OUT_OF_STOCK][google.cloud.retail.v2alpha.Product.Availability.OUT_OF_STOCK]
+    /// and set the true availability at the variant level. This way the primary
+    /// product will be considered "in stock" as long as it has at least one
+    /// variant in stock.
+    ///
+    /// For primary products with no variants set the true availability at the
+    /// primary level.
+    ///
     /// Corresponding properties: Google Merchant Center property
     /// [availability](<https://support.google.com/merchants/answer/6324448>).
     /// Schema.org property [Offer.availability](<https://schema.org/availability>).
@@ -1746,8 +1863,6 @@ pub struct Product {
     /// * [name][google.cloud.retail.v2alpha.Product.name]
     /// * [color_info][google.cloud.retail.v2alpha.Product.color_info]
     ///
-    /// The maximum number of paths is 30. Otherwise, an INVALID_ARGUMENT error is
-    /// returned.
     ///
     /// Note: Returning more fields in
     /// [SearchResponse][google.cloud.retail.v2alpha.SearchResponse] can increase
@@ -1963,7 +2078,8 @@ pub mod product {
         Ttl(::prost_types::Duration),
     }
 }
-/// A data branch that stores [Product][google.cloud.retail.v2alpha.Product]s.
+/// A data branch that stores all instances of
+/// [Product][google.cloud.retail.v2alpha.Product]s.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Branch {
     /// Immutable. Full resource name of the branch, such as
@@ -2374,8 +2490,8 @@ pub mod branch_service_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Lists all [Branch][google.cloud.retail.v2alpha.Branch]s under the specified
-        /// parent [Catalog][google.cloud.retail.v2alpha.Catalog].
+        /// Lists all instances of [Branch][google.cloud.retail.v2alpha.Branch] under
+        /// the specified parent [Catalog][google.cloud.retail.v2alpha.Catalog].
         pub async fn list_branches(
             &mut self,
             request: impl tonic::IntoRequest<super::ListBranchesRequest>,
@@ -4773,6 +4889,53 @@ pub mod catalog_service_client {
         }
     }
 }
+/// Product attribute which structured by an attribute name and value. This
+/// structure is used in conversational search filters and answers. For example,
+/// if we have `name=color` and `value=red`, this means that the color is `red`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ProductAttributeValue {
+    /// The attribute name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The attribute value.
+    #[prost(string, tag = "2")]
+    pub value: ::prost::alloc::string::String,
+}
+/// Product attribute name and numeric interval.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ProductAttributeInterval {
+    /// The attribute name (e.g. "length")
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The numeric interval (e.g. [10, 20))
+    #[prost(message, optional, tag = "2")]
+    pub interval: ::core::option::Option<Interval>,
+}
+/// This field specifies the tile information including an attribute key,
+/// attribute value. More fields will be added in the future, eg: product id
+/// or product counts, etc.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Tile {
+    /// The representative product id for this tile.
+    #[prost(string, tag = "3")]
+    pub representative_product_id: ::prost::alloc::string::String,
+    /// The attribute key and value for the tile.
+    #[prost(oneof = "tile::ProductAttribute", tags = "1, 2")]
+    pub product_attribute: ::core::option::Option<tile::ProductAttribute>,
+}
+/// Nested message and enum types in `Tile`.
+pub mod tile {
+    /// The attribute key and value for the tile.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ProductAttribute {
+        /// The product attribute key-value.
+        #[prost(message, tag = "1")]
+        ProductAttributeValue(super::ProductAttributeValue),
+        /// The product attribute key-numeric interval.
+        #[prost(message, tag = "2")]
+        ProductAttributeInterval(super::ProductAttributeInterval),
+    }
+}
 /// Request message for
 /// [SearchService.Search][google.cloud.retail.v2alpha.SearchService.Search]
 /// method.
@@ -5065,6 +5228,15 @@ pub struct SearchRequest {
     /// search results boosted by entity.
     #[prost(string, tag = "38")]
     pub entity: ::prost::alloc::string::String,
+    /// Optional. This field specifies all conversational related parameters
+    /// addition to traditional retail search.
+    #[prost(message, optional, tag = "40")]
+    pub conversational_search_spec: ::core::option::Option<
+        search_request::ConversationalSearchSpec,
+    >,
+    /// Optional. This field specifies tile navigation related parameters.
+    #[prost(message, optional, tag = "41")]
+    pub tile_navigation_spec: ::core::option::Option<search_request::TileNavigationSpec>,
 }
 /// Nested message and enum types in `SearchRequest`.
 pub mod search_request {
@@ -5605,6 +5777,87 @@ pub mod search_request {
             }
         }
     }
+    /// This field specifies all conversational related parameters addition to
+    /// traditional retail search.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ConversationalSearchSpec {
+        /// This field specifies whether the customer would like to do conversational
+        /// search. If this field is set to true, conversational related extra
+        /// information will be returned from server side, including follow-up
+        /// question, answer options, etc.
+        #[prost(bool, tag = "1")]
+        pub followup_conversation_requested: bool,
+        /// This field specifies the conversation id, which maintains the state of
+        /// the conversation between client side and server side. Use the value from
+        /// the previous [ConversationalSearchResult.conversation_id][]. For the
+        /// initial request, this should be empty.
+        #[prost(string, tag = "2")]
+        pub conversation_id: ::prost::alloc::string::String,
+        /// This field specifies the current user answer during the conversational
+        /// search. This can be either user selected from suggested answers or user
+        /// input plain text.
+        #[prost(message, optional, tag = "3")]
+        pub user_answer: ::core::option::Option<conversational_search_spec::UserAnswer>,
+    }
+    /// Nested message and enum types in `ConversationalSearchSpec`.
+    pub mod conversational_search_spec {
+        /// This field specifies the current user answer during the conversational
+        /// search. This can be either user selected from suggested answers or user
+        /// input plain text.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct UserAnswer {
+            /// This field specifies the type of user answer.
+            #[prost(oneof = "user_answer::Type", tags = "1, 2")]
+            pub r#type: ::core::option::Option<user_answer::Type>,
+        }
+        /// Nested message and enum types in `UserAnswer`.
+        pub mod user_answer {
+            /// This field specifies the selected answers during the conversational
+            /// search.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct SelectedAnswer {
+                /// This field is deprecated and should not be set.
+                #[deprecated]
+                #[prost(message, repeated, tag = "1")]
+                pub product_attribute_values: ::prost::alloc::vec::Vec<
+                    super::super::super::ProductAttributeValue,
+                >,
+                /// This field specifies the selected answer which is a attribute
+                /// key-value.
+                #[prost(message, optional, tag = "2")]
+                pub product_attribute_value: ::core::option::Option<
+                    super::super::super::ProductAttributeValue,
+                >,
+            }
+            /// This field specifies the type of user answer.
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum Type {
+                /// This field specifies the incremental input text from the user during
+                /// the conversational search.
+                #[prost(string, tag = "1")]
+                TextAnswer(::prost::alloc::string::String),
+                /// This field specifies the selected attributes during the
+                /// conversational search. This should be a subset of
+                /// [ConversationalSearchResult.suggested_answers][].
+                #[prost(message, tag = "2")]
+                SelectedAnswer(SelectedAnswer),
+            }
+        }
+    }
+    /// This field specifies tile navigation related parameters.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TileNavigationSpec {
+        /// This field specifies whether the customer would like to request tile
+        /// navigation.
+        #[prost(bool, tag = "1")]
+        pub tile_navigation_requested: bool,
+        /// This field specifies the tiles which are already clicked in client side.
+        /// NOTE: This field is not being used for filtering search products. Client
+        /// side should also put all the applied tiles in
+        /// [SearchRequest.filter][google.cloud.retail.v2alpha.SearchRequest.filter].
+        #[prost(message, repeated, tag = "2")]
+        pub applied_tiles: ::prost::alloc::vec::Vec<super::Tile>,
+    }
     /// The relevance threshold of the search results. The higher relevance
     /// threshold is, the higher relevant results are shown and the less number of
     /// results are returned.
@@ -5792,6 +6045,18 @@ pub struct SearchResponse {
     /// response. Only exists when an experiment is triggered.
     #[prost(message, repeated, tag = "17")]
     pub experiment_info: ::prost::alloc::vec::Vec<ExperimentInfo>,
+    /// This field specifies all related information that is needed on client
+    /// side for UI rendering of conversational retail search.
+    #[prost(message, optional, tag = "18")]
+    pub conversational_search_result: ::core::option::Option<
+        search_response::ConversationalSearchResult,
+    >,
+    /// This field specifies all related information for tile navigation that will
+    /// be used in client side.
+    #[prost(message, optional, tag = "19")]
+    pub tile_navigation_result: ::core::option::Option<
+        search_response::TileNavigationResult,
+    >,
 }
 /// Nested message and enum types in `SearchResponse`.
 pub mod search_response {
@@ -5959,6 +6224,85 @@ pub mod search_response {
         /// is set to true.
         #[prost(int64, tag = "2")]
         pub pinned_result_count: i64,
+    }
+    /// This field specifies all related information that is needed on client
+    /// side for UI rendering of conversational retail search.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ConversationalSearchResult {
+        /// Conversation UUID. This field will be stored in client side storage to
+        /// maintain the conversation session with server and will be used for next
+        /// search request's
+        /// [SearchRequest.ConversationalSearchSpec.conversation_id][google.cloud.retail.v2alpha.SearchRequest.ConversationalSearchSpec.conversation_id]
+        /// to restore conversation state in server.
+        #[prost(string, tag = "1")]
+        pub conversation_id: ::prost::alloc::string::String,
+        /// The current refined query for the conversational search. This field
+        /// will be used in customer UI that the query in the search bar should be
+        /// replaced with the refined query. For example, if
+        /// [SearchRequest.query][google.cloud.retail.v2alpha.SearchRequest.query] is
+        /// `dress` and next
+        /// [SearchRequest.ConversationalSearchSpec.UserAnswer.text_answer][google.cloud.retail.v2alpha.SearchRequest.ConversationalSearchSpec.UserAnswer.text_answer]
+        /// is `red color`, which does not match any product attribute value filters,
+        /// the refined query will be `dress, red color`.
+        #[prost(string, tag = "2")]
+        pub refined_query: ::prost::alloc::string::String,
+        /// This field is deprecated but will be kept for backward compatibility.
+        /// There is expected to have only one additional filter and the value will
+        /// be the same to the same as field `additional_filter`.
+        #[deprecated]
+        #[prost(message, repeated, tag = "3")]
+        pub additional_filters: ::prost::alloc::vec::Vec<
+            conversational_search_result::AdditionalFilter,
+        >,
+        /// The follow-up question. e.g., `What is the color?`
+        #[prost(string, tag = "4")]
+        pub followup_question: ::prost::alloc::string::String,
+        /// The answer options provided to client for the follow-up question.
+        #[prost(message, repeated, tag = "5")]
+        pub suggested_answers: ::prost::alloc::vec::Vec<
+            conversational_search_result::SuggestedAnswer,
+        >,
+        /// This is the incremental additional filters implied from the current
+        /// user answer. User should add the suggested addition filters to the
+        /// previous
+        /// [SearchRequest.filter][google.cloud.retail.v2alpha.SearchRequest.filter],
+        /// and use the merged filter in the follow up search request.
+        #[prost(message, optional, tag = "6")]
+        pub additional_filter: ::core::option::Option<
+            conversational_search_result::AdditionalFilter,
+        >,
+    }
+    /// Nested message and enum types in `ConversationalSearchResult`.
+    pub mod conversational_search_result {
+        /// Suggested answers to the follow-up question.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct SuggestedAnswer {
+            /// Product attribute value, including an attribute key and an
+            /// attribute value. Other types can be added here in the future.
+            #[prost(message, optional, tag = "1")]
+            pub product_attribute_value: ::core::option::Option<
+                super::super::ProductAttributeValue,
+            >,
+        }
+        /// Additional filter that client side need to apply.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct AdditionalFilter {
+            /// Product attribute value, including an attribute key and an
+            /// attribute value. Other types can be added here in the future.
+            #[prost(message, optional, tag = "1")]
+            pub product_attribute_value: ::core::option::Option<
+                super::super::ProductAttributeValue,
+            >,
+        }
+    }
+    /// This field specifies all related information for tile navigation that will
+    /// be used in client side.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TileNavigationResult {
+        /// The current tiles that are used for tile navigation, sorted by
+        /// engagement.
+        #[prost(message, repeated, tag = "1")]
+        pub tiles: ::prost::alloc::vec::Vec<super::Tile>,
     }
 }
 /// Metadata for active A/B testing
@@ -6203,9 +6547,9 @@ pub struct CompleteQueryRequest {
     /// capped by 20.
     #[prost(int32, tag = "5")]
     pub max_suggestions: i32,
-    /// If true, attribute suggestions are enabled and provided in response.
+    /// If true, attribute suggestions are enabled and provided in the response.
     ///
-    /// This field is only available for "cloud-retail" dataset.
+    /// This field is only available for the "cloud-retail" dataset.
     #[prost(bool, tag = "9")]
     pub enable_attribute_suggestions: bool,
     /// The entity for customers who run multiple entities, domains, sites, or
@@ -6317,9 +6661,9 @@ pub mod complete_query_response {
         pub recent_search: ::prost::alloc::string::String,
     }
     /// Resource that represents attribute results.
+    /// The list of suggestions for the attribute.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AttributeResult {
-        /// The list of suggestions for the attribute.
         #[prost(string, repeated, tag = "1")]
         pub suggestions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
@@ -6888,6 +7232,378 @@ pub mod control_service_client {
                     GrpcMethod::new(
                         "google.cloud.retail.v2alpha.ControlService",
                         "ListControls",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Configuration for overall generative question feature state.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerativeQuestionsFeatureConfig {
+    /// Required. Resource name of the affected catalog.
+    /// Format: projects/{project}/locations/{location}/catalogs/{catalog}
+    #[prost(string, tag = "1")]
+    pub catalog: ::prost::alloc::string::String,
+    /// Optional. Determines whether questions will be used at serving time.
+    /// Note: This feature cannot be enabled until initial data requirements are
+    /// satisfied.
+    #[prost(bool, tag = "2")]
+    pub feature_enabled: bool,
+    /// Optional. Minimum number of products in the response to trigger follow-up
+    /// questions. Value must be 0 or positive.
+    #[prost(int32, tag = "3")]
+    pub minimum_products: i32,
+}
+/// Configuration for a single generated question.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerativeQuestionConfig {
+    /// Required. Resource name of the catalog.
+    /// Format: projects/{project}/locations/{location}/catalogs/{catalog}
+    #[prost(string, tag = "1")]
+    pub catalog: ::prost::alloc::string::String,
+    /// Required. The facet to which the question is associated.
+    #[prost(string, tag = "2")]
+    pub facet: ::prost::alloc::string::String,
+    /// Output only. The LLM generated question.
+    #[prost(string, tag = "3")]
+    pub generated_question: ::prost::alloc::string::String,
+    /// Optional. The question that will be used at serving time.
+    /// Question can have a max length of 300 bytes.
+    /// When not populated, generated_question should be used.
+    #[prost(string, tag = "4")]
+    pub final_question: ::prost::alloc::string::String,
+    /// Output only. Values that can be used to answer the question.
+    #[prost(string, repeated, tag = "5")]
+    pub example_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. The ratio of how often a question was asked.
+    #[prost(float, tag = "6")]
+    pub frequency: f32,
+    /// Optional. Whether the question is asked at serving time.
+    #[prost(bool, tag = "7")]
+    pub allowed_in_conversation: bool,
+}
+/// Request for UpdateGenerativeQuestionsFeatureConfig method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateGenerativeQuestionsFeatureConfigRequest {
+    /// Required. The configuration managing the feature state.
+    #[prost(message, optional, tag = "2")]
+    pub generative_questions_feature_config: ::core::option::Option<
+        GenerativeQuestionsFeatureConfig,
+    >,
+    /// Optional. Indicates which fields in the provided
+    /// [GenerativeQuestionsFeatureConfig][google.cloud.retail.v2alpha.GenerativeQuestionsFeatureConfig]
+    /// to update. If not set or empty, all supported fields are updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request for GetGenerativeQuestionsFeatureConfig method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetGenerativeQuestionsFeatureConfigRequest {
+    /// Required. Resource name of the parent catalog.
+    /// Format: projects/{project}/locations/{location}/catalogs/{catalog}
+    #[prost(string, tag = "1")]
+    pub catalog: ::prost::alloc::string::String,
+}
+/// Request for ListQuestions method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListGenerativeQuestionConfigsRequest {
+    /// Required. Resource name of the parent catalog.
+    /// Format: projects/{project}/locations/{location}/catalogs/{catalog}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+}
+/// Response for ListQuestions method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListGenerativeQuestionConfigsResponse {
+    /// All the questions for a given catalog.
+    #[prost(message, repeated, tag = "1")]
+    pub generative_question_configs: ::prost::alloc::vec::Vec<GenerativeQuestionConfig>,
+}
+/// Request for UpdateGenerativeQuestionConfig method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateGenerativeQuestionConfigRequest {
+    /// Required. The question to update.
+    #[prost(message, optional, tag = "3")]
+    pub generative_question_config: ::core::option::Option<GenerativeQuestionConfig>,
+    /// Optional. Indicates which fields in the provided
+    /// [GenerativeQuestionConfig][google.cloud.retail.v2alpha.GenerativeQuestionConfig]
+    /// to update. The following are NOT supported:
+    ///
+    /// * [GenerativeQuestionConfig.frequency][google.cloud.retail.v2alpha.GenerativeQuestionConfig.frequency]
+    ///
+    /// If not set or empty, all supported fields are updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request for BatchUpdateGenerativeQuestionConfig method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchUpdateGenerativeQuestionConfigsRequest {
+    /// Optional. Resource name of the parent catalog.
+    /// Format: projects/{project}/locations/{location}/catalogs/{catalog}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The updates question configs.
+    #[prost(message, repeated, tag = "2")]
+    pub requests: ::prost::alloc::vec::Vec<UpdateGenerativeQuestionConfigRequest>,
+}
+/// Aggregated response for UpdateGenerativeQuestionConfig method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchUpdateGenerativeQuestionConfigsResponse {
+    /// Optional. The updates question configs.
+    #[prost(message, repeated, tag = "1")]
+    pub generative_question_configs: ::prost::alloc::vec::Vec<GenerativeQuestionConfig>,
+}
+/// Generated client implementations.
+pub mod generative_question_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service for managing LLM generated questions in search serving.
+    #[derive(Debug, Clone)]
+    pub struct GenerativeQuestionServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl GenerativeQuestionServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> GenerativeQuestionServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> GenerativeQuestionServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            GenerativeQuestionServiceClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Manages overal generative question feature state -- enables toggling
+        /// feature on and off.
+        pub async fn update_generative_questions_feature_config(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::UpdateGenerativeQuestionsFeatureConfigRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::GenerativeQuestionsFeatureConfig>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.retail.v2alpha.GenerativeQuestionService/UpdateGenerativeQuestionsFeatureConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2alpha.GenerativeQuestionService",
+                        "UpdateGenerativeQuestionsFeatureConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Manages overal generative question feature state -- enables toggling
+        /// feature on and off.
+        pub async fn get_generative_questions_feature_config(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::GetGenerativeQuestionsFeatureConfigRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::GenerativeQuestionsFeatureConfig>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.retail.v2alpha.GenerativeQuestionService/GetGenerativeQuestionsFeatureConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2alpha.GenerativeQuestionService",
+                        "GetGenerativeQuestionsFeatureConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns all questions for a given catalog.
+        pub async fn list_generative_question_configs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListGenerativeQuestionConfigsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListGenerativeQuestionConfigsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.retail.v2alpha.GenerativeQuestionService/ListGenerativeQuestionConfigs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2alpha.GenerativeQuestionService",
+                        "ListGenerativeQuestionConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Allows management of individual questions.
+        pub async fn update_generative_question_config(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::UpdateGenerativeQuestionConfigRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::GenerativeQuestionConfig>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.retail.v2alpha.GenerativeQuestionService/UpdateGenerativeQuestionConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2alpha.GenerativeQuestionService",
+                        "UpdateGenerativeQuestionConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Allows management of multiple questions.
+        pub async fn batch_update_generative_question_configs(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::BatchUpdateGenerativeQuestionConfigsRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::BatchUpdateGenerativeQuestionConfigsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.retail.v2alpha.GenerativeQuestionService/BatchUpdateGenerativeQuestionConfigs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2alpha.GenerativeQuestionService",
+                        "BatchUpdateGenerativeQuestionConfigs",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -7686,8 +8402,13 @@ pub mod model {
         pub context_products_type: i32,
     }
     /// Additional model features config.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ModelFeaturesConfig {
+        /// Optional. LLM embedding config to use for this model.
+        #[prost(message, optional, tag = "2")]
+        pub llm_embedding_config: ::core::option::Option<
+            model_features_config::LlmEmbeddingConfig,
+        >,
         #[prost(oneof = "model_features_config::TypeDedicatedConfig", tags = "1")]
         pub type_dedicated_config: ::core::option::Option<
             model_features_config::TypeDedicatedConfig,
@@ -7695,6 +8416,16 @@ pub mod model {
     }
     /// Nested message and enum types in `ModelFeaturesConfig`.
     pub mod model_features_config {
+        /// Config that turns on usage of llm embeddings as features to the model.
+        /// Embeddings leverage unstructured text fields like description and title.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct LlmEmbeddingConfig {
+            /// Optional. The LLM embedding version to use.
+            /// Currently only `v0` is supported. If not specified, feature will
+            /// not be turned on.
+            #[prost(string, tag = "1")]
+            pub llm_embedding_version: ::prost::alloc::string::String,
+        }
         #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
         pub enum TypeDedicatedConfig {
             /// Additional configs for frequently-bought-together models.
@@ -9790,6 +10521,36 @@ pub mod product_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Exports multiple [Product][google.cloud.retail.v2alpha.Product]s.
+        pub async fn export_products(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ExportProductsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.retail.v2alpha.ProductService/ExportProducts",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2alpha.ProductService",
+                        "ExportProducts",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Updates inventory information for a
         /// [Product][google.cloud.retail.v2alpha.Product] while respecting the last
         /// update timestamps of each inventory field.
@@ -10253,8 +11014,10 @@ pub mod alert_config {
     /// Alert policy for a customer.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AlertPolicy {
-        /// The feature that provides alerting capability. Supported value is
-        /// only `search-data-quality` for now.
+        /// The feature that provides alerting capability.
+        /// Supported value:
+        /// - `search-data-quality` for retail search customers.
+        /// - `conv-data-quality` for retail conversation customers.
         #[prost(string, tag = "1")]
         pub alert_group: ::prost::alloc::string::String,
         /// The enrollment status of a customer.
@@ -11829,6 +12592,39 @@ pub mod user_event_service_client {
                     GrpcMethod::new(
                         "google.cloud.retail.v2alpha.UserEventService",
                         "ImportUserEvents",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Exports user events.
+        ///
+        /// `Operation.response` is of type `ExportResponse`.
+        /// `Operation.metadata` is of type `ExportMetadata`.
+        pub async fn export_user_events(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ExportUserEventsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.retail.v2alpha.UserEventService/ExportUserEvents",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.retail.v2alpha.UserEventService",
+                        "ExportUserEvents",
                     ),
                 );
             self.inner.unary(req, path, codec).await

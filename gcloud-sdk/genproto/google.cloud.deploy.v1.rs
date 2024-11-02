@@ -405,6 +405,37 @@ pub mod kubernetes_config {
         /// Service resources. This label must already be present in both resources.
         #[prost(string, tag = "6")]
         pub pod_selector_label: ::prost::alloc::string::String,
+        /// Optional. Route destinations allow configuring the Gateway API HTTPRoute
+        /// to be deployed to additional clusters. This option is available for
+        /// multi-cluster service mesh set ups that require the route to exist in the
+        /// clusters that call the service. If unspecified, the HTTPRoute will only
+        /// be deployed to the Target cluster.
+        #[prost(message, optional, tag = "8")]
+        pub route_destinations: ::core::option::Option<
+            gateway_service_mesh::RouteDestinations,
+        >,
+    }
+    /// Nested message and enum types in `GatewayServiceMesh`.
+    pub mod gateway_service_mesh {
+        /// Information about route destinations for the Gateway API service mesh.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct RouteDestinations {
+            /// Required. The clusters where the Gateway API HTTPRoute resource will be
+            /// deployed to. Valid entries include the associated entities IDs
+            /// configured in the Target resource and "@self" to include the Target
+            /// cluster.
+            #[prost(string, repeated, tag = "1")]
+            pub destination_ids: ::prost::alloc::vec::Vec<
+                ::prost::alloc::string::String,
+            >,
+            /// Optional. Whether to propagate the Kubernetes Service to the route
+            /// destination clusters. The Service will always be deployed to the Target
+            /// cluster even if the HTTPRoute is not. This option may be used to
+            /// facilitiate successful DNS lookup in the route destination clusters.
+            /// Can only be set to true if destinations are specified.
+            #[prost(bool, tag = "2")]
+            pub propagate_service: bool,
+        }
     }
     /// Information about the Kubernetes Service networking configuration.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -805,6 +836,19 @@ pub struct Target {
     /// Output only. Most recent time at which the `Target` was updated.
     #[prost(message, optional, tag = "9")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Map of entity IDs to their associated entities. Associated
+    /// entities allows specifying places other than the deployment target for
+    /// specific features. For example, the Gateway API canary can be configured to
+    /// deploy the HTTPRoute to a different cluster(s) than the deployment cluster
+    /// using associated entities. An entity ID must consist of lower-case letters,
+    /// numbers, and hyphens, start with a letter and end with a letter or a
+    /// number, and have a max length of 63 characters. In other words, it must
+    /// match the following regex: `^[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?$`.
+    #[prost(map = "string, message", tag = "23")]
+    pub associated_entities: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        AssociatedEntities,
+    >,
     /// Optional. This checksum is computed by the server based on the value of
     /// other fields, and may be sent on update and delete requests to ensure the
     /// client has an up-to-date value before proceeding.
@@ -1052,6 +1096,16 @@ pub struct CustomTarget {
     /// `projects/{project}/locations/{location}/customTargetTypes/{custom_target_type}`.
     #[prost(string, tag = "1")]
     pub custom_target_type: ::prost::alloc::string::String,
+}
+/// Information about entities associated with a `Target`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssociatedEntities {
+    /// Optional. Information specifying GKE clusters as associated entities.
+    #[prost(message, repeated, tag = "2")]
+    pub gke_clusters: ::prost::alloc::vec::Vec<GkeCluster>,
+    /// Optional. Information specifying Anthos clusters as associated entities.
+    #[prost(message, repeated, tag = "3")]
+    pub anthos_clusters: ::prost::alloc::vec::Vec<AnthosCluster>,
 }
 /// The request object for `ListTargets`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2694,6 +2748,9 @@ pub struct Rollout {
     pub rolled_back_by_rollouts: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
     >,
+    /// Output only. The AutomationRun actively repairing the rollout.
+    #[prost(string, tag = "28")]
+    pub active_repair_automation_run: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Rollout`.
 pub mod rollout {
@@ -4218,6 +4275,14 @@ pub struct RepairRolloutRule {
     /// `[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?`.
     #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
+    /// Optional. Phases within which jobs are subject to automatic repair actions
+    /// on failure. Proceeds only after phase name matched any one in the list, or
+    /// for all phases if unspecified. This value must consist of lower-case
+    /// letters, numbers, and hyphens, start with a letter and end with a letter or
+    /// a number, and have a max length of 63 characters. In other words, it must
+    /// match the following regex: `^[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?$`.
+    #[prost(string, repeated, tag = "7")]
+    pub phases: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. Jobs to repair. Proceeds only after job name matched any one in
     /// the list, or for all jobs if unspecified or empty. The phase that includes
     /// the job must match the phase ID specified in `source_phase`. This value
@@ -4230,6 +4295,57 @@ pub struct RepairRolloutRule {
     /// Output only. Information around the state of the 'Automation' rule.
     #[prost(message, optional, tag = "6")]
     pub condition: ::core::option::Option<AutomationRuleCondition>,
+    /// Required. Defines the types of automatic repair phases for failed jobs.
+    #[prost(message, repeated, tag = "8")]
+    pub repair_phases: ::prost::alloc::vec::Vec<RepairPhaseConfig>,
+}
+/// Configuration of the repair phase.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RepairPhaseConfig {
+    /// The repair phase to perform.
+    #[prost(oneof = "repair_phase_config::RepairPhase", tags = "1, 2")]
+    pub repair_phase: ::core::option::Option<repair_phase_config::RepairPhase>,
+}
+/// Nested message and enum types in `RepairPhaseConfig`.
+pub mod repair_phase_config {
+    /// The repair phase to perform.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum RepairPhase {
+        /// Optional. Retries a failed job.
+        #[prost(message, tag = "1")]
+        Retry(super::Retry),
+        /// Optional. Rolls back a `Rollout`.
+        #[prost(message, tag = "2")]
+        Rollback(super::Rollback),
+    }
+}
+/// Retries the failed job.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct Retry {
+    /// Required. Total number of retries. Retry is skipped if set to 0; The
+    /// minimum value is 1, and the maximum value is 10.
+    #[prost(int64, tag = "1")]
+    pub attempts: i64,
+    /// Optional. How long to wait for the first retry. Default is 0, and the
+    /// maximum value is 14d.
+    #[prost(message, optional, tag = "2")]
+    pub wait: ::core::option::Option<::prost_types::Duration>,
+    /// Optional. The pattern of how wait time will be increased. Default is
+    /// linear. Backoff mode will be ignored if `wait` is 0.
+    #[prost(enumeration = "BackoffMode", tag = "3")]
+    pub backoff_mode: i32,
+}
+/// Rolls back a `Rollout`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Rollback {
+    /// Optional. The starting phase ID for the `Rollout`. If unspecified, the
+    /// `Rollout` will start in the stable phase.
+    #[prost(string, tag = "1")]
+    pub destination_phase: ::prost::alloc::string::String,
+    /// Optional. If pending rollout exists on the target, the rollback operation
+    /// will be aborted.
+    #[prost(bool, tag = "2")]
+    pub disable_rollback_if_rollout_pending: bool,
 }
 /// `AutomationRuleCondition` contains conditions relevant to an
 /// `Automation` rule.
@@ -4577,6 +4693,9 @@ pub struct RepairRolloutOperation {
     /// Output only. The name of the rollout that initiates the `AutomationRun`.
     #[prost(string, tag = "1")]
     pub rollout: ::prost::alloc::string::String,
+    /// Output only. The index of the current repair action in the repair sequence.
+    #[prost(int64, tag = "6")]
+    pub current_repair_phase_index: i64,
     /// Output only. Records of the repair attempts. Each repair phase may have
     /// multiple retry attempts or single rollback attempt.
     #[prost(message, repeated, tag = "3")]
@@ -4656,6 +4775,9 @@ pub struct RollbackAttempt {
     /// Output only. Description of the state of the Rollback.
     #[prost(string, tag = "4")]
     pub state_desc: ::prost::alloc::string::String,
+    /// Output only. If active rollout exists on the target, abort this rollback.
+    #[prost(bool, tag = "5")]
+    pub disable_rollback_if_rollout_pending: bool,
 }
 /// The request object for `ListAutomationRuns`.
 #[derive(Clone, PartialEq, ::prost::Message)]

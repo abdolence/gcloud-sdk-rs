@@ -2,21 +2,21 @@
 /// Configuration for BigLake managed tables.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigLakeConfiguration {
-    /// Required. The connection specifying the credentials to be used to read and
+    /// Optional. The connection specifying the credentials to be used to read and
     /// write to external storage, such as Cloud Storage. The connection_id can
     /// have the form `{project}.{location}.{connection_id}` or
     /// `projects/{project}/locations/{location}/connections/{connection_id}".
     #[prost(string, tag = "1")]
     pub connection_id: ::prost::alloc::string::String,
-    /// Required. The fully qualified location prefix of the external folder where
+    /// Optional. The fully qualified location prefix of the external folder where
     /// table data is stored. The '*' wildcard character is not allowed. The URI
     /// should be in the format `gs://bucket/path_to_table/`
     #[prost(string, tag = "2")]
     pub storage_uri: ::prost::alloc::string::String,
-    /// Required. The file format the table data is stored in.
+    /// Optional. The file format the table data is stored in.
     #[prost(enumeration = "big_lake_configuration::FileFormat", tag = "3")]
     pub file_format: i32,
-    /// Required. The table format the metadata only snapshots are stored in.
+    /// Optional. The table format the metadata only snapshots are stored in.
     #[prost(enumeration = "big_lake_configuration::TableFormat", tag = "4")]
     pub table_format: i32,
 }
@@ -663,6 +663,10 @@ pub struct Access {
     /// update operation.
     #[prost(message, optional, tag = "9")]
     pub dataset: ::core::option::Option<DatasetAccessEntry>,
+    /// Optional. condition for the binding. If CEL expression in this field is
+    /// true, this access binding will be considered
+    #[prost(message, optional, tag = "10")]
+    pub condition: ::core::option::Option<super::super::super::r#type::Expr>,
 }
 /// Represents a BigQuery dataset.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -996,6 +1000,34 @@ pub struct GetDatasetRequest {
     /// returned. By default, metadata and ACL information are returned.
     #[prost(enumeration = "get_dataset_request::DatasetView", tag = "3")]
     pub dataset_view: i32,
+    /// Optional. The version of the access policy schema to fetch.
+    /// Valid values are 0, 1, and 3. Requests specifying an invalid value will be
+    /// rejected.
+    ///
+    /// Requests for conditional access policy binding in datasets must specify
+    /// version 3. Dataset with no conditional role bindings in access policy may
+    /// specify any valid value or leave the field unset.
+    ///
+    /// This field will be maped to \[IAM Policy version\]
+    /// (<https://cloud.google.com/iam/docs/policies#versions>) and will be used to
+    /// fetch policy from IAM.
+    ///
+    /// If unset or if 0 or 1 value is used for dataset with conditional bindings,
+    /// access entry with condition will have role string appended by
+    /// 'withcond' string followed by a hash value. For example :
+    /// {
+    ///    "access": [
+    ///       {
+    ///          "role":
+    ///          "roles/bigquery.dataViewer_with_conditionalbinding_7a34awqsda",
+    ///          "userByEmail": "user@example.com",
+    ///       }
+    ///    ]
+    /// }
+    /// Please refer <https://cloud.google.com/iam/docs/troubleshooting-withcond> for
+    /// more details.
+    #[prost(int32, tag = "4")]
+    pub access_policy_version: i32,
 }
 /// Nested message and enum types in `GetDatasetRequest`.
 pub mod get_dataset_request {
@@ -1059,6 +1091,27 @@ pub struct InsertDatasetRequest {
     /// Required. Datasets resource to use for the new dataset
     #[prost(message, optional, tag = "2")]
     pub dataset: ::core::option::Option<Dataset>,
+    /// Optional. The version of the provided access policy schema.
+    /// Valid values are 0, 1, and 3. Requests specifying an invalid value will be
+    /// rejected.
+    ///
+    /// This version refers to the schema version of the access policy and not the
+    /// version of access policy. This field's value can be equal or more
+    /// than the access policy schema provided in the request.
+    /// For example,
+    ///    * Requests with conditional access policy binding in datasets must
+    ///    specify
+    ///      version 3.
+    ///    * But dataset with no conditional role bindings in access policy
+    ///      may specify any valid value or leave the field unset.
+    /// If unset or if 0 or 1 value is used for dataset with conditional
+    /// bindings, request will be rejected.
+    ///
+    /// This field will be maped to IAM Policy version
+    /// (<https://cloud.google.com/iam/docs/policies#versions>) and will be used to
+    /// set policy in IAM.
+    #[prost(int32, tag = "4")]
+    pub access_policy_version: i32,
 }
 /// Message for updating or patching a dataset.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1073,6 +1126,30 @@ pub struct UpdateOrPatchDatasetRequest {
     /// dataset.
     #[prost(message, optional, tag = "3")]
     pub dataset: ::core::option::Option<Dataset>,
+    /// Optional. The version of the provided access policy schema.
+    /// Valid values are 0, 1, and 3. Requests specifying an invalid value will be
+    /// rejected.
+    ///
+    /// This version refers to the schema version of the access policy and not the
+    /// version of access policy. This field's value can be equal or more
+    /// than the access policy schema provided in the request.
+    /// For example,
+    ///    * Operations updating conditional access policy binding in datasets must
+    ///    specify
+    ///      version 3. Some of the operations are :
+    ///        -  Adding a new access policy entry with condition.
+    ///        -  Removing an access policy entry with condition.
+    ///        -  Updating an access policy entry with condition.
+    ///    * But dataset with no conditional role bindings in access policy
+    ///      may specify any valid value or leave the field unset.
+    /// If unset or if 0 or 1 value is used for dataset with conditional
+    /// bindings, request will be rejected.
+    ///
+    /// This field will be maped to IAM Policy version
+    /// (<https://cloud.google.com/iam/docs/policies#versions>) and will be used to
+    /// set policy in IAM.
+    #[prost(int32, tag = "5")]
+    pub access_policy_version: i32,
 }
 /// Request format for deleting a dataset.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1200,10 +1277,7 @@ pub mod dataset_service_client {
     )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// This is an experimental RPC service definition for the BigQuery
-    /// Dataset Service.
-    ///
-    /// It should not be relied on for production use cases at this time.
+    /// DatasetService provides methods for managing BigQuery datasets.
     #[derive(Debug, Clone)]
     pub struct DatasetServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -5261,6 +5335,27 @@ pub mod model {
             pub vertex_ai_model_version_aliases: ::prost::alloc::vec::Vec<
                 ::prost::alloc::string::String,
             >,
+            /// Optional. Names of the columns to slice on. Applies to contribution
+            /// analysis models.
+            #[prost(string, repeated, tag = "104")]
+            pub dimension_id_columns: ::prost::alloc::vec::Vec<
+                ::prost::alloc::string::String,
+            >,
+            /// The contribution metric. Applies to contribution analysis models.
+            /// Allowed formats supported are for summable and summable ratio
+            /// contribution metrics. These include expressions such as `SUM(x)` or
+            /// `SUM(x)/SUM(y)`, where x and y are column names from the base table.
+            #[prost(string, optional, tag = "105")]
+            pub contribution_metric: ::core::option::Option<
+                ::prost::alloc::string::String,
+            >,
+            /// Name of the column used to determine the rows corresponding to control
+            /// and test. Applies to contribution analysis models.
+            #[prost(string, optional, tag = "106")]
+            pub is_test_column: ::core::option::Option<::prost::alloc::string::String>,
+            /// The apriori support minimum. Applies to contribution analysis models.
+            #[prost(double, optional, tag = "107")]
+            pub min_apriori_support: ::core::option::Option<f64>,
         }
         /// Information about a single iteration of the training run.
         #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5765,6 +5860,8 @@ pub mod model {
         /// Model to capture the columns and logic in the TRANSFORM clause along with
         /// statistics useful for ML analytic functions.
         TransformOnly = 29,
+        /// The contribution analysis model.
+        ContributionAnalysis = 37,
     }
     impl ModelType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -5798,6 +5895,7 @@ pub mod model {
                 Self::TensorflowLite => "TENSORFLOW_LITE",
                 Self::Onnx => "ONNX",
                 Self::TransformOnly => "TRANSFORM_ONLY",
+                Self::ContributionAnalysis => "CONTRIBUTION_ANALYSIS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5830,6 +5928,7 @@ pub mod model {
                 "TENSORFLOW_LITE" => Some(Self::TensorflowLite),
                 "ONNX" => Some(Self::Onnx),
                 "TRANSFORM_ONLY" => Some(Self::TransformOnly),
+                "CONTRIBUTION_ANALYSIS" => Some(Self::ContributionAnalysis),
                 _ => None,
             }
         }
@@ -6622,10 +6721,7 @@ pub mod model_service_client {
     )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// This is an experimental RPC service definition for the BigQuery
-    /// Model Service.
-    ///
-    /// It should not be relied on for production use cases at this time.
+    /// Model Service for BigQuery ML
     #[derive(Debug, Clone)]
     pub struct ModelServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -9394,10 +9490,6 @@ pub mod job_service_client {
     )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// This is an experimental RPC service definition for the BigQuery
-    /// Job Service.
-    ///
-    /// It should not be relied on for production use cases at this time.
     #[derive(Debug, Clone)]
     pub struct JobServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -9922,10 +10014,7 @@ pub mod project_service_client {
     )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// This is an experimental RPC service definition for the BigQuery
-    /// Project Service.
-    ///
-    /// It should not be relied on for production use cases at this time.
+    /// This service provides access to BigQuery functionality related to projects.
     #[derive(Debug, Clone)]
     pub struct ProjectServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -10182,7 +10271,7 @@ pub mod routine {
         /// Can be set for procedures only.
         #[prost(enumeration = "argument::Mode", tag = "3")]
         pub mode: i32,
-        /// Required unless argument_kind = ANY_TYPE.
+        /// Set if argument_kind == FIXED_TYPE.
         #[prost(message, optional, tag = "4")]
         pub data_type: ::core::option::Option<super::StandardSqlDataType>,
         /// Optional. Whether the argument is an aggregate function parameter.
@@ -10215,7 +10304,6 @@ pub mod routine {
             /// struct or an array, but not a table.
             FixedType = 1,
             /// The argument is any type, including struct or array, but not a table.
-            /// To be added: FIXED_TABLE, ANY_TABLE
             AnyType = 2,
         }
         impl ArgumentKind {
@@ -10743,10 +10831,7 @@ pub mod routine_service_client {
     )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// This is an experimental RPC service definition for the BigQuery
-    /// Routine Service.
-    ///
-    /// It should not be relied on for production use cases at this time.
+    /// RoutineService provides management access to BigQuery routines.
     #[derive(Debug, Clone)]
     pub struct RoutineServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -11907,10 +11992,8 @@ pub mod table_service_client {
     )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// This is an experimental RPC service definition for the BigQuery
-    /// Table Service.
-    ///
-    /// It should not be relied on for production use cases at this time.
+    /// TableService provides methods for managing BigQuery tables and table-like
+    /// entities such as views and snapshots.
     #[derive(Debug, Clone)]
     pub struct TableServiceClient<T> {
         inner: tonic::client::Grpc<T>,

@@ -36,6 +36,11 @@ pub struct Conversation {
     /// Conversation metadata related to quality management.
     #[prost(message, optional, tag = "24")]
     pub quality_metadata: ::core::option::Option<conversation::QualityMetadata>,
+    /// Input only. JSON Metadata encoded as a string.
+    /// This field is primarily used by Insights integrations with various telphony
+    /// systems and must be in one of Insights' supported formats.
+    #[prost(string, tag = "25")]
+    pub metadata_json: ::prost::alloc::string::String,
     /// Output only. The conversation transcript.
     #[prost(message, optional, tag = "8")]
     pub transcript: ::core::option::Option<conversation::Transcript>,
@@ -371,6 +376,9 @@ pub mod analysis_result {
         /// Overall conversation-level sentiment for each channel of the call.
         #[prost(message, repeated, tag = "4")]
         pub sentiments: ::prost::alloc::vec::Vec<super::ConversationLevelSentiment>,
+        /// Overall conversation-level silence during the call.
+        #[prost(message, optional, tag = "11")]
+        pub silence: ::core::option::Option<super::ConversationLevelSilence>,
         /// All the matched intents in the call.
         #[prost(map = "string, message", tag = "6")]
         pub intents: ::std::collections::HashMap<
@@ -415,6 +423,16 @@ pub struct ConversationLevelSentiment {
     /// Data specifying sentiment.
     #[prost(message, optional, tag = "2")]
     pub sentiment_data: ::core::option::Option<SentimentData>,
+}
+/// Conversation-level silence data.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ConversationLevelSilence {
+    /// Amount of time calculated to be in silence.
+    #[prost(message, optional, tag = "1")]
+    pub silence_duration: ::core::option::Option<::prost_types::Duration>,
+    /// Percentage of the total conversation spent in silence.
+    #[prost(float, tag = "2")]
+    pub silence_percentage: f32,
 }
 /// Information about the issue.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -963,6 +981,9 @@ pub struct Issue {
     /// match to this issue.
     #[prost(string, repeated, tag = "6")]
     pub sample_utterances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Representative description of the issue.
+    #[prost(string, tag = "14")]
+    pub display_description: ::prost::alloc::string::String,
 }
 /// Aggregated statistics about an issue model.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1192,7 +1213,12 @@ pub struct ExactMatchConfig {
     #[prost(bool, tag = "1")]
     pub case_sensitive: bool,
 }
-/// The settings resource.
+/// The CCAI Insights project wide settings.
+/// Use these settings to configure the behavior of Insights.
+/// View these settings with
+/// [`getsettings`](<https://cloud.google.com/contact-center/insights/docs/reference/rest/v1/projects.locations/getSettings>)
+/// and change the settings with
+/// [`updateSettings`](<https://cloud.google.com/contact-center/insights/docs/reference/rest/v1/projects.locations/updateSettings>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Settings {
     /// Immutable. The resource name of the settings resource.
@@ -1227,8 +1253,11 @@ pub struct Settings {
     /// * "create-analysis": Notify each time an analysis is created.
     /// * "create-conversation": Notify each time a conversation is created.
     /// * "export-insights-data": Notify each time an export is complete.
+    /// * "ingest-conversations": Notify each time an IngestConversations LRO is
+    /// complete.
     /// * "update-conversation": Notify each time a conversation is updated via
     /// UpdateConversation.
+    /// * "upload-conversation": Notify when an UploadConversation LRO is complete.
     ///
     /// Values are Pub/Sub topics. The format of each Pub/Sub topic is:
     /// projects/{project}/topics/{topic}
@@ -1241,11 +1270,16 @@ pub struct Settings {
     #[prost(message, optional, tag = "7")]
     pub analysis_config: ::core::option::Option<settings::AnalysisConfig>,
     /// Default DLP redaction resources to be applied while ingesting
-    /// conversations.
+    /// conversations. This applies to conversations ingested from the
+    /// `UploadConversation` and `IngestConversations` endpoints, including
+    /// conversations coming from CCAI Platform.
     #[prost(message, optional, tag = "10")]
     pub redaction_config: ::core::option::Option<RedactionConfig>,
-    /// Optional. Default Speech-to-Text resources to be used while ingesting audio
-    /// files. Optional, CCAI Insights will create a default if not provided.
+    /// Optional. Default Speech-to-Text resources to use while ingesting audio
+    /// files. Optional, CCAI Insights will create a default if not provided. This
+    /// applies to conversations ingested from the `UploadConversation` and
+    /// `IngestConversations` endpoints, including conversations coming from CCAI
+    /// Platform.
     #[prost(message, optional, tag = "11")]
     pub speech_config: ::core::option::Option<SpeechConfig>,
 }
@@ -1268,7 +1302,30 @@ pub mod settings {
         pub annotator_selector: ::core::option::Option<super::AnnotatorSelector>,
     }
 }
+/// A customer-managed encryption key specification that can be applied to all
+/// created resources (e.g. Conversation).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EncryptionSpec {
+    /// Immutable. The resource name of the encryption key specification resource.
+    /// Format:
+    /// projects/{project}/locations/{location}/encryptionSpec
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The name of customer-managed encryption key that is used to
+    /// secure a resource and its sub-resources. If empty, the resource is secured
+    /// by the default Google encryption key. Only the key in the same location as
+    /// this resource is allowed to be used for encryption. Format:
+    /// `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{key}`
+    #[prost(string, tag = "2")]
+    pub kms_key: ::prost::alloc::string::String,
+}
 /// DLP resources used for redaction while ingesting conversations.
+/// DLP settings are applied to conversations ingested from the
+/// `UploadConversation` and `IngestConversations` endpoints, including
+/// conversation coming from CCAI Platform. They are not applied to conversations
+/// ingested from the `CreateConversation` endpoint or the Dialogflow / Agent
+/// Assist runtime integrations. When using Dialogflow / Agent Assist runtime
+/// integrations, redaction should be performed in Dialogflow / Agent Assist.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RedactionConfig {
     /// The fully-qualified DLP deidentify template resource name.
@@ -1283,6 +1340,10 @@ pub struct RedactionConfig {
     pub inspect_template: ::prost::alloc::string::String,
 }
 /// Speech-to-Text configuration.
+/// Speech-to-Text settings are applied to conversations ingested from the
+/// `UploadConversation` and `IngestConversations` endpoints, including
+/// conversation coming from CCAI Platform. They are not applied to conversations
+/// ingested from the `CreateConversation` endpoint.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeechConfig {
     /// The fully-qualified Speech Recognizer resource name.
@@ -1311,12 +1372,77 @@ pub struct RuntimeAnnotation {
     /// The feedback that the customer has about the answer in `data`.
     #[prost(message, optional, tag = "5")]
     pub answer_feedback: ::core::option::Option<AnswerFeedback>,
+    /// Explicit input used for generating the answer
+    #[prost(message, optional, tag = "16")]
+    pub user_input: ::core::option::Option<runtime_annotation::UserInput>,
     /// The data in the annotation.
     #[prost(oneof = "runtime_annotation::Data", tags = "6, 7, 8, 9, 10, 12")]
     pub data: ::core::option::Option<runtime_annotation::Data>,
 }
 /// Nested message and enum types in `RuntimeAnnotation`.
 pub mod runtime_annotation {
+    /// Explicit input used for generating the answer
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct UserInput {
+        /// Query text. Article Search uses this to store the input query used
+        /// to generate the search results.
+        #[prost(string, tag = "1")]
+        pub query: ::prost::alloc::string::String,
+        /// The resource name of associated generator. Format:
+        /// `projects/<Project ID>/locations/<Location ID>/generators/<Generator ID>`
+        #[prost(string, tag = "2")]
+        pub generator_name: ::prost::alloc::string::String,
+        /// Query source for the answer.
+        #[prost(enumeration = "user_input::QuerySource", tag = "3")]
+        pub query_source: i32,
+    }
+    /// Nested message and enum types in `UserInput`.
+    pub mod user_input {
+        /// The source of the query.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum QuerySource {
+            /// Unknown query source.
+            Unspecified = 0,
+            /// The query is from agents.
+            AgentQuery = 1,
+            /// The query is a query from previous suggestions, e.g. from a preceding
+            /// SuggestKnowledgeAssist response.
+            SuggestedQuery = 2,
+        }
+        impl QuerySource {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "QUERY_SOURCE_UNSPECIFIED",
+                    Self::AgentQuery => "AGENT_QUERY",
+                    Self::SuggestedQuery => "SUGGESTED_QUERY",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "QUERY_SOURCE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "AGENT_QUERY" => Some(Self::AgentQuery),
+                    "SUGGESTED_QUERY" => Some(Self::SuggestedQuery),
+                    _ => None,
+                }
+            }
+        }
+    }
     /// The data in the annotation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Data {
@@ -1747,6 +1873,8 @@ pub mod annotator_selector {
             Unspecified = 0,
             /// The CCAI baseline model.
             BaselineModel = 1,
+            /// The CCAI baseline model, V2.0.
+            BaselineModelV20 = 2,
         }
         impl SummarizationModel {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -1757,6 +1885,7 @@ pub mod annotator_selector {
                 match self {
                     Self::Unspecified => "SUMMARIZATION_MODEL_UNSPECIFIED",
                     Self::BaselineModel => "BASELINE_MODEL",
+                    Self::BaselineModelV20 => "BASELINE_MODEL_V2_0",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1764,6 +1893,7 @@ pub mod annotator_selector {
                 match value {
                     "SUMMARIZATION_MODEL_UNSPECIFIED" => Some(Self::Unspecified),
                     "BASELINE_MODEL" => Some(Self::BaselineModel),
+                    "BASELINE_MODEL_V2_0" => Some(Self::BaselineModelV20),
                     _ => None,
                 }
             }
@@ -1930,7 +2060,7 @@ pub struct UploadConversationRequest {
     #[prost(message, optional, tag = "11")]
     pub speech_config: ::core::option::Option<SpeechConfig>,
 }
-/// The metadata for an UploadConversation operation.
+/// The metadata for an `UploadConversation` operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadConversationMetadata {
     /// Output only. The time the operation was created.
@@ -1957,7 +2087,7 @@ pub struct ListConversationsRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of conversations to return in the response. A valid page
-    /// size ranges from 0 to 1,000 inclusive. If the page size is zero or
+    /// size ranges from 0 to 100,000 inclusive. If the page size is zero or
     /// unspecified, a default page size of 100 will be chosen. Note that a call
     /// might return fewer results than the requested page size.
     #[prost(int32, tag = "2")]
@@ -1971,6 +2101,23 @@ pub struct ListConversationsRequest {
     /// conversations with specific properties.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
+    /// Optional. The attribute by which to order conversations in the response.
+    /// If empty, conversations will be ordered by descending creation time.
+    /// Supported values are one of the following:
+    ///
+    /// * create_time
+    /// * customer_satisfaction_rating
+    /// * duration
+    /// * latest_analysis
+    /// * start_time
+    /// * turn_count
+    ///
+    /// The default sort order is ascending. To specify order, append `asc` or
+    /// `desc` (`create_time desc`).
+    /// For more details, see [Google AIPs
+    /// Ordering](<https://google.aip.dev/132#ordering>).
+    #[prost(string, tag = "7")]
+    pub order_by: ::prost::alloc::string::String,
     /// The level of details of the conversation. Default is `BASIC`.
     #[prost(enumeration = "ConversationView", tag = "5")]
     pub view: i32,
@@ -2003,7 +2150,20 @@ pub struct UpdateConversationRequest {
     /// Required. The new values for the conversation.
     #[prost(message, optional, tag = "1")]
     pub conversation: ::core::option::Option<Conversation>,
-    /// The list of fields to be updated.
+    /// The list of fields to be updated. All possible fields can be updated by
+    /// passing `*`, or a subset of the following updateable fields can be
+    /// provided:
+    ///
+    /// * `agent_id`
+    /// * `language_code`
+    /// * `labels`
+    /// * `metadata`
+    /// * `quality_metadata`
+    /// * `call_metadata`
+    /// * `start_time`
+    /// * `expire_time` or `ttl`
+    /// * `data_source.gcs_source.audio_uri` or
+    /// `data_source.dialogflow_source.audio_uri`
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -2038,6 +2198,12 @@ pub struct IngestConversationsRequest {
     /// the config specified in Settings.
     #[prost(message, optional, tag = "6")]
     pub speech_config: ::core::option::Option<SpeechConfig>,
+    /// Optional. If set, this fields indicates the number of objects to ingest
+    /// from the Cloud Storage bucket. If empty, the entire bucket will be
+    /// ingested. Unless they are first deleted, conversations produced through
+    /// sampling won't be ingested by subsequent ingest requests.
+    #[prost(int32, optional, tag = "7")]
+    pub sample_size: ::core::option::Option<i32>,
     /// Configuration for an external data store containing objects that will
     /// be converted to conversations.
     #[prost(oneof = "ingest_conversations_request::Source", tags = "2")]
@@ -2059,6 +2225,23 @@ pub mod ingest_conversations_request {
         /// Optional. Specifies the type of the objects in `bucket_uri`.
         #[prost(enumeration = "gcs_source::BucketObjectType", tag = "2")]
         pub bucket_object_type: i32,
+        /// Optional. The Cloud Storage path to the conversation metadata. Note that:
+        /// \[1\] Metadata files are expected to be in JSON format.
+        /// \[2\] Metadata and source files (transcripts or audio) must be in
+        ///      separate buckets.
+        /// \[3\] A source file and its corresponding metadata file must share the same
+        /// name to
+        ///      be properly ingested, E.g. `gs://bucket/audio/conversation1.mp3` and
+        ///      `gs://bucket/metadata/conversation1.json`.
+        #[prost(string, optional, tag = "3")]
+        pub metadata_bucket_uri: ::core::option::Option<::prost::alloc::string::String>,
+        /// Optional. Custom keys to extract as conversation labels from metadata
+        /// files in `metadata_bucket_uri`. Keys not included in this field will be
+        /// ignored. Note that there is a limit of 20 labels per conversation.
+        #[prost(string, repeated, tag = "12")]
+        pub custom_metadata_keys: ::prost::alloc::vec::Vec<
+            ::prost::alloc::string::String,
+        >,
     }
     /// Nested message and enum types in `GcsSource`.
     pub mod gcs_source {
@@ -2115,8 +2298,10 @@ pub mod ingest_conversations_request {
     /// Configuration that applies to all conversations.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ConversationConfig {
-        /// An opaque, user-specified string representing the human agent who handled
-        /// the conversations.
+        /// Optional. An opaque, user-specified string representing a human agent who
+        /// handled all conversations in the import. Note that this will be
+        /// overridden if per-conversation metadata is provided through the
+        /// `metadata_bucket_uri`.
         #[prost(string, tag = "1")]
         pub agent_id: ::prost::alloc::string::String,
         /// Optional. Indicates which of the channels, 1 or 2, contains the agent.
@@ -2581,6 +2766,93 @@ pub struct UndeployIssueModelMetadata {
     #[prost(message, optional, tag = "3")]
     pub request: ::core::option::Option<UndeployIssueModelRequest>,
 }
+/// Request to export an issue model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportIssueModelRequest {
+    /// Required. The issue model to export.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    #[prost(oneof = "export_issue_model_request::Destination", tags = "2")]
+    pub destination: ::core::option::Option<export_issue_model_request::Destination>,
+}
+/// Nested message and enum types in `ExportIssueModelRequest`.
+pub mod export_issue_model_request {
+    /// Google Cloud Storage Object URI to save the issue model to.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GcsDestination {
+        /// Required. Format: `gs://<bucket-name>/<object-name>`
+        #[prost(string, tag = "1")]
+        pub object_uri: ::prost::alloc::string::String,
+    }
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Destination {
+        /// Google Cloud Storage URI to export the issue model to.
+        #[prost(message, tag = "2")]
+        GcsDestination(GcsDestination),
+    }
+}
+/// Response from export issue model
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ExportIssueModelResponse {}
+/// Metadata used for export issue model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportIssueModelMetadata {
+    /// The time the operation was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time the operation finished running.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The original export request.
+    #[prost(message, optional, tag = "3")]
+    pub request: ::core::option::Option<ExportIssueModelRequest>,
+}
+/// Request to import an issue model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportIssueModelRequest {
+    /// Required. The parent resource of the issue model.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. If set to true, will create an issue model from the imported file
+    /// with randomly generated IDs for the issue model and corresponding issues.
+    /// Otherwise, replaces an existing model with the same ID as the file.
+    #[prost(bool, tag = "3")]
+    pub create_new_model: bool,
+    #[prost(oneof = "import_issue_model_request::Source", tags = "2")]
+    pub source: ::core::option::Option<import_issue_model_request::Source>,
+}
+/// Nested message and enum types in `ImportIssueModelRequest`.
+pub mod import_issue_model_request {
+    /// Google Cloud Storage Object URI to get the issue model file from.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GcsSource {
+        /// Required. Format: `gs://<bucket-name>/<object-name>`
+        #[prost(string, tag = "1")]
+        pub object_uri: ::prost::alloc::string::String,
+    }
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// Google Cloud Storage source message.
+        #[prost(message, tag = "2")]
+        GcsSource(GcsSource),
+    }
+}
+/// Response from import issue model
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ImportIssueModelResponse {}
+/// Metadata used for import issue model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportIssueModelMetadata {
+    /// The time the operation was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time the operation finished running.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The original import request.
+    #[prost(message, optional, tag = "3")]
+    pub request: ::core::option::Option<ImportIssueModelRequest>,
+}
 /// The request to get an issue.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIssueRequest {
@@ -2720,6 +2992,43 @@ pub struct UpdateSettingsRequest {
     /// Required. The list of fields to be updated.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// The request to get location-level encryption specification.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetEncryptionSpecRequest {
+    /// Required. The name of the encryption spec resource to get.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request to initialize a location-level encryption specification.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InitializeEncryptionSpecRequest {
+    /// Required. The encryption spec used for CMEK encryption. It is required that
+    /// the kms key is in the same region as the endpoint. The same key will be
+    /// used for all provisioned resources, if encryption is available. If the
+    /// kms_key_name is left empty, no encryption will be enforced.
+    #[prost(message, optional, tag = "1")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
+}
+/// The response to initialize a location-level encryption specification.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct InitializeEncryptionSpecResponse {}
+/// Metadata for initializing a location-level encryption specification.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InitializeEncryptionSpecMetadata {
+    /// Output only. The time the operation was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the operation finished running.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The original request for initialization.
+    #[prost(message, optional, tag = "3")]
+    pub request: ::core::option::Option<InitializeEncryptionSpecRequest>,
+    /// Partial errors during initialising operation that might cause the operation
+    /// output to be incomplete.
+    #[prost(message, repeated, tag = "4")]
+    pub partial_errors: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
 }
 /// The request to create a view.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2916,6 +3225,8 @@ pub mod contact_center_insights_client {
             self
         }
         /// Creates a conversation.
+        /// Note that this method does not support audio transcription or redaction.
+        /// Use `conversations.upload` instead.
         pub async fn create_conversation(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateConversationRequest>,
@@ -2942,8 +3253,8 @@ pub mod contact_center_insights_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Create a longrunning conversation upload operation. This method differs
-        /// from CreateConversation by allowing audio transcription and optional DLP
+        /// Create a long-running conversation upload operation. This method differs
+        /// from `CreateConversation` by allowing audio transcription and optional DLP
         /// redaction.
         pub async fn upload_conversation(
             &mut self,
@@ -3527,6 +3838,66 @@ pub mod contact_center_insights_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Exports an issue model to the provided destination.
+        pub async fn export_issue_model(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ExportIssueModelRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/ExportIssueModel",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "ExportIssueModel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Imports an issue model from a Cloud Storage bucket.
+        pub async fn import_issue_model(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ImportIssueModelRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/ImportIssueModel",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "ImportIssueModel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Gets an issue.
         pub async fn get_issue(
             &mut self,
@@ -3886,6 +4257,67 @@ pub mod contact_center_insights_client {
                     GrpcMethod::new(
                         "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
                         "UpdateSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets location-level encryption key specification.
+        pub async fn get_encryption_spec(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetEncryptionSpecRequest>,
+        ) -> std::result::Result<tonic::Response<super::EncryptionSpec>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/GetEncryptionSpec",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "GetEncryptionSpec",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Initializes a location-level encryption key specification.  An error will
+        /// be thrown if the location has resources already created before the
+        /// initialization. Once the encryption specification is initialized at a
+        /// location, it is immutable and all newly created resources under the
+        /// location will be encrypted with the existing specification.
+        pub async fn initialize_encryption_spec(
+            &mut self,
+            request: impl tonic::IntoRequest<super::InitializeEncryptionSpecRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/InitializeEncryptionSpec",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "InitializeEncryptionSpec",
                     ),
                 );
             self.inner.unary(req, path, codec).await

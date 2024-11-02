@@ -186,8 +186,8 @@ pub struct AnnotateAssessmentRequest {
     /// `projects/{project}/assessments/{assessment}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. The annotation that is assigned to the Event. This field can
-    /// be left empty to provide reasons that apply to an event without concluding
+    /// Optional. The annotation that is assigned to the Event. This field can be
+    /// left empty to provide reasons that apply to an event without concluding
     /// whether the event is legitimate or fraudulent.
     #[prost(enumeration = "annotate_assessment_request::Annotation", tag = "2")]
     pub annotation: i32,
@@ -633,7 +633,7 @@ pub struct Event {
     #[prost(bytes = "vec", tag = "6")]
     pub hashed_account_id: ::prost::alloc::vec::Vec<u8>,
     /// Optional. Flag for a reCAPTCHA express request for an assessment without a
-    /// token. If enabled, `site_key` must reference an express key.
+    /// token. If enabled, `site_key` must reference an Express site key.
     #[prost(bool, tag = "14")]
     pub express: bool,
     /// Optional. The URI resource the user requested that triggered an assessment.
@@ -656,7 +656,7 @@ pub struct Event {
     #[prost(bool, tag = "12")]
     pub firewall_policy_evaluation: bool,
     /// Optional. Data describing a payment transaction to be assessed. Sending
-    /// this data enables reCAPTCHA Fraud Prevention and the
+    /// this data enables reCAPTCHA Enterprise Fraud Prevention and the
     /// FraudPreventionAssessment component in the response.
     #[prost(message, optional, tag = "13")]
     pub transaction_data: ::core::option::Option<TransactionData>,
@@ -1397,7 +1397,7 @@ pub struct CreateKeyRequest {
 /// The list keys request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListKeysRequest {
-    /// Required. The name of the project that contains the keys that are
+    /// Required. The name of the project that contains the keys that is
     /// listed, in the format `projects/{project}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -1459,7 +1459,7 @@ pub struct DeleteKeyRequest {
 /// The create firewall policy request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFirewallPolicyRequest {
-    /// Required. The name of the project this policy will apply to, in the format
+    /// Required. The name of the project this policy applies to, in the format
     /// `projects/{project}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -1577,7 +1577,7 @@ pub struct Metrics {
     #[prost(message, repeated, tag = "2")]
     pub score_metrics: ::prost::alloc::vec::Vec<ScoreMetrics>,
     /// Metrics are continuous and in order by dates, and in the granularity
-    /// of day. Only challenge-based keys (CHECKBOX, INVISIBLE), will have
+    /// of day. Only challenge-based keys (CHECKBOX, INVISIBLE) have
     /// challenge-based data.
     #[prost(message, repeated, tag = "3")]
     pub challenge_metrics: ::prost::alloc::vec::Vec<ChallengeMetrics>,
@@ -1640,7 +1640,7 @@ pub mod key {
         /// Settings for keys that can be used by iOS apps.
         #[prost(message, tag = "5")]
         IosSettings(super::IosKeySettings),
-        /// Settings specific to keys that can be used for reCAPTCHA Express.
+        /// Settings for keys that can be used by reCAPTCHA Express.
         #[prost(message, tag = "11")]
         ExpressSettings(super::ExpressKeySettings),
     }
@@ -1648,12 +1648,12 @@ pub mod key {
 /// Options for user acceptance testing.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TestingOptions {
-    /// Optional. All assessments for this Key will return this score. Must be
-    /// between 0 (likely not legitimate) and 1 (likely legitimate) inclusive.
+    /// Optional. All assessments for this Key return this score. Must be between 0
+    /// (likely not legitimate) and 1 (likely legitimate) inclusive.
     #[prost(float, tag = "1")]
     pub testing_score: f32,
     /// Optional. For challenge-based keys only (CHECKBOX, INVISIBLE), all
-    /// challenge requests for this site will return nocaptcha if NOCAPTCHA, or an
+    /// challenge requests for this site return nocaptcha if NOCAPTCHA, or an
     /// unsolvable challenge if CHALLENGE.
     #[prost(enumeration = "testing_options::TestingChallenge", tag = "2")]
     pub testing_challenge: i32,
@@ -1711,7 +1711,7 @@ pub mod testing_options {
 /// Settings specific to keys that can be used by websites.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebKeySettings {
-    /// Optional. If set to true, it means allowed_domains will not be enforced.
+    /// Optional. If set to true, it means allowed_domains are not enforced.
     #[prost(bool, tag = "3")]
     pub allow_all_domains: bool,
     /// Optional. Domains or subdomains of websites allowed to use the key. All
@@ -1729,7 +1729,7 @@ pub struct WebKeySettings {
     pub integration_type: i32,
     /// Optional. Settings for the frequency and difficulty at which this key
     /// triggers captcha challenges. This should only be specified for
-    /// IntegrationTypes CHECKBOX and INVISIBLE.
+    /// IntegrationTypes CHECKBOX and INVISIBLE and SCORE_AND_CHALLENGE.
     #[prost(enumeration = "web_key_settings::ChallengeSecurityPreference", tag = "5")]
     pub challenge_security_preference: i32,
 }
@@ -1863,10 +1863,10 @@ pub struct IosKeySettings {
     #[prost(string, repeated, tag = "1")]
     pub allowed_bundle_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. Apple Developer account details for the app that is protected by
-    /// the reCAPTCHA Key. reCAPTCHA Enterprise leverages platform-specific checks
-    /// like Apple App Attest and Apple DeviceCheck to protect your app from abuse.
-    /// Providing these fields allows reCAPTCHA Enterprise to get a better
-    /// assessment of the integrity of your app.
+    /// the reCAPTCHA Key. reCAPTCHA leverages platform-specific checks like Apple
+    /// App Attest and Apple DeviceCheck to protect your app from abuse. Providing
+    /// these fields allows reCAPTCHA to get a better assessment of the integrity
+    /// of your app.
     #[prost(message, optional, tag = "3")]
     pub apple_developer_id: ::core::option::Option<AppleDeveloperId>,
 }
@@ -1971,7 +1971,7 @@ pub mod firewall_action {
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct IncludeRecaptchaScriptAction {}
     /// A redirect action returns a 307 (temporary redirect) response, pointing
-    /// the user to a ReCaptcha interstitial page to attach a token.
+    /// the user to a reCAPTCHA interstitial page to attach a token.
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RedirectAction {}
     /// A substitute action transparently serves a different page than the one
@@ -2001,23 +2001,23 @@ pub mod firewall_action {
         /// access to the requested resource.
         #[prost(message, tag = "1")]
         Allow(AllowAction),
-        /// This action will deny access to a given page. The user will get an HTTP
+        /// This action denies access to a given page. The user gets an HTTP
         /// error code.
         #[prost(message, tag = "2")]
         Block(BlockAction),
-        /// This action will inject reCAPTCHA JavaScript code into the HTML page
+        /// This action injects reCAPTCHA JavaScript code into the HTML page
         /// returned by the site backend.
         #[prost(message, tag = "6")]
         IncludeRecaptchaScript(IncludeRecaptchaScriptAction),
-        /// This action will redirect the request to a ReCaptcha interstitial to
+        /// This action redirects the request to a reCAPTCHA interstitial to
         /// attach a token.
         #[prost(message, tag = "5")]
         Redirect(RedirectAction),
-        /// This action will transparently serve a different page to an offending
+        /// This action transparently serves a different page to an offending
         /// user.
         #[prost(message, tag = "3")]
         Substitute(SubstituteAction),
-        /// This action will set a custom header but allow the request to continue
+        /// This action sets a custom header but allow the request to continue
         /// to the customer backend.
         #[prost(message, tag = "4")]
         SetHeader(SetHeaderAction),
@@ -2192,6 +2192,49 @@ pub struct AddIpOverrideRequest {
 /// Response for AddIpOverride.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AddIpOverrideResponse {}
+/// The removeIpOverride request message.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RemoveIpOverrideRequest {
+    /// Required. The name of the key from which the IP override is removed, in the
+    /// format `projects/{project}/keys/{key}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. IP override to be removed from the key.
+    #[prost(message, optional, tag = "2")]
+    pub ip_override_data: ::core::option::Option<IpOverrideData>,
+}
+/// Response for RemoveIpOverride.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct RemoveIpOverrideResponse {}
+/// The ListIpOverrides request message.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListIpOverridesRequest {
+    /// Required. The parent key for which the IP overrides are listed, in the
+    /// format `projects/{project}/keys/{key}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of overrides to return. Default is 10. Max
+    /// limit is 100. If the number of overrides is less than the page_size, all
+    /// overrides are returned. If the page size is more than 100, it is coerced to
+    /// 100.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The next_page_token value returned from a previous
+    /// ListIpOverridesRequest, if any.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response for ListIpOverrides.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListIpOverridesResponse {
+    /// IP Overrides details.
+    #[prost(message, repeated, tag = "1")]
+    pub ip_overrides: ::prost::alloc::vec::Vec<IpOverrideData>,
+    /// Token to retrieve the next page of results. If this field is empty, no keys
+    /// remain in the results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
 /// A membership in a group of related accounts.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RelatedAccountGroupMembership {
@@ -2288,7 +2331,7 @@ pub mod waf_settings {
             }
         }
     }
-    /// Web Application Firewalls supported by reCAPTCHA Enterprise.
+    /// Web Application Firewalls supported by reCAPTCHA.
     #[derive(
         Clone,
         Copy,
@@ -2310,6 +2353,8 @@ pub mod waf_settings {
         Fastly = 3,
         /// Cloudflare
         Cloudflare = 4,
+        /// Akamai
+        Akamai = 5,
     }
     impl WafService {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2322,6 +2367,7 @@ pub mod waf_settings {
                 Self::Ca => "CA",
                 Self::Fastly => "FASTLY",
                 Self::Cloudflare => "CLOUDFLARE",
+                Self::Akamai => "AKAMAI",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2331,6 +2377,7 @@ pub mod waf_settings {
                 "CA" => Some(Self::Ca),
                 "FASTLY" => Some(Self::Fastly),
                 "CLOUDFLARE" => Some(Self::Cloudflare),
+                "AKAMAI" => Some(Self::Akamai),
                 _ => None,
             }
         }
@@ -2795,6 +2842,70 @@ pub mod recaptcha_enterprise_service_client {
                     GrpcMethod::new(
                         "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
                         "AddIpOverride",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Removes an IP override from a key. The following restrictions hold:
+        /// * If the IP isn't found in an existing IP override, a `NOT_FOUND` error
+        /// is returned.
+        /// * If the IP is found in an existing IP override, but the
+        /// override type does not match, a `NOT_FOUND` error is returned.
+        pub async fn remove_ip_override(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RemoveIpOverrideRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::RemoveIpOverrideResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/RemoveIpOverride",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
+                        "RemoveIpOverride",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all IP overrides for a key.
+        pub async fn list_ip_overrides(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListIpOverridesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListIpOverridesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ListIpOverrides",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
+                        "ListIpOverrides",
                     ),
                 );
             self.inner.unary(req, path, codec).await

@@ -865,6 +865,15 @@ pub struct Attributes {
     /// Custom label 4 for custom grouping of items in a Shopping campaign.
     #[prost(string, optional, tag = "50")]
     pub custom_label_4: ::core::option::Option<::prost::alloc::string::String>,
+    /// Number and amount of installments to pay for an item.
+    #[prost(message, optional, tag = "51")]
+    pub headline_offer_installment: ::core::option::Option<HeadlineOfferInstallment>,
+    /// Number of periods (months or years) and amount of payment per period
+    /// for an item with an associated subscription contract.
+    #[prost(message, optional, tag = "52")]
+    pub headline_offer_subscription_cost: ::core::option::Option<
+        HeadlineOfferSubscriptionCost,
+    >,
 }
 /// The certification for the product. Use the this attribute to describe
 /// certifications, such as energy efficiency ratings, associated with a product.
@@ -1010,6 +1019,68 @@ pub mod css_product_status {
         pub applicable_countries: ::prost::alloc::vec::Vec<
             ::prost::alloc::string::String,
         >,
+    }
+}
+/// The SubscriptionCost of the product.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HeadlineOfferSubscriptionCost {
+    /// The type of subscription period.
+    /// Supported values are:
+    ///    * "`month`"
+    ///    * "`year`"
+    #[prost(enumeration = "SubscriptionPeriod", tag = "1")]
+    pub period: i32,
+    /// The number of subscription periods the buyer has to pay.
+    #[prost(int64, tag = "2")]
+    pub period_length: i64,
+    /// The amount the buyer has to pay per subscription period.
+    #[prost(message, optional, tag = "3")]
+    pub amount: ::core::option::Option<super::super::r#type::Price>,
+}
+/// A message that represents installment.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HeadlineOfferInstallment {
+    /// The number of installments the buyer has to pay.
+    #[prost(int64, tag = "1")]
+    pub months: i64,
+    /// The amount the buyer has to pay per month.
+    #[prost(message, optional, tag = "2")]
+    pub amount: ::core::option::Option<super::super::r#type::Price>,
+    /// The up-front down payment amount the buyer has to pay.
+    #[prost(message, optional, tag = "3")]
+    pub downpayment: ::core::option::Option<super::super::r#type::Price>,
+}
+/// The subscription period of the product.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum SubscriptionPeriod {
+    /// Indicates that the subscription period is unspecified.
+    Unspecified = 0,
+    /// Indicates that the subscription period is month.
+    Month = 1,
+    /// Indicates that the subscription period is year.
+    Year = 2,
+}
+impl SubscriptionPeriod {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "SUBSCRIPTION_PERIOD_UNSPECIFIED",
+            Self::Month => "MONTH",
+            Self::Year => "YEAR",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SUBSCRIPTION_PERIOD_UNSPECIFIED" => Some(Self::Unspecified),
+            "MONTH" => Some(Self::Month),
+            "YEAR" => Some(Self::Year),
+            _ => None,
+        }
     }
 }
 /// This resource represents input data you submit for a CSS Product, not

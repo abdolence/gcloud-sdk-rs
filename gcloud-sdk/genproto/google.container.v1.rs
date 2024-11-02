@@ -426,11 +426,69 @@ pub struct NodeConfig {
     /// List of secondary boot disks attached to the nodes.
     #[prost(message, repeated, tag = "48")]
     pub secondary_boot_disks: ::prost::alloc::vec::Vec<SecondaryBootDisk>,
+    /// List of Storage Pools where boot disks are provisioned.
+    #[prost(string, repeated, tag = "49")]
+    pub storage_pools: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Secondary boot disk update strategy.
     #[prost(message, optional, tag = "50")]
     pub secondary_boot_disk_update_strategy: ::core::option::Option<
         SecondaryBootDiskUpdateStrategy,
     >,
+    /// Output only. effective_cgroup_mode is the cgroup mode actually used by the
+    /// node pool. It is determined by the cgroup mode specified in the
+    /// LinuxNodeConfig or the default cgroup mode based on the cluster creation
+    /// version.
+    #[prost(enumeration = "node_config::EffectiveCgroupMode", tag = "55")]
+    pub effective_cgroup_mode: i32,
+}
+/// Nested message and enum types in `NodeConfig`.
+pub mod node_config {
+    /// Possible effective cgroup modes for the node.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum EffectiveCgroupMode {
+        /// EFFECTIVE_CGROUP_MODE_UNSPECIFIED means the cgroup configuration for the
+        /// node pool is unspecified, i.e. the node pool is a Windows node pool.
+        Unspecified = 0,
+        /// CGROUP_MODE_V1 means the node pool is configured to use cgroupv1 for the
+        /// cgroup configuration.
+        V1 = 1,
+        /// CGROUP_MODE_V2 means the node pool is configured to use cgroupv2 for the
+        /// cgroup configuration.
+        V2 = 2,
+    }
+    impl EffectiveCgroupMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "EFFECTIVE_CGROUP_MODE_UNSPECIFIED",
+                Self::V1 => "EFFECTIVE_CGROUP_MODE_V1",
+                Self::V2 => "EFFECTIVE_CGROUP_MODE_V2",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EFFECTIVE_CGROUP_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "EFFECTIVE_CGROUP_MODE_V1" => Some(Self::V1),
+                "EFFECTIVE_CGROUP_MODE_V2" => Some(Self::V2),
+                _ => None,
+            }
+        }
+    }
 }
 /// Specifies options for controlling advanced machine features.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -490,7 +548,7 @@ pub struct NodeNetworkConfig {
     pub pod_ipv4_cidr_block: ::prost::alloc::string::String,
     /// Whether nodes have internal IP addresses only.
     /// If enable_private_nodes is not specified, then the value is derived from
-    /// [cluster.privateClusterConfig.enablePrivateNodes][google.container.v1beta1.PrivateClusterConfig.enablePrivateNodes]
+    /// [Cluster.NetworkConfig.default_enable_private_nodes][]
     #[prost(bool, optional, tag = "9")]
     pub enable_private_nodes: ::core::option::Option<bool>,
     /// Network bandwidth tier configuration.
@@ -1044,7 +1102,8 @@ pub struct MasterAuth {
     #[prost(string, tag = "100")]
     pub cluster_ca_certificate: ::prost::alloc::string::String,
     /// Output only. Base64-encoded public certificate used by clients to
-    /// authenticate to the cluster endpoint.
+    /// authenticate to the cluster endpoint. Issued only if
+    /// client_certificate_config is set.
     #[prost(string, tag = "101")]
     pub client_certificate: ::prost::alloc::string::String,
     /// Output only. Base64-encoded private key used by clients to authenticate
@@ -1115,6 +1174,11 @@ pub struct AddonsConfig {
     /// Optional. Configuration for the StatefulHA add-on.
     #[prost(message, optional, tag = "18")]
     pub stateful_ha_config: ::core::option::Option<StatefulHaConfig>,
+    /// Configuration for the Cloud Storage Parallelstore CSI driver.
+    #[prost(message, optional, tag = "19")]
+    pub parallelstore_csi_driver_config: ::core::option::Option<
+        ParallelstoreCsiDriverConfig,
+    >,
     /// Optional. Configuration for Ray Operator addon.
     #[prost(message, optional, tag = "21")]
     pub ray_operator_config: ::core::option::Option<RayOperatorConfig>,
@@ -1176,9 +1240,20 @@ pub struct PrivateClusterConfig {
     /// Whether nodes have internal IP addresses only. If enabled, all nodes are
     /// given only RFC 1918 private addresses and communicate with the master via
     /// private networking.
+    ///
+    /// Deprecated: Use
+    /// [NetworkConfig.default_enable_private_nodes][google.container.v1.NetworkConfig.default_enable_private_nodes]
+    /// instead.
+    #[deprecated]
     #[prost(bool, tag = "1")]
     pub enable_private_nodes: bool,
     /// Whether the master's internal IP address is used as the cluster endpoint.
+    ///
+    /// Deprecated: Use
+    /// [ControlPlaneEndpointsConfig.IPEndpointsConfig.enable_public_endpoint][google.container.v1.ControlPlaneEndpointsConfig.IPEndpointsConfig.enable_public_endpoint]
+    /// instead. Note that the value of enable_public_endpoint is reversed: if
+    /// enable_private_endpoint is false, then enable_public_endpoint will be true.
+    #[deprecated]
     #[prost(bool, tag = "2")]
     pub enable_private_endpoint: bool,
     /// The IP range in CIDR notation to use for the hosted master network. This
@@ -1188,21 +1263,41 @@ pub struct PrivateClusterConfig {
     #[prost(string, tag = "3")]
     pub master_ipv4_cidr_block: ::prost::alloc::string::String,
     /// Output only. The internal IP address of this cluster's master endpoint.
+    ///
+    /// Deprecated: Use
+    /// [ControlPlaneEndpointsConfig.IPEndpointsConfig.private_endpoint][google.container.v1.ControlPlaneEndpointsConfig.IPEndpointsConfig.private_endpoint]
+    /// instead.
+    #[deprecated]
     #[prost(string, tag = "4")]
     pub private_endpoint: ::prost::alloc::string::String,
     /// Output only. The external IP address of this cluster's master endpoint.
+    ///
+    /// Deprecated:Use
+    /// [ControlPlaneEndpointsConfig.IPEndpointsConfig.public_endpoint][google.container.v1.ControlPlaneEndpointsConfig.IPEndpointsConfig.public_endpoint]
+    /// instead.
+    #[deprecated]
     #[prost(string, tag = "5")]
     pub public_endpoint: ::prost::alloc::string::String,
     /// Output only. The peering name in the customer VPC used by this cluster.
     #[prost(string, tag = "7")]
     pub peering_name: ::prost::alloc::string::String,
     /// Controls master global access settings.
+    ///
+    /// Deprecated: Use
+    /// [ControlPlaneEndpointsConfig.IPEndpointsConfig.enable_global_access][]
+    /// instead.
+    #[deprecated]
     #[prost(message, optional, tag = "8")]
     pub master_global_access_config: ::core::option::Option<
         PrivateClusterMasterGlobalAccessConfig,
     >,
     /// Subnet to provision the master's private endpoint during cluster creation.
     /// Specified in projects/*/regions/*/subnetworks/* format.
+    ///
+    /// Deprecated: Use
+    /// [ControlPlaneEndpointsConfig.IPEndpointsConfig.private_endpoint_subnetwork][google.container.v1.ControlPlaneEndpointsConfig.IPEndpointsConfig.private_endpoint_subnetwork]
+    /// instead.
+    #[deprecated]
     #[prost(string, tag = "10")]
     pub private_endpoint_subnetwork: ::prost::alloc::string::String,
 }
@@ -1302,6 +1397,14 @@ pub struct GcsFuseCsiDriverConfig {
     #[prost(bool, tag = "1")]
     pub enabled: bool,
 }
+/// Configuration for the Cloud Storage Parallelstore CSI driver.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ParallelstoreCsiDriverConfig {
+    /// Whether the Cloud Storage Parallelstore CSI driver is enabled for this
+    /// cluster.
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
+}
 /// Configuration options for the Ray Operator add-on.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RayOperatorConfig {
@@ -1349,6 +1452,9 @@ pub struct MasterAuthorizedNetworksConfig {
     /// Whether master is accessbile via Google Compute Engine Public IP addresses.
     #[prost(bool, optional, tag = "3")]
     pub gcp_public_cidrs_access_enabled: ::core::option::Option<bool>,
+    /// Whether master authorized networks is enforced on private endpoint or not.
+    #[prost(bool, optional, tag = "5")]
+    pub private_endpoint_enforcement_enabled: ::core::option::Option<bool>,
 }
 /// Nested message and enum types in `MasterAuthorizedNetworksConfig`.
 pub mod master_authorized_networks_config {
@@ -1803,6 +1909,11 @@ pub struct Cluster {
     #[prost(message, optional, tag = "20")]
     pub ip_allocation_policy: ::core::option::Option<IpAllocationPolicy>,
     /// The configuration options for master authorized networks feature.
+    ///
+    /// Deprecated: Use
+    /// [ControlPlaneEndpointsConfig.IPEndpointsConfig.authorized_networks_config][google.container.v1.ControlPlaneEndpointsConfig.IPEndpointsConfig.authorized_networks_config]
+    /// instead.
+    #[deprecated]
     #[prost(message, optional, tag = "22")]
     pub master_authorized_networks_config: ::core::option::Option<
         MasterAuthorizedNetworksConfig,
@@ -2003,18 +2114,36 @@ pub struct Cluster {
     /// Enable/Disable Security Posture API features for the cluster.
     #[prost(message, optional, tag = "145")]
     pub security_posture_config: ::core::option::Option<SecurityPostureConfig>,
+    /// Configuration for all cluster's control plane endpoints.
+    #[prost(message, optional, tag = "146")]
+    pub control_plane_endpoints_config: ::core::option::Option<
+        ControlPlaneEndpointsConfig,
+    >,
     /// Beta APIs Config
     #[prost(message, optional, tag = "143")]
     pub enable_k8s_beta_apis: ::core::option::Option<K8sBetaApiConfig>,
     /// GKE Enterprise Configuration.
     #[prost(message, optional, tag = "149")]
     pub enterprise_config: ::core::option::Option<EnterpriseConfig>,
+    /// Secret CSI driver configuration.
+    #[prost(message, optional, tag = "150")]
+    pub secret_manager_config: ::core::option::Option<SecretManagerConfig>,
+    /// Enable/Disable Compliance Posture features for the cluster.
+    #[prost(message, optional, tag = "151")]
+    pub compliance_posture_config: ::core::option::Option<CompliancePostureConfig>,
     /// Output only. Reserved for future use.
     #[prost(bool, optional, tag = "152")]
     pub satisfies_pzs: ::core::option::Option<bool>,
     /// Output only. Reserved for future use.
     #[prost(bool, optional, tag = "153")]
     pub satisfies_pzi: ::core::option::Option<bool>,
+    /// The Custom keys configuration for the cluster.
+    #[prost(message, optional, tag = "154")]
+    pub user_managed_keys_config: ::core::option::Option<UserManagedKeysConfig>,
+    /// RBACBindingConfig allows user to restrict ClusterRoleBindings an
+    /// RoleBindings that can be created.
+    #[prost(message, optional, tag = "156")]
+    pub rbac_binding_config: ::core::option::Option<RbacBindingConfig>,
 }
 /// Nested message and enum types in `Cluster`.
 pub mod cluster {
@@ -2078,6 +2207,132 @@ pub mod cluster {
                 "STOPPING" => Some(Self::Stopping),
                 "ERROR" => Some(Self::Error),
                 "DEGRADED" => Some(Self::Degraded),
+                _ => None,
+            }
+        }
+    }
+}
+/// RBACBindingConfig allows user to restrict ClusterRoleBindings an RoleBindings
+/// that can be created.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct RbacBindingConfig {
+    /// Setting this to true will allow any ClusterRoleBinding and RoleBinding
+    /// with subjets system:anonymous or system:unauthenticated.
+    #[prost(bool, optional, tag = "1")]
+    pub enable_insecure_binding_system_unauthenticated: ::core::option::Option<bool>,
+    /// Setting this to true will allow any ClusterRoleBinding and RoleBinding
+    /// with subjects system:authenticated.
+    #[prost(bool, optional, tag = "2")]
+    pub enable_insecure_binding_system_authenticated: ::core::option::Option<bool>,
+}
+/// UserManagedKeysConfig holds the resource address to Keys which are used
+/// for signing certs and token that are used for communication within cluster.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UserManagedKeysConfig {
+    /// The Certificate Authority Service caPool to use for the cluster CA in this
+    /// cluster.
+    #[prost(string, tag = "10")]
+    pub cluster_ca: ::prost::alloc::string::String,
+    /// Resource path of the Certificate Authority Service caPool to use for the
+    /// etcd API CA in this cluster.
+    #[prost(string, tag = "11")]
+    pub etcd_api_ca: ::prost::alloc::string::String,
+    /// Resource path of the Certificate Authority Service caPool to use for the
+    /// etcd peer CA in this cluster.
+    #[prost(string, tag = "12")]
+    pub etcd_peer_ca: ::prost::alloc::string::String,
+    /// The Cloud KMS cryptoKeyVersions to use for signing service account JWTs
+    /// issued by this cluster.
+    ///
+    /// Format:
+    /// `projects/{project}/locations/{location}/keyRings/{keyring}/cryptoKeys/{cryptoKey}/cryptoKeyVersions/{cryptoKeyVersion}`
+    #[prost(string, repeated, tag = "13")]
+    pub service_account_signing_keys: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+    /// The Cloud KMS cryptoKeyVersions to use for verifying service account JWTs
+    /// issued by this cluster.
+    ///
+    /// Format:
+    /// `projects/{project}/locations/{location}/keyRings/{keyring}/cryptoKeys/{cryptoKey}/cryptoKeyVersions/{cryptoKeyVersion}`
+    #[prost(string, repeated, tag = "14")]
+    pub service_account_verification_keys: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+    /// The Certificate Authority Service caPool to use for the aggregation CA in
+    /// this cluster.
+    #[prost(string, tag = "15")]
+    pub aggregation_ca: ::prost::alloc::string::String,
+    /// The Cloud KMS cryptoKey to use for Confidential Hyperdisk on the control
+    /// plane nodes.
+    #[prost(string, tag = "16")]
+    pub control_plane_disk_encryption_key: ::prost::alloc::string::String,
+    /// Resource path of the Cloud KMS cryptoKey to use for encryption of internal
+    /// etcd backups.
+    #[prost(string, tag = "17")]
+    pub gkeops_etcd_backup_encryption_key: ::prost::alloc::string::String,
+}
+/// CompliancePostureConfig defines the settings needed to enable/disable
+/// features for the Compliance Posture.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CompliancePostureConfig {
+    /// Defines the enablement mode for Compliance Posture.
+    #[prost(enumeration = "compliance_posture_config::Mode", optional, tag = "1")]
+    pub mode: ::core::option::Option<i32>,
+    /// List of enabled compliance standards.
+    #[prost(message, repeated, tag = "2")]
+    pub compliance_standards: ::prost::alloc::vec::Vec<
+        compliance_posture_config::ComplianceStandard,
+    >,
+}
+/// Nested message and enum types in `CompliancePostureConfig`.
+pub mod compliance_posture_config {
+    /// Defines the details of a compliance standard.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ComplianceStandard {
+        /// Name of the compliance standard.
+        #[prost(string, optional, tag = "1")]
+        pub standard: ::core::option::Option<::prost::alloc::string::String>,
+    }
+    /// Mode defines enablement mode for Compliance Posture.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Mode {
+        /// Default value not specified.
+        Unspecified = 0,
+        /// Disables Compliance Posture features on the cluster.
+        Disabled = 1,
+        /// Enables Compliance Posture features on the cluster.
+        Enabled = 2,
+    }
+    impl Mode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MODE_UNSPECIFIED",
+                Self::Disabled => "DISABLED",
+                Self::Enabled => "ENABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DISABLED" => Some(Self::Disabled),
+                "ENABLED" => Some(Self::Enabled),
                 _ => None,
             }
         }
@@ -2328,6 +2583,11 @@ pub struct ClusterUpdate {
     #[prost(string, repeated, tag = "10")]
     pub desired_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The desired configuration options for master authorized networks feature.
+    ///
+    /// Deprecated: Use
+    /// desired_control_plane_endpoints_config.ip_endpoints_config.authorized_networks_config
+    /// instead.
+    #[deprecated]
     #[prost(message, optional, tag = "12")]
     pub desired_master_authorized_networks_config: ::core::option::Option<
         MasterAuthorizedNetworksConfig,
@@ -2365,6 +2625,11 @@ pub struct ClusterUpdate {
     /// [ClusterUpdate.desired_enable_private_endpoint][google.container.v1.ClusterUpdate.desired_enable_private_endpoint]
     /// for modifying other fields within
     /// [PrivateClusterConfig][google.container.v1.PrivateClusterConfig].
+    ///
+    /// Deprecated: Use
+    /// desired_control_plane_endpoints_config.ip_endpoints_config.global_access
+    /// instead.
+    #[deprecated]
     #[prost(message, optional, tag = "25")]
     pub desired_private_cluster_config: ::core::option::Option<PrivateClusterConfig>,
     /// The desired config of Intra-node visibility.
@@ -2411,8 +2676,26 @@ pub struct ClusterUpdate {
         ServiceExternalIPsConfig,
     >,
     /// Enable/Disable private endpoint for the cluster's master.
+    ///
+    /// Deprecated: Use
+    /// desired_control_plane_endpoints_config.ip_endpoints_config.enable_public_endpoint
+    /// instead. Note that the value of enable_public_endpoint is reversed: if
+    /// enable_private_endpoint is false, then enable_public_endpoint will be true.
+    #[deprecated]
     #[prost(bool, optional, tag = "71")]
     pub desired_enable_private_endpoint: ::core::option::Option<bool>,
+    /// Override the default setting of whether future created
+    /// nodes have private IP addresses only, namely
+    /// [NetworkConfig.default_enable_private_nodes][google.container.v1.NetworkConfig.default_enable_private_nodes]
+    #[prost(bool, optional, tag = "72")]
+    pub desired_default_enable_private_nodes: ::core::option::Option<bool>,
+    /// [Control plane
+    /// endpoints][google.container.v1.Cluster.control_plane_endpoints_config]
+    /// configuration.
+    #[prost(message, optional, tag = "73")]
+    pub desired_control_plane_endpoints_config: ::core::option::Option<
+        ControlPlaneEndpointsConfig,
+    >,
     /// The Kubernetes version to change the master to.
     ///
     /// Users may specify either explicit versions offered by
@@ -2502,6 +2785,14 @@ pub struct ClusterUpdate {
     /// Enable/Disable Cilium Clusterwide Network Policy for the cluster.
     #[prost(bool, optional, tag = "138")]
     pub desired_enable_cilium_clusterwide_network_policy: ::core::option::Option<bool>,
+    /// Enable/Disable Secret Manager Config.
+    #[prost(message, optional, tag = "139")]
+    pub desired_secret_manager_config: ::core::option::Option<SecretManagerConfig>,
+    /// Enable/Disable Compliance Posture features for the cluster.
+    #[prost(message, optional, tag = "140")]
+    pub desired_compliance_posture_config: ::core::option::Option<
+        CompliancePostureConfig,
+    >,
     /// The desired node kubelet config for the cluster.
     #[prost(message, optional, tag = "141")]
     pub desired_node_kubelet_config: ::core::option::Option<NodeKubeletConfig>,
@@ -2511,6 +2802,13 @@ pub struct ClusterUpdate {
     pub desired_node_pool_auto_config_kubelet_config: ::core::option::Option<
         NodeKubeletConfig,
     >,
+    /// The Custom keys configuration for the cluster.
+    #[prost(message, optional, tag = "143")]
+    pub user_managed_keys_config: ::core::option::Option<UserManagedKeysConfig>,
+    /// RBACBindingConfig allows user to restrict ClusterRoleBindings an
+    /// RoleBindings that can be created.
+    #[prost(message, optional, tag = "144")]
+    pub desired_rbac_binding_config: ::core::option::Option<RbacBindingConfig>,
 }
 /// AdditionalPodRangesConfig is the configuration for additional pod secondary
 /// ranges supporting the ClusterUpdate message.
@@ -3121,6 +3419,10 @@ pub struct UpdateNodePoolRequest {
     /// Specifies the configuration of queued provisioning.
     #[prost(message, optional, tag = "42")]
     pub queued_provisioning: ::core::option::Option<node_pool::QueuedProvisioning>,
+    /// List of Storage Pools where boot disks are provisioned.
+    /// Existing Storage Pools will be replaced with storage-pools.
+    #[prost(string, repeated, tag = "43")]
+    pub storage_pools: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// SetNodePoolAutoscalingRequest sets the autoscaler settings of a node pool.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3625,6 +3927,9 @@ pub mod server_config {
         /// List of valid versions for the channel.
         #[prost(string, repeated, tag = "4")]
         pub valid_versions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// The auto upgrade target version for clusters on the channel.
+        #[prost(string, tag = "5")]
+        pub upgrade_target_version: ::prost::alloc::string::String,
     }
 }
 /// CreateNodePoolRequest creates a node pool for a cluster.
@@ -5318,6 +5623,13 @@ pub struct NetworkConfig {
     /// Whether CiliumClusterwideNetworkPolicy is enabled on this cluster.
     #[prost(bool, optional, tag = "21")]
     pub enable_cilium_clusterwide_network_policy: ::core::option::Option<bool>,
+    /// Controls whether by default nodes have private IP addresses only.
+    /// It is invalid to specify both [PrivateClusterConfig.enablePrivateNodes][]
+    /// and this field at the same time.
+    /// To update the default setting, use
+    /// [ClusterUpdate.desired_default_enable_private_nodes][google.container.v1.ClusterUpdate.desired_default_enable_private_nodes]
+    #[prost(bool, optional, tag = "22")]
+    pub default_enable_private_nodes: ::core::option::Option<bool>,
 }
 /// Nested message and enum types in `NetworkConfig`.
 pub mod network_config {
@@ -6474,6 +6786,10 @@ pub mod logging_component_config {
         Scheduler = 4,
         /// kube-controller-manager
         ControllerManager = 5,
+        /// kcp-sshd
+        KcpSshd = 7,
+        /// kcp connection logs
+        KcpConnection = 8,
     }
     impl Component {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -6488,6 +6804,8 @@ pub mod logging_component_config {
                 Self::Apiserver => "APISERVER",
                 Self::Scheduler => "SCHEDULER",
                 Self::ControllerManager => "CONTROLLER_MANAGER",
+                Self::KcpSshd => "KCP_SSHD",
+                Self::KcpConnection => "KCP_CONNECTION",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6499,6 +6817,8 @@ pub mod logging_component_config {
                 "APISERVER" => Some(Self::Apiserver),
                 "SCHEDULER" => Some(Self::Scheduler),
                 "CONTROLLER_MANAGER" => Some(Self::ControllerManager),
+                "KCP_SSHD" => Some(Self::KcpSshd),
+                "KCP_CONNECTION" => Some(Self::KcpConnection),
                 _ => None,
             }
         }
@@ -6786,6 +7106,82 @@ pub struct Fleet {
     #[prost(bool, tag = "3")]
     pub pre_registered: bool,
 }
+/// Configuration for all of the cluster's control plane endpoints.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ControlPlaneEndpointsConfig {
+    /// DNS endpoint configuration.
+    #[prost(message, optional, tag = "1")]
+    pub dns_endpoint_config: ::core::option::Option<
+        control_plane_endpoints_config::DnsEndpointConfig,
+    >,
+    /// IP endpoints configuration.
+    #[prost(message, optional, tag = "3")]
+    pub ip_endpoints_config: ::core::option::Option<
+        control_plane_endpoints_config::IpEndpointsConfig,
+    >,
+}
+/// Nested message and enum types in `ControlPlaneEndpointsConfig`.
+pub mod control_plane_endpoints_config {
+    /// Describes the configuration of a DNS endpoint.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DnsEndpointConfig {
+        /// Output only. The cluster's DNS endpoint configuration.
+        /// A DNS format address. This is accessible from the public internet.
+        /// Ex: uid.us-central1.gke.goog.
+        /// Always present, but the behavior may change according to the value of
+        /// [DNSEndpointConfig.allow_external_traffic][google.container.v1.ControlPlaneEndpointsConfig.DNSEndpointConfig.allow_external_traffic].
+        #[prost(string, tag = "2")]
+        pub endpoint: ::prost::alloc::string::String,
+        /// Controls whether user traffic is allowed over this endpoint. Note that
+        /// GCP-managed services may still use the endpoint even if this is false.
+        #[prost(bool, optional, tag = "3")]
+        pub allow_external_traffic: ::core::option::Option<bool>,
+    }
+    /// IP endpoints configuration.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct IpEndpointsConfig {
+        /// Controls whether to allow direct IP access.
+        #[prost(bool, optional, tag = "1")]
+        pub enabled: ::core::option::Option<bool>,
+        /// Controls whether the control plane allows access through a public IP.
+        /// It is invalid to specify both
+        /// [PrivateClusterConfig.enablePrivateEndpoint][] and this field at the same
+        /// time.
+        #[prost(bool, optional, tag = "2")]
+        pub enable_public_endpoint: ::core::option::Option<bool>,
+        /// Controls whether the control plane's private endpoint is accessible from
+        /// sources in other regions.
+        /// It is invalid to specify both
+        /// [PrivateClusterMasterGlobalAccessConfig.enabled][google.container.v1.PrivateClusterMasterGlobalAccessConfig.enabled]
+        /// and this field at the same time.
+        #[prost(bool, optional, tag = "3")]
+        pub global_access: ::core::option::Option<bool>,
+        /// Configuration of authorized networks. If enabled, restricts access to the
+        /// control plane based on source IP.
+        /// It is invalid to specify both
+        /// [Cluster.masterAuthorizedNetworksConfig][] and this field at the same
+        /// time.
+        #[prost(message, optional, tag = "4")]
+        pub authorized_networks_config: ::core::option::Option<
+            super::MasterAuthorizedNetworksConfig,
+        >,
+        /// Output only. The external IP address of this cluster's control plane.
+        /// Only populated if enabled.
+        #[prost(string, tag = "5")]
+        pub public_endpoint: ::prost::alloc::string::String,
+        /// Output only. The internal IP address of this cluster's control plane.
+        /// Only populated if enabled.
+        #[prost(string, tag = "6")]
+        pub private_endpoint: ::prost::alloc::string::String,
+        /// Subnet to provision the master's private endpoint during cluster
+        /// creation. Specified in projects/*/regions/*/subnetworks/* format. It is
+        /// invalid to specify both
+        /// [PrivateClusterConfig.privateEndpointSubnetwork][] and this field at the
+        /// same time.
+        #[prost(string, tag = "7")]
+        pub private_endpoint_subnetwork: ::prost::alloc::string::String,
+    }
+}
 /// LocalNvmeSsdBlockConfig contains configuration for using raw-block local
 /// NVMe SSDs
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -6855,7 +7251,7 @@ pub struct ResourceManagerTags {
 /// EnterpriseConfig is the cluster enterprise configuration.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct EnterpriseConfig {
-    /// Output only. cluster_tier specifies the premium tier of the cluster.
+    /// Output only. cluster_tier indicates the effective tier of the cluster.
     #[prost(enumeration = "enterprise_config::ClusterTier", tag = "1")]
     pub cluster_tier: i32,
 }
@@ -6904,6 +7300,13 @@ pub mod enterprise_config {
             }
         }
     }
+}
+/// SecretManagerConfig is config for secret manager enablement.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct SecretManagerConfig {
+    /// Enable/Disable Secret Manager Config.
+    #[prost(bool, optional, tag = "1")]
+    pub enabled: ::core::option::Option<bool>,
 }
 /// SecondaryBootDisk represents a persistent disk attached to a node
 /// with special configurations based on its mode.

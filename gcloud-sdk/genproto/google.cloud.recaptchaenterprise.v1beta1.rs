@@ -2,7 +2,7 @@
 /// The create assessment request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAssessmentRequest {
-    /// Required. The name of the project in which the assessment will be created,
+    /// Required. The name of the project in which the assessment is created,
     /// in the format `projects/{project_number}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -186,8 +186,8 @@ pub struct AnnotateAssessmentRequest {
     /// `projects/{project_number}/assessments/{assessment_id}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. The annotation that will be assigned to the Event. This field can
-    /// be left empty to provide reasons that apply to an event without concluding
+    /// Optional. The annotation that is assigned to the Event. This field can be
+    /// left empty to provide reasons that apply to an event without concluding
     /// whether the event is legitimate or fraudulent.
     #[prost(enumeration = "annotate_assessment_request::Annotation", tag = "2")]
     pub annotation: i32,
@@ -507,12 +507,12 @@ pub mod assessment {
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Event {
-    /// Optional. The user response token provided by the reCAPTCHA Enterprise
-    /// client-side integration on your site.
+    /// Optional. The user response token provided by the reCAPTCHA client-side
+    /// integration on your site.
     #[prost(string, tag = "1")]
     pub token: ::prost::alloc::string::String,
-    /// Optional. The site key that was used to invoke reCAPTCHA Enterprise on your
-    /// site and generate the token.
+    /// Optional. The site key that was used to invoke reCAPTCHA on your site and
+    /// generate the token.
     #[prost(string, tag = "2")]
     pub site_key: ::prost::alloc::string::String,
     /// Optional. The user agent present in the request from the user's device
@@ -525,7 +525,7 @@ pub struct Event {
     pub user_ip_address: ::prost::alloc::string::String,
     /// Optional. The expected action for this type of event. This should be the
     /// same action provided at token generation time on client-side platforms
-    /// already integrated with recaptcha enterprise.
+    /// already integrated with reCAPTCHA.
     #[prost(string, tag = "5")]
     pub expected_action: ::prost::alloc::string::String,
     /// Optional. Unique stable hashed user identifier for the request. The
@@ -533,7 +533,7 @@ pub struct Event {
     #[prost(bytes = "vec", tag = "6")]
     pub hashed_account_id: ::prost::alloc::vec::Vec<u8>,
     /// Optional. Data describing a payment transaction to be assessed. Sending
-    /// this data enables reCAPTCHA Enterprise Fraud Prevention and the
+    /// this data enables reCAPTCHA Fraud Prevention and the
     /// FraudPreventionAssessment component in the response.
     #[prost(message, optional, tag = "13")]
     pub transaction_data: ::core::option::Option<TransactionData>,
@@ -593,7 +593,7 @@ pub mod event {
         }
     }
 }
-/// Transaction data associated with a payment protected by reCAPTCHA Enterprise.
+/// Transaction data associated with a payment protected by reCAPTCHA.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransactionData {
     /// Unique identifier for the transaction. This custom identifier can be used
@@ -728,11 +728,11 @@ pub mod transaction_data {
         #[prost(string, tag = "2")]
         pub gateway_response_code: ::prost::alloc::string::String,
         /// AVS response code from the gateway
-        /// (available only when reCAPTCHA Enterprise is called after authorization).
+        /// (available only when reCAPTCHA is called after authorization).
         #[prost(string, tag = "3")]
         pub avs_response_code: ::prost::alloc::string::String,
         /// CVV response code from the gateway
-        /// (available only when reCAPTCHA Enterprise is called after authorization).
+        /// (available only when reCAPTCHA is called after authorization).
         #[prost(string, tag = "4")]
         pub cvv_response_code: ::prost::alloc::string::String,
     }

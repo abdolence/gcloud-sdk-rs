@@ -728,6 +728,11 @@ pub struct SearchAds360Row {
     pub ad_group_criterion_label: ::core::option::Option<
         super::resources::AdGroupCriterionLabel,
     >,
+    /// The ad group effective label referenced in the query.
+    #[prost(message, optional, tag = "231")]
+    pub ad_group_effective_label: ::core::option::Option<
+        super::resources::AdGroupEffectiveLabel,
+    >,
     /// The ad group label referenced in the query.
     #[prost(message, optional, tag = "115")]
     pub ad_group_label: ::core::option::Option<super::resources::AdGroupLabel>,
@@ -785,6 +790,11 @@ pub struct SearchAds360Row {
     /// The campaign criterion referenced in the query.
     #[prost(message, optional, tag = "20")]
     pub campaign_criterion: ::core::option::Option<super::resources::CampaignCriterion>,
+    /// The campaign effective label referenced in the query.
+    #[prost(message, optional, tag = "229")]
+    pub campaign_effective_label: ::core::option::Option<
+        super::resources::CampaignEffectiveLabel,
+    >,
     /// The campaign label referenced in the query.
     #[prost(message, optional, tag = "108")]
     pub campaign_label: ::core::option::Option<super::resources::CampaignLabel>,

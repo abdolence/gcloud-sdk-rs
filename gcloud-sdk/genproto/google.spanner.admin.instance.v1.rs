@@ -15,6 +15,13 @@ pub struct OperationProgress {
     #[prost(message, optional, tag = "3")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// ReplicaSelection identifies replicas with common properties.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReplicaSelection {
+    /// Required. Name of the location of the replicas (e.g., "us-central1").
+    #[prost(string, tag = "1")]
+    pub location: ::prost::alloc::string::String,
+}
 /// Indicates the expected fulfillment period of an operation.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -309,8 +316,49 @@ pub mod instance_config {
         }
     }
 }
+/// ReplicaComputeCapacity describes the amount of server resources that are
+/// allocated to each replica identified by the replica selection.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReplicaComputeCapacity {
+    /// Required. Identifies replicas by specified properties.
+    /// All replicas in the selection have the same amount of compute capacity.
+    #[prost(message, optional, tag = "1")]
+    pub replica_selection: ::core::option::Option<ReplicaSelection>,
+    /// Compute capacity allocated to each replica identified by the specified
+    /// selection.
+    /// The unit is selected based on the unit used to specify the instance size
+    /// for non-autoscaling instances, or the unit used in autoscaling limit for
+    /// autoscaling instances.
+    #[prost(oneof = "replica_compute_capacity::ComputeCapacity", tags = "2, 3")]
+    pub compute_capacity: ::core::option::Option<
+        replica_compute_capacity::ComputeCapacity,
+    >,
+}
+/// Nested message and enum types in `ReplicaComputeCapacity`.
+pub mod replica_compute_capacity {
+    /// Compute capacity allocated to each replica identified by the specified
+    /// selection.
+    /// The unit is selected based on the unit used to specify the instance size
+    /// for non-autoscaling instances, or the unit used in autoscaling limit for
+    /// autoscaling instances.
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    pub enum ComputeCapacity {
+        /// The number of nodes allocated to each replica.
+        ///
+        /// This may be zero in API responses for instances that are not yet in
+        /// state `READY`.
+        #[prost(int32, tag = "2")]
+        NodeCount(i32),
+        /// The number of processing units allocated to each replica.
+        ///
+        /// This may be zero in API responses for instances that are not yet in
+        /// state `READY`.
+        #[prost(int32, tag = "3")]
+        ProcessingUnits(i32),
+    }
+}
 /// Autoscaling configuration for an instance.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalingConfig {
     /// Required. Autoscaling limits for an instance.
     #[prost(message, optional, tag = "1")]
@@ -321,6 +369,19 @@ pub struct AutoscalingConfig {
     #[prost(message, optional, tag = "2")]
     pub autoscaling_targets: ::core::option::Option<
         autoscaling_config::AutoscalingTargets,
+    >,
+    /// Optional. Optional asymmetric autoscaling options.
+    /// Replicas matching the replica selection criteria will be autoscaled
+    /// independently from other replicas. The autoscaler will scale the replicas
+    /// based on the utilization of replicas identified by the replica selection.
+    /// Replica selections should not overlap with each other.
+    ///
+    /// Other replicas (those do not match any replica selection) will be
+    /// autoscaled together and will have the same compute capacity allocated to
+    /// them.
+    #[prost(message, repeated, tag = "3")]
+    pub asymmetric_autoscaling_options: ::prost::alloc::vec::Vec<
+        autoscaling_config::AsymmetricAutoscalingOption,
     >,
 }
 /// Nested message and enum types in `AutoscalingConfig`.
@@ -387,6 +448,40 @@ pub mod autoscaling_config {
         #[prost(int32, tag = "2")]
         pub storage_utilization_percent: i32,
     }
+    /// AsymmetricAutoscalingOption specifies the scaling of replicas identified by
+    /// the given selection.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AsymmetricAutoscalingOption {
+        /// Required. Selects the replicas to which this AsymmetricAutoscalingOption
+        /// applies. Only read-only replicas are supported.
+        #[prost(message, optional, tag = "1")]
+        pub replica_selection: ::core::option::Option<super::ReplicaSelection>,
+        /// Optional. Overrides applied to the top-level autoscaling configuration
+        /// for the selected replicas.
+        #[prost(message, optional, tag = "2")]
+        pub overrides: ::core::option::Option<
+            asymmetric_autoscaling_option::AutoscalingConfigOverrides,
+        >,
+    }
+    /// Nested message and enum types in `AsymmetricAutoscalingOption`.
+    pub mod asymmetric_autoscaling_option {
+        /// Overrides the top-level autoscaling configuration for the replicas
+        /// identified by `replica_selection`. All fields in this message are
+        /// optional. Any unspecified fields will use the corresponding values from
+        /// the top-level autoscaling configuration.
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct AutoscalingConfigOverrides {
+            /// Optional. If specified, overrides the min/max limit in the top-level
+            /// autoscaling configuration for the selected replicas.
+            #[prost(message, optional, tag = "1")]
+            pub autoscaling_limits: ::core::option::Option<super::AutoscalingLimits>,
+            /// Optional. If specified, overrides the autoscaling target
+            /// high_priority_cpu_utilization_percent in the top-level autoscaling
+            /// configuration for the selected replicas.
+            #[prost(int32, tag = "2")]
+            pub autoscaling_target_high_priority_cpu_utilization_percent: i32,
+        }
+    }
 }
 /// An isolated set of Cloud Spanner resources on which databases can be hosted.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -407,34 +502,55 @@ pub struct Instance {
     /// Must be unique per project and between 4 and 30 characters in length.
     #[prost(string, tag = "3")]
     pub display_name: ::prost::alloc::string::String,
-    /// The number of nodes allocated to this instance. At most one of either
-    /// node_count or processing_units should be present in the message.
+    /// The number of nodes allocated to this instance. At most, one of either
+    /// `node_count` or `processing_units` should be present in the message.
     ///
-    /// Users can set the node_count field to specify the target number of nodes
+    /// Users can set the `node_count` field to specify the target number of nodes
     /// allocated to the instance.
     ///
-    /// This may be zero in API responses for instances that are not yet in state
-    /// `READY`.
+    /// If autoscaling is enabled, `node_count` is treated as an `OUTPUT_ONLY`
+    /// field and reflects the current number of nodes allocated to the instance.
     ///
-    /// See [the
-    /// documentation](<https://cloud.google.com/spanner/docs/compute-capacity>)
-    /// for more information about nodes and processing units.
+    /// This might be zero in API responses for instances that are not yet in the
+    /// `READY` state.
+    ///
+    /// If the instance has varying node count across replicas (achieved by
+    /// setting asymmetric_autoscaling_options in autoscaling config), the
+    /// node_count here is the maximum node count across all replicas.
+    ///
+    /// For more information, see
+    /// [Compute capacity, nodes, and processing
+    /// units](<https://cloud.google.com/spanner/docs/compute-capacity>).
     #[prost(int32, tag = "5")]
     pub node_count: i32,
-    /// The number of processing units allocated to this instance. At most one of
-    /// processing_units or node_count should be present in the message.
+    /// The number of processing units allocated to this instance. At most, one of
+    /// either `processing_units` or `node_count` should be present in the message.
     ///
-    /// Users can set the processing_units field to specify the target number of
+    /// Users can set the `processing_units` field to specify the target number of
     /// processing units allocated to the instance.
     ///
-    /// This may be zero in API responses for instances that are not yet in state
-    /// `READY`.
+    /// If autoscaling is enabled, `processing_units` is treated as an
+    /// `OUTPUT_ONLY` field and reflects the current number of processing units
+    /// allocated to the instance.
     ///
-    /// See [the
-    /// documentation](<https://cloud.google.com/spanner/docs/compute-capacity>)
-    /// for more information about nodes and processing units.
+    /// This might be zero in API responses for instances that are not yet in the
+    /// `READY` state.
+    ///
+    /// If the instance has varying processing units per replica
+    /// (achieved by setting asymmetric_autoscaling_options in autoscaling config),
+    /// the processing_units here is the maximum processing units across all
+    /// replicas.
+    ///
+    /// For more information, see
+    /// [Compute capacity, nodes and processing
+    /// units](<https://cloud.google.com/spanner/docs/compute-capacity>).
     #[prost(int32, tag = "9")]
     pub processing_units: i32,
+    /// Output only. Lists the compute capacity per ReplicaSelection. A replica
+    /// selection identifies a set of replicas with common properties. Replicas
+    /// identified by a ReplicaSelection are scaled with the same compute capacity.
+    #[prost(message, repeated, tag = "19")]
+    pub replica_compute_capacity: ::prost::alloc::vec::Vec<ReplicaComputeCapacity>,
     /// Optional. The autoscaling configuration. Autoscaling is enabled if this
     /// field is set. When autoscaling is enabled, node_count and processing_units
     /// are treated as OUTPUT_ONLY fields and reflect the current compute capacity
@@ -486,6 +602,17 @@ pub struct Instance {
     /// Optional. The `Edition` of the current instance.
     #[prost(enumeration = "instance::Edition", tag = "20")]
     pub edition: i32,
+    /// Optional. Controls the default backup behavior for new databases within the
+    /// instance.
+    ///
+    /// Note that `AUTOMATIC` is not permitted for free instances, as backups and
+    /// backup schedules are not allowed for free instances.
+    ///
+    /// In the `GetInstance` or `ListInstances` response, if the value of
+    /// default_backup_schedule_type is unset or NONE, no default backup
+    /// schedule will be created for new databases within the instance.
+    #[prost(enumeration = "instance::DefaultBackupScheduleType", tag = "23")]
+    pub default_backup_schedule_type: i32,
 }
 /// Nested message and enum types in `Instance`.
 pub mod instance {
@@ -579,6 +706,55 @@ pub mod instance {
                 "STANDARD" => Some(Self::Standard),
                 "ENTERPRISE" => Some(Self::Enterprise),
                 "ENTERPRISE_PLUS" => Some(Self::EnterprisePlus),
+                _ => None,
+            }
+        }
+    }
+    /// Indicates the default backup behavior for new databases within the
+    /// instance.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DefaultBackupScheduleType {
+        /// Not specified.
+        Unspecified = 0,
+        /// No default backup schedule will be created automatically on creation of a
+        /// database within the instance.
+        None = 1,
+        /// A default backup schedule will be created automatically on creation of a
+        /// database within the instance. The default backup schedule creates a full
+        /// backup every 24 hours and retains the backup for a period of 7 days. Once
+        /// created, the default backup schedule can be edited/deleted similar to any
+        /// other backup schedule.
+        Automatic = 2,
+    }
+    impl DefaultBackupScheduleType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DEFAULT_BACKUP_SCHEDULE_TYPE_UNSPECIFIED",
+                Self::None => "NONE",
+                Self::Automatic => "AUTOMATIC",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DEFAULT_BACKUP_SCHEDULE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "AUTOMATIC" => Some(Self::Automatic),
                 _ => None,
             }
         }

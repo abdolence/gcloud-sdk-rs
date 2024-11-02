@@ -3,40 +3,38 @@
 /// settings information such as top-level enablement in addition to individual
 /// module settings. Service settings can be configured at the organization,
 /// folder, or project level. Service settings at the organization or folder
-/// level are inherited by those in child folders and projects.
+/// level are inherited by those in descendant folders and projects.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityCenterService {
-    /// Identifier. The name of the service.
+    /// Identifier. The name of the service, in one of the following formats:
     ///
-    /// Its format is:
+    /// * `organizations/{organization}/locations/{location}/securityCenterServices/{service}`
+    /// * `folders/{folder}/locations/{location}/securityCenterServices/{service}`
+    /// * `projects/{project}/locations/{location}/securityCenterServices/{service}`
     ///
-    ///    * organizations/{organization}/locations/{location}/securityCenterServices/{service}
-    ///    * folders/{folder}/locations/{location}/securityCenterServices/{service}
-    ///    * projects/{project}/locations/{location}/securityCenterServices/{service}
+    /// The following values are valid for `{service}`:
     ///
-    /// The possible values for id {service} are:
-    ///
-    ///    * container-threat-detection
-    ///    * event-threat-detection
-    ///    * security-health-analytics
-    ///    * vm-threat-detection
-    ///    * web-security-scanner
+    /// * `container-threat-detection`
+    /// * `event-threat-detection`
+    /// * `security-health-analytics`
+    /// * `vm-threat-detection`
+    /// * `web-security-scanner`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. The intended state of enablement for the service at its level of
-    /// the resource hierarchy. A DISABLED state will override all module
-    /// enablement_states to DISABLED.
+    /// Optional. The intended enablement state for the service at its level of the
+    /// resource hierarchy. A `DISABLED` state will override all module enablement
+    /// states to `DISABLED`.
     #[prost(enumeration = "security_center_service::EnablementState", tag = "2")]
     pub intended_enablement_state: i32,
     /// Output only. The effective enablement state for the service at its level of
-    /// the resource hierarchy. If the intended state is set to INHERITED, the
+    /// the resource hierarchy. If the intended state is set to `INHERITED`, the
     /// effective state will be inherited from the enablement state of an ancestor.
     /// This state may differ from the intended enablement state due to billing
     /// eligibility or onboarding status.
     #[prost(enumeration = "security_center_service::EnablementState", tag = "3")]
     pub effective_enablement_state: i32,
-    /// Optional. The configurations including the state of enablement for the
-    /// service's different modules. The absence of a module in the map implies its
+    /// Optional. The module configurations, including the enablement state for the
+    /// service's modules. The absence of a module in the map implies that its
     /// configuration is inherited from its parents.
     #[prost(map = "string, message", tag = "4")]
     pub modules: ::std::collections::HashMap<
@@ -44,11 +42,11 @@ pub struct SecurityCenterService {
         security_center_service::ModuleSettings,
     >,
     /// Output only. The time the service was last updated. This could be due to an
-    /// explicit user update or due to a side effect of another system change such
+    /// explicit user update or due to a side effect of another system change, such
     /// as billing subscription expiry.
     #[prost(message, optional, tag = "5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Optional. Additional service specific configuration. Not all services will
+    /// Optional. Additional service-specific configuration. Not all services will
     /// utilize this field.
     #[prost(message, optional, tag = "6")]
     pub service_config: ::core::option::Option<::prost_types::Struct>,
@@ -58,21 +56,19 @@ pub mod security_center_service {
     /// The settings for individual modules.
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ModuleSettings {
-        /// Optional. The intended state of enablement for the module at its level of
+        /// Optional. The intended enablement state for the module at its level of
         /// the resource hierarchy.
         #[prost(enumeration = "EnablementState", tag = "1")]
         pub intended_enablement_state: i32,
         /// Output only. The effective enablement state for the module at its level
-        /// of the resource hierarchy. If the intended state is set to INHERITED, the
-        /// effective state will be inherited from the enablement state of an
-        /// ancestor. This state may
-        /// differ from the intended enablement state due to billing eligibility or
-        /// onboarding status.
+        /// of the resource hierarchy. If the intended state is set to `INHERITED`,
+        /// the effective state will be inherited from the enablement state of an
+        /// ancestor. This state may differ from the intended enablement state due to
+        /// billing eligibility or onboarding status.
         #[prost(enumeration = "EnablementState", tag = "2")]
         pub effective_enablement_state: i32,
     }
-    /// Represents the possible intended states of enablement for a service or
-    /// module.
+    /// Represents the possible enablement states for a service or module.
     #[derive(
         Clone,
         Copy,
@@ -88,16 +84,17 @@ pub mod security_center_service {
     pub enum EnablementState {
         /// Default value. This value is unused.
         Unspecified = 0,
-        /// State is inherited from the parent resource. Not a valid effective
-        /// enablement state.
+        /// State is inherited from the parent resource. Valid as an intended
+        /// enablement state, but not as an effective enablement state.
         Inherited = 1,
         /// State is enabled.
         Enabled = 2,
         /// State is disabled.
         Disabled = 3,
-        /// SCC is configured to ingest findings from this service but not enable
-        /// this service. Not a valid intended_enablement_state (that is, this is a
-        /// readonly state).
+        /// Security Command Center is configured to ingest findings from this
+        /// service, but not to enable this service. This state indicates that
+        /// Security Command Center is misconfigured. You can't set this state
+        /// yourself.
         IngestOnly = 4,
     }
     impl EnablementState {
@@ -127,29 +124,27 @@ pub mod security_center_service {
         }
     }
 }
-/// An EffectiveSecurityHealthAnalyticsCustomModule is the representation of
-/// a Security Health Analytics custom module at a specified level of the
-/// resource hierarchy: organization, folder, or project. If a custom module is
-/// inherited from a parent organization or folder, the value of the
-/// `enablementState` property in EffectiveSecurityHealthAnalyticsCustomModule is
-/// set to the value that is effective in the parent, instead of  `INHERITED`.
-/// For example, if the module is enabled in a parent organization or folder, the
-/// effective enablement_state for the module in all child folders or projects is
-/// also `enabled`. EffectiveSecurityHealthAnalyticsCustomModule is read-only.
+/// The representation of a Security Health Analytics custom module at a
+/// specified level of the resource hierarchy: organization, folder, or project.
+/// If a custom module is inherited from an ancestor organization or folder, then
+/// the enablement state is set to the value that is effective in the parent, not
+/// to `INHERITED`. For example, if the module is enabled in an organization or
+/// folder, then the effective enablement state for the module is `ENABLED` in
+/// all descendant folders or projects.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EffectiveSecurityHealthAnalyticsCustomModule {
-    /// Identifier. The full resource name of the custom module, specified in one
-    /// of the following formats:
+    /// Identifier. The full resource name of the custom module, in one of the
+    /// following formats:
     ///
-    /// * `organizations/organization/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}`
-    /// * `folders/folder/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}`
-    /// * `projects/project/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}`
+    /// * `organizations/organization/{location}/effectiveSecurityHealthAnalyticsCustomModules/{custom_module}`
+    /// * `folders/folder/{location}/effectiveSecurityHealthAnalyticsCustomModules/{custom_module}`
+    /// * `projects/project/{location}/effectiveSecurityHealthAnalyticsCustomModules/{custom_module}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The user-specified configuration for the module.
     #[prost(message, optional, tag = "2")]
     pub custom_config: ::core::option::Option<CustomConfig>,
-    /// Output only. The effective state of enablement for the module at the given
+    /// Output only. The effective enablement state for the module at the given
     /// level of the hierarchy.
     #[prost(
         enumeration = "effective_security_health_analytics_custom_module::EnablementState",
@@ -178,7 +173,7 @@ pub mod effective_security_health_analytics_custom_module {
     )]
     #[repr(i32)]
     pub enum EnablementState {
-        /// Unspecified enablement state.
+        /// Default value. This value is unused.
         Unspecified = 0,
         /// The module is enabled at the given level.
         Enabled = 1,
@@ -208,48 +203,54 @@ pub mod effective_security_health_analytics_custom_module {
         }
     }
 }
-/// Request message for listing effective Security Health Analytics custom
-/// modules.
+/// Request message for
+/// [SecurityCenterManagement.ListEffectiveSecurityHealthAnalyticsCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEffectiveSecurityHealthAnalyticsCustomModules].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEffectiveSecurityHealthAnalyticsCustomModulesRequest {
-    /// Required. Name of parent to list effective custom modules. specified in one
-    /// of the following formats:
+    /// Required. Name of parent to list effective custom modules, in one of the
+    /// following formats:
+    ///
     /// * `organizations/{organization}/locations/{location}`
     /// * `folders/{folder}/locations/{location}`
-    /// or
-    /// `projects/{project}/locations/{location}`
+    /// * `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of results to return in a single response.
     /// Default is 10, minimum is 1, maximum is 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. The value returned by the last call indicating a continuation.
+    /// Optional. A pagination token returned from a previous request. Provide this
+    /// token to retrieve the next page of results.
+    ///
+    /// When paginating, the rest of the request must match the request that
+    /// generated the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for listing effective Security Health Analytics custom
-/// modules.
+/// Response message for
+/// [SecurityCenterManagement.ListEffectiveSecurityHealthAnalyticsCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEffectiveSecurityHealthAnalyticsCustomModules].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEffectiveSecurityHealthAnalyticsCustomModulesResponse {
-    /// The list of EffectiveSecurityHealthAnalyticsCustomModule
+    /// The list of effective Security Health Analytics custom modules.
     #[prost(message, repeated, tag = "1")]
     pub effective_security_health_analytics_custom_modules: ::prost::alloc::vec::Vec<
         EffectiveSecurityHealthAnalyticsCustomModule,
     >,
-    /// A token identifying a page of results the server should return.
+    /// A pagination token. To retrieve the next page of results, call the method
+    /// again with this token.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Message for getting a EffectiveSecurityHealthAnalyticsCustomModule
+/// Request message for
+/// [SecurityCenterManagement.GetEffectiveSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.GetEffectiveSecurityHealthAnalyticsCustomModule].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEffectiveSecurityHealthAnalyticsCustomModuleRequest {
     /// Required. The full resource name of the custom module, specified in one of
     /// the following formats:
     ///
-    /// * `organizations/organization/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}`
-    /// * `folders/folder/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}`
-    /// * `projects/project/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}`
+    /// * `organizations/organization/{location}/effectiveSecurityHealthAnalyticsCustomModules/{custom_module}`
+    /// * `folders/folder/{location}/effectiveSecurityHealthAnalyticsCustomModules/{custom_module}`
+    /// * `projects/project/{location}/effectiveSecurityHealthAnalyticsCustomModules/{custom_module}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -257,20 +258,21 @@ pub struct GetEffectiveSecurityHealthAnalyticsCustomModuleRequest {
 /// including its full module name, display name, enablement state, and last
 /// updated time. You can create a custom module at the organization, folder, or
 /// project level. Custom modules that you create at the organization or folder
-/// level are inherited by the child folders and projects.
+/// level are inherited by the descendant folders and projects.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityHealthAnalyticsCustomModule {
-    /// Identifier. The full resource name of the custom module, specified in one
-    /// of the following formats:
-    /// * `organizations/{organization}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}`
-    /// * `folders/{folder}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}`
-    /// * `projects/{project}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}`
+    /// Identifier. The full resource name of the custom module, in one of the
+    /// following formats:
+    ///
+    /// * `organizations/{organization}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}`
+    /// * `folders/{folder}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}`
+    /// * `projects/{project}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. The display name of the Security Health Analytics custom module.
     /// This display name becomes the finding category for all findings that are
-    /// returned by this custom module. The display name must be between 1 and
-    /// 128 characters, start with a lowercase letter, and contain alphanumeric
+    /// returned by this custom module. The display name must be between 1 and 128
+    /// characters, start with a lowercase letter, and contain alphanumeric
     /// characters or underscores only.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
@@ -292,7 +294,7 @@ pub struct SecurityHealthAnalyticsCustomModule {
     /// module.
     #[prost(string, tag = "6")]
     pub ancestor_module: ::prost::alloc::string::String,
-    /// Optional. The user specified custom configuration for the module.
+    /// Optional. The user-specified custom configuration for the module.
     #[prost(message, optional, tag = "7")]
     pub custom_config: ::core::option::Option<CustomConfig>,
 }
@@ -312,17 +314,17 @@ pub mod security_health_analytics_custom_module {
     )]
     #[repr(i32)]
     pub enum EnablementState {
-        /// Unspecified enablement state.
+        /// Default value. This value is unused.
         Unspecified = 0,
-        /// The module is enabled at the given CRM resource.
+        /// The module is enabled at the given organization, folder, or project.
         Enabled = 1,
-        /// The module is disabled at the given CRM resource.
+        /// The module is disabled at the given organization, folder, or project.
         Disabled = 2,
         /// State is inherited from an ancestor module. The module will either
-        /// be effectively ENABLED or DISABLED based on its closest non-inherited
-        /// ancestor module in the CRM hierarchy. Attempting to set a top level
-        /// module (module with no parent) to the INHERITED state will result in an
-        /// INVALID_ARGUMENT error.
+        /// be effectively `ENABLED` or `DISABLED` based on its closest non-inherited
+        /// ancestor module in the resource hierarchy. If you try to set a top-level
+        /// module (a module with no parent) to the `INHERITED` state, you receive an
+        /// `INVALID_ARGUMENT` error.
         Inherited = 3,
     }
     impl EnablementState {
@@ -355,8 +357,9 @@ pub mod security_health_analytics_custom_module {
 /// detectors that generate custom findings for resources that you specify.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomConfig {
-    /// Optional. The CEL expression to evaluate to produce findings. When the
-    /// expression evaluates to true against a resource, a finding is generated.
+    /// Optional. The Common Expression Language (CEL) expression to evaluate to
+    /// produce findings. When the expression evaluates to `true` against a
+    /// resource, a finding is generated.
     #[prost(message, optional, tag = "1")]
     pub predicate: ::core::option::Option<super::super::super::r#type::Expr>,
     /// Optional. Custom output properties.
@@ -379,8 +382,7 @@ pub struct CustomConfig {
     pub description: ::prost::alloc::string::String,
     /// Optional. An explanation of the recommended steps that security teams can
     /// take to resolve the detected issue. This explanation is returned with each
-    /// finding generated by this module in the `nextSteps` property of the finding
-    /// JSON.
+    /// finding generated by this module.
     #[prost(string, tag = "6")]
     pub recommendation: ::prost::alloc::string::String,
 }
@@ -388,8 +390,7 @@ pub struct CustomConfig {
 pub mod custom_config {
     /// A set of optional name-value pairs that define custom source properties to
     /// return with each finding that is generated by the custom module. The custom
-    /// source properties that are defined here are included in the finding JSON
-    /// under `sourceProperties`.
+    /// source properties that are defined here are included in the finding.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CustomOutputSpec {
         /// Optional. A list of custom output properties to add to the finding.
@@ -434,7 +435,7 @@ pub mod custom_config {
     )]
     #[repr(i32)]
     pub enum Severity {
-        /// Unspecified severity.
+        /// Default value. This value is unused.
         Unspecified = 0,
         /// Critical severity.
         Critical = 1,
@@ -472,11 +473,12 @@ pub mod custom_config {
         }
     }
 }
-/// Request message for listing Security Health Analytics custom modules.
+/// Request message for
+/// [SecurityCenterManagement.ListSecurityHealthAnalyticsCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListSecurityHealthAnalyticsCustomModules].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSecurityHealthAnalyticsCustomModulesRequest {
-    /// Required. Name of parent organization, folder, or project in which to list
-    /// custom modules, specified in one of the following formats:
+    /// Required. Name of the parent organization, folder, or project in which to
+    /// list custom modules, in one of the following formats:
     ///
     /// * `organizations/{organization}/locations/{location}`
     /// * `folders/{folder}/locations/{location}`
@@ -487,28 +489,34 @@ pub struct ListSecurityHealthAnalyticsCustomModulesRequest {
     /// Default is 10, minimum is 1, maximum is 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. A token identifying a page of results the server should return.
+    /// Optional. A pagination token returned from a previous request. Provide this
+    /// token to retrieve the next page of results.
+    ///
+    /// When paginating, the rest of the request must match the request that
+    /// generated the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for listing Security Health Analytics custom modules.
+/// Response message for
+/// [SecurityCenterManagement.ListSecurityHealthAnalyticsCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListSecurityHealthAnalyticsCustomModules].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSecurityHealthAnalyticsCustomModulesResponse {
-    /// The list of SecurityHealthAnalyticsCustomModules
+    /// The list of Security Health Analytics custom modules.
     #[prost(message, repeated, tag = "1")]
     pub security_health_analytics_custom_modules: ::prost::alloc::vec::Vec<
         SecurityHealthAnalyticsCustomModule,
     >,
-    /// A token identifying a page of results the server should return.
+    /// A pagination token. To retrieve the next page of results, call the method
+    /// again with this token.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Request message for listing descendant Security Health Analytics custom
-/// modules.
+/// Request message for
+/// [SecurityCenterManagement.ListDescendantSecurityHealthAnalyticsCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListDescendantSecurityHealthAnalyticsCustomModules].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDescendantSecurityHealthAnalyticsCustomModulesRequest {
     /// Required. Name of the parent organization, folder, or project in which to
-    /// list custom modules, specified in one of the following formats:
+    /// list custom modules, in one of the following formats:
     ///
     /// * `organizations/{organization}/locations/{location}`
     /// * `folders/{folder}/locations/{location}`
@@ -519,12 +527,16 @@ pub struct ListDescendantSecurityHealthAnalyticsCustomModulesRequest {
     /// Default is 10, minimum is 1, maximum is 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. A token identifying a page of results the server should return.
+    /// Optional. A pagination token returned from a previous request. Provide this
+    /// token to retrieve the next page of results.
+    ///
+    /// When paginating, the rest of the request must match the request that
+    /// generated the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for listing descendant Security Health Analytics custom
-/// modules.
+/// Response message for
+/// [SecurityCenterManagement.ListDescendantSecurityHealthAnalyticsCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListDescendantSecurityHealthAnalyticsCustomModules].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDescendantSecurityHealthAnalyticsCustomModulesResponse {
     /// The list of SecurityHealthAnalyticsCustomModules
@@ -532,99 +544,124 @@ pub struct ListDescendantSecurityHealthAnalyticsCustomModulesResponse {
     pub security_health_analytics_custom_modules: ::prost::alloc::vec::Vec<
         SecurityHealthAnalyticsCustomModule,
     >,
-    /// A token identifying a page of results the server should return.
+    /// A pagination token. To retrieve the next page of results, call the method
+    /// again with this token.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Message for getting a SecurityHealthAnalyticsCustomModule
+/// Request message for
+/// [SecurityCenterManagement.GetSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.GetSecurityHealthAnalyticsCustomModule].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSecurityHealthAnalyticsCustomModuleRequest {
-    /// Required. Name of the resource
+    /// Required. Name of the resource, in the format
+    /// `projects/{project}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Message for creating a SecurityHealthAnalyticsCustomModule
+/// Request message for
+/// [SecurityCenterManagement.CreateSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.CreateSecurityHealthAnalyticsCustomModule].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSecurityHealthAnalyticsCustomModuleRequest {
     /// Required. Name of the parent organization, folder, or project of the
-    /// module, specified in one of the following formats:
+    /// module, in one of the following formats:
     ///
     /// * `organizations/{organization}/locations/{location}`
     /// * `folders/{folder}/locations/{location}`
     /// * `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. The resource being created
+    /// Required. The resource being created.
     #[prost(message, optional, tag = "2")]
     pub security_health_analytics_custom_module: ::core::option::Option<
         SecurityHealthAnalyticsCustomModule,
     >,
-    /// Optional. When set to true, only validations (including IAM checks) will
-    /// done for the request (no module will be created). An OK response indicates
-    /// the request is valid while an error response indicates the request is
-    /// invalid. Note that a subsequent request to actually create the module could
-    /// still fail because:
-    ///   1. the state could have changed (e.g. IAM permission lost) or
-    ///   2. A failure occurred during creation of the module.
-    /// Defaults to false.
+    /// Optional. When set to `true`, the request will be validated (including IAM
+    /// checks), but no module will be created. An `OK` response indicates that the
+    /// request is valid, while an error response indicates that the request is
+    /// invalid.
+    ///
+    /// If the request is valid, a subsequent request to create the module could
+    /// still fail for one of the following reasons:
+    ///
+    /// *  The state of your cloud resources changed; for example, you lost a
+    ///     required IAM permission
+    /// *  An error occurred during creation of the module
+    ///
+    /// Defaults to `false`.
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
 }
-/// Message for updating a SecurityHealthAnalyticsCustomModule
+/// Request message for
+/// [SecurityCenterManagement.UpdateSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.UpdateSecurityHealthAnalyticsCustomModule].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSecurityHealthAnalyticsCustomModuleRequest {
-    /// Required. The list of fields to be updated. The only fields that can be
-    /// updated are `enablement_state` and `custom_config`. If empty or set to the
-    /// wildcard value `*`, both `enablement_state` and `custom_config` are
-    /// updated.
+    /// Required. The fields to update. The following values are valid:
+    ///
+    /// * `custom_config`
+    /// * `enablement_state`
+    ///
+    /// If you omit this field or set it to the wildcard value `*`, then all
+    /// eligible fields are updated.
     #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// Required. The resource being updated
+    /// Required. The resource being updated.
     #[prost(message, optional, tag = "2")]
     pub security_health_analytics_custom_module: ::core::option::Option<
         SecurityHealthAnalyticsCustomModule,
     >,
-    /// Optional. When set to true, only validations (including IAM checks) will
-    /// done for the request (module will not be updated). An OK response indicates
-    /// the request is valid while an error response indicates the request is
-    /// invalid. Note that a subsequent request to actually update the module could
-    /// still fail because 1. the state could have changed (e.g. IAM permission
-    /// lost) or
-    /// 2. A failure occurred while trying to update the module.
+    /// Optional. When set to `true`, the request will be validated (including IAM
+    /// checks), but no module will be updated. An `OK` response indicates that the
+    /// request is valid, while an error response indicates that the request is
+    /// invalid.
+    ///
+    /// If the request is valid, a subsequent request to update the module could
+    /// still fail for one of the following reasons:
+    ///
+    /// *  The state of your cloud resources changed; for example, you lost a
+    ///     required IAM permission
+    /// *  An error occurred during creation of the module
+    ///
+    /// Defaults to `false`.
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
 }
-/// Message for deleting a SecurityHealthAnalyticsCustomModule
+/// Request message for
+/// [SecurityCenterManagement.DeleteSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.DeleteSecurityHealthAnalyticsCustomModule].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSecurityHealthAnalyticsCustomModuleRequest {
-    /// Required. The resource name of the SHA custom module.
+    /// Required. The resource name of the SHA custom module, in one of the
+    /// following formats:
     ///
-    /// Its format is:
-    ///
-    ///    * `organizations/{organization}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}`.
-    ///    * `folders/{folder}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}`.
-    ///    * `projects/{project}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}`.
+    ///    * `organizations/{organization}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}`
+    ///    * `folders/{folder}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}`
+    ///    * `projects/{project}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. When set to true, only validations (including IAM checks) will
-    /// done for the request (module will not be deleted). An OK response indicates
-    /// the request is valid while an error response indicates the request is
-    /// invalid. Note that a subsequent request to actually delete the module could
-    /// still fail because 1. the state could have changed (e.g. IAM permission
-    /// lost) or
-    /// 2. A failure occurred while trying to delete the module.
+    /// Optional. When set to `true`, the request will be validated (including IAM
+    /// checks), but no module will be deleted. An `OK` response indicates that the
+    /// request is valid, while an error response indicates that the request is
+    /// invalid.
+    ///
+    /// If the request is valid, a subsequent request to delete the module could
+    /// still fail for one of the following reasons:
+    ///
+    /// *  The state of your cloud resources changed; for example, you lost a
+    ///     required IAM permission
+    /// *  An error occurred during deletion of the module
+    ///
+    /// Defaults to `false`.
     #[prost(bool, tag = "2")]
     pub validate_only: bool,
 }
-/// Request message to simulate a CustomConfig against a given test resource.
-/// Maximum size of the request is 4 MB by default.
+/// Request message for
+/// [SecurityCenterManagement.SimulateSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.SimulateSecurityHealthAnalyticsCustomModule].
+/// The maximum size of the request is 4 MiB.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SimulateSecurityHealthAnalyticsCustomModuleRequest {
     /// Required. The relative resource name of the organization, project, or
-    /// folder. For more information about relative resource names, see [Relative
-    /// Resource
-    /// Name](<https://cloud.google.com/apis/design/resource_names#relative_resource_name>)
-    /// Example: `organizations/{organization_id}`.
+    /// folder. For more information about relative resource names, see [AIP-122:
+    /// Resource names](<https://google.aip.dev/122>). Example:
+    /// `organizations/{organization_id}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The custom configuration that you need to test.
@@ -638,77 +675,82 @@ pub struct SimulateSecurityHealthAnalyticsCustomModuleRequest {
 }
 /// Nested message and enum types in `SimulateSecurityHealthAnalyticsCustomModuleRequest`.
 pub mod simulate_security_health_analytics_custom_module_request {
-    /// Manually constructed resource name. If the custom module evaluates against
-    /// only the resource data, you can omit the `iam_policy_data` field. If it
-    /// evaluates only the `iam_policy_data` field, you can omit the resource data.
+    /// Manually constructed information about a resource.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SimulatedResource {
-        /// Required. The type of the resource, for example,
+        /// Required. The type of the resource. For example,
         /// `compute.googleapis.com/Disk`.
         #[prost(string, tag = "1")]
         pub resource_type: ::prost::alloc::string::String,
         /// Optional. A representation of the Google Cloud resource. Should match the
         /// Google Cloud resource JSON format.
+        ///
+        /// If the custom module evaluates only the IAM allow policy, then you can
+        /// omit this field.
         #[prost(message, optional, tag = "2")]
         pub resource_data: ::core::option::Option<::prost_types::Struct>,
-        /// Optional. A representation of the IAM policy.
+        /// Optional. A representation of the IAM allow policy.
+        ///
+        /// If the custom module evaluates only the resource data, then you can omit
+        /// this field.
         #[prost(message, optional, tag = "3")]
         pub iam_policy_data: ::core::option::Option<
             super::super::super::super::iam::v1::Policy,
         >,
     }
 }
-/// A subset of the fields of the Security Center Finding proto. The minimum set
-/// of fields needed to represent a simulated finding from a SHA custom module.
+/// The minimum set of fields needed to represent a simulated finding from a
+/// Security Health Analytics custom module.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SimulatedFinding {
-    /// Identifier. The [relative resource
-    /// name](<https://cloud.google.com/apis/design/resource_names#relative_resource_name>)
-    /// of the finding. Example:
-    /// `organizations/{organization_id}/sources/{source_id}/findings/{finding_id}`,
-    /// `folders/{folder_id}/sources/{source_id}/findings/{finding_id}`,
-    /// `projects/{project_id}/sources/{source_id}/findings/{finding_id}`.
+    /// Identifier. The [relative resource name](<https://google.aip.dev/122>) of the
+    /// finding, in one of the following formats:
+    ///
+    /// * `organizations/{organization_id}/sources/{source_id}/findings/{finding_id}`
+    /// * `folders/{folder_id}/sources/{source_id}/findings/{finding_id}`
+    /// * `projects/{project_id}/sources/{source_id}/findings/{finding_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The relative resource name of the source the finding belongs to. See:
-    /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
-    /// This field is immutable after creation time.
-    /// For example:
-    /// `organizations/{organization_id}/sources/{source_id}`
+    /// The [relative resource name](<https://google.aip.dev/122>) of the source the
+    /// finding belongs to. For example,
+    /// `organizations/{organization_id}/sources/{source_id}`. This field is
+    /// immutable after creation time.
     #[prost(string, tag = "2")]
     pub parent: ::prost::alloc::string::String,
-    /// For findings on Google Cloud resources, the full resource
-    /// name of the Google Cloud resource this finding is for. See:
-    /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
-    /// When the finding is for a non-Google Cloud resource, the resourceName can
-    /// be a customer or partner defined string. This field is immutable after
-    /// creation time.
+    /// For findings on Google Cloud resources, the
+    /// [full resource name](<https://google.aip.dev/122#full-resource-names>) of the
+    /// Google Cloud resource this finding is for. When the finding is for a
+    /// non-Google Cloud resource, the value can be a customer or partner defined
+    /// string. This field is immutable after creation time.
     #[prost(string, tag = "3")]
     pub resource_name: ::prost::alloc::string::String,
-    /// The additional taxonomy group within findings from a given source.
-    /// This field is immutable after creation time.
-    /// Example: "XSS_FLASH_INJECTION"
+    /// The additional taxonomy group within findings from a given source. For
+    /// example, `XSS_FLASH_INJECTION`. This field is immutable after creation
+    /// time.
     #[prost(string, tag = "4")]
     pub category: ::prost::alloc::string::String,
     /// Output only. The state of the finding.
     #[prost(enumeration = "simulated_finding::State", tag = "5")]
     pub state: i32,
-    /// Source specific properties. These properties are managed by the source
-    /// that writes the finding. The key names in the source_properties map must be
-    /// between 1 and 255 characters, and must start with a letter and contain
-    /// alphanumeric characters or underscores only.
+    /// Source-specific properties. These properties are managed by the source
+    /// that writes the finding. The key names must be between 1 and 255
+    /// characters; they must start with a letter and contain alphanumeric
+    /// characters or underscores only.
     #[prost(map = "string, message", tag = "6")]
     pub source_properties: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost_types::Value,
     >,
     /// The time the finding was first detected. If an existing finding is updated,
-    /// then this is the time the update occurred.
+    /// then this is the time the update occurred. If the finding is later
+    /// resolved, then this time reflects when the finding was resolved.
+    ///
     /// For example, if the finding represents an open firewall, this property
     /// captures the time the detector believes the firewall became open. The
-    /// accuracy is determined by the detector. If the finding is later resolved,
-    /// then this time reflects when the finding was resolved. This must not
-    /// be set to a value greater than the current timestamp.
+    /// accuracy is determined by the detector.
+    ///
+    /// The event time must not be set to a value greater than the current
+    /// timestamp.
     #[prost(message, optional, tag = "7")]
     pub event_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The severity of the finding. This field is managed by the source that
@@ -735,12 +777,12 @@ pub mod simulated_finding {
     )]
     #[repr(i32)]
     pub enum State {
-        /// Unspecified state.
+        /// Default value. This value is unused.
         Unspecified = 0,
         /// The finding requires attention and has not been addressed yet.
         Active = 1,
-        /// The finding has been fixed, triaged as a non-issue or otherwise addressed
-        /// and is no longer active.
+        /// The finding has been fixed, triaged as a non-issue, or otherwise
+        /// addressed and is no longer active.
         Inactive = 2,
     }
     impl State {
@@ -779,57 +821,51 @@ pub mod simulated_finding {
     )]
     #[repr(i32)]
     pub enum Severity {
-        /// This value is used for findings when a source doesn't write a severity
-        /// value.
+        /// Default value. This value is unused.
         Unspecified = 0,
-        /// Vulnerability:
-        /// A critical vulnerability is easily discoverable by an external actor,
-        /// exploitable, and results in the direct ability to execute arbitrary code,
-        /// exfiltrate data, and otherwise gain additional access and privileges to
-        /// cloud resources and workloads. Examples include publicly accessible
-        /// unprotected user data and public SSH access with weak or no
-        /// passwords.
+        /// For vulnerabilities: A critical vulnerability is easily discoverable by
+        /// an external actor, exploitable, and results in the direct ability to
+        /// execute arbitrary code, exfiltrate data, and otherwise gain additional
+        /// access and privileges to cloud resources and workloads. Examples include
+        /// publicly accessible unprotected user data and public SSH access with weak
+        /// or no passwords.
         ///
-        /// Threat:
-        /// Indicates a threat that is able to access, modify, or delete data or
-        /// execute unauthorized code within existing resources.
+        /// For threats: Indicates a threat that is able to access, modify, or delete
+        /// data or execute unauthorized code within existing resources.
         Critical = 1,
-        /// Vulnerability:
-        /// A high risk vulnerability can be easily discovered and exploited in
-        /// combination with other vulnerabilities in order to gain direct access and
-        /// the ability to execute arbitrary code, exfiltrate data, and otherwise
-        /// gain additional access and privileges to cloud resources and workloads.
-        /// An example is a database with weak or no passwords that is only
-        /// accessible internally. This database could easily be compromised by an
-        /// actor that had access to the internal network.
+        /// For vulnerabilities: A high-risk vulnerability can be easily discovered
+        /// and exploited in combination with other vulnerabilities in order to gain
+        /// direct access and the ability to execute arbitrary code, exfiltrate data,
+        /// and otherwise gain additional access and privileges to cloud resources
+        /// and workloads. An example is a database with weak or no passwords that is
+        /// only accessible internally. This database could easily be compromised by
+        /// an actor that had access to the internal network.
         ///
-        /// Threat:
-        /// Indicates a threat that is able to create new computational resources in
-        /// an environment but not able to access data or execute code in existing
-        /// resources.
+        /// For threats: Indicates a threat that is able to create new computational
+        /// resources in an environment but not able to access data or execute code
+        /// in existing resources.
         High = 2,
-        /// Vulnerability:
-        /// A medium risk vulnerability could be used by an actor to gain access to
-        /// resources or privileges that enable them to eventually (through multiple
-        /// steps or a complex exploit) gain access and the ability to execute
-        /// arbitrary code or exfiltrate data. An example is a service account with
-        /// access to more projects than it should have. If an actor gains access to
-        /// the service account, they could potentially use that access to manipulate
-        /// a project the service account was not intended to.
+        /// For vulnerabilities: A medium-risk vulnerability could be used by an
+        /// actor to gain access to resources or privileges that enable them to
+        /// eventually (through multiple steps or a complex exploit) gain access and
+        /// the ability to execute arbitrary code or exfiltrate data. An example is a
+        /// service account with access to more projects than it should have. If an
+        /// actor gains access to the service account, they could potentially use
+        /// that access to manipulate a project the service account was not intended
+        /// to.
         ///
-        /// Threat:
-        /// Indicates a threat that is able to cause operational impact but may not
-        /// access data or execute unauthorized code.
+        /// For threats: Indicates a threat that is able to cause operational impact
+        /// but may not access data or execute unauthorized code.
         Medium = 3,
-        /// Vulnerability:
-        /// A low risk vulnerability hampers a security organization's ability to
-        /// detect vulnerabilities or active threats in their deployment, or prevents
-        /// the root cause investigation of security issues. An example is monitoring
-        /// and logs being disabled for resource configurations and access.
+        /// For vulnerabilities: A low-risk vulnerability hampers a security
+        /// organization's ability to detect vulnerabilities or active threats in
+        /// their deployment, or prevents the root cause investigation of security
+        /// issues. An example is monitoring and logs being disabled for resource
+        /// configurations and access.
         ///
-        /// Threat:
-        /// Indicates a threat that has obtained minimal access to an environment but
-        /// is not able to access data, execute code, or create resources.
+        /// For threats: Indicates a threat that has obtained minimal access to an
+        /// environment but is not able to access data, execute code, or create
+        /// resources.
         Low = 4,
     }
     impl Severity {
@@ -858,7 +894,7 @@ pub mod simulated_finding {
             }
         }
     }
-    /// Represents what kind of Finding it is.
+    /// Represents what kind of finding it is.
     #[derive(
         Clone,
         Copy,
@@ -872,19 +908,20 @@ pub mod simulated_finding {
     )]
     #[repr(i32)]
     pub enum FindingClass {
-        /// Unspecified finding class.
+        /// Default value. This value is unused.
         Unspecified = 0,
         /// Describes unwanted or malicious activity.
         Threat = 1,
         /// Describes a potential weakness in software that increases risk to
-        /// Confidentiality & Integrity & Availability.
+        /// confidentiality, integrity, and availability.
         Vulnerability = 2,
-        /// Describes a potential weakness in cloud resource/asset configuration that
-        /// increases risk.
+        /// Describes a potential weakness in cloud resource or asset configuration
+        /// that increases risk.
         Misconfiguration = 3,
         /// Describes a security observation that is for informational purposes.
         Observation = 4,
-        /// Describes an error that prevents some SCC functionality.
+        /// Describes an error that prevents Security Command Center from working
+        /// correctly.
         SccError = 5,
         /// Describes a potential security risk due to a change in the security
         /// posture.
@@ -926,8 +963,8 @@ pub mod simulated_finding {
         }
     }
 }
-/// Response message for simulating a `SecurityHealthAnalyticsCustomModule`
-/// against a given resource.
+/// Response message for
+/// [SecurityCenterManagement.SimulateSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.SimulateSecurityHealthAnalyticsCustomModule].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SimulateSecurityHealthAnalyticsCustomModuleResponse {
     /// Result for test case in the corresponding request.
@@ -941,15 +978,17 @@ pub mod simulate_security_health_analytics_custom_module_response {
     /// Possible test result.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SimulatedResult {
+        /// The result of the simulation.
         #[prost(oneof = "simulated_result::Result", tags = "1, 2, 3")]
         pub result: ::core::option::Option<simulated_result::Result>,
     }
     /// Nested message and enum types in `SimulatedResult`.
     pub mod simulated_result {
+        /// The result of the simulation.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Result {
-            /// Finding that would be published for the test case,
-            /// if a violation is detected.
+            /// Finding that would be published for the test case if a violation is
+            /// detected.
             #[prost(message, tag = "1")]
             Finding(super::super::SimulatedFinding),
             /// Indicates that the test case does not trigger any violation.
@@ -961,25 +1000,24 @@ pub mod simulate_security_health_analytics_custom_module_response {
         }
     }
 }
-/// An EffectiveEventThreatDetectionCustomModule is the representation of
-/// EventThreatDetectionCustomModule at a given level taking hierarchy into
-/// account and resolving various fields accordingly. e.g. if the module is
-/// enabled at the ancestor level, effective modules at all descendant levels
-/// will have enablement_state set to ENABLED. Similarly, if module.inherited is
-/// set, then effective module's config will contain the ancestor's config
-/// details. EffectiveEventThreatDetectionCustomModule is read-only.
+/// The representation of an
+/// [EventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.EventThreatDetectionCustomModule]
+/// at a given level, taking hierarchy into account and resolving various fields
+/// accordingly. For example, if the module is enabled at the ancestor level,
+/// then effective modules at all descendant levels will have their enablement
+/// state set to `ENABLED`. Similarly, if `module.inherited` is set, then the
+/// effective module's configuration will reflect the ancestor's configuration.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EffectiveEventThreatDetectionCustomModule {
-    /// Identifier. The resource name of the ETD custom module.
+    /// Identifier. The resource name of the Event Threat Detection custom module,
+    /// in one of the following formats:
     ///
-    /// Its format is:
-    ///
-    ///    * `organizations/{organization}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}`.
-    ///    * `folders/{folder}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}`.
-    ///    * `projects/{project}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}`.
+    /// * `organizations/{organization}/locations/{location}/effectiveEventThreatDetectionCustomModules/{custom_module}`
+    /// * `folders/{folder}/locations/{location}/effectiveEventThreatDetectionCustomModules/{custom_module}`
+    /// * `projects/{project}/locations/{location}/effectiveEventThreatDetectionCustomModules/{custom_module}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. Config for the effective module.
+    /// Output only. Configuration for the effective module.
     #[prost(message, optional, tag = "2")]
     pub config: ::core::option::Option<::prost_types::Struct>,
     /// Output only. The effective state of enablement for the module at the given
@@ -989,13 +1027,13 @@ pub struct EffectiveEventThreatDetectionCustomModule {
         tag = "3"
     )]
     pub enablement_state: i32,
-    /// Output only. Type for the module. e.g. CONFIGURABLE_BAD_IP.
+    /// Output only. Type for the module (for example, `CONFIGURABLE_BAD_IP`).
     #[prost(string, tag = "4")]
     pub r#type: ::prost::alloc::string::String,
-    /// Output only. The human readable name to be displayed for the module.
+    /// Output only. The human-readable name of the module.
     #[prost(string, tag = "5")]
     pub display_name: ::prost::alloc::string::String,
-    /// Output only. The description for the module.
+    /// Output only. A description of the module.
     #[prost(string, tag = "6")]
     pub description: ::prost::alloc::string::String,
 }
@@ -1015,7 +1053,7 @@ pub mod effective_event_threat_detection_custom_module {
     )]
     #[repr(i32)]
     pub enum EnablementState {
-        /// Unspecified enablement state.
+        /// Default value. This value is unused.
         Unspecified = 0,
         /// The module is enabled at the given level.
         Enabled = 1,
@@ -1045,74 +1083,79 @@ pub mod effective_event_threat_detection_custom_module {
         }
     }
 }
-/// Request message for listing effective Event Threat Detection custom
-/// modules.
+/// Request message for
+/// [SecurityCenterManagement.ListEffectiveEventThreatDetectionCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEffectiveEventThreatDetectionCustomModules].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEffectiveEventThreatDetectionCustomModulesRequest {
-    /// Required. Name of parent to list effective custom modules. Its format is
-    /// `organizations/{organization}/locations/{location}`,
-    /// `folders/{folder}/locations/{location}`,
-    /// or
-    /// `projects/{project}/locations/{location}`
+    /// Required. Name of parent to list effective custom modules, in one of the
+    /// following formats:
+    ///
+    /// * `organizations/{organization}/locations/{location}`
+    /// * `folders/{folder}/locations/{location}`
+    /// * `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of results to return in a single response.
     /// Default is 10, minimum is 1, maximum is 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. The value returned by the last call indicating a continuation
+    /// Optional. A pagination token returned from a previous request. Provide this
+    /// token to retrieve the next page of results.
+    ///
+    /// When paginating, the rest of the request must match the request that
+    /// generated the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for listing effective Event Threat Detection custom
-/// modules.
+/// Response message for
+/// [SecurityCenterManagement.ListEffectiveEventThreatDetectionCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEffectiveEventThreatDetectionCustomModules].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEffectiveEventThreatDetectionCustomModulesResponse {
-    /// The list of EffectiveEventThreatDetectionCustomModules
+    /// The list of effective Event Threat Detection custom modules.
     #[prost(message, repeated, tag = "1")]
     pub effective_event_threat_detection_custom_modules: ::prost::alloc::vec::Vec<
         EffectiveEventThreatDetectionCustomModule,
     >,
-    /// A token identifying a page of results the server should return.
+    /// A pagination token. To retrieve the next page of results, call the method
+    /// again with this token.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Message for getting a EffectiveEventThreatDetectionCustomModule
+/// Request message for
+/// [SecurityCenterManagement.GetEffectiveEventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.GetEffectiveEventThreatDetectionCustomModule].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEffectiveEventThreatDetectionCustomModuleRequest {
-    /// Required. The resource name of the ETD custom module.
+    /// Required. The resource name of the Event Threat Detection custom module, in
+    /// one of the following formats:
     ///
-    /// Its format is:
-    ///
-    ///    * `organizations/{organization}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}`.
-    ///    * `folders/{folder}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}`.
-    ///    * `projects/{project}/locations/{location}/effectiveEventThreatDetectionCustomModules/{effective_event_threat_detection_custom_module}`.
+    /// * `organizations/{organization}/locations/{location}/effectiveEventThreatDetectionCustomModules/{custom_module}`
+    /// * `folders/{folder}/locations/{location}/effectiveEventThreatDetectionCustomModules/{custom_module}`
+    /// * `projects/{project}/locations/{location}/effectiveEventThreatDetectionCustomModules/{custom_module}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// An event threat detection custom module is a Cloud SCC resource that contains
-/// the configuration and enablement state of a custom module, which enables ETD
-/// to write certain findings to Cloud SCC.
+/// A Security Command Center resource that contains the configuration and
+/// enablement state of a custom module, which enables Event Threat Detection to
+/// write certain findings to Security Command Center.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventThreatDetectionCustomModule {
-    /// Identifier. The resource name of the ETD custom module.
+    /// Identifier. The resource name of the Event Threat Detection custom module,
+    /// in one of the following formats:
     ///
-    /// Its format is:
-    ///
-    ///    * `organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}`.
-    ///    * `folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}`.
-    ///    * `projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}`.
+    /// * `organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}`
+    /// * `folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}`
+    /// * `projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. Config for the module. For the resident module, its config value
-    /// is defined at this level. For the inherited module, its config value is
-    /// inherited from the ancestor module.
+    /// Optional. Configuration for the module. For the resident module, its
+    /// configuration value is defined at this level. For the inherited module, its
+    /// configuration value is inherited from the ancestor module.
     #[prost(message, optional, tag = "2")]
     pub config: ::core::option::Option<::prost_types::Struct>,
     /// Output only. The closest ancestor module that this module inherits the
     /// enablement state from. If empty, indicates that the custom module was
     /// created in the requesting parent organization, folder, or project. The
-    /// format is the same as the EventThreatDetectionCustomModule resource name.
+    /// format is the same as the custom module's resource name.
     #[prost(string, tag = "3")]
     pub ancestor_module: ::prost::alloc::string::String,
     /// Optional. The state of enablement for the module at the given level of the
@@ -1122,13 +1165,13 @@ pub struct EventThreatDetectionCustomModule {
         tag = "4"
     )]
     pub enablement_state: i32,
-    /// Optional. Type for the module. e.g. CONFIGURABLE_BAD_IP.
+    /// Optional. Type for the module. For example, `CONFIGURABLE_BAD_IP`.
     #[prost(string, tag = "5")]
     pub r#type: ::prost::alloc::string::String,
-    /// Optional. The human readable name to be displayed for the module.
+    /// Optional. The human-readable name of the module.
     #[prost(string, tag = "6")]
     pub display_name: ::prost::alloc::string::String,
-    /// Optional. The description for the module.
+    /// Optional. A description of the module.
     #[prost(string, tag = "7")]
     pub description: ::prost::alloc::string::String,
     /// Output only. The time the module was last updated.
@@ -1160,11 +1203,11 @@ pub mod event_threat_detection_custom_module {
         Enabled = 1,
         /// The module is disabled at the given level.
         Disabled = 2,
-        /// State is inherited from an ancestor module. The module will either
-        /// be effectively ENABLED or DISABLED based on its closest non-inherited
-        /// ancestor module in the CRM hierarchy. Attempting to set a top level
-        /// module (module with no parent) to the INHERITED state will result in an
-        /// error.
+        /// State is inherited from an ancestor module. The module will either be
+        /// effectively `ENABLED` or `DISABLED` based on its closest non-inherited
+        /// ancestor module in the CRM hierarchy. If you try to set a top-level
+        /// module (a module with no parent) to the `INHERITED` state, you receive an
+        /// `INVALID_ARGUMENT` error.
         Inherited = 3,
     }
     impl EnablementState {
@@ -1192,52 +1235,55 @@ pub mod event_threat_detection_custom_module {
         }
     }
 }
-/// Request message for listing Event Threat Detection custom modules.
+/// Request message for
+/// [SecurityCenterManagement.ListEventThreatDetectionCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEventThreatDetectionCustomModules].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEventThreatDetectionCustomModulesRequest {
-    /// Required. Name of parent to list custom modules. Its format is
-    /// `organizations/{organization}/locations/{location}`,
-    /// `folders/{folder}/locations/{location}`,
-    /// or
-    /// `projects/{project}/locations/{location}`
+    /// Required. Name of parent to list custom modules, in one of the following
+    /// formats:
+    ///
+    /// * `organizations/{organization}/locations/{location}`
+    /// * `folders/{folder}/locations/{location}`
+    /// * `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of modules to return. The service may return
-    /// fewer than this value. If unspecified, at most 10 configs will be returned.
+    /// fewer than this value. If unspecified, at most 10 modules will be returned.
     /// The maximum value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. A page token, received from a previous
-    /// `ListEventThreatDetectionCustomModules` call. Provide this to retrieve the
-    /// subsequent page.
+    /// Optional. A pagination token returned from a previous request. Provide this
+    /// token to retrieve the next page of results.
     ///
-    /// When paginating, all other parameters provided to
-    /// `ListEventThreatDetectionCustomModules` must match the call that provided
-    /// the page token.
+    /// When paginating, the rest of the request must match the request that
+    /// generated the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for listing Event Threat Detection custom modules.
+/// Response message for
+/// [SecurityCenterManagement.ListEventThreatDetectionCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEventThreatDetectionCustomModules].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEventThreatDetectionCustomModulesResponse {
-    /// The list of EventThreatDetectionCustomModules
+    /// The list of custom modules.
     #[prost(message, repeated, tag = "1")]
     pub event_threat_detection_custom_modules: ::prost::alloc::vec::Vec<
         EventThreatDetectionCustomModule,
     >,
-    /// A token identifying a page of results the server should return.
+    /// A pagination token. To retrieve the next page of results, call the method
+    /// again with this token.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Request message for listing descendant Event Threat Detection custom
-/// modules.
+/// Request message for
+/// [SecurityCenterManagement.ListDescendantEventThreatDetectionCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListDescendantEventThreatDetectionCustomModules].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDescendantEventThreatDetectionCustomModulesRequest {
-    /// Required. Name of parent to list custom modules. Its format is
-    /// `organizations/{organization}/locations/{location}`,
-    /// `folders/{folder}/locations/{location}`,
-    /// or
-    /// `projects/{project}/locations/{location}`
+    /// Required. Name of parent to list custom modules, in one of the following
+    /// formats:
+    ///
+    /// * `organizations/{organization}/locations/{location}`
+    /// * `folders/{folder}/locations/{location}`
+    /// * `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of modules to return. The service may return
@@ -1245,129 +1291,150 @@ pub struct ListDescendantEventThreatDetectionCustomModulesRequest {
     /// The maximum value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. A token identifying a page of results the server should return.
+    /// Optional. A pagination token returned from a previous request. Provide this
+    /// token to retrieve the next page of results.
+    ///
+    /// When paginating, the rest of the request must match the request that
+    /// generated the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for listing descendant Event Threat Detection custom
-/// modules.
+/// Response message for
+/// [SecurityCenterManagement.ListDescendantEventThreatDetectionCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListDescendantEventThreatDetectionCustomModules].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDescendantEventThreatDetectionCustomModulesResponse {
-    /// The list of EventThreatDetectionCustomModules
+    /// The list of custom modules.
     #[prost(message, repeated, tag = "1")]
     pub event_threat_detection_custom_modules: ::prost::alloc::vec::Vec<
         EventThreatDetectionCustomModule,
     >,
-    /// A token identifying a page of results the server should return.
+    /// A pagination token. To retrieve the next page of results, call the method
+    /// again with this token.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Message for getting a EventThreatDetectionCustomModule
+/// Request message for
+/// [SecurityCenterManagement.GetEventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.GetEventThreatDetectionCustomModule].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEventThreatDetectionCustomModuleRequest {
-    /// Required. The resource name of the ETD custom module.
+    /// Required. The resource name of the Event Threat Detection custom module, in
+    /// one of the following formats:
     ///
-    /// Its format is:
-    ///
-    ///    * `organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}`.
-    ///    * `folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}`.
-    ///    * `projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}`.
+    /// * `organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}`
+    /// * `folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}`
+    /// * `projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Message for creating a EventThreatDetectionCustomModule
+/// Request message for
+/// [SecurityCenterManagement.CreateEventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.CreateEventThreatDetectionCustomModule].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEventThreatDetectionCustomModuleRequest {
-    /// Required. Name of parent for the module. Its format is
-    /// `organizations/{organization}/locations/{location}`,
-    /// `folders/{folder}/locations/{location}`,
-    /// or
-    /// `projects/{project}/locations/{location}`
+    /// Required. Name of parent for the module, in one of the following formats:
+    ///
+    /// * `organizations/{organization}/locations/{location}`
+    /// * `folders/{folder}/locations/{location}`
+    /// * `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The module to create. The
-    /// event_threat_detection_custom_module.name will be ignored and server
-    /// generated.
+    /// [EventThreatDetectionCustomModule.name][google.cloud.securitycentermanagement.v1.EventThreatDetectionCustomModule.name]
+    /// field is ignored; Security Command Center generates the name.
     #[prost(message, optional, tag = "3")]
     pub event_threat_detection_custom_module: ::core::option::Option<
         EventThreatDetectionCustomModule,
     >,
-    /// Optional. When set to true, only validations (including IAM checks) will
-    /// done for the request (no module will be created). An OK response indicates
-    /// the request is valid while an error response indicates the request is
-    /// invalid. Note that a subsequent request to actually create the module could
-    /// still fail because 1. the state could have changed (e.g. IAM permission
-    /// lost) or
-    /// 2. A failure occurred during creation of the module.
+    /// Optional. When set to `true`, the request will be validated (including IAM
+    /// checks), but no module will be created. An `OK` response indicates that the
+    /// request is valid, while an error response indicates that the request is
+    /// invalid.
+    ///
+    /// If the request is valid, a subsequent request to create the module could
+    /// still fail for one of the following reasons:
+    ///
+    /// *  The state of your cloud resources changed; for example, you lost a
+    ///     required IAM permission
+    /// *  An error occurred during creation of the module
+    ///
+    /// Defaults to `false`.
     #[prost(bool, tag = "4")]
     pub validate_only: bool,
 }
 /// Message for updating a EventThreatDetectionCustomModule
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEventThreatDetectionCustomModuleRequest {
-    /// Required. Field mask is used to specify the fields to be overwritten in the
-    /// EventThreatDetectionCustomModule resource by the update.
-    /// The fields specified in the update_mask are relative to the resource, not
-    /// the full request. A field will be overwritten if it is in the mask. If the
-    /// user does not provide a mask then all fields will be overwritten.
+    /// Required. The fields to update. If omitted, then all fields are updated.
     #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// Required. The module being updated
+    /// Required. The module being updated.
     #[prost(message, optional, tag = "2")]
     pub event_threat_detection_custom_module: ::core::option::Option<
         EventThreatDetectionCustomModule,
     >,
-    /// Optional. When set to true, only validations (including IAM checks) will
-    /// done for the request (module will not be updated). An OK response indicates
-    /// the request is valid while an error response indicates the request is
-    /// invalid. Note that a subsequent request to actually update the module could
-    /// still fail because 1. the state could have changed (e.g. IAM permission
-    /// lost) or
-    /// 2. A failure occurred while trying to update the module.
+    /// Optional. When set to `true`, the request will be validated (including IAM
+    /// checks), but no module will be updated. An `OK` response indicates that the
+    /// request is valid, while an error response indicates that the request is
+    /// invalid.
+    ///
+    /// If the request is valid, a subsequent request to update the module could
+    /// still fail for one of the following reasons:
+    ///
+    /// *  The state of your cloud resources changed; for example, you lost a
+    ///     required IAM permission
+    /// *  An error occurred during creation of the module
+    ///
+    /// Defaults to `false`.
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
 }
-/// Message for deleting a EventThreatDetectionCustomModule
+/// Request message for
+/// [SecurityCenterManagement.DeleteEventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.DeleteEventThreatDetectionCustomModule].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEventThreatDetectionCustomModuleRequest {
-    /// Required. The resource name of the ETD custom module.
+    /// Required. The resource name of the Event Threat Detection custom module, in
+    /// one of the following formats:
     ///
-    /// Its format is:
-    ///
-    ///    * `organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}`.
-    ///    * `folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}`.
-    ///    * `projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}`.
+    /// * `organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}`
+    /// * `folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}`
+    /// * `projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{custom_module}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. When set to true, only validations (including IAM checks) will
-    /// done for the request (module will not be deleted). An OK response indicates
-    /// the request is valid while an error response indicates the request is
-    /// invalid. Note that a subsequent request to actually delete the module could
-    /// still fail because 1. the state could have changed (e.g. IAM permission
-    /// lost) or
-    /// 2. A failure occurred while trying to delete the module.
+    /// Optional. When set to `true`, the request will be validated (including IAM
+    /// checks), but no module will be deleted. An `OK` response indicates that the
+    /// request is valid, while an error response indicates that the request is
+    /// invalid.
+    ///
+    /// If the request is valid, a subsequent request to delete the module could
+    /// still fail for one of the following reasons:
+    ///
+    /// *  The state of your cloud resources changed; for example, you lost a
+    ///     required IAM permission
+    /// *  An error occurred during creation of the module
+    ///
+    /// Defaults to `false`.
     #[prost(bool, tag = "2")]
     pub validate_only: bool,
 }
-/// Request to validate an Event Threat Detection custom module.
+/// Request message for
+/// [SecurityCenterManagement.ValidateEventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ValidateEventThreatDetectionCustomModule].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValidateEventThreatDetectionCustomModuleRequest {
-    /// Required. Resource name of the parent to validate the Custom Module under.
+    /// Required. Resource name of the parent to validate the custom modules under,
+    /// in one of the following formats:
     ///
-    /// Its format is:
-    ///
-    ///    * `organizations/{organization}/locations/{location}`.
+    /// * `organizations/{organization}/locations/{location}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The raw text of the module's contents. Used to generate error
     /// messages.
     #[prost(string, tag = "2")]
     pub raw_text: ::prost::alloc::string::String,
-    /// Required. The type of the module (e.g. CONFIGURABLE_BAD_IP).
+    /// Required. The type of the module. For example, `CONFIGURABLE_BAD_IP`.
     #[prost(string, tag = "3")]
     pub r#type: ::prost::alloc::string::String,
 }
-/// Response to validating an Event Threat Detection custom module.
+/// Response message for
+/// [SecurityCenterManagement.ValidateEventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ValidateEventThreatDetectionCustomModule].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValidateEventThreatDetectionCustomModuleResponse {
     /// A list of errors returned by the validator. If the list is empty, there
@@ -1380,116 +1447,132 @@ pub struct ValidateEventThreatDetectionCustomModuleResponse {
 /// Nested message and enum types in `ValidateEventThreatDetectionCustomModuleResponse`.
 pub mod validate_event_threat_detection_custom_module_response {
     /// An error encountered while validating the uploaded configuration of an
-    /// Event Threat Detection Custom Module.
+    /// Event Threat Detection custom module.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CustomModuleValidationError {
-        /// A description of the error, suitable for human consumption. Required.
+        /// A human-readable description of the error.
         #[prost(string, tag = "1")]
         pub description: ::prost::alloc::string::String,
-        /// The path, in RFC 8901 JSON Pointer format, to the field that failed
-        /// validation. This may be left empty if no specific field is affected.
+        /// The path, in [RFC 6901: JSON
+        /// Pointer](<https://datatracker.ietf.org/doc/html/rfc6901>) format, to the
+        /// field that failed validation. Omitted if no specific field is affected.
         #[prost(string, tag = "2")]
         pub field_path: ::prost::alloc::string::String,
         /// The initial position of the error in the uploaded text version of the
-        /// module. This field may be omitted if no specific position applies, or if
-        /// one could not be computed.
+        /// module. Omitted if no specific position applies, or if the position could
+        /// not be computed.
         #[prost(message, optional, tag = "3")]
         pub start: ::core::option::Option<Position>,
-        /// The end position of the error in the uploaded text version of the
-        /// module. This field may be omitted if no specific position applies, or if
-        /// one could not be computed..
+        /// The end position of the error in the uploaded text version of the module.
+        /// Omitted if no specific position applies, or if the position could not be
+        /// computed.
         #[prost(message, optional, tag = "4")]
         pub end: ::core::option::Option<Position>,
     }
     /// A position in the uploaded text version of a module.
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct Position {
-        /// The line position in the text
+        /// The line position in the text.
         #[prost(int32, tag = "1")]
         pub line_number: i32,
-        /// The column position in the line
+        /// The column position in the line.
         #[prost(int32, tag = "2")]
         pub column_number: i32,
     }
 }
-/// Request message for getting a Security Command Center service.
+/// Request message for
+/// [SecurityCenterManagement.GetSecurityCenterService][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.GetSecurityCenterService].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSecurityCenterServiceRequest {
-    /// Required. The Security Command Center service to retrieve.
+    /// Required. The Security Command Center service to retrieve, in one of the
+    /// following formats:
     ///
-    /// Formats:
+    /// * organizations/{organization}/locations/{location}/securityCenterServices/{service}
+    /// * folders/{folder}/locations/{location}/securityCenterServices/{service}
+    /// * projects/{project}/locations/{location}/securityCenterServices/{service}
     ///
-    ///    * organizations/{organization}/locations/{location}/securityCenterServices/{service}
-    ///    * folders/{folder}/locations/{location}/securityCenterServices/{service}
-    ///    * projects/{project}/locations/{location}/securityCenterServices/{service}
+    /// The following values are valid for `{service}`:
     ///
-    /// The possible values for id {service} are:
-    ///
-    ///    * container-threat-detection
-    ///    * event-threat-detection
-    ///    * security-health-analytics
-    ///    * vm-threat-detection
-    ///    * web-security-scanner
+    /// * `container-threat-detection`
+    /// * `event-threat-detection`
+    /// * `security-health-analytics`
+    /// * `vm-threat-detection`
+    /// * `web-security-scanner`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Flag that, when set, will be used to filter the ModuleSettings that are
-    /// in scope. The default setting is that all modules will be shown.
+    /// Set to `true` to show only modules that are in scope. By default, all
+    /// modules are shown.
     #[prost(bool, tag = "2")]
     pub show_eligible_modules_only: bool,
 }
-/// Request message for listing Security Command Center services.
+/// Request message for
+/// [SecurityCenterManagement.ListSecurityCenterServices][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListSecurityCenterServices].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSecurityCenterServicesRequest {
-    /// Required. The name of the parent to list Security Command Center services.
+    /// Required. The name of the parent to list Security Command Center services,
+    /// in one of the following formats:
     ///
-    /// Formats:
-    ///
-    ///    * organizations/{organization}/locations/{location}
-    ///    * folders/{folder}/locations/{location}
-    ///    * projects/{project}/locations/{location}
+    /// * `organizations/{organization}/locations/{location}`
+    /// * `folders/{folder}/locations/{location}`
+    /// * `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of results to return in a single response.
     /// Default is 10, minimum is 1, maximum is 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. The value returned by the last call indicating a continuation.
+    /// Optional. A pagination token returned from a previous request. Provide this
+    /// token to retrieve the next page of results.
+    ///
+    /// When paginating, the rest of the request must match the request that
+    /// generated the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Flag that, when set, will be used to filter the ModuleSettings that are
-    /// in scope. The default setting is that all modules will be shown.
+    /// Flag that, when set, is used to filter the module settings that are shown.
+    /// The default setting is that all modules are shown.
     #[prost(bool, tag = "4")]
     pub show_eligible_modules_only: bool,
 }
-/// Response message for listing Security Command Center services.
+/// Response message for
+/// [SecurityCenterManagement.ListSecurityCenterServices][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListSecurityCenterServices].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSecurityCenterServicesResponse {
     /// The list of services.
     #[prost(message, repeated, tag = "1")]
     pub security_center_services: ::prost::alloc::vec::Vec<SecurityCenterService>,
-    /// A token identifying a page of results the server should return.
+    /// A pagination token. To retrieve the next page of results, call the method
+    /// again with this token.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Request message for updating a Security Command Center service.
+/// Request message for
+/// [SecurityCenterManagement.UpdateSecurityCenterService][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.UpdateSecurityCenterService].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSecurityCenterServiceRequest {
     /// Required. The updated service.
     #[prost(message, optional, tag = "1")]
     pub security_center_service: ::core::option::Option<SecurityCenterService>,
-    /// Required. The list of fields to be updated. Possible values:
+    /// Required. The fields to update. Accepts the following values:
     ///
-    ///    * "intended_enablement_state"
-    ///    * "modules"
+    /// * `intended_enablement_state`
+    /// * `modules`
+    ///
+    /// If omitted, then all eligible fields are updated.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// Optional. When set to true, only validations (including IAM checks) will be
-    /// done for the request (service will not be updated). An OK response
-    /// indicates that the request is valid, while an error response indicates that
-    /// the request is invalid. Note that a subsequent request to actually update
-    /// the service could still fail for one of the following reasons:
-    /// - The state could have changed (e.g. IAM permission lost).
-    /// - A failure occurred while trying to delete the module.
+    /// Optional. When set to `true`, the request will be validated (including IAM
+    /// checks), but no service will be updated. An `OK` response indicates that
+    /// the request is valid, while an error response indicates that the request is
+    /// invalid.
+    ///
+    /// If the request is valid, a subsequent request to update the service could
+    /// still fail for one of the following reasons:
+    ///
+    /// *  The state of your cloud resources changed; for example, you lost a
+    ///     required IAM permission
+    /// *  An error occurred during update of the service
+    ///
+    /// Defaults to `false`.
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
 }
@@ -1587,10 +1670,11 @@ pub mod security_center_management_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Returns a list of all EffectiveSecurityHealthAnalyticsCustomModules for the
-        /// given parent. This includes resident modules defined at the scope of the
-        /// parent, and inherited modules, inherited from CRM ancestors (no
-        /// descendants).
+        /// Returns a list of all
+        /// [EffectiveSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.EffectiveSecurityHealthAnalyticsCustomModule]
+        /// resources for the given parent. This includes resident modules defined at
+        /// the scope of the parent, and inherited modules, inherited from ancestor
+        /// organizations, folders, and projects (no descendants).
         pub async fn list_effective_security_health_analytics_custom_modules(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -1624,7 +1708,8 @@ pub mod security_center_management_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Gets details of a single EffectiveSecurityHealthAnalyticsCustomModule.
+        /// Gets details of a single
+        /// [EffectiveSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.EffectiveSecurityHealthAnalyticsCustomModule].
         pub async fn get_effective_security_health_analytics_custom_module(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -1656,9 +1741,11 @@ pub mod security_center_management_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Returns a list of all SecurityHealthAnalyticsCustomModules for the given
-        /// parent. This includes resident modules defined at the scope of the parent,
-        /// and inherited modules, inherited from CRM ancestors (no descendants).
+        /// Returns a list of all
+        /// [SecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule]
+        /// resources for the given parent. This includes resident modules defined at
+        /// the scope of the parent, and inherited modules, inherited from ancestor
+        /// organizations, folders, and projects (no descendants).
         pub async fn list_security_health_analytics_custom_modules(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -1690,8 +1777,10 @@ pub mod security_center_management_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Returns a list of all resident SecurityHealthAnalyticsCustomModules under
-        /// the given CRM parent and all of the parent's CRM descendants.
+        /// Returns a list of all resident
+        /// [SecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule]
+        /// resources under the given organization, folder, or project and all of its
+        /// descendants.
         pub async fn list_descendant_security_health_analytics_custom_modules(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -1725,7 +1814,8 @@ pub mod security_center_management_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Retrieves a SecurityHealthAnalyticsCustomModule.
+        /// Retrieves a
+        /// [SecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule].
         pub async fn get_security_health_analytics_custom_module(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -1757,10 +1847,12 @@ pub mod security_center_management_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Creates a resident SecurityHealthAnalyticsCustomModule at the scope of the
-        /// given CRM parent, and also creates inherited
-        /// SecurityHealthAnalyticsCustomModules for all CRM descendants of the given
-        /// parent. These modules are enabled by default.
+        /// Creates a resident
+        /// [SecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule]
+        /// at the scope of the given organization, folder, or project, and also
+        /// creates inherited `SecurityHealthAnalyticsCustomModule` resources for all
+        /// folders and projects that are descendants of the given parent. These
+        /// modules are enabled by default.
         pub async fn create_security_health_analytics_custom_module(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -1792,11 +1884,13 @@ pub mod security_center_management_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Updates the SecurityHealthAnalyticsCustomModule under the given name based
-        /// on the given update mask. Updating the enablement state is supported on
-        /// both resident and inherited modules (though resident modules cannot have an
-        /// enablement state of "inherited"). Updating the display name and custom
-        /// config of a module is supported on resident modules only.
+        /// Updates the
+        /// [SecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule]
+        /// under the given name based on the given update mask. Updating the
+        /// enablement state is supported on both resident and inherited modules
+        /// (though resident modules cannot have an enablement state of "inherited").
+        /// Updating the display name and custom configuration of a module is supported
+        /// on resident modules only.
         pub async fn update_security_health_analytics_custom_module(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -1828,9 +1922,10 @@ pub mod security_center_management_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Deletes the specified SecurityHealthAnalyticsCustomModule and all of its
-        /// descendants in the CRM hierarchy. This method is only supported for
-        /// resident custom modules.
+        /// Deletes the specified
+        /// [SecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule]
+        /// and all of its descendants in the resource hierarchy. This method is only
+        /// supported for resident custom modules.
         pub async fn delete_security_health_analytics_custom_module(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -1859,7 +1954,9 @@ pub mod security_center_management_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Simulates a given SecurityHealthAnalyticsCustomModule and Resource.
+        /// Simulates the result of using a
+        /// [SecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule]
+        /// to check a resource.
         pub async fn simulate_security_health_analytics_custom_module(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -1927,13 +2024,18 @@ pub mod security_center_management_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Gets an effective ETD custom module. Retrieves the effective module at the
-        /// given level. The difference between an EffectiveCustomModule and a
-        /// CustomModule is that the fields for an EffectiveCustomModule are computed
-        /// from ancestors if needed. For example, the enablement_state for a
-        /// CustomModule can be either ENABLED, DISABLED, or INHERITED. Where as the
-        /// enablement_state for an EffectiveCustomModule is always computed to ENABLED
-        /// or DISABLED (the effective enablement_state).
+        /// Gets the effective Event Threat Detection custom module at the given level.
+        ///
+        /// The difference between an
+        /// [EffectiveEventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.EffectiveEventThreatDetectionCustomModule]
+        /// and an
+        /// [EventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.EventThreatDetectionCustomModule]
+        /// is that the fields for an `EffectiveEventThreatDetectionCustomModule` are
+        /// computed from ancestors if needed. For example, the enablement state for an
+        /// `EventThreatDetectionCustomModule` can be `ENABLED`, `DISABLED`, or
+        /// `INHERITED`. In contrast, the enablement state for an
+        /// `EffectiveEventThreatDetectionCustomModule` is always computed as `ENABLED`
+        /// or `DISABLED`.
         pub async fn get_effective_event_threat_detection_custom_module(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -1965,9 +2067,9 @@ pub mod security_center_management_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists all Event Threat Detection custom modules for the given
-        /// Resource Manager parent. This includes resident modules defined at the
-        /// scope of the parent along with modules inherited from ancestors.
+        /// Lists all Event Threat Detection custom modules for the given organization,
+        /// folder, or project. This includes resident modules defined at the scope of
+        /// the parent along with modules inherited from ancestors.
         pub async fn list_event_threat_detection_custom_modules(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -1999,8 +2101,8 @@ pub mod security_center_management_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists all resident Event Threat Detection custom modules under the
-        /// given Resource Manager parent and its descendants.
+        /// Lists all resident Event Threat Detection custom modules for the given
+        /// organization, folder, or project and its descendants.
         pub async fn list_descendant_event_threat_detection_custom_modules(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -2067,9 +2169,9 @@ pub mod security_center_management_client {
             self.inner.unary(req, path, codec).await
         }
         /// Creates a resident Event Threat Detection custom module at the scope of the
-        /// given Resource Manager parent, and also creates inherited custom modules
-        /// for all descendants of the given parent. These modules are enabled by
-        /// default.
+        /// given organization, folder, or project, and creates inherited custom
+        /// modules for all descendants of the given parent. These modules are enabled
+        /// by default.
         pub async fn create_event_threat_detection_custom_module(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -2139,8 +2241,8 @@ pub mod security_center_management_client {
             self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified Event Threat Detection custom module and all of its
-        /// descendants in the Resource Manager hierarchy. This method is only
-        /// supported for resident custom modules.
+        /// descendants in the resource hierarchy. This method is only supported for
+        /// resident custom modules.
         pub async fn delete_event_threat_detection_custom_module(
             &mut self,
             request: impl tonic::IntoRequest<

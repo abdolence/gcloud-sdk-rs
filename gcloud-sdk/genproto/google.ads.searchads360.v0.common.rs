@@ -945,9 +945,19 @@ pub struct Metrics {
     /// Cross-device conversions are already included in all_conversions.
     #[prost(double, optional, tag = "173")]
     pub cross_device_conversions: ::core::option::Option<f64>,
+    /// The number of cross-device conversions by conversion date.
+    /// Details for the by_conversion_date columns are available at
+    /// <https://support.google.com/sa360/answer/9250611.>
+    #[prost(double, optional, tag = "372")]
+    pub cross_device_conversions_by_conversion_date: ::core::option::Option<f64>,
     /// The sum of the value of cross-device conversions.
     #[prost(double, optional, tag = "253")]
     pub cross_device_conversions_value: ::core::option::Option<f64>,
+    /// The sum of cross-device conversions value by conversion date.
+    /// Details for the by_conversion_date columns are available at
+    /// <https://support.google.com/sa360/answer/9250611.>
+    #[prost(double, optional, tag = "373")]
+    pub cross_device_conversions_value_by_conversion_date: ::core::option::Option<f64>,
     /// The number of clicks your ad receives (Clicks) divided by the number
     /// of times your ad is shown (Impressions).
     #[prost(double, optional, tag = "174")]
@@ -1015,6 +1025,26 @@ pub struct Metrics {
     /// Number of clicks Google considers illegitimate and doesn't charge you for.
     #[prost(int64, optional, tag = "225")]
     pub invalid_clicks: ::core::option::Option<i64>,
+    /// The percentage of clicks that have been filtered out of your total number
+    /// of clicks (filtered + non-filtered clicks) due to being general invalid
+    /// clicks. These are clicks Google considers illegitimate that are detected
+    /// through routine means of filtration (that is, known invalid data-center
+    /// traffic, bots and spiders or other crawlers, irregular patterns, etc).
+    /// You're not charged for them, and they don't affect your account statistics.
+    /// See the help page at
+    /// <https://support.google.com/campaignmanager/answer/6076504> for
+    /// details.
+    #[prost(double, optional, tag = "370")]
+    pub general_invalid_click_rate: ::core::option::Option<f64>,
+    /// Number of general invalid clicks. These are a subset of your invalid clicks
+    /// that are detected through routine means of filtration (such as known
+    /// invalid data-center traffic, bots and spiders or other crawlers, irregular
+    /// patterns, etc.). You're not charged for them, and they don't affect your
+    /// account statistics. See the help page at
+    /// <https://support.google.com/campaignmanager/answer/6076504> for
+    /// details.
+    #[prost(int64, optional, tag = "371")]
+    pub general_invalid_clicks: ::core::option::Option<i64>,
     /// The percentage of mobile clicks that go to a mobile-friendly page.
     #[prost(double, optional, tag = "229")]
     pub mobile_friendly_clicks_percentage: ::core::option::Option<f64>,

@@ -2646,9 +2646,15 @@ pub struct CheckCloudIdentityAccountsExistRequest {
     /// Parent uses the format: accounts/{account_id}
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. Domain to fetch for Cloud Identity account customer.
+    /// Required. Domain to fetch for Cloud Identity account customers, including
+    /// domain and team customers. For team customers, please use the domain for
+    /// their emails.
     #[prost(string, tag = "2")]
     pub domain: ::prost::alloc::string::String,
+    /// Optional. Primary admin email to fetch for Cloud Identity account team
+    /// customer.
+    #[prost(string, tag = "4")]
+    pub primary_admin_email: ::prost::alloc::string::String,
 }
 /// Entity representing a Cloud Identity account that may be
 /// associated with a Channel Services API partner.
@@ -2670,6 +2676,13 @@ pub struct CloudIdentityCustomerAccount {
     /// If existing = true, the Cloud Identity ID of the customer.
     #[prost(string, tag = "4")]
     pub customer_cloud_identity_id: ::prost::alloc::string::String,
+    /// If existing = true, the type of the customer.
+    #[prost(enumeration = "cloud_identity_info::CustomerType", tag = "5")]
+    pub customer_type: i32,
+    /// If existing = true, and is 2-tier customer, the channel partner of the
+    /// customer.
+    #[prost(string, tag = "6")]
+    pub channel_partner_cloud_identity_id: ::prost::alloc::string::String,
 }
 /// Response message for
 /// [CloudChannelService.CheckCloudIdentityAccountsExist][google.cloud.channel.v1.CloudChannelService.CheckCloudIdentityAccountsExist].
@@ -2797,7 +2810,7 @@ pub struct ImportCustomerRequest {
     /// A customer's cloud_identity_id or domain is required to look up the
     /// customer's Cloud Identity. For Team customers, only the cloud_identity_id
     /// option is valid.
-    #[prost(oneof = "import_customer_request::CustomerIdentity", tags = "2, 3")]
+    #[prost(oneof = "import_customer_request::CustomerIdentity", tags = "2, 3, 8")]
     pub customer_identity: ::core::option::Option<
         import_customer_request::CustomerIdentity,
     >,
@@ -2816,6 +2829,9 @@ pub mod import_customer_request {
         /// Required. Customer's Cloud Identity ID
         #[prost(string, tag = "3")]
         CloudIdentityId(::prost::alloc::string::String),
+        /// Required. Customer's primary admin email.
+        #[prost(string, tag = "8")]
+        PrimaryAdminEmail(::prost::alloc::string::String),
     }
 }
 /// Request message for

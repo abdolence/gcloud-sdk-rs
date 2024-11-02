@@ -490,3 +490,43 @@ pub struct MountedImage {
     #[prost(string, tag = "24")]
     pub image_expiration_date: ::prost::alloc::string::String,
 }
+/// Holds information for the Connector Versions log
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConnectorVersionReportLog {
+    /// Required. Appliance Name.
+    #[prost(string, tag = "1")]
+    pub appliance_name: ::prost::alloc::string::String,
+    /// Required. Appliance Id.
+    #[prost(string, tag = "2")]
+    pub appliance_id: ::prost::alloc::string::String,
+    /// Required. Host Name.
+    #[prost(string, tag = "3")]
+    pub host_name: ::prost::alloc::string::String,
+    /// Required. Host Id.
+    #[prost(string, tag = "4")]
+    pub host_id: ::prost::alloc::string::String,
+    /// Optional. Os Type.
+    #[prost(string, tag = "5")]
+    pub host_os_type: ::prost::alloc::string::String,
+    /// Required. Host Ip Address.
+    #[prost(string, tag = "6")]
+    pub host_ip_address: ::prost::alloc::string::String,
+    /// Optional. Db Authentication.
+    #[prost(string, tag = "7")]
+    pub db_authentication: ::prost::alloc::string::String,
+    /// Required. Installed version.
+    #[prost(string, tag = "8")]
+    pub installed_version: ::prost::alloc::string::String,
+    /// Optional. Available version.
+    #[prost(string, tag = "9")]
+    pub available_version: ::prost::alloc::string::String,
+    /// Required. Version Check.
+    #[prost(string, tag = "10")]
+    pub version_check: ::prost::alloc::string::String,
+    /// Required. Disk Preference.
+    #[prost(string, tag = "11")]
+    pub disk_preference: ::prost::alloc::string::String,
+    /// Required. Transport
+    #[prost(string, tag = "12")]
+    pub transport: ::prost::alloc::string::String,
+}

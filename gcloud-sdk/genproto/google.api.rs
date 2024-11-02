@@ -799,6 +799,9 @@ pub struct CommonLanguageSettings {
     /// The destination where API teams want this client library to be published.
     #[prost(enumeration = "ClientLibraryDestination", repeated, tag = "2")]
     pub destinations: ::prost::alloc::vec::Vec<i32>,
+    /// Configuration for which RPCs should be generated in the GAPIC client.
+    #[prost(message, optional, tag = "3")]
+    pub selective_gapic_generation: ::core::option::Option<SelectiveGapicGeneration>,
 }
 /// Details about how and where to publish client libraries.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1107,6 +1110,15 @@ pub mod method_settings {
         #[prost(message, optional, tag = "4")]
         pub total_poll_timeout: ::core::option::Option<::prost_types::Duration>,
     }
+}
+/// This message is used to configure the generation of a subset of the RPCs in
+/// a service for client libraries.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SelectiveGapicGeneration {
+    /// An allowlist of the fully qualified names of RPCs that should be included
+    /// on public client surfaces.
+    #[prost(string, repeated, tag = "1")]
+    pub methods: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The organization for which the client libraries are being published.
 /// Affects the url where generated docs are published, etc.
@@ -2960,6 +2972,37 @@ pub enum ErrorReason {
     /// "locations/asia-northeast3" violates at least one location policy.
     /// The troubleshooting guidance is provided in the Help links.
     LocationPolicyViolated = 31,
+    /// The request is denied because origin request header is missing.
+    ///
+    /// Example of an ErrorInfo when
+    /// accessing "pubsub.googleapis.com" service with an empty "Origin" request
+    /// header.
+    ///
+    /// {
+    ///    reason: "MISSING_ORIGIN"
+    ///    domain: "googleapis.com"
+    ///    metadata {
+    ///      "consumer":"projects/123456"
+    ///      "service": "pubsub.googleapis.com"
+    ///    }
+    /// }
+    MissingOrigin = 33,
+    /// The request is denied because the request contains more than one credential
+    /// type that are individually acceptable, but not together. The customer
+    /// should retry their request with only one set of credentials.
+    ///
+    /// Example of an ErrorInfo when
+    /// accessing "pubsub.googleapis.com" service with overloaded credentials.
+    ///
+    /// {
+    ///    reason: "OVERLOADED_CREDENTIALS"
+    ///    domain: "googleapis.com"
+    ///    metadata {
+    ///      "consumer":"projects/123456"
+    ///      "service": "pubsub.googleapis.com"
+    ///    }
+    /// }
+    OverloadedCredentials = 34,
 }
 impl ErrorReason {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -3001,6 +3044,8 @@ impl ErrorReason {
             Self::ServiceNotVisible => "SERVICE_NOT_VISIBLE",
             Self::GcpSuspended => "GCP_SUSPENDED",
             Self::LocationPolicyViolated => "LOCATION_POLICY_VIOLATED",
+            Self::MissingOrigin => "MISSING_ORIGIN",
+            Self::OverloadedCredentials => "OVERLOADED_CREDENTIALS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3039,6 +3084,8 @@ impl ErrorReason {
             "SERVICE_NOT_VISIBLE" => Some(Self::ServiceNotVisible),
             "GCP_SUSPENDED" => Some(Self::GcpSuspended),
             "LOCATION_POLICY_VIOLATED" => Some(Self::LocationPolicyViolated),
+            "MISSING_ORIGIN" => Some(Self::MissingOrigin),
+            "OVERLOADED_CREDENTIALS" => Some(Self::OverloadedCredentials),
             _ => None,
         }
     }
@@ -3517,7 +3564,7 @@ pub struct MetricDescriptor {
 /// Nested message and enum types in `MetricDescriptor`.
 pub mod metric_descriptor {
     /// Additional annotations that can be used to guide the usage of a metric.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MetricDescriptorMetadata {
         /// Deprecated. Must use the
         /// [MetricDescriptor.launch_stage][google.api.MetricDescriptor.launch_stage]
@@ -3536,6 +3583,67 @@ pub mod metric_descriptor {
         /// data loss due to errors.
         #[prost(message, optional, tag = "3")]
         pub ingest_delay: ::core::option::Option<::prost_types::Duration>,
+        /// The scope of the timeseries data of the metric.
+        #[prost(
+            enumeration = "metric_descriptor_metadata::TimeSeriesResourceHierarchyLevel",
+            repeated,
+            tag = "4"
+        )]
+        pub time_series_resource_hierarchy_level: ::prost::alloc::vec::Vec<i32>,
+    }
+    /// Nested message and enum types in `MetricDescriptorMetadata`.
+    pub mod metric_descriptor_metadata {
+        /// The resource hierarchy level of the timeseries data of a metric.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum TimeSeriesResourceHierarchyLevel {
+            /// Do not use this default value.
+            Unspecified = 0,
+            /// Scopes a metric to a project.
+            Project = 1,
+            /// Scopes a metric to an organization.
+            Organization = 2,
+            /// Scopes a metric to a folder.
+            Folder = 3,
+        }
+        impl TimeSeriesResourceHierarchyLevel {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => {
+                        "TIME_SERIES_RESOURCE_HIERARCHY_LEVEL_UNSPECIFIED"
+                    }
+                    Self::Project => "PROJECT",
+                    Self::Organization => "ORGANIZATION",
+                    Self::Folder => "FOLDER",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TIME_SERIES_RESOURCE_HIERARCHY_LEVEL_UNSPECIFIED" => {
+                        Some(Self::Unspecified)
+                    }
+                    "PROJECT" => Some(Self::Project),
+                    "ORGANIZATION" => Some(Self::Organization),
+                    "FOLDER" => Some(Self::Folder),
+                    _ => None,
+                }
+            }
+        }
     }
     /// The kind of measurement. It describes how the data is reported.
     /// For information on setting the start time and end time based on

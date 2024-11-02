@@ -299,6 +299,15 @@ pub mod entity_result {
     }
 }
 /// A query for entities.
+///
+/// The query stages are executed in the following order:
+/// 1. kind
+/// 2. filter
+/// 3. projection
+/// 4. order + start_cursor + end_cursor
+/// 5. offset
+/// 6. limit
+/// 7. find_nearest
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Query {
     /// The projection to return. Defaults to returning all properties.
@@ -346,6 +355,13 @@ pub struct Query {
     /// Must be >= 0 if specified.
     #[prost(message, optional, tag = "12")]
     pub limit: ::core::option::Option<i32>,
+    /// Optional. A potential Nearest Neighbors Search.
+    ///
+    /// Applies after all other filters and ordering.
+    ///
+    /// Finds the closest vector embeddings to the given query vector.
+    #[prost(message, optional, tag = "13")]
+    pub find_nearest: ::core::option::Option<FindNearest>,
 }
 /// Datastore query for running an aggregation over a
 /// [Query][google.datastore.v1.Query].
@@ -789,6 +805,104 @@ pub mod property_filter {
                 "NOT_EQUAL" => Some(Self::NotEqual),
                 "HAS_ANCESTOR" => Some(Self::HasAncestor),
                 "NOT_IN" => Some(Self::NotIn),
+                _ => None,
+            }
+        }
+    }
+}
+/// Nearest Neighbors search config. The ordering provided by FindNearest
+/// supersedes the order_by stage. If multiple documents have the same vector
+/// distance, the returned document order is not guaranteed to be stable between
+/// queries.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FindNearest {
+    /// Required. An indexed vector property to search upon. Only documents which
+    /// contain vectors whose dimensionality match the query_vector can be
+    /// returned.
+    #[prost(message, optional, tag = "1")]
+    pub vector_property: ::core::option::Option<PropertyReference>,
+    /// Required. The query vector that we are searching on. Must be a vector of no
+    /// more than 2048 dimensions.
+    #[prost(message, optional, tag = "2")]
+    pub query_vector: ::core::option::Option<Value>,
+    /// Required. The Distance Measure to use, required.
+    #[prost(enumeration = "find_nearest::DistanceMeasure", tag = "3")]
+    pub distance_measure: i32,
+    /// Required. The number of nearest neighbors to return. Must be a positive
+    /// integer of no more than 100.
+    #[prost(message, optional, tag = "4")]
+    pub limit: ::core::option::Option<i32>,
+    /// Optional. Optional name of the field to output the result of the vector
+    /// distance calculation. Must conform to [entity
+    /// property][google.datastore.v1.Entity.properties] limitations.
+    #[prost(string, tag = "5")]
+    pub distance_result_property: ::prost::alloc::string::String,
+    /// Optional. Option to specify a threshold for which no less similar documents
+    /// will be returned. The behavior of the specified `distance_measure` will
+    /// affect the meaning of the distance threshold. Since DOT_PRODUCT distances
+    /// increase when the vectors are more similar, the comparison is inverted.
+    ///
+    /// For EUCLIDEAN, COSINE: WHERE distance <= distance_threshold
+    /// For DOT_PRODUCT:       WHERE distance >= distance_threshold
+    #[prost(message, optional, tag = "6")]
+    pub distance_threshold: ::core::option::Option<f64>,
+}
+/// Nested message and enum types in `FindNearest`.
+pub mod find_nearest {
+    /// The distance measure to use when comparing vectors.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DistanceMeasure {
+        /// Should not be set.
+        Unspecified = 0,
+        /// Measures the EUCLIDEAN distance between the vectors. See
+        /// [Euclidean](<https://en.wikipedia.org/wiki/Euclidean_distance>) to learn
+        /// more. The resulting distance decreases the more similar two vectors are.
+        Euclidean = 1,
+        /// COSINE distance compares vectors based on the angle between them, which
+        /// allows you to measure similarity that isn't based on the vectors
+        /// magnitude. We recommend using DOT_PRODUCT with unit normalized vectors
+        /// instead of COSINE distance, which is mathematically equivalent with
+        /// better performance. See [Cosine
+        /// Similarity](<https://en.wikipedia.org/wiki/Cosine_similarity>) to learn
+        /// more about COSINE similarity and COSINE distance. The resulting COSINE
+        /// distance decreases the more similar two vectors are.
+        Cosine = 2,
+        /// Similar to cosine but is affected by the magnitude of the vectors. See
+        /// [Dot Product](<https://en.wikipedia.org/wiki/Dot_product>) to learn more.
+        /// The resulting distance increases the more similar two vectors are.
+        DotProduct = 3,
+    }
+    impl DistanceMeasure {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DISTANCE_MEASURE_UNSPECIFIED",
+                Self::Euclidean => "EUCLIDEAN",
+                Self::Cosine => "COSINE",
+                Self::DotProduct => "DOT_PRODUCT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DISTANCE_MEASURE_UNSPECIFIED" => Some(Self::Unspecified),
+                "EUCLIDEAN" => Some(Self::Euclidean),
+                "COSINE" => Some(Self::Cosine),
+                "DOT_PRODUCT" => Some(Self::DotProduct),
                 _ => None,
             }
         }
@@ -1463,6 +1577,11 @@ pub struct ReserveIdsResponse {}
 /// A mutation to apply to an entity.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Mutation {
+    /// The strategy to use when a conflict is detected. Defaults to
+    /// `SERVER_VALUE`.
+    /// If this is set, then `conflict_detection_strategy` must also be set.
+    #[prost(enumeration = "mutation::ConflictResolutionStrategy", tag = "10")]
+    pub conflict_resolution_strategy: i32,
     /// The properties to write in this mutation.
     /// None of the properties in the mask may have a reserved name, except for
     /// `__key__`.
@@ -1473,6 +1592,13 @@ pub struct Mutation {
     /// Properties referenced in the mask but not in the entity are deleted.
     #[prost(message, optional, tag = "9")]
     pub property_mask: ::core::option::Option<PropertyMask>,
+    /// Optional. The transforms to perform on the entity.
+    ///
+    /// This field can be set only when the operation is `insert`, `update`,
+    /// or `upsert`. If present, the transforms are be applied to the entity
+    /// regardless of the property mask, in order, after the operation.
+    #[prost(message, repeated, tag = "12")]
+    pub property_transforms: ::prost::alloc::vec::Vec<PropertyTransform>,
     /// The mutation operation.
     ///
     /// For `insert`, `update`, and `upsert`:
@@ -1493,6 +1619,49 @@ pub struct Mutation {
 }
 /// Nested message and enum types in `Mutation`.
 pub mod mutation {
+    /// The possible ways to resolve a conflict detected in a mutation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ConflictResolutionStrategy {
+        /// Unspecified. Defaults to `SERVER_VALUE`.
+        StrategyUnspecified = 0,
+        /// The server entity is kept.
+        ServerValue = 1,
+        /// The whole commit request fails.
+        Fail = 3,
+    }
+    impl ConflictResolutionStrategy {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::StrategyUnspecified => "STRATEGY_UNSPECIFIED",
+                Self::ServerValue => "SERVER_VALUE",
+                Self::Fail => "FAIL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STRATEGY_UNSPECIFIED" => Some(Self::StrategyUnspecified),
+                "SERVER_VALUE" => Some(Self::ServerValue),
+                "FAIL" => Some(Self::Fail),
+                _ => None,
+            }
+        }
+    }
     /// The mutation operation.
     ///
     /// For `insert`, `update`, and `upsert`:
@@ -1537,6 +1706,142 @@ pub mod mutation {
         UpdateTime(::prost_types::Timestamp),
     }
 }
+/// A transformation of an entity property.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PropertyTransform {
+    /// Optional. The name of the property.
+    ///
+    /// Property paths (a list of property names separated by dots (`.`)) may be
+    /// used to refer to properties inside entity values. For example `foo.bar`
+    /// means the property `bar` inside the entity property `foo`.
+    ///
+    /// If a property name contains a dot `.` or a backlslash `\`, then that name
+    /// must be escaped.
+    #[prost(string, tag = "1")]
+    pub property: ::prost::alloc::string::String,
+    /// The transformation to apply to the property.
+    #[prost(oneof = "property_transform::TransformType", tags = "2, 3, 4, 5, 6, 7")]
+    pub transform_type: ::core::option::Option<property_transform::TransformType>,
+}
+/// Nested message and enum types in `PropertyTransform`.
+pub mod property_transform {
+    /// A value that is calculated by the server.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ServerValue {
+        /// Unspecified. This value must not be used.
+        Unspecified = 0,
+        /// The time at which the server processed the request, with millisecond
+        /// precision. If used on multiple properties (same or different entities)
+        /// in a transaction, all the properties will get the same server timestamp.
+        RequestTime = 1,
+    }
+    impl ServerValue {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SERVER_VALUE_UNSPECIFIED",
+                Self::RequestTime => "REQUEST_TIME",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SERVER_VALUE_UNSPECIFIED" => Some(Self::Unspecified),
+                "REQUEST_TIME" => Some(Self::RequestTime),
+                _ => None,
+            }
+        }
+    }
+    /// The transformation to apply to the property.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum TransformType {
+        /// Sets the property to the given server value.
+        #[prost(enumeration = "ServerValue", tag = "2")]
+        SetToServerValue(i32),
+        /// Adds the given value to the property's current value.
+        ///
+        /// This must be an integer or a double value.
+        /// If the property is not an integer or double, or if the property does not
+        /// yet exist, the transformation will set the property to the given value.
+        /// If either of the given value or the current property value are doubles,
+        /// both values will be interpreted as doubles. Double arithmetic and
+        /// representation of double values follows IEEE 754 semantics.
+        /// If there is positive/negative integer overflow, the property is resolved
+        /// to the largest magnitude positive/negative integer.
+        #[prost(message, tag = "3")]
+        Increment(super::Value),
+        /// Sets the property to the maximum of its current value and the given
+        /// value.
+        ///
+        /// This must be an integer or a double value.
+        /// If the property is not an integer or double, or if the property does not
+        /// yet exist, the transformation will set the property to the given value.
+        /// If a maximum operation is applied where the property and the input value
+        /// are of mixed types (that is - one is an integer and one is a double)
+        /// the property takes on the type of the larger operand. If the operands are
+        /// equivalent (e.g. 3 and 3.0), the property does not change.
+        /// 0, 0.0, and -0.0 are all zero. The maximum of a zero stored value and
+        /// zero input value is always the stored value.
+        /// The maximum of any numeric value x and NaN is NaN.
+        #[prost(message, tag = "4")]
+        Maximum(super::Value),
+        /// Sets the property to the minimum of its current value and the given
+        /// value.
+        ///
+        /// This must be an integer or a double value.
+        /// If the property is not an integer or double, or if the property does not
+        /// yet exist, the transformation will set the property to the input value.
+        /// If a minimum operation is applied where the property and the input value
+        /// are of mixed types (that is - one is an integer and one is a double)
+        /// the property takes on the type of the smaller operand. If the operands
+        /// are equivalent (e.g. 3 and 3.0), the property does not change. 0, 0.0,
+        /// and -0.0 are all zero. The minimum of a zero stored value and zero input
+        /// value is always the stored value. The minimum of any numeric value x and
+        /// NaN is NaN.
+        #[prost(message, tag = "5")]
+        Minimum(super::Value),
+        /// Appends the given elements in order if they are not already present in
+        /// the current property value.
+        /// If the property is not an array, or if the property does not yet exist,
+        /// it is first set to the empty array.
+        ///
+        /// Equivalent numbers of different types (e.g. 3L and 3.0) are
+        /// considered equal when checking if a value is missing.
+        /// NaN is equal to NaN, and the null value is equal to the null value.
+        /// If the input contains multiple equivalent values, only the first will
+        /// be considered.
+        ///
+        /// The corresponding transform result will be the null value.
+        #[prost(message, tag = "6")]
+        AppendMissingElements(super::ArrayValue),
+        /// Removes all of the given elements from the array in the property.
+        /// If the property is not an array, or if the property does not yet exist,
+        /// it is set to the empty array.
+        ///
+        /// Equivalent numbers of different types (e.g. 3L and 3.0) are
+        /// considered equal when deciding whether an element should be removed.
+        /// NaN is equal to NaN, and the null value is equal to the null value.
+        /// This will remove all equivalent values if there are duplicates.
+        ///
+        /// The corresponding transform result will be the null value.
+        #[prost(message, tag = "7")]
+        RemoveAllFromArray(super::ArrayValue),
+    }
+}
 /// The result of applying a mutation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutationResult {
@@ -1564,6 +1869,11 @@ pub struct MutationResult {
     /// conflict detection strategy field is not set in the mutation.
     #[prost(bool, tag = "5")]
     pub conflict_detected: bool,
+    /// The results of applying each
+    /// [PropertyTransform][google.datastore.v1.PropertyTransform], in the same
+    /// order of the request.
+    #[prost(message, repeated, tag = "8")]
+    pub transform_results: ::prost::alloc::vec::Vec<Value>,
 }
 /// The set of arbitrarily nested property paths used to restrict an operation to
 /// only a subset of properties in an entity.
@@ -1586,16 +1896,13 @@ pub struct PropertyMask {
 /// The options shared by read requests.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadOptions {
-    /// For Cloud Datastore, if read_consistency is not specified, then lookups and
-    /// ancestor queries default to `read_consistency`=`STRONG`, global queries
-    /// default to `read_consistency`=`EVENTUAL`.
-    ///
-    /// For Cloud Firestore in Datastore mode, if read_consistency is not specified
-    /// then lookups and all queries default to `read_consistency`=`STRONG`.
+    /// For Cloud Firestore in Datastore mode, if you don't specify
+    /// read_consistency then all lookups and queries default to
+    /// `read_consistency`=`STRONG`. Note that, in Cloud Datastore, global queries
+    /// defaulted to `read_consistency`=`EVENTUAL`.
     ///
     /// Explicitly setting `read_consistency`=`EVENTUAL` will result in eventually
-    /// consistent lookups & queries in both Cloud Datastore & Cloud Firestore in
-    /// Datastore mode.
+    /// consistent lookups and queries.
     #[prost(oneof = "read_options::ConsistencyType", tags = "1, 2, 3, 4")]
     pub consistency_type: ::core::option::Option<read_options::ConsistencyType>,
 }
@@ -1644,16 +1951,13 @@ pub mod read_options {
             }
         }
     }
-    /// For Cloud Datastore, if read_consistency is not specified, then lookups and
-    /// ancestor queries default to `read_consistency`=`STRONG`, global queries
-    /// default to `read_consistency`=`EVENTUAL`.
-    ///
-    /// For Cloud Firestore in Datastore mode, if read_consistency is not specified
-    /// then lookups and all queries default to `read_consistency`=`STRONG`.
+    /// For Cloud Firestore in Datastore mode, if you don't specify
+    /// read_consistency then all lookups and queries default to
+    /// `read_consistency`=`STRONG`. Note that, in Cloud Datastore, global queries
+    /// defaulted to `read_consistency`=`EVENTUAL`.
     ///
     /// Explicitly setting `read_consistency`=`EVENTUAL` will result in eventually
-    /// consistent lookups & queries in both Cloud Datastore & Cloud Firestore in
-    /// Datastore mode.
+    /// consistent lookups and queries.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConsistencyType {
         /// The non-transactional read consistency to use.

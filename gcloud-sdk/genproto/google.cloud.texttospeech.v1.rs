@@ -38,6 +38,14 @@ pub struct Voice {
     #[prost(int32, tag = "4")]
     pub natural_sample_rate_hertz: i32,
 }
+/// Used for advanced voice options.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct AdvancedVoiceOptions {
+    /// Only for Journey voices. If false, the synthesis will be context aware
+    /// and have higher latency.
+    #[prost(bool, optional, tag = "1")]
+    pub low_latency_journey_synthesis: ::core::option::Option<bool>,
+}
 /// The top-level message sent by the client for the `SynthesizeSpeech` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SynthesizeSpeechRequest {
@@ -50,6 +58,105 @@ pub struct SynthesizeSpeechRequest {
     /// Required. The configuration of the synthesized audio.
     #[prost(message, optional, tag = "3")]
     pub audio_config: ::core::option::Option<AudioConfig>,
+    /// Advanced voice options.
+    #[prost(message, optional, tag = "8")]
+    pub advanced_voice_options: ::core::option::Option<AdvancedVoiceOptions>,
+}
+/// Pronunciation customization for a phrase.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomPronunciationParams {
+    /// The phrase to which the customization will be applied.
+    /// The phrase can be multiple words (in the case of proper nouns etc), but
+    /// should not span to a whole sentence.
+    #[prost(string, optional, tag = "1")]
+    pub phrase: ::core::option::Option<::prost::alloc::string::String>,
+    /// The phonetic encoding of the phrase.
+    #[prost(
+        enumeration = "custom_pronunciation_params::PhoneticEncoding",
+        optional,
+        tag = "2"
+    )]
+    pub phonetic_encoding: ::core::option::Option<i32>,
+    /// The pronunciation of the phrase. This must be in the phonetic encoding
+    /// specified above.
+    #[prost(string, optional, tag = "3")]
+    pub pronunciation: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `CustomPronunciationParams`.
+pub mod custom_pronunciation_params {
+    /// The phonetic encoding of the phrase.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PhoneticEncoding {
+        /// Not specified.
+        Unspecified = 0,
+        /// IPA. (e.g. apple -> ˈæpəl )
+        /// <https://en.wikipedia.org/wiki/International_Phonetic_Alphabet>
+        Ipa = 1,
+        /// X-SAMPA (e.g. apple -> "{p@l" )
+        /// <https://en.wikipedia.org/wiki/X-SAMPA>
+        XSampa = 2,
+    }
+    impl PhoneticEncoding {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PHONETIC_ENCODING_UNSPECIFIED",
+                Self::Ipa => "PHONETIC_ENCODING_IPA",
+                Self::XSampa => "PHONETIC_ENCODING_X_SAMPA",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PHONETIC_ENCODING_UNSPECIFIED" => Some(Self::Unspecified),
+                "PHONETIC_ENCODING_IPA" => Some(Self::Ipa),
+                "PHONETIC_ENCODING_X_SAMPA" => Some(Self::XSampa),
+                _ => None,
+            }
+        }
+    }
+}
+/// A collection of pronunciation customizations.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomPronunciations {
+    /// The pronunciation customizations to be applied.
+    #[prost(message, repeated, tag = "1")]
+    pub pronunciations: ::prost::alloc::vec::Vec<CustomPronunciationParams>,
+}
+/// A collection of turns for multi-speaker synthesis.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MultiSpeakerMarkup {
+    /// Required. Speaker turns.
+    #[prost(message, repeated, tag = "1")]
+    pub turns: ::prost::alloc::vec::Vec<multi_speaker_markup::Turn>,
+}
+/// Nested message and enum types in `MultiSpeakerMarkup`.
+pub mod multi_speaker_markup {
+    /// A Multi-speaker turn.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Turn {
+        /// Required. The speaker of the turn, for example, 'O' or 'Q'. Please refer
+        /// to documentation for available speakers.
+        #[prost(string, tag = "1")]
+        pub speaker: ::prost::alloc::string::String,
+        /// Required. The text to speak.
+        #[prost(string, tag = "2")]
+        pub text: ::prost::alloc::string::String,
+    }
 }
 /// Contains text input to be synthesized. Either `text` or `ssml` must be
 /// supplied. Supplying both or neither returns
@@ -57,8 +164,22 @@ pub struct SynthesizeSpeechRequest {
 /// input size is limited to 5000 bytes.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SynthesisInput {
+    /// Optional. The pronunciation customizations to be applied to the input. If
+    /// this is set, the input will be synthesized using the given pronunciation
+    /// customizations.
+    ///
+    /// The initial support will be for EFIGS (English, French,
+    /// Italian, German, Spanish) languages, as provided in
+    /// VoiceSelectionParams. Journey and Instant Clone voices are
+    /// not supported yet.
+    ///
+    /// In order to customize the pronunciation of a phrase, there must be an exact
+    /// match of the phrase in the input types. If using SSML, the phrase must not
+    /// be inside a phoneme tag (entirely or partially).
+    #[prost(message, optional, tag = "3")]
+    pub custom_pronunciations: ::core::option::Option<CustomPronunciations>,
     /// The input source, which is either plain text or SSML.
-    #[prost(oneof = "synthesis_input::InputSource", tags = "1, 2")]
+    #[prost(oneof = "synthesis_input::InputSource", tags = "1, 2, 4")]
     pub input_source: ::core::option::Option<synthesis_input::InputSource>,
 }
 /// Nested message and enum types in `SynthesisInput`.
@@ -76,6 +197,10 @@ pub mod synthesis_input {
         /// [SSML](<https://cloud.google.com/text-to-speech/docs/ssml>).
         #[prost(string, tag = "2")]
         Ssml(::prost::alloc::string::String),
+        /// The multi-speaker input to be synthesized. Only applicable for
+        /// multi-speaker synthesis.
+        #[prost(message, tag = "4")]
+        MultiSpeakerMarkup(super::MultiSpeakerMarkup),
     }
 }
 /// Description of which voice to use for a synthesis request.
@@ -111,6 +236,11 @@ pub struct VoiceSelectionParams {
     /// configuration.
     #[prost(message, optional, tag = "4")]
     pub custom_voice: ::core::option::Option<CustomVoiceParams>,
+    /// Optional. The configuration for a voice clone. If
+    /// \[VoiceCloneParams.voice_clone_key\] is set, the service will choose the
+    /// voice clone matching the specified configuration.
+    #[prost(message, optional, tag = "5")]
+    pub voice_clone: ::core::option::Option<VoiceCloneParams>,
 }
 /// Description of audio data to be synthesized.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -217,6 +347,13 @@ pub mod custom_voice_params {
             }
         }
     }
+}
+/// The configuration of Voice Clone feature.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VoiceCloneParams {
+    /// Required. Created by GenerateVoiceCloningKey.
+    #[prost(string, tag = "1")]
+    pub voice_cloning_key: ::prost::alloc::string::String,
 }
 /// The message returned to the client by the `SynthesizeSpeech` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
