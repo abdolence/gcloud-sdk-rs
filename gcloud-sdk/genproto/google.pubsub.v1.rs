@@ -1036,6 +1036,75 @@ pub mod platform_logs_settings {
         }
     }
 }
+/// Payload of the Platform Log entry sent when a failure is encountered while
+/// ingesting.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IngestionFailureEvent {
+    /// Required. Name of the import topic. Format is:
+    /// projects/{project_name}/topics/{topic_name}.
+    #[prost(string, tag = "1")]
+    pub topic: ::prost::alloc::string::String,
+    /// Required. Error details explaining why ingestion to Pub/Sub has failed.
+    #[prost(string, tag = "2")]
+    pub error_message: ::prost::alloc::string::String,
+    #[prost(oneof = "ingestion_failure_event::Failure", tags = "3")]
+    pub failure: ::core::option::Option<ingestion_failure_event::Failure>,
+}
+/// Nested message and enum types in `IngestionFailureEvent`.
+pub mod ingestion_failure_event {
+    /// Specifies the reason why some data may have been left out of
+    /// the desired Pub/Sub message due to the API message limits
+    /// (<https://cloud.google.com/pubsub/quotas#resource_limits>). For example,
+    /// when the number of attributes is larger than 100, the number of
+    /// attributes is truncated to 100 to respect the limit on the attribute count.
+    /// Other attribute limits are treated similarly. When the size of the desired
+    /// message would've been larger than 10MB, the message won't be published at
+    /// all, and ingestion of the subsequent messages will proceed as normal.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct ApiViolationReason {}
+    /// Set when an Avro file is unsupported or its format is not valid. When this
+    /// occurs, one or more Avro objects won't be ingested.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct AvroFailureReason {}
+    /// Failure when ingesting from a Cloud Storage source.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CloudStorageFailure {
+        /// Optional. Name of the Cloud Storage bucket used for ingestion.
+        #[prost(string, tag = "1")]
+        pub bucket: ::prost::alloc::string::String,
+        /// Optional. Name of the Cloud Storage object which contained the section
+        /// that couldn't be ingested.
+        #[prost(string, tag = "2")]
+        pub object_name: ::prost::alloc::string::String,
+        /// Optional. Generation of the Cloud Storage object which contained the
+        /// section that couldn't be ingested.
+        #[prost(int64, tag = "3")]
+        pub object_generation: i64,
+        /// Reason why ingestion failed for the specified object.
+        #[prost(oneof = "cloud_storage_failure::Reason", tags = "5, 6")]
+        pub reason: ::core::option::Option<cloud_storage_failure::Reason>,
+    }
+    /// Nested message and enum types in `CloudStorageFailure`.
+    pub mod cloud_storage_failure {
+        /// Reason why ingestion failed for the specified object.
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        pub enum Reason {
+            /// Optional. Failure encountered when parsing an Avro file.
+            #[prost(message, tag = "5")]
+            AvroFailureReason(super::AvroFailureReason),
+            /// Optional. The Pub/Sub API limits prevented the desired message from
+            /// being published.
+            #[prost(message, tag = "6")]
+            ApiViolationReason(super::ApiViolationReason),
+        }
+    }
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Failure {
+        /// Optional. Failure when ingesting from Cloud Storage.
+        #[prost(message, tag = "3")]
+        CloudStorageFailure(CloudStorageFailure),
+    }
+}
 /// A topic resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Topic {

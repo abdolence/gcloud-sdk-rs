@@ -2118,6 +2118,48 @@ impl RestrictedMetricType {
         }
     }
 }
+/// Categories of sampling levels for the requests.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum SamplingLevel {
+    /// Unspecified type.
+    Unspecified = 0,
+    /// Applies a sampling level of 10 million to standard properties and
+    /// 100 million to Google Analytics 360 properties.
+    Low = 1,
+    /// Exclusive to Google Analytics 360 properties with a sampling level of 1
+    /// billion.
+    Medium = 2,
+    /// Exclusive to Google Analytics 360 properties. Unsampled explorations are
+    /// more accurate and can reveal insights that aren't visible in standard
+    /// explorations. To learn more, see
+    /// <https://support.google.com/analytics/answer/10896953.>
+    Unsampled = 3,
+}
+impl SamplingLevel {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "SAMPLING_LEVEL_UNSPECIFIED",
+            Self::Low => "LOW",
+            Self::Medium => "MEDIUM",
+            Self::Unsampled => "UNSAMPLED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SAMPLING_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+            "LOW" => Some(Self::Low),
+            "MEDIUM" => Some(Self::Medium),
+            "UNSAMPLED" => Some(Self::Unsampled),
+            _ => None,
+        }
+    }
+}
 /// A request to create a new recurring audience list.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRecurringAudienceListRequest {
@@ -2909,6 +2951,9 @@ pub mod report_task {
         /// containing eventName: "purchase" and eventCount: 0.
         #[prost(bool, tag = "13")]
         pub keep_empty_rows: bool,
+        /// Optional. The report's sampling level.
+        #[prost(enumeration = "super::SamplingLevel", optional, tag = "14")]
+        pub sampling_level: ::core::option::Option<i32>,
     }
     /// The report metadata for a specific report task.
     #[derive(Clone, PartialEq, ::prost::Message)]

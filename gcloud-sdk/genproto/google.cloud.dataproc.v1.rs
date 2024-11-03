@@ -2841,6 +2841,12 @@ pub struct ManagedGroupConfig {
 /// models.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceFlexibilityPolicy {
+    /// Optional. Defines how the Group selects the provisioning model to ensure
+    /// required reliability.
+    #[prost(message, optional, tag = "1")]
+    pub provisioning_model_mix: ::core::option::Option<
+        instance_flexibility_policy::ProvisioningModelMix,
+    >,
     /// Optional. List of instance selection options that the group will use when
     /// creating new VMs.
     #[prost(message, repeated, tag = "2")]
@@ -2855,6 +2861,29 @@ pub struct InstanceFlexibilityPolicy {
 }
 /// Nested message and enum types in `InstanceFlexibilityPolicy`.
 pub mod instance_flexibility_policy {
+    /// Defines how Dataproc should create VMs with a mixture of provisioning
+    /// models.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct ProvisioningModelMix {
+        /// Optional. The base capacity that will always use Standard VMs to avoid
+        /// risk of more preemption than the minimum capacity you need. Dataproc will
+        /// create only standard VMs until it reaches standard_capacity_base, then it
+        /// will start using standard_capacity_percent_above_base to mix Spot with
+        /// Standard VMs. eg. If 15 instances are requested and
+        /// standard_capacity_base is 5, Dataproc will create 5 standard VMs and then
+        /// start mixing spot and standard VMs for remaining 10 instances.
+        #[prost(int32, optional, tag = "1")]
+        pub standard_capacity_base: ::core::option::Option<i32>,
+        /// Optional. The percentage of target capacity that should use Standard VM.
+        /// The remaining percentage will use Spot VMs. The percentage applies only
+        /// to the capacity above standard_capacity_base. eg. If 15 instances are
+        /// requested and standard_capacity_base is 5 and
+        /// standard_capacity_percent_above_base is 30, Dataproc will create 5
+        /// standard VMs and then start mixing spot and standard VMs for remaining 10
+        /// instances. The mix will be 30% standard and 70% spot.
+        #[prost(int32, optional, tag = "2")]
+        pub standard_capacity_percent_above_base: ::core::option::Option<i32>,
+    }
     /// Defines machines types and a rank to which the machines types belong.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InstanceSelection {
@@ -2939,6 +2968,17 @@ pub struct DiskConfig {
     /// performance](<https://cloud.google.com/compute/docs/disks/local-ssd#performance>).
     #[prost(string, tag = "4")]
     pub local_ssd_interface: ::prost::alloc::string::String,
+    /// Optional. Indicates how many IOPS to provision for the disk. This sets the
+    /// number of I/O operations per second that the disk can handle. Note: This
+    /// field is only supported if boot_disk_type is hyperdisk-balanced.
+    #[prost(int64, optional, tag = "5")]
+    pub boot_disk_provisioned_iops: ::core::option::Option<i64>,
+    /// Optional. Indicates how much throughput to provision for the disk. This
+    /// sets the number of throughput mb per second that the disk can handle.
+    /// Values must be greater than or equal to 1. Note: This field is only
+    /// supported if boot_disk_type is hyperdisk-balanced.
+    #[prost(int64, optional, tag = "6")]
+    pub boot_disk_provisioned_throughput: ::core::option::Option<i64>,
 }
 /// Node group identification and configuration information.
 #[derive(Clone, PartialEq, ::prost::Message)]

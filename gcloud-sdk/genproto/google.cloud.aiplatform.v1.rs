@@ -3630,9 +3630,12 @@ pub struct Schema {
     /// Optional. Maximum number of the elements for Type.ARRAY.
     #[prost(int64, tag = "22")]
     pub max_items: i64,
-    /// Optional. Possible values of the element of Type.STRING with enum format.
-    /// For example we can define an Enum Direction as :
-    /// {type:STRING, format:enum, enum:\["EAST", NORTH", "SOUTH", "WEST"\]}
+    /// Optional. Possible values of the element of primitive type with enum
+    /// format. Examples:
+    /// 1. We can define direction as :
+    /// ```{type:STRING, format:enum, enum:\["EAST", "NORTH", "SOUTH", "WEST"\]}```
+    /// 2. We can define apartment number as :
+    /// ```{type:INTEGER, format:enum, enum:\["101", "201", "301"\]}```
     #[prost(string, repeated, tag = "9")]
     pub r#enum: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. SCHEMA FIELDS FOR TYPE OBJECT
@@ -3746,7 +3749,7 @@ pub struct Tool {
     /// User should provide a [FunctionResponse][content.part.function_response]
     /// for each function call in the next turn. Based on the function responses,
     /// Model will generate the final response back to the user.
-    /// Maximum 64 function declarations can be provided.
+    /// Maximum 128 function declarations can be provided.
     #[prost(message, repeated, tag = "1")]
     pub function_declarations: ::prost::alloc::vec::Vec<FunctionDeclaration>,
     /// Optional. Retrieval tool type.
@@ -3762,9 +3765,9 @@ pub struct Tool {
 }
 /// Structured representation of a function declaration as defined by the
 /// [OpenAPI 3.0 specification](<https://spec.openapis.org/oas/v3.0.3>). Included
-/// in this declaration are the function name and parameters. This
-/// FunctionDeclaration is a representation of a block of code that can be used
-/// as a `Tool` by the model and executed by the client.
+/// in this declaration are the function name, description, parameters and
+/// response type. This FunctionDeclaration is a representation of a block of
+/// code that can be used as a `Tool` by the model and executed by the client.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunctionDeclaration {
     /// Required. The name of the function to call.
@@ -3793,6 +3796,11 @@ pub struct FunctionDeclaration {
     ///   - param1
     #[prost(message, optional, tag = "3")]
     pub parameters: ::core::option::Option<Schema>,
+    /// Optional. Describes the output from this function in JSON Schema format.
+    /// Reflects the Open API 3.03 Response Object. The Schema defines the type
+    /// used for the response value of the function.
+    #[prost(message, optional, tag = "4")]
+    pub response: ::core::option::Option<Schema>,
 }
 /// A predicted \[FunctionCall\] returned from the model that contains a string
 /// representing the \[FunctionDeclaration.name\] and a structured JSON object
@@ -3819,6 +3827,9 @@ pub struct FunctionResponse {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The function response in JSON object format.
+    /// Use "output" key to specify function output and "error" key to specify
+    /// error details (if any). If "output" and "error" keys are not specified,
+    /// then whole "response" is treated as function output.
     #[prost(message, optional, tag = "2")]
     pub response: ::core::option::Option<::prost_types::Struct>,
 }
@@ -3844,10 +3855,10 @@ pub mod retrieval {
     }
 }
 /// Retrieve from Vertex AI Search datastore for grounding.
-/// See <https://cloud.google.com/vertex-ai-search-and-conversation>
+/// See <https://cloud.google.com/products/agent-builder>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VertexAiSearch {
-    /// Required. Fully-qualified Vertex AI Search's datastore resource ID.
+    /// Required. Fully-qualified Vertex AI Search data store resource ID.
     /// Format:
     /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}`
     #[prost(string, tag = "1")]
@@ -3855,7 +3866,64 @@ pub struct VertexAiSearch {
 }
 /// Tool to retrieve public web data for grounding, powered by Google.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
-pub struct GoogleSearchRetrieval {}
+pub struct GoogleSearchRetrieval {
+    /// Specifies the dynamic retrieval configuration for the given source.
+    #[prost(message, optional, tag = "2")]
+    pub dynamic_retrieval_config: ::core::option::Option<DynamicRetrievalConfig>,
+}
+/// Describes the options to customize dynamic retrieval.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct DynamicRetrievalConfig {
+    /// The mode of the predictor to be used in dynamic retrieval.
+    #[prost(enumeration = "dynamic_retrieval_config::Mode", tag = "1")]
+    pub mode: i32,
+    /// Optional. The threshold to be used in dynamic retrieval.
+    /// If not set, a system default value is used.
+    #[prost(float, optional, tag = "2")]
+    pub dynamic_threshold: ::core::option::Option<f32>,
+}
+/// Nested message and enum types in `DynamicRetrievalConfig`.
+pub mod dynamic_retrieval_config {
+    /// The mode of the predictor to be used in dynamic retrieval.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Mode {
+        /// Always trigger retrieval.
+        Unspecified = 0,
+        /// Run retrieval only when system decides it is necessary.
+        Dynamic = 1,
+    }
+    impl Mode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MODE_UNSPECIFIED",
+                Self::Dynamic => "MODE_DYNAMIC",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MODE_DYNAMIC" => Some(Self::Dynamic),
+                _ => None,
+            }
+        }
+    }
+}
 /// Tool config. This config is shared for all tools provided in the request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ToolConfig {
@@ -4651,6 +4719,9 @@ pub mod grounding_chunk {
         /// Title of the attribution.
         #[prost(string, optional, tag = "2")]
         pub title: ::core::option::Option<::prost::alloc::string::String>,
+        /// Text of the attribution.
+        #[prost(string, optional, tag = "3")]
+        pub text: ::core::option::Option<::prost::alloc::string::String>,
     }
     /// Chunk type.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -4696,6 +4767,9 @@ pub struct GroundingMetadata {
     /// Optional. List of grounding support.
     #[prost(message, repeated, tag = "6")]
     pub grounding_supports: ::prost::alloc::vec::Vec<GroundingSupport>,
+    /// Optional. Output only. Retrieval metadata.
+    #[prost(message, optional, tag = "7")]
+    pub retrieval_metadata: ::core::option::Option<RetrievalMetadata>,
 }
 /// Google search entry point.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4708,6 +4782,17 @@ pub struct SearchEntryPoint {
     /// url> tuple.
     #[prost(bytes = "vec", tag = "2")]
     pub sdk_blob: ::prost::alloc::vec::Vec<u8>,
+}
+/// Metadata related to retrieval in the grounding flow.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct RetrievalMetadata {
+    /// Optional. Score indicating how likely information from Google Search could
+    /// help answer the prompt. The score is in the range `\[0, 1\]`, where 0 is the
+    /// least likely and 1 is the most likely. This score is only populated when
+    /// Google Search grounding and dynamic retrieval is enabled. It will be
+    /// compared to the threshold to determine whether to trigger Google Search.
+    #[prost(float, tag = "2")]
+    pub google_search_dynamic_retrieval_score: f32,
 }
 /// Harm categories that will block the content.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -7466,6 +7551,13 @@ pub struct DeployedModel {
     /// [network][google.cloud.aiplatform.v1.Endpoint.network] is configured.
     #[prost(message, optional, tag = "14")]
     pub private_endpoints: ::core::option::Option<PrivateEndpoints>,
+    /// System labels to apply to Model Garden deployments.
+    /// System labels are managed by Google for internal use only.
+    #[prost(map = "string, string", tag = "28")]
+    pub system_labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// The prediction (for example, the machine) resources that the DeployedModel
     /// uses. The user is billed for the resources (at least their minimal amount)
     /// even if the DeployedModel receives no traffic.
@@ -11289,6 +11381,10 @@ pub mod feature_view {
         /// "TZ=America/New_York 1 * * * *".
         #[prost(string, tag = "1")]
         pub cron: ::prost::alloc::string::String,
+        /// Optional. If true, syncs the FeatureView in a continuous manner to Online
+        /// Store.
+        #[prost(bool, tag = "2")]
+        pub continuous: bool,
     }
     /// Configuration for vector indexing.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -14353,18 +14449,21 @@ pub struct CreateFeatureRequest {
 }
 /// Request message for
 /// [FeaturestoreService.BatchCreateFeatures][google.cloud.aiplatform.v1.FeaturestoreService.BatchCreateFeatures].
+/// Request message for
+/// [FeatureRegistryService.BatchCreateFeatures][google.cloud.aiplatform.v1.FeatureRegistryService.BatchCreateFeatures].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateFeaturesRequest {
-    /// Required. The resource name of the EntityType to create the batch of
-    /// Features under. Format:
+    /// Required. The resource name of the EntityType/FeatureGroup to create the
+    /// batch of Features under. Format:
     /// `projects/{project}/locations/{location}/featurestores/{featurestore}/entityTypes/{entity_type}`
+    /// `projects/{project}/locations/{location}/featureGroups/{feature_group}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The request message specifying the Features to create. All
-    /// Features must be created under the same parent EntityType. The `parent`
-    /// field in each child request message can be omitted. If `parent` is set in a
-    /// child request, then the value must match the `parent` value in this request
-    /// message.
+    /// Features must be created under the same parent EntityType / FeatureGroup.
+    /// The `parent` field in each child request message can be omitted. If
+    /// `parent` is set in a child request, then the value must match the `parent`
+    /// value in this request message.
     #[prost(message, repeated, tag = "2")]
     pub requests: ::prost::alloc::vec::Vec<CreateFeatureRequest>,
 }
@@ -15624,7 +15723,7 @@ pub struct CreateFeatureGroupRequest {
     /// Required. The ID to use for this FeatureGroup, which will become the final
     /// component of the FeatureGroup's resource name.
     ///
-    /// This value may be up to 60 characters, and valid characters are
+    /// This value may be up to 128 characters, and valid characters are
     /// `\[a-z0-9_\]`. The first character cannot be a number.
     ///
     /// The value must be unique within the project and location.
@@ -16042,6 +16141,36 @@ pub mod feature_registry_service_client {
                     GrpcMethod::new(
                         "google.cloud.aiplatform.v1.FeatureRegistryService",
                         "CreateFeature",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a batch of Features in a given FeatureGroup.
+        pub async fn batch_create_features(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchCreateFeaturesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.FeatureRegistryService/BatchCreateFeatures",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.FeatureRegistryService",
+                        "BatchCreateFeatures",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -29898,6 +30027,29 @@ pub struct StartNotebookRuntimeOperationMetadata {
 /// [NotebookService.StartNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.StartNotebookRuntime].
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StartNotebookRuntimeResponse {}
+/// Request message for
+/// [NotebookService.StopNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.StopNotebookRuntime].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StopNotebookRuntimeRequest {
+    /// Required. The name of the NotebookRuntime resource to be stopped.
+    /// Instead of checking whether the name is in valid NotebookRuntime resource
+    /// name format, directly throw NotFound exception if there is no such
+    /// NotebookRuntime in spanner.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Metadata information for
+/// [NotebookService.StopNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.StopNotebookRuntime].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StopNotebookRuntimeOperationMetadata {
+    /// The operation generic information.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Response message for
+/// [NotebookService.StopNotebookRuntime][google.cloud.aiplatform.v1.NotebookService.StopNotebookRuntime].
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct StopNotebookRuntimeResponse {}
 /// Request message for \[NotebookService.CreateNotebookExecutionJob\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNotebookExecutionJobRequest {
@@ -30451,6 +30603,36 @@ pub mod notebook_service_client {
                     GrpcMethod::new(
                         "google.cloud.aiplatform.v1.NotebookService",
                         "StartNotebookRuntime",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Stops a NotebookRuntime.
+        pub async fn stop_notebook_runtime(
+            &mut self,
+            request: impl tonic::IntoRequest<super::StopNotebookRuntimeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.NotebookService/StopNotebookRuntime",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.NotebookService",
+                        "StopNotebookRuntime",
                     ),
                 );
             self.inner.unary(req, path, codec).await

@@ -55,7 +55,7 @@ pub struct Step {
     /// final state the configuration is cleared.
     #[prost(
         oneof = "step::StepInfo",
-        tags = "5, 6, 7, 8, 24, 9, 10, 11, 21, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 25, 26, 27, 28"
+        tags = "5, 6, 7, 8, 24, 9, 10, 11, 21, 12, 13, 14, 15, 16, 17, 18, 19, 30, 31, 20, 22, 23, 25, 26, 27, 28, 29"
     )]
     pub step_info: ::core::option::Option<step::StepInfo>,
 }
@@ -98,6 +98,12 @@ pub mod step {
         /// Initial state: packet originating from a Cloud SQL instance.
         /// A CloudSQLInstanceInfo is populated with starting instance information.
         StartFromCloudSqlInstance = 22,
+        /// Initial state: packet originating from a Redis instance.
+        /// A RedisInstanceInfo is populated with starting instance information.
+        StartFromRedisInstance = 32,
+        /// Initial state: packet originating from a Redis Cluster.
+        /// A RedisClusterInfo is populated with starting Cluster information.
+        StartFromRedisCluster = 33,
         /// Initial state: packet originating from a Cloud Function.
         /// A CloudFunctionInfo is populated with starting function information.
         StartFromCloudFunction = 23,
@@ -114,6 +120,10 @@ pub mod step {
         /// Initial state: packet originating from a published service that uses
         /// Private Service Connect. Used only for return traces.
         StartFromPscPublishedService = 30,
+        /// Initial state: packet originating from a serverless network endpoint
+        /// group backend. Used only for return traces.
+        /// The serverless_neg information is populated.
+        StartFromServerlessNeg = 31,
         /// Config checking state: verify ingress firewall rule.
         ApplyIngressFirewallRule = 4,
         /// Config checking state: verify egress firewall rule.
@@ -171,11 +181,14 @@ pub mod step {
                 Self::StartFromPrivateNetwork => "START_FROM_PRIVATE_NETWORK",
                 Self::StartFromGkeMaster => "START_FROM_GKE_MASTER",
                 Self::StartFromCloudSqlInstance => "START_FROM_CLOUD_SQL_INSTANCE",
+                Self::StartFromRedisInstance => "START_FROM_REDIS_INSTANCE",
+                Self::StartFromRedisCluster => "START_FROM_REDIS_CLUSTER",
                 Self::StartFromCloudFunction => "START_FROM_CLOUD_FUNCTION",
                 Self::StartFromAppEngineVersion => "START_FROM_APP_ENGINE_VERSION",
                 Self::StartFromCloudRunRevision => "START_FROM_CLOUD_RUN_REVISION",
                 Self::StartFromStorageBucket => "START_FROM_STORAGE_BUCKET",
                 Self::StartFromPscPublishedService => "START_FROM_PSC_PUBLISHED_SERVICE",
+                Self::StartFromServerlessNeg => "START_FROM_SERVERLESS_NEG",
                 Self::ApplyIngressFirewallRule => "APPLY_INGRESS_FIREWALL_RULE",
                 Self::ApplyEgressFirewallRule => "APPLY_EGRESS_FIREWALL_RULE",
                 Self::ApplyRoute => "APPLY_ROUTE",
@@ -207,6 +220,8 @@ pub mod step {
                 "START_FROM_PRIVATE_NETWORK" => Some(Self::StartFromPrivateNetwork),
                 "START_FROM_GKE_MASTER" => Some(Self::StartFromGkeMaster),
                 "START_FROM_CLOUD_SQL_INSTANCE" => Some(Self::StartFromCloudSqlInstance),
+                "START_FROM_REDIS_INSTANCE" => Some(Self::StartFromRedisInstance),
+                "START_FROM_REDIS_CLUSTER" => Some(Self::StartFromRedisCluster),
                 "START_FROM_CLOUD_FUNCTION" => Some(Self::StartFromCloudFunction),
                 "START_FROM_APP_ENGINE_VERSION" => Some(Self::StartFromAppEngineVersion),
                 "START_FROM_CLOUD_RUN_REVISION" => Some(Self::StartFromCloudRunRevision),
@@ -214,6 +229,7 @@ pub mod step {
                 "START_FROM_PSC_PUBLISHED_SERVICE" => {
                     Some(Self::StartFromPscPublishedService)
                 }
+                "START_FROM_SERVERLESS_NEG" => Some(Self::StartFromServerlessNeg),
                 "APPLY_INGRESS_FIREWALL_RULE" => Some(Self::ApplyIngressFirewallRule),
                 "APPLY_EGRESS_FIREWALL_RULE" => Some(Self::ApplyEgressFirewallRule),
                 "APPLY_ROUTE" => Some(Self::ApplyRoute),
@@ -303,6 +319,12 @@ pub mod step {
         /// Display information of a Cloud SQL instance.
         #[prost(message, tag = "19")]
         CloudSqlInstance(super::CloudSqlInstanceInfo),
+        /// Display information of a Redis Instance.
+        #[prost(message, tag = "30")]
+        RedisInstance(super::RedisInstanceInfo),
+        /// Display information of a Redis Cluster.
+        #[prost(message, tag = "31")]
+        RedisCluster(super::RedisClusterInfo),
         /// Display information of a Cloud Function.
         #[prost(message, tag = "20")]
         CloudFunction(super::CloudFunctionInfo),
@@ -324,6 +346,10 @@ pub mod step {
         /// Display information of a Storage Bucket. Used only for return traces.
         #[prost(message, tag = "28")]
         StorageBucket(super::StorageBucketInfo),
+        /// Display information of a Serverless network endpoint group backend. Used
+        /// only for return traces.
+        #[prost(message, tag = "29")]
+        ServerlessNeg(super::ServerlessNegInfo),
     }
 }
 /// For display only. Metadata associated with a Compute Engine instance.
@@ -354,8 +380,12 @@ pub struct InstanceInfo {
     #[deprecated]
     #[prost(string, tag = "8")]
     pub service_account: ::prost::alloc::string::String,
+    /// URI of the PSC network attachment the NIC is attached to (if relevant).
+    #[prost(string, tag = "9")]
+    pub psc_network_attachment_uri: ::prost::alloc::string::String,
 }
 /// For display only. Metadata associated with a Compute Engine network.
+/// Next ID: 7
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkInfo {
     /// Name of a Compute Engine network.
@@ -364,20 +394,26 @@ pub struct NetworkInfo {
     /// URI of a Compute Engine network.
     #[prost(string, tag = "2")]
     pub uri: ::prost::alloc::string::String,
-    /// The IP range that matches the test.
+    /// URI of the subnet matching the source IP address of the test.
+    #[prost(string, tag = "5")]
+    pub matched_subnet_uri: ::prost::alloc::string::String,
+    /// The IP range of the subnet matching the source IP address of the test.
     #[prost(string, tag = "4")]
     pub matched_ip_range: ::prost::alloc::string::String,
+    /// The region of the subnet matching the source IP address of the test.
+    #[prost(string, tag = "6")]
+    pub region: ::prost::alloc::string::String,
 }
 /// For display only. Metadata associated with a VPC firewall rule, an implied
-/// VPC firewall rule, or a hierarchical firewall policy rule.
+/// VPC firewall rule, or a firewall policy rule.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirewallInfo {
-    /// The display name of the VPC firewall rule. This field is not applicable
-    /// to hierarchical firewall policy rules.
+    /// The display name of the firewall rule. This field might be empty for
+    /// firewall policy rules.
     #[prost(string, tag = "1")]
     pub display_name: ::prost::alloc::string::String,
-    /// The URI of the VPC firewall rule. This field is not applicable to
-    /// implied firewall rules or hierarchical firewall policy rules.
+    /// The URI of the firewall rule. This field is not applicable to implied
+    /// VPC firewall rules.
     #[prost(string, tag = "2")]
     pub uri: ::prost::alloc::string::String,
     /// Possible values: INGRESS, EGRESS
@@ -394,7 +430,7 @@ pub struct FirewallInfo {
     #[prost(string, tag = "6")]
     pub network_uri: ::prost::alloc::string::String,
     /// The target tags defined by the VPC firewall rule. This field is not
-    /// applicable to hierarchical firewall policy rules.
+    /// applicable to firewall policy rules.
     #[prost(string, repeated, tag = "7")]
     pub target_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The target service accounts specified by the firewall rule.
@@ -402,10 +438,16 @@ pub struct FirewallInfo {
     pub target_service_accounts: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
     >,
-    /// The hierarchical firewall policy that this rule is associated with.
-    /// This field is not applicable to VPC firewall rules.
+    /// The name of the firewall policy that this rule is associated with.
+    /// This field is not applicable to VPC firewall rules and implied VPC firewall
+    /// rules.
     #[prost(string, tag = "9")]
     pub policy: ::prost::alloc::string::String,
+    /// The URI of the firewall policy that this rule is associated with.
+    /// This field is not applicable to VPC firewall rules and implied VPC firewall
+    /// rules.
+    #[prost(string, tag = "11")]
+    pub policy_uri: ::prost::alloc::string::String,
     /// The firewall rule's type.
     #[prost(enumeration = "firewall_info::FirewallRuleType", tag = "10")]
     pub firewall_rule_type: i32,
@@ -528,12 +570,12 @@ pub struct RouteInfo {
     /// Name of a route.
     #[prost(string, tag = "1")]
     pub display_name: ::prost::alloc::string::String,
-    /// URI of a route.
-    /// Dynamic, peering static and peering dynamic routes do not have an URI.
-    /// Advertised route from Google Cloud VPC to on-premises network also does
-    /// not have an URI.
+    /// URI of a route (if applicable).
     #[prost(string, tag = "2")]
     pub uri: ::prost::alloc::string::String,
+    /// Region of the route (if applicable).
+    #[prost(string, tag = "19")]
+    pub region: ::prost::alloc::string::String,
     /// Destination IP range of the route.
     #[prost(string, tag = "3")]
     pub dest_ip_range: ::prost::alloc::string::String,
@@ -567,6 +609,20 @@ pub struct RouteInfo {
     /// URI of a NCC Spoke. NCC_HUB routes only.
     #[prost(string, optional, tag = "16")]
     pub ncc_spoke_uri: ::core::option::Option<::prost::alloc::string::String>,
+    /// For advertised dynamic routes, the URI of the Cloud Router that advertised
+    /// the corresponding IP prefix.
+    #[prost(string, optional, tag = "17")]
+    pub advertised_route_source_router_uri: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// For advertised routes, the URI of their next hop, i.e. the URI of the
+    /// hybrid endpoint (VPN tunnel, Interconnect attachment, NCC router appliance)
+    /// the advertised prefix is advertised through, or URI of the source peered
+    /// network.
+    #[prost(string, optional, tag = "18")]
+    pub advertised_route_next_hop_uri: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
 }
 /// Nested message and enum types in `RouteInfo`.
 pub mod route_info {
@@ -601,6 +657,9 @@ pub mod route_info {
         PeeringDynamic = 6,
         /// Policy based route.
         PolicyBased = 7,
+        /// Advertised route. Synthetic route which is used to transition from the
+        /// StartFromPrivateNetwork state in Connectivity tests.
+        Advertised = 101,
     }
     impl RouteType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -617,6 +676,7 @@ pub mod route_info {
                 Self::PeeringStatic => "PEERING_STATIC",
                 Self::PeeringDynamic => "PEERING_DYNAMIC",
                 Self::PolicyBased => "POLICY_BASED",
+                Self::Advertised => "ADVERTISED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -630,6 +690,7 @@ pub mod route_info {
                 "PEERING_STATIC" => Some(Self::PeeringStatic),
                 "PEERING_DYNAMIC" => Some(Self::PeeringDynamic),
                 "POLICY_BASED" => Some(Self::PolicyBased),
+                "ADVERTISED" => Some(Self::Advertised),
                 _ => None,
             }
         }
@@ -857,16 +918,16 @@ pub mod google_service_info {
 /// For display only. Metadata associated with a Compute Engine forwarding rule.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ForwardingRuleInfo {
-    /// Name of a Compute Engine forwarding rule.
+    /// Name of the forwarding rule.
     #[prost(string, tag = "1")]
     pub display_name: ::prost::alloc::string::String,
-    /// URI of a Compute Engine forwarding rule.
+    /// URI of the forwarding rule.
     #[prost(string, tag = "2")]
     pub uri: ::prost::alloc::string::String,
-    /// Protocol defined in the forwarding rule that matches the test.
+    /// Protocol defined in the forwarding rule that matches the packet.
     #[prost(string, tag = "3")]
     pub matched_protocol: ::prost::alloc::string::String,
-    /// Port range defined in the forwarding rule that matches the test.
+    /// Port range defined in the forwarding rule that matches the packet.
     #[prost(string, tag = "6")]
     pub matched_port_range: ::prost::alloc::string::String,
     /// VIP of the forwarding rule.
@@ -875,9 +936,23 @@ pub struct ForwardingRuleInfo {
     /// Target type of the forwarding rule.
     #[prost(string, tag = "5")]
     pub target: ::prost::alloc::string::String,
-    /// Network URI. Only valid for Internal Load Balancer.
+    /// Network URI.
     #[prost(string, tag = "7")]
     pub network_uri: ::prost::alloc::string::String,
+    /// Region of the forwarding rule. Set only for regional forwarding rules.
+    #[prost(string, tag = "8")]
+    pub region: ::prost::alloc::string::String,
+    /// Name of the load balancer the forwarding rule belongs to. Empty for
+    /// forwarding rules not related to load balancers (like PSC forwarding rules).
+    #[prost(string, tag = "9")]
+    pub load_balancer_name: ::prost::alloc::string::String,
+    /// URI of the PSC service attachment this forwarding rule targets (if
+    /// applicable).
+    #[prost(string, tag = "10")]
+    pub psc_service_attachment_uri: ::prost::alloc::string::String,
+    /// PSC Google API target this forwarding rule targets (if applicable).
+    #[prost(string, tag = "11")]
+    pub psc_google_api_target: ::prost::alloc::string::String,
 }
 /// For display only. Metadata associated with a load balancer.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1228,6 +1303,13 @@ pub struct DeliverInfo {
     /// IP address of the target (if applicable).
     #[prost(string, tag = "3")]
     pub ip_address: ::prost::alloc::string::String,
+    /// Name of the Cloud Storage Bucket the packet is delivered to (if
+    /// applicable).
+    #[prost(string, tag = "4")]
+    pub storage_bucket: ::prost::alloc::string::String,
+    /// PSC Google API target the packet is delivered to (if applicable).
+    #[prost(string, tag = "5")]
+    pub psc_google_api_target: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `DeliverInfo`.
 pub mod deliver_info {
@@ -1260,7 +1342,7 @@ pub mod deliver_info {
         /// Target is a published service that uses [Private Service
         /// Connect](<https://cloud.google.com/vpc/docs/configure-private-service-connect-services>).
         PscPublishedService = 6,
-        /// Target is all Google APIs that use [Private Service
+        /// Target is Google APIs that use [Private Service
         /// Connect](<https://cloud.google.com/vpc/docs/configure-private-service-connect-apis>).
         PscGoogleApi = 7,
         /// Target is a VPC-SC that uses [Private Service
@@ -1278,6 +1360,12 @@ pub mod deliver_info {
         AppEngineVersion = 13,
         /// Target is a Cloud Run revision. Used only for return traces.
         CloudRunRevision = 14,
+        /// Target is a Google-managed service. Used only for return traces.
+        GoogleManagedService = 15,
+        /// Target is a Redis Instance.
+        RedisInstance = 16,
+        /// Target is a Redis Cluster.
+        RedisCluster = 17,
     }
     impl Target {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1301,6 +1389,9 @@ pub mod deliver_info {
                 Self::CloudFunction => "CLOUD_FUNCTION",
                 Self::AppEngineVersion => "APP_ENGINE_VERSION",
                 Self::CloudRunRevision => "CLOUD_RUN_REVISION",
+                Self::GoogleManagedService => "GOOGLE_MANAGED_SERVICE",
+                Self::RedisInstance => "REDIS_INSTANCE",
+                Self::RedisCluster => "REDIS_CLUSTER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1321,6 +1412,9 @@ pub mod deliver_info {
                 "CLOUD_FUNCTION" => Some(Self::CloudFunction),
                 "APP_ENGINE_VERSION" => Some(Self::AppEngineVersion),
                 "CLOUD_RUN_REVISION" => Some(Self::CloudRunRevision),
+                "GOOGLE_MANAGED_SERVICE" => Some(Self::GoogleManagedService),
+                "REDIS_INSTANCE" => Some(Self::RedisInstance),
+                "REDIS_CLUSTER" => Some(Self::RedisCluster),
                 _ => None,
             }
         }
@@ -1479,6 +1573,9 @@ pub mod abort_info {
         /// Aborted because no endpoint with the packet's destination IP address is
         /// found.
         UnknownIp = 2,
+        /// Aborted because no endpoint with the packet's destination IP is found in
+        /// the Google-managed project.
+        GoogleManagedServiceUnknownIp = 32,
         /// Aborted because the source IP address doesn't belong to any of the
         /// subnets of the source VPC network.
         SourceIpAddressNotInSourceNetwork = 23,
@@ -1491,6 +1588,9 @@ pub mod abort_info {
         /// Aborted because user lacks permission to access Network endpoint group
         /// endpoint configs required to run the test.
         PermissionDeniedNoNegEndpointConfigs = 29,
+        /// Aborted because user lacks permission to access Cloud Router configs
+        /// required to run the test.
+        PermissionDeniedNoCloudRouterConfigs = 36,
         /// Aborted because no valid source or destination endpoint is derived from
         /// the input test request.
         NoSourceLocation = 5,
@@ -1532,6 +1632,11 @@ pub mod abort_info {
         /// Aborted because tests with a PSC-based Cloud SQL instance as a source are
         /// not supported.
         SourcePscCloudSqlUnsupported = 20,
+        /// Aborted because tests with a Redis Cluster as a source are not supported.
+        SourceRedisClusterUnsupported = 34,
+        /// Aborted because tests with a Redis Instance as a source are not
+        /// supported.
+        SourceRedisInstanceUnsupported = 35,
         /// Aborted because tests with a forwarding rule as a source are not
         /// supported.
         SourceForwardingRuleUnsupported = 21,
@@ -1561,6 +1666,9 @@ pub mod abort_info {
                 Self::DestinationEndpointNotFound => "DESTINATION_ENDPOINT_NOT_FOUND",
                 Self::MismatchedDestinationNetwork => "MISMATCHED_DESTINATION_NETWORK",
                 Self::UnknownIp => "UNKNOWN_IP",
+                Self::GoogleManagedServiceUnknownIp => {
+                    "GOOGLE_MANAGED_SERVICE_UNKNOWN_IP"
+                }
                 Self::SourceIpAddressNotInSourceNetwork => {
                     "SOURCE_IP_ADDRESS_NOT_IN_SOURCE_NETWORK"
                 }
@@ -1570,6 +1678,9 @@ pub mod abort_info {
                 }
                 Self::PermissionDeniedNoNegEndpointConfigs => {
                     "PERMISSION_DENIED_NO_NEG_ENDPOINT_CONFIGS"
+                }
+                Self::PermissionDeniedNoCloudRouterConfigs => {
+                    "PERMISSION_DENIED_NO_CLOUD_ROUTER_CONFIGS"
                 }
                 Self::NoSourceLocation => "NO_SOURCE_LOCATION",
                 Self::InvalidArgument => "INVALID_ARGUMENT",
@@ -1589,6 +1700,10 @@ pub mod abort_info {
                     "GOOGLE_MANAGED_SERVICE_AMBIGUOUS_PSC_ENDPOINT"
                 }
                 Self::SourcePscCloudSqlUnsupported => "SOURCE_PSC_CLOUD_SQL_UNSUPPORTED",
+                Self::SourceRedisClusterUnsupported => "SOURCE_REDIS_CLUSTER_UNSUPPORTED",
+                Self::SourceRedisInstanceUnsupported => {
+                    "SOURCE_REDIS_INSTANCE_UNSUPPORTED"
+                }
                 Self::SourceForwardingRuleUnsupported => {
                     "SOURCE_FORWARDING_RULE_UNSUPPORTED"
                 }
@@ -1618,6 +1733,9 @@ pub mod abort_info {
                     Some(Self::MismatchedDestinationNetwork)
                 }
                 "UNKNOWN_IP" => Some(Self::UnknownIp),
+                "GOOGLE_MANAGED_SERVICE_UNKNOWN_IP" => {
+                    Some(Self::GoogleManagedServiceUnknownIp)
+                }
                 "SOURCE_IP_ADDRESS_NOT_IN_SOURCE_NETWORK" => {
                     Some(Self::SourceIpAddressNotInSourceNetwork)
                 }
@@ -1627,6 +1745,9 @@ pub mod abort_info {
                 }
                 "PERMISSION_DENIED_NO_NEG_ENDPOINT_CONFIGS" => {
                     Some(Self::PermissionDeniedNoNegEndpointConfigs)
+                }
+                "PERMISSION_DENIED_NO_CLOUD_ROUTER_CONFIGS" => {
+                    Some(Self::PermissionDeniedNoCloudRouterConfigs)
                 }
                 "NO_SOURCE_LOCATION" => Some(Self::NoSourceLocation),
                 "INVALID_ARGUMENT" => Some(Self::InvalidArgument),
@@ -1647,6 +1768,12 @@ pub mod abort_info {
                 }
                 "SOURCE_PSC_CLOUD_SQL_UNSUPPORTED" => {
                     Some(Self::SourcePscCloudSqlUnsupported)
+                }
+                "SOURCE_REDIS_CLUSTER_UNSUPPORTED" => {
+                    Some(Self::SourceRedisClusterUnsupported)
+                }
+                "SOURCE_REDIS_INSTANCE_UNSUPPORTED" => {
+                    Some(Self::SourceRedisInstanceUnsupported)
                 }
                 "SOURCE_FORWARDING_RULE_UNSUPPORTED" => {
                     Some(Self::SourceForwardingRuleUnsupported)
@@ -1774,6 +1901,10 @@ pub mod drop_info {
         GkeClusterNotRunning = 27,
         /// Packet sent from or to a Cloud SQL instance that is not in running state.
         CloudSqlInstanceNotRunning = 28,
+        /// Packet sent from or to a Redis Instance that is not in running state.
+        RedisInstanceNotRunning = 68,
+        /// Packet sent from or to a Redis Cluster that is not in running state.
+        RedisClusterNotRunning = 69,
         /// The type of traffic is blocked and the user cannot configure a firewall
         /// rule to enable it. See [Always blocked
         /// traffic](<https://cloud.google.com/vpc/docs/firewalls#blockedtraffic>) for
@@ -1824,6 +1955,10 @@ pub mod drop_info {
         /// Packet was dropped because there is no route from a Cloud SQL
         /// instance to a destination network.
         CloudSqlInstanceNoRoute = 35,
+        /// Packet was dropped because the Cloud SQL instance requires all
+        /// connections to use Cloud SQL connectors and to target the Cloud SQL proxy
+        /// port (3307).
+        CloudSqlConnectorRequired = 63,
         /// Packet could be dropped because the Cloud Function is not in an active
         /// status.
         CloudFunctionNotActive = 22,
@@ -1832,6 +1967,12 @@ pub mod drop_info {
         /// Packet could be dropped because the VPC connector is not in a running
         /// state.
         VpcConnectorNotRunning = 24,
+        /// Packet could be dropped because the traffic from the serverless service
+        /// to the VPC connector is not allowed.
+        VpcConnectorServerlessTrafficBlocked = 60,
+        /// Packet could be dropped because the health check traffic to the VPC
+        /// connector is not allowed.
+        VpcConnectorHealthCheckTrafficBlocked = 61,
         /// Packet could be dropped because it was sent from a different region
         /// to a regional forwarding without global access.
         ForwardingRuleRegionMismatch = 25,
@@ -1856,6 +1997,9 @@ pub mod drop_info {
         CloudSqlPscNegUnsupported = 58,
         /// No NAT subnets are defined for the PSC service attachment.
         NoNatSubnetsForPscServiceAttachment = 57,
+        /// PSC endpoint is accessed via NCC, but PSC transitivity configuration is
+        /// not yet propagated.
+        PscTransitivityNotPropagated = 64,
         /// The packet sent from the hybrid NEG proxy matches a non-dynamic route,
         /// but such a configuration is not supported.
         HybridNegNonDynamicRouteMatched = 55,
@@ -1874,6 +2018,58 @@ pub mod drop_info {
         CloudNatNoAddresses = 40,
         /// Packet is stuck in a routing loop.
         RoutingLoop = 59,
+        /// Packet is dropped inside a Google-managed service due to being delivered
+        /// in return trace to an endpoint that doesn't match the endpoint the packet
+        /// was sent from in forward trace. Used only for return traces.
+        DroppedInsideGoogleManagedService = 62,
+        /// Packet is dropped due to a load balancer backend instance not having a
+        /// network interface in the network expected by the load balancer.
+        LoadBalancerBackendInvalidNetwork = 65,
+        /// Packet is dropped due to a backend service named port not being defined
+        /// on the instance group level.
+        BackendServiceNamedPortNotDefined = 66,
+        /// Packet is dropped due to a destination IP range being part of a Private
+        /// NAT IP range.
+        DestinationIsPrivateNatIpRange = 67,
+        /// Generic drop cause for a packet being dropped inside a Redis Instance
+        /// service project.
+        DroppedInsideRedisInstanceService = 70,
+        /// Packet is dropped due to an unsupported port being used to connect to a
+        /// Redis Instance. Port 6379 should be used to connect to a Redis Instance.
+        RedisInstanceUnsupportedPort = 71,
+        /// Packet is dropped due to connecting from PUPI address to a PSA based
+        /// Redis Instance.
+        RedisInstanceConnectingFromPupiAddress = 72,
+        /// Packet is dropped due to no route to the destination network.
+        RedisInstanceNoRouteToDestinationNetwork = 73,
+        /// Redis Instance does not have an external IP address.
+        RedisInstanceNoExternalIp = 74,
+        /// Packet is dropped due to an unsupported protocol being used to connect to
+        /// a Redis Instance. Only TCP connections are accepted by a Redis Instance.
+        RedisInstanceUnsupportedProtocol = 78,
+        /// Generic drop cause for a packet being dropped inside a Redis Cluster
+        /// service project.
+        DroppedInsideRedisClusterService = 75,
+        /// Packet is dropped due to an unsupported port being used to connect to a
+        /// Redis Cluster. Ports 6379 and 11000 to 13047 should be used to connect to
+        /// a Redis Cluster.
+        RedisClusterUnsupportedPort = 76,
+        /// Redis Cluster does not have an external IP address.
+        RedisClusterNoExternalIp = 77,
+        /// Packet is dropped due to an unsupported protocol being used to connect to
+        /// a Redis Cluster. Only TCP connections are accepted by a Redis Cluster.
+        RedisClusterUnsupportedProtocol = 79,
+        /// Packet from the non-GCP (on-prem) or unknown GCP network is dropped due
+        /// to the destination IP address not belonging to any IP prefix advertised
+        /// via BGP by the Cloud Router.
+        NoAdvertisedRouteToGcpDestination = 80,
+        /// Packet from the non-GCP (on-prem) or unknown GCP network is dropped due
+        /// to the destination IP address not belonging to any IP prefix included to
+        /// the local traffic selector of the VPN tunnel.
+        NoTrafficSelectorToGcpDestination = 81,
+        /// Packet from the unknown peered network is dropped due to no known route
+        /// from the source network to the destination IP address.
+        NoKnownRouteFromPeeredNetworkToDestination = 82,
     }
     impl Cause {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1932,6 +2128,8 @@ pub mod drop_info {
                 Self::InstanceNotRunning => "INSTANCE_NOT_RUNNING",
                 Self::GkeClusterNotRunning => "GKE_CLUSTER_NOT_RUNNING",
                 Self::CloudSqlInstanceNotRunning => "CLOUD_SQL_INSTANCE_NOT_RUNNING",
+                Self::RedisInstanceNotRunning => "REDIS_INSTANCE_NOT_RUNNING",
+                Self::RedisClusterNotRunning => "REDIS_CLUSTER_NOT_RUNNING",
                 Self::TrafficTypeBlocked => "TRAFFIC_TYPE_BLOCKED",
                 Self::GkeMasterUnauthorizedAccess => "GKE_MASTER_UNAUTHORIZED_ACCESS",
                 Self::CloudSqlInstanceUnauthorizedAccess => {
@@ -1961,9 +2159,16 @@ pub mod drop_info {
                     "PUBLIC_CLOUD_SQL_INSTANCE_TO_PRIVATE_DESTINATION"
                 }
                 Self::CloudSqlInstanceNoRoute => "CLOUD_SQL_INSTANCE_NO_ROUTE",
+                Self::CloudSqlConnectorRequired => "CLOUD_SQL_CONNECTOR_REQUIRED",
                 Self::CloudFunctionNotActive => "CLOUD_FUNCTION_NOT_ACTIVE",
                 Self::VpcConnectorNotSet => "VPC_CONNECTOR_NOT_SET",
                 Self::VpcConnectorNotRunning => "VPC_CONNECTOR_NOT_RUNNING",
+                Self::VpcConnectorServerlessTrafficBlocked => {
+                    "VPC_CONNECTOR_SERVERLESS_TRAFFIC_BLOCKED"
+                }
+                Self::VpcConnectorHealthCheckTrafficBlocked => {
+                    "VPC_CONNECTOR_HEALTH_CHECK_TRAFFIC_BLOCKED"
+                }
                 Self::ForwardingRuleRegionMismatch => "FORWARDING_RULE_REGION_MISMATCH",
                 Self::PscConnectionNotAccepted => "PSC_CONNECTION_NOT_ACCEPTED",
                 Self::PscEndpointAccessedFromPeeredNetwork => {
@@ -1979,6 +2184,7 @@ pub mod drop_info {
                 Self::NoNatSubnetsForPscServiceAttachment => {
                     "NO_NAT_SUBNETS_FOR_PSC_SERVICE_ATTACHMENT"
                 }
+                Self::PscTransitivityNotPropagated => "PSC_TRANSITIVITY_NOT_PROPAGATED",
                 Self::HybridNegNonDynamicRouteMatched => {
                     "HYBRID_NEG_NON_DYNAMIC_ROUTE_MATCHED"
                 }
@@ -1992,6 +2198,49 @@ pub mod drop_info {
                 Self::LoadBalancerHasNoProxySubnet => "LOAD_BALANCER_HAS_NO_PROXY_SUBNET",
                 Self::CloudNatNoAddresses => "CLOUD_NAT_NO_ADDRESSES",
                 Self::RoutingLoop => "ROUTING_LOOP",
+                Self::DroppedInsideGoogleManagedService => {
+                    "DROPPED_INSIDE_GOOGLE_MANAGED_SERVICE"
+                }
+                Self::LoadBalancerBackendInvalidNetwork => {
+                    "LOAD_BALANCER_BACKEND_INVALID_NETWORK"
+                }
+                Self::BackendServiceNamedPortNotDefined => {
+                    "BACKEND_SERVICE_NAMED_PORT_NOT_DEFINED"
+                }
+                Self::DestinationIsPrivateNatIpRange => {
+                    "DESTINATION_IS_PRIVATE_NAT_IP_RANGE"
+                }
+                Self::DroppedInsideRedisInstanceService => {
+                    "DROPPED_INSIDE_REDIS_INSTANCE_SERVICE"
+                }
+                Self::RedisInstanceUnsupportedPort => "REDIS_INSTANCE_UNSUPPORTED_PORT",
+                Self::RedisInstanceConnectingFromPupiAddress => {
+                    "REDIS_INSTANCE_CONNECTING_FROM_PUPI_ADDRESS"
+                }
+                Self::RedisInstanceNoRouteToDestinationNetwork => {
+                    "REDIS_INSTANCE_NO_ROUTE_TO_DESTINATION_NETWORK"
+                }
+                Self::RedisInstanceNoExternalIp => "REDIS_INSTANCE_NO_EXTERNAL_IP",
+                Self::RedisInstanceUnsupportedProtocol => {
+                    "REDIS_INSTANCE_UNSUPPORTED_PROTOCOL"
+                }
+                Self::DroppedInsideRedisClusterService => {
+                    "DROPPED_INSIDE_REDIS_CLUSTER_SERVICE"
+                }
+                Self::RedisClusterUnsupportedPort => "REDIS_CLUSTER_UNSUPPORTED_PORT",
+                Self::RedisClusterNoExternalIp => "REDIS_CLUSTER_NO_EXTERNAL_IP",
+                Self::RedisClusterUnsupportedProtocol => {
+                    "REDIS_CLUSTER_UNSUPPORTED_PROTOCOL"
+                }
+                Self::NoAdvertisedRouteToGcpDestination => {
+                    "NO_ADVERTISED_ROUTE_TO_GCP_DESTINATION"
+                }
+                Self::NoTrafficSelectorToGcpDestination => {
+                    "NO_TRAFFIC_SELECTOR_TO_GCP_DESTINATION"
+                }
+                Self::NoKnownRouteFromPeeredNetworkToDestination => {
+                    "NO_KNOWN_ROUTE_FROM_PEERED_NETWORK_TO_DESTINATION"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2053,6 +2302,8 @@ pub mod drop_info {
                 "CLOUD_SQL_INSTANCE_NOT_RUNNING" => {
                     Some(Self::CloudSqlInstanceNotRunning)
                 }
+                "REDIS_INSTANCE_NOT_RUNNING" => Some(Self::RedisInstanceNotRunning),
+                "REDIS_CLUSTER_NOT_RUNNING" => Some(Self::RedisClusterNotRunning),
                 "TRAFFIC_TYPE_BLOCKED" => Some(Self::TrafficTypeBlocked),
                 "GKE_MASTER_UNAUTHORIZED_ACCESS" => {
                     Some(Self::GkeMasterUnauthorizedAccess)
@@ -2088,9 +2339,16 @@ pub mod drop_info {
                     Some(Self::PublicCloudSqlInstanceToPrivateDestination)
                 }
                 "CLOUD_SQL_INSTANCE_NO_ROUTE" => Some(Self::CloudSqlInstanceNoRoute),
+                "CLOUD_SQL_CONNECTOR_REQUIRED" => Some(Self::CloudSqlConnectorRequired),
                 "CLOUD_FUNCTION_NOT_ACTIVE" => Some(Self::CloudFunctionNotActive),
                 "VPC_CONNECTOR_NOT_SET" => Some(Self::VpcConnectorNotSet),
                 "VPC_CONNECTOR_NOT_RUNNING" => Some(Self::VpcConnectorNotRunning),
+                "VPC_CONNECTOR_SERVERLESS_TRAFFIC_BLOCKED" => {
+                    Some(Self::VpcConnectorServerlessTrafficBlocked)
+                }
+                "VPC_CONNECTOR_HEALTH_CHECK_TRAFFIC_BLOCKED" => {
+                    Some(Self::VpcConnectorHealthCheckTrafficBlocked)
+                }
                 "FORWARDING_RULE_REGION_MISMATCH" => {
                     Some(Self::ForwardingRuleRegionMismatch)
                 }
@@ -2108,6 +2366,9 @@ pub mod drop_info {
                 "NO_NAT_SUBNETS_FOR_PSC_SERVICE_ATTACHMENT" => {
                     Some(Self::NoNatSubnetsForPscServiceAttachment)
                 }
+                "PSC_TRANSITIVITY_NOT_PROPAGATED" => {
+                    Some(Self::PscTransitivityNotPropagated)
+                }
                 "HYBRID_NEG_NON_DYNAMIC_ROUTE_MATCHED" => {
                     Some(Self::HybridNegNonDynamicRouteMatched)
                 }
@@ -2123,6 +2384,53 @@ pub mod drop_info {
                 }
                 "CLOUD_NAT_NO_ADDRESSES" => Some(Self::CloudNatNoAddresses),
                 "ROUTING_LOOP" => Some(Self::RoutingLoop),
+                "DROPPED_INSIDE_GOOGLE_MANAGED_SERVICE" => {
+                    Some(Self::DroppedInsideGoogleManagedService)
+                }
+                "LOAD_BALANCER_BACKEND_INVALID_NETWORK" => {
+                    Some(Self::LoadBalancerBackendInvalidNetwork)
+                }
+                "BACKEND_SERVICE_NAMED_PORT_NOT_DEFINED" => {
+                    Some(Self::BackendServiceNamedPortNotDefined)
+                }
+                "DESTINATION_IS_PRIVATE_NAT_IP_RANGE" => {
+                    Some(Self::DestinationIsPrivateNatIpRange)
+                }
+                "DROPPED_INSIDE_REDIS_INSTANCE_SERVICE" => {
+                    Some(Self::DroppedInsideRedisInstanceService)
+                }
+                "REDIS_INSTANCE_UNSUPPORTED_PORT" => {
+                    Some(Self::RedisInstanceUnsupportedPort)
+                }
+                "REDIS_INSTANCE_CONNECTING_FROM_PUPI_ADDRESS" => {
+                    Some(Self::RedisInstanceConnectingFromPupiAddress)
+                }
+                "REDIS_INSTANCE_NO_ROUTE_TO_DESTINATION_NETWORK" => {
+                    Some(Self::RedisInstanceNoRouteToDestinationNetwork)
+                }
+                "REDIS_INSTANCE_NO_EXTERNAL_IP" => Some(Self::RedisInstanceNoExternalIp),
+                "REDIS_INSTANCE_UNSUPPORTED_PROTOCOL" => {
+                    Some(Self::RedisInstanceUnsupportedProtocol)
+                }
+                "DROPPED_INSIDE_REDIS_CLUSTER_SERVICE" => {
+                    Some(Self::DroppedInsideRedisClusterService)
+                }
+                "REDIS_CLUSTER_UNSUPPORTED_PORT" => {
+                    Some(Self::RedisClusterUnsupportedPort)
+                }
+                "REDIS_CLUSTER_NO_EXTERNAL_IP" => Some(Self::RedisClusterNoExternalIp),
+                "REDIS_CLUSTER_UNSUPPORTED_PROTOCOL" => {
+                    Some(Self::RedisClusterUnsupportedProtocol)
+                }
+                "NO_ADVERTISED_ROUTE_TO_GCP_DESTINATION" => {
+                    Some(Self::NoAdvertisedRouteToGcpDestination)
+                }
+                "NO_TRAFFIC_SELECTOR_TO_GCP_DESTINATION" => {
+                    Some(Self::NoTrafficSelectorToGcpDestination)
+                }
+                "NO_KNOWN_ROUTE_FROM_PEERED_NETWORK_TO_DESTINATION" => {
+                    Some(Self::NoKnownRouteFromPeeredNetworkToDestination)
+                }
                 _ => None,
             }
         }
@@ -2167,6 +2475,53 @@ pub struct CloudSqlInstanceInfo {
     /// Region in which the Cloud SQL instance is running.
     #[prost(string, tag = "7")]
     pub region: ::prost::alloc::string::String,
+}
+/// For display only. Metadata associated with a Cloud Redis Instance.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RedisInstanceInfo {
+    /// Name of a Cloud Redis Instance.
+    #[prost(string, tag = "1")]
+    pub display_name: ::prost::alloc::string::String,
+    /// URI of a Cloud Redis Instance.
+    #[prost(string, tag = "2")]
+    pub uri: ::prost::alloc::string::String,
+    /// URI of a Cloud Redis Instance network.
+    #[prost(string, tag = "3")]
+    pub network_uri: ::prost::alloc::string::String,
+    /// Primary endpoint IP address of a Cloud Redis Instance.
+    #[prost(string, tag = "4")]
+    pub primary_endpoint_ip: ::prost::alloc::string::String,
+    /// Read endpoint IP address of a Cloud Redis Instance (if applicable).
+    #[prost(string, tag = "5")]
+    pub read_endpoint_ip: ::prost::alloc::string::String,
+    /// Region in which the Cloud Redis Instance is defined.
+    #[prost(string, tag = "6")]
+    pub region: ::prost::alloc::string::String,
+}
+/// For display only. Metadata associated with a Redis Cluster.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RedisClusterInfo {
+    /// Name of a Redis Cluster.
+    #[prost(string, tag = "1")]
+    pub display_name: ::prost::alloc::string::String,
+    /// URI of a Redis Cluster in format
+    /// "projects/{project_id}/locations/{location}/clusters/{cluster_id}"
+    #[prost(string, tag = "2")]
+    pub uri: ::prost::alloc::string::String,
+    /// URI of a Redis Cluster network in format
+    /// "projects/{project_id}/global/networks/{network_id}".
+    #[prost(string, tag = "3")]
+    pub network_uri: ::prost::alloc::string::String,
+    /// Discovery endpoint IP address of a Redis Cluster.
+    #[prost(string, tag = "4")]
+    pub discovery_endpoint_ip_address: ::prost::alloc::string::String,
+    /// Secondary endpoint IP address of a Redis Cluster.
+    #[prost(string, tag = "5")]
+    pub secondary_endpoint_ip_address: ::prost::alloc::string::String,
+    /// Name of the region in which the Redis Cluster is defined. For example,
+    /// "us-central1".
+    #[prost(string, tag = "6")]
+    pub location: ::prost::alloc::string::String,
 }
 /// For display only. Metadata associated with a Cloud Function.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2487,6 +2842,14 @@ pub struct StorageBucketInfo {
     #[prost(string, tag = "1")]
     pub bucket: ::prost::alloc::string::String,
 }
+/// For display only. Metadata associated with the serverless network endpoint
+/// group backend.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ServerlessNegInfo {
+    /// URI of the serverless network endpoint group.
+    #[prost(string, tag = "1")]
+    pub neg_uri: ::prost::alloc::string::String,
+}
 /// Type of a load balancer. For more information, see [Summary of Google Cloud
 /// load
 /// balancers](<https://cloud.google.com/load-balancing/docs/load-balancing-overview#summary-of-google-cloud-load-balancers>).
@@ -2560,7 +2923,7 @@ impl LoadBalancerType {
 /// A Connectivity Test for a network reachability analysis.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConnectivityTest {
-    /// Required. Unique name of the resource using the form:
+    /// Identifier. Unique name of the resource using the form:
     ///      `projects/{project_id}/locations/global/connectivityTests/{test_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -2688,6 +3051,14 @@ pub struct Endpoint {
     /// A [Cloud SQL](<https://cloud.google.com/sql>) instance URI.
     #[prost(string, tag = "8")]
     pub cloud_sql_instance: ::prost::alloc::string::String,
+    /// A [Redis Instance](<https://cloud.google.com/memorystore/docs/redis>)
+    /// URI.
+    #[prost(string, tag = "17")]
+    pub redis_instance: ::prost::alloc::string::String,
+    /// A [Redis Cluster](<https://cloud.google.com/memorystore/docs/cluster>)
+    /// URI.
+    #[prost(string, tag = "18")]
+    pub redis_cluster: ::prost::alloc::string::String,
     /// A [Cloud Function](<https://cloud.google.com/functions>).
     #[prost(message, optional, tag = "10")]
     pub cloud_function: ::core::option::Option<endpoint::CloudFunctionEndpoint>,
@@ -3453,7 +3824,7 @@ pub mod reachability_service_client {
         ///
         /// If the endpoint specifications in `ConnectivityTest` are incomplete, the
         /// reachability result returns a value of `AMBIGUOUS`. See the documentation
-        /// in `ConnectivityTest` for for more details.
+        /// in `ConnectivityTest` for more details.
         pub async fn update_connectivity_test(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateConnectivityTestRequest>,

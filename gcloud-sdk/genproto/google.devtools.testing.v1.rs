@@ -3051,6 +3051,9 @@ pub struct AndroidModel {
     /// URL of a thumbnail image (photo) of the device.
     #[prost(string, tag = "19")]
     pub thumbnail_url: ::prost::alloc::string::String,
+    /// Output only. Lab info of this device.
+    #[prost(message, optional, tag = "26")]
+    pub lab_info: ::core::option::Option<LabInfo>,
 }
 /// A version of the Android OS.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3132,6 +3135,14 @@ pub struct Distribution {
     /// configuration.
     #[prost(double, tag = "2")]
     pub market_share: f64,
+}
+/// Lab specific information for a device.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LabInfo {
+    /// Lab name where the device is hosted.
+    /// If empty, the device is hosted in a Google owned lab.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// The currently supported iOS devices.
 #[derive(Clone, PartialEq, ::prost::Message)]

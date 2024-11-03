@@ -279,6 +279,10 @@ pub struct TaskConfig {
     /// This is applicable for synchronous calls to Eventbus alone (Post).
     #[prost(message, optional, tag = "5")]
     pub synchronous_call_failure_policy: ::core::option::Option<FailurePolicy>,
+    /// Optional. The list of conditional failure policies that will be applied to
+    /// the task in order.
+    #[prost(message, optional, tag = "18")]
+    pub conditional_failure_policies: ::core::option::Option<ConditionalFailurePolicies>,
     /// Optional. The set of tasks that are next in line to be executed as per the
     /// execution graph defined for the parent event, specified by
     /// `event_config_id`. Each of these next tasks are executed
@@ -530,7 +534,7 @@ pub mod success_policy {
 /// Policy that defines the task retry logic and failure type. If no
 /// FailurePolicy is defined for a task, all its dependent tasks will not be
 /// executed (i.e, a `retry_strategy` of NONE will be applied).
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FailurePolicy {
     /// Defines what happens to the task upon failure.
     #[prost(enumeration = "failure_policy::RetryStrategy", tag = "1")]
@@ -545,6 +549,10 @@ pub struct FailurePolicy {
     /// initial interval in seconds for backoff.
     #[prost(message, optional, tag = "3")]
     pub interval_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. The string condition that will be evaluated to determine if the
+    /// task should be retried with this failure policy.
+    #[prost(string, tag = "4")]
+    pub condition: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `FailurePolicy`.
 pub mod failure_policy {
@@ -659,6 +667,17 @@ pub struct NextTask {
     #[prost(string, tag = "5")]
     pub description: ::prost::alloc::string::String,
 }
+/// Conditional task failur retry strategies
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConditionalFailurePolicies {
+    /// The list of failure policies that will be applied to the task in order.
+    #[prost(message, repeated, tag = "1")]
+    pub failure_policies: ::prost::alloc::vec::Vec<FailurePolicy>,
+    /// The default failure policy to be applied if no conditional failure policy
+    /// matches.
+    #[prost(message, optional, tag = "2")]
+    pub default_failure_policy: ::core::option::Option<FailurePolicy>,
+}
 /// Log entry to log execution info for the monitored resource
 /// `integrations.googleapis.com/IntegrationVersion`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -726,9 +745,30 @@ pub struct ExecutionInfo {
     /// Version) is created.
     #[prost(int64, tag = "22")]
     pub integration_snapshot_number: i64,
+    /// Replay info for the execution
+    #[prost(message, optional, tag = "23")]
+    pub replay_info: ::core::option::Option<execution_info::ReplayInfo>,
 }
 /// Nested message and enum types in `ExecutionInfo`.
 pub mod execution_info {
+    /// Contains the details of the execution info: this includes the replay reason
+    /// and replay tree connecting executions in a parent-child relationship
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ReplayInfo {
+        /// If this execution is a replay of another execution, then this field
+        /// contains the original execution id.
+        #[prost(string, tag = "1")]
+        pub original_execution_info_id: ::prost::alloc::string::String,
+        /// If this execution has been replayed, then this field contains the
+        /// execution ids of the replayed executions.
+        #[prost(string, repeated, tag = "2")]
+        pub replayed_execution_info_ids: ::prost::alloc::vec::Vec<
+            ::prost::alloc::string::String,
+        >,
+        /// reason for replay
+        #[prost(string, tag = "3")]
+        pub replay_reason: ::prost::alloc::string::String,
+    }
     /// ExecutionMethod Enum
     #[derive(
         Clone,
@@ -803,6 +843,10 @@ pub struct IntegrationExecutionDetails {
     /// beginning.
     #[prost(int32, tag = "5")]
     pub execution_retries_count: i32,
+    /// If the execution is manually canceled, this field will contain the reason
+    /// for cancellation.
+    #[prost(string, tag = "6")]
+    pub cancel_reason: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `IntegrationExecutionDetails`.
 pub mod integration_execution_details {

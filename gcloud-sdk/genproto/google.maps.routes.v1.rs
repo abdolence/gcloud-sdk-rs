@@ -12,11 +12,11 @@ pub mod polyline {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PolylineType {
         /// The string encoding of the polyline using the [polyline encoding
-        /// algorithm](<https://developers.google.com/maps/documentation/utilities/polylinealgorithm>)
+        /// algorithm](<https://developers.google.com/maps/documentation/utilities/polylinealgorithm>).
         #[prost(string, tag = "1")]
         EncodedPolyline(::prost::alloc::string::String),
         /// Specifies a polyline using the [GeoJSON LineString
-        /// format](<https://tools.ietf.org/html/rfc7946#section-3.1.4>)
+        /// format](<https://tools.ietf.org/html/rfc7946#section-3.1.4>).
         #[prost(message, tag = "2")]
         GeoJsonLinestring(::prost_types::Struct),
     }
@@ -69,7 +69,7 @@ pub enum PolylineEncoding {
     /// algorithm](<https://developers.google.com/maps/documentation/utilities/polylinealgorithm>).
     EncodedPolyline = 1,
     /// Specifies a polyline using the [GeoJSON LineString
-    /// format](<https://tools.ietf.org/html/rfc7946#section-3.1.4>)
+    /// format](<https://tools.ietf.org/html/rfc7946#section-3.1.4>).
     GeoJsonLinestring = 2,
 }
 impl PolylineEncoding {
@@ -147,11 +147,35 @@ pub enum TollPass {
     InFastag = 78,
     /// India, HP state plate exemption.
     InLocalHpPlateExempt = 79,
-    /// Mexico toll pass.
+    /// Japan
+    /// ETC. Electronic wireless system to collect tolls.
+    /// <https://www.go-etc.jp/>
+    JpEtc = 98,
+    /// Japan
+    /// ETC2.0. New version of ETC with further discount and bidirectional
+    /// communication between devices on vehicles and antennas on the road.
+    /// <https://www.go-etc.jp/etc2/index.html>
+    JpEtc2 = 99,
+    /// Mexico
+    /// <https://iave.capufe.gob.mx/#/>
+    MxIave = 90,
+    /// Mexico
+    /// <https://www.pase.com.mx>
+    MxPase = 91,
+    /// Mexico
+    ///   <https://operadoravial.com/quick-pass/>
+    MxQuickpass = 93,
+    /// Mexico
+    /// <http://appsh.chihuahua.gob.mx/transparencia/?doc=/ingresos/TelepeajeFormato4.pdf>
+    MxSistemaTelepeajeChihuahua = 89,
+    /// Mexico
     MxTagIave = 12,
     /// Mexico toll pass company. One of many operating in Mexico City. See
     /// additional details at <https://www.televia.com.mx.>
     MxTagTelevia = 13,
+    /// Mexico toll pass company. One of many operating in Mexico City.
+    /// <https://www.televia.com.mx>
+    MxTelevia = 92,
     /// Mexico toll pass. See additional details at
     /// <https://www.viapass.com.mx/viapass/web_home.aspx.>
     MxViapass = 14,
@@ -214,9 +238,14 @@ pub enum TollPass {
     /// MI, USA.
     UsMiAmbassadorBridgePremierCommuterCard = 36,
     /// MI, USA.
+    UsMiBcpass = 94,
+    /// MI, USA.
     UsMiGrosseIleTollBridgePassTag = 37,
     /// MI, USA.
+    /// Deprecated as this pass type no longer exists.
     UsMiIqProxCard = 38,
+    /// MI, USA.
+    UsMiIqTag = 95,
     /// MI, USA.
     UsMiMackinacBridgeMacPass = 39,
     /// MI, USA.
@@ -248,6 +277,8 @@ pub enum TollPass {
     /// SC, USA.
     UsScPalpass = 47,
     /// TX, USA.
+    UsTxAviTag = 97,
+    /// TX, USA.
     UsTxBancpass = 48,
     /// TX, USA.
     UsTxDelRioPass = 49,
@@ -261,6 +292,8 @@ pub enum TollPass {
     UsTxEzCross = 53,
     /// TX, USA.
     UsTxEztag = 54,
+    /// TX, USA.
+    UsTxFuegoTag = 96,
     /// TX, USA.
     UsTxLaredoTradeTag = 55,
     /// TX, USA.
@@ -283,6 +316,8 @@ pub enum TollPass {
     UsWvEzpasswv = 62,
     /// WV, USA.
     UsWvMemorialBridgeTickets = 63,
+    /// WV, USA
+    UsWvMovPass = 100,
     /// WV, USA.
     UsWvNewellTollBridgeTicket = 64,
 }
@@ -315,8 +350,15 @@ impl TollPass {
             Self::IdEToll => "ID_E_TOLL",
             Self::InFastag => "IN_FASTAG",
             Self::InLocalHpPlateExempt => "IN_LOCAL_HP_PLATE_EXEMPT",
+            Self::JpEtc => "JP_ETC",
+            Self::JpEtc2 => "JP_ETC2",
+            Self::MxIave => "MX_IAVE",
+            Self::MxPase => "MX_PASE",
+            Self::MxQuickpass => "MX_QUICKPASS",
+            Self::MxSistemaTelepeajeChihuahua => "MX_SISTEMA_TELEPEAJE_CHIHUAHUA",
             Self::MxTagIave => "MX_TAG_IAVE",
             Self::MxTagTelevia => "MX_TAG_TELEVIA",
+            Self::MxTelevia => "MX_TELEVIA",
             Self::MxViapass => "MX_VIAPASS",
             Self::UsAlFreedomPass => "US_AL_FREEDOM_PASS",
             Self::UsAkAntonAndersonTunnelBookOf10Tickets => {
@@ -352,10 +394,12 @@ impl TollPass {
             Self::UsMiAmbassadorBridgePremierCommuterCard => {
                 "US_MI_AMBASSADOR_BRIDGE_PREMIER_COMMUTER_CARD"
             }
+            Self::UsMiBcpass => "US_MI_BCPASS",
             Self::UsMiGrosseIleTollBridgePassTag => {
                 "US_MI_GROSSE_ILE_TOLL_BRIDGE_PASS_TAG"
             }
             Self::UsMiIqProxCard => "US_MI_IQ_PROX_CARD",
+            Self::UsMiIqTag => "US_MI_IQ_TAG",
             Self::UsMiMackinacBridgeMacPass => "US_MI_MACKINAC_BRIDGE_MAC_PASS",
             Self::UsMiNexpressToll => "US_MI_NEXPRESS_TOLL",
             Self::UsMnEzpassmn => "US_MN_EZPASSMN",
@@ -371,6 +415,7 @@ impl TollPass {
             Self::UsPaEzpasspa => "US_PA_EZPASSPA",
             Self::UsRiEzpassri => "US_RI_EZPASSRI",
             Self::UsScPalpass => "US_SC_PALPASS",
+            Self::UsTxAviTag => "US_TX_AVI_TAG",
             Self::UsTxBancpass => "US_TX_BANCPASS",
             Self::UsTxDelRioPass => "US_TX_DEL_RIO_PASS",
             Self::UsTxEfastPass => "US_TX_EFAST_PASS",
@@ -378,6 +423,7 @@ impl TollPass {
             Self::UsTxEptoll => "US_TX_EPTOLL",
             Self::UsTxEzCross => "US_TX_EZ_CROSS",
             Self::UsTxEztag => "US_TX_EZTAG",
+            Self::UsTxFuegoTag => "US_TX_FUEGO_TAG",
             Self::UsTxLaredoTradeTag => "US_TX_LAREDO_TRADE_TAG",
             Self::UsTxPluspass => "US_TX_PLUSPASS",
             Self::UsTxTolltag => "US_TX_TOLLTAG",
@@ -389,6 +435,7 @@ impl TollPass {
             Self::UsWaGoodToGo => "US_WA_GOOD_TO_GO",
             Self::UsWvEzpasswv => "US_WV_EZPASSWV",
             Self::UsWvMemorialBridgeTickets => "US_WV_MEMORIAL_BRIDGE_TICKETS",
+            Self::UsWvMovPass => "US_WV_MOV_PASS",
             Self::UsWvNewellTollBridgeTicket => "US_WV_NEWELL_TOLL_BRIDGE_TICKET",
         }
     }
@@ -419,8 +466,15 @@ impl TollPass {
             "ID_E_TOLL" => Some(Self::IdEToll),
             "IN_FASTAG" => Some(Self::InFastag),
             "IN_LOCAL_HP_PLATE_EXEMPT" => Some(Self::InLocalHpPlateExempt),
+            "JP_ETC" => Some(Self::JpEtc),
+            "JP_ETC2" => Some(Self::JpEtc2),
+            "MX_IAVE" => Some(Self::MxIave),
+            "MX_PASE" => Some(Self::MxPase),
+            "MX_QUICKPASS" => Some(Self::MxQuickpass),
+            "MX_SISTEMA_TELEPEAJE_CHIHUAHUA" => Some(Self::MxSistemaTelepeajeChihuahua),
             "MX_TAG_IAVE" => Some(Self::MxTagIave),
             "MX_TAG_TELEVIA" => Some(Self::MxTagTelevia),
+            "MX_TELEVIA" => Some(Self::MxTelevia),
             "MX_VIAPASS" => Some(Self::MxViapass),
             "US_AL_FREEDOM_PASS" => Some(Self::UsAlFreedomPass),
             "US_AK_ANTON_ANDERSON_TUNNEL_BOOK_OF_10_TICKETS" => {
@@ -456,10 +510,12 @@ impl TollPass {
             "US_MI_AMBASSADOR_BRIDGE_PREMIER_COMMUTER_CARD" => {
                 Some(Self::UsMiAmbassadorBridgePremierCommuterCard)
             }
+            "US_MI_BCPASS" => Some(Self::UsMiBcpass),
             "US_MI_GROSSE_ILE_TOLL_BRIDGE_PASS_TAG" => {
                 Some(Self::UsMiGrosseIleTollBridgePassTag)
             }
             "US_MI_IQ_PROX_CARD" => Some(Self::UsMiIqProxCard),
+            "US_MI_IQ_TAG" => Some(Self::UsMiIqTag),
             "US_MI_MACKINAC_BRIDGE_MAC_PASS" => Some(Self::UsMiMackinacBridgeMacPass),
             "US_MI_NEXPRESS_TOLL" => Some(Self::UsMiNexpressToll),
             "US_MN_EZPASSMN" => Some(Self::UsMnEzpassmn),
@@ -475,6 +531,7 @@ impl TollPass {
             "US_PA_EZPASSPA" => Some(Self::UsPaEzpasspa),
             "US_RI_EZPASSRI" => Some(Self::UsRiEzpassri),
             "US_SC_PALPASS" => Some(Self::UsScPalpass),
+            "US_TX_AVI_TAG" => Some(Self::UsTxAviTag),
             "US_TX_BANCPASS" => Some(Self::UsTxBancpass),
             "US_TX_DEL_RIO_PASS" => Some(Self::UsTxDelRioPass),
             "US_TX_EFAST_PASS" => Some(Self::UsTxEfastPass),
@@ -482,6 +539,7 @@ impl TollPass {
             "US_TX_EPTOLL" => Some(Self::UsTxEptoll),
             "US_TX_EZ_CROSS" => Some(Self::UsTxEzCross),
             "US_TX_EZTAG" => Some(Self::UsTxEztag),
+            "US_TX_FUEGO_TAG" => Some(Self::UsTxFuegoTag),
             "US_TX_LAREDO_TRADE_TAG" => Some(Self::UsTxLaredoTradeTag),
             "US_TX_PLUSPASS" => Some(Self::UsTxPluspass),
             "US_TX_TOLLTAG" => Some(Self::UsTxTolltag),
@@ -495,6 +553,7 @@ impl TollPass {
             "US_WA_GOOD_TO_GO" => Some(Self::UsWaGoodToGo),
             "US_WV_EZPASSWV" => Some(Self::UsWvEzpasswv),
             "US_WV_MEMORIAL_BRIDGE_TICKETS" => Some(Self::UsWvMemorialBridgeTickets),
+            "US_WV_MOV_PASS" => Some(Self::UsWvMovPass),
             "US_WV_NEWELL_TOLL_BRIDGE_TICKET" => Some(Self::UsWvNewellTollBridgeTicket),
             _ => None,
         }
@@ -550,7 +609,7 @@ pub struct Waypoint {
     /// added to the `legs` array, but they do route the journey through the
     /// waypoint. You can only set this value on waypoints that are intermediates.
     /// The request fails if you set this field on terminal waypoints.
-    /// If ComputeRoutesRequest.optimize_waypoint_order is set to true then
+    /// If `ComputeRoutesRequest.optimize_waypoint_order` is set to true then
     /// this field cannot be set to true; otherwise, the request fails.
     #[prost(bool, tag = "3")]
     pub via: bool,
@@ -566,7 +625,7 @@ pub struct Waypoint {
     /// value, the route will pass through the location so that the vehicle can
     /// stop at the side of road that the location is biased towards from the
     /// center of the road. This option works only for 'DRIVE' and 'TWO_WHEELER'
-    /// travel modes, and when the 'location_type' is set to 'location'.
+    /// travel modes.
     #[prost(bool, tag = "5")]
     pub side_of_road: bool,
     /// Different ways to represent a location.
@@ -594,14 +653,14 @@ pub struct Location {
     #[prost(message, optional, tag = "1")]
     pub lat_lng: ::core::option::Option<super::super::super::r#type::LatLng>,
     /// The compass heading associated with the direction of the flow of traffic.
-    /// This value is used to specify the side of the road to use for pickup and
+    /// This value specifies the side of the road to use for pickup and
     /// drop-off. Heading values can be from 0 to 360, where 0 specifies a heading
-    /// of due North, 90 specifies a heading of due East, etc. You can use this
-    /// field only for `DRIVE` and `TWO_WHEELER` travel modes.
+    /// of due North, 90 specifies a heading of due East, and so on. You can use
+    /// this field only for `DRIVE` and `TWO_WHEELER` travel modes.
     #[prost(message, optional, tag = "2")]
     pub heading: ::core::option::Option<i32>,
 }
-/// ComputeRoutes request message.
+/// `ComputeRoutes` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeRoutesRequest {
     /// Required. Origin waypoint.
@@ -621,10 +680,8 @@ pub struct ComputeRoutesRequest {
     /// Optional. Specifies how to compute the route. The server
     /// attempts to use the selected routing preference to compute the route. If
     ///   the routing preference results in an error or an extra long latency, then
-    /// an error is returned. In the future, we might implement a fallback
-    /// mechanism to use a different option when the preferred option does not give
-    /// a valid result. You can specify this option only when the `travel_mode` is
-    /// `DRIVE` or `TWO_WHEELER`, otherwise the request fails.
+    /// an error is returned. You can specify this option only when the
+    /// `travel_mode` is `DRIVE` or `TWO_WHEELER`, otherwise the request fails.
     #[prost(enumeration = "RoutingPreference", tag = "5")]
     pub routing_preference: i32,
     /// Optional. Specifies your preference for the quality of the polyline.
@@ -638,7 +695,9 @@ pub struct ComputeRoutesRequest {
     /// time that has already occurred, then the request fails.
     #[prost(message, optional, tag = "7")]
     pub departure_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Specifies whether to calculate alternate routes in addition to the route.
+    /// Optional. Specifies whether to calculate alternate routes in addition to
+    /// the route. No alternative routes are returned for requests that have
+    /// intermediate waypoints.
     #[prost(bool, tag = "8")]
     pub compute_alternative_routes: bool,
     /// Optional. A set of conditions to satisfy that affect the way routes are
@@ -646,11 +705,12 @@ pub struct ComputeRoutesRequest {
     #[prost(message, optional, tag = "9")]
     pub route_modifiers: ::core::option::Option<RouteModifiers>,
     /// Optional. The BCP-47 language code, such as "en-US" or "sr-Latn". For more
-    /// information, see
-    /// <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.> See
-    /// [Language Support](<https://developers.google.com/maps/faq#languagesupport>)
-    /// for the list of supported languages. When you don't provide this value, the
-    /// display language is inferred from the location of the route request.
+    /// information, see [Unicode Locale
+    /// Identifier](<http://www.unicode.org/reports/tr35/#Unicode_locale_identifier>).
+    /// See [Language
+    /// Support](<https://developers.google.com/maps/faq#languagesupport>) for the
+    /// list of supported languages. When you don't provide this value, the display
+    /// language is inferred from the location of the route request.
     #[prost(string, tag = "10")]
     pub language_code: ::prost::alloc::string::String,
     /// Optional. Specifies the units of measure for the display fields. This
@@ -663,11 +723,11 @@ pub struct ComputeRoutesRequest {
     /// If optimizeWaypointOrder is set to true, an attempt is made to re-order the
     /// specified intermediate waypoints to minimize the overall cost of the route.
     /// If any of the intermediate waypoints is via waypoint the request fails. Use
-    /// ComputeRoutesResponse.Routes.optimized_intermediate_waypoint_index to find
-    /// the new ordering. If routes.optimized_intermediate_waypoint_index is not
-    /// requested in the `X-Goog-FieldMask` header, the request fails. If
-    /// optimizeWaypointOrder is set to false,
-    /// ComputeRoutesResponse.optimized_intermediate_waypoint_index is empty.
+    /// `ComputeRoutesResponse.Routes.optimized_intermediate_waypoint_index` to
+    /// find the new ordering. If `routes.optimized_intermediate_waypoint_index` is
+    /// not requested in the `X-Goog-FieldMask` header, the request fails. If
+    /// `optimize_waypoint_order` is set to false,
+    /// `ComputeRoutesResponse.optimized_intermediate_waypoint_index` is empty.
     #[prost(bool, tag = "13")]
     pub optimize_waypoint_order: bool,
 }
@@ -675,23 +735,23 @@ pub struct ComputeRoutesRequest {
 /// routes.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteModifiers {
-    /// Specifies whether to avoid toll roads where reasonable. Preference will be
-    /// given to routes not containing toll roads. Applies only to the `DRIVE` and
+    /// When set to true, avoids toll roads where reasonable, giving preference to
+    /// routes not containing toll roads. Applies only to the `DRIVE` and
     /// `TWO_WHEELER` travel modes.
     #[prost(bool, tag = "1")]
     pub avoid_tolls: bool,
-    /// Specifies whether to avoid highways where reasonable. Preference will be
-    /// given to routes not containing highways. Applies only to the `DRIVE` and
+    /// When set to true, avoids highways where reasonable, giving preference to
+    /// routes not containing highways. Applies only to the `DRIVE` and
     /// `TWO_WHEELER` travel modes.
     #[prost(bool, tag = "2")]
     pub avoid_highways: bool,
-    /// Specifies whether to avoid ferries where reasonable. Preference will be
-    /// given to routes not containing travel by ferries.
+    /// When set to true, avoids ferries where reasonable, giving preference to
+    /// routes not containing ferries.
     /// Applies only to the `DRIVE` and`TWO_WHEELER` travel modes.
     #[prost(bool, tag = "3")]
     pub avoid_ferries: bool,
-    /// Specifies whether to avoid navigating indoors where reasonable. Preference
-    /// will be given to routes not containing indoor navigation.
+    /// When set to true, avoids navigating indoors where reasonable, giving
+    /// preference to routes not containing indoor navigation.
     /// Applies only to the `WALK` travel mode.
     #[prost(bool, tag = "4")]
     pub avoid_indoor: bool,
@@ -702,19 +762,19 @@ pub struct RouteModifiers {
     /// If toll passes are provided, the API tries to return the pass price. If
     /// toll passes are not provided, the API treats the toll pass as unknown and
     /// tries to return the cash price.
-    /// Applies only to the DRIVE and TWO_WHEELER travel modes.
+    /// Applies only to the `DRIVE` and `TWO_WHEELER` travel modes.
     #[prost(enumeration = "TollPass", repeated, tag = "6")]
     pub toll_passes: ::prost::alloc::vec::Vec<i32>,
 }
-/// Encapsulates the vehicle information, such as the license plate last
-/// character.
+/// Encapsulates the vehicle information, such as the vehicle emission type.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VehicleInfo {
     /// Specifies the license plate last character. Could be a digit or a letter.
     #[prost(string, tag = "1")]
     pub license_plate_last_character: ::prost::alloc::string::String,
     /// Describes the vehicle's emission type.
-    /// Applies only to the DRIVE travel mode.
+    /// Applies only to the `DRIVE`
+    /// [`RouteTravelMode`][google.maps.routes.v1.RouteTravelMode].
     #[prost(enumeration = "VehicleEmissionType", tag = "2")]
     pub emission_type: i32,
 }
@@ -735,6 +795,9 @@ pub enum RouteTravelMode {
     TwoWheeler = 4,
     /// Travel by licensed taxi, which may allow the vehicle to travel on
     /// designated taxi lanes in some areas.
+    ///
+    /// TAXI mode is an experimental feature. If customer requests TAXI route in a
+    /// city where taxi lane data is not available, a DRIVE route is returned.
     Taxi = 5,
 }
 impl RouteTravelMode {
@@ -772,9 +835,17 @@ impl RouteTravelMode {
 pub enum RoutingPreference {
     /// No routing preference specified. Default to `TRAFFIC_AWARE`.
     Unspecified = 0,
-    /// Computes routes without taking traffic conditions into consideration.
-    /// Suitable when traffic conditions don't matter. Using this value produces
-    /// the lowest latency.
+    /// Computes routes without taking live traffic conditions into consideration.
+    /// Suitable when traffic conditions don't matter or are not applicable.
+    /// Using this value produces the lowest latency.
+    /// Note: For `RouteTravelMode` DRIVE and TWO_WHEELER, the route and duration
+    /// chosen are based on road network and average time-independent traffic
+    /// conditions, not current road conditions. Consequently, routes may include
+    /// roads that are temporarily closed. Results for
+    /// a given request may vary over time due to changes
+    /// in the road network, updated average traffic conditions, and the
+    /// distributed nature of the service. Results may also vary between
+    /// nearly-equivalent routes at any time or frequency.
     TrafficUnaware = 1,
     /// Calculates routes taking traffic conditions into consideration. In contrast
     /// to `TRAFFIC_AWARE_OPTIMAL`, some optimizations are applied to significantly
@@ -906,7 +977,8 @@ pub struct ComputeCustomRoutesRequest {
 /// Encapsulates an objective to optimize for by `ComputeCustomRoutes`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteObjective {
-    /// Optional. Specifies the custom data layer being used to affect generated
+    /// Optional. Deprecated: Custom layers will stop affecting route generation
+    /// soon. Specifies the custom data layer being used to affect generated
     /// routes. Customers can turn off the custom layer by not setting this field.
     #[prost(message, optional, tag = "2")]
     pub custom_layer: ::core::option::Option<route_objective::CustomLayer>,
@@ -939,6 +1011,7 @@ pub mod route_objective {
             pub value: f64,
         }
     }
+    /// Deprecated: Custom layers will stop affecting route generation soon.
     /// Customized data layer that customers use to influence the generated route.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CustomLayer {
@@ -1436,8 +1509,9 @@ impl Maneuver {
     }
 }
 /// Encapsulates a custom route computed based on the route objective specified
-/// by the customer. CustomRoute contains a route and a route token, which can be
-/// passed to NavSDK to reconstruct the custom route for turn by turn navigation.
+/// by the customer. `CustomRoute` contains a route and a route token, which can
+/// be passed to NavSDK to reconstruct the custom route for turn by turn
+/// navigation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomRoute {
     /// The route considered 'best' for the input route objective.
@@ -1445,8 +1519,8 @@ pub struct CustomRoute {
     pub route: ::core::option::Option<Route>,
     /// Web-safe base64 encoded route token that can be passed to NavSDK, which
     /// allows NavSDK to reconstruct the route during navigation, and in the event
-    /// of rerouting honor the original intention when RoutesPreferred
-    /// ComputeCustomRoutes is called. Customers should treat this token as an
+    /// of rerouting honor the original intention when `RoutesPreferred`
+    /// `ComputeCustomRoutes` is called. Customers should treat this token as an
     /// opaque blob.
     #[prost(string, tag = "12")]
     pub token: ::prost::alloc::string::String,
@@ -1510,10 +1584,10 @@ impl FallbackReason {
 pub enum FallbackRoutingMode {
     /// Not used.
     Unspecified = 0,
-    /// Indicates the "TRAFFIC_UNAWARE" routing mode was used to compute the
+    /// Indicates the `TRAFFIC_UNAWARE` routing mode was used to compute the
     /// response.
     FallbackTrafficUnaware = 1,
-    /// Indicates the "TRAFFIC_AWARE" routing mode was used to compute the
+    /// Indicates the `TRAFFIC_AWARE` routing mode was used to compute the
     /// response.
     FallbackTrafficAware = 2,
 }
@@ -1559,18 +1633,18 @@ pub struct ComputeCustomRoutesResponse {
 }
 /// Nested message and enum types in `ComputeCustomRoutesResponse`.
 pub mod compute_custom_routes_response {
-    /// Encapsulates fallback info for ComputeCustomRoutes. ComputeCustomRoutes
+    /// Encapsulates fallback info for `ComputeCustomRoutes`. `ComputeCustomRoutes`
     /// performs two types of fallbacks:
     ///
-    /// 1. If it cannot compute the route using the routing_preference requested by
-    /// the customer, it will fallback to another routing mode. In this case
-    /// fallback_routing_mode and routing_mode_fallback_reason are used to
+    /// 1. If it cannot compute the route using the `routing_preference` requested
+    /// by the customer, it will fallback to another routing mode. In this case
+    /// `fallback_routing_mode` and `routing_mode_fallback_reason` are used to
     /// communicate the fallback routing mode used, as well as the reason for
     /// fallback.
     ///
     /// 2. If it cannot compute a 'best' route for the route objective specified by
     /// the customer, it might fallback to another objective.
-    /// fallback_route_objective is used to communicate the fallback route
+    /// `fallback_route_objective` is used to communicate the fallback route
     /// objective.
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct FallbackInfo {
@@ -1609,9 +1683,9 @@ pub mod compute_custom_routes_response {
         pub enum FallbackRouteObjective {
             /// Fallback route objective unspecified.
             Unspecified = 0,
-            /// If customer requests RateCard and sets include_tolls to true, and
+            /// If customer requests `RateCard` and sets include_tolls to true, and
             /// Google does not have toll price data for the route, the API falls back
-            /// to RateCard without considering toll price.
+            /// to `RateCard` without considering toll price.
             FallbackRatecardWithoutTollPriceData = 1,
         }
         impl FallbackRouteObjective {
@@ -1643,8 +1717,8 @@ pub mod compute_custom_routes_response {
 /// ComputeRouteMatrix request message
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeRouteMatrixRequest {
-    /// Required. Array of origins, which determines the rows of the response matrix.
-    /// Several size restrictions apply to the cardinality of origins and
+    /// Required. Array of origins, which determines the rows of the response
+    /// matrix. Several size restrictions apply to the cardinality of origins and
     /// destinations:
     ///
     /// * The number of elements (origins × destinations) must be no greater than
@@ -1655,24 +1729,23 @@ pub struct ComputeRouteMatrixRequest {
     /// must be no greater than 50.
     #[prost(message, repeated, tag = "1")]
     pub origins: ::prost::alloc::vec::Vec<RouteMatrixOrigin>,
-    /// Required. Array of destinations, which determines the columns of the response matrix.
+    /// Required. Array of destinations, which determines the columns of the
+    /// response matrix.
     #[prost(message, repeated, tag = "2")]
     pub destinations: ::prost::alloc::vec::Vec<RouteMatrixDestination>,
     /// Optional. Specifies the mode of transportation.
     #[prost(enumeration = "RouteTravelMode", tag = "3")]
     pub travel_mode: i32,
-    /// Optional. Specifies how to compute the route. The server attempts to use the selected
-    /// routing preference to compute the route. If the routing preference results
-    /// in an error or an extra long latency, an error is returned. In the future,
-    /// we might implement a fallback mechanism to use a different option when the
-    /// preferred option does not give a valid result. You can specify this option
-    /// only when the `travel_mode` is `DRIVE` or `TWO_WHEELER`, otherwise the
-    /// request fails.
+    /// Optional. Specifies how to compute the route. The server attempts to use
+    /// the selected routing preference to compute the route. If the routing
+    /// preference results in an error or an extra long latency, an error is
+    /// returned. You can specify this option only when the `travel_mode` is
+    /// `DRIVE` or `TWO_WHEELER`, otherwise the request fails.
     #[prost(enumeration = "RoutingPreference", tag = "4")]
     pub routing_preference: i32,
-    /// Optional. The departure time. If you don't set this value, this defaults to the time
-    /// that you made the request. If you set this value to a time that has already
-    /// occurred, the request fails.
+    /// Optional. The departure time. If you don't set this value, this defaults to
+    /// the time that you made the request. If you set this value to a time that
+    /// has already occurred, the request fails.
     #[prost(message, optional, tag = "5")]
     pub departure_time: ::core::option::Option<::prost_types::Timestamp>,
 }
@@ -1697,7 +1770,7 @@ pub struct RouteMatrixDestination {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeRoutesResponse {
     /// Contains an array of computed routes (up to three) when you specify
-    /// compute_alternatives_routes, and contains just one route when you don't.
+    /// `compute_alternatives_routes`, and contains just one route when you don't.
     /// When this array contains multiple entries, the first one is the most
     /// recommended route. If the array is empty, then it means no route could be
     /// found.

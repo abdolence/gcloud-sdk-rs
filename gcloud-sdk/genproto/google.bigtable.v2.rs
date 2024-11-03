@@ -2590,6 +2590,12 @@ pub struct FeatureFlags {
     /// Notify the server that the client has client side metrics enabled.
     #[prost(bool, tag = "8")]
     pub client_side_metrics_enabled: bool,
+    /// Notify the server that the client using Traffic Director endpoint.
+    #[prost(bool, tag = "9")]
+    pub traffic_director_enabled: bool,
+    /// Notify the server that the client explicitly opted in for Direct Access.
+    #[prost(bool, tag = "10")]
+    pub direct_access_requested: bool,
 }
 /// Response metadata proto
 /// This is an experimental feature that will be used to get zone_id and

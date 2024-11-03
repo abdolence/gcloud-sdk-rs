@@ -238,7 +238,7 @@ pub struct CommonFeatureState {
 /// NOTE: Please use snake case in your feature name.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MembershipFeatureSpec {
-    #[prost(oneof = "membership_feature_spec::FeatureSpec", tags = "106, 116")]
+    #[prost(oneof = "membership_feature_spec::FeatureSpec", tags = "106, 116, 118")]
     pub feature_spec: ::core::option::Option<membership_feature_spec::FeatureSpec>,
 }
 /// Nested message and enum types in `MembershipFeatureSpec`.
@@ -251,6 +251,9 @@ pub mod membership_feature_spec {
         /// Anthos Service Mesh-specific spec
         #[prost(message, tag = "116")]
         Mesh(super::super::servicemesh::v1beta::MembershipSpec),
+        /// Policy Controller spec.
+        #[prost(message, tag = "118")]
+        Policycontroller(super::super::policycontroller::v1beta::MembershipSpec),
     }
 }
 /// MembershipFeatureState contains Feature status information for a single
@@ -260,7 +263,10 @@ pub struct MembershipFeatureState {
     /// The high-level state of this Feature for a single membership.
     #[prost(message, optional, tag = "1")]
     pub state: ::core::option::Option<FeatureState>,
-    #[prost(oneof = "membership_feature_state::FeatureState", tags = "100, 104, 106")]
+    #[prost(
+        oneof = "membership_feature_state::FeatureState",
+        tags = "100, 104, 106, 116"
+    )]
     pub feature_state: ::core::option::Option<membership_feature_state::FeatureState>,
 }
 /// Nested message and enum types in `MembershipFeatureState`.
@@ -276,6 +282,9 @@ pub mod membership_feature_state {
         /// Config Management-specific state.
         #[prost(message, tag = "106")]
         Configmanagement(super::super::configmanagement::v1beta::MembershipState),
+        /// Policycontroller-specific state.
+        #[prost(message, tag = "116")]
+        Policycontroller(super::super::policycontroller::v1beta::MembershipState),
     }
 }
 /// Request message for `GkeHub.ListFeatures` method.
