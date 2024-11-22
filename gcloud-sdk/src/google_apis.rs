@@ -3672,6 +3672,7 @@ pub mod google {
                 feature = "google-apps-drive-labels-v2",
                 feature = "google-apps-drive-labels-v2beta",
                 feature = "google-assistant-embedded-v1alpha2",
+                feature = "google-bigtable-v2",
                 feature = "google-bigtable-admin-v2",
                 feature = "google-chat-v1",
                 feature = "google-cloud-aiplatform-v1",
