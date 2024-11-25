@@ -3,11 +3,11 @@ use std::{
     path::{Path, PathBuf},
 };
 
+use crate::token_source::ext_creds_source::ExternalCredentialSource;
+use crate::token_source::{BoxSource, Source, Token};
 use async_trait::async_trait;
 use secret_vault_value::SecretValue;
 use tracing::debug;
-use crate::token_source::ext_creds_source::ExternalCredentialSource;
-use crate::token_source::{BoxSource, Source, Token};
 
 #[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 #[serde(untagged)]
@@ -25,12 +25,14 @@ impl Credentials {
             Self::ExternalAccount(ea) => ea.quota_project_id.as_deref(),
             Self::User(u) => u.quota_project_id.as_deref(),
             Self::ServiceAccount(sa) => sa.quota_project_id.as_deref(),
-            Self::ServiceAccountImpersonation(sa) => {
-                match &sa.source_credentials {
-                    ServiceAccountImpersonationSourceCredentials::ServiceAccount(sa) => sa.quota_project_id.as_deref(),
-                    ServiceAccountImpersonationSourceCredentials::User(u) => u.quota_project_id.as_deref(),
+            Self::ServiceAccountImpersonation(sa) => match &sa.source_credentials {
+                ServiceAccountImpersonationSourceCredentials::ServiceAccount(sa) => {
+                    sa.quota_project_id.as_deref()
                 }
-            }
+                ServiceAccountImpersonationSourceCredentials::User(u) => {
+                    u.quota_project_id.as_deref()
+                }
+            },
         }
     }
 }
@@ -75,14 +77,14 @@ pub struct ServiceAccountImpersonationSettings {
 #[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct ServiceAccountImpersonation {
     pub service_account_impersonation_url: String,
-    pub source_credentials: ServiceAccountImpersonationSourceCredentials
+    pub source_credentials: ServiceAccountImpersonationSourceCredentials,
 }
 
 #[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 #[serde(untagged)]
 pub enum ServiceAccountImpersonationSourceCredentials {
     ServiceAccount(ServiceAccount),
-    User(User)
+    User(User),
 }
 
 #[async_trait]
@@ -94,9 +96,7 @@ impl Source for Credentials {
             Credentials::ExternalAccount(external_account) => {
                 external_account::token(external_account).await
             }
-            Credentials::ServiceAccountImpersonation(sa) => {
-                impersonate_account::token(sa).await
-            }
+            Credentials::ServiceAccountImpersonation(sa) => impersonate_account::token(sa).await,
         }
     }
 }
@@ -298,7 +298,9 @@ mod external_account {
     use std::convert::TryFrom;
     use tracing::*;
 
-    use crate::token_source::credentials::{ExternalAccount, IamCredentialsGenerateAccessToken, IamCredentialsTokenResponse};
+    use crate::token_source::credentials::{
+        ExternalAccount, IamCredentialsGenerateAccessToken, IamCredentialsTokenResponse,
+    };
     use crate::token_source::{ext_creds_source, Token, TokenResponse};
 
     #[derive(Debug, PartialEq, Eq, serde::Serialize)]
@@ -311,7 +313,6 @@ mod external_account {
         pub subject_token: SecretValue,
         pub scope: String,
     }
-
 
     // This implements source described here: https://google.aip.dev/auth/4117
     pub async fn token(external_account: &ExternalAccount) -> crate::error::Result<Token> {
@@ -397,17 +398,27 @@ mod external_account {
 }
 
 mod impersonate_account {
+    use crate::token_source::credentials::{
+        jwt, oauth2, IamCredentialsGenerateAccessToken, IamCredentialsTokenResponse,
+        ServiceAccountImpersonation, ServiceAccountImpersonationSourceCredentials,
+    };
     use crate::{Token, GCP_DEFAULT_SCOPES};
-    use crate::token_source::credentials::{jwt, oauth2, IamCredentialsGenerateAccessToken, IamCredentialsTokenResponse, ServiceAccountImpersonation, ServiceAccountImpersonationSourceCredentials};
     use tracing::*;
 
-    pub async fn token(impersonate_account: &ServiceAccountImpersonation) -> crate::error::Result<Token> {
+    pub async fn token(
+        impersonate_account: &ServiceAccountImpersonation,
+    ) -> crate::error::Result<Token> {
         let initial_token = match &impersonate_account.source_credentials {
-            ServiceAccountImpersonationSourceCredentials::ServiceAccount(sa) => jwt::token(sa).await,
+            ServiceAccountImpersonationSourceCredentials::ServiceAccount(sa) => {
+                jwt::token(sa).await
+            }
             ServiceAccountImpersonationSourceCredentials::User(user) => oauth2::token(user).await,
         }?;
 
-        debug!("Using impersonation URL {}", impersonate_account.service_account_impersonation_url);
+        debug!(
+            "Using impersonation URL {}",
+            impersonate_account.service_account_impersonation_url
+        );
 
         let client = reqwest::Client::new();
 
@@ -435,7 +446,10 @@ mod impersonate_account {
         } else {
             let status = iam_generate_token_response.status();
             let err_body = iam_generate_token_response.text().await?;
-            let err_text = format!("Unable to receive subject using impersonation url: {}. HTTP: {} {}", &impersonate_account.service_account_impersonation_url, status, err_body);
+            let err_text = format!(
+                "Unable to receive subject using impersonation url: {}. HTTP: {} {}",
+                &impersonate_account.service_account_impersonation_url, status, err_body
+            );
             Err(crate::error::ErrorKind::ExternalCredsSourceError(err_text).into())
         }
     }
