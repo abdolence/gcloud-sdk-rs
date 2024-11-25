@@ -17,13 +17,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     )
     .await?;
 
-    // Option 1: using service account impersonation
+    let service_account = std::env::var("TEST_SERVICE_ACCOUNT")?;
+
     let resp = client
         .get()
         .sign_blob(tonic::Request::new(
             gcloud_sdk::google::iam::credentials::v1::SignBlobRequest {
-                name: "projects/-/serviceAccounts/latestbit@appspot.gserviceaccount.com"
-                    .to_string(),
+                name: format!("projects/-/serviceAccounts/{}", service_account),
                 delegates: vec![],
                 payload: "https://storage.googleapis.com/example-bucket/cat.jpeg"
                     .as_bytes()
