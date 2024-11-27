@@ -181,6 +181,8 @@ mod aws {
     use crate::error::Error;
     use crate::error::ErrorKind;
     use aws_config::Region;
+    use aws_config::imds::credentials::ImdsCredentialsProvider;
+    use aws_config::imds::region::ImdsRegionProvider;
     use aws_credential_types::provider::ProvideCredentials;
     use aws_credential_types::Credentials;
     use aws_sigv4::http_request::{
@@ -262,14 +264,8 @@ mod aws {
     }
 
     pub async fn get_aws_props() -> crate::error::Result<(Credentials, Region)> {
-        let imds_client = aws_config::imds::Client::builder().build();
-        let imds_credentials_provider =
-            aws_config::imds::credentials::ImdsCredentialsProvider::builder()
-                .imds_client(imds_client.clone())
-                .build();
-        let imds_region_provider = aws_config::imds::region::Builder::default()
-            .imds_client(imds_client)
-            .build();
+        let imds_region_provider = ImdsRegionProvider::builder().build();
+        let imds_credentials_provider = ImdsCredentialsProvider::builder().build();
 
         let config = aws_config::load_from_env().await;
         let region = match config.region() {
