@@ -71,8 +71,16 @@ pub async fn subject_token(
         #[cfg(feature = "external-account-aws")]
         ExternalCredentialSource::Aws(Aws {
             regional_cred_verification_url,
+            environment_id,
             ..
         }) => {
+            if environment_id.starts_with("aws") {
+                if environment_id != "aws1" {
+                    return Err(crate::error::ErrorKind::ExternalCredsSourceError(
+                        "unsupported aws version".to_string(),
+                    ).into());
+                }
+            };
             let (credentials, region) = aws::get_aws_props().await?;
             aws::subject_token_aws(
                 regional_cred_verification_url.as_str(),
