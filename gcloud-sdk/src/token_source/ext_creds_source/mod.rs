@@ -271,15 +271,9 @@ mod aws {
     }
 
     pub async fn get_aws_props() -> crate::error::Result<(Credentials, Region)> {
-        let imds_region_provider =
+        let region_provider =
             aws_config::default_provider::region::DefaultRegionChain::builder().build();
-
-        let config = aws_config::load_from_env().await;
-        let region = match config.region() {
-            Some(region) => Some(region.to_owned()),
-            None => imds_region_provider.region().await,
-        }
-        .ok_or_else(|| {
+        let region = region_provider.region().await.ok_or_else(|| {
             Error::from(ErrorKind::ExternalCredsSourceError(
                 "region not found".to_string(),
             ))
