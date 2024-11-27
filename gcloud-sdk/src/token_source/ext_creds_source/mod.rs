@@ -265,7 +265,6 @@ mod aws {
 
     pub async fn get_aws_props() -> crate::error::Result<(Credentials, Region)> {
         let imds_region_provider = ImdsRegionProvider::builder().build();
-        let imds_credentials_provider = ImdsCredentialsProvider::builder().build();
 
         let config = aws_config::load_from_env().await;
         let region = match config.region() {
@@ -277,6 +276,7 @@ mod aws {
                 "region not found".to_string(),
             ))
         })?;
+        let imds_credentials_provider = ImdsCredentialsProvider::builder().build();
         let provide_credentials = {
             match config.credentials_provider() {
                 Some(provider) => provider
