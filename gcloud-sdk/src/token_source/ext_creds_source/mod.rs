@@ -78,7 +78,8 @@ pub async fn subject_token(
                 if environment_id != "aws1" {
                     return Err(crate::error::ErrorKind::ExternalCredsSourceError(
                         "unsupported aws version".to_string(),
-                    ).into());
+                    )
+                    .into());
                 }
             };
             let (credentials, region) = aws::get_aws_props().await?;
@@ -284,17 +285,13 @@ mod aws {
                 "region not found".to_string(),
             ))
         })?;
-        let imds_credentials_provider = ImdsCredentialsProvider::builder().build();
-        let provide_credentials = {
-            match config.credentials_provider() {
-                Some(provider) => provider
-                    .provide_credentials()
-                    .await
-                    .or(imds_credentials_provider.provide_credentials().await),
-                None => imds_credentials_provider.provide_credentials().await,
-            }
-        };
-        let credentials: Credentials = provide_credentials
+        let credentials_provider =
+            aws_config::default_provider::credentials::DefaultCredentialsChain::builder()
+                .build()
+                .await;
+        let credentials: Credentials = credentials_provider
+            .provide_credentials()
+            .await
             .map_err(|e| Error::from(ErrorKind::ExternalCredsSourceError(e.to_string())))?
             .into();
         Ok((credentials, region))
