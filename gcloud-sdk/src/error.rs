@@ -18,7 +18,7 @@ pub enum ErrorKind {
     CredentialsJson(serde_json::Error),
     /// An error reading credentials file.
     CredentialsFile(std::io::Error),
-    /// An error parsing data from token response.
+    /// An error from json serialization and deserialization.
     TokenJson(serde_json::Error),
     /// Invalid token error.
     TokenData,
