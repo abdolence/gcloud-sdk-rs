@@ -233,7 +233,7 @@ mod aws {
         let mut request = req.body(()).unwrap();
 
         let signable_request = aws_sigv4::http_request::SignableRequest::new(
-            "POST",
+            method.as_str(),
             &subject_token_url,
             headers.into_iter(),
             SignableBody::empty(),
