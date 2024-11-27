@@ -180,9 +180,9 @@ fn subject_token_from_json(
 mod aws {
     use crate::error::Error;
     use crate::error::ErrorKind;
-    use aws_config::Region;
     use aws_config::imds::credentials::ImdsCredentialsProvider;
     use aws_config::imds::region::ImdsRegionProvider;
+    use aws_config::Region;
     use aws_credential_types::provider::ProvideCredentials;
     use aws_credential_types::Credentials;
     use aws_sigv4::http_request::{
@@ -279,7 +279,10 @@ mod aws {
         })?;
         let provide_credentials = {
             match config.credentials_provider() {
-                Some(provider) => provider.provide_credentials().await,
+                Some(provider) => provider
+                    .provide_credentials()
+                    .await
+                    .or(imds_credentials_provider.provide_credentials().await),
                 None => imds_credentials_provider.provide_credentials().await,
             }
         };
