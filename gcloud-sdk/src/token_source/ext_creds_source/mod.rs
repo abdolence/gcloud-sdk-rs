@@ -189,8 +189,6 @@ fn subject_token_from_json(
 mod aws {
     use crate::error::Error;
     use crate::error::ErrorKind;
-    use aws_config::imds::credentials::ImdsCredentialsProvider;
-    use aws_config::imds::region::ImdsRegionProvider;
     use aws_config::Region;
     use aws_credential_types::provider::ProvideCredentials;
     use aws_credential_types::Credentials;
@@ -273,7 +271,8 @@ mod aws {
     }
 
     pub async fn get_aws_props() -> crate::error::Result<(Credentials, Region)> {
-        let imds_region_provider = ImdsRegionProvider::builder().build();
+        let imds_region_provider =
+            aws_config::default_provider::region::DefaultRegionChain::builder().build();
 
         let config = aws_config::load_from_env().await;
         let region = match config.region() {
