@@ -335,6 +335,10 @@ pub struct AdGroupAd {
     /// Output only. The resource names of labels attached to this ad group ad.
     #[prost(string, repeated, tag = "10")]
     pub labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. The resource names of effective labels attached to this ad.
+    /// An effective label is a label inherited or directly assigned to this ad.
+    #[prost(string, repeated, tag = "19")]
+    pub effective_labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. ID of the ad in the external engine account. This field is for
     /// Search Ads 360 account only, for example, Yahoo Japan, Microsoft, Baidu
     /// etc. For non-Search Ads 360 entity, use "ad_group_ad.ad.id" instead.
@@ -353,6 +357,26 @@ pub struct AdGroupAd {
     /// format.
     #[prost(string, tag = "12")]
     pub last_modified_time: ::prost::alloc::string::String,
+}
+/// A relationship between an ad group ad and an effective label.
+/// An effective label is a label inherited or directly assigned to this
+/// ad group ad.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdGroupAdEffectiveLabel {
+    /// Immutable. The resource name of the ad group ad effective label.
+    /// Ad group ad effective label resource names have the form:
+    /// `customers/{customer_id}/adGroupAdEffectiveLabels/{ad_group_id}~{ad_id}~{label_id}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Immutable. The ad group ad to which the effective label is attached.
+    #[prost(string, optional, tag = "2")]
+    pub ad_group_ad: ::core::option::Option<::prost::alloc::string::String>,
+    /// Immutable. The effective label assigned to the ad group ad.
+    #[prost(string, optional, tag = "3")]
+    pub label: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The ID of the Customer which owns the effective label.
+    #[prost(int64, optional, tag = "4")]
+    pub owner_customer_id: ::core::option::Option<i64>,
 }
 /// A relationship between an ad group ad and a label.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -518,6 +542,11 @@ pub struct AdGroupCriterion {
     /// criterion.
     #[prost(string, repeated, tag = "60")]
     pub labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. The resource names of effective labels attached to this ad
+    /// group criterion. An effective label is a label inherited or directly
+    /// assigned to this ad group criterion.
+    #[prost(string, repeated, tag = "87")]
+    pub effective_labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The modifier for the bid when the criterion matches. The modifier must be
     /// in the range: 0.1 - 10.0. Most targetable criteria types support modifiers.
     #[prost(double, optional, tag = "61")]
@@ -617,6 +646,26 @@ pub mod ad_group_criterion {
         #[prost(message, tag = "82")]
         Location(super::super::common::LocationInfo),
     }
+}
+/// A relationship between an ad group criterion and an effective label.
+/// An effective label is a label inherited or directly assigned to this
+/// ad group criterion.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdGroupCriterionEffectiveLabel {
+    /// Immutable. The resource name of the ad group criterion effective label.
+    /// Ad group criterion effective label resource names have the form:
+    /// `customers/{customer_id}/adGroupCriterionEffectiveLabels/{ad_group_id}~{criterion_id}~{label_id}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Immutable. The ad group criterion to which the effective label is attached.
+    #[prost(string, optional, tag = "2")]
+    pub ad_group_criterion: ::core::option::Option<::prost::alloc::string::String>,
+    /// Immutable. The effective label assigned to the ad group criterion.
+    #[prost(string, optional, tag = "3")]
+    pub label: ::core::option::Option<::prost::alloc::string::String>,
+    /// Output only. The ID of the Customer which owns the effective label.
+    #[prost(int64, optional, tag = "4")]
+    pub owner_customer_id: ::core::option::Option<i64>,
 }
 /// A relationship between an ad group criterion and a label.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2815,6 +2864,27 @@ pub struct UserList {
     /// This field is read-only.
     #[prost(enumeration = "super::enums::user_list_type_enum::UserListType", tag = "13")]
     pub r#type: i32,
+}
+/// A user location view.
+///
+/// User Location View includes all metrics aggregated at the country level,
+/// one row per country. It reports metrics at the actual physical location of
+/// the user by targeted or not targeted location. If other segment fields are
+/// used, you may get more than one row per country.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UserLocationView {
+    /// Output only. The resource name of the user location view.
+    /// UserLocation view resource names have the form:
+    ///
+    /// `customers/{customer_id}/userLocationViews/{country_criterion_id}~{targeting_location}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Output only. Criterion Id for the country.
+    #[prost(int64, optional, tag = "4")]
+    pub country_criterion_id: ::core::option::Option<i64>,
+    /// Output only. Indicates whether location was targeted or not.
+    #[prost(bool, optional, tag = "5")]
+    pub targeting_location: ::core::option::Option<bool>,
 }
 /// A visit.
 #[derive(Clone, PartialEq, ::prost::Message)]

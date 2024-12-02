@@ -392,6 +392,8 @@ pub enum RouteLabel {
     /// Fuel efficient route. Routes labeled with this value are determined to be
     /// optimized for Eco parameters such as fuel consumption.
     FuelEfficient = 3,
+    /// Shorter travel distance route. This is an experimental feature.
+    ShorterDistance = 4,
 }
 impl RouteLabel {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -404,6 +406,7 @@ impl RouteLabel {
             Self::DefaultRoute => "DEFAULT_ROUTE",
             Self::DefaultRouteAlternate => "DEFAULT_ROUTE_ALTERNATE",
             Self::FuelEfficient => "FUEL_EFFICIENT",
+            Self::ShorterDistance => "SHORTER_DISTANCE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -413,6 +416,7 @@ impl RouteLabel {
             "DEFAULT_ROUTE" => Some(Self::DefaultRoute),
             "DEFAULT_ROUTE_ALTERNATE" => Some(Self::DefaultRouteAlternate),
             "FUEL_EFFICIENT" => Some(Self::FuelEfficient),
+            "SHORTER_DISTANCE" => Some(Self::ShorterDistance),
             _ => None,
         }
     }
@@ -798,11 +802,13 @@ pub struct Route {
     /// Text representations of properties of the `Route`.
     #[prost(message, optional, tag = "11")]
     pub localized_values: ::core::option::Option<route::RouteLocalizedValues>,
-    /// A web-safe, base64-encoded route token that can be passed to the Navigation
-    /// SDK, that allows the Navigation SDK to reconstruct the route during
-    /// navigation, and, in the event of rerouting, honor the original intention
-    /// when you created the route by calling ComputeRoutes. Customers should treat
-    /// this token as an opaque blob. It is not meant for reading or mutating.
+    /// An opaque token that can be passed to [Navigation
+    /// SDK](<https://developers.google.com/maps/documentation/navigation>) to
+    /// reconstruct the route during navigation, and, in the event of rerouting,
+    /// honor the original intention when the route was created. Treat this token
+    /// as an opaque blob.  Don't compare its value across requests as its value
+    /// may change even if the service returns the exact same route.
+    ///
     /// NOTE: `Route.route_token` is only available for requests that have set
     /// `ComputeRoutesRequest.routing_preference` to `TRAFFIC_AWARE` or
     /// `TRAFFIC_AWARE_OPTIMAL`. `Route.route_token` is not supported for requests
@@ -820,9 +826,10 @@ pub mod route {
         pub distance: ::core::option::Option<
             super::super::super::super::r#type::LocalizedText,
         >,
-        /// Duration taking traffic conditions into consideration, represented in
-        /// text form. Note: If you did not request traffic information, this value
-        /// will be the same value as `static_duration`.
+        /// Duration, represented in text form and localized to the region of the
+        /// query. Takes traffic conditions into consideration. Note: If you did not
+        /// request traffic information, this value is the same value as
+        /// `static_duration`.
         #[prost(message, optional, tag = "2")]
         pub duration: ::core::option::Option<
             super::super::super::super::r#type::LocalizedText,
@@ -966,9 +973,10 @@ pub mod route_leg {
         pub distance: ::core::option::Option<
             super::super::super::super::r#type::LocalizedText,
         >,
-        /// Duration taking traffic conditions into consideration represented in text
-        /// form. Note: If you did not request traffic information, this value will
-        /// be the same value as static_duration.
+        /// Duration, represented in text form and localized to the region of the
+        /// query. Takes traffic conditions into consideration. Note: If you did not
+        /// request traffic information, this value is the same value as
+        /// static_duration.
         #[prost(message, optional, tag = "2")]
         pub duration: ::core::option::Option<
             super::super::super::super::r#type::LocalizedText,
@@ -1108,7 +1116,7 @@ pub struct RouteLegStepTransitDetails {
     /// The number of stops from the departure to the arrival stop. This count
     /// includes the arrival stop, but excludes the departure stop. For example, if
     /// your route leaves from Stop A, passes through stops B and C, and arrives at
-    /// stop D, stop_count will return 3.
+    /// stop D, <code>stop_count</code> returns 3.
     #[prost(int32, tag = "6")]
     pub stop_count: i32,
     /// The text that appears in schedules and sign boards to identify a transit
@@ -2097,7 +2105,10 @@ pub struct ComputeRoutesRequest {
     /// request in addition to the default route. A reference route is a route with
     /// a different route calculation objective than the default route. For example
     /// a `FUEL_EFFICIENT` reference route calculation takes into account various
-    /// parameters that would generate an optimal fuel efficient route.
+    /// parameters that would generate an optimal fuel efficient route. When using
+    /// this feature, look for
+    /// [`route_labels`][google.maps.routing.v2.Route.route_labels] on the
+    /// resulting routes.
     #[prost(
         enumeration = "compute_routes_request::ReferenceRoute",
         repeated,
@@ -2155,9 +2166,23 @@ pub mod compute_routes_request {
     pub enum ReferenceRoute {
         /// Not used. Requests containing this value fail.
         Unspecified = 0,
-        /// Fuel efficient route. Routes labeled with this value are determined to be
-        /// optimized for parameters such as fuel consumption.
+        /// Fuel efficient route.
         FuelEfficient = 1,
+        /// Route with shorter travel distance. This is an experimental feature.
+        ///
+        /// For `DRIVE` requests, this feature prioritizes shorter distance over
+        /// driving comfort. For example, it may prefer local roads instead of
+        /// highways, take dirt roads, cut through parking lots, etc. This feature
+        /// does not return any maneuvers that Google Maps knows to be illegal.
+        ///
+        /// For `BICYCLE` and `TWO_WHEELER` requests, this feature returns routes
+        /// similar to those returned when you don't specify
+        /// `requested_reference_routes`.
+        ///
+        /// This feature is not compatible with any other travel modes, via
+        /// intermediate waypoints, or `optimize_waypoint_order`; such requests will
+        /// fail. However, you can use it with any `routing_preference`.
+        ShorterDistance = 2,
     }
     impl ReferenceRoute {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2168,6 +2193,7 @@ pub mod compute_routes_request {
             match self {
                 Self::Unspecified => "REFERENCE_ROUTE_UNSPECIFIED",
                 Self::FuelEfficient => "FUEL_EFFICIENT",
+                Self::ShorterDistance => "SHORTER_DISTANCE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2175,6 +2201,7 @@ pub mod compute_routes_request {
             match value {
                 "REFERENCE_ROUTE_UNSPECIFIED" => Some(Self::Unspecified),
                 "FUEL_EFFICIENT" => Some(Self::FuelEfficient),
+                "SHORTER_DISTANCE" => Some(Self::ShorterDistance),
                 _ => None,
             }
         }

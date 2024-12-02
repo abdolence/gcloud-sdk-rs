@@ -2135,6 +2135,8 @@ pub struct ApkManifest {
     #[prost(message, repeated, tag = "5")]
     pub intent_filters: ::prost::alloc::vec::Vec<IntentFilter>,
     /// Permissions declared to be used by the application
+    #[prost(message, repeated, tag = "13")]
+    pub uses_permission_tags: ::prost::alloc::vec::Vec<UsesPermissionTag>,
     #[prost(string, repeated, tag = "7")]
     pub uses_permission: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Version number used internally by the app.
@@ -2152,6 +2154,17 @@ pub struct ApkManifest {
     /// Services contained in the <application> tag.
     #[prost(message, repeated, tag = "12")]
     pub services: ::prost::alloc::vec::Vec<Service>,
+}
+/// The <uses-permission> tag within a manifest.
+/// <https://developer.android.com/guide/topics/manifest/uses-permission-element.html>
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UsesPermissionTag {
+    /// The android:name value
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The android:name value
+    #[prost(int32, tag = "2")]
+    pub max_sdk_version: i32,
 }
 /// The <service> section of an <application> tag.
 /// <https://developer.android.com/guide/topics/manifest/service-element>

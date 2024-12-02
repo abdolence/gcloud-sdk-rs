@@ -59,6 +59,109 @@ pub struct BdrBackupRestoreJobLog {
     /// The user readable error message. Only populated in error scenarios.
     #[prost(string, optional, tag = "17")]
     pub error_message: ::core::option::Option<::prost::alloc::string::String>,
+    /// Backup consistency time.
+    #[prost(message, optional, tag = "18")]
+    pub backup_consistency_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Source resource location.
+    #[prost(string, optional, tag = "19")]
+    pub source_resource_location: ::core::option::Option<::prost::alloc::string::String>,
+    /// Restore resource location.
+    #[prost(string, optional, tag = "20")]
+    pub restore_resource_location: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+}
+/// Log entry for BDRProtectedResource Log for resources using BackupPlan based
+/// protection.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BdrProtectedResourceLog {
+    /// Full canonical source resource name.
+    #[prost(string, optional, tag = "1")]
+    pub source_resource_name: ::core::option::Option<::prost::alloc::string::String>,
+    /// The source resource ID. Instance Id for GCE.
+    #[prost(string, optional, tag = "2")]
+    pub source_resource_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// Type of the resource. For eg. “Compute Engine”.
+    #[prost(string, optional, tag = "3")]
+    pub resource_type: ::core::option::Option<::prost::alloc::string::String>,
+    /// The size of the protected source resource in GiB, rounded to 2 decimal
+    /// places.
+    #[prost(double, optional, tag = "4")]
+    pub source_resource_data_size_gib: ::core::option::Option<f64>,
+    /// Complete canonical name of the Backup plan currently associated with the
+    /// source resource.
+    #[prost(string, optional, tag = "5")]
+    pub current_backup_plan_name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Backup Rule details of the backup plan currently associated with the source
+    /// resource.
+    #[prost(message, repeated, tag = "6")]
+    pub current_backup_rule_details: ::prost::alloc::vec::Vec<BackupRuleDetail>,
+    /// Timestamp when the resource was last protected.
+    #[prost(message, optional, tag = "7")]
+    pub last_protected_on: ::core::option::Option<::prost_types::Timestamp>,
+    /// Full Resource Name of the backup vault currently associated with the source
+    /// resource.
+    #[prost(string, optional, tag = "8")]
+    pub current_backup_vault_name: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// Source resource_location
+    #[prost(string, optional, tag = "9")]
+    pub source_resource_location: ::core::option::Option<::prost::alloc::string::String>,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BackupRuleDetail {
+    /// Backup Rule Name.
+    #[prost(string, optional, tag = "1")]
+    pub rule_name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Backup Retention in Days.
+    #[prost(int32, optional, tag = "2")]
+    pub retention_days: ::core::option::Option<i32>,
+    /// Recurrence Type. For Eg. “Weekly”,” Monthly” or “Daily”.
+    #[prost(string, optional, tag = "3")]
+    pub recurrence: ::core::option::Option<::prost::alloc::string::String>,
+    /// Recurrence Repeat Schedule. For Eg. “1st and 25th day of the month.”
+    #[prost(string, optional, tag = "4")]
+    pub recurrence_schedule: ::core::option::Option<::prost::alloc::string::String>,
+    /// Backup Window For Eg. “00:00 to 06:00”
+    #[prost(string, optional, tag = "5")]
+    pub backup_window: ::core::option::Option<::prost::alloc::string::String>,
+    /// Backup Window Timezone in IANA format. For Eg. “America/Los_Angeles”
+    #[prost(string, optional, tag = "6")]
+    pub backup_window_timezone: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Log entry for BDRBackupVaultDetails Log for resources using BackupPlan based
+/// protection.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BdrBackupVaultDetailsLog {
+    /// Relative resource name of Backup Vault
+    #[prost(string, optional, tag = "1")]
+    pub backup_vault_name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Relative source resource name
+    #[prost(string, optional, tag = "2")]
+    pub source_resource_name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Type of the resource For eg. “Compute Engine”
+    #[prost(string, optional, tag = "3")]
+    pub resource_type: ::core::option::Option<::prost::alloc::string::String>,
+    /// The name of the Backup Plan applied on the resource to protect.
+    #[prost(string, optional, tag = "4")]
+    pub current_backup_plan_name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Timestamp when the first (oldest) backup was taken.
+    #[prost(message, optional, tag = "5")]
+    pub first_available_restore_point: ::core::option::Option<::prost_types::Timestamp>,
+    /// Timestamp when the latest backup was taken.
+    #[prost(message, optional, tag = "6")]
+    pub last_available_restore_point: ::core::option::Option<::prost_types::Timestamp>,
+    /// Amount of storage space consumed by backups in GiB.
+    #[prost(double, optional, tag = "7")]
+    pub stored_bytes_gib: ::core::option::Option<f64>,
+    /// The minimum timeframe in days that backups in that vault are being
+    /// protected from deletion.
+    #[prost(int32, optional, tag = "8")]
+    pub minimum_enforced_retention_days: ::core::option::Option<i32>,
+    /// Source resource_location
+    #[prost(string, optional, tag = "9")]
+    pub source_resource_location: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// This is an event
 #[derive(Clone, PartialEq, ::prost::Message)]

@@ -1937,6 +1937,17 @@ pub struct ExecuteSqlRequest {
     /// `partition_token`, the API returns an `INVALID_ARGUMENT` error.
     #[prost(bool, tag = "16")]
     pub data_boost_enabled: bool,
+    /// Optional. If set to true, this statement marks the end of the transaction.
+    /// The transaction should be committed or aborted after this statement
+    /// executes, and attempts to execute any other requests against this
+    /// transaction (including reads and queries) will be rejected.
+    ///
+    /// For DML statements, setting this option may cause some error reporting to
+    /// be deferred until commit time (e.g. validation of unique constraints).
+    /// Given this, successful execution of a DML statement should not be assumed
+    /// until a subsequent Commit call completes successfully.
+    #[prost(bool, tag = "17")]
+    pub last_statement: bool,
 }
 /// Nested message and enum types in `ExecuteSqlRequest`.
 pub mod execute_sql_request {
@@ -2086,6 +2097,17 @@ pub struct ExecuteBatchDmlRequest {
     /// Common options for this request.
     #[prost(message, optional, tag = "5")]
     pub request_options: ::core::option::Option<RequestOptions>,
+    /// Optional. If set to true, this request marks the end of the transaction.
+    /// The transaction should be committed or aborted after these statements
+    /// execute, and attempts to execute any other requests against this
+    /// transaction (including reads and queries) will be rejected.
+    ///
+    /// Setting this option may cause some error reporting to be deferred until
+    /// commit time (e.g. validation of unique constraints). Given this, successful
+    /// execution of statements should not be assumed until a subsequent Commit
+    /// call completes successfully.
+    #[prost(bool, tag = "6")]
+    pub last_statements: bool,
 }
 /// Nested message and enum types in `ExecuteBatchDmlRequest`.
 pub mod execute_batch_dml_request {

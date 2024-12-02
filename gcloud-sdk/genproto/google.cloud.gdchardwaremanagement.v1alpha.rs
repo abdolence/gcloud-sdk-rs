@@ -460,6 +460,10 @@ pub mod hardware {
         /// Output only. Address type for this MAC address.
         #[prost(enumeration = "mac_address::AddressType", tag = "2")]
         pub r#type: i32,
+        /// Output only. Static IP address (if used) that is associated with the MAC
+        /// address. Only applicable for VIRTUAL MAC address type.
+        #[prost(string, tag = "3")]
+        pub ipv4_address: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `MacAddress`.
     pub mod mac_address {
@@ -798,6 +802,9 @@ pub struct Zone {
     /// Output only. Subscription configurations for this zone.
     #[prost(message, repeated, tag = "13")]
     pub subscription_configs: ::prost::alloc::vec::Vec<SubscriptionConfig>,
+    /// Output only. Provisioning state for configurations like MAC addresses.
+    #[prost(enumeration = "zone::ProvisioningState", tag = "14")]
+    pub provisioning_state: i32,
 }
 /// Nested message and enum types in `Zone`.
 pub mod zone {
@@ -868,6 +875,53 @@ pub mod zone {
                 }
                 "ACTIVE" => Some(Self::Active),
                 "CANCELLED" => Some(Self::Cancelled),
+                _ => None,
+            }
+        }
+    }
+    /// Valid provisioning states for configurations like MAC addresses.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ProvisioningState {
+        /// Provisioning state is unspecified.
+        Unspecified = 0,
+        /// Provisioning is required. Set by Google.
+        ProvisioningRequired = 1,
+        /// Provisioning is in progress. Set by customer.
+        ProvisioningInProgress = 2,
+        /// Provisioning is complete. Set by customer.
+        ProvisioningComplete = 3,
+    }
+    impl ProvisioningState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PROVISIONING_STATE_UNSPECIFIED",
+                Self::ProvisioningRequired => "PROVISIONING_REQUIRED",
+                Self::ProvisioningInProgress => "PROVISIONING_IN_PROGRESS",
+                Self::ProvisioningComplete => "PROVISIONING_COMPLETE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PROVISIONING_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PROVISIONING_REQUIRED" => Some(Self::ProvisioningRequired),
+                "PROVISIONING_IN_PROGRESS" => Some(Self::ProvisioningInProgress),
+                "PROVISIONING_COMPLETE" => Some(Self::ProvisioningComplete),
                 _ => None,
             }
         }
@@ -1257,6 +1311,17 @@ pub struct ZoneNetworkConfig {
     /// subnet.
     #[prost(message, optional, tag = "5")]
     pub kubernetes_ipv4_subnet: ::core::option::Option<Subnet>,
+    /// Optional. DNS nameservers.
+    /// The GDC Infrastructure will resolve DNS queries via these IPs.
+    /// If unspecified, Google DNS is used.
+    #[prost(string, repeated, tag = "6")]
+    pub dns_ipv4_addresses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Kubernetes VLAN ID.
+    /// By default, the kubernetes node, including the primary kubernetes network,
+    /// are in the same VLAN as the machine management network.
+    /// For network segmentation purposes, these can optionally be separated.
+    #[prost(int32, tag = "7")]
+    pub kubernetes_primary_vlan_id: i32,
 }
 /// Represents a subnet.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2275,9 +2340,17 @@ pub struct SignalZoneStateRequest {
     /// [AIP-155](<https://google.aip.dev/155>).
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
-    /// Required. The state signal to send for this zone.
+    /// Optional. The state signal to send for this zone. Either state_signal or
+    /// provisioning_state_signal must be set, but not both.
     #[prost(enumeration = "signal_zone_state_request::StateSignal", tag = "3")]
     pub state_signal: i32,
+    /// Optional. The provisioning state signal to send for this zone. Either
+    /// state_signal or provisioning_state_signal must be set, but not both.
+    #[prost(
+        enumeration = "signal_zone_state_request::ProvisioningStateSignal",
+        tag = "4"
+    )]
+    pub provisioning_state_signal: i32,
 }
 /// Nested message and enum types in `SignalZoneStateRequest`.
 pub mod signal_zone_state_request {
@@ -2320,6 +2393,49 @@ pub mod signal_zone_state_request {
                 "STATE_SIGNAL_UNSPECIFIED" => Some(Self::Unspecified),
                 "FACTORY_TURNUP_CHECKS_PASSED" => Some(Self::FactoryTurnupChecksPassed),
                 "FACTORY_TURNUP_CHECKS_FAILED" => Some(Self::FactoryTurnupChecksFailed),
+                _ => None,
+            }
+        }
+    }
+    /// Valid provisioning state signals for a zone.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ProvisioningStateSignal {
+        /// Provisioning state signal is unspecified.
+        Unspecified = 0,
+        /// Provisioning is in progress.
+        ProvisioningInProgress = 1,
+        /// Provisioning is complete.
+        ProvisioningComplete = 2,
+    }
+    impl ProvisioningStateSignal {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PROVISIONING_STATE_SIGNAL_UNSPECIFIED",
+                Self::ProvisioningInProgress => "PROVISIONING_IN_PROGRESS",
+                Self::ProvisioningComplete => "PROVISIONING_COMPLETE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PROVISIONING_STATE_SIGNAL_UNSPECIFIED" => Some(Self::Unspecified),
+                "PROVISIONING_IN_PROGRESS" => Some(Self::ProvisioningInProgress),
+                "PROVISIONING_COMPLETE" => Some(Self::ProvisioningComplete),
                 _ => None,
             }
         }

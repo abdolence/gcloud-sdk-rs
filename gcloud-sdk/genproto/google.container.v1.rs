@@ -18,6 +18,9 @@ pub struct LinuxNodeConfig {
     /// net.ipv4.tcp_rmem
     /// net.ipv4.tcp_wmem
     /// net.ipv4.tcp_tw_reuse
+    /// kernel.shmmni
+    /// kernel.shmmax
+    /// kernel.shmall
     #[prost(map = "string, string", tag = "1")]
     pub sysctls: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -434,6 +437,10 @@ pub struct NodeConfig {
     pub secondary_boot_disk_update_strategy: ::core::option::Option<
         SecondaryBootDiskUpdateStrategy,
     >,
+    /// Specifies which method should be used for encrypting the
+    /// Local SSDs attahced to the node.
+    #[prost(enumeration = "node_config::LocalSsdEncryptionMode", optional, tag = "54")]
+    pub local_ssd_encryption_mode: ::core::option::Option<i32>,
     /// Output only. effective_cgroup_mode is the cgroup mode actually used by the
     /// node pool. It is determined by the cgroup mode specified in the
     /// LinuxNodeConfig or the default cgroup mode based on the cluster creation
@@ -443,6 +450,57 @@ pub struct NodeConfig {
 }
 /// Nested message and enum types in `NodeConfig`.
 pub mod node_config {
+    /// LocalSsdEncryptionMode specifies the method used for encrypting the Local
+    /// SSDs attached to the node.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum LocalSsdEncryptionMode {
+        /// The given node will be encrypted using keys managed by Google
+        /// infrastructure and the keys will be deleted when the node is
+        /// deleted.
+        Unspecified = 0,
+        /// The given node will be encrypted using keys managed by Google
+        /// infrastructure and the keys will be deleted when the node is
+        /// deleted.
+        StandardEncryption = 1,
+        /// The given node will opt-in for using ephemeral key for
+        /// encryption of Local SSDs.
+        /// The Local SSDs will not be able to recover data in case of node
+        /// crash.
+        EphemeralKeyEncryption = 2,
+    }
+    impl LocalSsdEncryptionMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "LOCAL_SSD_ENCRYPTION_MODE_UNSPECIFIED",
+                Self::StandardEncryption => "STANDARD_ENCRYPTION",
+                Self::EphemeralKeyEncryption => "EPHEMERAL_KEY_ENCRYPTION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LOCAL_SSD_ENCRYPTION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STANDARD_ENCRYPTION" => Some(Self::StandardEncryption),
+                "EPHEMERAL_KEY_ENCRYPTION" => Some(Self::EphemeralKeyEncryption),
+                _ => None,
+            }
+        }
+    }
     /// Possible effective cgroup modes for the node.
     #[derive(
         Clone,
@@ -2477,6 +2535,9 @@ pub struct NodePoolAutoConfig {
     /// Currently only `insecure_kubelet_readonly_port_enabled` can be set here.
     #[prost(message, optional, tag = "3")]
     pub node_kubelet_config: ::core::option::Option<NodeKubeletConfig>,
+    /// Output only. Configuration options for Linux nodes.
+    #[prost(message, optional, tag = "4")]
+    pub linux_node_config: ::core::option::Option<LinuxNodeConfig>,
 }
 /// Subset of Nodepool message that has defaults.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2809,6 +2870,17 @@ pub struct ClusterUpdate {
     /// RoleBindings that can be created.
     #[prost(message, optional, tag = "144")]
     pub desired_rbac_binding_config: ::core::option::Option<RbacBindingConfig>,
+    /// The desired enterprise configuration for the cluster.
+    #[prost(message, optional, tag = "147")]
+    pub desired_enterprise_config: ::core::option::Option<DesiredEnterpriseConfig>,
+    /// The desired Linux node config for all auto-provisioned node pools
+    /// in autopilot clusters and node auto-provisioning enabled clusters.
+    ///
+    /// Currently only `cgroup_mode` can be set here.
+    #[prost(message, optional, tag = "150")]
+    pub desired_node_pool_auto_config_linux_node_config: ::core::option::Option<
+        LinuxNodeConfig,
+    >,
 }
 /// AdditionalPodRangesConfig is the configuration for additional pod secondary
 /// ranges supporting the ClusterUpdate message.
@@ -2830,6 +2902,13 @@ pub struct RangeInfo {
     /// Output only. The utilization of the range.
     #[prost(double, tag = "2")]
     pub utilization: f64,
+}
+/// DesiredEnterpriseConfig is a wrapper used for updating enterprise_config.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct DesiredEnterpriseConfig {
+    /// desired_tier specifies the desired tier of the cluster.
+    #[prost(enumeration = "enterprise_config::ClusterTier", tag = "1")]
+    pub desired_tier: i32,
 }
 /// This operation resource represents operations that may have happened or are
 /// happening on the cluster. All fields are output only.
@@ -5016,11 +5095,11 @@ pub struct NodePoolAutoscaling {
     /// Is autoscaling enabled for this node pool.
     #[prost(bool, tag = "1")]
     pub enabled: bool,
-    /// Minimum number of nodes for one location in the NodePool. Must be >= 1 and
-    /// <= max_node_count.
+    /// Minimum number of nodes for one location in the node pool. Must be greater
+    /// than or equal to 0 and less than or equal to max_node_count.
     #[prost(int32, tag = "2")]
     pub min_node_count: i32,
-    /// Maximum number of nodes for one location in the NodePool. Must be >=
+    /// Maximum number of nodes for one location in the node pool. Must be >=
     /// min_node_count. There has to be enough quota to scale up the cluster.
     #[prost(int32, tag = "3")]
     pub max_node_count: i32,
@@ -5030,13 +5109,13 @@ pub struct NodePoolAutoscaling {
     /// Location policy used when scaling up a nodepool.
     #[prost(enumeration = "node_pool_autoscaling::LocationPolicy", tag = "5")]
     pub location_policy: i32,
-    /// Minimum number of nodes in the node pool. Must be greater than 1 less than
-    /// total_max_node_count.
+    /// Minimum number of nodes in the node pool. Must be greater than or equal
+    /// to 0 and less than or equal to total_max_node_count.
     /// The total_*_node_count fields are mutually exclusive with the *_node_count
     /// fields.
     #[prost(int32, tag = "6")]
     pub total_min_node_count: i32,
-    /// Maximum number of nodes in the node pool. Must be greater than
+    /// Maximum number of nodes in the node pool. Must be greater than or equal to
     /// total_min_node_count. There has to be enough quota to scale up the cluster.
     /// The total_*_node_count fields are mutually exclusive with the *_node_count
     /// fields.
@@ -6662,6 +6741,93 @@ pub struct UpgradeEvent {
     #[prost(string, tag = "6")]
     pub resource: ::prost::alloc::string::String,
 }
+/// UpgradeInfoEvent is a notification sent to customers about the upgrade
+/// information of a resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpgradeInfoEvent {
+    /// The resource type associated with the upgrade.
+    #[prost(enumeration = "UpgradeResourceType", tag = "1")]
+    pub resource_type: i32,
+    /// The operation associated with this upgrade.
+    #[prost(string, tag = "2")]
+    pub operation: ::prost::alloc::string::String,
+    /// The time when the operation was started.
+    #[prost(message, optional, tag = "3")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time when the operation ended.
+    #[prost(message, optional, tag = "4")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The current version before the upgrade.
+    #[prost(string, tag = "5")]
+    pub current_version: ::prost::alloc::string::String,
+    /// The target version for the upgrade.
+    #[prost(string, tag = "6")]
+    pub target_version: ::prost::alloc::string::String,
+    /// Optional relative path to the resource. For example in node pool upgrades,
+    /// the relative path of the node pool.
+    #[prost(string, tag = "7")]
+    pub resource: ::prost::alloc::string::String,
+    /// Output only. The state of the upgrade.
+    #[prost(enumeration = "upgrade_info_event::State", tag = "8")]
+    pub state: i32,
+    /// A brief description of the event.
+    #[prost(string, tag = "11")]
+    pub description: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `UpgradeInfoEvent`.
+pub mod upgrade_info_event {
+    /// The state of the upgrade.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// STATE_UNSPECIFIED indicates the state is unspecified.
+        Unspecified = 0,
+        /// STARTED indicates the upgrade has started.
+        Started = 3,
+        /// SUCCEEDED indicates the upgrade has completed successfully.
+        Succeeded = 4,
+        /// FAILED indicates the upgrade has failed.
+        Failed = 5,
+        /// CANCELED indicates the upgrade has canceled.
+        Canceled = 6,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Started => "STARTED",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::Canceled => "CANCELED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STARTED" => Some(Self::Started),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "CANCELED" => Some(Self::Canceled),
+                _ => None,
+            }
+        }
+    }
+}
 /// UpgradeAvailableEvent is a notification sent to customers when a new
 /// available version is released.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -7254,6 +7420,9 @@ pub struct EnterpriseConfig {
     /// Output only. cluster_tier indicates the effective tier of the cluster.
     #[prost(enumeration = "enterprise_config::ClusterTier", tag = "1")]
     pub cluster_tier: i32,
+    /// desired_tier specifies the desired tier of the cluster.
+    #[prost(enumeration = "enterprise_config::ClusterTier", tag = "2")]
+    pub desired_tier: i32,
 }
 /// Nested message and enum types in `EnterpriseConfig`.
 pub mod enterprise_config {

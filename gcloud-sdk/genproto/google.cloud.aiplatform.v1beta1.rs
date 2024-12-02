@@ -1189,8 +1189,8 @@ pub mod jira_source {
         pub server_uri: ::prost::alloc::string::String,
         /// Required. The SecretManager secret version resource name (e.g.
         /// projects/{project}/secrets/{secret}/versions/{version}) storing the
-        /// Jira API key
-        /// (<https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/>).
+        /// Jira API key. See [Manage API tokens for your Atlassian
+        /// account](<https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/>).
         #[prost(message, optional, tag = "7")]
         pub api_key_config: ::core::option::Option<super::api_auth::ApiKeyConfig>,
     }
@@ -2222,6 +2222,14 @@ pub struct DedicatedResources {
     /// number of GPUs per replica in the selected machine type).
     #[prost(int32, tag = "3")]
     pub max_replica_count: i32,
+    /// Optional. Number of required available replicas for the deployment to
+    /// succeed. This field is only needed when partial model deployment/mutation
+    /// is desired. If set, the model deploy/mutate operation will succeed once
+    /// available_replica_count reaches required_replica_count, and the rest of
+    /// the replicas will be retried. If not set, the default
+    /// required_replica_count will be min_replica_count.
+    #[prost(int32, tag = "9")]
+    pub required_replica_count: i32,
     /// Immutable. The metric specifications that overrides a resource
     /// utilization metric (CPU utilization, accelerator's duty cycle, and so on)
     /// target value (default to 60 if not set). At most one entry is allowed per
@@ -5089,12 +5097,17 @@ pub struct VertexRagStore {
     #[prost(message, repeated, tag = "4")]
     pub rag_resources: ::prost::alloc::vec::Vec<vertex_rag_store::RagResource>,
     /// Optional. Number of top k results to return from the selected corpora.
+    #[deprecated]
     #[prost(int32, optional, tag = "2")]
     pub similarity_top_k: ::core::option::Option<i32>,
     /// Optional. Only return results with vector distance smaller than the
     /// threshold.
+    #[deprecated]
     #[prost(double, optional, tag = "3")]
     pub vector_distance_threshold: ::core::option::Option<f64>,
+    /// Optional. The retrieval config for the Rag query.
+    #[prost(message, optional, tag = "6")]
+    pub rag_retrieval_config: ::core::option::Option<RagRetrievalConfig>,
 }
 /// Nested message and enum types in `VertexRagStore`.
 pub mod vertex_rag_store {
@@ -5253,6 +5266,98 @@ pub mod function_calling_config {
                 "NONE" => Some(Self::None),
                 _ => None,
             }
+        }
+    }
+}
+/// Specifies the context retrieval config.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RagRetrievalConfig {
+    /// Optional. The number of contexts to retrieve.
+    #[prost(int32, tag = "1")]
+    pub top_k: i32,
+    /// Optional. Config for Hybrid Search.
+    #[prost(message, optional, tag = "2")]
+    pub hybrid_search: ::core::option::Option<rag_retrieval_config::HybridSearch>,
+    /// Optional. Config for filters.
+    #[prost(message, optional, tag = "3")]
+    pub filter: ::core::option::Option<rag_retrieval_config::Filter>,
+    /// Optional. Config for ranking and reranking.
+    #[prost(message, optional, tag = "4")]
+    pub ranking: ::core::option::Option<rag_retrieval_config::Ranking>,
+}
+/// Nested message and enum types in `RagRetrievalConfig`.
+pub mod rag_retrieval_config {
+    /// Config for Hybrid Search.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct HybridSearch {
+        /// Optional. Alpha value controls the weight between dense and sparse vector
+        /// search results. The range is \[0, 1\], while 0 means sparse vector search
+        /// only and 1 means dense vector search only. The default value is 0.5 which
+        /// balances sparse and dense vector search equally.
+        #[prost(float, optional, tag = "1")]
+        pub alpha: ::core::option::Option<f32>,
+    }
+    /// Config for filters.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Filter {
+        /// Optional. String for metadata filtering.
+        #[prost(string, tag = "2")]
+        pub metadata_filter: ::prost::alloc::string::String,
+        /// Filter contexts retrieved from the vector DB based on either vector
+        /// distance or vector similarity.
+        #[prost(oneof = "filter::VectorDbThreshold", tags = "3, 4")]
+        pub vector_db_threshold: ::core::option::Option<filter::VectorDbThreshold>,
+    }
+    /// Nested message and enum types in `Filter`.
+    pub mod filter {
+        /// Filter contexts retrieved from the vector DB based on either vector
+        /// distance or vector similarity.
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        pub enum VectorDbThreshold {
+            /// Optional. Only returns contexts with vector distance smaller than the
+            /// threshold.
+            #[prost(double, tag = "3")]
+            VectorDistanceThreshold(f64),
+            /// Optional. Only returns contexts with vector similarity larger than the
+            /// threshold.
+            #[prost(double, tag = "4")]
+            VectorSimilarityThreshold(f64),
+        }
+    }
+    /// Config for ranking and reranking.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Ranking {
+        /// Config options for ranking. Currently only Rank Service is supported.
+        #[prost(oneof = "ranking::RankingConfig", tags = "1, 3")]
+        pub ranking_config: ::core::option::Option<ranking::RankingConfig>,
+    }
+    /// Nested message and enum types in `Ranking`.
+    pub mod ranking {
+        /// Config for Rank Service.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct RankService {
+            /// Optional. The model name of the rank service.
+            /// Format: `semantic-ranker-512@latest`
+            #[prost(string, optional, tag = "1")]
+            pub model_name: ::core::option::Option<::prost::alloc::string::String>,
+        }
+        /// Config for LlmRanker.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct LlmRanker {
+            /// Optional. The model name used for ranking.
+            /// Format: `gemini-1.5-pro`
+            #[prost(string, optional, tag = "1")]
+            pub model_name: ::core::option::Option<::prost::alloc::string::String>,
+        }
+        /// Config options for ranking. Currently only Rank Service is supported.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum RankingConfig {
+            /// Optional. Config for Rank Service.
+            #[prost(message, tag = "1")]
+            RankService(RankService),
+            /// Optional. Config for LlmRanker.
+            #[prost(message, tag = "3")]
+            LlmRanker(LlmRanker),
         }
     }
 }
@@ -8797,6 +8902,9 @@ pub struct DeployedModel {
     /// Configuration for faster model deployment.
     #[prost(message, optional, tag = "23")]
     pub faster_deployment_config: ::core::option::Option<FasterDeploymentConfig>,
+    /// Output only. Runtime status of the deployed model.
+    #[prost(message, optional, tag = "26")]
+    pub status: ::core::option::Option<deployed_model::Status>,
     /// System labels to apply to Model Garden deployments.
     /// System labels are managed by Google for internal use only.
     #[prost(map = "string, string", tag = "28")]
@@ -8817,6 +8925,19 @@ pub struct DeployedModel {
 }
 /// Nested message and enum types in `DeployedModel`.
 pub mod deployed_model {
+    /// Runtime status of the deployed model.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Status {
+        /// Output only. The latest deployed model's status message (if any).
+        #[prost(string, tag = "1")]
+        pub message: ::prost::alloc::string::String,
+        /// Output only. The time at which the status was last updated.
+        #[prost(message, optional, tag = "2")]
+        pub last_update_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Output only. The number of available replicas of the deployed model.
+        #[prost(int32, tag = "3")]
+        pub available_replica_count: i32,
+    }
     /// The prediction (for example, the machine) resources that the DeployedModel
     /// uses. The user is billed for the resources (at least their minimal amount)
     /// even if the DeployedModel receives no traffic.
@@ -8880,19 +9001,19 @@ pub struct PredictRequestResponseLoggingConfig {
     #[prost(message, optional, tag = "3")]
     pub bigquery_destination: ::core::option::Option<BigQueryDestination>,
 }
-/// Configuration for faster model deployment.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
-pub struct FasterDeploymentConfig {
-    /// If true, enable fast tryout feature for this deployed model.
-    #[prost(bool, tag = "2")]
-    pub fast_tryout_enabled: bool,
-}
 /// Configurations (e.g. inference timeout) that are applied on your endpoints.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ClientConnectionConfig {
     /// Customizable online prediction request timeout.
     #[prost(message, optional, tag = "1")]
     pub inference_timeout: ::core::option::Option<::prost_types::Duration>,
+}
+/// Configuration for faster model deployment.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct FasterDeploymentConfig {
+    /// If true, enable fast tryout feature for this deployed model.
+    #[prost(bool, tag = "2")]
+    pub fast_tryout_enabled: bool,
 }
 /// Request message for CreateDeploymentResourcePool method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -10474,7 +10595,7 @@ pub struct EvaluateInstancesRequest {
     /// Instances and specs for evaluation
     #[prost(
         oneof = "evaluate_instances_request::MetricInputs",
-        tags = "2, 3, 4, 5, 6, 8, 9, 12, 7, 23, 14, 15, 10, 24, 16, 17, 18, 28, 29, 19, 20, 21, 22"
+        tags = "2, 3, 4, 5, 6, 8, 9, 12, 7, 23, 14, 15, 10, 24, 16, 17, 18, 28, 29, 19, 20, 21, 22, 33, 34, 35, 37, 38, 39"
     )]
     pub metric_inputs: ::core::option::Option<evaluate_instances_request::MetricInputs>,
 }
@@ -10560,6 +10681,24 @@ pub mod evaluate_instances_request {
         /// Input for tool parameter key value match metric.
         #[prost(message, tag = "22")]
         ToolParameterKvMatchInput(super::ToolParameterKvMatchInput),
+        /// Input for trajectory exact match metric.
+        #[prost(message, tag = "33")]
+        TrajectoryExactMatchInput(super::TrajectoryExactMatchInput),
+        /// Input for trajectory in order match metric.
+        #[prost(message, tag = "34")]
+        TrajectoryInOrderMatchInput(super::TrajectoryInOrderMatchInput),
+        /// Input for trajectory match any order metric.
+        #[prost(message, tag = "35")]
+        TrajectoryAnyOrderMatchInput(super::TrajectoryAnyOrderMatchInput),
+        /// Input for trajectory precision metric.
+        #[prost(message, tag = "37")]
+        TrajectoryPrecisionInput(super::TrajectoryPrecisionInput),
+        /// Input for trajectory recall metric.
+        #[prost(message, tag = "38")]
+        TrajectoryRecallInput(super::TrajectoryRecallInput),
+        /// Input for trajectory single tool use metric.
+        #[prost(message, tag = "39")]
+        TrajectorySingleToolUseInput(super::TrajectorySingleToolUseInput),
     }
 }
 /// Response message for EvaluationService.EvaluateInstances.
@@ -10569,7 +10708,7 @@ pub struct EvaluateInstancesResponse {
     /// EvaluationRequest.instances.
     #[prost(
         oneof = "evaluate_instances_response::EvaluationResults",
-        tags = "1, 2, 3, 4, 5, 7, 8, 11, 6, 22, 13, 14, 9, 23, 15, 16, 17, 27, 28, 18, 19, 20, 21"
+        tags = "1, 2, 3, 4, 5, 7, 8, 11, 6, 22, 13, 14, 9, 23, 15, 16, 17, 27, 28, 18, 19, 20, 21, 31, 32, 33, 35, 36, 37"
     )]
     pub evaluation_results: ::core::option::Option<
         evaluate_instances_response::EvaluationResults,
@@ -10659,6 +10798,24 @@ pub mod evaluate_instances_response {
         /// Results for tool parameter key value match metric.
         #[prost(message, tag = "21")]
         ToolParameterKvMatchResults(super::ToolParameterKvMatchResults),
+        /// Result for trajectory exact match metric.
+        #[prost(message, tag = "31")]
+        TrajectoryExactMatchResults(super::TrajectoryExactMatchResults),
+        /// Result for trajectory in order match metric.
+        #[prost(message, tag = "32")]
+        TrajectoryInOrderMatchResults(super::TrajectoryInOrderMatchResults),
+        /// Result for trajectory any order match metric.
+        #[prost(message, tag = "33")]
+        TrajectoryAnyOrderMatchResults(super::TrajectoryAnyOrderMatchResults),
+        /// Result for trajectory precision metric.
+        #[prost(message, tag = "35")]
+        TrajectoryPrecisionResults(super::TrajectoryPrecisionResults),
+        /// Results for trajectory recall metric.
+        #[prost(message, tag = "36")]
+        TrajectoryRecallResults(super::TrajectoryRecallResults),
+        /// Results for trajectory single tool use metric.
+        #[prost(message, tag = "37")]
+        TrajectorySingleToolUseResults(super::TrajectorySingleToolUseResults),
     }
 }
 /// Input for exact match metric.
@@ -11661,7 +11818,7 @@ pub struct ToolParameterKvMatchInput {
 /// Spec for tool parameter key value match metric.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ToolParameterKvMatchSpec {
-    /// Optional. Whether to use STRCIT string match on parameter values.
+    /// Optional. Whether to use STRICT string match on parameter values.
     #[prost(bool, tag = "1")]
     pub use_strict_string_match: bool,
 }
@@ -11690,6 +11847,266 @@ pub struct ToolParameterKvMatchMetricValue {
     /// Output only. Tool parameter key value match score.
     #[prost(float, optional, tag = "1")]
     pub score: ::core::option::Option<f32>,
+}
+/// Instances and metric spec for TrajectoryExactMatch metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrajectoryExactMatchInput {
+    /// Required. Spec for TrajectoryExactMatch metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<TrajectoryExactMatchSpec>,
+    /// Required. Repeated TrajectoryExactMatch instance.
+    #[prost(message, repeated, tag = "2")]
+    pub instances: ::prost::alloc::vec::Vec<TrajectoryExactMatchInstance>,
+}
+/// Spec for TrajectoryExactMatch metric - returns 1 if tool calls in the
+/// reference trajectory exactly match the predicted trajectory, else 0.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct TrajectoryExactMatchSpec {}
+/// Spec for TrajectoryExactMatch instance.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrajectoryExactMatchInstance {
+    /// Required. Spec for predicted tool call trajectory.
+    #[prost(message, optional, tag = "1")]
+    pub predicted_trajectory: ::core::option::Option<Trajectory>,
+    /// Required. Spec for reference tool call trajectory.
+    #[prost(message, optional, tag = "2")]
+    pub reference_trajectory: ::core::option::Option<Trajectory>,
+}
+/// Results for TrajectoryExactMatch metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrajectoryExactMatchResults {
+    /// Output only. TrajectoryExactMatch metric values.
+    #[prost(message, repeated, tag = "1")]
+    pub trajectory_exact_match_metric_values: ::prost::alloc::vec::Vec<
+        TrajectoryExactMatchMetricValue,
+    >,
+}
+/// TrajectoryExactMatch metric value for an instance.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct TrajectoryExactMatchMetricValue {
+    /// Output only. TrajectoryExactMatch score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+}
+/// Instances and metric spec for TrajectoryInOrderMatch metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrajectoryInOrderMatchInput {
+    /// Required. Spec for TrajectoryInOrderMatch metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<TrajectoryInOrderMatchSpec>,
+    /// Required. Repeated TrajectoryInOrderMatch instance.
+    #[prost(message, repeated, tag = "2")]
+    pub instances: ::prost::alloc::vec::Vec<TrajectoryInOrderMatchInstance>,
+}
+/// Spec for TrajectoryInOrderMatch metric - returns 1 if tool calls in the
+/// reference trajectory appear in the predicted trajectory in the same order,
+/// else 0.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct TrajectoryInOrderMatchSpec {}
+/// Spec for TrajectoryInOrderMatch instance.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrajectoryInOrderMatchInstance {
+    /// Required. Spec for predicted tool call trajectory.
+    #[prost(message, optional, tag = "1")]
+    pub predicted_trajectory: ::core::option::Option<Trajectory>,
+    /// Required. Spec for reference tool call trajectory.
+    #[prost(message, optional, tag = "2")]
+    pub reference_trajectory: ::core::option::Option<Trajectory>,
+}
+/// Results for TrajectoryInOrderMatch metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrajectoryInOrderMatchResults {
+    /// Output only. TrajectoryInOrderMatch metric values.
+    #[prost(message, repeated, tag = "1")]
+    pub trajectory_in_order_match_metric_values: ::prost::alloc::vec::Vec<
+        TrajectoryInOrderMatchMetricValue,
+    >,
+}
+/// TrajectoryInOrderMatch metric value for an instance.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct TrajectoryInOrderMatchMetricValue {
+    /// Output only. TrajectoryInOrderMatch score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+}
+/// Instances and metric spec for TrajectoryAnyOrderMatch metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrajectoryAnyOrderMatchInput {
+    /// Required. Spec for TrajectoryAnyOrderMatch metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<TrajectoryAnyOrderMatchSpec>,
+    /// Required. Repeated TrajectoryAnyOrderMatch instance.
+    #[prost(message, repeated, tag = "2")]
+    pub instances: ::prost::alloc::vec::Vec<TrajectoryAnyOrderMatchInstance>,
+}
+/// Spec for TrajectoryAnyOrderMatch metric - returns 1 if all tool calls in the
+/// reference trajectory appear in the predicted trajectory in any order, else
+/// 0.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct TrajectoryAnyOrderMatchSpec {}
+/// Spec for TrajectoryAnyOrderMatch instance.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrajectoryAnyOrderMatchInstance {
+    /// Required. Spec for predicted tool call trajectory.
+    #[prost(message, optional, tag = "1")]
+    pub predicted_trajectory: ::core::option::Option<Trajectory>,
+    /// Required. Spec for reference tool call trajectory.
+    #[prost(message, optional, tag = "2")]
+    pub reference_trajectory: ::core::option::Option<Trajectory>,
+}
+/// Results for TrajectoryAnyOrderMatch metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrajectoryAnyOrderMatchResults {
+    /// Output only. TrajectoryAnyOrderMatch metric values.
+    #[prost(message, repeated, tag = "1")]
+    pub trajectory_any_order_match_metric_values: ::prost::alloc::vec::Vec<
+        TrajectoryAnyOrderMatchMetricValue,
+    >,
+}
+/// TrajectoryAnyOrderMatch metric value for an instance.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct TrajectoryAnyOrderMatchMetricValue {
+    /// Output only. TrajectoryAnyOrderMatch score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+}
+/// Instances and metric spec for TrajectoryPrecision metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrajectoryPrecisionInput {
+    /// Required. Spec for TrajectoryPrecision metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<TrajectoryPrecisionSpec>,
+    /// Required. Repeated TrajectoryPrecision instance.
+    #[prost(message, repeated, tag = "2")]
+    pub instances: ::prost::alloc::vec::Vec<TrajectoryPrecisionInstance>,
+}
+/// Spec for TrajectoryPrecision metric - returns a float score based on average
+/// precision of individual tool calls.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct TrajectoryPrecisionSpec {}
+/// Spec for TrajectoryPrecision instance.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrajectoryPrecisionInstance {
+    /// Required. Spec for predicted tool call trajectory.
+    #[prost(message, optional, tag = "1")]
+    pub predicted_trajectory: ::core::option::Option<Trajectory>,
+    /// Required. Spec for reference tool call trajectory.
+    #[prost(message, optional, tag = "2")]
+    pub reference_trajectory: ::core::option::Option<Trajectory>,
+}
+/// Results for TrajectoryPrecision metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrajectoryPrecisionResults {
+    /// Output only. TrajectoryPrecision metric values.
+    #[prost(message, repeated, tag = "1")]
+    pub trajectory_precision_metric_values: ::prost::alloc::vec::Vec<
+        TrajectoryPrecisionMetricValue,
+    >,
+}
+/// TrajectoryPrecision metric value for an instance.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct TrajectoryPrecisionMetricValue {
+    /// Output only. TrajectoryPrecision score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+}
+/// Instances and metric spec for TrajectoryRecall metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrajectoryRecallInput {
+    /// Required. Spec for TrajectoryRecall metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<TrajectoryRecallSpec>,
+    /// Required. Repeated TrajectoryRecall instance.
+    #[prost(message, repeated, tag = "2")]
+    pub instances: ::prost::alloc::vec::Vec<TrajectoryRecallInstance>,
+}
+/// Spec for TrajectoryRecall metric - returns a float score based on average
+/// recall of individual tool calls.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct TrajectoryRecallSpec {}
+/// Spec for TrajectoryRecall instance.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrajectoryRecallInstance {
+    /// Required. Spec for predicted tool call trajectory.
+    #[prost(message, optional, tag = "1")]
+    pub predicted_trajectory: ::core::option::Option<Trajectory>,
+    /// Required. Spec for reference tool call trajectory.
+    #[prost(message, optional, tag = "2")]
+    pub reference_trajectory: ::core::option::Option<Trajectory>,
+}
+/// Results for TrajectoryRecall metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrajectoryRecallResults {
+    /// Output only. TrajectoryRecall metric values.
+    #[prost(message, repeated, tag = "1")]
+    pub trajectory_recall_metric_values: ::prost::alloc::vec::Vec<
+        TrajectoryRecallMetricValue,
+    >,
+}
+/// TrajectoryRecall metric value for an instance.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct TrajectoryRecallMetricValue {
+    /// Output only. TrajectoryRecall score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+}
+/// Instances and metric spec for TrajectorySingleToolUse metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrajectorySingleToolUseInput {
+    /// Required. Spec for TrajectorySingleToolUse metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<TrajectorySingleToolUseSpec>,
+    /// Required. Repeated TrajectorySingleToolUse instance.
+    #[prost(message, repeated, tag = "2")]
+    pub instances: ::prost::alloc::vec::Vec<TrajectorySingleToolUseInstance>,
+}
+/// Spec for TrajectorySingleToolUse metric - returns 1 if tool is present in the
+/// predicted trajectory, else 0.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrajectorySingleToolUseSpec {
+    /// Required. Spec for tool name to be checked for in the predicted trajectory.
+    #[prost(string, optional, tag = "1")]
+    pub tool_name: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Spec for TrajectorySingleToolUse instance.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrajectorySingleToolUseInstance {
+    /// Required. Spec for predicted tool call trajectory.
+    #[prost(message, optional, tag = "1")]
+    pub predicted_trajectory: ::core::option::Option<Trajectory>,
+}
+/// Results for TrajectorySingleToolUse metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrajectorySingleToolUseResults {
+    /// Output only. TrajectorySingleToolUse metric values.
+    #[prost(message, repeated, tag = "1")]
+    pub trajectory_single_tool_use_metric_values: ::prost::alloc::vec::Vec<
+        TrajectorySingleToolUseMetricValue,
+    >,
+}
+/// TrajectorySingleToolUse metric value for an instance.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct TrajectorySingleToolUseMetricValue {
+    /// Output only. TrajectorySingleToolUse score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+}
+/// Spec for trajectory.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Trajectory {
+    /// Required. Tool calls in the trajectory.
+    #[prost(message, repeated, tag = "1")]
+    pub tool_calls: ::prost::alloc::vec::Vec<ToolCall>,
+}
+/// Spec for tool call.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ToolCall {
+    /// Required. Spec for tool name
+    #[prost(string, optional, tag = "1")]
+    pub tool_name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Spec for tool input
+    #[prost(string, optional, tag = "2")]
+    pub tool_input: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Pairwise prediction autorater preference.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -13881,6 +14298,10 @@ pub struct FeatureView {
     /// performed during online serving.
     #[prost(message, optional, tag = "15")]
     pub index_config: ::core::option::Option<feature_view::IndexConfig>,
+    /// Optional. Configuration for FeatureView created under Optimized
+    /// FeatureOnlineStore.
+    #[prost(message, optional, tag = "16")]
+    pub optimized_config: ::core::option::Option<feature_view::OptimizedConfig>,
     /// Optional. Service agent type used during data sync. By default, the Vertex
     /// AI Service Agent is used. When using an IAM Policy to isolate this
     /// FeatureView within a project, a separate service account should be
@@ -14208,6 +14629,17 @@ pub mod feature_view {
         /// Optional. The RAG corpus id corresponding to this FeatureView.
         #[prost(int64, tag = "2")]
         pub rag_corpus_id: i64,
+    }
+    /// Configuration for FeatureViews created in Optimized FeatureOnlineStore.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct OptimizedConfig {
+        /// Optional. A description of resources that the FeatureView uses, which to
+        /// large degree are decided by Vertex AI, and optionally allows only a
+        /// modest additional configuration. If min_replica_count is not set, the
+        /// default value is 2. If max_replica_count is not set, the default value
+        /// is 6. The max allowed replica count is 1000.
+        #[prost(message, optional, tag = "7")]
+        pub automatic_resources: ::core::option::Option<super::AutomaticResources>,
     }
     /// Service agent type used during data sync.
     #[derive(
@@ -19930,6 +20362,15 @@ pub struct TuningJob {
     /// provided encryption key.
     #[prost(message, optional, tag = "16")]
     pub encryption_spec: ::core::option::Option<EncryptionSpec>,
+    /// The service account that the tuningJob workload runs as.
+    /// If not specified, the Vertex AI Secure Fine-Tuned Service Agent in the
+    /// project will be used. See
+    /// <https://cloud.google.com/iam/docs/service-agents#vertex-ai-secure-fine-tuning-service-agent>
+    ///
+    /// Users starting the pipeline must have the `iam.serviceAccounts.actAs`
+    /// permission on this service account.
+    #[prost(string, tag = "22")]
+    pub service_account: ::prost::alloc::string::String,
     #[prost(oneof = "tuning_job::SourceModel", tags = "4")]
     pub source_model: ::core::option::Option<tuning_job::SourceModel>,
     #[prost(oneof = "tuning_job::TuningSpec", tags = "5, 17, 21")]
@@ -32852,7 +33293,7 @@ pub struct NotebookExecutionJob {
     #[prost(oneof = "notebook_execution_job::NotebookSource", tags = "3, 4, 17")]
     pub notebook_source: ::core::option::Option<notebook_execution_job::NotebookSource>,
     /// The compute config to use for an execution job.
-    #[prost(oneof = "notebook_execution_job::EnvironmentSpec", tags = "14")]
+    #[prost(oneof = "notebook_execution_job::EnvironmentSpec", tags = "14, 16")]
     pub environment_spec: ::core::option::Option<
         notebook_execution_job::EnvironmentSpec,
     >,
@@ -32899,6 +33340,19 @@ pub mod notebook_execution_job {
         #[prost(bytes = "vec", tag = "1")]
         pub content: ::prost::alloc::vec::Vec<u8>,
     }
+    /// Compute configuration to use for an execution job.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CustomEnvironmentSpec {
+        /// The specification of a single machine for the execution job.
+        #[prost(message, optional, tag = "1")]
+        pub machine_spec: ::core::option::Option<super::MachineSpec>,
+        /// The specification of a persistent disk to attach for the execution job.
+        #[prost(message, optional, tag = "2")]
+        pub persistent_disk_spec: ::core::option::Option<super::PersistentDiskSpec>,
+        /// The network configuration to use for the execution job.
+        #[prost(message, optional, tag = "3")]
+        pub network_spec: ::core::option::Option<super::NetworkSpec>,
+    }
     /// The input notebook.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum NotebookSource {
@@ -32919,6 +33373,9 @@ pub mod notebook_execution_job {
         /// The NotebookRuntimeTemplate to source compute configuration from.
         #[prost(string, tag = "14")]
         NotebookRuntimeTemplateResourceName(::prost::alloc::string::String),
+        /// The custom compute configuration for an execution job.
+        #[prost(message, tag = "16")]
+        CustomEnvironmentSpec(CustomEnvironmentSpec),
     }
     /// The location to store the notebook execution result.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -34432,6 +34889,12 @@ pub struct PersistentResource {
     /// Example: \['vertex-ai-ip-range'\].
     #[prost(string, repeated, tag = "15")]
     pub reserved_ip_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "18")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "19")]
+    pub satisfies_pzi: bool,
 }
 /// Nested message and enum types in `PersistentResource`.
 pub mod persistent_resource {
@@ -34575,6 +35038,9 @@ pub struct RaySpec {
     /// the {@code resource_pool_images} field.
     #[prost(string, tag = "1")]
     pub image_uri: ::prost::alloc::string::String,
+    /// Optional. Use if you want to mount to any NFS storages.
+    #[prost(message, repeated, tag = "11")]
+    pub nfs_mounts: ::prost::alloc::vec::Vec<NfsMount>,
     /// Optional. Required if image_uri isn't set. A map of resource_pool_id to
     /// prebuild Ray image if user need to use different images for different
     /// head/worker pools. This map needs to cover all the resource pool ids.
@@ -38333,7 +38799,8 @@ pub struct ReasoningEngineSpec {
     /// Required. User provided package spec of the ReasoningEngine.
     #[prost(message, optional, tag = "2")]
     pub package_spec: ::core::option::Option<reasoning_engine_spec::PackageSpec>,
-    /// Optional. Declarations for object class methods.
+    /// Optional. Declarations for object class methods in OpenAPI specification
+    /// format.
     #[prost(message, repeated, tag = "3")]
     pub class_methods: ::prost::alloc::vec::Vec<::prost_types::Struct>,
 }
@@ -38396,6 +38863,10 @@ pub struct QueryReasoningEngineRequest {
     /// include text query, function calling parameters, media bytes, etc.
     #[prost(message, optional, tag = "2")]
     pub input: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. Class method to be used for the query.
+    /// It is optional and defaults to "query" if unspecified.
+    #[prost(string, tag = "3")]
+    pub class_method: ::prost::alloc::string::String,
 }
 /// Response message for [ReasoningEngineExecutionService.Query][]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -38403,6 +38874,23 @@ pub struct QueryReasoningEngineResponse {
     /// Response provided by users in JSON object format.
     #[prost(message, optional, tag = "1")]
     pub output: ::core::option::Option<::prost_types::Value>,
+}
+/// Request message for [ReasoningEngineExecutionService.StreamQuery][].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamQueryReasoningEngineRequest {
+    /// Required. The name of the ReasoningEngine resource to use.
+    /// Format:
+    /// `projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Input content provided by users in JSON object format. Examples
+    /// include text query, function calling parameters, media bytes, etc.
+    #[prost(message, optional, tag = "2")]
+    pub input: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. Class method to be used for the stream query.
+    /// It is optional and defaults to "stream_query" if unspecified.
+    #[prost(string, tag = "3")]
+    pub class_method: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod reasoning_engine_execution_service_client {
@@ -38528,6 +39016,38 @@ pub mod reasoning_engine_execution_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Streams queries using a reasoning engine.
+        pub async fn stream_query_reasoning_engine(
+            &mut self,
+            request: impl tonic::IntoRequest<super::StreamQueryReasoningEngineRequest>,
+        ) -> std::result::Result<
+            tonic::Response<
+                tonic::codec::Streaming<super::super::super::super::api::HttpBody>,
+            >,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.ReasoningEngineExecutionService/StreamQueryReasoningEngine",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.ReasoningEngineExecutionService",
+                        "StreamQueryReasoningEngine",
+                    ),
+                );
+            self.inner.server_streaming(req, path, codec).await
+        }
     }
 }
 /// Request message for
@@ -38568,7 +39088,7 @@ pub struct UpdateReasoningEngineRequest {
     /// Required. The ReasoningEngine which replaces the resource on the server.
     #[prost(message, optional, tag = "1")]
     pub reasoning_engine: ::core::option::Option<ReasoningEngine>,
-    /// Required. Mask specifying which fields to update.
+    /// Optional. Mask specifying which fields to update.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -42075,6 +42595,9 @@ pub struct RagVectorDbConfig {
     /// Authentication config for the chosen Vector DB.
     #[prost(message, optional, tag = "5")]
     pub api_auth: ::core::option::Option<ApiAuth>,
+    /// Optional. Immutable. The embedding model config of the Vector DB.
+    #[prost(message, optional, tag = "7")]
+    pub rag_embedding_model_config: ::core::option::Option<RagEmbeddingModelConfig>,
     /// The config for the Vector DB.
     #[prost(oneof = "rag_vector_db_config::VectorDb", tags = "1, 2, 3, 4, 6")]
     pub vector_db: ::core::option::Option<rag_vector_db_config::VectorDb>,
@@ -42205,6 +42728,16 @@ pub mod file_status {
         }
     }
 }
+/// Config for the Vertex AI Search.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VertexAiSearchConfig {
+    /// Vertex AI Search Serving Config resource full name. For example,
+    /// `projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/servingConfigs/{serving_config}`
+    /// or
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/servingConfigs/{serving_config}`.
+    #[prost(string, tag = "1")]
+    pub serving_config: ::prost::alloc::string::String,
+}
 /// RagCorpus status.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CorpusStatus {
@@ -42282,9 +42815,11 @@ pub struct RagCorpus {
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
     /// Optional. Immutable. The embedding model config of the RagCorpus.
+    #[deprecated]
     #[prost(message, optional, tag = "6")]
     pub rag_embedding_model_config: ::core::option::Option<RagEmbeddingModelConfig>,
     /// Optional. Immutable. The Vector DB config of the RagCorpus.
+    #[deprecated]
     #[prost(message, optional, tag = "7")]
     pub rag_vector_db_config: ::core::option::Option<RagVectorDbConfig>,
     /// Output only. Timestamp when this RagCorpus was created.
@@ -42296,6 +42831,24 @@ pub struct RagCorpus {
     /// Output only. RagCorpus state.
     #[prost(message, optional, tag = "8")]
     pub corpus_status: ::core::option::Option<CorpusStatus>,
+    /// The backend config of the RagCorpus.
+    /// It can be data store and/or retrieval engine.
+    #[prost(oneof = "rag_corpus::BackendConfig", tags = "9, 10")]
+    pub backend_config: ::core::option::Option<rag_corpus::BackendConfig>,
+}
+/// Nested message and enum types in `RagCorpus`.
+pub mod rag_corpus {
+    /// The backend config of the RagCorpus.
+    /// It can be data store and/or retrieval engine.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum BackendConfig {
+        /// Optional. Immutable. The config for the Vector DBs.
+        #[prost(message, tag = "9")]
+        VectorDbConfig(super::RagVectorDbConfig),
+        /// Optional. Immutable. The config for the Vertex AI Search.
+        #[prost(message, tag = "10")]
+        VertexAiSearchConfig(super::VertexAiSearchConfig),
+    }
 }
 /// A RagFile contains user data for chunking, embedding and indexing.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -42407,33 +42960,123 @@ pub mod rag_file {
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RagFileChunkingConfig {
     /// The size of the chunks.
+    #[deprecated]
     #[prost(int32, tag = "1")]
     pub chunk_size: i32,
     /// The overlap between chunks.
+    #[deprecated]
     #[prost(int32, tag = "2")]
     pub chunk_overlap: i32,
+    /// Specifies the chunking config for RagFiles.
+    #[prost(oneof = "rag_file_chunking_config::ChunkingConfig", tags = "3")]
+    pub chunking_config: ::core::option::Option<
+        rag_file_chunking_config::ChunkingConfig,
+    >,
+}
+/// Nested message and enum types in `RagFileChunkingConfig`.
+pub mod rag_file_chunking_config {
+    /// Specifies the fixed length chunking config.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct FixedLengthChunking {
+        /// The size of the chunks.
+        #[prost(int32, tag = "1")]
+        pub chunk_size: i32,
+        /// The overlap between chunks.
+        #[prost(int32, tag = "2")]
+        pub chunk_overlap: i32,
+    }
+    /// Specifies the chunking config for RagFiles.
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    pub enum ChunkingConfig {
+        /// Specifies the fixed length chunking config.
+        #[prost(message, tag = "3")]
+        FixedLengthChunking(FixedLengthChunking),
+    }
+}
+/// Specifies the transformation config for RagFiles.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct RagFileTransformationConfig {
+    /// Specifies the chunking config for RagFiles.
+    #[prost(message, optional, tag = "1")]
+    pub rag_file_chunking_config: ::core::option::Option<RagFileChunkingConfig>,
 }
 /// Specifies the parsing config for RagFiles.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RagFileParsingConfig {
     /// Whether to use advanced PDF parsing.
+    #[deprecated]
     #[prost(bool, tag = "2")]
     pub use_advanced_pdf_parsing: bool,
+    /// The parser to use for RagFiles.
+    #[prost(oneof = "rag_file_parsing_config::Parser", tags = "3, 4")]
+    pub parser: ::core::option::Option<rag_file_parsing_config::Parser>,
+}
+/// Nested message and enum types in `RagFileParsingConfig`.
+pub mod rag_file_parsing_config {
+    /// Specifies the advanced parsing for RagFiles.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct AdvancedParser {
+        /// Whether to use advanced PDF parsing.
+        #[prost(bool, tag = "1")]
+        pub use_advanced_pdf_parsing: bool,
+    }
+    /// Document AI Layout Parser config.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct LayoutParser {
+        /// The full resource name of a Document AI processor or processor version.
+        /// The processor must have type `LAYOUT_PARSER_PROCESSOR`. If specified, the
+        /// `additional_config.parse_as_scanned_pdf` field must be false.
+        /// Format:
+        /// * `projects/{project_id}/locations/{location}/processors/{processor_id}`
+        /// * `projects/{project_id}/locations/{location}/processors/{processor_id}/processorVersions/{processor_version_id}`
+        #[prost(string, tag = "1")]
+        pub processor_name: ::prost::alloc::string::String,
+        /// The maximum number of requests the job is allowed to make to the Document
+        /// AI processor per minute. Consult
+        /// <https://cloud.google.com/document-ai/quotas> and the Quota page for your
+        /// project to set an appropriate value here. If unspecified, a default value
+        /// of 120 QPM would be used.
+        #[prost(int32, tag = "2")]
+        pub max_parsing_requests_per_min: i32,
+    }
+    /// The parser to use for RagFiles.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Parser {
+        /// The Advanced Parser to use for RagFiles.
+        #[prost(message, tag = "3")]
+        AdvancedParser(AdvancedParser),
+        /// The Layout Parser to use for RagFiles.
+        #[prost(message, tag = "4")]
+        LayoutParser(LayoutParser),
+    }
 }
 /// Config for uploading RagFile.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct UploadRagFileConfig {
     /// Specifies the size and overlap of chunks after uploading RagFile.
+    #[deprecated]
     #[prost(message, optional, tag = "1")]
     pub rag_file_chunking_config: ::core::option::Option<RagFileChunkingConfig>,
+    /// Specifies the transformation config for RagFiles.
+    #[prost(message, optional, tag = "3")]
+    pub rag_file_transformation_config: ::core::option::Option<
+        RagFileTransformationConfig,
+    >,
 }
 /// Config for importing RagFiles.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportRagFilesConfig {
     /// Specifies the size and overlap of chunks after importing RagFiles.
+    #[deprecated]
     #[prost(message, optional, tag = "4")]
     pub rag_file_chunking_config: ::core::option::Option<RagFileChunkingConfig>,
-    /// Specifies the parsing config for RagFiles.
+    /// Specifies the transformation config for RagFiles.
+    #[prost(message, optional, tag = "16")]
+    pub rag_file_transformation_config: ::core::option::Option<
+        RagFileTransformationConfig,
+    >,
+    /// Optional. Specifies the parsing config for RagFiles.
+    /// RAG will use the default parser if this field is not set.
     #[prost(message, optional, tag = "8")]
     pub rag_file_parsing_config: ::core::option::Option<RagFileParsingConfig>,
     /// Optional. The max number of queries per minute that this job is allowed to
@@ -42447,6 +43090,7 @@ pub struct ImportRagFilesConfig {
     #[prost(oneof = "import_rag_files_config::ImportSource", tags = "2, 3, 6, 7, 13")]
     pub import_source: ::core::option::Option<import_rag_files_config::ImportSource>,
     /// Optional. If provided, all partial failures are written to the sink.
+    /// Deprecated. Prefer to use the `import_result_sink`.
     #[prost(oneof = "import_rag_files_config::PartialFailureSink", tags = "11, 12")]
     pub partial_failure_sink: ::core::option::Option<
         import_rag_files_config::PartialFailureSink,
@@ -42478,17 +43122,20 @@ pub mod import_rag_files_config {
         SharePointSources(super::SharePointSources),
     }
     /// Optional. If provided, all partial failures are written to the sink.
+    /// Deprecated. Prefer to use the `import_result_sink`.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PartialFailureSink {
         /// The Cloud Storage path to write partial failures to.
+        /// Deprecated. Prefer to use `import_result_gcs_sink`.
         #[prost(message, tag = "11")]
         PartialFailureGcsSink(super::GcsDestination),
         /// The BigQuery destination to write partial failures to. It should be a
         /// bigquery table resource name (e.g.
-        /// "bq://projectId.bqDatasetId.bqTableId"). If the dataset id does not
-        /// exist, it will be created. If the table does not exist, it will be
-        /// created with the expected schema. If the table exists, the schema will be
-        /// validated and data will be added to this existing table.
+        /// "bq://projectId.bqDatasetId.bqTableId"). The dataset must exist. If the
+        /// table does not exist, it will be created with the expected schema. If the
+        /// table exists, the schema will be validated and data will be added to this
+        /// existing table.
+        /// Deprecated. Prefer to use `import_result_bq_sink`.
         #[prost(message, tag = "12")]
         PartialFailureBigquerySink(super::BigQueryDestination),
     }
@@ -43140,11 +43787,16 @@ pub mod vertex_rag_data_service_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RagQuery {
     /// Optional. The number of contexts to retrieve.
+    #[deprecated]
     #[prost(int32, tag = "2")]
     pub similarity_top_k: i32,
     /// Optional. Configurations for hybrid search results ranking.
+    #[deprecated]
     #[prost(message, optional, tag = "4")]
     pub ranking: ::core::option::Option<rag_query::Ranking>,
+    /// Optional. The retrieval config for the query.
+    #[prost(message, optional, tag = "6")]
+    pub rag_retrieval_config: ::core::option::Option<RagRetrievalConfig>,
     /// The query to retrieve contexts.
     /// Currently only text query is supported.
     #[prost(oneof = "rag_query::Query", tags = "1")]
@@ -43206,6 +43858,7 @@ pub mod retrieve_contexts_request {
         pub rag_resources: ::prost::alloc::vec::Vec<vertex_rag_store::RagResource>,
         /// Optional. Only return contexts with vector distance smaller than the
         /// threshold.
+        #[deprecated]
         #[prost(double, optional, tag = "2")]
         pub vector_distance_threshold: ::core::option::Option<f64>,
     }
@@ -43245,22 +43898,37 @@ pub mod rag_contexts {
     /// A context of the query.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Context {
-        /// For vertex RagStore, if the file is imported from Cloud Storage or Google
-        /// Drive, source_uri will be original file URI in Cloud Storage or Google
-        /// Drive; if file is uploaded, source_uri will be file display name.
+        /// If the file is imported from Cloud Storage or Google Drive, source_uri
+        /// will be original file URI in Cloud Storage or Google Drive; if file is
+        /// uploaded, source_uri will be file display name.
         #[prost(string, tag = "1")]
         pub source_uri: ::prost::alloc::string::String,
+        /// The file display name.
+        #[prost(string, tag = "5")]
+        pub source_display_name: ::prost::alloc::string::String,
         /// The text chunk.
         #[prost(string, tag = "2")]
         pub text: ::prost::alloc::string::String,
         /// The distance between the query dense embedding vector and the context
         /// text vector.
+        #[deprecated]
         #[prost(double, tag = "3")]
         pub distance: f64,
         /// The distance between the query sparse embedding vector and the context
         /// text vector.
+        #[deprecated]
         #[prost(double, tag = "4")]
         pub sparse_distance: f64,
+        /// According to the underlying Vector DB and the selected metric type, the
+        /// score can be either the distance or the similarity between the query and
+        /// the context and its range depends on the metric type.
+        ///
+        /// For example, if the metric type is COSINE_DISTANCE, it represents the
+        /// distance between the query and the context. The larger the distance, the
+        /// less relevant the context is to the query. The range is \[0, 2\], while 0
+        /// means the most relevant and 2 means the least relevant.
+        #[prost(double, optional, tag = "6")]
+        pub score: ::core::option::Option<f64>,
     }
 }
 /// Response message for
@@ -43270,6 +43938,147 @@ pub struct RetrieveContextsResponse {
     /// The contexts of the query.
     #[prost(message, optional, tag = "1")]
     pub contexts: ::core::option::Option<RagContexts>,
+}
+/// Request message for AugmentPrompt.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AugmentPromptRequest {
+    /// Required. The resource name of the Location from which to augment prompt.
+    /// The users must have permission to make a call in the project.
+    /// Format:
+    /// `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Input content to augment, only text format is supported for now.
+    #[prost(message, repeated, tag = "2")]
+    pub contents: ::prost::alloc::vec::Vec<Content>,
+    /// Optional. Metadata of the backend deployed model.
+    #[prost(message, optional, tag = "3")]
+    pub model: ::core::option::Option<augment_prompt_request::Model>,
+    /// The data source for retrieving contexts.
+    #[prost(oneof = "augment_prompt_request::DataSource", tags = "4")]
+    pub data_source: ::core::option::Option<augment_prompt_request::DataSource>,
+}
+/// Nested message and enum types in `AugmentPromptRequest`.
+pub mod augment_prompt_request {
+    /// Metadata of the backend deployed model.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Model {
+        /// Optional. The model that the user will send the augmented prompt for
+        /// content generation.
+        #[prost(string, tag = "1")]
+        pub model: ::prost::alloc::string::String,
+        /// Optional. The model version of the backend deployed model.
+        #[prost(string, tag = "2")]
+        pub model_version: ::prost::alloc::string::String,
+    }
+    /// The data source for retrieving contexts.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum DataSource {
+        /// Optional. Retrieves contexts from the Vertex RagStore.
+        #[prost(message, tag = "4")]
+        VertexRagStore(super::VertexRagStore),
+    }
+}
+/// Response message for AugmentPrompt.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AugmentPromptResponse {
+    /// Augmented prompt, only text format is supported for now.
+    #[prost(message, repeated, tag = "1")]
+    pub augmented_prompt: ::prost::alloc::vec::Vec<Content>,
+    /// Retrieved facts from RAG data sources.
+    #[prost(message, repeated, tag = "2")]
+    pub facts: ::prost::alloc::vec::Vec<Fact>,
+}
+/// Request message for CorroborateContent.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CorroborateContentRequest {
+    /// Required. The resource name of the Location from which to corroborate text.
+    /// The users must have permission to make a call in the project.
+    /// Format:
+    /// `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Input content to corroborate, only text format is supported for
+    /// now.
+    #[prost(message, optional, tag = "2")]
+    pub content: ::core::option::Option<Content>,
+    /// Optional. Facts used to generate the text can also be used to corroborate
+    /// the text.
+    #[prost(message, repeated, tag = "3")]
+    pub facts: ::prost::alloc::vec::Vec<Fact>,
+    /// Optional. Parameters that can be set to override default settings per
+    /// request.
+    #[prost(message, optional, tag = "4")]
+    pub parameters: ::core::option::Option<corroborate_content_request::Parameters>,
+}
+/// Nested message and enum types in `CorroborateContentRequest`.
+pub mod corroborate_content_request {
+    /// Parameters that can be overrided per request.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct Parameters {
+        /// Optional. Only return claims with citation score larger than the
+        /// threshold.
+        #[prost(double, tag = "1")]
+        pub citation_threshold: f64,
+    }
+}
+/// Response message for CorroborateContent.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CorroborateContentResponse {
+    /// Confidence score of corroborating content. Value is \[0,1\] with 1 is the
+    /// most confidence.
+    #[prost(float, optional, tag = "1")]
+    pub corroboration_score: ::core::option::Option<f32>,
+    /// Claims that are extracted from the input content and facts that support the
+    /// claims.
+    #[prost(message, repeated, tag = "2")]
+    pub claims: ::prost::alloc::vec::Vec<Claim>,
+}
+/// The fact used in grounding.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Fact {
+    /// Query that is used to retrieve this fact.
+    #[prost(string, optional, tag = "1")]
+    pub query: ::core::option::Option<::prost::alloc::string::String>,
+    /// If present, it refers to the title of this fact.
+    #[prost(string, optional, tag = "2")]
+    pub title: ::core::option::Option<::prost::alloc::string::String>,
+    /// If present, this uri links to the source of the fact.
+    #[prost(string, optional, tag = "3")]
+    pub uri: ::core::option::Option<::prost::alloc::string::String>,
+    /// If present, the summary/snippet of the fact.
+    #[prost(string, optional, tag = "4")]
+    pub summary: ::core::option::Option<::prost::alloc::string::String>,
+    /// If present, the distance between the query vector and this fact vector.
+    #[deprecated]
+    #[prost(double, optional, tag = "5")]
+    pub vector_distance: ::core::option::Option<f64>,
+    /// If present, according to the underlying Vector DB and the selected metric
+    /// type, the score can be either the distance or the similarity between the
+    /// query and the fact and its range depends on the metric type.
+    ///
+    /// For example, if the metric type is COSINE_DISTANCE, it represents the
+    /// distance between the query and the fact. The larger the distance, the less
+    /// relevant the fact is to the query. The range is \[0, 2\], while 0 means the
+    /// most relevant and 2 means the least relevant.
+    #[prost(double, optional, tag = "6")]
+    pub score: ::core::option::Option<f64>,
+}
+/// Claim that is extracted from the input text and facts that support it.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Claim {
+    /// Index in the input text where the claim starts (inclusive).
+    #[prost(int32, optional, tag = "1")]
+    pub start_index: ::core::option::Option<i32>,
+    /// Index in the input text where the claim ends (exclusive).
+    #[prost(int32, optional, tag = "2")]
+    pub end_index: ::core::option::Option<i32>,
+    /// Indexes of the facts supporting this claim.
+    #[prost(int32, repeated, tag = "3")]
+    pub fact_indexes: ::prost::alloc::vec::Vec<i32>,
+    /// Confidence score of this corroboration.
+    #[prost(float, optional, tag = "4")]
+    pub score: ::core::option::Option<f32>,
 }
 /// Generated client implementations.
 pub mod vertex_rag_service_client {
@@ -43389,6 +44198,69 @@ pub mod vertex_rag_service_client {
                     GrpcMethod::new(
                         "google.cloud.aiplatform.v1beta1.VertexRagService",
                         "RetrieveContexts",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Given an input prompt, it returns augmented prompt from vertex rag store
+        ///  to guide LLM towards generating grounded responses.
+        pub async fn augment_prompt(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AugmentPromptRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::AugmentPromptResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.VertexRagService/AugmentPrompt",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.VertexRagService",
+                        "AugmentPrompt",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Given an input text, it returns a score that evaluates the factuality of
+        /// the text. It also extracts and returns claims from the text and provides
+        /// supporting facts.
+        pub async fn corroborate_content(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CorroborateContentRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::CorroborateContentResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.VertexRagService/CorroborateContent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.VertexRagService",
+                        "CorroborateContent",
                     ),
                 );
             self.inner.unary(req, path, codec).await

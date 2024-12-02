@@ -151,7 +151,7 @@ pub mod entitlement {
             Unstructured(Unstructured),
         }
     }
-    /// AdditionalNotificationTargets includes email addresses to be notified.
+    /// `AdditionalNotificationTargets` includes email addresses to be notified.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AdditionalNotificationTargets {
         /// Optional. Additional email addresses to be notified when a principal
@@ -223,7 +223,7 @@ pub mod entitlement {
         }
     }
 }
-/// AccessControlEntry is used to control who can do some operation.
+/// `AccessControlEntry` is used to control who can do some operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessControlEntry {
     /// Optional. Users who are allowed for the operation. Each entry should be a
@@ -305,7 +305,7 @@ pub struct PrivilegedAccess {
 }
 /// Nested message and enum types in `PrivilegedAccess`.
 pub mod privileged_access {
-    /// GcpIamAccess represents IAM based access control on a Google Cloud
+    /// `GcpIamAccess` represents IAM based access control on a Google Cloud
     /// resource. Refer to <https://cloud.google.com/iam/docs> to understand more
     /// about IAM.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -322,7 +322,7 @@ pub mod privileged_access {
     }
     /// Nested message and enum types in `GcpIamAccess`.
     pub mod gcp_iam_access {
-        /// IAM Role bindings that are created after a successful grant.
+        /// IAM role bindings that are created after a successful grant.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct RoleBinding {
             /// Required. IAM role to be granted.
@@ -501,7 +501,7 @@ pub struct CreateEntitlementRequest {
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, ignores the second request and returns the
     /// previous operation's response. This prevents clients from accidentally
-    /// creating duplicate commitments.
+    /// creating duplicate entitlements.
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
@@ -522,8 +522,7 @@ pub struct DeleteEntitlementRequest {
     /// For example, consider a situation where you make an initial request and the
     /// request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
-    /// was received, and if so, ignores the second request. This prevents
-    /// clients from accidentally creating duplicate commitments.
+    /// was received, and if so, ignores the second request.
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
@@ -553,8 +552,6 @@ pub struct UpdateEntitlementRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// This is to ensure that the `Grants` and `ProducerGrants` proto are byte
-/// compatible.
 /// A grant represents a request from a user for obtaining the access specified
 /// in an entitlement they are eligible for.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1034,7 +1031,7 @@ pub struct CreateGrantRequest {
     /// request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, ignores the second request. This prevents
-    /// clients from accidentally creating duplicate commitments.
+    /// clients from accidentally creating duplicate grants.
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
@@ -1183,7 +1180,7 @@ pub mod privileged_access_manager_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// CheckOnboardingStatus reports the onboarding status for a
+        /// `CheckOnboardingStatus` reports the onboarding status for a
         /// project/folder/organization. Any findings reported by this API need to be
         /// fixed before PAM can be used on the resource.
         pub async fn check_onboarding_status(
@@ -1335,7 +1332,7 @@ pub mod privileged_access_manager_client {
             self.inner.unary(req, path, codec).await
         }
         /// Deletes a single entitlement. This method can only be called when there
-        /// are no in-progress (ACTIVE/ACTIVATING/REVOKING) grants under the
+        /// are no in-progress (`ACTIVE`/`ACTIVATING`/`REVOKING`) grants under the
         /// entitlement.
         pub async fn delete_entitlement(
             &mut self,
@@ -1503,7 +1500,8 @@ pub mod privileged_access_manager_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Creates a new grant in a given project and location.
+        /// Creates a new grant in a given project/folder/organization and
+        /// location.
         pub async fn create_grant(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateGrantRequest>,

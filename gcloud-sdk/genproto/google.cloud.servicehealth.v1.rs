@@ -622,6 +622,9 @@ pub struct Product {
     /// Google Cloud product impacted by the event. Example: `"Google Cloud SQL"`
     #[prost(string, tag = "1")]
     pub product_name: ::prost::alloc::string::String,
+    /// Unique identifier for the product.
+    #[prost(string, tag = "2")]
+    pub id: ::prost::alloc::string::String,
 }
 /// Represents the Google Cloud products and locations impacted by the event.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -672,6 +675,7 @@ pub struct Asset {
     #[prost(string, tag = "2")]
     pub asset_type: ::prost::alloc::string::String,
 }
+/// Message for requesting list of events.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEventsRequest {
     /// Required. Parent value using the form
@@ -701,7 +705,8 @@ pub struct ListEventsRequest {
     /// response. The expression takes the following forms: <br>
     /// *   field=value for `category` and `state`<br>
     /// *   field &lt;, >, &lt;=, or >= value for `update_time` <br>
-    /// Examples: `category=INCIDENT`, `update_time>=2000-01-01T11:30:00-04:00`
+    /// Examples: `category=INCIDENT`, `update_time>="2000-01-01T11:30:00-04:00"`,
+    /// `event_impacts.product.product_name:"Eventarc"`
     /// <br>
     ///
     /// Multiple filter queries are separated by spaces. Example:
@@ -711,13 +716,14 @@ pub struct ListEventsRequest {
     /// AND and OR expressions explicitly.
     ///
     /// Filter is supported for the following fields: `category`, `state`,
-    /// `update_time`
+    /// `update_time`, `event_impacts.product.product_name`
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Event fields to include in response.
     #[prost(enumeration = "EventView", tag = "6")]
     pub view: i32,
 }
+/// Message for response to listing events.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEventsResponse {
     /// Output only. List of events.
@@ -734,7 +740,7 @@ pub struct ListEventsResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Message for getting an event
+/// Message for getting an event.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEventRequest {
     /// Required. Unique name of the event in this scope including project
@@ -747,6 +753,7 @@ pub struct GetEventRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// Message for requesting list of organization events.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOrganizationEventsRequest {
     /// Required. Parent value using the form
@@ -783,7 +790,7 @@ pub struct ListOrganizationEventsRequest {
     /// *   field=value for `category` and `state`
     /// *   field &lt;, >, &lt;=, or >= value for `update_time`
     ///
-    /// Examples: `category=INCIDENT`, `update_time>=2000-01-01T11:30:00-04:00`
+    /// Examples: `category=INCIDENT`, `update_time>="2000-01-01T11:30:00-04:00"`
     ///
     /// Multiple filter queries are space-separated. Example:
     /// `category=INCIDENT state=ACTIVE`.
@@ -799,6 +806,7 @@ pub struct ListOrganizationEventsRequest {
     #[prost(enumeration = "OrganizationEventView", tag = "6")]
     pub view: i32,
 }
+/// Message for response to listing organization events.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOrganizationEventsResponse {
     /// Output only. List of organization events affecting an organization.
@@ -815,6 +823,7 @@ pub struct ListOrganizationEventsResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Message for getting an organization event.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOrganizationEventRequest {
     /// Required. Unique name of the event in this scope including organization and
@@ -829,7 +838,7 @@ pub struct GetOrganizationEventRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Message for requesting list of OrganizationImpacts
+/// Message for requesting list of organization impacts.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOrganizationImpactsRequest {
     /// Required. Parent value using the form
@@ -879,6 +888,7 @@ pub struct ListOrganizationImpactsRequest {
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }
+/// Message for response to listing organization impacts.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOrganizationImpactsResponse {
     /// Output only. List of
@@ -897,6 +907,7 @@ pub struct ListOrganizationImpactsResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Message for getting an organization impact.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOrganizationImpactRequest {
     /// Required. Name of the resource using the form

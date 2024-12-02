@@ -2430,7 +2430,7 @@ pub struct GenerationConfig {
     /// values will cause the model to start repeating a common token  until it
     /// hits the
     /// [max_output_tokens][google.ai.generativelanguage.v1beta.GenerationConfig.max_output_tokens]
-    /// limit: "...the the the the the...".
+    /// limit.
     #[prost(float, optional, tag = "16")]
     pub frequency_penalty: ::core::option::Option<f32>,
     /// Optional. If true, export the logprobs results in response.
@@ -2489,6 +2489,9 @@ pub struct GenerateContentResponse {
     /// Output only. Metadata on the generation requests' token usage.
     #[prost(message, optional, tag = "3")]
     pub usage_metadata: ::core::option::Option<generate_content_response::UsageMetadata>,
+    /// Output only. The model version used to generate the response.
+    #[prost(string, tag = "4")]
+    pub model_version: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `GenerateContentResponse`.
 pub mod generate_content_response {
@@ -2621,7 +2624,7 @@ pub struct Candidate {
     /// This field is populated for `GenerateContent` calls.
     #[prost(message, optional, tag = "9")]
     pub grounding_metadata: ::core::option::Option<GroundingMetadata>,
-    /// Output only.
+    /// Output only. Average log probability score of the candidate.
     #[prost(double, tag = "10")]
     pub avg_logprobs: f64,
     /// Output only. Log-likelihood scores for the response tokens and top tokens
@@ -2822,6 +2825,9 @@ pub struct GroundingMetadata {
     /// Metadata related to retrieval in the grounding flow.
     #[prost(message, optional, tag = "4")]
     pub retrieval_metadata: ::core::option::Option<RetrievalMetadata>,
+    /// Web search queries for the following-up web search.
+    #[prost(string, repeated, tag = "5")]
+    pub web_search_queries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Google search entry point.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3870,7 +3876,7 @@ pub mod dataset {
     /// Inline data or a reference to the data.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Dataset {
-        /// Optional. Inline examples.
+        /// Optional. Inline examples with simple input/output text.
         #[prost(message, tag = "1")]
         Examples(super::TuningExamples),
     }
@@ -3878,8 +3884,8 @@ pub mod dataset {
 /// A set of tuning examples. Can be training or validation data.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TuningExamples {
-    /// Required. The examples. Example input can be for text or discuss, but all
-    /// examples in a set must be of the same type.
+    /// The examples. Example input can be for text or discuss, but all examples
+    /// in a set must be of the same type.
     #[prost(message, repeated, tag = "1")]
     pub examples: ::prost::alloc::vec::Vec<TuningExample>,
 }
@@ -4059,7 +4065,7 @@ pub struct UpdateTunedModelRequest {
     /// Required. The tuned model to update.
     #[prost(message, optional, tag = "1")]
     pub tuned_model: ::core::option::Option<TunedModel>,
-    /// Required. The list of fields to update.
+    /// Optional. The list of fields to update.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }

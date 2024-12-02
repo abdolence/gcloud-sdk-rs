@@ -382,6 +382,8 @@ pub enum AudioEncoding {
     /// is replaced with a single byte containing the block length. Only Speex
     /// wideband is supported. `sample_rate_hertz` must be 16000.
     SpeexWithHeaderByte = 7,
+    /// 8-bit samples that compand 13-bit audio samples using G.711 PCMU/a-law.
+    Alaw = 8,
 }
 impl AudioEncoding {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -398,6 +400,7 @@ impl AudioEncoding {
             Self::AmrWb => "AUDIO_ENCODING_AMR_WB",
             Self::OggOpus => "AUDIO_ENCODING_OGG_OPUS",
             Self::SpeexWithHeaderByte => "AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE",
+            Self::Alaw => "AUDIO_ENCODING_ALAW",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -411,6 +414,7 @@ impl AudioEncoding {
             "AUDIO_ENCODING_AMR_WB" => Some(Self::AmrWb),
             "AUDIO_ENCODING_OGG_OPUS" => Some(Self::OggOpus),
             "AUDIO_ENCODING_SPEEX_WITH_HEADER_BYTE" => Some(Self::SpeexWithHeaderByte),
+            "AUDIO_ENCODING_ALAW" => Some(Self::Alaw),
             _ => None,
         }
     }
@@ -531,6 +535,8 @@ pub enum OutputAudioEncoding {
     OggOpus = 3,
     /// 8-bit samples that compand 14-bit audio samples using G.711 PCMU/mu-law.
     Mulaw = 5,
+    /// 8-bit samples that compand 13-bit audio samples using G.711 PCMU/a-law.
+    Alaw = 6,
 }
 impl OutputAudioEncoding {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -545,6 +551,7 @@ impl OutputAudioEncoding {
             Self::Mp364Kbps => "OUTPUT_AUDIO_ENCODING_MP3_64_KBPS",
             Self::OggOpus => "OUTPUT_AUDIO_ENCODING_OGG_OPUS",
             Self::Mulaw => "OUTPUT_AUDIO_ENCODING_MULAW",
+            Self::Alaw => "OUTPUT_AUDIO_ENCODING_ALAW",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -556,9 +563,21 @@ impl OutputAudioEncoding {
             "OUTPUT_AUDIO_ENCODING_MP3_64_KBPS" => Some(Self::Mp364Kbps),
             "OUTPUT_AUDIO_ENCODING_OGG_OPUS" => Some(Self::OggOpus),
             "OUTPUT_AUDIO_ENCODING_MULAW" => Some(Self::Mulaw),
+            "OUTPUT_AUDIO_ENCODING_ALAW" => Some(Self::Alaw),
             _ => None,
         }
     }
+}
+/// The settings of BigQuery export.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BigQueryExportSettings {
+    /// The field to indicate whether the BigQuery export is enabled.
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
+    /// The BigQuery table to export.
+    /// Format: `projects/<ProjectID>/datasets/<DatasetID>/tables/<TableID>`.
+    #[prost(string, tag = "2")]
+    pub bigquery_table: ::prost::alloc::string::String,
 }
 /// Import strategies for the conflict resolution of resources (i.e. intents,
 /// entities, and webhooks) with identical display names during import
@@ -1084,7 +1103,8 @@ pub mod response_message {
     /// The text response message.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Text {
-        /// Required. A collection of text responses.
+        /// Required. A collection of text response variants. If multiple variants
+        /// are defined, only one text response variant is returned at runtime.
         #[prost(string, repeated, tag = "1")]
         pub text: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Output only. Whether the playback of this message can be interrupted by
@@ -1328,8 +1348,8 @@ pub struct Fulfillment {
     #[prost(message, repeated, tag = "1")]
     pub messages: ::prost::alloc::vec::Vec<ResponseMessage>,
     /// The webhook to call.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/webhooks/<Webhook ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/webhooks/<WebhookID>`.
     #[prost(string, tag = "2")]
     pub webhook: ::prost::alloc::string::String,
     /// Whether Dialogflow should return currently queued fulfillment response
@@ -1460,8 +1480,8 @@ pub struct Page {
     /// method.
     /// [Pages.CreatePage][google.cloud.dialogflow.cx.v3beta1.Pages.CreatePage]
     /// populates the name automatically.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>/pages/<Page ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The human-readable name of the page, unique within the flow.
@@ -1491,11 +1511,10 @@ pub struct Page {
     /// *   If multiple transition route groups within a page contain the same
     ///      intent, then the first group in the ordered list takes precedence.
     ///
-    /// Format:`projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>/transitionRouteGroups/<TransitionRouteGroup ID>`
-    /// or `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/transitionRouteGroups/<TransitionRouteGroup ID>` for agent-level
-    /// groups.
+    /// Format:`projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/transitionRouteGroups/<TransitionRouteGroupID>`
+    /// or
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/transitionRouteGroups/<TransitionRouteGroupID>`
+    /// for agent-level groups.
     #[prost(string, repeated, tag = "11")]
     pub transition_route_groups: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
@@ -1563,11 +1582,12 @@ pub mod form {
         #[prost(bool, tag = "2")]
         pub required: bool,
         /// Required. The entity type of the parameter.
-        /// Format: `projects/-/locations/-/agents/-/entityTypes/<System Entity Type
-        /// ID>` for system entity types (for example,
+        /// Format:
+        /// `projects/-/locations/-/agents/-/entityTypes/<SystemEntityTypeID>` for
+        /// system entity types (for example,
         /// `projects/-/locations/-/agents/-/entityTypes/sys.date`), or
-        /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-        /// ID>/entityTypes/<Entity Type ID>` for developer entity types.
+        /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>`
+        /// for developer entity types.
         #[prost(string, tag = "3")]
         pub entity_type: ::prost::alloc::string::String,
         /// Indicates whether the parameter represents a list of values.
@@ -1690,13 +1710,13 @@ pub mod event_handler {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Target {
         /// The target page to transition to.
-        /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-        /// ID>/flows/<Flow ID>/pages/<Page ID>`.
+        /// Format:
+        /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>`.
         #[prost(string, tag = "2")]
         TargetPage(::prost::alloc::string::String),
         /// The target flow to transition to.
-        /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-        /// ID>/flows/<Flow ID>`.
+        /// Format:
+        /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
         #[prost(string, tag = "3")]
         TargetFlow(::prost::alloc::string::String),
         /// The target playbook to transition to.
@@ -1733,8 +1753,7 @@ pub struct TransitionRoute {
     pub description: ::prost::alloc::string::String,
     /// The unique identifier of an
     /// [Intent][google.cloud.dialogflow.cx.v3beta1.Intent]. Format:
-    /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/intents/<Intent ID>`.
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>`.
     /// Indicates that the transition can only happen when the given intent is
     /// matched.
     /// At least one of `intent` or `condition` must be specified. When both
@@ -1774,13 +1793,13 @@ pub mod transition_route {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Target {
         /// The target page to transition to.
-        /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-        /// ID>/flows/<Flow ID>/pages/<Page ID>`.
+        /// Format:
+        /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>`.
         #[prost(string, tag = "4")]
         TargetPage(::prost::alloc::string::String),
         /// The target flow to transition to.
-        /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-        /// ID>/flows/<Flow ID>`.
+        /// Format:
+        /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
         #[prost(string, tag = "5")]
         TargetFlow(::prost::alloc::string::String),
     }
@@ -1790,8 +1809,8 @@ pub mod transition_route {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPagesRequest {
     /// Required. The flow to list all pages for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The language to list pages for. The following fields are language
@@ -1843,8 +1862,8 @@ pub struct ListPagesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPageRequest {
     /// Required. The name of the page.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>/pages/<Page ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The language to retrieve the page for. The following fields are language
@@ -1876,8 +1895,8 @@ pub struct GetPageRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePageRequest {
     /// Required. The flow to create a page for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The page to create.
@@ -1945,8 +1964,8 @@ pub struct UpdatePageRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePageRequest {
     /// Required. The name of the page to delete.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/Flows/<flow ID>/pages/<Page ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/Flows/<flowID>/pages/<PageID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// This field has no effect for pages with no incoming transitions.
@@ -1998,13 +2017,13 @@ pub mod knowledge_connector_settings {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Target {
         /// The target page to transition to.
-        /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-        /// ID>/flows/<Flow ID>/pages/<Page ID>`.
+        /// Format:
+        /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>`.
         #[prost(string, tag = "4")]
         TargetPage(::prost::alloc::string::String),
         /// The target flow to transition to.
-        /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-        /// ID>/flows/<Flow ID>`.
+        /// Format:
+        /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
         #[prost(string, tag = "5")]
         TargetFlow(::prost::alloc::string::String),
     }
@@ -2423,7 +2442,8 @@ pub struct NluSettings {
     /// classification threshold. If the returned score value is less than the
     /// threshold value, then a no-match event will be triggered. The score values
     /// range from 0.0 (completely uncertain) to 1.0 (completely certain). If set
-    /// to 0.0, the default of 0.3 is used.
+    /// to 0.0, the default of 0.3 is used. You can set a separate classification
+    /// threshold for the flow in each language enabled for the agent.
     #[prost(float, tag = "3")]
     pub classification_threshold: f32,
     /// Indicates NLU model training mode.
@@ -2538,8 +2558,8 @@ pub mod nlu_settings {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Flow {
     /// The unique identifier of the flow.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The human-readable name of the flow.
@@ -2590,11 +2610,10 @@ pub struct Flow {
     /// route groups][Page.transition_route_groups]. Transition route groups
     /// defined in the page have higher priority than those defined in the flow.
     ///
-    /// Format:`projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>/transitionRouteGroups/<TransitionRouteGroup ID>`
-    /// or `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/transitionRouteGroups/<TransitionRouteGroup ID>` for agent-level
-    /// groups.
+    /// Format:`projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/transitionRouteGroups/<TransitionRouteGroupID>`
+    /// or
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/transitionRouteGroups/<TransitionRouteGroupID>`
+    /// for agent-level groups.
     #[prost(string, repeated, tag = "15")]
     pub transition_route_groups: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
@@ -2646,7 +2665,7 @@ pub mod flow {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFlowRequest {
     /// Required. The agent to create a flow for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The flow to create.
@@ -2672,8 +2691,8 @@ pub struct CreateFlowRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteFlowRequest {
     /// Required. The name of the flow to delete.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// This field has no effect for flows with no incoming transitions.
@@ -2694,7 +2713,7 @@ pub struct DeleteFlowRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFlowsRequest {
     /// Required. The agent containing the flows.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return in a single page. By default 100 and
@@ -2738,8 +2757,8 @@ pub struct ListFlowsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFlowRequest {
     /// Required. The name of the flow to get.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The language to retrieve the flow for. The following fields are language
@@ -2789,8 +2808,8 @@ pub struct UpdateFlowRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrainFlowRequest {
     /// Required. The flow to train.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -2799,8 +2818,8 @@ pub struct TrainFlowRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValidateFlowRequest {
     /// Required. The flow to validate.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// If not specified, the agent's default language is used.
@@ -2812,8 +2831,8 @@ pub struct ValidateFlowRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFlowValidationResultRequest {
     /// Required. The flow name.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>/validationResult`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/validationResult`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// If not specified, the agent's default language is used.
@@ -2825,8 +2844,8 @@ pub struct GetFlowValidationResultRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FlowValidationResult {
     /// The unique identifier of the flow validation result.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>/validationResult`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/validationResult`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Contains all validation messages.
@@ -2841,7 +2860,7 @@ pub struct FlowValidationResult {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportFlowRequest {
     /// Required. The agent to import the flow into.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Flow import mode. If not specified, `KEEP` is assumed.
@@ -2941,8 +2960,8 @@ pub struct FlowImportStrategy {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportFlowResponse {
     /// The unique identifier of the new flow.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
     #[prost(string, tag = "1")]
     pub flow: ::prost::alloc::string::String,
 }
@@ -2951,8 +2970,8 @@ pub struct ImportFlowResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportFlowRequest {
     /// Required. The name of the flow to export.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. The [Google Cloud
@@ -3429,6 +3448,9 @@ pub mod flows_client {
 /// Settings for Generative Safety.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SafetySettings {
+    /// Optional. Default phrase match strategy for banned phrases.
+    #[prost(enumeration = "safety_settings::PhraseMatchStrategy", tag = "4")]
+    pub default_banned_phrase_match_strategy: i32,
     /// Banned phrases for generated text.
     #[prost(message, repeated, tag = "1")]
     pub banned_phrases: ::prost::alloc::vec::Vec<safety_settings::Phrase>,
@@ -3445,12 +3467,57 @@ pub mod safety_settings {
         #[prost(string, tag = "2")]
         pub language_code: ::prost::alloc::string::String,
     }
+    /// Strategy for matching phrases.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PhraseMatchStrategy {
+        /// Unspecified, defaults to PARTIAL_MATCH.
+        Unspecified = 0,
+        /// Text that contains the phrase as a substring will be matched, e.g. "foo"
+        /// will match "afoobar".
+        PartialMatch = 1,
+        /// Text that contains the tokenized words of the phrase will be matched,
+        /// e.g. "foo" will match "a foo bar" and "foo bar", but not "foobar".
+        WordMatch = 2,
+    }
+    impl PhraseMatchStrategy {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PHRASE_MATCH_STRATEGY_UNSPECIFIED",
+                Self::PartialMatch => "PARTIAL_MATCH",
+                Self::WordMatch => "WORD_MATCH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PHRASE_MATCH_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
+                "PARTIAL_MATCH" => Some(Self::PartialMatch),
+                "WORD_MATCH" => Some(Self::WordMatch),
+                _ => None,
+            }
+        }
+    }
 }
 /// Settings for Generative AI.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerativeSettings {
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/generativeSettings`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generativeSettings`.
     #[prost(string, tag = "5")]
     pub name: ::prost::alloc::string::String,
     /// Settings for Generative Fallback.
@@ -3574,7 +3641,7 @@ pub struct Agent {
     /// method.
     /// [Agents.CreateAgent][google.cloud.dialogflow.cx.v3beta1.Agents.CreateAgent]
     /// populates the name automatically.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The human-readable name of the agent, unique within the location.
@@ -3615,8 +3682,8 @@ pub struct Agent {
     pub speech_to_text_settings: ::core::option::Option<SpeechToTextSettings>,
     /// Name of the
     /// [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings]
-    /// reference for the agent. Format: `projects/<Project ID>/locations/<Location
-    /// ID>/securitySettings/<Security Settings ID>`.
+    /// reference for the agent. Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/securitySettings/<SecuritySettingsID>`.
     #[prost(string, tag = "17")]
     pub security_settings: ::prost::alloc::string::String,
     /// Indicates if stackdriver logging is enabled for the agent.
@@ -3645,6 +3712,13 @@ pub struct Agent {
     /// Git integration settings for this agent.
     #[prost(message, optional, tag = "30")]
     pub git_integration_settings: ::core::option::Option<agent::GitIntegrationSettings>,
+    /// Optional. The BigQuery export settings for this agent. The conversation
+    /// data will be exported to BigQuery tables if it is enabled. By default,
+    /// BigQuery export settings will not be exported with agent. You need to set
+    /// [include_bigquery_export_settings][google.cloud.dialogflow.cx.v3beta1.ExportAgentRequest.include_bigquery_export_settings]
+    /// to include it in the exported agent.
+    #[prost(message, optional, tag = "29")]
+    pub bigquery_export_settings: ::core::option::Option<BigQueryExportSettings>,
     /// Settings on instructing the speech synthesizer on how to generate the
     /// output audio content.
     #[prost(message, optional, tag = "31")]
@@ -3658,6 +3732,11 @@ pub struct Agent {
     /// Optional. Settings for end user personalization.
     #[prost(message, optional, tag = "42")]
     pub personalization_settings: ::core::option::Option<agent::PersonalizationSettings>,
+    /// Optional. Settings for custom client certificates.
+    #[prost(message, optional, tag = "43")]
+    pub client_certificate_settings: ::core::option::Option<
+        agent::ClientCertificateSettings,
+    >,
     /// The resource to start the conversations with for the agent.
     #[prost(oneof = "agent::SessionEntryResource", tags = "16, 39")]
     pub session_entry_resource: ::core::option::Option<agent::SessionEntryResource>,
@@ -3734,24 +3813,45 @@ pub mod agent {
         #[prost(message, optional, tag = "1")]
         pub default_end_user_metadata: ::core::option::Option<::prost_types::Struct>,
     }
+    /// Settings for custom client certificates.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ClientCertificateSettings {
+        /// Required. The ssl certificate encoded in PEM format. This string must
+        /// include the begin header and end footer lines.
+        #[prost(string, tag = "1")]
+        pub ssl_certificate: ::prost::alloc::string::String,
+        /// Required. The name of the SecretManager secret version resource storing
+        /// the private key encoded in PEM format. Format:
+        /// `projects/{project}/secrets/{secret}/versions/{version}`
+        #[prost(string, tag = "2")]
+        pub private_key: ::prost::alloc::string::String,
+        /// Optional. The name of the SecretManager secret version resource storing
+        /// the passphrase. 'passphrase' should be left unset if the private key is
+        /// not encrypted.
+        /// Format: `projects/{project}/secrets/{secret}/versions/{version}`
+        #[prost(string, tag = "3")]
+        pub passphrase: ::prost::alloc::string::String,
+    }
     /// The resource to start the conversations with for the agent.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SessionEntryResource {
         /// Name of the start flow in this agent. A start flow will be automatically
         /// created when the agent is created, and can only be deleted by deleting
         /// the agent.
-        /// Format: `projects/<Project ID>/locations/<Location
-        /// ID>/agents/<Agent ID>/flows/<Flow ID>`. Currently only the default start
-        /// flow with id "00000000-0000-0000-0000-000000000000" is allowed.
+        /// Format:
+        /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
+        /// Currently only the default start flow with id
+        /// "00000000-0000-0000-0000-000000000000" is allowed.
         #[prost(string, tag = "16")]
         StartFlow(::prost::alloc::string::String),
         /// Name of the start playbook in this agent. A start playbook will be
         /// automatically created when the agent is created, and can only be deleted
         /// by deleting the agent.
-        /// Format: `projects/<Project ID>/locations/<Location
-        /// ID>/agents/<Agent ID>/playbooks/<Playbook ID>`. Currently only the
-        /// default playbook with id
-        /// "00000000-0000-0000-0000-000000000000" is allowed.
+        /// Format:
+        /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>`.
+        /// Currently only the
+        ///   default playbook with id
+        ///   "00000000-0000-0000-0000-000000000000" is allowed.
         #[prost(string, tag = "39")]
         StartPlaybook(::prost::alloc::string::String),
     }
@@ -3761,7 +3861,7 @@ pub mod agent {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAgentsRequest {
     /// Required. The location to list all agents for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return in a single page. By default 100 and
@@ -3790,7 +3890,7 @@ pub struct ListAgentsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAgentRequest {
     /// Required. The name of the agent.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -3799,7 +3899,7 @@ pub struct GetAgentRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAgentRequest {
     /// Required. The location to create a agent for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The agent to create.
@@ -3823,7 +3923,7 @@ pub struct UpdateAgentRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAgentRequest {
     /// Required. The name of the agent to delete.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -3832,7 +3932,7 @@ pub struct DeleteAgentRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportAgentRequest {
     /// Required. The name of the agent to export.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. The [Google Cloud
@@ -3852,8 +3952,8 @@ pub struct ExportAgentRequest {
     #[prost(enumeration = "export_agent_request::DataFormat", tag = "3")]
     pub data_format: i32,
     /// Optional. Environment name. If not set, draft environment is assumed.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/environments/<Environment ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>`.
     #[prost(string, tag = "5")]
     pub environment: ::prost::alloc::string::String,
     /// Optional. The Git branch to export the agent to.
@@ -3954,7 +4054,7 @@ pub mod export_agent_response {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreAgentRequest {
     /// Required. The name of the agent to restore into.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Agent restore mode. If not specified, `KEEP` is assumed.
@@ -4046,7 +4146,7 @@ pub mod restore_agent_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValidateAgentRequest {
     /// Required. The agent to validate.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// If not specified, the agent's default language is used.
@@ -4058,8 +4158,8 @@ pub struct ValidateAgentRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAgentValidationResultRequest {
     /// Required. The agent name.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/validationResult`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/validationResult`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// If not specified, the agent's default language is used.
@@ -4071,8 +4171,8 @@ pub struct GetAgentValidationResultRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AgentValidationResult {
     /// The unique identifier of the agent validation result.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/validationResult`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/validationResult`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Contains all flow validation results.
@@ -4084,8 +4184,8 @@ pub struct AgentValidationResult {
 /// RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGenerativeSettingsRequest {
-    /// Required. Format: `projects/<Project ID>/locations/<Location
-    /// ID>/agents/<Agent ID>/generativeSettings`.
+    /// Required. Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generativeSettings`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Language code of the generative settings.
@@ -4558,7 +4658,7 @@ pub mod agents_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListChangelogsRequest {
     /// Required. The agent containing the changelogs.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The filter string. Supports filter by user_email, resource, type and
@@ -4610,8 +4710,8 @@ pub struct ListChangelogsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetChangelogRequest {
     /// Required. The name of the changelog to get.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/changelogs/<Changelog ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/changelogs/<ChangelogID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -4619,8 +4719,8 @@ pub struct GetChangelogRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Changelog {
     /// The unique identifier of the changelog.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/changelogs/<Changelog ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/changelogs/<ChangelogID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Email address of the authenticated user.
@@ -4828,8 +4928,8 @@ pub struct Intent {
     /// method.
     /// [Intents.CreateIntent][google.cloud.dialogflow.cx.v3beta1.Intents.CreateIntent]
     /// populates the name automatically.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/intents/<Intent ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The human-readable name of the intent, unique within the agent.
@@ -4942,11 +5042,12 @@ pub mod intent {
         #[prost(string, tag = "1")]
         pub id: ::prost::alloc::string::String,
         /// Required. The entity type of the parameter.
-        /// Format: `projects/-/locations/-/agents/-/entityTypes/<System Entity Type
-        /// ID>` for system entity types (for example,
+        /// Format:
+        /// `projects/-/locations/-/agents/-/entityTypes/<SystemEntityTypeID>` for
+        /// system entity types (for example,
         /// `projects/-/locations/-/agents/-/entityTypes/sys.date`), or
-        /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-        /// ID>/entityTypes/<Entity Type ID>` for developer entity types.
+        /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>`
+        /// for developer entity types.
         #[prost(string, tag = "2")]
         pub entity_type: ::prost::alloc::string::String,
         /// Indicates whether the parameter represents a list of values.
@@ -4968,7 +5069,7 @@ pub mod intent {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIntentsRequest {
     /// Required. The agent to list all intents for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The language to list intents for. The following fields are language
@@ -5012,8 +5113,8 @@ pub struct ListIntentsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIntentRequest {
     /// Required. The name of the intent.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/intents/<Intent ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The language to retrieve the intent for. The following fields are language
@@ -5034,7 +5135,7 @@ pub struct GetIntentRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateIntentRequest {
     /// Required. The agent to create an intent for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The intent to create.
@@ -5080,8 +5181,8 @@ pub struct UpdateIntentRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteIntentRequest {
     /// Required. The name of the intent to delete.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/intents/<Intent ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -5090,7 +5191,7 @@ pub struct DeleteIntentRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportIntentsRequest {
     /// Required. The agent to import the intents into.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Merge option for importing intents. If not specified, `REJECT` is assumed.
@@ -5193,8 +5294,8 @@ pub mod import_intents_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportIntentsResponse {
     /// The unique identifier of the imported intents.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/intents/<Intent ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>`.
     #[prost(string, repeated, tag = "1")]
     pub intents: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Info which resources have conflicts when
@@ -5234,13 +5335,12 @@ pub struct ImportIntentsMetadata {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportIntentsRequest {
     /// Required. The name of the parent agent to export intents.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The name of the intents to export.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/intents/<Intent ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>`.
     #[prost(string, repeated, tag = "2")]
     pub intents: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The data format of the exported intents. If not specified, `BLOB`
@@ -5712,8 +5812,8 @@ pub mod intents_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateExampleRequest {
     /// Required. The playbook to create an example for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/playbooks/<Playbook ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The example to create.
@@ -5725,8 +5825,8 @@ pub struct CreateExampleRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteExampleRequest {
     /// Required. The name of the example to delete.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/playbooks/<Playbook ID>/examples/<Example ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>/examples/<ExampleID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -5735,8 +5835,8 @@ pub struct DeleteExampleRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExamplesRequest {
     /// Required. The playbook to list the examples from.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/playbooks/<Playbook ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return in a single page. By
@@ -5748,7 +5848,7 @@ pub struct ListExamplesRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. The language to list examples for.
-    /// If not specified, the agent's default language is used.
+    /// If not specified, list all examples under the playbook.
     /// Note: languages must be enabled in the agent before they can be used.
     #[prost(string, tag = "4")]
     pub language_code: ::prost::alloc::string::String,
@@ -5773,8 +5873,8 @@ pub struct ListExamplesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetExampleRequest {
     /// Required. The name of the example.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/playbooks/<Playbook ID>/examples/<Example ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>/examples/<ExampleID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -5797,8 +5897,8 @@ pub struct UpdateExampleRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Example {
     /// The unique identifier of the playbook example.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/playbooks/<Playbook ID>/examples/<Example ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>/examples/<ExampleID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. The input to the playbook in the example.
@@ -5834,6 +5934,7 @@ pub struct Example {
     /// Optional. The language code of the example.
     /// If not specified, the agent's default language is used.
     /// Note: languages must be enabled in the agent before they can be used.
+    /// Note: example's language code is not currently used in dialogflow agents.
     #[prost(string, tag = "13")]
     pub language_code: ::prost::alloc::string::String,
 }
@@ -5907,8 +6008,8 @@ pub struct AgentUtterance {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ToolUse {
     /// Required. The [tool][google.cloud.dialogflow.cx.v3beta1.Tool] that should
-    /// be used. Format: `projects/<Project ID>/locations/<Location
-    /// ID>/agents/<Agent ID>/tools/<Tool ID>`.
+    /// be used. Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.
     #[prost(string, tag = "1")]
     pub tool: ::prost::alloc::string::String,
     /// Optional. Name of the action to be called during the tool use.
@@ -5922,12 +6023,11 @@ pub struct ToolUse {
     pub output_action_parameters: ::core::option::Option<::prost_types::Struct>,
 }
 /// Stores metadata of the invocation of a child playbook.
-/// Next Id: 5
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlaybookInvocation {
     /// Required. The unique identifier of the playbook.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/playbooks/<Playbook ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>`.
     #[prost(string, tag = "1")]
     pub playbook: ::prost::alloc::string::String,
     /// Optional. Input of the child playbook invocation.
@@ -5941,12 +6041,11 @@ pub struct PlaybookInvocation {
     pub playbook_state: i32,
 }
 /// Stores metadata of the invocation of a CX flow.
-/// Next Id: 7
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FlowInvocation {
     /// Required. The unique identifier of the flow.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// flows/<Flow ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
     #[prost(string, tag = "1")]
     pub flow: ::prost::alloc::string::String,
     /// Optional. A list of input parameters for the flow.
@@ -6270,8 +6369,8 @@ pub struct EntityType {
     /// The unique identifier of the entity type.
     /// Required for
     /// [EntityTypes.UpdateEntityType][google.cloud.dialogflow.cx.v3beta1.EntityTypes.UpdateEntityType].
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/entityTypes/<Entity Type ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The human-readable name of the entity type, unique within the
@@ -6438,13 +6537,12 @@ pub mod entity_type {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportEntityTypesRequest {
     /// Required. The name of the parent agent to export entity types.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The name of the entity types to export.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/entityTypes/<EntityType ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>`.
     #[prost(string, repeated, tag = "2")]
     pub entity_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The data format of the exported entity types. If not specified,
@@ -6571,20 +6669,20 @@ pub struct ExportEntityTypesMetadata {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportEntityTypesRequest {
     /// Required. The agent to import the entity types into.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Merge option for importing entity types.
     #[prost(enumeration = "import_entity_types_request::MergeOption", tag = "4")]
     pub merge_option: i32,
     /// Optional. The target entity type to import into.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/entity_types/<EntityType ID>`.
-    /// If set, there should be only one entity type included in
-    /// [entity_types][google.cloud.dialogflow.cx.v3beta1.ImportEntityTypesRequest.entity_types],
-    /// of which the type should match the type of the target entity type. All
-    /// [entities][google.cloud.dialogflow.cx.v3beta1.EntityType.entities] in the
-    /// imported entity type will be added to the target entity type.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entity_types/<EntityTypeID>`.
+    ///   If set, there should be only one entity type included in
+    ///   [entity_types][google.cloud.dialogflow.cx.v3beta1.ImportEntityTypesRequest.entity_types],
+    ///   of which the type should match the type of the target entity type. All
+    ///   [entities][google.cloud.dialogflow.cx.v3beta1.EntityType.entities] in the
+    ///   imported entity type will be added to the target entity type.
     #[prost(string, tag = "5")]
     pub target_entity_type: ::prost::alloc::string::String,
     /// Required. The entity types to import.
@@ -6677,8 +6775,8 @@ pub mod import_entity_types_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportEntityTypesResponse {
     /// The unique identifier of the imported entity types.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/entity_types/<EntityType ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entity_types/<EntityTypeID>`.
     #[prost(string, repeated, tag = "1")]
     pub entity_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Info which resources have conflicts when
@@ -6718,7 +6816,7 @@ pub struct ImportEntityTypesMetadata {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEntityTypesRequest {
     /// Required. The agent to list all entity types for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The language to list entity types for. The following fields are language
@@ -6761,8 +6859,8 @@ pub struct ListEntityTypesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEntityTypeRequest {
     /// Required. The name of the entity type.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/entityTypes/<Entity Type ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The language to retrieve the entity type for. The following fields are
@@ -6785,7 +6883,7 @@ pub struct GetEntityTypeRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEntityTypeRequest {
     /// Required. The agent to create a entity type for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The entity type to create.
@@ -6834,8 +6932,8 @@ pub struct UpdateEntityTypeRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEntityTypeRequest {
     /// Required. The name of the entity type to delete.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/entityTypes/<Entity Type ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/entityTypes/<EntityTypeID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// This field has no effect for entity type not being used.
@@ -7170,11 +7268,11 @@ pub mod entity_types_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionEntityType {
     /// Required. The unique identifier of the session entity type.
-    /// Format: `projects/<Project ID>/locations/<Location
-    /// ID>/agents/<Agent ID>/sessions/<Session ID>/entityTypes/<Entity Type
-    /// ID>` or `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/environments/<Environment ID>/sessions/<Session ID>/entityTypes/<Entity
-    /// Type ID>`. If `Environment ID` is not specified, we assume default 'draft'
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>`
+    /// or
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>`.
+    /// If `Environment ID` is not specified, we assume default 'draft'
     /// environment.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -7248,11 +7346,12 @@ pub mod session_entity_type {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSessionEntityTypesRequest {
     /// Required. The session to list all session entity types from.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/sessions/<Session ID>` or `projects/<Project ID>/locations/<Location
-    /// ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>`
+    /// or
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>`.
     /// If `Environment ID` is not specified, we assume default 'draft'
-    /// environment.
+    ///   environment.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return in a single page. By default 100 and
@@ -7281,11 +7380,11 @@ pub struct ListSessionEntityTypesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSessionEntityTypeRequest {
     /// Required. The name of the session entity type.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>` or
-    /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/environments/<Environment ID>/sessions/<Session ID>/entityTypes/<Entity
-    /// Type ID>`. If `Environment ID` is not specified, we assume default 'draft'
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>`
+    /// or
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>`.
+    /// If `Environment ID` is not specified, we assume default 'draft'
     /// environment.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -7295,9 +7394,10 @@ pub struct GetSessionEntityTypeRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSessionEntityTypeRequest {
     /// Required. The session to create a session entity type for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/sessions/<Session ID>` or `projects/<Project ID>/locations/<Location
-    /// ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>`
+    /// or
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>`.
     /// If `Environment ID` is not specified, we assume default 'draft'
     /// environment.
     #[prost(string, tag = "1")]
@@ -7311,11 +7411,11 @@ pub struct CreateSessionEntityTypeRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSessionEntityTypeRequest {
     /// Required. The session entity type to update.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>` or
-    /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/environments/<Environment ID>/sessions/<Session ID>/entityTypes/<Entity
-    /// Type ID>`. If `Environment ID` is not specified, we assume default 'draft'
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>`
+    /// or
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>`.
+    /// If `Environment ID` is not specified, we assume default 'draft'
     /// environment.
     #[prost(message, optional, tag = "1")]
     pub session_entity_type: ::core::option::Option<SessionEntityType>,
@@ -7328,11 +7428,11 @@ pub struct UpdateSessionEntityTypeRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSessionEntityTypeRequest {
     /// Required. The name of the session entity type to delete.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>` or
-    /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/environments/<Environment ID>/sessions/<Session ID>/entityTypes/<Entity
-    /// Type ID>`. If `Environment ID` is not specified, we assume default 'draft'
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>`
+    /// or
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>/entityTypes/<EntityTypeID>`.
+    /// If `Environment ID` is not specified, we assume default 'draft'
     /// environment.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -7676,14 +7776,15 @@ pub struct SubmitAnswerFeedbackRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetectIntentRequest {
     /// Required. The name of the session this query is sent to.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/sessions/<Session ID>` or `projects/<Project ID>/locations/<Location
-    /// ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>`
+    /// or
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>`.
     /// If `Environment ID` is not specified, we assume default 'draft'
-    /// environment.
-    /// It's up to the API caller to choose an appropriate `Session ID`. It can be
-    /// a random number or some type of session identifiers (preferably hashed).
-    /// The length of the `Session ID` must not exceed 36 characters.
+    /// environment. It's up to the API caller to choose an appropriate `Session
+    /// ID`. It can be a random number or some type of session identifiers
+    /// (preferably hashed). The length of the `Session ID` must not exceed 36
+    /// characters.
     ///
     /// For more information, see the [sessions
     /// guide](<https://cloud.google.com/dialogflow/cx/docs/concept/session>).
@@ -7822,22 +7923,23 @@ pub mod detect_intent_response {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingDetectIntentRequest {
     /// The name of the session this query is sent to.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/sessions/<Session ID>` or `projects/<Project ID>/locations/<Location
-    /// ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>`
+    /// or
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>`.
     /// If `Environment ID` is not specified, we assume default 'draft'
-    /// environment.
-    /// It's up to the API caller to choose an appropriate `Session ID`. It can be
-    /// a random number or some type of session identifiers (preferably hashed).
-    /// The length of the `Session ID` must not exceed 36 characters.
-    /// Note: session must be set in the first request.
+    ///   environment.
+    ///   It's up to the API caller to choose an appropriate `Session ID`. It can be
+    ///   a random number or some type of session identifiers (preferably hashed).
+    ///   The length of the `Session ID` must not exceed 36 characters.
+    ///   Note: session must be set in the first request.
     ///
-    /// For more information, see the [sessions
-    /// guide](<https://cloud.google.com/dialogflow/cx/docs/concept/session>).
+    ///   For more information, see the [sessions
+    ///   guide](<https://cloud.google.com/dialogflow/cx/docs/concept/session>).
     ///
-    /// Note: Always use agent versions for production traffic.
-    /// See [Versions and
-    /// environments](<https://cloud.google.com/dialogflow/cx/docs/concept/version>).
+    ///   Note: Always use agent versions for production traffic.
+    ///   See [Versions and
+    ///   environments](<https://cloud.google.com/dialogflow/cx/docs/concept/version>).
     #[prost(string, tag = "1")]
     pub session: ::prost::alloc::string::String,
     /// The parameters of this query.
@@ -8182,18 +8284,18 @@ pub struct QueryParameters {
     /// The unique identifier of the
     /// [page][google.cloud.dialogflow.cx.v3beta1.Page] to override the [current
     /// page][QueryResult.current_page] in the session.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>/pages/<Page ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>`.
     ///
-    /// If `current_page` is specified, the previous state of the session will be
-    /// ignored by Dialogflow, including the [previous
-    /// page][QueryResult.current_page] and the [previous session
-    /// parameters][QueryResult.parameters].
-    /// In most cases,
-    /// [current_page][google.cloud.dialogflow.cx.v3beta1.QueryParameters.current_page]
-    /// and
-    /// [parameters][google.cloud.dialogflow.cx.v3beta1.QueryParameters.parameters]
-    /// should be configured together to direct a session to a specific state.
+    ///   If `current_page` is specified, the previous state of the session will be
+    ///   ignored by Dialogflow, including the [previous
+    ///   page][QueryResult.current_page] and the [previous session
+    ///   parameters][QueryResult.parameters].
+    ///   In most cases,
+    ///   [current_page][google.cloud.dialogflow.cx.v3beta1.QueryParameters.current_page]
+    ///   and
+    ///   [parameters][google.cloud.dialogflow.cx.v3beta1.QueryParameters.parameters]
+    ///   should be configured together to direct a session to a specific state.
     #[prost(string, tag = "6")]
     pub current_page: ::prost::alloc::string::String,
     /// Whether to disable webhook calls for this request.
@@ -8217,13 +8319,13 @@ pub struct QueryParameters {
         ::prost::alloc::string::String,
     >,
     /// A list of flow versions to override for the request.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>/versions/<Version ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>`.
     ///
-    /// If version 1 of flow X is included in this list, the traffic of
-    /// flow X will go through version 1 regardless of the version configuration in
-    /// the environment. Each flow can have at most one version specified in this
-    /// list.
+    ///   If version 1 of flow X is included in this list, the traffic of
+    ///   flow X will go through version 1 regardless of the version configuration
+    ///   in the environment. Each flow can have at most one version specified in
+    ///   this list.
     #[prost(string, repeated, tag = "14")]
     pub flow_versions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. Start the session with the specified
@@ -8231,8 +8333,8 @@ pub struct QueryParameters {
     /// specify the playbook at the beginning of the session. Otherwise, an error
     /// will be thrown.
     ///
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/playbooks/<Playbook ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>`.
     #[prost(string, tag = "19")]
     pub current_playbook: ::prost::alloc::string::String,
     /// Optional. Use the specified LLM model settings for processing the request.
@@ -8345,6 +8447,157 @@ pub mod boost_spec {
         /// ignored.
         #[prost(float, tag = "2")]
         pub boost: f32,
+        /// Optional. Complex specification for custom ranking based on customer
+        /// defined attribute value.
+        #[prost(message, optional, tag = "4")]
+        pub boost_control_spec: ::core::option::Option<
+            condition_boost_spec::BoostControlSpec,
+        >,
+    }
+    /// Nested message and enum types in `ConditionBoostSpec`.
+    pub mod condition_boost_spec {
+        /// Specification for custom ranking based on customer specified attribute
+        /// value. It provides more controls for customized ranking than the simple
+        /// (condition, boost) combination above.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct BoostControlSpec {
+            /// Optional. The name of the field whose value will be used to determine
+            /// the boost amount.
+            #[prost(string, tag = "1")]
+            pub field_name: ::prost::alloc::string::String,
+            /// Optional. The attribute type to be used to determine the boost amount.
+            /// The attribute value can be derived from the field value of the
+            /// specified field_name. In the case of numerical it is straightforward
+            /// i.e. attribute_value = numerical_field_value. In the case of freshness
+            /// however, attribute_value = (time.now() - datetime_field_value).
+            #[prost(enumeration = "boost_control_spec::AttributeType", tag = "2")]
+            pub attribute_type: i32,
+            /// Optional. The interpolation type to be applied to connect the control
+            /// points listed below.
+            #[prost(enumeration = "boost_control_spec::InterpolationType", tag = "3")]
+            pub interpolation_type: i32,
+            /// Optional. The control points used to define the curve. The monotonic
+            /// function (defined through the interpolation_type above) passes through
+            /// the control points listed here.
+            #[prost(message, repeated, tag = "4")]
+            pub control_points: ::prost::alloc::vec::Vec<
+                boost_control_spec::ControlPoint,
+            >,
+        }
+        /// Nested message and enum types in `BoostControlSpec`.
+        pub mod boost_control_spec {
+            /// The control points used to define the curve. The curve defined
+            /// through these control points can only be monotonically increasing
+            /// or decreasing(constant values are acceptable).
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct ControlPoint {
+                /// Optional. Can be one of:
+                /// 1. The numerical field value.
+                /// 2. The duration spec for freshness:
+                /// The value must be formatted as an XSD `dayTimeDuration` value (a
+                /// restricted subset of an ISO 8601 duration value). The pattern for
+                /// this is: `[nD][T[nH][nM][nS]]`.
+                #[prost(string, tag = "1")]
+                pub attribute_value: ::prost::alloc::string::String,
+                /// Optional. The value between -1 to 1 by which to boost the score if
+                /// the attribute_value evaluates to the value specified above.
+                #[prost(float, tag = "2")]
+                pub boost_amount: f32,
+            }
+            /// The attribute(or function) for which the custom ranking is to be
+            /// applied.
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum AttributeType {
+                /// Unspecified AttributeType.
+                Unspecified = 0,
+                /// The value of the numerical field will be used to dynamically update
+                /// the boost amount. In this case, the attribute_value (the x value)
+                /// of the control point will be the actual value of the numerical
+                /// field for which the boost_amount is specified.
+                Numerical = 1,
+                /// For the freshness use case the attribute value will be the duration
+                /// between the current time and the date in the datetime field
+                /// specified. The value must be formatted as an XSD `dayTimeDuration`
+                /// value (a restricted subset of an ISO 8601 duration value). The
+                /// pattern for this is: `[nD][T[nH][nM][nS]]`.
+                /// E.g. `5D`, `3DT12H30M`, `T24H`.
+                Freshness = 2,
+            }
+            impl AttributeType {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        Self::Unspecified => "ATTRIBUTE_TYPE_UNSPECIFIED",
+                        Self::Numerical => "NUMERICAL",
+                        Self::Freshness => "FRESHNESS",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "ATTRIBUTE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "NUMERICAL" => Some(Self::Numerical),
+                        "FRESHNESS" => Some(Self::Freshness),
+                        _ => None,
+                    }
+                }
+            }
+            /// The interpolation type to be applied. Default will be linear
+            /// (Piecewise Linear).
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum InterpolationType {
+                /// Interpolation type is unspecified. In this case, it defaults to
+                /// Linear.
+                Unspecified = 0,
+                /// Piecewise linear interpolation will be applied.
+                Linear = 1,
+            }
+            impl InterpolationType {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        Self::Unspecified => "INTERPOLATION_TYPE_UNSPECIFIED",
+                        Self::Linear => "LINEAR",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "INTERPOLATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "LINEAR" => Some(Self::Linear),
+                        _ => None,
+                    }
+                }
+            }
+        }
     }
 }
 /// Boost specifications for data stores.
@@ -8568,8 +8821,8 @@ pub struct QueryResult {
     pub allow_answer_feedback: bool,
     /// Optional. Data store connection feature output signals.
     /// Filled only when data stores are involved in serving the query and
-    /// DetectIntentRequest.populate data_store_connection_quality_signals is set
-    /// to true in the request.
+    /// DetectIntentRequest.populate_data_store_connection_signals is set to true
+    /// in the request.
     #[prost(message, optional, tag = "35")]
     pub data_store_connection_signals: ::core::option::Option<
         DataStoreConnectionSignals,
@@ -8589,8 +8842,8 @@ pub mod query_result {
         Text(::prost::alloc::string::String),
         /// If an [intent][google.cloud.dialogflow.cx.v3beta1.IntentInput] was
         /// provided as input, this field will contain a copy of the intent
-        /// identifier. Format: `projects/<Project ID>/locations/<Location
-        /// ID>/agents/<Agent ID>/intents/<Intent ID>`.
+        /// identifier. Format:
+        /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>`.
         #[prost(string, tag = "11")]
         TriggerIntent(::prost::alloc::string::String),
         /// If [natural language speech
@@ -8621,8 +8874,8 @@ pub struct TextInput {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IntentInput {
     /// Required. The unique identifier of the intent.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/intents/<Intent ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>`.
     #[prost(string, tag = "1")]
     pub intent: ::prost::alloc::string::String,
 }
@@ -8786,17 +9039,18 @@ pub mod r#match {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MatchIntentRequest {
     /// Required. The name of the session this query is sent to.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/sessions/<Session ID>` or `projects/<Project ID>/locations/<Location
-    /// ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>`
+    /// or
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>`.
     /// If `Environment ID` is not specified, we assume default 'draft'
-    /// environment.
-    /// It's up to the API caller to choose an appropriate `Session ID`. It can be
-    /// a random number or some type of session identifiers (preferably hashed).
-    /// The length of the `Session ID` must not exceed 36 characters.
+    ///   environment.
+    ///   It's up to the API caller to choose an appropriate `Session ID`. It can be
+    ///   a random number or some type of session identifiers (preferably hashed).
+    ///   The length of the `Session ID` must not exceed 36 characters.
     ///
-    /// For more information, see the [sessions
-    /// guide](<https://cloud.google.com/dialogflow/cx/docs/concept/session>).
+    ///   For more information, see the [sessions
+    ///   guide](<https://cloud.google.com/dialogflow/cx/docs/concept/session>).
     #[prost(string, tag = "1")]
     pub session: ::prost::alloc::string::String,
     /// The parameters of this query.
@@ -8836,8 +9090,8 @@ pub mod match_intent_response {
         Text(::prost::alloc::string::String),
         /// If an [intent][google.cloud.dialogflow.cx.v3beta1.IntentInput] was
         /// provided as input, this field will contain a copy of the intent
-        /// identifier. Format: `projects/<Project ID>/locations/<Location
-        /// ID>/agents/<Agent ID>/intents/<Intent ID>`.
+        /// identifier. Format:
+        /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>`.
         #[prost(string, tag = "2")]
         TriggerIntent(::prost::alloc::string::String),
         /// If [natural language speech
@@ -9216,12 +9470,11 @@ pub mod sessions_client {
 pub struct TransitionRouteGroup {
     /// The unique identifier of the transition route group.
     /// [TransitionRouteGroups.CreateTransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.CreateTransitionRouteGroup]
-    /// populates the name automatically. Format: `projects/<Project
-    /// ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow
-    /// ID>/transitionRouteGroups/<Transition Route Group ID>` or
-    /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/transitionRouteGroups/<TransitionRouteGroup ID>` for agent-level
-    /// groups.
+    /// populates the name automatically. Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/transitionRouteGroups/<TransitionRouteGroupID>`
+    /// or
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/transitionRouteGroups/<TransitionRouteGroupID>`
+    /// for agent-level groups.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The human-readable name of the transition route group, unique
@@ -9238,9 +9491,9 @@ pub struct TransitionRouteGroup {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTransitionRouteGroupsRequest {
     /// Required. The flow to list all transition route groups for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>`
-    /// or `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`
+    ///   or `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return in a single page. By default 100 and
@@ -9286,10 +9539,10 @@ pub struct ListTransitionRouteGroupsResponse {
 pub struct GetTransitionRouteGroupRequest {
     /// Required. The name of the
     /// [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup].
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>/transitionRouteGroups/<Transition Route Group ID>`
-    /// or `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/transitionRouteGroups/<Transition Route Group ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/transitionRouteGroups/<TransitionRouteGroupID>`
+    /// or
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/transitionRouteGroups/<TransitionRouteGroupID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The language to retrieve the transition route group for. The following
@@ -9313,9 +9566,9 @@ pub struct GetTransitionRouteGroupRequest {
 pub struct CreateTransitionRouteGroupRequest {
     /// Required. The flow to create an
     /// [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]
-    /// for. Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>`
-    /// or `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`
+    /// for. Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`
+    /// or `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`
     /// for agent-level groups.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -9366,10 +9619,10 @@ pub struct UpdateTransitionRouteGroupRequest {
 pub struct DeleteTransitionRouteGroupRequest {
     /// Required. The name of the
     /// [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]
-    /// to delete. Format: `projects/<Project ID>/locations/<Location
-    /// ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<Transition
-    /// Route Group ID>` or `projects/<Project ID>/locations/<Location
-    /// ID>/agents/<Agent ID>/transitionRouteGroups/<Transition Route Group ID>`.
+    /// to delete. Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/transitionRouteGroups/<TransitionRouteGroupID>`
+    /// or
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/transitionRouteGroups/<TransitionRouteGroupID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// This field has no effect for transition route group that no page is using.
@@ -9647,8 +9900,7 @@ pub struct TestCase {
     /// The unique identifier of the test case.
     /// [TestCases.CreateTestCase][google.cloud.dialogflow.cx.v3beta1.TestCases.CreateTestCase]
     /// will populate the name automatically. Otherwise use format:
-    /// `projects/<Project ID>/locations/<LocationID>/agents/
-    /// <AgentID>/testCases/<TestCase ID>`.
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Tags are short descriptions that users may apply to test cases for
@@ -9682,8 +9934,7 @@ pub struct TestCase {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestCaseResult {
     /// The resource name for the test case result. Format:
-    /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/testCases/
-    /// <TestCase ID>/results/<TestCaseResult ID>`.
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>/results/<TestCaseResultID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Environment where the test was run. If not set, it indicates the draft
@@ -9708,8 +9959,8 @@ pub struct TestConfig {
     #[prost(string, repeated, tag = "1")]
     pub tracking_parameters: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Flow name to start the test case with.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
     ///
     /// Only one of `flow` and `page` should be set to indicate the starting point
     /// of the test case. If neither is set, the test case will start with start
@@ -9717,8 +9968,8 @@ pub struct TestConfig {
     #[prost(string, tag = "2")]
     pub flow: ::prost::alloc::string::String,
     /// The [page][google.cloud.dialogflow.cx.v3beta1.Page] to start the test case
-    /// with. Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>/pages/<Page ID>`.
+    /// with. Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>`.
     ///
     /// Only one of `flow` and `page` should be set to indicate the starting point
     /// of the test case. If neither is set, the test case will start with start
@@ -10015,7 +10266,7 @@ pub mod intent_coverage {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CalculateCoverageRequest {
     /// Required. The agent to calculate coverage for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "3")]
     pub agent: ::prost::alloc::string::String,
     /// Required. The type of coverage requested.
@@ -10077,7 +10328,7 @@ pub mod calculate_coverage_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CalculateCoverageResponse {
     /// The agent to calculate coverage for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "5")]
     pub agent: ::prost::alloc::string::String,
     /// The type of coverage requested.
@@ -10105,7 +10356,7 @@ pub mod calculate_coverage_response {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTestCasesRequest {
     /// Required. The agent to list all pages for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return in a single page. By default 20.
@@ -10186,11 +10437,11 @@ pub struct ListTestCasesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDeleteTestCasesRequest {
     /// Required. The agent to delete test cases from.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. Format of test case names: `projects/<Project ID>/locations/
-    /// <Location ID>/agents/<AgentID>/testCases/<TestCase ID>`.
+    /// Required. Format of test case names:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>`.
     #[prost(string, repeated, tag = "3")]
     pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -10199,7 +10450,7 @@ pub struct BatchDeleteTestCasesRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTestCaseRequest {
     /// Required. The agent to create the test case for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The test case to create.
@@ -10226,8 +10477,8 @@ pub struct UpdateTestCaseRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTestCaseRequest {
     /// Required. The name of the testcase.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/testCases/<TestCase ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -10235,13 +10486,13 @@ pub struct GetTestCaseRequest {
 /// [TestCases.RunTestCase][google.cloud.dialogflow.cx.v3beta1.TestCases.RunTestCase].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunTestCaseRequest {
-    /// Required. Format of test case name to run: `projects/<Project
-    /// ID>/locations/ <Location ID>/agents/<AgentID>/testCases/<TestCase ID>`.
+    /// Required. Format of test case name to run:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. Environment name. If not set, draft environment is assumed.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/environments/<Environment ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>`.
     #[prost(string, tag = "2")]
     pub environment: ::prost::alloc::string::String,
 }
@@ -10262,17 +10513,16 @@ pub struct RunTestCaseMetadata {}
 /// [TestCases.BatchRunTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.BatchRunTestCases].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchRunTestCasesRequest {
-    /// Required. Agent name. Format: `projects/<Project ID>/locations/<Location
-    /// ID>/agents/ <AgentID>`.
+    /// Required. Agent name. Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. If not set, draft environment is assumed. Format:
-    /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/environments/<Environment ID>`.
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>`.
     #[prost(string, tag = "2")]
     pub environment: ::prost::alloc::string::String,
-    /// Required. Format: `projects/<Project ID>/locations/<Location
-    /// ID>/agents/<Agent ID>/testCases/<TestCase ID>`.
+    /// Required. Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>`.
     #[prost(string, repeated, tag = "3")]
     pub test_cases: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -10314,7 +10564,7 @@ pub struct TestError {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportTestCasesRequest {
     /// Required. The agent to import test cases to.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The source to import.
@@ -10347,8 +10597,8 @@ pub mod import_test_cases_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportTestCasesResponse {
     /// The unique identifiers of the new test cases.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/testCases/<TestCase ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>`.
     #[prost(string, repeated, tag = "1")]
     pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -10376,7 +10626,7 @@ pub struct TestCaseError {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportTestCasesRequest {
     /// Required. The agent where to export test cases from.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The data format of the exported test cases. If not specified, `BLOB` is
@@ -10475,7 +10725,7 @@ pub mod export_test_cases_response {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// The URI to a file containing the exported test cases. This field is
-        /// populated only if `gcs_uri` is specified in
+        ///   populated only if `gcs_uri` is specified in
         /// [ExportTestCasesRequest][google.cloud.dialogflow.cx.v3beta1.ExportTestCasesRequest].
         #[prost(string, tag = "1")]
         GcsUri(::prost::alloc::string::String),
@@ -10494,9 +10744,10 @@ pub struct ExportTestCasesMetadata {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTestCaseResultsRequest {
     /// Required. The test case to list results for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/
-    /// testCases/<TestCase ID>`. Specify a `-` as a wildcard for TestCase ID to
-    /// list results across multiple test cases.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>`.
+    /// Specify a `-` as a wildcard for TestCase ID to
+    ///   list results across multiple test cases.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return in a single page. By default 100 and
@@ -10550,8 +10801,8 @@ pub struct ListTestCaseResultsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTestCaseResultRequest {
     /// Required. The name of the testcase.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/testCases/<TestCase ID>/results/<TestCaseResult ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>/results/<TestCaseResultID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -11080,8 +11331,8 @@ pub struct Webhook {
     /// [Webhooks.UpdateWebhook][google.cloud.dialogflow.cx.v3beta1.Webhooks.UpdateWebhook]
     /// method.
     /// [Webhooks.CreateWebhook][google.cloud.dialogflow.cx.v3beta1.Webhooks.CreateWebhook]
-    /// populates the name automatically. Format: `projects/<Project
-    /// ID>/locations/<Location ID>/agents/<Agent ID>/webhooks/<Webhook ID>`.
+    /// populates the name automatically. Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/webhooks/<WebhookID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The human-readable name of the webhook, unique within the agent.
@@ -11358,8 +11609,8 @@ pub mod webhook {
     pub struct ServiceDirectoryConfig {
         /// Required. The name of [Service
         /// Directory](<https://cloud.google.com/service-directory>) service.
-        /// Format: `projects/<Project ID>/locations/<Location
-        /// ID>/namespaces/<Namespace ID>/services/<Service ID>`.
+        /// Format:
+        /// `projects/<ProjectID>/locations/<LocationID>/namespaces/<NamespaceID>/services/<ServiceID>`.
         /// `Location ID` of the service directory must be the same as the location
         /// of the agent.
         #[prost(string, tag = "1")]
@@ -11385,7 +11636,7 @@ pub mod webhook {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWebhooksRequest {
     /// Required. The agent to list all webhooks for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return in a single page. By default 100 and
@@ -11414,8 +11665,8 @@ pub struct ListWebhooksResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWebhookRequest {
     /// Required. The name of the webhook.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/webhooks/<Webhook ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/webhooks/<WebhookID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -11424,7 +11675,7 @@ pub struct GetWebhookRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWebhookRequest {
     /// Required. The agent to create a webhook for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The webhook to create.
@@ -11448,8 +11699,8 @@ pub struct UpdateWebhookRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteWebhookRequest {
     /// Required. The name of the webhook to delete.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/webhooks/<Webhook ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/webhooks/<WebhookID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// This field has no effect for webhook not being used.
@@ -11536,8 +11787,8 @@ pub mod webhook_request {
     pub struct IntentInfo {
         /// Always present. The unique identifier of the last matched
         /// [intent][google.cloud.dialogflow.cx.v3beta1.Intent].
-        /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-        /// ID>/intents/<Intent ID>`.
+        /// Format:
+        /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>`.
         #[prost(string, tag = "1")]
         pub last_matched_intent: ::prost::alloc::string::String,
         /// Always present. The display name of the last matched
@@ -11576,7 +11827,7 @@ pub mod webhook_request {
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SentimentAnalysisResult {
         /// Sentiment score between -1.0 (negative sentiment) and 1.0 (positive
-        /// sentiment).
+        ///   sentiment).
         #[prost(float, tag = "1")]
         pub score: f32,
         /// A non-negative number in the [0, +inf) range, which represents the
@@ -11594,8 +11845,8 @@ pub mod webhook_request {
         Text(::prost::alloc::string::String),
         /// If an [intent][google.cloud.dialogflow.cx.v3beta1.IntentInput] was
         /// provided as input, this field will contain a copy of the intent
-        /// identifier. Format: `projects/<Project ID>/locations/<Location
-        /// ID>/agents/<Agent ID>/intents/<Intent ID>`.
+        /// identifier. Format:
+        /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/intents/<IntentID>`.
         #[prost(string, tag = "11")]
         TriggerIntent(::prost::alloc::string::String),
         /// If [natural language speech
@@ -11706,13 +11957,13 @@ pub mod webhook_response {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Transition {
         /// The target page to transition to.
-        /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-        /// ID>/flows/<Flow ID>/pages/<Page ID>`.
+        /// Format:
+        /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>`.
         #[prost(string, tag = "5")]
         TargetPage(::prost::alloc::string::String),
         /// The target flow to transition to.
-        /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-        /// ID>/flows/<Flow ID>`.
+        /// Format:
+        /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
         #[prost(string, tag = "6")]
         TargetFlow(::prost::alloc::string::String),
     }
@@ -11724,9 +11975,8 @@ pub struct PageInfo {
     /// [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest].
     /// Ignored for
     /// [WebhookResponse][google.cloud.dialogflow.cx.v3beta1.WebhookResponse]. The
-    /// unique identifier of the current page. Format: `projects/<Project
-    /// ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page
-    /// ID>`.
+    /// unique identifier of the current page. Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/pages/<PageID>`.
     #[prost(string, tag = "1")]
     pub current_page: ::prost::alloc::string::String,
     /// Always present for
@@ -11867,9 +12117,9 @@ pub struct SessionInfo {
     /// unique identifier of the
     /// [session][google.cloud.dialogflow.cx.v3beta1.DetectIntentRequest.session].
     /// This field can be used by the webhook to identify a session. Format:
-    /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/sessions/<Session ID>` or `projects/<Project ID>/locations/<Location
-    /// ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>`
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/sessions/<SessionID>`
+    /// or
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/sessions/<SessionID>`
     /// if environment is specified.
     #[prost(string, tag = "1")]
     pub session: ::prost::alloc::string::String,
@@ -12147,8 +12397,8 @@ pub mod webhooks_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Environment {
     /// The name of the environment.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/environments/<Environment ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The human-readable name of the environment (unique in an agent).
@@ -12180,8 +12430,11 @@ pub mod environment {
     /// Configuration for the version.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct VersionConfig {
-        /// Required. Format: projects/<Project ID>/locations/<Location
-        /// ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>.
+        /// Required. Both flow and playbook versions are supported.
+        /// Format for flow version:
+        /// projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>.
+        /// Format for playbook version:
+        /// projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>/versions/<VersionID>.
         #[prost(string, tag = "1")]
         pub version: ::prost::alloc::string::String,
     }
@@ -12189,8 +12442,8 @@ pub mod environment {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TestCasesConfig {
         /// A list of test case names to run. They should be under the same agent.
-        /// Format of each test case name: `projects/<Project ID>/locations/
-        /// <Location ID>/agents/<AgentID>/testCases/<TestCase ID>`
+        /// Format of each test case name:
+        /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>`
         #[prost(string, repeated, tag = "1")]
         pub test_cases: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Whether to run test cases in
@@ -12221,8 +12474,8 @@ pub mod environment {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEnvironmentsRequest {
     /// Required. The [Agent][google.cloud.dialogflow.cx.v3beta1.Agent] to list all
-    /// environments for. Format: `projects/<Project ID>/locations/<Location
-    /// ID>/agents/<Agent ID>`.
+    /// environments for. Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return in a single page. By default 20 and
@@ -12254,8 +12507,7 @@ pub struct ListEnvironmentsResponse {
 pub struct GetEnvironmentRequest {
     /// Required. The name of the
     /// [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]. Format:
-    /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/environments/<Environment ID>`.
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -12265,7 +12517,7 @@ pub struct GetEnvironmentRequest {
 pub struct CreateEnvironmentRequest {
     /// Required. The [Agent][google.cloud.dialogflow.cx.v3beta1.Agent] to create
     /// an [Environment][google.cloud.dialogflow.cx.v3beta1.Environment] for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The environment to create.
@@ -12289,8 +12541,8 @@ pub struct UpdateEnvironmentRequest {
 pub struct DeleteEnvironmentRequest {
     /// Required. The name of the
     /// [Environment][google.cloud.dialogflow.cx.v3beta1.Environment] to delete.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/environments/<Environment ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -12299,8 +12551,8 @@ pub struct DeleteEnvironmentRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupEnvironmentHistoryRequest {
     /// Required. Resource name of the environment to look up the history for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/environments/<Environment ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The maximum number of items to return in a single page. By default 100 and
@@ -12329,9 +12581,7 @@ pub struct LookupEnvironmentHistoryResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContinuousTestResult {
     /// The resource name for the continuous test result. Format:
-    /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/environments/<Environment
-    /// ID>/continuousTestResults/<ContinuousTestResult ID>`.
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/continuousTestResults/<ContinuousTestResultID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The result of this continuous test run, i.e. whether all the tests in this
@@ -12395,8 +12645,8 @@ pub mod continuous_test_result {
 /// [Environments.RunContinuousTest][google.cloud.dialogflow.cx.v3beta1.Environments.RunContinuousTest].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunContinuousTestRequest {
-    /// Required. Format: `projects/<Project ID>/locations/<Location
-    /// ID>/agents/<Agent ID>/environments/<Environment ID>`.
+    /// Required. Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>`.
     #[prost(string, tag = "1")]
     pub environment: ::prost::alloc::string::String,
 }
@@ -12422,8 +12672,8 @@ pub struct RunContinuousTestMetadata {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListContinuousTestResultsRequest {
     /// Required. The environment to list results for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/
-    /// environments/<Environment ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return in a single page. By default 100 and
@@ -12450,13 +12700,13 @@ pub struct ListContinuousTestResultsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployFlowRequest {
     /// Required. The environment to deploy the flow to.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/
-    /// environments/<Environment ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>`.
     #[prost(string, tag = "1")]
     pub environment: ::prost::alloc::string::String,
     /// Required. The flow version to deploy.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/
-    /// flows/<Flow ID>/versions/<Version ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>`.
     #[prost(string, tag = "2")]
     pub flow_version: ::prost::alloc::string::String,
 }
@@ -12468,8 +12718,8 @@ pub struct DeployFlowResponse {
     #[prost(message, optional, tag = "1")]
     pub environment: ::core::option::Option<Environment>,
     /// The name of the flow version deployment.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/
-    /// environments/<Environment ID>/deployments/<Deployment ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/deployments/<DeploymentID>`.
     #[prost(string, tag = "2")]
     pub deployment: ::prost::alloc::string::String,
 }
@@ -12887,8 +13137,8 @@ pub mod environments_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConversationRequest {
     /// Required. The name of the conversation.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/conversations/<Conversation ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/conversations/<ConversationID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -12896,8 +13146,8 @@ pub struct GetConversationRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteConversationRequest {
     /// Required. The name of the conversation.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/conversations/<Conversation ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/conversations/<ConversationID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -12905,7 +13155,7 @@ pub struct DeleteConversationRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConversationsRequest {
     /// Required. The agent to list all conversations for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The filter string. Supports filter by create_time,
@@ -12951,8 +13201,7 @@ pub struct Conversation {
     /// Identifier. The identifier of the conversation.
     /// If conversation ID is reused, interactions happened later than 48 hours of
     /// the conversation's create time will be ignored. Format:
-    /// `projects/<ProjectID>/locations/<Location ID>/agents/<Agent
-    /// ID>/conversations/<Conversation ID>`
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/conversations/<ConversationID>`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The type of the conversation.
@@ -13396,13 +13645,13 @@ pub mod conversation_history_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Deployment {
     /// The name of the deployment.
-    /// Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/environments/<Environment ID>/deployments/<Deployment ID>.
+    /// Format:
+    /// projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/deployments/<DeploymentID>.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The name of the flow version for this deployment.
-    /// Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>/versions/<Verion ID>.
+    /// Format:
+    /// projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VerionID>.
     #[prost(string, tag = "2")]
     pub flow_version: ::prost::alloc::string::String,
     /// The current state of the deployment.
@@ -13424,15 +13673,15 @@ pub mod deployment {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Result {
         /// Results of test cases running before the deployment.
-        /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-        /// ID>/testCases/<TestCase ID>/results/<TestCaseResult ID>`.
+        /// Format:
+        /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/testCases/<TestCaseID>/results/<TestCaseResultID>`.
         #[prost(string, repeated, tag = "1")]
         pub deployment_test_results: ::prost::alloc::vec::Vec<
             ::prost::alloc::string::String,
         >,
         /// The name of the experiment triggered by this deployment.
-        /// Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent
-        /// ID>/environments/<Environment ID>/experiments/<Experiment ID>.
+        /// Format:
+        /// projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/experiments/<ExperimentID>.
         #[prost(string, tag = "2")]
         pub experiment: ::prost::alloc::string::String,
     }
@@ -13489,9 +13738,8 @@ pub mod deployment {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDeploymentsRequest {
     /// Required. The [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
-    /// to list all environments for. Format: `projects/<Project
-    /// ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment
-    /// ID>`.
+    /// to list all environments for. Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return in a single page. By default 20 and
@@ -13523,8 +13771,7 @@ pub struct ListDeploymentsResponse {
 pub struct GetDeploymentRequest {
     /// Required. The name of the
     /// [Deployment][google.cloud.dialogflow.cx.v3beta1.Deployment]. Format:
-    /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/environments/<Environment ID>/deployments/<Deployment ID>`.
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/deployments/<DeploymentID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -13686,8 +13933,8 @@ pub mod deployments_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Experiment {
     /// The name of the experiment.
-    /// Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/environments/<Environment ID>/experiments/<Experiment ID>..
+    /// Format:
+    /// projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/experiments/<ExperimentID>.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The human-readable name of the experiment (unique in an
@@ -13841,8 +14088,7 @@ pub mod experiment {
         pub struct VersionMetrics {
             /// The name of the flow
             /// [Version][google.cloud.dialogflow.cx.v3beta1.Version]. Format:
-            /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-            /// ID>/flows/<Flow ID>/versions/<Version ID>`.
+            /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>`.
             #[prost(string, tag = "1")]
             pub version: ::prost::alloc::string::String,
             /// The metrics and corresponding confidence intervals in the inference
@@ -14026,8 +14272,8 @@ pub mod version_variants {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Variant {
         /// The name of the flow version.
-        /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-        /// ID>/flows/<Flow ID>/versions/<Version ID>`.
+        /// Format:
+        /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>`.
         #[prost(string, tag = "1")]
         pub version: ::prost::alloc::string::String,
         /// Percentage of the traffic which should be routed to this
@@ -14119,9 +14365,8 @@ pub mod variants_history {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExperimentsRequest {
     /// Required. The [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
-    /// to list all environments for. Format: `projects/<Project
-    /// ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment
-    /// ID>`.
+    /// to list all environments for. Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return in a single page. By default 20 and
@@ -14153,8 +14398,7 @@ pub struct ListExperimentsResponse {
 pub struct GetExperimentRequest {
     /// Required. The name of the
     /// [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]. Format:
-    /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/environments/<Environment ID>/experiments/<Experiment ID>`.
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/experiments/<ExperimentID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -14164,8 +14408,8 @@ pub struct GetExperimentRequest {
 pub struct CreateExperimentRequest {
     /// Required. The [Agent][google.cloud.dialogflow.cx.v3beta1.Agent] to create
     /// an [Environment][google.cloud.dialogflow.cx.v3beta1.Environment] for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/environments/<Environment ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The experiment to create.
@@ -14189,8 +14433,8 @@ pub struct UpdateExperimentRequest {
 pub struct DeleteExperimentRequest {
     /// Required. The name of the
     /// [Environment][google.cloud.dialogflow.cx.v3beta1.Environment] to delete.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/environments/<Environment ID>/experiments/<Experiment ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/experiments/<ExperimentID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -14199,8 +14443,8 @@ pub struct DeleteExperimentRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartExperimentRequest {
     /// Required. Resource name of the experiment to start.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/environments/<Environment ID>/experiments/<Experiment ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/experiments/<ExperimentID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -14209,8 +14453,8 @@ pub struct StartExperimentRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StopExperimentRequest {
     /// Required. Resource name of the experiment to stop.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/environments/<Environment ID>/experiments/<Experiment ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/environments/<EnvironmentID>/experiments/<ExperimentID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -14521,8 +14765,8 @@ pub struct Generator {
     /// Must be set for the
     /// [Generators.UpdateGenerator][google.cloud.dialogflow.cx.v3beta1.Generators.UpdateGenerator]
     /// method. [Generators.CreateGenerate][] populates the name automatically.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/generators/<Generator ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generators/<GeneratorID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The human-readable name of the generator, unique within the
@@ -14540,6 +14784,9 @@ pub struct Generator {
     /// The LLM model settings.
     #[prost(message, optional, tag = "9")]
     pub llm_model_settings: ::core::option::Option<LlmModelSettings>,
+    /// Parameters passed to the LLM to configure its behavior.
+    #[prost(message, optional, tag = "8")]
+    pub model_parameter: ::core::option::Option<generator::ModelParameter>,
 }
 /// Nested message and enum types in `Generator`.
 pub mod generator {
@@ -14552,6 +14799,34 @@ pub mod generator {
         /// Custom placeholder value in the prompt text.
         #[prost(string, tag = "2")]
         pub name: ::prost::alloc::string::String,
+    }
+    /// Parameters to be passed to the LLM. If not set, default values will be
+    /// used.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct ModelParameter {
+        /// The temperature used for sampling. Temperature sampling occurs after both
+        /// topP and topK have been applied.
+        /// Valid range: \[0.0, 1.0\]
+        /// Low temperature = less random. High temperature = more random.
+        #[prost(float, optional, tag = "1")]
+        pub temperature: ::core::option::Option<f32>,
+        /// The maximum number of tokens to generate.
+        #[prost(int32, optional, tag = "2")]
+        pub max_decode_steps: ::core::option::Option<i32>,
+        /// If set, only the tokens comprising the top top_p probability mass are
+        /// considered. If both top_p and top_k are
+        /// set, top_p will be used for further refining candidates selected with
+        /// top_k.
+        /// Valid range: (0.0, 1.0].
+        /// Small topP = less random. Large topP = more random.
+        #[prost(float, optional, tag = "3")]
+        pub top_p: ::core::option::Option<f32>,
+        /// If set, the sampling process in each step is limited to the top_k tokens
+        /// with highest probabilities.
+        /// Valid range: \[1, 40\] or 1000+.
+        /// Small topK = less random. Large topK = more random.
+        #[prost(int32, optional, tag = "4")]
+        pub top_k: ::core::option::Option<i32>,
     }
 }
 /// Text input which can be used for prompt or banned phrases.
@@ -14566,7 +14841,7 @@ pub struct Phrase {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGeneratorsRequest {
     /// Required. The agent to list all generators for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The language to list generators for.
@@ -14598,8 +14873,8 @@ pub struct ListGeneratorsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGeneratorRequest {
     /// Required. The name of the generator.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/generators/<Generator ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generators/<GeneratorID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The language to list generators for.
@@ -14611,7 +14886,7 @@ pub struct GetGeneratorRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateGeneratorRequest {
     /// Required. The agent to create a generator for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The generator to create.
@@ -14643,8 +14918,8 @@ pub struct UpdateGeneratorRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteGeneratorRequest {
     /// Required. The name of the generator to delete.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/generators/<Generator ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generators/<GeneratorID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// This field has no effect for generators not being used.
@@ -14978,7 +15253,7 @@ pub mod parameter_definition {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePlaybookRequest {
     /// Required. The agent to create a playbook for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The playbook to create.
@@ -14990,8 +15265,8 @@ pub struct CreatePlaybookRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePlaybookRequest {
     /// Required. The name of the playbook to delete.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/playbooks/<Playbook ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -15000,7 +15275,7 @@ pub struct DeletePlaybookRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPlaybooksRequest {
     /// Required. The agent to list playbooks from.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return in a single page. By default 100 and
@@ -15029,8 +15304,8 @@ pub struct ListPlaybooksResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPlaybookRequest {
     /// Required. The name of the playbook.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/playbooks/<Playbook ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -15057,8 +15332,8 @@ pub struct UpdatePlaybookRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Playbook {
     /// The unique identifier of the playbook.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/playbooks/<Playbook ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The human-readable name of the playbook, unique within an agent.
@@ -15140,8 +15415,8 @@ pub mod playbook {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePlaybookVersionRequest {
     /// Required. The playbook to create a version for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/playbooks/<Playbook ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The playbook version to create.
@@ -15152,8 +15427,8 @@ pub struct CreatePlaybookVersionRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlaybookVersion {
     /// The unique identifier of the playbook version.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/playbooks/<Playbook ID>/versions/<Version ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>/versions/<VersionID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. The description of the playbook version.
@@ -15175,8 +15450,8 @@ pub struct PlaybookVersion {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPlaybookVersionRequest {
     /// Required. The name of the playbook version.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/playbooks/<Playbook ID>/versions/<Version ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>/versions/<VersionID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -15185,8 +15460,8 @@ pub struct GetPlaybookVersionRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPlaybookVersionsRequest {
     /// Required. The playbook to list versions for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/playbooks/<Playbook ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return in a single page. By
@@ -15215,8 +15490,8 @@ pub struct ListPlaybookVersionsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePlaybookVersionRequest {
     /// Required. The name of the playbook version to delete.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/playbooks/<Playbook ID>/versions/<Version ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>/versions/<VersionID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -15575,8 +15850,8 @@ pub mod playbooks_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSecuritySettingsRequest {
     /// Required. Resource name of the settings.
-    /// Format: `projects/<Project ID>/locations/<Location
-    /// ID>/securitySettings/<security settings ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/securitySettings/<securitysettingsID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -15597,7 +15872,7 @@ pub struct UpdateSecuritySettingsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSecuritySettingsRequest {
     /// Required. The location to list all security settings for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return in a single page. By default 20 and
@@ -15624,7 +15899,7 @@ pub struct ListSecuritySettingsResponse {
 pub struct CreateSecuritySettingsRequest {
     /// Required. The location to create an
     /// [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings]
-    /// for. Format: `projects/<Project ID>/locations/<Location ID>`.
+    /// for. Format: `projects/<ProjectID>/locations/<LocationID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The security settings to create.
@@ -15636,8 +15911,8 @@ pub struct CreateSecuritySettingsRequest {
 pub struct DeleteSecuritySettingsRequest {
     /// Required. The name of the
     /// [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings] to
-    /// delete. Format: `projects/<Project ID>/locations/<Location
-    /// ID>/securitySettings/<Security Settings ID>`.
+    /// delete. Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/securitySettings/<SecuritySettingsID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -15651,8 +15926,8 @@ pub struct SecuritySettings {
     /// [SecuritySettingsService.UpdateSecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettingsService.UpdateSecuritySettings]
     /// method.
     /// [SecuritySettingsService.CreateSecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettingsService.CreateSecuritySettings]
-    /// populates the name automatically. Format: `projects/<Project
-    /// ID>/locations/<Location ID>/securitySettings/<Security Settings ID>`.
+    /// populates the name automatically. Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/securitySettings/<SecuritySettingsID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The human-readable name of the security settings, unique within
@@ -15678,9 +15953,9 @@ pub struct SecuritySettings {
     /// If empty, we use the default DLP inspect config.
     ///
     /// The template name will have one of the following formats:
-    /// `projects/<Project ID>/locations/<Location ID>/inspectTemplates/<Template
-    /// ID>` OR `organizations/<Organization ID>/locations/<Location
-    /// ID>/inspectTemplates/<Template ID>`
+    /// `projects/<ProjectID>/locations/<LocationID>/inspectTemplates/<TemplateID>`
+    /// OR
+    /// `organizations/<OrganizationID>/locations/<LocationID>/inspectTemplates/<TemplateID>`
     ///
     /// Note: `inspect_template` must be located in the same region as the
     /// `SecuritySettings`.
@@ -15697,9 +15972,9 @@ pub struct SecuritySettings {
     /// If empty, Dialogflow replaces sensitive info with `\[redacted\]` text.
     ///
     /// The template name will have one of the following formats:
-    /// `projects/<Project ID>/locations/<Location
-    /// ID>/deidentifyTemplates/<Template ID>` OR `organizations/<Organization
-    /// ID>/locations/<Location ID>/deidentifyTemplates/<Template ID>`
+    /// `projects/<ProjectID>/locations/<LocationID>/deidentifyTemplates/<TemplateID>`
+    /// OR
+    /// `organizations/<OrganizationID>/locations/<LocationID>/deidentifyTemplates/<TemplateID>`
     ///
     /// Note: `deidentify_template` must be located in the same region as the
     /// `SecuritySettings`.
@@ -16272,7 +16547,7 @@ pub mod security_settings_service_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateToolRequest {
     /// Required. The agent to create a Tool for.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Tool to be created.
@@ -16284,7 +16559,7 @@ pub struct CreateToolRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListToolsRequest {
     /// Required. The agent to list the Tools from.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return in a single page. By default 100 and
@@ -16313,8 +16588,8 @@ pub struct ListToolsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetToolRequest {
     /// Required. The name of the Tool.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/tools/<Tool ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -16323,13 +16598,12 @@ pub struct GetToolRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportToolsRequest {
     /// Required. The agent to export tools from.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>`.
+    /// Format: `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The name of the tools to export.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/tools/<Tool ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.
     #[prost(string, repeated, tag = "2")]
     pub tools: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The data format of the exported tools. If not specified, `BLOB`
@@ -16446,8 +16720,8 @@ pub struct UpdateToolRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteToolRequest {
     /// Required. The name of the Tool to be deleted.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/tools/<Tool ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// This field has no effect for Tools not being used.
@@ -16467,8 +16741,8 @@ pub struct DeleteToolRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Tool {
     /// The unique identifier of the Tool.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/tools/<Tool ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The human-readable name of the Tool, unique within an agent.
@@ -16560,7 +16834,7 @@ pub mod tool {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Authentication {
         /// The auth configuration.
-        #[prost(oneof = "authentication::AuthConfig", tags = "1, 2, 3")]
+        #[prost(oneof = "authentication::AuthConfig", tags = "1, 2, 3, 4")]
         pub auth_config: ::core::option::Option<authentication::AuthConfig>,
     }
     /// Nested message and enum types in `Authentication`.
@@ -16596,6 +16870,9 @@ pub mod tool {
             /// access token.
             #[prost(string, tag = "4")]
             pub token_endpoint: ::prost::alloc::string::String,
+            /// Optional. The OAuth scopes to grant.
+            #[prost(string, repeated, tag = "5")]
+            pub scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
         /// Nested message and enum types in `OAuthConfig`.
         pub mod o_auth_config {
@@ -16645,7 +16922,84 @@ pub mod tool {
         /// Config for auth using [Diglogflow service
         /// agent](<https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>).
         #[derive(Clone, Copy, PartialEq, ::prost::Message)]
-        pub struct ServiceAgentAuthConfig {}
+        pub struct ServiceAgentAuthConfig {
+            /// Optional. Indicate the auth token type generated from the [Diglogflow
+            /// service
+            /// agent](<https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>).
+            /// The generated token is sent in the Authorization header.
+            #[prost(
+                enumeration = "service_agent_auth_config::ServiceAgentAuth",
+                tag = "1"
+            )]
+            pub service_agent_auth: i32,
+        }
+        /// Nested message and enum types in `ServiceAgentAuthConfig`.
+        pub mod service_agent_auth_config {
+            /// Indicate the auth token type generated from the [Diglogflow service
+            /// agent](<https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>).
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum ServiceAgentAuth {
+                /// Service agent auth type unspecified. Default to ID_TOKEN.
+                Unspecified = 0,
+                /// Use [ID
+                /// token](<https://cloud.google.com/docs/authentication/token-types#id>)
+                /// generated from service agent. This can be used to access Cloud
+                /// Function and Cloud Run after you grant Invoker role to
+                /// `service-<PROJECT-NUMBER>@gcp-sa-dialogflow.iam.gserviceaccount.com`.
+                IdToken = 1,
+                /// Use [access
+                /// token](<https://cloud.google.com/docs/authentication/token-types#access>)
+                /// generated from service agent. This can be used to access other Google
+                /// Cloud APIs after you grant required roles to
+                /// `service-<PROJECT-NUMBER>@gcp-sa-dialogflow.iam.gserviceaccount.com`.
+                AccessToken = 2,
+            }
+            impl ServiceAgentAuth {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        Self::Unspecified => "SERVICE_AGENT_AUTH_UNSPECIFIED",
+                        Self::IdToken => "ID_TOKEN",
+                        Self::AccessToken => "ACCESS_TOKEN",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "SERVICE_AGENT_AUTH_UNSPECIFIED" => Some(Self::Unspecified),
+                        "ID_TOKEN" => Some(Self::IdToken),
+                        "ACCESS_TOKEN" => Some(Self::AccessToken),
+                        _ => None,
+                    }
+                }
+            }
+        }
+        /// Config for authentication using bearer token.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct BearerTokenConfig {
+            /// Required. The text token appended to the text `Bearer` to the request
+            /// Authorization header.
+            /// [Session parameters
+            /// reference](<https://cloud.google.com/dialogflow/cx/docs/concept/parameter#session-ref>)
+            /// can be used to pass the token dynamically, e.g.
+            /// `$session.params.parameter-id`.
+            #[prost(string, tag = "1")]
+            pub token: ::prost::alloc::string::String,
+        }
         /// The location of the API key in the request.
         #[derive(
             Clone,
@@ -16703,6 +17057,9 @@ pub mod tool {
             /// auth.
             #[prost(message, tag = "3")]
             ServiceAgentAuthConfig(ServiceAgentAuthConfig),
+            /// Config for bearer token auth.
+            #[prost(message, tag = "4")]
+            BearerTokenConfig(BearerTokenConfig),
         }
     }
     /// The TLS configuration.
@@ -17082,17 +17439,18 @@ pub mod tools_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateVersionOperationMetadata {
     /// Name of the created version.
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>/versions/<Version ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>`.
     #[prost(string, tag = "1")]
     pub version: ::prost::alloc::string::String,
 }
 /// Represents a version of a flow.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Version {
-    /// Format: projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>/versions/<Version ID>. Version ID is a self-increasing
-    /// number generated by Dialogflow upon version creation.
+    /// Format:
+    /// projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>.
+    /// Version ID is a self-increasing number generated by Dialogflow upon version
+    /// creation.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The human-readable name of the version. Limit of 64 characters.
@@ -17168,8 +17526,8 @@ pub mod version {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVersionsRequest {
     /// Required. The [Flow][google.cloud.dialogflow.cx.v3beta1.Flow] to list all
-    /// versions for. Format: `projects/<Project ID>/locations/<Location
-    /// ID>/agents/<Agent ID>/flows/<Flow ID>`.
+    /// versions for. Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return in a single page. By default 20 and
@@ -17200,8 +17558,7 @@ pub struct ListVersionsResponse {
 pub struct GetVersionRequest {
     /// Required. The name of the
     /// [Version][google.cloud.dialogflow.cx.v3beta1.Version]. Format:
-    /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>/versions/<Version ID>`.
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -17211,8 +17568,7 @@ pub struct GetVersionRequest {
 pub struct CreateVersionRequest {
     /// Required. The [Flow][google.cloud.dialogflow.cx.v3beta1.Flow] to create an
     /// [Version][google.cloud.dialogflow.cx.v3beta1.Version] for. Format:
-    /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>`.
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The version to create.
@@ -17237,8 +17593,7 @@ pub struct UpdateVersionRequest {
 pub struct DeleteVersionRequest {
     /// Required. The name of the
     /// [Version][google.cloud.dialogflow.cx.v3beta1.Version] to delete. Format:
-    /// `projects/<Project ID>/locations/<Location ID>/agents/<Agent
-    /// ID>/flows/<Flow ID>/versions/<Version ID>`.
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -17247,8 +17602,8 @@ pub struct DeleteVersionRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoadVersionRequest {
     /// Required. The [Version][google.cloud.dialogflow.cx.v3beta1.Version] to be
-    /// loaded to draft flow. Format: `projects/<Project ID>/locations/<Location
-    /// ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>`.
+    /// loaded to draft flow. Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// This field is used to prevent accidental overwrite of other agent
@@ -17265,14 +17620,14 @@ pub struct CompareVersionsRequest {
     /// Required. Name of the base flow version to compare with the target version.
     /// Use version ID `0` to indicate the draft version of the specified flow.
     ///
-    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/
-    /// <Agent ID>/flows/<Flow ID>/versions/<Version ID>`.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>`.
     #[prost(string, tag = "1")]
     pub base_version: ::prost::alloc::string::String,
     /// Required. Name of the target flow version to compare with the
     /// base version. Use version ID `0` to indicate the draft version of the
-    /// specified flow. Format: `projects/<Project ID>/locations/<Location
-    /// ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>`.
+    /// specified flow. Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>/versions/<VersionID>`.
     #[prost(string, tag = "2")]
     pub target_version: ::prost::alloc::string::String,
     /// The language to compare the flow versions for.

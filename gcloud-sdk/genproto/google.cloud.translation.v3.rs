@@ -307,6 +307,10 @@ pub mod adaptive_mt_translate_request {
         /// `false` if missing.
         #[prost(bool, tag = "2")]
         pub ignore_case: bool,
+        /// Optional. If set to true, the glossary will be used for contextual
+        /// translation.
+        #[prost(bool, tag = "4")]
+        pub contextual_translation_enabled: bool,
     }
 }
 /// An AdaptiveMt translation.
@@ -2663,6 +2667,10 @@ pub struct TranslateTextGlossaryConfig {
     /// if missing.
     #[prost(bool, tag = "2")]
     pub ignore_case: bool,
+    /// Optional. If set to true, the glossary will be used for contextual
+    /// translation.
+    #[prost(bool, tag = "4")]
+    pub contextual_translation_enabled: bool,
 }
 /// Generated client implementations.
 pub mod translation_service_client {

@@ -151,6 +151,54 @@ pub struct TokenOptions {
     /// Optional. Optional token type to select what type of token to return.
     #[prost(enumeration = "TokenType", tag = "3")]
     pub token_type: i32,
+    /// An optional additional configuration per token type.
+    #[prost(oneof = "token_options::TokenTypeOptions", tags = "4")]
+    pub token_type_options: ::core::option::Option<token_options::TokenTypeOptions>,
+}
+/// Nested message and enum types in `TokenOptions`.
+pub mod token_options {
+    /// Token options that only apply to the AWS Principal Tags token type.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AwsPrincipalTagsOptions {
+        /// Optional. Principal tags to allow in the token.
+        #[prost(message, optional, tag = "1")]
+        pub allowed_principal_tags: ::core::option::Option<
+            aws_principal_tags_options::AllowedPrincipalTags,
+        >,
+    }
+    /// Nested message and enum types in `AwsPrincipalTagsOptions`.
+    pub mod aws_principal_tags_options {
+        /// Allowed principal tags is used to define what principal tags will be
+        /// placed in the token.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct AllowedPrincipalTags {
+            /// Optional. Container image signatures allowed in the token.
+            #[prost(message, optional, tag = "1")]
+            pub container_image_signatures: ::core::option::Option<
+                allowed_principal_tags::ContainerImageSignatures,
+            >,
+        }
+        /// Nested message and enum types in `AllowedPrincipalTags`.
+        pub mod allowed_principal_tags {
+            /// Allowed Container Image Signatures. Key IDs are required to allow this
+            /// claim to fit within the narrow AWS IAM restrictions.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct ContainerImageSignatures {
+                /// Optional. List of key ids to filter into the Principal tags. Only
+                /// keys that have been validated and added to the token will be filtered
+                /// into principal tags. Unrecognized key ids will be ignored.
+                #[prost(string, repeated, tag = "1")]
+                pub key_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+            }
+        }
+    }
+    /// An optional additional configuration per token type.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum TokenTypeOptions {
+        /// Optional. Options for the Limited AWS token type.
+        #[prost(message, tag = "4")]
+        AwsPrincipalTagsOptions(AwsPrincipalTagsOptions),
+    }
 }
 /// TPM2 data containing everything necessary to validate any platform state
 /// measured into the TPM.
@@ -291,6 +339,8 @@ pub enum TokenType {
     Pki = 2,
     /// Limited claim token type for AWS integration
     LimitedAws = 3,
+    /// Principal-tag-based token for AWS integration
+    AwsPrincipaltags = 4,
 }
 impl TokenType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -303,6 +353,7 @@ impl TokenType {
             Self::Oidc => "TOKEN_TYPE_OIDC",
             Self::Pki => "TOKEN_TYPE_PKI",
             Self::LimitedAws => "TOKEN_TYPE_LIMITED_AWS",
+            Self::AwsPrincipaltags => "TOKEN_TYPE_AWS_PRINCIPALTAGS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -312,6 +363,7 @@ impl TokenType {
             "TOKEN_TYPE_OIDC" => Some(Self::Oidc),
             "TOKEN_TYPE_PKI" => Some(Self::Pki),
             "TOKEN_TYPE_LIMITED_AWS" => Some(Self::LimitedAws),
+            "TOKEN_TYPE_AWS_PRINCIPALTAGS" => Some(Self::AwsPrincipaltags),
             _ => None,
         }
     }

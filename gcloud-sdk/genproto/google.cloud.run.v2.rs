@@ -851,10 +851,9 @@ pub struct SecretVolumeSource {
     /// * Internally, a umask of 0222 will be applied to any non-zero value.
     /// * This is an integer representation of the mode bits. So, the octal
     /// integer value should look exactly as the chmod numeric notation with a
-    /// leading zero. Some examples: for chmod 777 (a=rwx), set to 0777 (octal) or
-    /// 511 (base-10). For chmod 640 (u=rw,g=r), set to 0640 (octal) or
-    /// 416 (base-10). For chmod 755 (u=rwx,g=rx,o=rx), set to 0755 (octal) or 493
-    /// (base-10).
+    /// leading zero. Some examples: for chmod 640 (u=rw,g=r), set to 0640 (octal)
+    /// or 416 (base-10). For chmod 755 (u=rwx,g=rx,o=rx), set to 0755 (octal) or
+    /// 493 (base-10).
     /// * This might be in conflict with other options that affect the
     /// file mode, like fsGroup, and the result can be other mode bits set.
     ///
@@ -884,10 +883,9 @@ pub struct VersionToPath {
     /// * Internally, a umask of 0222 will be applied to any non-zero value.
     /// * This is an integer representation of the mode bits. So, the octal
     /// integer value should look exactly as the chmod numeric notation with a
-    /// leading zero. Some examples: for chmod 777 (a=rwx), set to 0777 (octal) or
-    /// 511 (base-10). For chmod 640 (u=rw,g=r), set to 0640 (octal) or
-    /// 416 (base-10). For chmod 755 (u=rwx,g=rx,o=rx), set to 0755 (octal) or 493
-    /// (base-10).
+    /// leading zero. Some examples: for chmod 640 (u=rw,g=r), set to 0640 (octal)
+    /// or 416 (base-10). For chmod 755 (u=rwx,g=rx,o=rx), set to 0755 (octal) or
+    /// 493 (base-10).
     /// * This might be in conflict with other options that affect the
     /// file mode, like fsGroup, and the result can be other mode bits set.
     #[prost(int32, tag = "3")]
@@ -1244,6 +1242,11 @@ pub struct ServiceScaling {
     /// Optional. The scaling mode for the service.
     #[prost(enumeration = "service_scaling::ScalingMode", tag = "3")]
     pub scaling_mode: i32,
+    /// Optional. total instance count for the service in manual scaling mode. This
+    /// number of instances is divided among all revisions with specified traffic
+    /// based on the percent of traffic they are receiving.
+    #[prost(int32, optional, tag = "6")]
+    pub manual_instance_count: ::core::option::Option<i32>,
 }
 /// Nested message and enum types in `ServiceScaling`.
 pub mod service_scaling {
@@ -3104,13 +3107,22 @@ pub struct RevisionTemplate {
     #[prost(string, tag = "14")]
     pub encryption_key: ::prost::alloc::string::String,
     /// Optional. Sets the maximum number of requests that each serving instance
-    /// can receive. If not specified or 0, defaults to 80 when requested
-    /// `CPU >= 1` and defaults to 1 when requested `CPU < 1`.
+    /// can receive. If not specified or 0, concurrency defaults to 80 when
+    /// requested `CPU >= 1` and defaults to 1 when requested `CPU < 1`.
     #[prost(int32, tag = "15")]
     pub max_instance_request_concurrency: i32,
     /// Optional. Enables service mesh connectivity.
     #[prost(message, optional, tag = "16")]
     pub service_mesh: ::core::option::Option<ServiceMesh>,
+    /// Optional. The action to take if the encryption key is revoked.
+    #[prost(enumeration = "EncryptionKeyRevocationAction", tag = "17")]
+    pub encryption_key_revocation_action: i32,
+    /// Optional. If encryption_key_revocation_action is SHUTDOWN, the duration
+    /// before shutting down all instances. The minimum increment is 1 hour.
+    #[prost(message, optional, tag = "18")]
+    pub encryption_key_shutdown_duration: ::core::option::Option<
+        ::prost_types::Duration,
+    >,
     /// Optional. Enable session affinity.
     #[prost(bool, tag = "19")]
     pub session_affinity: bool,
