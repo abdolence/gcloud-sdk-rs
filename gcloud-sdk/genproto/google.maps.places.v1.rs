@@ -486,6 +486,19 @@ pub struct Circle {
     #[prost(double, tag = "2")]
     pub radius: f64,
 }
+/// The price range associated with a Place. `end_price` could be unset, which
+/// indicates a range without upper bound (e.g. "More than $100").
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PriceRange {
+    /// The low end of the price range (inclusive). Price should be at or above
+    /// this amount.
+    #[prost(message, optional, tag = "1")]
+    pub start_price: ::core::option::Option<super::super::super::r#type::Money>,
+    /// The high end of the price range (exclusive). Price should be lower than
+    /// this amount.
+    #[prost(message, optional, tag = "2")]
+    pub end_price: ::core::option::Option<super::super::super::r#type::Money>,
+}
 /// All the information representing a Place.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Place {
@@ -555,7 +568,9 @@ pub struct Place {
     /// The position of this place.
     #[prost(message, optional, tag = "12")]
     pub location: ::core::option::Option<super::super::super::r#type::LatLng>,
-    /// A viewport suitable for displaying the place on an average-sized map.
+    /// A viewport suitable for displaying the place on an average-sized map. This
+    /// viewport should not be used as the physical boundary or the service area of
+    /// the business.
     #[prost(message, optional, tag = "13")]
     pub viewport: ::core::option::Option<super::super::super::geo::r#type::Viewport>,
     /// A rating between 1.0 and 5.0, based on user reviews of this place.
@@ -589,7 +604,6 @@ pub struct Place {
     /// The place's address in adr microformat: <http://microformats.org/wiki/adr.>
     #[prost(string, tag = "24")]
     pub adr_format_address: ::prost::alloc::string::String,
-    /// The business status for the place.
     #[prost(enumeration = "place::BusinessStatus", tag = "25")]
     pub business_status: i32,
     /// Price level of the place.
@@ -742,6 +756,19 @@ pub struct Place {
     /// AI-generated summary of the area that the place is in.
     #[prost(message, optional, tag = "81")]
     pub area_summary: ::core::option::Option<place::AreaSummary>,
+    /// List of places in which the current place is located.
+    #[prost(message, repeated, tag = "82")]
+    pub containing_places: ::prost::alloc::vec::Vec<place::ContainingPlace>,
+    /// Indicates whether the place is a pure service area business. Pure service
+    /// area business is a business that visits or delivers to customers directly
+    /// but does not serve customers at their business address. For example,
+    /// businesses like cleaning services or plumbers. Those businesses may not
+    /// have a physical address or location on Google Maps.
+    #[prost(bool, optional, tag = "83")]
+    pub pure_service_area_business: ::core::option::Option<bool>,
+    /// The price range associated with a Place.
+    #[prost(message, optional, tag = "86")]
+    pub price_range: ::core::option::Option<PriceRange>,
 }
 /// Nested message and enum types in `Place`.
 pub mod place {
@@ -813,6 +840,16 @@ pub mod place {
         /// exceptional hours.
         #[prost(message, repeated, tag = "5")]
         pub special_days: ::prost::alloc::vec::Vec<opening_hours::SpecialDay>,
+        /// The next time the current opening hours period starts up to 7 days in the
+        /// future. This field is only populated if the opening hours period is not
+        /// active at the time of serving the request.
+        #[prost(message, optional, tag = "6")]
+        pub next_open_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// The next time the current opening hours period ends up to 7 days in the
+        /// future. This field is only populated if the opening hours period is
+        /// active at the time of serving the request.
+        #[prost(message, optional, tag = "7")]
+        pub next_close_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// Nested message and enum types in `OpeningHours`.
     pub mod opening_hours {
@@ -1067,6 +1104,16 @@ pub mod place {
         #[prost(message, repeated, tag = "4")]
         pub content_blocks: ::prost::alloc::vec::Vec<super::ContentBlock>,
     }
+    /// Info about the place in which this place is located.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ContainingPlace {
+        /// The resource name of the place in which this place is located.
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// The place id of the place in which this place is located.
+        #[prost(string, tag = "2")]
+        pub id: ::prost::alloc::string::String,
+    }
     /// Business status for the place.
     #[derive(
         Clone,
@@ -1270,7 +1317,7 @@ impl RoutingPreference {
 }
 /// The duration and distance from the routing origin to a place in the
 /// response, and a second leg from that place to the destination, if requested.
-/// Note: Adding `routingSummaries` in the field mask without also including
+/// **Note:** Adding `routingSummaries` in the field mask without also including
 /// either the `routingParameters.origin` parameter or the
 /// `searchAlongRouteParameters.polyline.encodedPolyline` parameter in the
 /// request causes an error.
@@ -1285,6 +1332,14 @@ pub struct RoutingSummary {
     /// destination.
     #[prost(message, repeated, tag = "1")]
     pub legs: ::prost::alloc::vec::Vec<routing_summary::Leg>,
+    /// A link to show directions on Google Maps using the waypoints from the given
+    /// routing summary. The route generated by this link is not guaranteed to be
+    /// the same as the route used to generate the routing summary.
+    /// The link uses information provided in the request, from fields including
+    /// `routingParameters` and `searchAlongRouteParameters` when applicable, to
+    /// generate the directions link.
+    #[prost(string, tag = "2")]
+    pub directions_uri: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `RoutingSummary`.
 pub mod routing_summary {
@@ -1561,7 +1616,7 @@ pub struct SearchNearbyResponse {
     #[prost(message, repeated, tag = "1")]
     pub places: ::prost::alloc::vec::Vec<Place>,
     /// A list of routing summaries where each entry associates to the
-    /// corresponding place in the same index in the places field. If the routing
+    /// corresponding place in the same index in the `places` field. If the routing
     /// summary is not available for one of the places, it will contain an empty
     /// entry. This list should have as many entries as the list of places if
     /// requested.
@@ -1654,6 +1709,15 @@ pub struct SearchTextRequest {
     pub search_along_route_parameters: ::core::option::Option<
         search_text_request::SearchAlongRouteParameters,
     >,
+    /// Optional. Include pure service area businesses if the field is set to true.
+    /// Pure service area business is a business that visits or delivers to
+    /// customers directly but does not serve customers at their business address.
+    /// For example, businesses like cleaning services or plumbers. Those
+    /// businesses do not have a physical address or location on Google Maps.
+    /// Places will not return fields including `location`, `plus_code`, and other
+    /// location related fields for these businesses.
+    #[prost(bool, tag = "20")]
+    pub include_pure_service_area_businesses: bool,
 }
 /// Nested message and enum types in `SearchTextRequest`.
 pub mod search_text_request {
@@ -1794,7 +1858,7 @@ pub struct SearchTextResponse {
     #[prost(message, repeated, tag = "1")]
     pub places: ::prost::alloc::vec::Vec<Place>,
     /// A list of routing summaries where each entry associates to the
-    /// corresponding place in the same index in the places field. If the routing
+    /// corresponding place in the same index in the `places` field. If the routing
     /// summary is not available for one of the places, it will contain an empty
     /// entry. This list will have as many entries as the list of places if
     /// requested.
@@ -2018,6 +2082,15 @@ pub struct AutocompletePlacesRequest {
     ///    billed individually.
     #[prost(string, tag = "11")]
     pub session_token: ::prost::alloc::string::String,
+    /// Optional. Include pure service area businesses if the field is set to true.
+    /// Pure service area business is a business that visits or delivers to
+    /// customers directly but does not serve customers at their business address.
+    /// For example, businesses like cleaning services or plumbers. Those
+    /// businesses do not have a physical address or location on Google Maps.
+    /// Places will not return fields including `location`, `plus_code`, and other
+    /// location related fields for these businesses.
+    #[prost(bool, tag = "12")]
+    pub include_pure_service_area_businesses: bool,
 }
 /// Nested message and enum types in `AutocompletePlacesRequest`.
 pub mod autocomplete_places_request {

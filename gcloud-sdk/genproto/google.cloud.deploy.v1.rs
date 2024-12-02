@@ -4192,7 +4192,7 @@ pub struct AutomationResourceSelector {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutomationRule {
     /// The configuration of the Automation rule.
-    #[prost(oneof = "automation_rule::Rule", tags = "1, 2, 3")]
+    #[prost(oneof = "automation_rule::Rule", tags = "1, 2, 3, 4")]
     pub rule: ::core::option::Option<automation_rule::Rule>,
 }
 /// Nested message and enum types in `AutomationRule`.
@@ -4212,7 +4212,45 @@ pub mod automation_rule {
         /// rollout.
         #[prost(message, tag = "3")]
         RepairRolloutRule(super::RepairRolloutRule),
+        /// Optional. The `TimedPromoteReleaseRule` will automatically promote a
+        /// release from the current target(s) to the specified target(s) on a
+        /// configured schedule.
+        #[prost(message, tag = "4")]
+        TimedPromoteReleaseRule(super::TimedPromoteReleaseRule),
     }
+}
+/// The `TimedPromoteReleaseRule` will automatically promote a release from the
+/// current target(s) to the specified target(s) on a configured schedule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TimedPromoteReleaseRule {
+    /// Required. ID of the rule. This ID must be unique in the `Automation`
+    /// resource to which this rule belongs. The format is
+    /// `[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?`.
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    /// Optional. The ID of the stage in the pipeline to which this `Release` is
+    /// deploying. If unspecified, default it to the next stage in the promotion
+    /// flow. The value of this field could be one of the following:
+    ///
+    /// * The last segment of a target name
+    /// * "@next", the next target in the promotion sequence
+    #[prost(string, tag = "2")]
+    pub destination_target_id: ::prost::alloc::string::String,
+    /// Required. Schedule in crontab format. e.g. "0 9 * * 1" for every Monday at
+    /// 9am.
+    #[prost(string, tag = "3")]
+    pub schedule: ::prost::alloc::string::String,
+    /// Required. The time zone in IANA format [IANA Time Zone
+    /// Database](<https://www.iana.org/time-zones>) (e.g. America/New_York).
+    #[prost(string, tag = "4")]
+    pub time_zone: ::prost::alloc::string::String,
+    /// Output only. Information around the state of the Automation rule.
+    #[prost(message, optional, tag = "5")]
+    pub condition: ::core::option::Option<AutomationRuleCondition>,
+    /// Optional. The starting phase of the rollout created by this rule. Default
+    /// to the first phase.
+    #[prost(string, tag = "6")]
+    pub destination_phase: ::prost::alloc::string::String,
 }
 /// The `PromoteRelease` rule will automatically promote a release from the
 /// current target to a specified target.
@@ -4354,6 +4392,46 @@ pub struct AutomationRuleCondition {
     /// Optional. Details around targets enumerated in the rule.
     #[prost(message, optional, tag = "1")]
     pub targets_present_condition: ::core::option::Option<TargetsPresentCondition>,
+    /// Details specific to the automation rule type.
+    #[prost(oneof = "automation_rule_condition::RuleTypeCondition", tags = "2")]
+    pub rule_type_condition: ::core::option::Option<
+        automation_rule_condition::RuleTypeCondition,
+    >,
+}
+/// Nested message and enum types in `AutomationRuleCondition`.
+pub mod automation_rule_condition {
+    /// Details specific to the automation rule type.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum RuleTypeCondition {
+        /// Optional. TimedPromoteReleaseCondition contains rule conditions specific
+        /// to a an Automation with a timed promote release rule defined.
+        #[prost(message, tag = "2")]
+        TimedPromoteReleaseCondition(super::TimedPromoteReleaseCondition),
+    }
+}
+/// `TimedPromoteReleaseCondition` contains conditions specific to an Automation
+/// with a Timed Promote Release rule defined.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TimedPromoteReleaseCondition {
+    /// Output only. When the next scheduled promotion(s) will occur.
+    #[prost(message, optional, tag = "1")]
+    pub next_promotion_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. A list of targets involved in the upcoming timed promotion(s).
+    #[prost(message, repeated, tag = "2")]
+    pub targets_list: ::prost::alloc::vec::Vec<timed_promote_release_condition::Targets>,
+}
+/// Nested message and enum types in `TimedPromoteReleaseCondition`.
+pub mod timed_promote_release_condition {
+    /// The targets involved in a single timed promotion.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Targets {
+        /// Optional. The source target ID.
+        #[prost(string, tag = "1")]
+        pub source_target_id: ::prost::alloc::string::String,
+        /// Optional. The destination target ID.
+        #[prost(string, tag = "2")]
+        pub destination_target_id: ::prost::alloc::string::String,
+    }
 }
 /// The request object for `CreateAutomation`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4544,9 +4622,9 @@ pub struct AutomationRun {
     /// time.
     #[prost(message, optional, tag = "6")]
     pub automation_snapshot: ::core::option::Option<Automation>,
-    /// Output only. The ID of the target that represents the promotion stage that
-    /// initiates the `AutomationRun`. The value of this field is the last segment
-    /// of a target name.
+    /// Output only. The ID of the source target that initiates the
+    /// `AutomationRun`. The value of this field is the last segment of a target
+    /// name.
     #[prost(string, tag = "7")]
     pub target_id: ::prost::alloc::string::String,
     /// Output only. Current state of the `AutomationRun`.
@@ -4575,7 +4653,7 @@ pub struct AutomationRun {
     #[prost(message, optional, tag = "16")]
     pub wait_until_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The operation that the `AutomationRun` will perform.
-    #[prost(oneof = "automation_run::Operation", tags = "13, 14, 17")]
+    #[prost(oneof = "automation_run::Operation", tags = "13, 14, 17, 19")]
     pub operation: ::core::option::Option<automation_run::Operation>,
 }
 /// Nested message and enum types in `AutomationRun`.
@@ -4651,6 +4729,10 @@ pub mod automation_run {
         /// Output only. Repairs a failed 'Rollout'.
         #[prost(message, tag = "17")]
         RepairRolloutOperation(super::RepairRolloutOperation),
+        /// Output only. Promotes a release to a specified 'Target' as defined in a
+        /// Timed Promote Release rule.
+        #[prost(message, tag = "19")]
+        TimedPromoteReleaseOperation(super::TimedPromoteReleaseOperation),
     }
 }
 /// Contains the information of an automated promote-release operation.
@@ -4707,6 +4789,21 @@ pub struct RepairRolloutOperation {
     /// Output only. The job ID for the Job to repair.
     #[prost(string, tag = "5")]
     pub job_id: ::prost::alloc::string::String,
+}
+/// Contains the information of an automated timed promote-release operation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TimedPromoteReleaseOperation {
+    /// Output only. The ID of the target that represents the promotion stage to
+    /// which the release will be promoted. The value of this field is the last
+    /// segment of a target name.
+    #[prost(string, tag = "1")]
+    pub target_id: ::prost::alloc::string::String,
+    /// Output only. The name of the release to be promoted.
+    #[prost(string, tag = "2")]
+    pub release: ::prost::alloc::string::String,
+    /// Output only. The starting phase of the rollout created by this operation.
+    #[prost(string, tag = "3")]
+    pub phase: ::prost::alloc::string::String,
 }
 /// RepairPhase tracks the repair attempts that have been made for
 /// each `RepairPhaseConfig` specified in the `Automation` resource.

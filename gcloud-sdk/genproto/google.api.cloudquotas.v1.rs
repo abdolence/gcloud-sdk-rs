@@ -150,6 +150,10 @@ pub mod quota_increase_eligibility {
         Unspecified = 0,
         /// The container is not linked with a valid billing account.
         NoValidBillingAccount = 1,
+        /// Quota increase is not supported for the quota.
+        NotSupported = 3,
+        /// There is not enough usage history to determine the eligibility.
+        NotEnoughUsageHistory = 4,
         /// Other reasons.
         Other = 2,
     }
@@ -162,6 +166,8 @@ pub mod quota_increase_eligibility {
             match self {
                 Self::Unspecified => "INELIGIBILITY_REASON_UNSPECIFIED",
                 Self::NoValidBillingAccount => "NO_VALID_BILLING_ACCOUNT",
+                Self::NotSupported => "NOT_SUPPORTED",
+                Self::NotEnoughUsageHistory => "NOT_ENOUGH_USAGE_HISTORY",
                 Self::Other => "OTHER",
             }
         }
@@ -170,6 +176,8 @@ pub mod quota_increase_eligibility {
             match value {
                 "INELIGIBILITY_REASON_UNSPECIFIED" => Some(Self::Unspecified),
                 "NO_VALID_BILLING_ACCOUNT" => Some(Self::NoValidBillingAccount),
+                "NOT_SUPPORTED" => Some(Self::NotSupported),
+                "NOT_ENOUGH_USAGE_HISTORY" => Some(Self::NotEnoughUsageHistory),
                 "OTHER" => Some(Self::Other),
                 _ => None,
             }

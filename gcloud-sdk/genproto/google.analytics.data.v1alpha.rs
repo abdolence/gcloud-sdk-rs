@@ -188,7 +188,7 @@ pub struct Filter {
     #[prost(string, tag = "1")]
     pub field_name: ::prost::alloc::string::String,
     /// Specify one type of filter for `Filter`.
-    #[prost(oneof = "filter::OneFilter", tags = "2, 3, 4, 5")]
+    #[prost(oneof = "filter::OneFilter", tags = "2, 3, 4, 5, 6")]
     pub one_filter: ::core::option::Option<filter::OneFilter>,
 }
 /// Nested message and enum types in `Filter`.
@@ -208,6 +208,9 @@ pub mod filter {
         /// A filter for between two values.
         #[prost(message, tag = "5")]
         BetweenFilter(super::BetweenFilter),
+        /// A filter for empty values such as "(not set)" and "" values.
+        #[prost(message, tag = "6")]
+        EmptyFilter(super::EmptyFilter),
     }
 }
 /// The filter for string
@@ -473,6 +476,9 @@ pub struct BetweenFilter {
     #[prost(message, optional, tag = "2")]
     pub to_value: ::core::option::Option<NumericValue>,
 }
+/// Filter for empty values.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct EmptyFilter {}
 /// To represent a number.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct NumericValue {
@@ -717,6 +723,16 @@ pub struct ResponseMetaData {
     /// Interests](<https://support.google.com/analytics/answer/2799357>).
     #[prost(bool, optional, tag = "8")]
     pub subject_to_thresholding: ::core::option::Option<bool>,
+    /// If this report's results are
+    /// [sampled](<https://support.google.com/analytics/answer/13331292>), this
+    /// describes the percentage of events used in this report. One
+    /// `samplingMetadatas` is populated for each date range. Each
+    /// `samplingMetadatas` corresponds to a date range in the order that date
+    /// ranges were specified in the request.
+    ///
+    /// However if the results are not sampled, this field will not be defined.
+    #[prost(message, repeated, tag = "9")]
+    pub sampling_metadatas: ::prost::alloc::vec::Vec<SamplingMetadata>,
 }
 /// Nested message and enum types in `ResponseMetaData`.
 pub mod response_meta_data {
@@ -1717,8 +1733,8 @@ pub struct FunnelResponseMetadata {
     /// [sampled](<https://support.google.com/analytics/answer/13331292>), this
     /// describes what percentage of events were used in this funnel report. One
     /// `samplingMetadatas` is populated for each date range. Each
-    /// `samplingMetadatas` corresponds to a date range in order that date ranges
-    /// were specified in the request.
+    /// `samplingMetadatas` corresponds to a date range in the order that date
+    /// ranges were specified in the request.
     ///
     /// However if the results are not sampled, this field will not be defined.
     #[prost(message, repeated, tag = "1")]

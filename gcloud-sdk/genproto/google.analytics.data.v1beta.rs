@@ -252,7 +252,7 @@ pub struct Filter {
     #[prost(string, tag = "1")]
     pub field_name: ::prost::alloc::string::String,
     /// Specify one type of filter for `Filter`.
-    #[prost(oneof = "filter::OneFilter", tags = "3, 4, 5, 6")]
+    #[prost(oneof = "filter::OneFilter", tags = "3, 4, 5, 6, 8")]
     pub one_filter: ::core::option::Option<filter::OneFilter>,
 }
 /// Nested message and enum types in `Filter`.
@@ -421,6 +421,9 @@ pub mod filter {
         #[prost(message, optional, tag = "2")]
         pub to_value: ::core::option::Option<super::NumericValue>,
     }
+    /// Filter for empty values.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct EmptyFilter {}
     /// Specify one type of filter for `Filter`.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneFilter {
@@ -436,6 +439,9 @@ pub mod filter {
         /// A filter for two values.
         #[prost(message, tag = "6")]
         BetweenFilter(BetweenFilter),
+        /// A filter for empty values such as "(not set)" and "" values.
+        #[prost(message, tag = "8")]
+        EmptyFilter(EmptyFilter),
     }
 }
 /// Order bys define how rows will be sorted in the response. For example,
@@ -1378,8 +1384,8 @@ impl MetricType {
         }
     }
 }
-/// Categories of data that you may be restricted from viewing on certain GA4
-/// properties.
+/// Categories of data that you may be restricted from viewing on certain
+/// Google Analytics properties.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum RestrictedMetricType {
@@ -1453,7 +1459,7 @@ impl Compatibility {
 /// as in your `runReport` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckCompatibilityRequest {
-    /// A Google Analytics GA4 property identifier whose events are tracked. To
+    /// A Google Analytics property identifier whose events are tracked. To
     /// learn more, see [where to find your Property
     /// ID](<https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>).
     /// `property` should be the same value as in your `runReport` request.
@@ -1513,7 +1519,7 @@ pub struct Metadata {
 /// The request to generate a report.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunReportRequest {
-    /// A Google Analytics GA4 property identifier whose events are tracked.
+    /// A Google Analytics property identifier whose events are tracked.
     /// Specified in the URL path and not the body. To learn more, see [where to
     /// find your Property
     /// ID](<https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>).
@@ -1573,9 +1579,13 @@ pub struct RunReportRequest {
     pub limit: i64,
     /// Aggregation of metrics. Aggregated metric values will be shown in rows
     /// where the dimension_values are set to "RESERVED_(MetricAggregation)".
+    /// Aggregates including both comparisons and multiple date ranges will
+    /// be aggregated based on the date ranges.
     #[prost(enumeration = "MetricAggregation", repeated, tag = "9")]
     pub metric_aggregations: ::prost::alloc::vec::Vec<i32>,
     /// Specifies how rows are ordered in the response.
+    /// Requests including both comparisons and multiple date ranges will
+    /// have order bys applied on the comparisons.
     #[prost(message, repeated, tag = "10")]
     pub order_bys: ::prost::alloc::vec::Vec<OrderBy>,
     /// A currency code in ISO4217 format, such as "AED", "USD", "JPY".
@@ -1591,15 +1601,15 @@ pub struct RunReportRequest {
     /// removed by a filter.
     ///
     /// Regardless of this `keep_empty_rows` setting, only data recorded by the
-    /// Google Analytics (GA4) property can be displayed in a report.
+    /// Google Analytics property can be displayed in a report.
     ///
     /// For example if a property never logs a `purchase` event, then a query for
     /// the `eventName` dimension and  `eventCount` metric will not have a row
     /// eventName: "purchase" and eventCount: 0.
     #[prost(bool, tag = "13")]
     pub keep_empty_rows: bool,
-    /// Toggles whether to return the current state of this Analytics Property's
-    /// quota. Quota is returned in [PropertyQuota](#PropertyQuota).
+    /// Toggles whether to return the current state of this Google Analytics
+    /// property's quota. Quota is returned in [PropertyQuota](#PropertyQuota).
     #[prost(bool, tag = "14")]
     pub return_property_quota: bool,
     /// Optional. The configuration of comparisons requested and displayed. The
@@ -1644,7 +1654,7 @@ pub struct RunReportResponse {
     /// Metadata for the report.
     #[prost(message, optional, tag = "8")]
     pub metadata: ::core::option::Option<ResponseMetaData>,
-    /// This Analytics Property's quota state including this request.
+    /// This Google Analytics property's quota state including this request.
     #[prost(message, optional, tag = "9")]
     pub property_quota: ::core::option::Option<PropertyQuota>,
     /// Identifies what kind of resource this message is. This `kind` is always the
@@ -1656,7 +1666,7 @@ pub struct RunReportResponse {
 /// The request to generate a pivot report.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunPivotReportRequest {
-    /// A Google Analytics GA4 property identifier whose events are tracked.
+    /// A Google Analytics property identifier whose events are tracked.
     /// Specified in the URL path and not the body. To learn more, see [where to
     /// find your Property
     /// ID](<https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>).
@@ -1710,15 +1720,15 @@ pub struct RunPivotReportRequest {
     /// removed by a filter.
     ///
     /// Regardless of this `keep_empty_rows` setting, only data recorded by the
-    /// Google Analytics (GA4) property can be displayed in a report.
+    /// Google Analytics property can be displayed in a report.
     ///
     /// For example if a property never logs a `purchase` event, then a query for
     /// the `eventName` dimension and  `eventCount` metric will not have a row
     /// eventName: "purchase" and eventCount: 0.
     #[prost(bool, tag = "10")]
     pub keep_empty_rows: bool,
-    /// Toggles whether to return the current state of this Analytics Property's
-    /// quota. Quota is returned in [PropertyQuota](#PropertyQuota).
+    /// Toggles whether to return the current state of this Google Analytics
+    /// property's quota. Quota is returned in [PropertyQuota](#PropertyQuota).
     #[prost(bool, tag = "11")]
     pub return_property_quota: bool,
     /// Optional. The configuration of comparisons requested and displayed. The
@@ -1788,7 +1798,7 @@ pub struct RunPivotReportResponse {
     /// Metadata for the report.
     #[prost(message, optional, tag = "6")]
     pub metadata: ::core::option::Option<ResponseMetaData>,
-    /// This Analytics Property's quota state including this request.
+    /// This Google Analytics property's quota state including this request.
     #[prost(message, optional, tag = "7")]
     pub property_quota: ::core::option::Option<PropertyQuota>,
     /// Identifies what kind of resource this message is. This `kind` is always the
@@ -1800,7 +1810,7 @@ pub struct RunPivotReportResponse {
 /// The batch request containing multiple report requests.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchRunReportsRequest {
-    /// A Google Analytics GA4 property identifier whose events are tracked.
+    /// A Google Analytics property identifier whose events are tracked.
     /// Specified in the URL path and not the body. To learn more, see [where to
     /// find your Property
     /// ID](<https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>).
@@ -1831,7 +1841,7 @@ pub struct BatchRunReportsResponse {
 /// The batch request containing multiple pivot report requests.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchRunPivotReportsRequest {
-    /// A Google Analytics GA4 property identifier whose events are tracked.
+    /// A Google Analytics property identifier whose events are tracked.
     /// Specified in the URL path and not the body. To learn more, see [where to
     /// find your Property
     /// ID](<https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>).
@@ -1864,7 +1874,7 @@ pub struct BatchRunPivotReportsResponse {
 pub struct GetMetadataRequest {
     /// Required. The resource name of the metadata to retrieve. This name field is
     /// specified in the URL path and not URL parameters. Property is a numeric
-    /// Google Analytics GA4 Property identifier. To learn more, see [where to find
+    /// Google Analytics property identifier. To learn more, see [where to find
     /// your Property
     /// ID](<https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>).
     ///
@@ -1879,7 +1889,7 @@ pub struct GetMetadataRequest {
 /// The request to generate a realtime report.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunRealtimeReportRequest {
-    /// A Google Analytics GA4 property identifier whose events are tracked.
+    /// A Google Analytics property identifier whose events are tracked.
     /// Specified in the URL path and not the body. To learn more, see [where to
     /// find your Property
     /// ID](<https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>).
@@ -1918,8 +1928,9 @@ pub struct RunRealtimeReportRequest {
     /// Specifies how rows are ordered in the response.
     #[prost(message, repeated, tag = "8")]
     pub order_bys: ::prost::alloc::vec::Vec<OrderBy>,
-    /// Toggles whether to return the current state of this Analytics Property's
-    /// Realtime quota. Quota is returned in [PropertyQuota](#PropertyQuota).
+    /// Toggles whether to return the current state of this Google Analytics
+    /// property's Realtime quota. Quota is returned in
+    /// [PropertyQuota](#PropertyQuota).
     #[prost(bool, tag = "9")]
     pub return_property_quota: bool,
     /// The minute ranges of event data to read. If unspecified, one minute range
@@ -1960,7 +1971,8 @@ pub struct RunRealtimeReportResponse {
     /// only 50 rows.
     #[prost(int32, tag = "7")]
     pub row_count: i32,
-    /// This Analytics Property's Realtime quota state including this request.
+    /// This Google Analytics property's Realtime quota state including this
+    /// request.
     #[prost(message, optional, tag = "8")]
     pub property_quota: ::core::option::Option<PropertyQuota>,
     /// Identifies what kind of resource this message is. This `kind` is always the
@@ -2384,7 +2396,7 @@ pub mod beta_analytics_data_client {
             self.inner.unary(req, path, codec).await
         }
         /// Returns multiple reports in a batch. All reports must be for the same
-        /// GA4 Property.
+        /// Google Analytics property.
         pub async fn batch_run_reports(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchRunReportsRequest>,
@@ -2415,7 +2427,7 @@ pub mod beta_analytics_data_client {
             self.inner.unary(req, path, codec).await
         }
         /// Returns multiple pivot reports in a batch. All reports must be for the same
-        /// GA4 Property.
+        /// Google Analytics property.
         pub async fn batch_run_pivot_reports(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchRunPivotReportsRequest>,
@@ -2447,7 +2459,7 @@ pub mod beta_analytics_data_client {
         }
         /// Returns metadata for dimensions and metrics available in reporting methods.
         /// Used to explore the dimensions and metrics. In this method, a Google
-        /// Analytics GA4 Property Identifier is specified in the request, and
+        /// Analytics property identifier is specified in the request, and
         /// the metadata response includes Custom dimensions and metrics as well as
         /// Universal metadata.
         ///

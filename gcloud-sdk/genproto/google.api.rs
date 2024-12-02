@@ -971,6 +971,12 @@ pub mod python_settings {
         /// feature in preview packages.
         #[prost(bool, tag = "1")]
         pub rest_async_io_enabled: bool,
+        /// Enables generation of protobuf code using new types that are more
+        /// Pythonic which are included in `protobuf>=5.29.x`. This feature will be
+        /// enabled by default 1 month after launching the feature in preview
+        /// packages.
+        #[prost(bool, tag = "2")]
+        pub protobuf_pythonic_types_enabled: bool,
     }
 }
 /// Settings for Node client libraries.
@@ -4123,8 +4129,8 @@ pub struct QuotaLimit {
     #[prost(string, tag = "8")]
     pub metric: ::prost::alloc::string::String,
     /// Specify the unit of the quota limit. It uses the same syntax as
-    /// [Metric.unit][]. The supported unit kinds are determined by the quota
-    /// backend system.
+    /// [MetricDescriptor.unit][google.api.MetricDescriptor.unit]. The supported
+    /// unit kinds are determined by the quota backend system.
     ///
     /// Here are some examples:
     /// * "1/min/{project}" for quota per minute per project.

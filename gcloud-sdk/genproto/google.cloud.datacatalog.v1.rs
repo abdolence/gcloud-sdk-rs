@@ -973,7 +973,7 @@ impl TableSourceType {
 /// on the permissions needed to create or view tags.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Tag {
-    /// The resource name of the tag in URL format where tag ID is a
+    /// Identifier. The resource name of the tag in URL format where tag ID is a
     /// system-generated identifier.
     ///
     /// Note: The tag itself might not be stored in the location specified in its
@@ -997,6 +997,9 @@ pub struct Tag {
     /// must have at least 1 field and at most 500 fields.
     #[prost(map = "string, message", tag = "3")]
     pub fields: ::std::collections::HashMap<::prost::alloc::string::String, TagField>,
+    /// Output only. Denotes the transfer status of the Tag Template.
+    #[prost(enumeration = "tag_template::DataplexTransferStatus", tag = "7")]
+    pub dataplex_transfer_status: i32,
     /// The scope within the parent resource that this tag is attached to. If not
     /// provided, the tag is attached to the parent resource itself.
     ///
@@ -1098,7 +1101,7 @@ pub mod tag_field {
 /// that includes a permission to use the tag template to tag resources.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TagTemplate {
-    /// The resource name of the tag template in URL format.
+    /// Identifier. The resource name of the tag template in URL format.
     ///
     /// Note: The tag template itself and its child resources might not be
     /// stored in the location specified in its name.
@@ -1135,11 +1138,65 @@ pub struct TagTemplate {
         ::prost::alloc::string::String,
         TagTemplateField,
     >,
+    /// Optional. Transfer status of the TagTemplate
+    #[prost(enumeration = "tag_template::DataplexTransferStatus", tag = "7")]
+    pub dataplex_transfer_status: i32,
+}
+/// Nested message and enum types in `TagTemplate`.
+pub mod tag_template {
+    /// This enum describes TagTemplate transfer status to Dataplex service.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DataplexTransferStatus {
+        /// Default value. TagTemplate and its tags are only visible and editable in
+        /// DataCatalog.
+        Unspecified = 0,
+        /// TagTemplate and its tags are auto-copied to Dataplex service.
+        /// Visible in both services. Editable in DataCatalog, read-only in Dataplex.
+        /// Deprecated: Individual TagTemplate migration is deprecated in favor of
+        /// organization or project wide TagTemplate migration opt-in.
+        Migrated = 1,
+        /// TagTemplate and its tags are auto-copied to Dataplex service.
+        /// Visible in both services. Editable in Dataplex, read-only in DataCatalog.
+        Transferred = 2,
+    }
+    impl DataplexTransferStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DATAPLEX_TRANSFER_STATUS_UNSPECIFIED",
+                Self::Migrated => "MIGRATED",
+                Self::Transferred => "TRANSFERRED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATAPLEX_TRANSFER_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "MIGRATED" => Some(Self::Migrated),
+                "TRANSFERRED" => Some(Self::Transferred),
+                _ => None,
+            }
+        }
+    }
 }
 /// The template for an individual field within a tag template.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TagTemplateField {
-    /// Output only. The resource name of the tag template field in URL format.
+    /// Identifier. The resource name of the tag template field in URL format.
     /// Example:
     ///
     /// `projects/{PROJECT_ID}/locations/{LOCATION}/tagTemplates/{TAG_TEMPLATE}/fields/{FIELD}`
@@ -1736,7 +1793,7 @@ pub mod lookup_entry_request {
 /// [Tag][google.cloud.datacatalog.v1.Tag].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Entry {
-    /// Output only. The resource name of an entry in URL format.
+    /// Output only. Identifier. The resource name of an entry in URL format.
     ///
     /// Note: The entry itself and its child resources might not be
     /// stored in the location specified in its name.
@@ -1840,7 +1897,7 @@ pub struct Entry {
     ///
     /// When extending the API with new types and systems, use this field instead
     /// of the legacy `type_spec`.
-    #[prost(oneof = "entry::Spec", tags = "24, 27, 28, 32, 33, 42, 43")]
+    #[prost(oneof = "entry::Spec", tags = "24, 27, 28, 32, 33, 42, 43, 45")]
     pub spec: ::core::option::Option<entry::Spec>,
 }
 /// Nested message and enum types in `Entry`.
@@ -1958,6 +2015,9 @@ pub mod entry {
         /// Model specification.
         #[prost(message, tag = "43")]
         ModelSpec(super::ModelSpec),
+        /// FeatureonlineStore spec for Vertex AI Feature Store.
+        #[prost(message, tag = "45")]
+        FeatureOnlineStoreSpec(super::FeatureOnlineStoreSpec),
     }
 }
 /// Specification that applies to a table resource. Valid only
@@ -2427,6 +2487,12 @@ pub mod vertex_model_source_info {
         Bqml = 3,
         /// The Model is saved or tuned from Model Garden.
         ModelGarden = 4,
+        /// The Model is saved or tuned from Genie.
+        Genie = 5,
+        /// The Model is uploaded by text embedding finetuning pipeline.
+        CustomTextEmbedding = 6,
+        /// The Model is saved or tuned from Marketplace.
+        Marketplace = 7,
     }
     impl ModelSourceType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2440,6 +2506,9 @@ pub mod vertex_model_source_info {
                 Self::Custom => "CUSTOM",
                 Self::Bqml => "BQML",
                 Self::ModelGarden => "MODEL_GARDEN",
+                Self::Genie => "GENIE",
+                Self::CustomTextEmbedding => "CUSTOM_TEXT_EMBEDDING",
+                Self::Marketplace => "MARKETPLACE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2450,6 +2519,9 @@ pub mod vertex_model_source_info {
                 "CUSTOM" => Some(Self::Custom),
                 "BQML" => Some(Self::Bqml),
                 "MODEL_GARDEN" => Some(Self::ModelGarden),
+                "GENIE" => Some(Self::Genie),
+                "CUSTOM_TEXT_EMBEDDING" => Some(Self::CustomTextEmbedding),
+                "MARKETPLACE" => Some(Self::Marketplace),
                 _ => None,
             }
         }
@@ -2595,6 +2667,60 @@ pub mod model_spec {
         VertexModelSpec(super::VertexModelSpec),
     }
 }
+/// Detail description of the source information of a Vertex Feature Online
+/// Store.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct FeatureOnlineStoreSpec {
+    /// Output only. Type of underelaying storage for the FeatureOnlineStore.
+    #[prost(enumeration = "feature_online_store_spec::StorageType", tag = "1")]
+    pub storage_type: i32,
+}
+/// Nested message and enum types in `FeatureOnlineStoreSpec`.
+pub mod feature_online_store_spec {
+    /// Type of underlaying storage type.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum StorageType {
+        /// Should not be used.
+        Unspecified = 0,
+        /// Underlsying storgae is Bigtable.
+        Bigtable = 1,
+        /// Underlaying is optimized online server (Lightning).
+        Optimized = 2,
+    }
+    impl StorageType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STORAGE_TYPE_UNSPECIFIED",
+                Self::Bigtable => "BIGTABLE",
+                Self::Optimized => "OPTIMIZED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STORAGE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "BIGTABLE" => Some(Self::Bigtable),
+                "OPTIMIZED" => Some(Self::Optimized),
+                _ => None,
+            }
+        }
+    }
+}
 /// Business Context of the entry.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BusinessContext {
@@ -2641,11 +2767,11 @@ pub mod contacts {
 }
 /// Entry group metadata.
 ///
-/// An `EntryGroup` resource represents a logical grouping of zero or more
-/// Data Catalog [Entry][google.cloud.datacatalog.v1.Entry] resources.
+///   An `EntryGroup` resource represents a logical grouping of zero or more
+///   Data Catalog [Entry][google.cloud.datacatalog.v1.Entry] resources.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntryGroup {
-    /// The resource name of the entry group in URL format.
+    /// Identifier. The resource name of the entry group in URL format.
     ///
     /// Note: The entry group itself and its child resources might not be
     /// stored in the location specified in its name.
@@ -2663,6 +2789,13 @@ pub struct EntryGroup {
     /// Output only. Timestamps of the entry group. Default value is empty.
     #[prost(message, optional, tag = "4")]
     pub data_catalog_timestamps: ::core::option::Option<SystemTimestamps>,
+    /// Optional. When set to \[true\], it means DataCatalog EntryGroup was
+    /// transferred to Dataplex Catalog Service. It makes EntryGroup and its
+    /// Entries to be read-only in DataCatalog. However, new Tags on EntryGroup and
+    /// its Entries can be created. After setting the flag to \[true\] it cannot be
+    /// unset.
+    #[prost(bool, tag = "9")]
+    pub transferred_to_dataplex: bool,
 }
 /// Request message for
 /// [CreateTagTemplate][google.cloud.datacatalog.v1.DataCatalog.CreateTagTemplate].
@@ -3179,6 +3312,75 @@ pub struct ModifyEntryContactsRequest {
     #[prost(message, optional, tag = "2")]
     pub contacts: ::core::option::Option<Contacts>,
 }
+/// Request message for
+/// [SetConfig][google.cloud.datacatalog.v1.DataCatalog.SetConfig].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SetConfigRequest {
+    /// Required. The organization or project whose config is being specified.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The configuration field to set.
+    #[prost(oneof = "set_config_request::Configuration", tags = "2, 3")]
+    pub configuration: ::core::option::Option<set_config_request::Configuration>,
+}
+/// Nested message and enum types in `SetConfigRequest`.
+pub mod set_config_request {
+    /// The configuration field to set.
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    pub enum Configuration {
+        /// Opt-in status for the migration of Tag Templates to Dataplex.
+        #[prost(enumeration = "super::TagTemplateMigration", tag = "2")]
+        TagTemplateMigration(i32),
+        /// Opt-in status for the UI switch to Dataplex.
+        #[prost(enumeration = "super::CatalogUiExperience", tag = "3")]
+        CatalogUiExperience(i32),
+    }
+}
+/// Request message for
+/// [RetrieveConfig][google.cloud.datacatalog.v1.DataCatalog.RetrieveConfig].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RetrieveConfigRequest {
+    /// Required. The organization whose config is being retrieved.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [RetrieveEffectiveConfig][google.cloud.datacatalog.v1.DataCatalog.RetrieveEffectiveConfig].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RetrieveEffectiveConfigRequest {
+    /// Required. The resource whose effective config is being retrieved.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The configuration related to the migration from Data Catalog to Dataplex that
+/// has been applied to an organization and any projects under it. It is the
+/// response message for
+/// [RetrieveConfig][google.cloud.datacatalog.v1.DataCatalog.RetrieveConfig].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OrganizationConfig {
+    /// Map of organizations and project resource names and their configuration.
+    /// The format for the map keys is `organizations/{organizationId}` or
+    /// `projects/{projectId}`.
+    #[prost(map = "string, message", tag = "1")]
+    pub config: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        MigrationConfig,
+    >,
+}
+/// The configuration related to the migration to Dataplex applied to an
+/// organization or project.
+/// It is the response message for
+/// [SetConfig][google.cloud.datacatalog.v1.DataCatalog.SetConfig] and
+/// [RetrieveEffectiveConfig][google.cloud.datacatalog.v1.DataCatalog.RetrieveEffectiveConfig].
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct MigrationConfig {
+    /// Opt-in status for the migration of Tag Templates to Dataplex.
+    #[prost(enumeration = "TagTemplateMigration", tag = "1")]
+    pub tag_template_migration: i32,
+    /// Opt-in status for the UI switch to Dataplex.
+    #[prost(enumeration = "CatalogUiExperience", tag = "2")]
+    pub catalog_ui_experience: i32,
+}
 /// Metadata automatically ingested from Google Cloud resources like BigQuery
 /// tables or Pub/Sub topics always uses enum values from `EntryType` as the type
 /// of entry.
@@ -3238,6 +3440,12 @@ pub enum EntryType {
     /// For more information, see \[Looker Look API\]
     /// (<https://developers.looker.com/api/explorer/4.0/methods/Look>).
     Look = 18,
+    /// Feature Online Store resource in Vertex AI Feature Store.
+    FeatureOnlineStore = 19,
+    /// Feature View resource in Vertex AI Feature Store.
+    FeatureView = 20,
+    /// Feature Group resource in Vertex AI Feature Store.
+    FeatureGroup = 21,
 }
 impl EntryType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -3262,6 +3470,9 @@ impl EntryType {
             Self::Dashboard => "DASHBOARD",
             Self::Explore => "EXPLORE",
             Self::Look => "LOOK",
+            Self::FeatureOnlineStore => "FEATURE_ONLINE_STORE",
+            Self::FeatureView => "FEATURE_VIEW",
+            Self::FeatureGroup => "FEATURE_GROUP",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3283,6 +3494,77 @@ impl EntryType {
             "DASHBOARD" => Some(Self::Dashboard),
             "EXPLORE" => Some(Self::Explore),
             "LOOK" => Some(Self::Look),
+            "FEATURE_ONLINE_STORE" => Some(Self::FeatureOnlineStore),
+            "FEATURE_VIEW" => Some(Self::FeatureView),
+            "FEATURE_GROUP" => Some(Self::FeatureGroup),
+            _ => None,
+        }
+    }
+}
+/// Configuration related to the opt-in status for the migration of TagTemplates
+/// to Dataplex.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum TagTemplateMigration {
+    /// Default value. Migration of Tag Templates from Data Catalog to Dataplex is
+    /// not performed.
+    Unspecified = 0,
+    /// Migration of Tag Templates from Data Catalog to Dataplex is enabled.
+    Enabled = 1,
+    /// Migration of Tag Templates from Data Catalog to Dataplex is disabled.
+    Disabled = 2,
+}
+impl TagTemplateMigration {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "TAG_TEMPLATE_MIGRATION_UNSPECIFIED",
+            Self::Enabled => "TAG_TEMPLATE_MIGRATION_ENABLED",
+            Self::Disabled => "TAG_TEMPLATE_MIGRATION_DISABLED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TAG_TEMPLATE_MIGRATION_UNSPECIFIED" => Some(Self::Unspecified),
+            "TAG_TEMPLATE_MIGRATION_ENABLED" => Some(Self::Enabled),
+            "TAG_TEMPLATE_MIGRATION_DISABLED" => Some(Self::Disabled),
+            _ => None,
+        }
+    }
+}
+/// Configuration related to the opt-in status for the UI switch to Dataplex.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum CatalogUiExperience {
+    /// Default value. The default UI is Dataplex.
+    Unspecified = 0,
+    /// The UI is Dataplex.
+    Enabled = 1,
+    /// The UI is Data Catalog.
+    Disabled = 2,
+}
+impl CatalogUiExperience {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "CATALOG_UI_EXPERIENCE_UNSPECIFIED",
+            Self::Enabled => "CATALOG_UI_EXPERIENCE_ENABLED",
+            Self::Disabled => "CATALOG_UI_EXPERIENCE_DISABLED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CATALOG_UI_EXPERIENCE_UNSPECIFIED" => Some(Self::Unspecified),
+            "CATALOG_UI_EXPERIENCE_ENABLED" => Some(Self::Enabled),
+            "CATALOG_UI_EXPERIENCE_DISABLED" => Some(Self::Disabled),
             _ => None,
         }
     }
@@ -4569,6 +4851,103 @@ pub mod data_catalog_client {
                     GrpcMethod::new(
                         "google.cloud.datacatalog.v1.DataCatalog",
                         "ImportEntries",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Sets the configuration related to the migration to Dataplex for an
+        /// organization or project.
+        pub async fn set_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SetConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::MigrationConfig>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.datacatalog.v1.DataCatalog/SetConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datacatalog.v1.DataCatalog",
+                        "SetConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves the configuration related to the migration from Data Catalog to
+        /// Dataplex for a specific organization, including all the projects under it
+        /// which have a separate configuration set.
+        pub async fn retrieve_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RetrieveConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::OrganizationConfig>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.datacatalog.v1.DataCatalog/RetrieveConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datacatalog.v1.DataCatalog",
+                        "RetrieveConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves the effective configuration related to the migration from Data
+        /// Catalog to Dataplex for a specific organization or project. If there is no
+        /// specific configuration set for the resource, the setting is checked
+        /// hierarchicahlly through the ancestors of the resource, starting from the
+        /// resource itself.
+        pub async fn retrieve_effective_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RetrieveEffectiveConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::MigrationConfig>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.datacatalog.v1.DataCatalog/RetrieveEffectiveConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.datacatalog.v1.DataCatalog",
+                        "RetrieveEffectiveConfig",
                     ),
                 );
             self.inner.unary(req, path, codec).await

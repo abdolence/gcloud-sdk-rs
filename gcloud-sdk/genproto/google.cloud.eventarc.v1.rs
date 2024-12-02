@@ -263,7 +263,7 @@ pub struct Enrollment {
     #[prost(string, tag = "11")]
     pub destination: ::prost::alloc::string::String,
 }
-/// The configuration for Platform Telemetry logging for Eventarc Avdvanced
+/// The configuration for Platform Telemetry logging for Eventarc Advanced
 /// resources.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LoggingConfig {

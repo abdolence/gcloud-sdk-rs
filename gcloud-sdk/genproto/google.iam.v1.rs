@@ -771,3 +771,26 @@ pub mod iam_policy_client {
         }
     }
 }
+/// Output-only policy member strings of a Google Cloud resource's built-in
+/// identity.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResourcePolicyMember {
+    /// IAM policy binding member referring to a Google Cloud resource by
+    /// user-assigned name (<https://google.aip.dev/122>). If a resource is deleted
+    /// and recreated with the same name, the binding will be applicable to the new
+    /// resource.
+    ///
+    /// Example:
+    /// `principal://parametermanager.googleapis.com/projects/12345/name/locations/us-central1-a/parameters/my-parameter`
+    #[prost(string, tag = "1")]
+    pub iam_policy_name_principal: ::prost::alloc::string::String,
+    /// IAM policy binding member referring to a Google Cloud resource by
+    /// system-assigned unique identifier (<https://google.aip.dev/148#uid>). If a
+    /// resource is deleted and recreated with the same name, the binding will not
+    /// be applicable to the new resource
+    ///
+    /// Example:
+    /// `principal://parametermanager.googleapis.com/projects/12345/uid/locations/us-central1-a/parameters/a918fed5`
+    #[prost(string, tag = "2")]
+    pub iam_policy_uid_principal: ::prost::alloc::string::String,
+}

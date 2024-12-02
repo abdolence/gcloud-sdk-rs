@@ -2074,6 +2074,9 @@ pub mod drop_info {
         /// Packet from the unknown peered network is dropped due to no known route
         /// from the source network to the destination IP address.
         NoKnownRouteFromPeeredNetworkToDestination = 82,
+        /// Sending packets processed by the Private NAT Gateways to the Private
+        /// Service Connect endpoints is not supported.
+        PrivateNatToPscEndpointUnsupported = 83,
     }
     impl Cause {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2244,6 +2247,9 @@ pub mod drop_info {
                 }
                 Self::NoKnownRouteFromPeeredNetworkToDestination => {
                     "NO_KNOWN_ROUTE_FROM_PEERED_NETWORK_TO_DESTINATION"
+                }
+                Self::PrivateNatToPscEndpointUnsupported => {
+                    "PRIVATE_NAT_TO_PSC_ENDPOINT_UNSUPPORTED"
                 }
             }
         }
@@ -2435,6 +2441,9 @@ pub mod drop_info {
                 "NO_KNOWN_ROUTE_FROM_PEERED_NETWORK_TO_DESTINATION" => {
                     Some(Self::NoKnownRouteFromPeeredNetworkToDestination)
                 }
+                "PRIVATE_NAT_TO_PSC_ENDPOINT_UNSUPPORTED" => {
+                    Some(Self::PrivateNatToPscEndpointUnsupported)
+                }
                 _ => None,
             }
         }
@@ -2450,12 +2459,15 @@ pub struct GkeMasterInfo {
     /// URI of a GKE cluster network.
     #[prost(string, tag = "4")]
     pub cluster_network_uri: ::prost::alloc::string::String,
-    /// Internal IP address of a GKE cluster master.
+    /// Internal IP address of a GKE cluster control plane.
     #[prost(string, tag = "5")]
     pub internal_ip: ::prost::alloc::string::String,
-    /// External IP address of a GKE cluster master.
+    /// External IP address of a GKE cluster control plane.
     #[prost(string, tag = "6")]
     pub external_ip: ::prost::alloc::string::String,
+    /// DNS endpoint of a GKE cluster control plane.
+    #[prost(string, tag = "7")]
+    pub dns_endpoint: ::prost::alloc::string::String,
 }
 /// For display only. Metadata associated with a Cloud SQL instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3012,6 +3024,16 @@ pub struct ConnectivityTest {
     /// existing test.
     #[prost(message, optional, tag = "14")]
     pub probing_details: ::core::option::Option<ProbingDetails>,
+    /// Whether run analysis for the return path from destination to source.
+    /// Default value is false.
+    #[prost(bool, tag = "15")]
+    pub round_trip: bool,
+    /// Output only. The reachability details of this test from the latest run for
+    /// the return path. The details are updated when creating a new test,
+    /// updating an existing test, or triggering a one-time rerun of an existing
+    /// test.
+    #[prost(message, optional, tag = "16")]
+    pub return_reachability_details: ::core::option::Option<ReachabilityDetails>,
     /// Whether the test should skip firewall checking.
     /// If not provided, we assume false.
     #[prost(bool, tag = "17")]
@@ -3048,10 +3070,16 @@ pub struct Endpoint {
     /// Output only. Type of the load balancer the forwarding rule points to.
     #[prost(enumeration = "LoadBalancerType", optional, tag = "16")]
     pub load_balancer_type: ::core::option::Option<i32>,
-    /// A cluster URI for [Google Kubernetes Engine
-    /// master](<https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture>).
+    /// A cluster URI for [Google Kubernetes Engine cluster control
+    /// plane](<https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture>).
     #[prost(string, tag = "7")]
     pub gke_master_cluster: ::prost::alloc::string::String,
+    /// DNS endpoint of [Google Kubernetes Engine cluster control
+    /// plane](<https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture>).
+    /// Requires gke_master_cluster to be set, can't be used simultaneoulsly with
+    /// ip_address or network. Applicable only to destination endpoint.
+    #[prost(string, tag = "19")]
+    pub fqdn: ::prost::alloc::string::String,
     /// A [Cloud SQL](<https://cloud.google.com/sql>) instance URI.
     #[prost(string, tag = "8")]
     pub cloud_sql_instance: ::prost::alloc::string::String,

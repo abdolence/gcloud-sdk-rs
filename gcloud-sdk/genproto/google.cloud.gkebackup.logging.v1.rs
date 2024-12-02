@@ -151,6 +151,10 @@ pub struct LoggedBackupPlan {
     /// Defines backup configuration of this BackupPlan.
     #[prost(message, optional, tag = "7")]
     pub backup_config: ::core::option::Option<logged_backup_plan::BackupConfig>,
+    /// A number that represents the current risk level of this BackupPlan from RPO
+    /// perspective with 1 being no risk and 5 being highest risk.
+    #[prost(int32, tag = "8")]
+    pub rpo_risk_level: i32,
 }
 /// Nested message and enum types in `LoggedBackupPlan`.
 pub mod logged_backup_plan {

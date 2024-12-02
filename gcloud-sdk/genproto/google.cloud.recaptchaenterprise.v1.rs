@@ -936,6 +936,10 @@ pub struct RiskAnalysis {
     pub extended_verdict_reasons: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
     >,
+    /// Output only. Challenge information for SCORE_AND_CHALLENGE and INVISIBLE
+    /// keys
+    #[prost(enumeration = "risk_analysis::Challenge", tag = "4")]
+    pub challenge: i32,
 }
 /// Nested message and enum types in `RiskAnalysis`.
 pub mod risk_analysis {
@@ -1000,6 +1004,54 @@ pub mod risk_analysis {
                 "LOW_CONFIDENCE_SCORE" => Some(Self::LowConfidenceScore),
                 "SUSPECTED_CARDING" => Some(Self::SuspectedCarding),
                 "SUSPECTED_CHARGEBACK" => Some(Self::SuspectedChargeback),
+                _ => None,
+            }
+        }
+    }
+    /// Challenge information for SCORE_AND_CHALLENGE and INVISIBLE keys
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Challenge {
+        /// Default unspecified type.
+        Unspecified = 0,
+        /// No challenge was presented for solving.
+        Nocaptcha = 1,
+        /// A solution was submitted that was correct.
+        Passed = 2,
+        /// A solution was submitted that was incorrect or otherwise
+        /// deemed suspicious.
+        Failed = 3,
+    }
+    impl Challenge {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CHALLENGE_UNSPECIFIED",
+                Self::Nocaptcha => "NOCAPTCHA",
+                Self::Passed => "PASSED",
+                Self::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CHALLENGE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NOCAPTCHA" => Some(Self::Nocaptcha),
+                "PASSED" => Some(Self::Passed),
+                "FAILED" => Some(Self::Failed),
                 _ => None,
             }
         }
@@ -2192,7 +2244,7 @@ pub struct AddIpOverrideRequest {
 /// Response for AddIpOverride.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AddIpOverrideResponse {}
-/// The removeIpOverride request message.
+/// The RemoveIpOverride request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveIpOverrideRequest {
     /// Required. The name of the key from which the IP override is removed, in the

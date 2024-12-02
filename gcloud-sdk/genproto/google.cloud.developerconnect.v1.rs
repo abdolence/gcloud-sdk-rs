@@ -48,8 +48,12 @@ pub struct Connection {
     /// GitRepositoryLink.
     #[prost(string, tag = "12")]
     pub uid: ::prost::alloc::string::String,
+    /// Optional. The crypto key configuration. This field is used by the
+    /// Customer-Managed Encryption Keys (CMEK) feature.
+    #[prost(message, optional, tag = "15")]
+    pub crypto_key_config: ::core::option::Option<CryptoKeyConfig>,
     /// Configuration for the connection depending on the type of provider.
-    #[prost(oneof = "connection::ConnectionConfig", tags = "5")]
+    #[prost(oneof = "connection::ConnectionConfig", tags = "5, 13, 14, 16")]
     pub connection_config: ::core::option::Option<connection::ConnectionConfig>,
 }
 /// Nested message and enum types in `Connection`.
@@ -60,7 +64,26 @@ pub mod connection {
         /// Configuration for connections to github.com.
         #[prost(message, tag = "5")]
         GithubConfig(super::GitHubConfig),
+        /// Configuration for connections to an instance of GitHub Enterprise.
+        #[prost(message, tag = "13")]
+        GithubEnterpriseConfig(super::GitHubEnterpriseConfig),
+        /// Configuration for connections to gitlab.com.
+        #[prost(message, tag = "14")]
+        GitlabConfig(super::GitLabConfig),
+        /// Configuration for connections to an instance of GitLab Enterprise.
+        #[prost(message, tag = "16")]
+        GitlabEnterpriseConfig(super::GitLabEnterpriseConfig),
     }
+}
+/// The crypto key configuration. This field is used by the Customer-managed
+/// encryption keys (CMEK) feature.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CryptoKeyConfig {
+    /// Required. The name of the key which is used to encrypt/decrypt customer
+    /// data. For key in Cloud KMS, the key should be in the format of
+    /// `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
+    #[prost(string, tag = "1")]
+    pub key_reference: ::prost::alloc::string::String,
 }
 /// Describes stage and necessary actions to be taken by the
 /// user to complete the installation. Used for GitHub and GitHub Enterprise
@@ -201,6 +224,57 @@ pub mod git_hub_config {
         }
     }
 }
+/// Configuration for connections to an instance of GitHub Enterprise.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GitHubEnterpriseConfig {
+    /// Required. The URI of the GitHub Enterprise host this connection is for.
+    #[prost(string, tag = "1")]
+    pub host_uri: ::prost::alloc::string::String,
+    /// Optional. ID of the GitHub App created from the manifest.
+    #[prost(int64, tag = "2")]
+    pub app_id: i64,
+    /// Output only. The URL-friendly name of the GitHub App.
+    #[prost(string, tag = "3")]
+    pub app_slug: ::prost::alloc::string::String,
+    /// Optional. SecretManager resource containing the private key of the GitHub
+    /// App, formatted as `projects/*/secrets/*/versions/*`.
+    #[prost(string, tag = "4")]
+    pub private_key_secret_version: ::prost::alloc::string::String,
+    /// Optional. SecretManager resource containing the webhook secret of the
+    /// GitHub App, formatted as `projects/*/secrets/*/versions/*`.
+    #[prost(string, tag = "5")]
+    pub webhook_secret_secret_version: ::prost::alloc::string::String,
+    /// Optional. ID of the installation of the GitHub App.
+    #[prost(int64, tag = "8")]
+    pub app_installation_id: i64,
+    /// Output only. The URI to navigate to in order to manage the installation
+    /// associated with this GitHubEnterpriseConfig.
+    #[prost(string, tag = "9")]
+    pub installation_uri: ::prost::alloc::string::String,
+    /// Optional. Configuration for using Service Directory to privately connect to
+    /// a GitHub Enterprise server. This should only be set if the GitHub
+    /// Enterprise server is hosted on-premises and not reachable by public
+    /// internet. If this field is left empty, calls to the GitHub Enterprise
+    /// server will be made over the public internet.
+    #[prost(message, optional, tag = "10")]
+    pub service_directory_config: ::core::option::Option<ServiceDirectoryConfig>,
+    /// Output only. GitHub Enterprise version installed at the host_uri.
+    #[prost(string, tag = "12")]
+    pub server_version: ::prost::alloc::string::String,
+    /// Optional. SSL certificate to use for requests to GitHub Enterprise.
+    #[prost(string, tag = "14")]
+    pub ssl_ca_certificate: ::prost::alloc::string::String,
+}
+/// ServiceDirectoryConfig represents Service Directory configuration for a
+/// connection.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ServiceDirectoryConfig {
+    /// Required. The Service Directory service name.
+    /// Format:
+    /// projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}.
+    #[prost(string, tag = "1")]
+    pub service: ::prost::alloc::string::String,
+}
 /// Represents an OAuth token of the account that authorized the Connection,
 /// and associated metadata.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -212,6 +286,79 @@ pub struct OAuthCredential {
     /// Output only. The username associated with this token.
     #[prost(string, tag = "2")]
     pub username: ::prost::alloc::string::String,
+}
+/// Configuration for connections to gitlab.com.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GitLabConfig {
+    /// Required. Immutable. SecretManager resource containing the webhook secret
+    /// of a GitLab project, formatted as `projects/*/secrets/*/versions/*`. This
+    /// is used to validate webhooks.
+    #[prost(string, tag = "1")]
+    pub webhook_secret_secret_version: ::prost::alloc::string::String,
+    /// Required. A GitLab personal access token with the minimum `read_api` scope
+    /// access and a minimum role of `reporter`. The GitLab Projects visible to
+    /// this Personal Access Token will control which Projects Developer Connect
+    /// has access to.
+    #[prost(message, optional, tag = "2")]
+    pub read_authorizer_credential: ::core::option::Option<UserCredential>,
+    /// Required. A GitLab personal access token with the minimum `api` scope
+    /// access and a minimum role of `maintainer`. The GitLab Projects visible to
+    /// this Personal Access Token will control which Projects Developer Connect
+    /// has access to.
+    #[prost(message, optional, tag = "3")]
+    pub authorizer_credential: ::core::option::Option<UserCredential>,
+}
+/// Represents a personal access token that authorized the Connection,
+/// and associated metadata.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UserCredential {
+    /// Required. A SecretManager resource containing the user token that
+    /// authorizes the Developer Connect connection. Format:
+    /// `projects/*/secrets/*/versions/*`.
+    #[prost(string, tag = "1")]
+    pub user_token_secret_version: ::prost::alloc::string::String,
+    /// Output only. The username associated with this token.
+    #[prost(string, tag = "2")]
+    pub username: ::prost::alloc::string::String,
+}
+/// Configuration for connections to an instance of GitLab Enterprise.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GitLabEnterpriseConfig {
+    /// Required. The URI of the GitLab Enterprise host this connection is for.
+    #[prost(string, tag = "1")]
+    pub host_uri: ::prost::alloc::string::String,
+    /// Required. Immutable. SecretManager resource containing the webhook secret
+    /// of a GitLab project, formatted as `projects/*/secrets/*/versions/*`. This
+    /// is used to validate webhooks.
+    #[prost(string, tag = "2")]
+    pub webhook_secret_secret_version: ::prost::alloc::string::String,
+    /// Required. A GitLab personal access token with the minimum `read_api` scope
+    /// access and a minimum role of `reporter`. The GitLab Projects visible to
+    /// this Personal Access Token will control which Projects Developer Connect
+    /// has access to.
+    #[prost(message, optional, tag = "3")]
+    pub read_authorizer_credential: ::core::option::Option<UserCredential>,
+    /// Required. A GitLab personal access token with the minimum `api` scope
+    /// access and a minimum role of `maintainer`. The GitLab Projects visible to
+    /// this Personal Access Token will control which Projects Developer Connect
+    /// has access to.
+    #[prost(message, optional, tag = "4")]
+    pub authorizer_credential: ::core::option::Option<UserCredential>,
+    /// Optional. Configuration for using Service Directory to privately connect to
+    /// a GitLab Enterprise instance. This should only be set if the GitLab
+    /// Enterprise server is hosted on-premises and not reachable by public
+    /// internet. If this field is left empty, calls to the GitLab Enterprise
+    /// server will be made over the public internet.
+    #[prost(message, optional, tag = "5")]
+    pub service_directory_config: ::core::option::Option<ServiceDirectoryConfig>,
+    /// Optional. SSL Certificate Authority certificate to use for requests to
+    /// GitLab Enterprise instance.
+    #[prost(string, tag = "6")]
+    pub ssl_ca_certificate: ::prost::alloc::string::String,
+    /// Output only. Version of the GitLab Enterprise server running on the
+    /// `host_uri`.
+    #[prost(string, tag = "7")]
+    pub server_version: ::prost::alloc::string::String,
 }
 /// Message for requesting list of Connections
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -375,9 +522,10 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have been cancelled successfully
-    /// have [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
-    /// `Code.CANCELLED`.
+    /// have
+    /// [google.longrunning.Operation.error][google.longrunning.Operation.error]
+    /// value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.
@@ -428,6 +576,9 @@ pub struct GitRepositoryLink {
     /// GitRepositoryLink.
     #[prost(string, tag = "10")]
     pub uid: ::prost::alloc::string::String,
+    /// Output only. External ID of the webhook created for the repository.
+    #[prost(string, tag = "11")]
+    pub webhook_id: ::prost::alloc::string::String,
 }
 /// Message for creating a GitRepositoryLink
 #[derive(Clone, PartialEq, ::prost::Message)]

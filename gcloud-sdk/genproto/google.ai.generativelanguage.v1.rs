@@ -437,7 +437,7 @@ pub struct GenerationConfig {
     /// values will cause the model to start repeating a common token  until it
     /// hits the
     /// [max_output_tokens][google.ai.generativelanguage.v1.GenerationConfig.max_output_tokens]
-    /// limit: "...the the the the the...".
+    /// limit.
     #[prost(float, optional, tag = "16")]
     pub frequency_penalty: ::core::option::Option<f32>,
     /// Optional. If true, export the logprobs results in response.
@@ -473,6 +473,9 @@ pub struct GenerateContentResponse {
     /// Output only. Metadata on the generation requests' token usage.
     #[prost(message, optional, tag = "3")]
     pub usage_metadata: ::core::option::Option<generate_content_response::UsageMetadata>,
+    /// Output only. The model version used to generate the response.
+    #[prost(string, tag = "4")]
+    pub model_version: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `GenerateContentResponse`.
 pub mod generate_content_response {
@@ -591,7 +594,12 @@ pub struct Candidate {
     /// Output only. Token count for this candidate.
     #[prost(int32, tag = "7")]
     pub token_count: i32,
-    /// Output only.
+    /// Output only. Grounding metadata for the candidate.
+    ///
+    /// This field is populated for `GenerateContent` calls.
+    #[prost(message, optional, tag = "9")]
+    pub grounding_metadata: ::core::option::Option<GroundingMetadata>,
+    /// Output only. Average log probability score of the candidate.
     #[prost(double, tag = "10")]
     pub avg_logprobs: f64,
     /// Output only. Log-likelihood scores for the response tokens and top tokens
@@ -711,6 +719,111 @@ pub mod logprobs_result {
         #[prost(message, repeated, tag = "1")]
         pub candidates: ::prost::alloc::vec::Vec<Candidate>,
     }
+}
+/// Metadata related to retrieval in the grounding flow.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct RetrievalMetadata {
+    /// Optional. Score indicating how likely information from google search could
+    /// help answer the prompt. The score is in the range \[0, 1\], where 0 is the
+    /// least likely and 1 is the most likely. This score is only populated when
+    /// google search grounding and dynamic retrieval is enabled. It will be
+    /// compared to the threshold to determine whether to trigger google search.
+    #[prost(float, tag = "2")]
+    pub google_search_dynamic_retrieval_score: f32,
+}
+/// Metadata returned to client when grounding is enabled.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GroundingMetadata {
+    /// Optional. Google search entry for the following-up web searches.
+    #[prost(message, optional, tag = "1")]
+    pub search_entry_point: ::core::option::Option<SearchEntryPoint>,
+    /// List of supporting references retrieved from specified grounding source.
+    #[prost(message, repeated, tag = "2")]
+    pub grounding_chunks: ::prost::alloc::vec::Vec<GroundingChunk>,
+    /// List of grounding support.
+    #[prost(message, repeated, tag = "3")]
+    pub grounding_supports: ::prost::alloc::vec::Vec<GroundingSupport>,
+    /// Metadata related to retrieval in the grounding flow.
+    #[prost(message, optional, tag = "4")]
+    pub retrieval_metadata: ::core::option::Option<RetrievalMetadata>,
+    /// Web search queries for the following-up web search.
+    #[prost(string, repeated, tag = "5")]
+    pub web_search_queries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Google search entry point.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchEntryPoint {
+    /// Optional. Web content snippet that can be embedded in a web page or an app
+    /// webview.
+    #[prost(string, tag = "1")]
+    pub rendered_content: ::prost::alloc::string::String,
+    /// Optional. Base64 encoded JSON representing array of <search term, search
+    /// url> tuple.
+    #[prost(bytes = "vec", tag = "2")]
+    pub sdk_blob: ::prost::alloc::vec::Vec<u8>,
+}
+/// Grounding chunk.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GroundingChunk {
+    /// Chunk type.
+    #[prost(oneof = "grounding_chunk::ChunkType", tags = "1")]
+    pub chunk_type: ::core::option::Option<grounding_chunk::ChunkType>,
+}
+/// Nested message and enum types in `GroundingChunk`.
+pub mod grounding_chunk {
+    /// Chunk from the web.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Web {
+        /// URI reference of the chunk.
+        #[prost(string, optional, tag = "1")]
+        pub uri: ::core::option::Option<::prost::alloc::string::String>,
+        /// Title of the chunk.
+        #[prost(string, optional, tag = "2")]
+        pub title: ::core::option::Option<::prost::alloc::string::String>,
+    }
+    /// Chunk type.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ChunkType {
+        /// Grounding chunk from the web.
+        #[prost(message, tag = "1")]
+        Web(Web),
+    }
+}
+/// Segment of the content.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Segment {
+    /// Output only. The index of a Part object within its parent Content object.
+    #[prost(int32, tag = "1")]
+    pub part_index: i32,
+    /// Output only. Start index in the given Part, measured in bytes. Offset from
+    /// the start of the Part, inclusive, starting at zero.
+    #[prost(int32, tag = "2")]
+    pub start_index: i32,
+    /// Output only. End index in the given Part, measured in bytes. Offset from
+    /// the start of the Part, exclusive, starting at zero.
+    #[prost(int32, tag = "3")]
+    pub end_index: i32,
+    /// Output only. The text corresponding to the segment from the response.
+    #[prost(string, tag = "4")]
+    pub text: ::prost::alloc::string::String,
+}
+/// Grounding support.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GroundingSupport {
+    /// Segment of the content this support belongs to.
+    #[prost(message, optional, tag = "1")]
+    pub segment: ::core::option::Option<Segment>,
+    /// A list of indices (into 'grounding_chunk') specifying the
+    /// citations associated with the claim. For instance \[1,3,4\] means
+    /// that grounding_chunk\[1\], grounding_chunk\[3\],
+    /// grounding_chunk\[4\] are the retrieved content attributed to the claim.
+    #[prost(int32, repeated, tag = "2")]
+    pub grounding_chunk_indices: ::prost::alloc::vec::Vec<i32>,
+    /// Confidence score of the support references. Ranges from 0 to 1. 1 is the
+    /// most confident. This list must have the same size as the
+    /// grounding_chunk_indices.
+    #[prost(float, repeated, tag = "3")]
+    pub confidence_scores: ::prost::alloc::vec::Vec<f32>,
 }
 /// Request containing the `Content` for the model to embed.
 #[derive(Clone, PartialEq, ::prost::Message)]

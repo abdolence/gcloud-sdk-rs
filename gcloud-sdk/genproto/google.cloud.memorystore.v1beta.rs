@@ -393,7 +393,7 @@ pub struct PscAutoConnection {
     #[prost(string, tag = "3")]
     pub forwarding_rule: ::prost::alloc::string::String,
     /// Required. The consumer project_id where PSC connections are established.
-    /// This should be the same project_id that the cluster is being created in.
+    /// This should be the same project_id that the instance is being created in.
     #[prost(string, tag = "4")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. The network where the PSC endpoints are created, in the form of

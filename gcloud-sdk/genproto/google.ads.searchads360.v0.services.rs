@@ -701,6 +701,11 @@ pub struct SearchAds360Row {
     /// The ad referenced in the query.
     #[prost(message, optional, tag = "16")]
     pub ad_group_ad: ::core::option::Option<super::resources::AdGroupAd>,
+    /// The ad group ad effective label referenced in the query.
+    #[prost(message, optional, tag = "234")]
+    pub ad_group_ad_effective_label: ::core::option::Option<
+        super::resources::AdGroupAdEffectiveLabel,
+    >,
     /// The ad group ad label referenced in the query.
     #[prost(message, optional, tag = "120")]
     pub ad_group_ad_label: ::core::option::Option<super::resources::AdGroupAdLabel>,
@@ -723,6 +728,11 @@ pub struct SearchAds360Row {
     /// The criterion referenced in the query.
     #[prost(message, optional, tag = "17")]
     pub ad_group_criterion: ::core::option::Option<super::resources::AdGroupCriterion>,
+    /// The ad group criterion effective label referenced in the query.
+    #[prost(message, optional, tag = "235")]
+    pub ad_group_criterion_effective_label: ::core::option::Option<
+        super::resources::AdGroupCriterionEffectiveLabel,
+    >,
     /// The ad group criterion label referenced in the query.
     #[prost(message, optional, tag = "121")]
     pub ad_group_criterion_label: ::core::option::Option<
@@ -875,6 +885,9 @@ pub struct SearchAds360Row {
     /// The user list referenced in the query.
     #[prost(message, optional, tag = "38")]
     pub user_list: ::core::option::Option<super::resources::UserList>,
+    /// The user location view referenced in the query.
+    #[prost(message, optional, tag = "135")]
+    pub user_location_view: ::core::option::Option<super::resources::UserLocationView>,
     /// The webpage view referenced in the query.
     #[prost(message, optional, tag = "162")]
     pub webpage_view: ::core::option::Option<super::resources::WebpageView>,

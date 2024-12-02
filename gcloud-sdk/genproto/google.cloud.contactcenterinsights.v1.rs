@@ -26,8 +26,8 @@ pub struct Conversation {
     /// the conversation.
     #[prost(string, tag = "5")]
     pub agent_id: ::prost::alloc::string::String,
-    /// A map for the user to specify any custom fields. A maximum of 20 labels per
-    /// conversation is allowed, with a maximum of 256 characters per entry.
+    /// A map for the user to specify any custom fields. A maximum of 100 labels
+    /// per conversation is allowed, with a maximum of 256 characters per entry.
     #[prost(map = "string, string", tag = "6")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -36,9 +36,9 @@ pub struct Conversation {
     /// Conversation metadata related to quality management.
     #[prost(message, optional, tag = "24")]
     pub quality_metadata: ::core::option::Option<conversation::QualityMetadata>,
-    /// Input only. JSON Metadata encoded as a string.
+    /// Input only. JSON metadata encoded as a string.
     /// This field is primarily used by Insights integrations with various telphony
-    /// systems and must be in one of Insights' supported formats.
+    /// systems and must be in one of Insight's supported formats.
     #[prost(string, tag = "25")]
     pub metadata_json: ::prost::alloc::string::String,
     /// Output only. The conversation transcript.
@@ -394,6 +394,9 @@ pub mod analysis_result {
         /// Overall conversation-level issue modeling result.
         #[prost(message, optional, tag = "8")]
         pub issue_model_result: ::core::option::Option<super::IssueModelResult>,
+        /// Results of scoring QaScorecards.
+        #[prost(message, repeated, tag = "10")]
+        pub qa_scorecard_results: ::prost::alloc::vec::Vec<super::QaScorecardResult>,
     }
     /// Metadata discovered during analysis.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -413,6 +416,40 @@ pub struct IssueModelResult {
     /// All the matched issues.
     #[prost(message, repeated, tag = "2")]
     pub issues: ::prost::alloc::vec::Vec<IssueAssignment>,
+}
+/// Represents a conversation, resource, and label provided by the user.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FeedbackLabel {
+    /// Immutable. Resource name of the FeedbackLabel.
+    /// Format:
+    /// projects/{project}/locations/{location}/conversations/{conversation}/feedbackLabels/{feedback_label}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Resource name of the resource to be labeled.
+    #[prost(string, tag = "3")]
+    pub labeled_resource: ::prost::alloc::string::String,
+    /// Output only. Create time of the label.
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Update time of the label.
+    #[prost(message, optional, tag = "6")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Label type.
+    #[prost(oneof = "feedback_label::LabelType", tags = "4, 7")]
+    pub label_type: ::core::option::Option<feedback_label::LabelType>,
+}
+/// Nested message and enum types in `FeedbackLabel`.
+pub mod feedback_label {
+    /// Label type.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum LabelType {
+        /// String label.
+        #[prost(string, tag = "4")]
+        Label(::prost::alloc::string::String),
+        /// QaAnswer label.
+        #[prost(message, tag = "7")]
+        QaAnswerLabel(super::qa_answer::AnswerValue),
+    }
 }
 /// One channel of conversation-level sentiment data.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -1302,8 +1339,50 @@ pub mod settings {
         pub annotator_selector: ::core::option::Option<super::AnnotatorSelector>,
     }
 }
+/// The CCAI Insights project wide analysis rule. This rule will be applied to
+/// all conversations that match the filter defined in the rule. For a
+/// conversation matches the filter, the annotators specified in the rule will be
+/// run. If a conversation matches multiple rules, a union of all the annotators
+/// will be run. One project can have multiple analysis rules.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AnalysisRule {
+    /// Identifier. The resource name of the analysis rule.
+    /// Format:
+    /// projects/{project}/locations/{location}/analysisRules/{analysis_rule}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The time at which this analysis rule was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The most recent time at which this analysis rule was updated.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Display Name of the analysis rule.
+    #[prost(string, optional, tag = "4")]
+    pub display_name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Filter for the conversations that should apply this analysis
+    /// rule. An empty filter means this analysis rule applies to all
+    /// conversations.
+    #[prost(string, tag = "5")]
+    pub conversation_filter: ::prost::alloc::string::String,
+    /// Selector of annotators to run and the phrase matchers to use for
+    /// conversations that matches the conversation_filter. If not specified, NO
+    /// annotators will be run.
+    #[prost(message, optional, tag = "6")]
+    pub annotator_selector: ::core::option::Option<AnnotatorSelector>,
+    /// Percentage of conversations that we should apply this analysis setting
+    /// automatically, between \[0, 1\]. For example, 0.1 means 10%. Conversations
+    /// are sampled in a determenestic way. The original runtime_percentage &
+    /// upload percentage will be replaced by defining filters on the conversation.
+    #[prost(double, tag = "7")]
+    pub analysis_percentage: f64,
+    /// If true, apply this rule to conversations. Otherwise, this rule is
+    /// inactive and saved as a draft.
+    #[prost(bool, tag = "8")]
+    pub active: bool,
+}
 /// A customer-managed encryption key specification that can be applied to all
-/// created resources (e.g. Conversation).
+/// created resources (e.g. `Conversation`).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EncryptionSpec {
     /// Immutable. The resource name of the encryption key specification resource.
@@ -1313,8 +1392,8 @@ pub struct EncryptionSpec {
     pub name: ::prost::alloc::string::String,
     /// Required. The name of customer-managed encryption key that is used to
     /// secure a resource and its sub-resources. If empty, the resource is secured
-    /// by the default Google encryption key. Only the key in the same location as
-    /// this resource is allowed to be used for encryption. Format:
+    /// by our default encryption key. Only the key in the same location as this
+    /// resource is allowed to be used for encryption. Format:
     /// `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{key}`
     #[prost(string, tag = "2")]
     pub kms_key: ::prost::alloc::string::String,
@@ -1842,6 +1921,12 @@ pub struct AnnotatorSelector {
     pub summarization_config: ::core::option::Option<
         annotator_selector::SummarizationConfig,
     >,
+    /// Whether to run the QA annotator.
+    #[prost(bool, tag = "12")]
+    pub run_qa_annotator: bool,
+    /// Configuration for the QA annotator.
+    #[prost(message, optional, tag = "13")]
+    pub qa_config: ::core::option::Option<annotator_selector::QaConfig>,
 }
 /// Nested message and enum types in `AnnotatorSelector`.
 pub mod annotator_selector {
@@ -1910,6 +1995,568 @@ pub mod annotator_selector {
             /// Default summarization model to be used.
             #[prost(enumeration = "SummarizationModel", tag = "2")]
             SummarizationModel(i32),
+        }
+    }
+    /// Configuration for the QA feature.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct QaConfig {
+        /// Which scorecards should be scored.
+        #[prost(oneof = "qa_config::ScorecardSource", tags = "1")]
+        pub scorecard_source: ::core::option::Option<qa_config::ScorecardSource>,
+    }
+    /// Nested message and enum types in `QaConfig`.
+    pub mod qa_config {
+        /// Container for a list of scorecards.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ScorecardList {
+            /// List of QaScorecardRevisions.
+            #[prost(string, repeated, tag = "1")]
+            pub qa_scorecard_revisions: ::prost::alloc::vec::Vec<
+                ::prost::alloc::string::String,
+            >,
+        }
+        /// Which scorecards should be scored.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum ScorecardSource {
+            /// A manual list of scorecards to score.
+            #[prost(message, tag = "1")]
+            ScorecardList(ScorecardList),
+        }
+    }
+}
+/// A single question to be scored by the Insights QA feature.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QaQuestion {
+    /// Identifier. The resource name of the question.
+    /// Format:
+    /// projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}/revisions/{revision}/qaQuestions/{qa_question}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Short, descriptive string, used in the UI where it's not practical
+    /// to display the full question body. E.g., "Greeting".
+    #[prost(string, tag = "2")]
+    pub abbreviation: ::prost::alloc::string::String,
+    /// Output only. The time at which this question was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The most recent time at which the question was updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Question text. E.g., "Did the agent greet the customer?"
+    #[prost(string, tag = "5")]
+    pub question_body: ::prost::alloc::string::String,
+    /// Instructions describing how to determine the answer.
+    #[prost(string, tag = "9")]
+    pub answer_instructions: ::prost::alloc::string::String,
+    /// A list of valid answers to the question, which the LLM must choose from.
+    #[prost(message, repeated, tag = "6")]
+    pub answer_choices: ::prost::alloc::vec::Vec<qa_question::AnswerChoice>,
+    /// User-defined list of arbitrary tags for the question. Used for
+    /// grouping/organization and for weighting the score of each question.
+    #[prost(string, repeated, tag = "7")]
+    pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Defines the order of the question within its parent scorecard revision.
+    #[prost(int32, tag = "8")]
+    pub order: i32,
+    /// Metrics of the underlying tuned LLM over a holdout/test set while fine
+    /// tuning the underlying LLM for the given question. This field will only be
+    /// populated if and only if the question is part of a scorecard revision that
+    /// has been tuned.
+    #[prost(message, optional, tag = "10")]
+    pub metrics: ::core::option::Option<qa_question::Metrics>,
+    /// Metadata about the tuning operation for the question.This field will only
+    /// be populated if and only if the question is part of a scorecard revision
+    /// that has been tuned.
+    #[prost(message, optional, tag = "11")]
+    pub tuning_metadata: ::core::option::Option<qa_question::TuningMetadata>,
+}
+/// Nested message and enum types in `QaQuestion`.
+pub mod qa_question {
+    /// Message representing a possible answer to the question.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AnswerChoice {
+        /// A short string used as an identifier.
+        #[prost(string, tag = "1")]
+        pub key: ::prost::alloc::string::String,
+        /// Numerical score of the answer, used for generating the overall score of
+        /// a QaScorecardResult. If the answer uses na_value, this field is unused.
+        #[prost(double, optional, tag = "6")]
+        pub score: ::core::option::Option<f64>,
+        /// The answer value may be one of a few different types.
+        #[prost(oneof = "answer_choice::Value", tags = "2, 3, 4, 5")]
+        pub value: ::core::option::Option<answer_choice::Value>,
+    }
+    /// Nested message and enum types in `AnswerChoice`.
+    pub mod answer_choice {
+        /// The answer value may be one of a few different types.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Value {
+            /// String value.
+            #[prost(string, tag = "2")]
+            StrValue(::prost::alloc::string::String),
+            /// Numerical value.
+            #[prost(double, tag = "3")]
+            NumValue(f64),
+            /// Boolean value.
+            #[prost(bool, tag = "4")]
+            BoolValue(bool),
+            /// A value of "Not Applicable (N/A)". If provided, this field may only
+            /// be set to `true`. If a question receives this answer, it will be
+            /// excluded from any score calculations.
+            #[prost(bool, tag = "5")]
+            NaValue(bool),
+        }
+    }
+    /// A wrapper representing metrics calculated against a test-set on a LLM that
+    /// was fine tuned for this question.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct Metrics {
+        /// Output only. Accuracy of the model. Measures the percentage of correct
+        /// answers the model gave on the test set.
+        #[prost(double, tag = "1")]
+        pub accuracy: f64,
+    }
+    /// Metadata about the tuning operation for the question. Will only be set if a
+    /// scorecard containing this question has been tuned.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TuningMetadata {
+        /// Total number of valid labels provided for the question at the time of
+        /// tuining.
+        #[prost(int64, tag = "1")]
+        pub total_valid_label_count: i64,
+        /// A list of any applicable data validation warnings about the question's
+        /// feedback labels.
+        #[prost(enumeration = "super::DatasetValidationWarning", repeated, tag = "2")]
+        pub dataset_validation_warnings: ::prost::alloc::vec::Vec<i32>,
+        /// Error status of the tuning operation for the question. Will only be set
+        /// if the tuning operation failed.
+        #[prost(string, tag = "3")]
+        pub tuning_error: ::prost::alloc::string::String,
+    }
+}
+/// A QaScorecard represents a collection of questions to be scored during
+/// analysis.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QaScorecard {
+    /// Identifier. The scorecard name.
+    /// Format:
+    /// projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The user-specified display name of the scorecard.
+    #[prost(string, tag = "7")]
+    pub display_name: ::prost::alloc::string::String,
+    /// A text description explaining the intent of the scorecard.
+    #[prost(string, tag = "2")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. The time at which this scorecard was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The most recent time at which the scorecard was updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// A revision of a QaScorecard.
+///
+/// Modifying published scorecard fields would invalidate existing scorecard
+/// results — the questions may have changed, or the score weighting will make
+/// existing scores impossible to understand. So changes must create a new
+/// revision, rather than modifying the existing resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QaScorecardRevision {
+    /// Identifier. The name of the scorecard revision.
+    /// Format:
+    /// projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}/revisions/{revision}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The snapshot of the scorecard at the time of this revision's creation.
+    #[prost(message, optional, tag = "2")]
+    pub snapshot: ::core::option::Option<QaScorecard>,
+    /// Output only. The timestamp that the revision was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Alternative IDs for this revision of the scorecard, e.g.,
+    /// `latest`.
+    #[prost(string, repeated, tag = "4")]
+    pub alternate_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. State of the scorecard revision, indicating whether it's ready
+    /// to be used in analysis.
+    #[prost(enumeration = "qa_scorecard_revision::State", tag = "5")]
+    pub state: i32,
+}
+/// Nested message and enum types in `QaScorecardRevision`.
+pub mod qa_scorecard_revision {
+    /// Enum representing the set of states a scorecard revision may be in.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Unspecified.
+        Unspecified = 0,
+        /// The scorecard revision can be edited.
+        Editable = 12,
+        /// Scorecard model training is in progress.
+        Training = 2,
+        /// Scorecard revision model training failed.
+        TrainingFailed = 9,
+        /// The revision can be used in analysis.
+        Ready = 11,
+        /// Scorecard is being deleted.
+        Deleting = 7,
+        /// Scorecard model training was explicitly cancelled by the user.
+        TrainingCancelled = 14,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Editable => "EDITABLE",
+                Self::Training => "TRAINING",
+                Self::TrainingFailed => "TRAINING_FAILED",
+                Self::Ready => "READY",
+                Self::Deleting => "DELETING",
+                Self::TrainingCancelled => "TRAINING_CANCELLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "EDITABLE" => Some(Self::Editable),
+                "TRAINING" => Some(Self::Training),
+                "TRAINING_FAILED" => Some(Self::TrainingFailed),
+                "READY" => Some(Self::Ready),
+                "DELETING" => Some(Self::Deleting),
+                "TRAINING_CANCELLED" => Some(Self::TrainingCancelled),
+                _ => None,
+            }
+        }
+    }
+}
+/// An answer to a QaQuestion.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QaAnswer {
+    /// The QaQuestion answered by this answer.
+    #[prost(string, tag = "7")]
+    pub qa_question: ::prost::alloc::string::String,
+    /// The conversation the answer applies to.
+    #[prost(string, tag = "2")]
+    pub conversation: ::prost::alloc::string::String,
+    /// Question text. E.g., "Did the agent greet the customer?"
+    #[prost(string, tag = "6")]
+    pub question_body: ::prost::alloc::string::String,
+    /// The main answer value, incorporating any manual edits if they exist.
+    #[prost(message, optional, tag = "3")]
+    pub answer_value: ::core::option::Option<qa_answer::AnswerValue>,
+    /// User-defined list of arbitrary tags. Matches the value from
+    /// QaScorecard.ScorecardQuestion.tags. Used for grouping/organization and
+    /// for weighting the score of each answer.
+    #[prost(string, repeated, tag = "5")]
+    pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// List of all individual answers given to the question.
+    #[prost(message, repeated, tag = "8")]
+    pub answer_sources: ::prost::alloc::vec::Vec<qa_answer::AnswerSource>,
+}
+/// Nested message and enum types in `QaAnswer`.
+pub mod qa_answer {
+    /// Message for holding the value of a
+    /// [QaAnswer][google.cloud.contactcenterinsights.v1.QaAnswer].
+    /// [QaQuestion.AnswerChoice][google.cloud.contactcenterinsights.v1.QaQuestion.AnswerChoice]
+    /// defines the possible answer values for a question.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AnswerValue {
+        /// A short string used as an identifier. Matches the value used in
+        /// QaQuestion.AnswerChoice.key.
+        #[prost(string, tag = "1")]
+        pub key: ::prost::alloc::string::String,
+        /// Output only. Numerical score of the answer.
+        #[prost(double, optional, tag = "6")]
+        pub score: ::core::option::Option<f64>,
+        /// Output only. The maximum potential score of the question.
+        #[prost(double, optional, tag = "7")]
+        pub potential_score: ::core::option::Option<f64>,
+        /// Output only. Normalized score of the questions. Calculated as score /
+        /// potential_score.
+        #[prost(double, optional, tag = "8")]
+        pub normalized_score: ::core::option::Option<f64>,
+        /// The answer value may be one of a few different types.
+        #[prost(oneof = "answer_value::Value", tags = "2, 3, 4, 5")]
+        pub value: ::core::option::Option<answer_value::Value>,
+    }
+    /// Nested message and enum types in `AnswerValue`.
+    pub mod answer_value {
+        /// The answer value may be one of a few different types.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Value {
+            /// String value.
+            #[prost(string, tag = "2")]
+            StrValue(::prost::alloc::string::String),
+            /// Numerical value.
+            #[prost(double, tag = "3")]
+            NumValue(f64),
+            /// Boolean value.
+            #[prost(bool, tag = "4")]
+            BoolValue(bool),
+            /// A value of "Not Applicable (N/A)". Should only ever be `true`.
+            #[prost(bool, tag = "5")]
+            NaValue(bool),
+        }
+    }
+    /// A question may have multiple answers from varying sources, one of which
+    /// becomes the "main" answer above. AnswerSource represents each individual
+    /// answer.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AnswerSource {
+        /// What created the answer.
+        #[prost(enumeration = "answer_source::SourceType", tag = "1")]
+        pub source_type: i32,
+        /// The answer value from this source.
+        #[prost(message, optional, tag = "2")]
+        pub answer_value: ::core::option::Option<AnswerValue>,
+    }
+    /// Nested message and enum types in `AnswerSource`.
+    pub mod answer_source {
+        /// What created the answer.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum SourceType {
+            /// Source type is unspecified.
+            Unspecified = 0,
+            /// Answer was system-generated; created during an Insights analysis.
+            SystemGenerated = 1,
+            /// Answer was created by a human via manual edit.
+            ManualEdit = 2,
+        }
+        impl SourceType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "SOURCE_TYPE_UNSPECIFIED",
+                    Self::SystemGenerated => "SYSTEM_GENERATED",
+                    Self::ManualEdit => "MANUAL_EDIT",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SOURCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "SYSTEM_GENERATED" => Some(Self::SystemGenerated),
+                    "MANUAL_EDIT" => Some(Self::ManualEdit),
+                    _ => None,
+                }
+            }
+        }
+    }
+}
+/// The results of scoring a single conversation against a QaScorecard. Contains
+/// a collection of QaAnswers and aggregate score.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QaScorecardResult {
+    /// Identifier. The name of the scorecard result.
+    /// Format:
+    /// projects/{project}/locations/{location}/qaScorecardResults/{qa_scorecard_result}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The QaScorecardRevision scored by this result.
+    #[prost(string, tag = "2")]
+    pub qa_scorecard_revision: ::prost::alloc::string::String,
+    /// The conversation scored by this result.
+    #[prost(string, tag = "3")]
+    pub conversation: ::prost::alloc::string::String,
+    /// Output only. The timestamp that the revision was created.
+    #[prost(message, optional, tag = "4")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// ID of the agent that handled the conversation.
+    #[prost(string, tag = "5")]
+    pub agent_id: ::prost::alloc::string::String,
+    /// Set of QaAnswers represented in the result.
+    #[prost(message, repeated, tag = "6")]
+    pub qa_answers: ::prost::alloc::vec::Vec<QaAnswer>,
+    /// The overall numerical score of the result, incorporating any manual edits
+    /// if they exist.
+    #[prost(double, optional, tag = "7")]
+    pub score: ::core::option::Option<f64>,
+    /// The maximum potential overall score of the scorecard. Any questions
+    /// answered using `na_value` are excluded from this calculation.
+    #[prost(double, optional, tag = "8")]
+    pub potential_score: ::core::option::Option<f64>,
+    /// The normalized score, which is the score divided by the potential score.
+    /// Any manual edits are included if they exist.
+    #[prost(double, optional, tag = "9")]
+    pub normalized_score: ::core::option::Option<f64>,
+    /// Collection of tags and their scores.
+    #[prost(message, repeated, tag = "10")]
+    pub qa_tag_results: ::prost::alloc::vec::Vec<qa_scorecard_result::QaTagResult>,
+    /// List of all individual score sets.
+    #[prost(message, repeated, tag = "11")]
+    pub score_sources: ::prost::alloc::vec::Vec<qa_scorecard_result::ScoreSource>,
+}
+/// Nested message and enum types in `QaScorecardResult`.
+pub mod qa_scorecard_result {
+    /// Tags and their corresponding results.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct QaTagResult {
+        /// The tag the score applies to.
+        #[prost(string, tag = "1")]
+        pub tag: ::prost::alloc::string::String,
+        /// The score the tag applies to.
+        #[prost(double, optional, tag = "2")]
+        pub score: ::core::option::Option<f64>,
+        /// The potential score the tag applies to.
+        #[prost(double, optional, tag = "3")]
+        pub potential_score: ::core::option::Option<f64>,
+        /// The normalized score the tag applies to.
+        #[prost(double, optional, tag = "4")]
+        pub normalized_score: ::core::option::Option<f64>,
+    }
+    /// A scorecard result may have multiple sets of scores from varying sources,
+    /// one of which becomes the "main" answer above. A ScoreSource represents
+    /// each individual set of scores.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ScoreSource {
+        /// What created the score.
+        #[prost(enumeration = "score_source::SourceType", tag = "1")]
+        pub source_type: i32,
+        /// The overall numerical score of the result.
+        #[prost(double, optional, tag = "2")]
+        pub score: ::core::option::Option<f64>,
+        /// The maximum potential overall score of the scorecard. Any questions
+        /// answered using `na_value` are excluded from this calculation.
+        #[prost(double, optional, tag = "3")]
+        pub potential_score: ::core::option::Option<f64>,
+        /// The normalized score, which is the score divided by the potential score.
+        #[prost(double, optional, tag = "4")]
+        pub normalized_score: ::core::option::Option<f64>,
+        /// Collection of tags and their scores.
+        #[prost(message, repeated, tag = "5")]
+        pub qa_tag_results: ::prost::alloc::vec::Vec<QaTagResult>,
+    }
+    /// Nested message and enum types in `ScoreSource`.
+    pub mod score_source {
+        /// What created the score.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum SourceType {
+            /// Source type is unspecified.
+            Unspecified = 0,
+            /// Score is derived only from system-generated answers.
+            SystemGeneratedOnly = 1,
+            /// Score is derived from both system-generated answers, and includes
+            /// any manual edits if they exist.
+            IncludesManualEdits = 2,
+        }
+        impl SourceType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "SOURCE_TYPE_UNSPECIFIED",
+                    Self::SystemGeneratedOnly => "SYSTEM_GENERATED_ONLY",
+                    Self::IncludesManualEdits => "INCLUDES_MANUAL_EDITS",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SOURCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "SYSTEM_GENERATED_ONLY" => Some(Self::SystemGeneratedOnly),
+                    "INCLUDES_MANUAL_EDITS" => Some(Self::IncludesManualEdits),
+                    _ => None,
+                }
+            }
+        }
+    }
+}
+/// Enum for the different types of issues a tuning dataset can have.
+/// These warnings are currentlyraised when trying to validate a dataset for
+/// tuning a scorecard.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DatasetValidationWarning {
+    /// Unspecified data validation warning.
+    Unspecified = 0,
+    /// A non-trivial percentage of the feedback labels are invalid.
+    TooManyInvalidFeedbackLabels = 1,
+    /// The quantity of valid feedback labels provided is less than the
+    /// recommended minimum.
+    InsufficientFeedbackLabels = 2,
+    /// One or more of the answers have less than the recommended minimum of
+    /// feedback labels.
+    InsufficientFeedbackLabelsPerAnswer = 3,
+    /// All the labels in the dataset come from a single answer choice.
+    AllFeedbackLabelsHaveTheSameAnswer = 4,
+}
+impl DatasetValidationWarning {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "DATASET_VALIDATION_WARNING_UNSPECIFIED",
+            Self::TooManyInvalidFeedbackLabels => "TOO_MANY_INVALID_FEEDBACK_LABELS",
+            Self::InsufficientFeedbackLabels => "INSUFFICIENT_FEEDBACK_LABELS",
+            Self::InsufficientFeedbackLabelsPerAnswer => {
+                "INSUFFICIENT_FEEDBACK_LABELS_PER_ANSWER"
+            }
+            Self::AllFeedbackLabelsHaveTheSameAnswer => {
+                "ALL_FEEDBACK_LABELS_HAVE_THE_SAME_ANSWER"
+            }
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DATASET_VALIDATION_WARNING_UNSPECIFIED" => Some(Self::Unspecified),
+            "TOO_MANY_INVALID_FEEDBACK_LABELS" => {
+                Some(Self::TooManyInvalidFeedbackLabels)
+            }
+            "INSUFFICIENT_FEEDBACK_LABELS" => Some(Self::InsufficientFeedbackLabels),
+            "INSUFFICIENT_FEEDBACK_LABELS_PER_ANSWER" => {
+                Some(Self::InsufficientFeedbackLabelsPerAnswer)
+            }
+            "ALL_FEEDBACK_LABELS_HAVE_THE_SAME_ANSWER" => {
+                Some(Self::AllFeedbackLabelsHaveTheSameAnswer)
+            }
+            _ => None,
         }
     }
 }
@@ -2237,7 +2884,7 @@ pub mod ingest_conversations_request {
         pub metadata_bucket_uri: ::core::option::Option<::prost::alloc::string::String>,
         /// Optional. Custom keys to extract as conversation labels from metadata
         /// files in `metadata_bucket_uri`. Keys not included in this field will be
-        /// ignored. Note that there is a limit of 20 labels per conversation.
+        /// ignored. Note that there is a limit of 100 labels per conversation.
         #[prost(string, repeated, tag = "12")]
         pub custom_metadata_keys: ::prost::alloc::vec::Vec<
             ::prost::alloc::string::String,
@@ -2993,6 +3640,75 @@ pub struct UpdateSettingsRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
+/// The request to create a analysis rule.
+/// analysis_rule_id will be generated by the server.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateAnalysisRuleRequest {
+    /// Required. The parent resource of the analysis rule. Required. The location
+    /// to create a analysis rule for. Format: `projects/<Project
+    /// ID>/locations/<Location ID>` or `projects/<Project
+    /// Number>/locations/<Location ID>`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The analysis rule resource to create.
+    #[prost(message, optional, tag = "2")]
+    pub analysis_rule: ::core::option::Option<AnalysisRule>,
+}
+/// The request for getting a analysis rule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAnalysisRuleRequest {
+    /// Required. The name of the AnalysisRule to get.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request to update a analysis rule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateAnalysisRuleRequest {
+    /// Required. The new analysis rule.
+    #[prost(message, optional, tag = "1")]
+    pub analysis_rule: ::core::option::Option<AnalysisRule>,
+    /// Optional. The list of fields to be updated.
+    /// If the update_mask is not provided, the update will be applied to all
+    /// fields.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// The request to delete a analysis rule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteAnalysisRuleRequest {
+    /// Required. The name of the analysis rule to delete.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request to list analysis rules.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAnalysisRulesRequest {
+    /// Required. The parent resource of the analysis rules.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of analysis rule to return in the response. If
+    /// this value is zero, the service will select a default size. A call may
+    /// return fewer objects than requested. A non-empty `next_page_token` in the
+    /// response indicates that more data is available.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The value returned by the last `ListAnalysisRulesResponse`;
+    /// indicates that this is a continuation of a prior `ListAnalysisRules` call
+    /// and the system should return the next page of data.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The response of listing views.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAnalysisRulesResponse {
+    /// The analysis_rule that match the request.
+    #[prost(message, repeated, tag = "1")]
+    pub analysis_rules: ::prost::alloc::vec::Vec<AnalysisRule>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
 /// The request to get location-level encryption specification.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEncryptionSpecRequest {
@@ -3006,7 +3722,7 @@ pub struct InitializeEncryptionSpecRequest {
     /// Required. The encryption spec used for CMEK encryption. It is required that
     /// the kms key is in the same region as the endpoint. The same key will be
     /// used for all provisioned resources, if encryption is available. If the
-    /// kms_key_name is left empty, no encryption will be enforced.
+    /// `kms_key_name` field is left empty, no encryption will be enforced.
     #[prost(message, optional, tag = "1")]
     pub encryption_spec: ::core::option::Option<EncryptionSpec>,
 }
@@ -3025,7 +3741,7 @@ pub struct InitializeEncryptionSpecMetadata {
     /// Output only. The original request for initialization.
     #[prost(message, optional, tag = "3")]
     pub request: ::core::option::Option<InitializeEncryptionSpecRequest>,
-    /// Partial errors during initialising operation that might cause the operation
+    /// Partial errors during initializing operation that might cause the operation
     /// output to be incomplete.
     #[prost(message, repeated, tag = "4")]
     pub partial_errors: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
@@ -3095,6 +3811,1228 @@ pub struct DeleteViewRequest {
     /// Required. The name of the view to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+}
+/// A dimension determines the grouping key for the query. In SQL terms, these
+/// would be part of both the "SELECT" and "GROUP BY" clauses.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Dimension {
+    /// The key of the dimension.
+    #[prost(enumeration = "dimension::DimensionKey", tag = "1")]
+    pub dimension_key: i32,
+    /// Output-only metadata about the dimension.
+    #[prost(oneof = "dimension::DimensionMetadata", tags = "2, 3, 4, 5")]
+    pub dimension_metadata: ::core::option::Option<dimension::DimensionMetadata>,
+}
+/// Nested message and enum types in `Dimension`.
+pub mod dimension {
+    /// Metadata about the issue dimension.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct IssueDimensionMetadata {
+        /// The issue ID.
+        #[prost(string, tag = "1")]
+        pub issue_id: ::prost::alloc::string::String,
+        /// The issue display name.
+        #[prost(string, tag = "2")]
+        pub issue_display_name: ::prost::alloc::string::String,
+        /// The parent issue model ID.
+        #[prost(string, tag = "3")]
+        pub issue_model_id: ::prost::alloc::string::String,
+    }
+    /// Metadata about the agent dimension.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AgentDimensionMetadata {
+        /// Optional. A user-specified string representing the agent.
+        #[prost(string, tag = "1")]
+        pub agent_id: ::prost::alloc::string::String,
+        /// Optional. The agent's name
+        #[prost(string, tag = "2")]
+        pub agent_display_name: ::prost::alloc::string::String,
+        /// Optional. A user-specified string representing the agent's team.
+        #[prost(string, tag = "3")]
+        pub agent_team: ::prost::alloc::string::String,
+    }
+    /// Metadata about the QA question dimension.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct QaQuestionDimensionMetadata {
+        /// Optional. The QA scorecard ID.
+        #[prost(string, tag = "1")]
+        pub qa_scorecard_id: ::prost::alloc::string::String,
+        /// Optional. The QA question ID.
+        #[prost(string, tag = "2")]
+        pub qa_question_id: ::prost::alloc::string::String,
+        /// Optional. The full body of the question.
+        #[prost(string, tag = "3")]
+        pub question_body: ::prost::alloc::string::String,
+    }
+    /// Metadata about the QA question-answer dimension.
+    /// This is useful for showing the answer distribution for questions for a
+    /// given scorecard.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct QaQuestionAnswerDimensionMetadata {
+        /// Optional. The QA scorecard ID.
+        #[prost(string, tag = "1")]
+        pub qa_scorecard_id: ::prost::alloc::string::String,
+        /// Optional. The QA question ID.
+        #[prost(string, tag = "2")]
+        pub qa_question_id: ::prost::alloc::string::String,
+        /// Optional. The full body of the question.
+        #[prost(string, tag = "3")]
+        pub question_body: ::prost::alloc::string::String,
+        /// Optional. The full body of the question.
+        #[prost(string, tag = "4")]
+        pub answer_value: ::prost::alloc::string::String,
+    }
+    /// The key of the dimension.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DimensionKey {
+        /// The key of the dimension is unspecified.
+        Unspecified = 0,
+        /// The dimension is keyed by issues.
+        Issue = 1,
+        /// The dimension is keyed by agents.
+        Agent = 2,
+        /// The dimension is keyed by agent teams.
+        AgentTeam = 3,
+        /// The dimension is keyed by QaQuestionIds.
+        /// Note that: We only group by the QuestionId and not the revision-id of the
+        /// scorecard this question is a part of. This allows for showing stats for
+        /// the same question across different scorecard revisions.
+        QaQuestionId = 4,
+        /// The dimension is keyed by QaQuestionIds-Answer value pairs.
+        /// Note that: We only group by the QuestionId and not the revision-id of the
+        /// scorecard this question is a part of. This allows for showing
+        /// distribution of answers per question across different scorecard
+        /// revisions.
+        QaQuestionAnswerValue = 5,
+        /// The dimension is keyed by the conversation profile ID.
+        ConversationProfileId = 6,
+    }
+    impl DimensionKey {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DIMENSION_KEY_UNSPECIFIED",
+                Self::Issue => "ISSUE",
+                Self::Agent => "AGENT",
+                Self::AgentTeam => "AGENT_TEAM",
+                Self::QaQuestionId => "QA_QUESTION_ID",
+                Self::QaQuestionAnswerValue => "QA_QUESTION_ANSWER_VALUE",
+                Self::ConversationProfileId => "CONVERSATION_PROFILE_ID",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DIMENSION_KEY_UNSPECIFIED" => Some(Self::Unspecified),
+                "ISSUE" => Some(Self::Issue),
+                "AGENT" => Some(Self::Agent),
+                "AGENT_TEAM" => Some(Self::AgentTeam),
+                "QA_QUESTION_ID" => Some(Self::QaQuestionId),
+                "QA_QUESTION_ANSWER_VALUE" => Some(Self::QaQuestionAnswerValue),
+                "CONVERSATION_PROFILE_ID" => Some(Self::ConversationProfileId),
+                _ => None,
+            }
+        }
+    }
+    /// Output-only metadata about the dimension.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum DimensionMetadata {
+        /// Output only. Metadata about the issue dimension.
+        #[prost(message, tag = "2")]
+        IssueDimensionMetadata(IssueDimensionMetadata),
+        /// Output only. Metadata about the agent dimension.
+        #[prost(message, tag = "3")]
+        AgentDimensionMetadata(AgentDimensionMetadata),
+        /// Output only. Metadata about the QA question dimension.
+        #[prost(message, tag = "4")]
+        QaQuestionDimensionMetadata(QaQuestionDimensionMetadata),
+        /// Output only. Metadata about the QA question-answer dimension.
+        #[prost(message, tag = "5")]
+        QaQuestionAnswerDimensionMetadata(QaQuestionAnswerDimensionMetadata),
+    }
+}
+/// The request for querying metrics.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryMetricsRequest {
+    /// Required. The location of the data.
+    /// "projects/{project}/locations/{location}"
+    #[prost(string, tag = "1")]
+    pub location: ::prost::alloc::string::String,
+    /// Required. Filter to select a subset of conversations to compute the
+    /// metrics. Must specify a window of the conversation create time to compute
+    /// the metrics. The returned metrics will be from the range [DATE(starting
+    /// create time), DATE(ending create time)).
+    ///
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// The time granularity of each data point in the time series.
+    /// Defaults to NONE if this field is unspecified.
+    #[prost(enumeration = "query_metrics_request::TimeGranularity", tag = "3")]
+    pub time_granularity: i32,
+    /// The dimensions that determine the grouping key for the query. Defaults to
+    /// no dimension if this field is unspecified. If a dimension is specified,
+    /// its key must also be specified. Each dimension's key must be unique.
+    ///
+    /// If a time granularity is also specified, metric values in the dimension
+    /// will be bucketed by this granularity.
+    ///
+    /// Up to one dimension is supported for now.
+    #[prost(message, repeated, tag = "4")]
+    pub dimensions: ::prost::alloc::vec::Vec<Dimension>,
+    /// Measures to return. Defaults to all measures if this field is unspecified.
+    /// A valid mask should traverse from the `measure` field from the response.
+    /// For example, a path from a measure mask to get the conversation count is
+    /// "conversation_measure.count".
+    #[prost(message, optional, tag = "5")]
+    pub measure_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Nested message and enum types in `QueryMetricsRequest`.
+pub mod query_metrics_request {
+    /// A time granularity divides the time line into discrete time periods.
+    /// This is useful for defining buckets over which filtering and aggregation
+    /// should be performed.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum TimeGranularity {
+        /// The time granularity is unspecified and will default to NONE.
+        Unspecified = 0,
+        /// No time granularity. The response won't contain a time series.
+        /// This is the default value if no time granularity is specified.
+        None = 1,
+        /// Data points in the time series will aggregate at a daily granularity.
+        /// 1 day means [midnight to midnight).
+        Daily = 2,
+        /// Data points in the time series will aggregate at a daily granularity.
+        /// 1 HOUR means [01:00 to 02:00).
+        Hourly = 3,
+        /// Data points in the time series will aggregate at a daily granularity.
+        /// PER_MINUTE means [01:00 to 01:01).
+        PerMinute = 4,
+        /// Data points in the time series will aggregate at a 1 minute  granularity.
+        /// PER_5_MINUTES means [01:00 to 01:05).
+        Per5Minutes = 5,
+        /// Data points in the time series will aggregate at a monthly granularity.
+        /// 1 MONTH means [01st of the month to 1st of the next month).
+        Monthly = 6,
+    }
+    impl TimeGranularity {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "TIME_GRANULARITY_UNSPECIFIED",
+                Self::None => "NONE",
+                Self::Daily => "DAILY",
+                Self::Hourly => "HOURLY",
+                Self::PerMinute => "PER_MINUTE",
+                Self::Per5Minutes => "PER_5_MINUTES",
+                Self::Monthly => "MONTHLY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TIME_GRANULARITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "DAILY" => Some(Self::Daily),
+                "HOURLY" => Some(Self::Hourly),
+                "PER_MINUTE" => Some(Self::PerMinute),
+                "PER_5_MINUTES" => Some(Self::Per5Minutes),
+                "MONTHLY" => Some(Self::Monthly),
+                _ => None,
+            }
+        }
+    }
+}
+/// The response for querying metrics.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryMetricsResponse {
+    /// Required. The location of the data.
+    /// "projects/{project}/locations/{location}"
+    #[prost(string, tag = "1")]
+    pub location: ::prost::alloc::string::String,
+    /// The metrics last update time.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// A slice contains a total and (if the request specified a time granularity)
+    /// a time series of metric values. Each slice contains a unique combination of
+    /// the cardinality of dimensions from the request.
+    #[prost(message, repeated, tag = "2")]
+    pub slices: ::prost::alloc::vec::Vec<query_metrics_response::Slice>,
+    /// The macro average slice contains aggregated averages across the selected
+    /// dimension. i.e. if group_by agent is specified this field will contain the
+    /// average across all agents.
+    /// This field is only populated if the request specifies a Dimension.
+    #[prost(message, optional, tag = "4")]
+    pub macro_average_slice: ::core::option::Option<query_metrics_response::Slice>,
+}
+/// Nested message and enum types in `QueryMetricsResponse`.
+pub mod query_metrics_response {
+    /// A slice contains a total and (if the request specified a time granularity)
+    /// a time series of metric values. Each slice contains a unique combination of
+    /// the cardinality of dimensions from the request.
+    ///
+    /// For example, if the request specifies a single ISSUE dimension and it has a
+    /// cardinality of 2 (i.e. the data used to compute the metrics has 2 issues in
+    /// total), the response will have 2 slices:
+    ///
+    /// * Slice 1 -> dimensions=\[Issue 1\]
+    /// * Slice 2 -> dimensions=\[Issue 2\]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Slice {
+        /// A unique combination of dimensions that this slice represents.
+        #[prost(message, repeated, tag = "1")]
+        pub dimensions: ::prost::alloc::vec::Vec<super::Dimension>,
+        /// The total metric value. The interval of this data point is
+        /// [starting create time, ending create time) from the request.
+        #[prost(message, optional, tag = "2")]
+        pub total: ::core::option::Option<slice::DataPoint>,
+        /// A time series of metric values. This is only populated if the request
+        /// specifies a time granularity other than NONE.
+        #[prost(message, optional, tag = "3")]
+        pub time_series: ::core::option::Option<slice::TimeSeries>,
+    }
+    /// Nested message and enum types in `Slice`.
+    pub mod slice {
+        /// A data point contains the metric values mapped to an interval.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct DataPoint {
+            /// The interval that this data point represents.
+            ///
+            /// * If this is the total data point, the interval is
+            /// [starting create time, ending create time) from the request.
+            /// * If this a data point from the time series, the interval is
+            /// [time, time + time granularity from the request).
+            #[prost(message, optional, tag = "1")]
+            pub interval: ::core::option::Option<
+                super::super::super::super::super::r#type::Interval,
+            >,
+            /// The measure included in this data point.
+            #[prost(oneof = "data_point::Measure", tags = "2")]
+            pub measure: ::core::option::Option<data_point::Measure>,
+        }
+        /// Nested message and enum types in `DataPoint`.
+        pub mod data_point {
+            /// The measure related to conversations.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct ConversationMeasure {
+                /// The conversation count.
+                #[prost(int32, optional, tag = "1")]
+                pub conversation_count: ::core::option::Option<i32>,
+                /// The average silence percentage.
+                #[prost(float, optional, tag = "2")]
+                pub average_silence_percentage: ::core::option::Option<f32>,
+                /// The average duration.
+                #[prost(message, optional, tag = "3")]
+                pub average_duration: ::core::option::Option<::prost_types::Duration>,
+                /// The average turn count.
+                #[prost(float, optional, tag = "4")]
+                pub average_turn_count: ::core::option::Option<f32>,
+                /// The average agent's sentiment score.
+                #[prost(float, optional, tag = "5")]
+                pub average_agent_sentiment_score: ::core::option::Option<f32>,
+                /// The average client's sentiment score.
+                #[prost(float, optional, tag = "6")]
+                pub average_client_sentiment_score: ::core::option::Option<f32>,
+                /// The average customer satisfaction rating.
+                #[prost(double, optional, tag = "8")]
+                pub average_customer_satisfaction_rating: ::core::option::Option<f64>,
+                /// Average QA normalized score.
+                /// Will exclude 0's in average calculation.
+                #[prost(double, optional, tag = "7")]
+                pub average_qa_normalized_score: ::core::option::Option<f64>,
+                /// Average QA normalized score for all the tags.
+                #[prost(message, repeated, tag = "9")]
+                pub qa_tag_scores: ::prost::alloc::vec::Vec<
+                    conversation_measure::QaTagScore,
+                >,
+                /// Average QA normalized score averaged for questions averaged across
+                /// all revisions of the parent scorecard.
+                /// Will be only populated if the request specifies a dimension of
+                /// QA_QUESTION_ID.
+                #[prost(double, optional, tag = "10")]
+                pub average_qa_question_normalized_score: ::core::option::Option<f64>,
+            }
+            /// Nested message and enum types in `ConversationMeasure`.
+            pub mod conversation_measure {
+                /// Average QA normalized score for the tag.
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct QaTagScore {
+                    /// Tag name.
+                    #[prost(string, tag = "1")]
+                    pub tag: ::prost::alloc::string::String,
+                    /// Average tag normalized score per tag.
+                    #[prost(double, tag = "2")]
+                    pub average_tag_normalized_score: f64,
+                }
+            }
+            /// The measure included in this data point.
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum Measure {
+                /// The measure related to conversations.
+                #[prost(message, tag = "2")]
+                ConversationMeasure(ConversationMeasure),
+            }
+        }
+        /// A time series of metric values.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct TimeSeries {
+            /// The data points that make up the time series .
+            #[prost(message, repeated, tag = "4")]
+            pub data_points: ::prost::alloc::vec::Vec<DataPoint>,
+        }
+    }
+}
+/// The metadata from querying metrics.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct QueryMetricsMetadata {}
+/// The request for creating a QaQuestion.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateQaQuestionRequest {
+    /// Required. The parent resource of the QaQuestion.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The QaQuestion to create.
+    #[prost(message, optional, tag = "2")]
+    pub qa_question: ::core::option::Option<QaQuestion>,
+    /// Optional. A unique ID for the new question. This ID will become the final
+    /// component of the question's resource name. If no ID is specified, a
+    /// server-generated ID will be used.
+    ///
+    /// This value should be 4-64 characters and must match the regular
+    /// expression `^\[a-z0-9-\]{4,64}$`. Valid characters are `[a-z][0-9]-`.
+    #[prost(string, tag = "3")]
+    pub qa_question_id: ::prost::alloc::string::String,
+}
+/// The request for a QaQuestion.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetQaQuestionRequest {
+    /// Required. The name of the QaQuestion to get.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request to list QaQuestions.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListQaQuestionsRequest {
+    /// Required. The parent resource of the questions.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of questions to return in the response. If the
+    /// value is zero, the service will select a default size. A call might return
+    /// fewer objects than requested. A non-empty `next_page_token` in the response
+    /// indicates that more data is available.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The value returned by the last `ListQaQuestionsResponse`. This
+    /// value indicates that this is a continuation of a prior `ListQaQuestions`
+    /// call and that the system should return the next page of data.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The response from a ListQaQuestions request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListQaQuestionsResponse {
+    /// The QaQuestions under the parent.
+    #[prost(message, repeated, tag = "1")]
+    pub qa_questions: ::prost::alloc::vec::Vec<QaQuestion>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The request for updating a QaQuestion.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateQaQuestionRequest {
+    /// Required. The QaQuestion to update.
+    #[prost(message, optional, tag = "1")]
+    pub qa_question: ::core::option::Option<QaQuestion>,
+    /// Required. The list of fields to be updated. All possible fields can be
+    /// updated by passing `*`, or a subset of the following updateable fields can
+    /// be provided:
+    ///
+    /// * `abbreviation`
+    /// * `answer_choices`
+    /// * `answer_instructions`
+    /// * `order`
+    /// * `question_body`
+    /// * `tags`
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// The request for deleting a QaQuestion.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteQaQuestionRequest {
+    /// Required. The name of the QaQuestion to delete.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for creating a QaScorecard.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateQaScorecardRequest {
+    /// Required. The parent resource of the QaScorecard.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The QaScorecard to create.
+    #[prost(message, optional, tag = "2")]
+    pub qa_scorecard: ::core::option::Option<QaScorecard>,
+    /// Optional. A unique ID for the new QaScorecard. This ID will become the
+    /// final component of the QaScorecard's resource name. If no ID is specified,
+    /// a server-generated ID will be used.
+    ///
+    /// This value should be 4-64 characters and must match the regular
+    /// expression `^\[a-z0-9-\]{4,64}$`. Valid characters are `[a-z][0-9]-`.
+    #[prost(string, tag = "3")]
+    pub qa_scorecard_id: ::prost::alloc::string::String,
+}
+/// The request for a QaScorecard. By default, returns the latest revision.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetQaScorecardRequest {
+    /// Required. The name of the QaScorecard to get.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for updating a QaScorecard.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateQaScorecardRequest {
+    /// Required. The QaScorecard to update.
+    #[prost(message, optional, tag = "1")]
+    pub qa_scorecard: ::core::option::Option<QaScorecard>,
+    /// Required. The list of fields to be updated. All possible fields can be
+    /// updated by passing `*`, or a subset of the following updateable fields can
+    /// be provided:
+    ///
+    /// * `description`
+    /// * `display_name`
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// The request for deleting a QaScorecard.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteQaScorecardRequest {
+    /// Required. The name of the QaScorecard to delete.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. If set to true, all of this QaScorecard's child resources will
+    /// also be deleted. Otherwise, the request will only succeed if it has none.
+    #[prost(bool, tag = "2")]
+    pub force: bool,
+}
+/// The request for creating a QaScorecardRevision.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateQaScorecardRevisionRequest {
+    /// Required. The parent resource of the QaScorecardRevision.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The QaScorecardRevision to create.
+    #[prost(message, optional, tag = "2")]
+    pub qa_scorecard_revision: ::core::option::Option<QaScorecardRevision>,
+    /// Optional. A unique ID for the new QaScorecardRevision. This ID will become
+    /// the final component of the QaScorecardRevision's resource name. If no ID is
+    /// specified, a server-generated ID will be used.
+    ///
+    /// This value should be 4-64 characters and must match the regular
+    /// expression `^\[a-z0-9-\]{4,64}$`. Valid characters are `[a-z][0-9]-`.
+    #[prost(string, tag = "3")]
+    pub qa_scorecard_revision_id: ::prost::alloc::string::String,
+}
+/// The request for a QaScorecardRevision.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetQaScorecardRevisionRequest {
+    /// Required. The name of the QaScorecardRevision to get.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for TuneQaScorecardRevision endpoint.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TuneQaScorecardRevisionRequest {
+    /// Required. The parent resource for new fine tuning job instance.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Filter for selecting the feedback labels that needs to be
+    /// used for training.
+    /// This filter can be used to limit the feedback labels used for tuning to a
+    /// feedback labels created or updated for a specific time-window etc.
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Run in validate only mode, no fine tuning will actually run.
+    /// Data quality validations like training data distributions will run.
+    /// Even when set to false, the data quality validations will still run but
+    /// once the validations complete we will proceed with the fine tune, if
+    /// applicable.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+}
+/// Response for TuneQaScorecardRevision endpoint.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct TuneQaScorecardRevisionResponse {}
+/// Metadata for TuneQaScorecardRevision endpoint.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TuneQaScorecardRevisionMetadata {
+    /// Output only. The time the operation was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the operation finished running.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The original request.
+    #[prost(message, optional, tag = "3")]
+    pub request: ::core::option::Option<TuneQaScorecardRevisionRequest>,
+    /// Output only. The results of data validation per question in the request.
+    #[prost(message, repeated, tag = "4")]
+    pub qa_question_dataset_validation_results: ::prost::alloc::vec::Vec<
+        tune_qa_scorecard_revision_metadata::QaQuestionDatasetValidationResult,
+    >,
+    /// Output only. The metrics for each QaQuestion in the TuneScorecardRevision
+    /// request.
+    #[prost(message, repeated, tag = "5")]
+    pub qa_question_dataset_tuning_metrics: ::prost::alloc::vec::Vec<
+        tune_qa_scorecard_revision_metadata::QaQuestionDatasetTuningMetrics,
+    >,
+    /// Output only. The percentage of the tuning job that has completed. Always
+    /// between 0 and 1 where 0 indicates the job has not started i.e. 0% and 1
+    /// indicates the job has completed i.e. 100%.
+    #[prost(double, tag = "6")]
+    pub tuning_completion_ratio: f64,
+}
+/// Nested message and enum types in `TuneQaScorecardRevisionMetadata`.
+pub mod tune_qa_scorecard_revision_metadata {
+    /// Contains validation results for a question in the tuning request.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct QaQuestionDatasetValidationResult {
+        /// Output only. The resource path of the question whose dataset was
+        /// evaluated for tuning.
+        #[prost(string, tag = "1")]
+        pub question: ::prost::alloc::string::String,
+        /// A list of any applicable data validation warnings about the question's
+        /// feedback labels.
+        #[prost(enumeration = "super::DatasetValidationWarning", repeated, tag = "2")]
+        pub dataset_validation_warnings: ::prost::alloc::vec::Vec<i32>,
+        /// The number of valid feedback labels in the question's dataset.
+        #[prost(int32, tag = "3")]
+        pub valid_feedback_labels_count: i32,
+    }
+    /// Contains performance metrics for each QaQuestion in the
+    /// TuneScorecardRevision request.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct QaQuestionDatasetTuningMetrics {
+        /// Output only. The resource path of the question whose dataset was
+        /// evaluated for tuning.
+        #[prost(string, tag = "1")]
+        pub question: ::prost::alloc::string::String,
+        /// Output only. The metrics for the question's dataset.
+        #[prost(message, optional, tag = "2")]
+        pub metrics: ::core::option::Option<qa_question_dataset_tuning_metrics::Metrics>,
+    }
+    /// Nested message and enum types in `QaQuestionDatasetTuningMetrics`.
+    pub mod qa_question_dataset_tuning_metrics {
+        /// Performance metrics for the question's dataset calculated over the tuned
+        /// model.
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct Metrics {
+            /// Accuracy of the question's dataset.
+            #[prost(double, tag = "1")]
+            pub accuracy: f64,
+        }
+    }
+}
+/// The request to deploy a QaScorecardRevision
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeployQaScorecardRevisionRequest {
+    /// Required. The name of the QaScorecardRevision to deploy.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request to undeploy a QaScorecardRevision
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UndeployQaScorecardRevisionRequest {
+    /// Required. The name of the QaScorecardRevision to undeploy.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request to delete a QaScorecardRevision.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteQaScorecardRevisionRequest {
+    /// Required. The name of the QaScorecardRevision to delete.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. If set to true, all of this QaScorecardRevision's child resources
+    /// will also be deleted. Otherwise, the request will only succeed if it has
+    /// none.
+    #[prost(bool, tag = "2")]
+    pub force: bool,
+}
+/// Request to list QaScorecards.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListQaScorecardsRequest {
+    /// Required. The parent resource of the scorecards.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of scorecards to return in the response. If
+    /// the value is zero, the service will select a default size. A call might
+    /// return fewer objects than requested. A non-empty `next_page_token` in the
+    /// response indicates that more data is available.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The value returned by the last `ListQaScorecardsResponse`. This
+    /// value indicates that this is a continuation of a prior `ListQaScorecards`
+    /// call and that the system should return the next page of data.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The response from a ListQaScorecards request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListQaScorecardsResponse {
+    /// The QaScorecards under the parent.
+    #[prost(message, repeated, tag = "1")]
+    pub qa_scorecards: ::prost::alloc::vec::Vec<QaScorecard>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request to list QaScorecardRevisions
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListQaScorecardRevisionsRequest {
+    /// Required. The parent resource of the scorecard revisions. To list all
+    /// revisions of all scorecards, substitute the QaScorecard ID with a '-'
+    /// character.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of scorecard revisions to return in the
+    /// response. If the value is zero, the service will select a default size. A
+    /// call might return fewer objects than requested. A non-empty
+    /// `next_page_token` in the response indicates that more data is available.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The value returned by the last
+    /// `ListQaScorecardRevisionsResponse`. This value indicates that this is a
+    /// continuation of a prior `ListQaScorecardRevisions` call and that the system
+    /// should return the next page of data.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. A filter to reduce results to a specific subset. Useful for
+    /// querying scorecard revisions with specific properties.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// The response from a ListQaScorecardRevisions request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListQaScorecardRevisionsResponse {
+    /// The QaScorecards under the parent.
+    #[prost(message, repeated, tag = "1")]
+    pub qa_scorecard_revisions: ::prost::alloc::vec::Vec<QaScorecardRevision>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The request for creating a feedback label.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateFeedbackLabelRequest {
+    /// Required. The parent resource of the feedback label.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The ID of the feedback label to create.
+    /// If one is not specified it will be generated by the server.
+    #[prost(string, tag = "2")]
+    pub feedback_label_id: ::prost::alloc::string::String,
+    /// Required. The feedback label to create.
+    #[prost(message, optional, tag = "3")]
+    pub feedback_label: ::core::option::Option<FeedbackLabel>,
+}
+/// The request for listing feedback labels.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListFeedbackLabelsRequest {
+    /// Required. The parent resource of the feedback labels.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. A filter to reduce results to a specific subset. Supports
+    /// disjunctions (OR) and conjunctions (AND). Automatically sorts by
+    /// conversation ID. To sort by all feedback labels in a project see
+    /// ListAllFeedbackLabels.
+    ///
+    /// Supported fields:
+    ///
+    /// * `issue_model_id`
+    /// * `qa_question_id`
+    /// * `qa_scorecard_id`
+    /// * `min_create_time`
+    /// * `max_create_time`
+    /// * `min_update_time`
+    /// * `max_update_time`
+    /// * `feedback_label_type`: QUALITY_AI, TOPIC_MODELING
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. The maximum number of feedback labels to return in the response.
+    /// A valid page size ranges from 0 to 100,000 inclusive. If the page size is
+    /// zero or unspecified, a default page size of 100 will be chosen. Note that a
+    /// call might return fewer results than the requested page size.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Optional. The value returned by the last `ListFeedbackLabelsResponse`. This
+    /// value indicates that this is a continuation of a prior `ListFeedbackLabels`
+    /// call and that the system should return the next page of data.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The response for listing feedback labels.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListFeedbackLabelsResponse {
+    /// The feedback labels that match the request.
+    #[prost(message, repeated, tag = "1")]
+    pub feedback_labels: ::prost::alloc::vec::Vec<FeedbackLabel>,
+    /// The next page token.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The request for getting a feedback label.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetFeedbackLabelRequest {
+    /// Required. The name of the feedback label to get.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for updating a feedback label.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateFeedbackLabelRequest {
+    /// Required. The feedback label to update.
+    #[prost(message, optional, tag = "1")]
+    pub feedback_label: ::core::option::Option<FeedbackLabel>,
+    /// Required. The list of fields to be updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// The request for deleting a feedback label.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteFeedbackLabelRequest {
+    /// Required. The name of the feedback label to delete.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for listing all feedback labels.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAllFeedbackLabelsRequest {
+    /// Required. The parent resource of all feedback labels per project.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of feedback labels to return in the response.
+    /// A valid page size ranges from 0 to 100,000 inclusive. If the page size is
+    /// zero or unspecified, a default page size of 100 will be chosen. Note that a
+    /// call might return fewer results than the requested page size.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The value returned by the last `ListAllFeedbackLabelsResponse`.
+    /// This value indicates that this is a continuation of a prior
+    /// `ListAllFeedbackLabels` call and that the system should return the next
+    /// page of data.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. A filter to reduce results to a specific subset in the entire
+    /// project. Supports disjunctions (OR) and conjunctions (AND).
+    ///
+    /// Supported fields:
+    ///
+    /// * `issue_model_id`
+    /// * `qa_question_id`
+    /// * `min_create_time`
+    /// * `max_create_time`
+    /// * `min_update_time`
+    /// * `max_update_time`
+    /// * `feedback_label_type`: QUALITY_AI, TOPIC_MODELING
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// The response for listing all feedback labels.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAllFeedbackLabelsResponse {
+    /// The feedback labels that match the request.
+    #[prost(message, repeated, tag = "1")]
+    pub feedback_labels: ::prost::alloc::vec::Vec<FeedbackLabel>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The request for bulk uploading feedback labels.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BulkUploadFeedbackLabelsRequest {
+    /// Required. The parent resource for new feedback labels.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. If set, upload will not happen and the labels will be validated.
+    /// If not set, then default behavior will be to upload the labels after
+    /// validation is complete.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+    /// Configuration for an external data store containing objects that will
+    /// be converted to FeedbackLabels.
+    #[prost(oneof = "bulk_upload_feedback_labels_request::Source", tags = "2")]
+    pub source: ::core::option::Option<bulk_upload_feedback_labels_request::Source>,
+}
+/// Nested message and enum types in `BulkUploadFeedbackLabelsRequest`.
+pub mod bulk_upload_feedback_labels_request {
+    /// Google Cloud Storage Object details to get the feedback label file from.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GcsSource {
+        /// Required. File format which will be ingested.
+        #[prost(enumeration = "gcs_source::Format", tag = "1")]
+        pub format: i32,
+        /// Required. The Google Cloud Storage URI of the file to import.
+        /// Format: `gs://bucket_name/object_name`
+        #[prost(string, tag = "2")]
+        pub object_uri: ::prost::alloc::string::String,
+    }
+    /// Nested message and enum types in `GcsSource`.
+    pub mod gcs_source {
+        /// All permissible file formats.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Format {
+            /// Unspecified format.
+            Unspecified = 0,
+            /// CSV format.
+            Csv = 1,
+            /// JSON format.
+            Json = 2,
+        }
+        impl Format {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "FORMAT_UNSPECIFIED",
+                    Self::Csv => "CSV",
+                    Self::Json => "JSON",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                    "CSV" => Some(Self::Csv),
+                    "JSON" => Some(Self::Json),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Configuration for an external data store containing objects that will
+    /// be converted to FeedbackLabels.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// A cloud storage bucket source.
+        #[prost(message, tag = "2")]
+        GcsSource(GcsSource),
+    }
+}
+/// Response for the Bulk Upload Feedback Labels API.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct BulkUploadFeedbackLabelsResponse {}
+/// Metadata for the Bulk Upload Feedback Labels API.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BulkUploadFeedbackLabelsMetadata {
+    /// Output only. The time the operation was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the operation finished running.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The original request for ingest.
+    #[prost(message, optional, tag = "3")]
+    pub request: ::core::option::Option<BulkUploadFeedbackLabelsRequest>,
+    /// Partial errors during ingest operation that might cause the operation
+    /// output to be incomplete.
+    #[prost(message, repeated, tag = "4")]
+    pub partial_errors: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
+    /// Output only. Statistics for BulkUploadFeedbackLabels operation.
+    #[prost(message, optional, tag = "5")]
+    pub upload_stats: ::core::option::Option<
+        bulk_upload_feedback_labels_metadata::UploadStats,
+    >,
+}
+/// Nested message and enum types in `BulkUploadFeedbackLabelsMetadata`.
+pub mod bulk_upload_feedback_labels_metadata {
+    /// Statistics for BulkUploadFeedbackLabels operation.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct UploadStats {
+        /// The number of objects processed during the upload operation.
+        #[prost(int32, tag = "1")]
+        pub processed_object_count: i32,
+        /// The number of objects skipped because of failed validation
+        #[prost(int32, tag = "2")]
+        pub failed_validation_count: i32,
+        /// The number of new feedback labels added during this ingest operation.
+        #[prost(int32, tag = "3")]
+        pub successful_upload_count: i32,
+    }
+}
+/// Request for the BulkDownloadFeedbackLabel endpoint.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BulkDownloadFeedbackLabelsRequest {
+    /// Required. The parent resource for new feedback labels.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. A filter to reduce results to a specific subset. Supports
+    /// disjunctions (OR) and conjunctions (AND).
+    ///
+    /// Supported fields:
+    ///
+    /// * `issue_model_id`
+    /// * `qa_question_id`
+    /// * `qa_scorecard_id`
+    /// * `min_create_time`
+    /// * `max_create_time`
+    /// * `min_update_time`
+    /// * `max_update_time`
+    /// * `feedback_label_type`: QUALITY_AI, TOPIC_MODELING
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Limits the maximum number of feedback labels that will be
+    /// downloaded. The first `N` feedback labels will be downloaded.
+    #[prost(int32, tag = "4")]
+    pub max_download_count: i32,
+    /// Optional. The type of feedback labels that will be downloaded.
+    #[prost(
+        enumeration = "bulk_download_feedback_labels_request::FeedbackLabelType",
+        tag = "5"
+    )]
+    pub feedback_label_type: i32,
+    /// Optional. Filter parent conversations to download feedback labels for.
+    /// When specified, the feedback labels will be downloaded for the
+    /// conversations that match the filter.
+    /// If `template_qa_scorecard_id` is set, all the conversations that match the
+    /// filter will be paired with the questions under the scorecard for labeling.
+    #[prost(string, tag = "6")]
+    pub conversation_filter: ::prost::alloc::string::String,
+    /// Optional. If set, a template for labeling conversations and scorecard
+    /// questions will be created from the conversation_filter and the questions
+    /// under the scorecard(s). The feedback label `filter` will be ignored.
+    #[prost(string, repeated, tag = "7")]
+    pub template_qa_scorecard_id: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+    /// Configuration for an external data store to which the feedback labels
+    /// will be written to.
+    #[prost(oneof = "bulk_download_feedback_labels_request::Destination", tags = "3")]
+    pub destination: ::core::option::Option<
+        bulk_download_feedback_labels_request::Destination,
+    >,
+}
+/// Nested message and enum types in `BulkDownloadFeedbackLabelsRequest`.
+pub mod bulk_download_feedback_labels_request {
+    /// Google Cloud Storage Object details to write the feedback labels to.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GcsDestination {
+        /// Required. File format in which the labels will be exported.
+        #[prost(enumeration = "gcs_destination::Format", tag = "1")]
+        pub format: i32,
+        /// Required. The Google Cloud Storage URI to write the feedback labels to.
+        /// The file name will be used as a prefix for the files written to the
+        /// bucket if the output needs to be split across multiple files, otherwise
+        /// it will be used as is. The file extension will be appended to the file
+        /// name based on the format selected.
+        ///   E.g. `gs://bucket_name/object_uri_prefix`
+        #[prost(string, tag = "2")]
+        pub object_uri: ::prost::alloc::string::String,
+        /// Optional. Add whitespace to the JSON file. Makes easier to read, but
+        /// increases file size. Only applicable for JSON format.
+        #[prost(bool, tag = "3")]
+        pub add_whitespace: bool,
+        /// Optional. Always print fields with no presence.
+        /// This is useful for printing fields that are not set, like implicit 0
+        /// value or empty lists/maps. Only applicable for JSON format.
+        #[prost(bool, tag = "4")]
+        pub always_print_empty_fields: bool,
+        /// Optional. The number of records per file. Applicable for either format.
+        #[prost(int64, tag = "5")]
+        pub records_per_file_count: i64,
+    }
+    /// Nested message and enum types in `GcsDestination`.
+    pub mod gcs_destination {
+        /// All permissible file formats.
+        /// See `records_per_file_count` to override the default number of records
+        /// per file.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Format {
+            /// Unspecified format.
+            Unspecified = 0,
+            /// CSV format.
+            /// 1,000 labels are stored per CSV file by default.
+            Csv = 1,
+            /// JSON format.
+            /// 1 label stored per JSON file by default.
+            Json = 2,
+        }
+        impl Format {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "FORMAT_UNSPECIFIED",
+                    Self::Csv => "CSV",
+                    Self::Json => "JSON",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                    "CSV" => Some(Self::Csv),
+                    "JSON" => Some(Self::Json),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Possible feedback label types that will be downloaded.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum FeedbackLabelType {
+        /// Unspecified format
+        Unspecified = 0,
+        /// Downloaded file will contain all Quality AI labels from the latest
+        /// scorecard revision.
+        QualityAi = 1,
+        /// Downloaded file will contain only Topic Modeling labels.
+        TopicModeling = 2,
+    }
+    impl FeedbackLabelType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "FEEDBACK_LABEL_TYPE_UNSPECIFIED",
+                Self::QualityAi => "QUALITY_AI",
+                Self::TopicModeling => "TOPIC_MODELING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FEEDBACK_LABEL_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "QUALITY_AI" => Some(Self::QualityAi),
+                "TOPIC_MODELING" => Some(Self::TopicModeling),
+                _ => None,
+            }
+        }
+    }
+    /// Configuration for an external data store to which the feedback labels
+    /// will be written to.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Destination {
+        /// A cloud storage bucket destination.
+        #[prost(message, tag = "3")]
+        GcsDestination(GcsDestination),
+    }
+}
+/// Response for the BulkDownloadFeedbackLabel endpoint.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct BulkDownloadFeedbackLabelsResponse {}
+/// Metadata for the BulkDownloadFeedbackLabel endpoint.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BulkDownloadFeedbackLabelsMetadata {
+    /// Output only. The time the operation was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the operation finished running.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The original request for download.
+    #[prost(message, optional, tag = "3")]
+    pub request: ::core::option::Option<BulkDownloadFeedbackLabelsRequest>,
+    /// Partial errors during ingest operation that might cause the operation
+    /// output to be incomplete.
+    #[prost(message, repeated, tag = "4")]
+    pub partial_errors: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
+    /// Output only. Statistics for BulkDownloadFeedbackLabels operation.
+    #[prost(message, optional, tag = "5")]
+    pub download_stats: ::core::option::Option<
+        bulk_download_feedback_labels_metadata::DownloadStats,
+    >,
+}
+/// Nested message and enum types in `BulkDownloadFeedbackLabelsMetadata`.
+pub mod bulk_download_feedback_labels_metadata {
+    /// Statistics for BulkDownloadFeedbackLabels operation.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DownloadStats {
+        /// The number of objects processed during the download operation.
+        #[prost(int32, tag = "1")]
+        pub processed_object_count: i32,
+        /// The number of new feedback labels downloaded during this operation.
+        /// Different from "processed" because some labels might not be downloaded
+        /// because an error.
+        #[prost(int32, tag = "2")]
+        pub successful_download_count: i32,
+        /// Total number of files written to the provided Cloud Storage bucket.
+        #[prost(int32, tag = "3")]
+        pub total_files_written: i32,
+        /// Output only. Full name of the files written to Cloud storage.
+        #[prost(string, repeated, tag = "4")]
+        pub file_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
 }
 /// Represents the options for viewing a conversation.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -4261,6 +6199,144 @@ pub mod contact_center_insights_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Creates a analysis rule.
+        pub async fn create_analysis_rule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateAnalysisRuleRequest>,
+        ) -> std::result::Result<tonic::Response<super::AnalysisRule>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/CreateAnalysisRule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "CreateAnalysisRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get a analysis rule.
+        pub async fn get_analysis_rule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAnalysisRuleRequest>,
+        ) -> std::result::Result<tonic::Response<super::AnalysisRule>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/GetAnalysisRule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "GetAnalysisRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists analysis rules.
+        pub async fn list_analysis_rules(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListAnalysisRulesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListAnalysisRulesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/ListAnalysisRules",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "ListAnalysisRules",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a analysis rule.
+        pub async fn update_analysis_rule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateAnalysisRuleRequest>,
+        ) -> std::result::Result<tonic::Response<super::AnalysisRule>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/UpdateAnalysisRule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "UpdateAnalysisRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a analysis rule.
+        pub async fn delete_analysis_rule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteAnalysisRuleRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/DeleteAnalysisRule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "DeleteAnalysisRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Gets location-level encryption key specification.
         pub async fn get_encryption_spec(
             &mut self,
@@ -4288,9 +6364,9 @@ pub mod contact_center_insights_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Initializes a location-level encryption key specification.  An error will
-        /// be thrown if the location has resources already created before the
-        /// initialization. Once the encryption specification is initialized at a
+        /// Initializes a location-level encryption key specification. An error will
+        /// result if the location has resources already created before the
+        /// initialization. After the encryption specification is initialized at a
         /// location, it is immutable and all newly created resources under the
         /// location will be encrypted with the existing specification.
         pub async fn initialize_encryption_spec(
@@ -4456,6 +6532,747 @@ pub mod contact_center_insights_client {
                     GrpcMethod::new(
                         "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
                         "DeleteView",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Query metrics.
+        pub async fn query_metrics(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryMetricsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/QueryMetrics",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "QueryMetrics",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Create a QaQuestion.
+        pub async fn create_qa_question(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateQaQuestionRequest>,
+        ) -> std::result::Result<tonic::Response<super::QaQuestion>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/CreateQaQuestion",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "CreateQaQuestion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a QaQuestion.
+        pub async fn get_qa_question(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetQaQuestionRequest>,
+        ) -> std::result::Result<tonic::Response<super::QaQuestion>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/GetQaQuestion",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "GetQaQuestion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a QaQuestion.
+        pub async fn update_qa_question(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateQaQuestionRequest>,
+        ) -> std::result::Result<tonic::Response<super::QaQuestion>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/UpdateQaQuestion",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "UpdateQaQuestion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a QaQuestion.
+        pub async fn delete_qa_question(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteQaQuestionRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/DeleteQaQuestion",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "DeleteQaQuestion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists QaQuestions.
+        pub async fn list_qa_questions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListQaQuestionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListQaQuestionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/ListQaQuestions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "ListQaQuestions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Create a QaScorecard.
+        pub async fn create_qa_scorecard(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateQaScorecardRequest>,
+        ) -> std::result::Result<tonic::Response<super::QaScorecard>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/CreateQaScorecard",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "CreateQaScorecard",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a QaScorecard.
+        pub async fn get_qa_scorecard(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetQaScorecardRequest>,
+        ) -> std::result::Result<tonic::Response<super::QaScorecard>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/GetQaScorecard",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "GetQaScorecard",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a QaScorecard.
+        pub async fn update_qa_scorecard(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateQaScorecardRequest>,
+        ) -> std::result::Result<tonic::Response<super::QaScorecard>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/UpdateQaScorecard",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "UpdateQaScorecard",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a QaScorecard.
+        pub async fn delete_qa_scorecard(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteQaScorecardRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/DeleteQaScorecard",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "DeleteQaScorecard",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists QaScorecards.
+        pub async fn list_qa_scorecards(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListQaScorecardsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListQaScorecardsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/ListQaScorecards",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "ListQaScorecards",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a QaScorecardRevision.
+        pub async fn create_qa_scorecard_revision(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateQaScorecardRevisionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QaScorecardRevision>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/CreateQaScorecardRevision",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "CreateQaScorecardRevision",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a QaScorecardRevision.
+        pub async fn get_qa_scorecard_revision(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetQaScorecardRevisionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QaScorecardRevision>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/GetQaScorecardRevision",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "GetQaScorecardRevision",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Fine tune one or more QaModels.
+        pub async fn tune_qa_scorecard_revision(
+            &mut self,
+            request: impl tonic::IntoRequest<super::TuneQaScorecardRevisionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/TuneQaScorecardRevision",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "TuneQaScorecardRevision",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deploy a QaScorecardRevision.
+        pub async fn deploy_qa_scorecard_revision(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeployQaScorecardRevisionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QaScorecardRevision>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/DeployQaScorecardRevision",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "DeployQaScorecardRevision",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Undeploy a QaScorecardRevision.
+        pub async fn undeploy_qa_scorecard_revision(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UndeployQaScorecardRevisionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QaScorecardRevision>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/UndeployQaScorecardRevision",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "UndeployQaScorecardRevision",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a QaScorecardRevision.
+        pub async fn delete_qa_scorecard_revision(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteQaScorecardRevisionRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/DeleteQaScorecardRevision",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "DeleteQaScorecardRevision",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all revisions under the parent QaScorecard.
+        pub async fn list_qa_scorecard_revisions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListQaScorecardRevisionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListQaScorecardRevisionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/ListQaScorecardRevisions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "ListQaScorecardRevisions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Create feedback label.
+        pub async fn create_feedback_label(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateFeedbackLabelRequest>,
+        ) -> std::result::Result<tonic::Response<super::FeedbackLabel>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/CreateFeedbackLabel",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "CreateFeedbackLabel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// List feedback labels.
+        pub async fn list_feedback_labels(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListFeedbackLabelsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListFeedbackLabelsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/ListFeedbackLabels",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "ListFeedbackLabels",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get feedback label.
+        pub async fn get_feedback_label(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetFeedbackLabelRequest>,
+        ) -> std::result::Result<tonic::Response<super::FeedbackLabel>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/GetFeedbackLabel",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "GetFeedbackLabel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Update feedback label.
+        pub async fn update_feedback_label(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateFeedbackLabelRequest>,
+        ) -> std::result::Result<tonic::Response<super::FeedbackLabel>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/UpdateFeedbackLabel",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "UpdateFeedbackLabel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Delete feedback label.
+        pub async fn delete_feedback_label(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteFeedbackLabelRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/DeleteFeedbackLabel",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "DeleteFeedbackLabel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// List all feedback labels by project number.
+        pub async fn list_all_feedback_labels(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListAllFeedbackLabelsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListAllFeedbackLabelsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/ListAllFeedbackLabels",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "ListAllFeedbackLabels",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Upload feedback labels in bulk.
+        pub async fn bulk_upload_feedback_labels(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BulkUploadFeedbackLabelsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/BulkUploadFeedbackLabels",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "BulkUploadFeedbackLabels",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Download feedback labels in bulk.
+        pub async fn bulk_download_feedback_labels(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BulkDownloadFeedbackLabelsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/BulkDownloadFeedbackLabels",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
+                        "BulkDownloadFeedbackLabels",
                     ),
                 );
             self.inner.unary(req, path, codec).await

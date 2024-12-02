@@ -1043,6 +1043,9 @@ pub struct InputAudioConfig {
     /// Enable automatic punctuation option at the speech backend.
     #[prost(bool, tag = "17")]
     pub enable_automatic_punctuation: bool,
+    /// A collection of phrase set resources to use for speech adaptation.
+    #[prost(string, repeated, tag = "20")]
+    pub phrase_sets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// If `true`, the request will opt out for STT conformer model migration.
     /// This field will be deprecated once force migration takes place in June
     /// 2024. Please refer to [Dialogflow ES Speech model
@@ -1165,6 +1168,9 @@ pub struct SpeechToTextConfig {
     /// for model selection.
     #[prost(string, tag = "2")]
     pub model: ::prost::alloc::string::String,
+    /// List of names of Cloud Speech phrase sets that are used for transcription.
+    #[prost(string, repeated, tag = "4")]
+    pub phrase_sets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Audio encoding of the audio content to process.
     #[prost(enumeration = "AudioEncoding", tag = "6")]
     pub audio_encoding: i32,
@@ -6926,6 +6932,9 @@ pub mod knowledge_assist_answer {
                 /// Title of the document.
                 #[prost(string, tag = "4")]
                 pub title: ::prost::alloc::string::String,
+                /// Metadata of the document.
+                #[prost(message, optional, tag = "5")]
+                pub metadata: ::core::option::Option<::prost_types::Struct>,
             }
         }
         /// Source of result.
@@ -8288,6 +8297,10 @@ pub mod human_agent_assistant_config {
         /// summary of a conversation.
         #[prost(message, optional, tag = "8")]
         pub sections: ::core::option::Option<suggestion_query_config::Sections>,
+        /// Optional. The number of recent messages to include in the context.
+        /// Supported features: KNOWLEDGE_ASSIST.
+        #[prost(int32, tag = "9")]
+        pub context_size: i32,
         /// Source of query.
         #[prost(oneof = "suggestion_query_config::QuerySource", tags = "1, 2, 3")]
         pub query_source: ::core::option::Option<suggestion_query_config::QuerySource>,
@@ -9158,10 +9171,10 @@ pub struct CreateGeneratorRequest {
     /// Optional. The ID to use for the generator, which will become the final
     /// component of the generator's resource name.
     ///
-    /// The generator ID must be compliant with the regression fomula
+    /// The generator ID must be compliant with the regression formula
     /// `[a-zA-Z][a-zA-Z0-9_-]*` with the characters length in range of \[3,64\].
     /// If the field is not provided, an Id will be auto-generated.
-    /// If the field is provided, the caller is resposible for
+    /// If the field is provided, the caller is responsible for
     /// 1. the uniqueness of the ID, otherwise the request will be rejected.
     /// 2. the consistency for whether to use custom ID or not under a project to
     /// better ensure uniqueness.
@@ -9172,7 +9185,7 @@ pub struct CreateGeneratorRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGeneratorRequest {
     /// Required. The generator resource name to retrieve. Format:
-    /// `projects/<Project ID>/locations/<Location ID>`/generators/<Generator ID>`
+    /// `projects/<Project ID>/locations/<Location ID>/generators/<Generator ID>`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -9306,7 +9319,6 @@ pub struct SummarizationSectionList {
 }
 /// Providing examples in the generator (i.e. building a few-shot generator)
 /// helps convey the desired format of the LLM response.
-/// NEXT_ID: 10
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FewShotExample {
     /// Optional. Conversation transcripts.
@@ -9983,9 +9995,9 @@ pub struct CreateConversationRequest {
     /// Google. Only set it if you cannot wait for the response to return a
     /// auto-generated one to you.
     ///
-    /// The conversation ID must be compliant with the regression fomula
+    /// The conversation ID must be compliant with the regression formula
     /// `[a-zA-Z][a-zA-Z0-9_-]*` with the characters length in range of \[3,64\].
-    /// If the field is provided, the caller is resposible for
+    /// If the field is provided, the caller is responsible for
     /// 1. the uniqueness of the ID, otherwise the request will be rejected.
     /// 2. the consistency for whether to use custom ID or not under a project to
     /// better ensure uniqueness.
@@ -10345,6 +10357,331 @@ pub struct SearchKnowledgeRequest {
     /// ID>/conversations/<Conversation ID>/messages/<Message ID>`.
     #[prost(string, tag = "5")]
     pub latest_message: ::prost::alloc::string::String,
+    /// Optional. The source of the query in the request.
+    #[prost(enumeration = "search_knowledge_request::QuerySource", tag = "7")]
+    pub query_source: i32,
+    /// Optional. Information about the end-user to improve the relevance and
+    /// accuracy of generative answers.
+    ///
+    /// This will be interpreted and used by a language model, so, for good
+    /// results, the data should be self-descriptive, and in a simple structure.
+    ///
+    /// Example:
+    ///
+    /// ```json
+    /// {
+    ///    "subscription plan": "Business Premium Plus",
+    ///    "devices owned": [
+    ///      {"model": "Google Pixel 7"},
+    ///      {"model": "Google Pixel Tablet"}
+    ///    ]
+    /// }
+    /// ```
+    #[prost(message, optional, tag = "9")]
+    pub end_user_metadata: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. Configuration specific to search queries with data stores.
+    #[prost(message, optional, tag = "11")]
+    pub search_config: ::core::option::Option<search_knowledge_request::SearchConfig>,
+    /// Optional. Whether to search the query exactly without query rewrite.
+    #[prost(bool, tag = "14")]
+    pub exact_search: bool,
+}
+/// Nested message and enum types in `SearchKnowledgeRequest`.
+pub mod search_knowledge_request {
+    /// Configuration specific to search queries with data stores.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SearchConfig {
+        /// Optional. Boost specifications for data stores.
+        #[prost(message, repeated, tag = "1")]
+        pub boost_specs: ::prost::alloc::vec::Vec<search_config::BoostSpecs>,
+        /// Optional. Filter specification for data store queries.
+        #[prost(message, repeated, tag = "2")]
+        pub filter_specs: ::prost::alloc::vec::Vec<search_config::FilterSpecs>,
+    }
+    /// Nested message and enum types in `SearchConfig`.
+    pub mod search_config {
+        /// Boost specifications for data stores.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct BoostSpecs {
+            /// Optional. Data Stores where the boosting configuration is applied. The
+            /// full names of the referenced data stores. Formats:
+            /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}`
+            /// `projects/{project}/locations/{location}/dataStores/{data_store}`
+            #[prost(string, repeated, tag = "1")]
+            pub data_stores: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+            /// Optional. A list of boosting specifications.
+            #[prost(message, repeated, tag = "2")]
+            pub spec: ::prost::alloc::vec::Vec<boost_specs::BoostSpec>,
+        }
+        /// Nested message and enum types in `BoostSpecs`.
+        pub mod boost_specs {
+            /// Boost specification to boost certain documents.
+            /// A copy of google.cloud.discoveryengine.v1main.BoostSpec, field
+            /// documentation is available at
+            /// <https://cloud.google.com/generative-ai-app-builder/docs/reference/rest/v1alpha/BoostSpec>
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct BoostSpec {
+                /// Optional. Condition boost specifications. If a document matches
+                /// multiple conditions in the specifictions, boost scores from these
+                /// specifications are all applied and combined in a non-linear way.
+                /// Maximum number of specifications is 20.
+                #[prost(message, repeated, tag = "1")]
+                pub condition_boost_specs: ::prost::alloc::vec::Vec<
+                    boost_spec::ConditionBoostSpec,
+                >,
+            }
+            /// Nested message and enum types in `BoostSpec`.
+            pub mod boost_spec {
+                /// Boost applies to documents which match a condition.
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct ConditionBoostSpec {
+                    /// Optional. An expression which specifies a boost condition. The
+                    /// syntax and supported fields are the same as a filter expression.
+                    /// Examples:
+                    ///
+                    /// * To boost documents with document ID "doc_1" or "doc_2", and
+                    /// color
+                    ///    "Red" or "Blue":
+                    ///      * (id: ANY("doc_1", "doc_2")) AND (color: ANY("Red","Blue"))
+                    #[prost(string, tag = "1")]
+                    pub condition: ::prost::alloc::string::String,
+                    /// Optional. Strength of the condition boost, which should be in [-1,
+                    /// 1]. Negative boost means demotion. Default is 0.0.
+                    ///
+                    /// Setting to 1.0 gives the document a big promotion. However, it does
+                    /// not necessarily mean that the boosted document will be the top
+                    /// result at all times, nor that other documents will be excluded.
+                    /// Results could still be shown even when none of them matches the
+                    /// condition. And results that are significantly more relevant to the
+                    /// search query can still trump your heavily favored but irrelevant
+                    /// documents.
+                    ///
+                    /// Setting to -1.0 gives the document a big demotion. However, results
+                    /// that are deeply relevant might still be shown. The document will
+                    /// have an upstream battle to get a fairly high ranking, but it is not
+                    /// blocked out completely.
+                    ///
+                    /// Setting to 0.0 means no boost applied. The boosting condition is
+                    /// ignored.
+                    #[prost(float, tag = "2")]
+                    pub boost: f32,
+                    /// Optional. Complex specification for custom ranking based on
+                    /// customer defined attribute value.
+                    #[prost(message, optional, tag = "4")]
+                    pub boost_control_spec: ::core::option::Option<
+                        condition_boost_spec::BoostControlSpec,
+                    >,
+                }
+                /// Nested message and enum types in `ConditionBoostSpec`.
+                pub mod condition_boost_spec {
+                    /// Specification for custom ranking based on customer specified
+                    /// attribute
+                    /// value. It provides more controls for customized ranking than the
+                    /// simple (condition, boost) combination above.
+                    #[derive(Clone, PartialEq, ::prost::Message)]
+                    pub struct BoostControlSpec {
+                        /// Optional. The name of the field whose value will be used to
+                        /// determine the boost amount.
+                        #[prost(string, tag = "1")]
+                        pub field_name: ::prost::alloc::string::String,
+                        /// Optional. The attribute type to be used to determine the boost
+                        /// amount. The attribute value can be derived from the field value
+                        /// of the specified field_name. In the case of numerical it is
+                        /// straightforward i.e. attribute_value = numerical_field_value. In
+                        /// the case of freshness however, attribute_value = (time.now() -
+                        /// datetime_field_value).
+                        #[prost(
+                            enumeration = "boost_control_spec::AttributeType",
+                            tag = "2"
+                        )]
+                        pub attribute_type: i32,
+                        /// Optional. The interpolation type to be applied to connect the
+                        /// control points listed below.
+                        #[prost(
+                            enumeration = "boost_control_spec::InterpolationType",
+                            tag = "3"
+                        )]
+                        pub interpolation_type: i32,
+                        /// Optional. The control points used to define the curve. The
+                        /// monotonic function (defined through the interpolation_type above)
+                        /// passes through the control points listed here.
+                        #[prost(message, repeated, tag = "4")]
+                        pub control_points: ::prost::alloc::vec::Vec<
+                            boost_control_spec::ControlPoint,
+                        >,
+                    }
+                    /// Nested message and enum types in `BoostControlSpec`.
+                    pub mod boost_control_spec {
+                        /// The control points used to define the curve. The curve defined
+                        /// through these control points can only be monotonically increasing
+                        /// or decreasing(constant values are acceptable).
+                        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+                        pub struct ControlPoint {}
+                        /// The attribute(or function) for which the custom ranking is to be
+                        /// applied.
+                        #[derive(
+                            Clone,
+                            Copy,
+                            Debug,
+                            PartialEq,
+                            Eq,
+                            Hash,
+                            PartialOrd,
+                            Ord,
+                            ::prost::Enumeration
+                        )]
+                        #[repr(i32)]
+                        pub enum AttributeType {
+                            /// Unspecified AttributeType.
+                            Unspecified = 0,
+                            /// The value of the numerical field will be used to dynamically
+                            /// update the boost amount. In this case, the attribute_value (the
+                            /// x value) of the control point will be the actual value of the
+                            /// numerical field for which the boost_amount is specified.
+                            Numerical = 1,
+                            /// For the freshness use case the attribute value will be the
+                            /// duration between the current time and the date in the datetime
+                            /// field specified. The value must be formatted as an XSD
+                            /// `dayTimeDuration` value (a restricted subset of an ISO 8601
+                            /// duration value). The pattern for this is:
+                            /// `[nD][T[nH][nM][nS]]`. E.g. `5D`, `3DT12H30M`, `T24H`.
+                            Freshness = 2,
+                        }
+                        impl AttributeType {
+                            /// String value of the enum field names used in the ProtoBuf definition.
+                            ///
+                            /// The values are not transformed in any way and thus are considered stable
+                            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                            pub fn as_str_name(&self) -> &'static str {
+                                match self {
+                                    Self::Unspecified => "ATTRIBUTE_TYPE_UNSPECIFIED",
+                                    Self::Numerical => "NUMERICAL",
+                                    Self::Freshness => "FRESHNESS",
+                                }
+                            }
+                            /// Creates an enum from field names used in the ProtoBuf definition.
+                            pub fn from_str_name(
+                                value: &str,
+                            ) -> ::core::option::Option<Self> {
+                                match value {
+                                    "ATTRIBUTE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                                    "NUMERICAL" => Some(Self::Numerical),
+                                    "FRESHNESS" => Some(Self::Freshness),
+                                    _ => None,
+                                }
+                            }
+                        }
+                        /// The interpolation type to be applied. Default will be linear
+                        /// (Piecewise Linear).
+                        #[derive(
+                            Clone,
+                            Copy,
+                            Debug,
+                            PartialEq,
+                            Eq,
+                            Hash,
+                            PartialOrd,
+                            Ord,
+                            ::prost::Enumeration
+                        )]
+                        #[repr(i32)]
+                        pub enum InterpolationType {
+                            /// Interpolation type is unspecified. In this case, it defaults to
+                            /// Linear.
+                            Unspecified = 0,
+                            /// Piecewise linear interpolation will be applied.
+                            Linear = 1,
+                        }
+                        impl InterpolationType {
+                            /// String value of the enum field names used in the ProtoBuf definition.
+                            ///
+                            /// The values are not transformed in any way and thus are considered stable
+                            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                            pub fn as_str_name(&self) -> &'static str {
+                                match self {
+                                    Self::Unspecified => "INTERPOLATION_TYPE_UNSPECIFIED",
+                                    Self::Linear => "LINEAR",
+                                }
+                            }
+                            /// Creates an enum from field names used in the ProtoBuf definition.
+                            pub fn from_str_name(
+                                value: &str,
+                            ) -> ::core::option::Option<Self> {
+                                match value {
+                                    "INTERPOLATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                                    "LINEAR" => Some(Self::Linear),
+                                    _ => None,
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        /// Filter specification for data store queries.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct FilterSpecs {
+            /// Optional. The data store where the filter configuration is applied.
+            /// Full resource name of data store, such as
+            /// projects/{project}/locations/{location}/collections/{collectionId}/
+            /// dataStores/{dataStoreId}.
+            #[prost(string, repeated, tag = "1")]
+            pub data_stores: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+            /// Optional. The filter expression to be applied.
+            /// Expression syntax is documented at
+            /// <https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata#filter-expression-syntax>
+            #[prost(string, tag = "2")]
+            pub filter: ::prost::alloc::string::String,
+        }
+    }
+    /// The source of the query. We use QuerySource to distinguish queries directly
+    /// entered by agents and suggested queries from
+    /// [Participants.SuggestKnowledgeAssist][google.cloud.dialogflow.v2.Participants.SuggestKnowledgeAssist].
+    /// If SUGGESTED_QUERY source is specified, we will treat it as a continuation
+    /// of a SuggestKnowledgeAssist call.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum QuerySource {
+        /// Unknown query source.
+        Unspecified = 0,
+        /// The query is from agents.
+        AgentQuery = 1,
+        /// The query is a suggested query from
+        /// [Participants.SuggestKnowledgeAssist][google.cloud.dialogflow.v2.Participants.SuggestKnowledgeAssist].
+        SuggestedQuery = 2,
+    }
+    impl QuerySource {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "QUERY_SOURCE_UNSPECIFIED",
+                Self::AgentQuery => "AGENT_QUERY",
+                Self::SuggestedQuery => "SUGGESTED_QUERY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "QUERY_SOURCE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AGENT_QUERY" => Some(Self::AgentQuery),
+                "SUGGESTED_QUERY" => Some(Self::SuggestedQuery),
+                _ => None,
+            }
+        }
+    }
 }
 /// The response message for
 /// [Conversations.SearchKnowledge][google.cloud.dialogflow.v2.Conversations.SearchKnowledge].
@@ -10391,6 +10728,9 @@ pub mod search_knowledge_answer {
         /// The relevant snippet of the article.
         #[prost(string, tag = "3")]
         pub snippet: ::prost::alloc::string::String,
+        /// Metadata associated with the article.
+        #[prost(message, optional, tag = "5")]
+        pub metadata: ::core::option::Option<::prost_types::Struct>,
     }
     /// The type of the answer.
     #[derive(
