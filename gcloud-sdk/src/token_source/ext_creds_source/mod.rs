@@ -227,7 +227,8 @@ mod aws {
         let regional_cred_verification_url =
             regional_cred_verification_url.replace("{region}", region.as_ref());
         let subject_token_url = regional_cred_verification_url;
-        let url = url::Url::parse(&subject_token_url).unwrap();
+        let url = url::Url::parse(&subject_token_url)
+            .map_err(|e| Error::from(ErrorKind::ExternalCredsSourceError(e.to_string())))?;
         let method = Method::POST;
         let mut headers = vec![("x-goog-cloud-target-resource", audience)];
         if let Some(host) = url.host_str() {
@@ -237,7 +238,9 @@ mod aws {
         for header in &headers {
             req = req.header(header.0, header.1);
         }
-        let mut request = req.body(()).unwrap();
+        let mut request = req
+            .body(())
+            .map_err(|e| Error::from(ErrorKind::ExternalCredsSourceError(e.to_string())))?;
 
         let signable_request = aws_sigv4::http_request::SignableRequest::new(
             method.as_str(),
