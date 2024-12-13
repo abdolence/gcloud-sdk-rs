@@ -87,8 +87,8 @@ Looks for credentials in the following places, preferring the first location fou
 The library provides the support for workload identity federation support to use "keyless" integrations with different providers:
 - URL based OIDC/SAML (for example GitHub actions) with text/json file formats;
 - File based OIDC/SAML  with text/json file formats;
-
-AWS provider is not supported yet (feel free to open a PR to support, https://github.com/abdolence/gcloud-sdk-rs/issues/29).
+- AWS external account: authentication from AWS computing instances(e.g. EC2, lambda, ECS, etc.) is now supported as "external-account-aws" feature in https://github.com/abdolence/gcloud-sdk-rs/pull/172.
+However, it is not intensively tested yet, so pelase report issues if there's a problem.
 
 ### Local development
 Don't confuse `gcloud auth login` with `gcloud auth application-default login` for local development,
