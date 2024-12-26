@@ -18,7 +18,7 @@ use crate::google_rest_apis::storage_v1::apis::ResponseContent;
 pub struct StoragePeriodObjectAccessControlsPeriodDeleteParams {
     /// Name of a bucket.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see Encoding URI Path Parts.
+    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
     pub object: String,
     /// The entity holding the permission. Can be user-userId, user-emailAddress, group-groupId, group-emailAddress, allUsers, or allAuthenticatedUsers.
     pub entity: String,
@@ -49,7 +49,7 @@ pub struct StoragePeriodObjectAccessControlsPeriodDeleteParams {
 pub struct StoragePeriodObjectAccessControlsPeriodGetParams {
     /// Name of a bucket.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see Encoding URI Path Parts.
+    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
     pub object: String,
     /// The entity holding the permission. Can be user-userId, user-emailAddress, group-groupId, group-emailAddress, allUsers, or allAuthenticatedUsers.
     pub entity: String,
@@ -80,7 +80,7 @@ pub struct StoragePeriodObjectAccessControlsPeriodGetParams {
 pub struct StoragePeriodObjectAccessControlsPeriodInsertParams {
     /// Name of a bucket.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see Encoding URI Path Parts.
+    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
     pub object: String,
     /// Data format for the response.
     pub alt: Option<String>,
@@ -111,7 +111,7 @@ pub struct StoragePeriodObjectAccessControlsPeriodInsertParams {
 pub struct StoragePeriodObjectAccessControlsPeriodListParams {
     /// Name of a bucket.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see Encoding URI Path Parts.
+    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
     pub object: String,
     /// Data format for the response.
     pub alt: Option<String>,
@@ -140,7 +140,7 @@ pub struct StoragePeriodObjectAccessControlsPeriodListParams {
 pub struct StoragePeriodObjectAccessControlsPeriodPatchParams {
     /// Name of a bucket.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see Encoding URI Path Parts.
+    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
     pub object: String,
     /// The entity holding the permission. Can be user-userId, user-emailAddress, group-groupId, group-emailAddress, allUsers, or allAuthenticatedUsers.
     pub entity: String,
@@ -173,7 +173,7 @@ pub struct StoragePeriodObjectAccessControlsPeriodPatchParams {
 pub struct StoragePeriodObjectAccessControlsPeriodUpdateParams {
     /// Name of a bucket.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see Encoding URI Path Parts.
+    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
     pub object: String,
     /// The entity holding the permission. Can be user-userId, user-emailAddress, group-groupId, group-emailAddress, allUsers, or allAuthenticatedUsers.
     pub entity: String,

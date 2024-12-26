@@ -54,6 +54,9 @@ pub struct Object {
     /// The content generation of this object. Used for object versioning.
     #[serde(rename = "generation", skip_serializing_if = "Option::is_none")]
     pub generation: Option<String>,
+    /// This is the time (in the future) when the soft-deleted object will no longer be restorable. It is equal to the soft delete time plus the current soft delete retention duration of the bucket.
+    #[serde(rename = "hardDeleteTime", skip_serializing_if = "Option::is_none")]
+    pub hard_delete_time: Option<String>,
     /// The ID of the object, including the bucket name, object name, and generation number.
     #[serde(rename = "id", skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
@@ -80,6 +83,8 @@ pub struct Object {
     pub name: Option<String>,
     #[serde(rename = "owner", skip_serializing_if = "Option::is_none")]
     pub owner: Option<Box<crate::google_rest_apis::storage_v1::models::ObjectOwner>>,
+    #[serde(rename = "retention", skip_serializing_if = "Option::is_none")]
+    pub retention: Option<Box<crate::google_rest_apis::storage_v1::models::ObjectRetention>>,
     /// A server-determined value that specifies the earliest time that the object's retention period expires. This value is in RFC 3339 format. Note 1: This field is not provided for objects with an active event-based hold, since retention expiration is unknown until the hold is removed. Note 2: This value can be provided even when temporary hold is set (so that the user can reason about policy without having to first unset the temporary hold).
     #[serde(
         rename = "retentionExpirationTime",
@@ -92,6 +97,9 @@ pub struct Object {
     /// Content-Length of the data in bytes.
     #[serde(rename = "size", skip_serializing_if = "Option::is_none")]
     pub size: Option<String>,
+    /// The time at which the object became soft-deleted in RFC 3339 format.
+    #[serde(rename = "softDeleteTime", skip_serializing_if = "Option::is_none")]
+    pub soft_delete_time: Option<String>,
     /// Storage class of the object.
     #[serde(rename = "storageClass", skip_serializing_if = "Option::is_none")]
     pub storage_class: Option<String>,
@@ -101,7 +109,7 @@ pub struct Object {
     /// The creation time of the object in RFC 3339 format.
     #[serde(rename = "timeCreated", skip_serializing_if = "Option::is_none")]
     pub time_created: Option<String>,
-    /// The deletion time of the object in RFC 3339 format. Will be returned if and only if this version of the object has been deleted.
+    /// The time at which the object became noncurrent in RFC 3339 format. Will be returned if and only if this version of the object has been deleted.
     #[serde(rename = "timeDeleted", skip_serializing_if = "Option::is_none")]
     pub time_deleted: Option<String>,
     /// The time at which the object's storage class was last changed. When the object is initially created, it will be set to timeCreated.
@@ -133,6 +141,7 @@ impl Object {
             etag: None,
             event_based_hold: None,
             generation: None,
+            hard_delete_time: None,
             id: None,
             kind: None,
             kms_key_name: None,
@@ -142,9 +151,11 @@ impl Object {
             metageneration: None,
             name: None,
             owner: None,
+            retention: None,
             retention_expiration_time: None,
             self_link: None,
             size: None,
+            soft_delete_time: None,
             storage_class: None,
             temporary_hold: None,
             time_created: None,

@@ -5,7 +5,7 @@ authors = ["me@abdolence.dev"]
 edition = "2021"
 
 [dependencies]
-gcloud-sdk = { path = "./../../gcloud-sdk", default-features = false, features = ["rest", "google-rest-storage-v1", "google-rest-compute-v1"] }
+gcloud-sdk = { path = "./../../gcloud-sdk", default-features = false, features = ["google-rest-storage-v1", "google-rest-compute-v1","tls-webpki-roots"] }
 tokio = { version = "1.20", features = ["full"] }
 tracing = "0.1"
 tracing-subscriber = { version ="0.3", features = ["env-filter"] }

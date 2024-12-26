@@ -1,4 +1,3 @@
-use bytes::Bytes;
 use serde::{Deserialize, Serialize}; /*
                                       * Cloud Storage JSON API
                                       *
@@ -14,12 +13,37 @@ use reqwest;
 use super::{configuration, Error};
 use crate::google_rest_apis::storage_v1::apis::ResponseContent;
 
+/// struct for passing parameters to the method [`storage_objects_bulk_restore`]
+#[derive(Clone, Debug, Default)]
+pub struct StoragePeriodObjectsPeriodBulkRestoreParams {
+    /// Name of the bucket in which the object resides.
+    pub bucket: String,
+    /// Data format for the response.
+    pub alt: Option<String>,
+    /// Selector specifying which fields to include in a partial response.
+    pub fields: Option<String>,
+    /// API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    pub key: Option<String>,
+    /// OAuth 2.0 token for the current user.
+    pub oauth_token: Option<String>,
+    /// Returns response with indentations and line breaks.
+    pub pretty_print: Option<bool>,
+    /// An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
+    pub quota_user: Option<String>,
+    /// Upload protocol for media (e.g. \"media\", \"multipart\", \"resumable\").
+    pub upload_type: Option<String>,
+    /// Deprecated. Please use quotaUser instead.
+    pub user_ip: Option<String>,
+    pub bulk_restore_objects_request:
+        Option<crate::google_rest_apis::storage_v1::models::BulkRestoreObjectsRequest>,
+}
+
 /// struct for passing parameters to the method [`storage_objects_compose`]
 #[derive(Clone, Debug, Default)]
 pub struct StoragePeriodObjectsPeriodComposeParams {
     /// Name of the bucket containing the source objects. The destination object is stored in this bucket.
     pub destination_bucket: String,
-    /// Name of the new object. For information about how to URL encode object names to be path safe, see Encoding URI Path Parts.
+    /// Name of the new object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
     pub destination_object: String,
     /// Data format for the response.
     pub alt: Option<String>,
@@ -55,9 +79,9 @@ pub struct StoragePeriodObjectsPeriodComposeParams {
 pub struct StoragePeriodObjectsPeriodCopyParams {
     /// Name of the bucket in which to find the source object.
     pub source_bucket: String,
-    /// Name of the source object. For information about how to URL encode object names to be path safe, see Encoding URI Path Parts.
+    /// Name of the source object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
     pub source_object: String,
-    /// Name of the bucket in which to store the new object. Overrides the provided object metadata's bucket value, if any.For information about how to URL encode object names to be path safe, see Encoding URI Path Parts.
+    /// Name of the bucket in which to store the new object. Overrides the provided object metadata's bucket value, if any.For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
     pub destination_bucket: String,
     /// Name of the new object. Required when the object metadata is not otherwise provided. Overrides the object metadata's name value, if any.
     pub destination_object: String,
@@ -111,7 +135,7 @@ pub struct StoragePeriodObjectsPeriodCopyParams {
 pub struct StoragePeriodObjectsPeriodDeleteParams {
     /// Name of the bucket in which the object resides.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see Encoding URI Path Parts.
+    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
     pub object: String,
     /// Data format for the response.
     pub alt: Option<String>,
@@ -148,7 +172,7 @@ pub struct StoragePeriodObjectsPeriodDeleteParams {
 pub struct StoragePeriodObjectsPeriodGetParams {
     /// Name of the bucket in which the object resides.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see Encoding URI Path Parts.
+    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
     pub object: String,
     /// Data format for the response.
     pub alt: Option<String>,
@@ -178,6 +202,8 @@ pub struct StoragePeriodObjectsPeriodGetParams {
     pub if_metageneration_not_match: Option<String>,
     /// Set of properties to return. Defaults to noAcl.
     pub projection: Option<String>,
+    /// If true, only soft-deleted object versions will be listed. The default is false. For more information, see Soft Delete.
+    pub soft_deleted: Option<bool>,
     /// The project to be billed for this request. Required for Requester Pays buckets.
     pub user_project: Option<String>,
 }
@@ -187,7 +213,7 @@ pub struct StoragePeriodObjectsPeriodGetParams {
 pub struct StoragePeriodObjectsPeriodGetIamPolicyParams {
     /// Name of the bucket in which the object resides.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see Encoding URI Path Parts.
+    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
     pub object: String,
     /// Data format for the response.
     pub alt: Option<String>,
@@ -244,7 +270,7 @@ pub struct StoragePeriodObjectsPeriodInsertParams {
     pub if_metageneration_not_match: Option<String>,
     /// Resource name of the Cloud KMS key, of the form projects/my-project/locations/global/keyRings/my-kr/cryptoKeys/my-key, that will be used to encrypt the object. Overrides the object metadata's kms_key_name value, if any.
     pub kms_key_name: Option<String>,
-    /// Name of the object. Required when the object metadata is not otherwise provided. Overrides the object metadata's name value, if any. For information about how to URL encode object names to be path safe, see Encoding URI Path Parts.
+    /// Name of the object. Required when the object metadata is not otherwise provided. Overrides the object metadata's name value, if any. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
     pub name: Option<String>,
     /// Apply a predefined set of access controls to this object.
     pub predefined_acl: Option<String>,
@@ -280,8 +306,12 @@ pub struct StoragePeriodObjectsPeriodListParams {
     pub delimiter: Option<String>,
     /// Filter results to objects whose names are lexicographically before endOffset. If startOffset is also set, the objects listed will have names between startOffset (inclusive) and endOffset (exclusive).
     pub end_offset: Option<String>,
+    /// Only applicable if delimiter is set to '/'. If true, will also include folders and managed folders (besides objects) in the returned prefixes.
+    pub include_folders_as_prefixes: Option<bool>,
     /// If true, objects that end in exactly one instance of delimiter will have their metadata included in items in addition to prefixes.
     pub include_trailing_delimiter: Option<bool>,
+    /// Filter results to objects and prefixes that match this glob pattern.
+    pub match_glob: Option<String>,
     /// Maximum number of items plus prefixes to return in a single page of responses. As duplicate prefixes are omitted, fewer total results may be returned than requested. The service will use this parameter or 1,000 items, whichever is smaller.
     pub max_results: Option<i32>,
     /// A previously-returned page token representing part of the larger set of results to view.
@@ -290,6 +320,8 @@ pub struct StoragePeriodObjectsPeriodListParams {
     pub prefix: Option<String>,
     /// Set of properties to return. Defaults to noAcl.
     pub projection: Option<String>,
+    /// If true, only soft-deleted object versions will be listed. The default is false. For more information, see Soft Delete.
+    pub soft_deleted: Option<bool>,
     /// Filter results to objects whose names are lexicographically equal to or after startOffset. If endOffset is also set, the objects listed will have names between startOffset (inclusive) and endOffset (exclusive).
     pub start_offset: Option<String>,
     /// The project to be billed for this request. Required for Requester Pays buckets.
@@ -303,7 +335,7 @@ pub struct StoragePeriodObjectsPeriodListParams {
 pub struct StoragePeriodObjectsPeriodPatchParams {
     /// Name of the bucket in which the object resides.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see Encoding URI Path Parts.
+    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
     pub object: String,
     /// Data format for the response.
     pub alt: Option<String>,
@@ -331,6 +363,8 @@ pub struct StoragePeriodObjectsPeriodPatchParams {
     pub if_metageneration_match: Option<String>,
     /// Makes the operation conditional on whether the object's current metageneration does not match the given value.
     pub if_metageneration_not_match: Option<String>,
+    /// Must be true to remove the retention configuration, reduce its unlocked retention period, or change its mode from unlocked to locked.
+    pub override_unlocked_retention: Option<bool>,
     /// Apply a predefined set of access controls to this object.
     pub predefined_acl: Option<String>,
     /// Set of properties to return. Defaults to full.
@@ -340,16 +374,58 @@ pub struct StoragePeriodObjectsPeriodPatchParams {
     pub object2: Option<crate::google_rest_apis::storage_v1::models::Object>,
 }
 
+/// struct for passing parameters to the method [`storage_objects_restore`]
+#[derive(Clone, Debug, Default)]
+pub struct StoragePeriodObjectsPeriodRestoreParams {
+    /// Name of the bucket in which the object resides.
+    pub bucket: String,
+    /// Name of the object. For information about how to URL encode object names to be path safe, see Encoding URI Path Parts.
+    pub object: String,
+    /// Selects a specific revision of this object.
+    pub generation: String,
+    /// Data format for the response.
+    pub alt: Option<String>,
+    /// Selector specifying which fields to include in a partial response.
+    pub fields: Option<String>,
+    /// API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    pub key: Option<String>,
+    /// OAuth 2.0 token for the current user.
+    pub oauth_token: Option<String>,
+    /// Returns response with indentations and line breaks.
+    pub pretty_print: Option<bool>,
+    /// An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
+    pub quota_user: Option<String>,
+    /// Upload protocol for media (e.g. \"media\", \"multipart\", \"resumable\").
+    pub upload_type: Option<String>,
+    /// Deprecated. Please use quotaUser instead.
+    pub user_ip: Option<String>,
+    /// If true, copies the source object's ACL; otherwise, uses the bucket's default object ACL. The default is false.
+    pub copy_source_acl: Option<bool>,
+    /// Makes the operation conditional on whether the object's one live generation matches the given value. Setting to 0 makes the operation succeed only if there are no live versions of the object.
+    pub if_generation_match: Option<String>,
+    /// Makes the operation conditional on whether none of the object's live generations match the given value. If no live object exists, the precondition fails. Setting to 0 makes the operation succeed only if there is a live version of the object.
+    pub if_generation_not_match: Option<String>,
+    /// Makes the operation conditional on whether the object's one live metageneration matches the given value.
+    pub if_metageneration_match: Option<String>,
+    /// Makes the operation conditional on whether none of the object's live metagenerations match the given value.
+    pub if_metageneration_not_match: Option<String>,
+    /// Set of properties to return. Defaults to full.
+    pub projection: Option<String>,
+    /// The project to be billed for this request. Required for Requester Pays buckets.
+    pub user_project: Option<String>,
+    pub object2: Option<crate::google_rest_apis::storage_v1::models::Object>,
+}
+
 /// struct for passing parameters to the method [`storage_objects_rewrite`]
 #[derive(Clone, Debug, Default)]
 pub struct StoragePeriodObjectsPeriodRewriteParams {
     /// Name of the bucket in which to find the source object.
     pub source_bucket: String,
-    /// Name of the source object. For information about how to URL encode object names to be path safe, see Encoding URI Path Parts.
+    /// Name of the source object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
     pub source_object: String,
     /// Name of the bucket in which to store the new object. Overrides the provided object metadata's bucket value, if any.
     pub destination_bucket: String,
-    /// Name of the new object. Required when the object metadata is not otherwise provided. Overrides the object metadata's name value, if any. For information about how to URL encode object names to be path safe, see Encoding URI Path Parts.
+    /// Name of the new object. Required when the object metadata is not otherwise provided. Overrides the object metadata's name value, if any. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
     pub destination_object: String,
     /// Data format for the response.
     pub alt: Option<String>,
@@ -405,7 +481,7 @@ pub struct StoragePeriodObjectsPeriodRewriteParams {
 pub struct StoragePeriodObjectsPeriodSetIamPolicyParams {
     /// Name of the bucket in which the object resides.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see Encoding URI Path Parts.
+    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
     pub object: String,
     /// Data format for the response.
     pub alt: Option<String>,
@@ -435,7 +511,7 @@ pub struct StoragePeriodObjectsPeriodSetIamPolicyParams {
 pub struct StoragePeriodObjectsPeriodTestIamPermissionsParams {
     /// Name of the bucket in which the object resides.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see Encoding URI Path Parts.
+    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
     pub object: String,
     /// Permissions to test.
     pub permissions: Vec<String>,
@@ -466,7 +542,7 @@ pub struct StoragePeriodObjectsPeriodTestIamPermissionsParams {
 pub struct StoragePeriodObjectsPeriodUpdateParams {
     /// Name of the bucket in which the object resides.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see Encoding URI Path Parts.
+    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
     pub object: String,
     /// Data format for the response.
     pub alt: Option<String>,
@@ -494,6 +570,8 @@ pub struct StoragePeriodObjectsPeriodUpdateParams {
     pub if_metageneration_match: Option<String>,
     /// Makes the operation conditional on whether the object's current metageneration does not match the given value.
     pub if_metageneration_not_match: Option<String>,
+    /// Must be true to remove the retention configuration, reduce its unlocked retention period, or change its mode from unlocked to locked.
+    pub override_unlocked_retention: Option<bool>,
     /// Apply a predefined set of access controls to this object.
     pub predefined_acl: Option<String>,
     /// Set of properties to return. Defaults to full.
@@ -545,6 +623,13 @@ pub struct StoragePeriodObjectsPeriodWatchAllParams {
     /// If true, lists all versions of an object as distinct results. The default is false. For more information, see Object Versioning.
     pub versions: Option<bool>,
     pub channel: Option<crate::google_rest_apis::storage_v1::models::Channel>,
+}
+
+/// struct for typed errors of method [`storage_objects_bulk_restore`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum StoragePeriodObjectsPeriodBulkRestoreError {
+    UnknownValue(serde_json::Value),
 }
 
 /// struct for typed errors of method [`storage_objects_compose`]
@@ -603,6 +688,13 @@ pub enum StoragePeriodObjectsPeriodPatchError {
     UnknownValue(serde_json::Value),
 }
 
+/// struct for typed errors of method [`storage_objects_restore`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum StoragePeriodObjectsPeriodRestoreError {
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`storage_objects_rewrite`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -636,6 +728,100 @@ pub enum StoragePeriodObjectsPeriodUpdateError {
 #[serde(untagged)]
 pub enum StoragePeriodObjectsPeriodWatchAllError {
     UnknownValue(serde_json::Value),
+}
+
+/// Initiates a long-running bulk restore operation on the specified bucket.
+pub async fn storage_objects_bulk_restore(
+    configuration: &configuration::Configuration,
+    params: StoragePeriodObjectsPeriodBulkRestoreParams,
+) -> Result<
+    crate::google_rest_apis::storage_v1::models::GoogleLongrunningOperation,
+    Error<StoragePeriodObjectsPeriodBulkRestoreError>,
+> {
+    let local_var_configuration = configuration;
+
+    // unbox the parameters
+    let bucket = params.bucket;
+    let alt = params.alt;
+    let fields = params.fields;
+    let key = params.key;
+    let oauth_token = params.oauth_token;
+    let pretty_print = params.pretty_print;
+    let quota_user = params.quota_user;
+    let upload_type = params.upload_type;
+    let user_ip = params.user_ip;
+    let bulk_restore_objects_request = params.bulk_restore_objects_request;
+
+    let local_var_client = &local_var_configuration.client;
+
+    let local_var_uri_str = format!(
+        "{}/b/{bucket}/o/bulkRestore",
+        local_var_configuration.base_path,
+        bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket)
+    );
+    let mut local_var_req_builder =
+        local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_str) = alt {
+        local_var_req_builder = local_var_req_builder.query(&[("alt", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = fields {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("fields", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = key {
+        local_var_req_builder = local_var_req_builder.query(&[("key", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = oauth_token {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("oauth_token", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = pretty_print {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("prettyPrint", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = quota_user {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("quotaUser", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = upload_type {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("uploadType", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = user_ip {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder =
+            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+    local_var_req_builder = local_var_req_builder.json(&bulk_restore_objects_request);
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        serde_json::from_str(&local_var_content).map_err(Error::from)
+    } else {
+        let local_var_entity: Option<StoragePeriodObjectsPeriodBulkRestoreError> =
+            serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent {
+            status: local_var_status,
+            content: local_var_content,
+            entity: local_var_entity,
+        };
+        Err(Error::ResponseError(local_var_error))
+    }
 }
 
 /// Concatenates a list of existing objects into a new object in the same bucket.
@@ -1076,6 +1262,7 @@ pub async fn storage_objects_get(
     let if_metageneration_match = params.if_metageneration_match;
     let if_metageneration_not_match = params.if_metageneration_not_match;
     let projection = params.projection;
+    let soft_deleted = params.soft_deleted;
     let user_project = params.user_project;
 
     let local_var_client = &local_var_configuration.client;
@@ -1142,6 +1329,10 @@ pub async fn storage_objects_get(
     if let Some(ref local_var_str) = projection {
         local_var_req_builder =
             local_var_req_builder.query(&[("projection", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = soft_deleted {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("softDeleted", &local_var_str.to_string())]);
     }
     if let Some(ref local_var_str) = user_project {
         local_var_req_builder =
@@ -1448,11 +1639,14 @@ pub async fn storage_objects_list(
     let user_ip = params.user_ip;
     let delimiter = params.delimiter;
     let end_offset = params.end_offset;
+    let include_folders_as_prefixes = params.include_folders_as_prefixes;
     let include_trailing_delimiter = params.include_trailing_delimiter;
+    let match_glob = params.match_glob;
     let max_results = params.max_results;
     let page_token = params.page_token;
     let prefix = params.prefix;
     let projection = params.projection;
+    let soft_deleted = params.soft_deleted;
     let start_offset = params.start_offset;
     let user_project = params.user_project;
     let versions = params.versions;
@@ -1505,9 +1699,17 @@ pub async fn storage_objects_list(
         local_var_req_builder =
             local_var_req_builder.query(&[("endOffset", &local_var_str.to_string())]);
     }
+    if let Some(ref local_var_str) = include_folders_as_prefixes {
+        local_var_req_builder = local_var_req_builder
+            .query(&[("includeFoldersAsPrefixes", &local_var_str.to_string())]);
+    }
     if let Some(ref local_var_str) = include_trailing_delimiter {
         local_var_req_builder = local_var_req_builder
             .query(&[("includeTrailingDelimiter", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = match_glob {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("matchGlob", &local_var_str.to_string())]);
     }
     if let Some(ref local_var_str) = max_results {
         local_var_req_builder =
@@ -1524,6 +1726,10 @@ pub async fn storage_objects_list(
     if let Some(ref local_var_str) = projection {
         local_var_req_builder =
             local_var_req_builder.query(&[("projection", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = soft_deleted {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("softDeleted", &local_var_str.to_string())]);
     }
     if let Some(ref local_var_str) = start_offset {
         local_var_req_builder =
@@ -1594,6 +1800,7 @@ pub async fn storage_objects_patch(
     let if_generation_not_match = params.if_generation_not_match;
     let if_metageneration_match = params.if_metageneration_match;
     let if_metageneration_not_match = params.if_metageneration_not_match;
+    let override_unlocked_retention = params.override_unlocked_retention;
     let predefined_acl = params.predefined_acl;
     let projection = params.projection;
     let user_project = params.user_project;
@@ -1660,6 +1867,10 @@ pub async fn storage_objects_patch(
         local_var_req_builder = local_var_req_builder
             .query(&[("ifMetagenerationNotMatch", &local_var_str.to_string())]);
     }
+    if let Some(ref local_var_str) = override_unlocked_retention {
+        local_var_req_builder = local_var_req_builder
+            .query(&[("overrideUnlockedRetention", &local_var_str.to_string())]);
+    }
     if let Some(ref local_var_str) = predefined_acl {
         local_var_req_builder =
             local_var_req_builder.query(&[("predefinedAcl", &local_var_str.to_string())]);
@@ -1694,6 +1905,139 @@ pub async fn storage_objects_patch(
         serde_json::from_str(&local_var_content).map_err(Error::from)
     } else {
         let local_var_entity: Option<StoragePeriodObjectsPeriodPatchError> =
+            serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent {
+            status: local_var_status,
+            content: local_var_content,
+            entity: local_var_entity,
+        };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
+/// Restores a soft-deleted object.
+pub async fn storage_objects_restore(
+    configuration: &configuration::Configuration,
+    params: StoragePeriodObjectsPeriodRestoreParams,
+) -> Result<
+    crate::google_rest_apis::storage_v1::models::Object,
+    Error<StoragePeriodObjectsPeriodRestoreError>,
+> {
+    let local_var_configuration = configuration;
+
+    // unbox the parameters
+    let bucket = params.bucket;
+    let object = params.object;
+    let generation = params.generation;
+    let alt = params.alt;
+    let fields = params.fields;
+    let key = params.key;
+    let oauth_token = params.oauth_token;
+    let pretty_print = params.pretty_print;
+    let quota_user = params.quota_user;
+    let upload_type = params.upload_type;
+    let user_ip = params.user_ip;
+    let copy_source_acl = params.copy_source_acl;
+    let if_generation_match = params.if_generation_match;
+    let if_generation_not_match = params.if_generation_not_match;
+    let if_metageneration_match = params.if_metageneration_match;
+    let if_metageneration_not_match = params.if_metageneration_not_match;
+    let projection = params.projection;
+    let user_project = params.user_project;
+    let object2 = params.object2;
+
+    let local_var_client = &local_var_configuration.client;
+
+    let local_var_uri_str = format!(
+        "{}/b/{bucket}/o/{object}/restore",
+        local_var_configuration.base_path,
+        bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket),
+        object = crate::google_rest_apis::storage_v1::apis::urlencode(object)
+    );
+    let mut local_var_req_builder =
+        local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_str) = alt {
+        local_var_req_builder = local_var_req_builder.query(&[("alt", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = fields {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("fields", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = key {
+        local_var_req_builder = local_var_req_builder.query(&[("key", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = oauth_token {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("oauth_token", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = pretty_print {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("prettyPrint", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = quota_user {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("quotaUser", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = upload_type {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("uploadType", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = user_ip {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = copy_source_acl {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("copySourceAcl", &local_var_str.to_string())]);
+    }
+    local_var_req_builder = local_var_req_builder.query(&[("generation", &generation.to_string())]);
+    if let Some(ref local_var_str) = if_generation_match {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("ifGenerationMatch", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = if_generation_not_match {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("ifGenerationNotMatch", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = if_metageneration_match {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("ifMetagenerationMatch", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = if_metageneration_not_match {
+        local_var_req_builder = local_var_req_builder
+            .query(&[("ifMetagenerationNotMatch", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = projection {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("projection", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = user_project {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("userProject", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder =
+            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+    local_var_req_builder = local_var_req_builder.json(&object2);
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        serde_json::from_str(&local_var_content).map_err(Error::from)
+    } else {
+        let local_var_entity: Option<StoragePeriodObjectsPeriodRestoreError> =
             serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent {
             status: local_var_status,
@@ -2126,6 +2470,7 @@ pub async fn storage_objects_update(
     let if_generation_not_match = params.if_generation_not_match;
     let if_metageneration_match = params.if_metageneration_match;
     let if_metageneration_not_match = params.if_metageneration_not_match;
+    let override_unlocked_retention = params.override_unlocked_retention;
     let predefined_acl = params.predefined_acl;
     let projection = params.projection;
     let user_project = params.user_project;
@@ -2191,6 +2536,10 @@ pub async fn storage_objects_update(
     if let Some(ref local_var_str) = if_metageneration_not_match {
         local_var_req_builder = local_var_req_builder
             .query(&[("ifMetagenerationNotMatch", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = override_unlocked_retention {
+        local_var_req_builder = local_var_req_builder
+            .query(&[("overrideUnlockedRetention", &local_var_str.to_string())]);
     }
     if let Some(ref local_var_str) = predefined_acl {
         local_var_req_builder =
@@ -2399,7 +2748,7 @@ pub async fn storage_objects_insert_ext_stream<S>(
 where
     S: futures::stream::TryStream + Send + 'static,
     S::Error: Into<Box<dyn std::error::Error + Send + Sync>>,
-    Bytes: From<S::Ok>,
+    bytes::Bytes: From<S::Ok>,
 {
     let local_var_configuration = configuration;
 

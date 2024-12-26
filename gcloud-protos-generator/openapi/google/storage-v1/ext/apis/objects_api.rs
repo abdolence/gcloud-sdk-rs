@@ -16,7 +16,7 @@ pub async fn storage_objects_insert_ext_stream<S>(
 where
     S: futures::stream::TryStream + Send + 'static,
     S::Error: Into<Box<dyn std::error::Error + Send + Sync>>,
-    Bytes: From<S::Ok>,
+    bytes::Bytes: From<S::Ok>,
 {
     let local_var_configuration = configuration;
 
