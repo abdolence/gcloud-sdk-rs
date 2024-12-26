@@ -15,6 +15,18 @@ pub struct BucketAutoclass {
     /// Whether or not Autoclass is enabled on this bucket
     #[serde(rename = "enabled", skip_serializing_if = "Option::is_none")]
     pub enabled: Option<bool>,
+    /// The storage class that objects in the bucket eventually transition to if they are not read for a certain length of time. Valid values are NEARLINE and ARCHIVE.
+    #[serde(
+        rename = "terminalStorageClass",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub terminal_storage_class: Option<String>,
+    /// A date and time in RFC 3339 format representing the time of the most recent update to \"terminalStorageClass\".
+    #[serde(
+        rename = "terminalStorageClassUpdateTime",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub terminal_storage_class_update_time: Option<String>,
     /// A date and time in RFC 3339 format representing the instant at which \"enabled\" was last toggled.
     #[serde(rename = "toggleTime", skip_serializing_if = "Option::is_none")]
     pub toggle_time: Option<String>,
@@ -25,6 +37,8 @@ impl BucketAutoclass {
     pub fn new() -> BucketAutoclass {
         BucketAutoclass {
             enabled: None,
+            terminal_storage_class: None,
+            terminal_storage_class_update_time: None,
             toggle_time: None,
         }
     }

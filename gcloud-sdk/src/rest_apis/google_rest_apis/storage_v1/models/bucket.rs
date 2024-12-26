@@ -43,6 +43,12 @@ pub struct Bucket {
     /// HTTP 1.1 Entity tag for the bucket.
     #[serde(rename = "etag", skip_serializing_if = "Option::is_none")]
     pub etag: Option<String>,
+    #[serde(
+        rename = "hierarchicalNamespace",
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub hierarchical_namespace:
+        Option<Box<crate::google_rest_apis::storage_v1::models::BucketHierarchicalNamespace>>,
     #[serde(rename = "iamConfiguration", skip_serializing_if = "Option::is_none")]
     pub iam_configuration:
         Option<Box<crate::google_rest_apis::storage_v1::models::BucketIamConfiguration>>,
@@ -71,6 +77,9 @@ pub struct Bucket {
     /// The name of the bucket.
     #[serde(rename = "name", skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
+    #[serde(rename = "objectRetention", skip_serializing_if = "Option::is_none")]
+    pub object_retention:
+        Option<Box<crate::google_rest_apis::storage_v1::models::BucketObjectRetention>>,
     #[serde(rename = "owner", skip_serializing_if = "Option::is_none")]
     pub owner: Option<Box<crate::google_rest_apis::storage_v1::models::BucketOwner>>,
     /// The project number of the project the bucket belongs to.
@@ -88,6 +97,9 @@ pub struct Bucket {
     /// The URI of this bucket.
     #[serde(rename = "selfLink", skip_serializing_if = "Option::is_none")]
     pub self_link: Option<String>,
+    #[serde(rename = "softDeletePolicy", skip_serializing_if = "Option::is_none")]
+    pub soft_delete_policy:
+        Option<Box<crate::google_rest_apis::storage_v1::models::BucketSoftDeletePolicy>>,
     /// The bucket's default storage class, used whenever no storageClass is specified for a newly-created object. This defines how objects in the bucket are stored and determines the SLA and the cost of storage. Values include MULTI_REGIONAL, REGIONAL, STANDARD, NEARLINE, COLDLINE, ARCHIVE, and DURABLE_REDUCED_AVAILABILITY. If this value is not specified when the bucket is created, it will default to STANDARD. For more information, see storage classes.
     #[serde(rename = "storageClass", skip_serializing_if = "Option::is_none")]
     pub storage_class: Option<String>,
@@ -116,6 +128,7 @@ impl Bucket {
             default_object_acl: None,
             encryption: None,
             etag: None,
+            hierarchical_namespace: None,
             iam_configuration: None,
             id: None,
             kind: None,
@@ -126,12 +139,14 @@ impl Bucket {
             logging: None,
             metageneration: None,
             name: None,
+            object_retention: None,
             owner: None,
             project_number: None,
             retention_policy: None,
             rpo: None,
             satisfies_pzs: None,
             self_link: None,
+            soft_delete_policy: None,
             storage_class: None,
             time_created: None,
             updated: None,

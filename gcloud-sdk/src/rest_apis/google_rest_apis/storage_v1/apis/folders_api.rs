@@ -13,15 +13,13 @@ use reqwest;
 use super::{configuration, Error};
 use crate::google_rest_apis::storage_v1::apis::ResponseContent;
 
-/// struct for passing parameters to the method [`storage_object_access_controls_delete`]
+/// struct for passing parameters to the method [`storage_folders_delete`]
 #[derive(Clone, Debug, Default)]
-pub struct StoragePeriodObjectAccessControlsPeriodDeleteParams {
-    /// Name of a bucket.
+pub struct StoragePeriodFoldersPeriodDeleteParams {
+    /// Name of the bucket in which the folder resides.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
-    pub object: String,
-    /// The entity holding the permission. Can be user-userId, user-emailAddress, group-groupId, group-emailAddress, allUsers, or allAuthenticatedUsers.
-    pub entity: String,
+    /// Name of a folder.
+    pub folder: String,
     /// Data format for the response.
     pub alt: Option<String>,
     /// Selector specifying which fields to include in a partial response.
@@ -38,21 +36,19 @@ pub struct StoragePeriodObjectAccessControlsPeriodDeleteParams {
     pub upload_type: Option<String>,
     /// Deprecated. Please use quotaUser instead.
     pub user_ip: Option<String>,
-    /// If present, selects a specific revision of this object (as opposed to the latest version, the default).
-    pub generation: Option<String>,
-    /// The project to be billed for this request. Required for Requester Pays buckets.
-    pub user_project: Option<String>,
+    /// If set, only deletes the folder if its metageneration matches this value.
+    pub if_metageneration_match: Option<String>,
+    /// If set, only deletes the folder if its metageneration does not match this value.
+    pub if_metageneration_not_match: Option<String>,
 }
 
-/// struct for passing parameters to the method [`storage_object_access_controls_get`]
+/// struct for passing parameters to the method [`storage_folders_get`]
 #[derive(Clone, Debug, Default)]
-pub struct StoragePeriodObjectAccessControlsPeriodGetParams {
-    /// Name of a bucket.
+pub struct StoragePeriodFoldersPeriodGetParams {
+    /// Name of the bucket in which the folder resides.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
-    pub object: String,
-    /// The entity holding the permission. Can be user-userId, user-emailAddress, group-groupId, group-emailAddress, allUsers, or allAuthenticatedUsers.
-    pub entity: String,
+    /// Name of a folder.
+    pub folder: String,
     /// Data format for the response.
     pub alt: Option<String>,
     /// Selector specifying which fields to include in a partial response.
@@ -69,19 +65,17 @@ pub struct StoragePeriodObjectAccessControlsPeriodGetParams {
     pub upload_type: Option<String>,
     /// Deprecated. Please use quotaUser instead.
     pub user_ip: Option<String>,
-    /// If present, selects a specific revision of this object (as opposed to the latest version, the default).
-    pub generation: Option<String>,
-    /// The project to be billed for this request. Required for Requester Pays buckets.
-    pub user_project: Option<String>,
+    /// Makes the return of the folder metadata conditional on whether the folder's current metageneration matches the given value.
+    pub if_metageneration_match: Option<String>,
+    /// Makes the return of the folder metadata conditional on whether the folder's current metageneration does not match the given value.
+    pub if_metageneration_not_match: Option<String>,
 }
 
-/// struct for passing parameters to the method [`storage_object_access_controls_insert`]
+/// struct for passing parameters to the method [`storage_folders_insert`]
 #[derive(Clone, Debug, Default)]
-pub struct StoragePeriodObjectAccessControlsPeriodInsertParams {
-    /// Name of a bucket.
+pub struct StoragePeriodFoldersPeriodInsertParams {
+    /// Name of the bucket in which the folder resides.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
-    pub object: String,
     /// Data format for the response.
     pub alt: Option<String>,
     /// Selector specifying which fields to include in a partial response.
@@ -98,21 +92,16 @@ pub struct StoragePeriodObjectAccessControlsPeriodInsertParams {
     pub upload_type: Option<String>,
     /// Deprecated. Please use quotaUser instead.
     pub user_ip: Option<String>,
-    /// If present, selects a specific revision of this object (as opposed to the latest version, the default).
-    pub generation: Option<String>,
-    /// The project to be billed for this request. Required for Requester Pays buckets.
-    pub user_project: Option<String>,
-    pub object_access_control:
-        Option<crate::google_rest_apis::storage_v1::models::ObjectAccessControl>,
+    /// If true, any parent folder which doesn’t exist will be created automatically.
+    pub recursive: Option<bool>,
+    pub folder: Option<crate::google_rest_apis::storage_v1::models::Folder>,
 }
 
-/// struct for passing parameters to the method [`storage_object_access_controls_list`]
+/// struct for passing parameters to the method [`storage_folders_list`]
 #[derive(Clone, Debug, Default)]
-pub struct StoragePeriodObjectAccessControlsPeriodListParams {
-    /// Name of a bucket.
+pub struct StoragePeriodFoldersPeriodListParams {
+    /// Name of the bucket in which to look for folders.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
-    pub object: String,
     /// Data format for the response.
     pub alt: Option<String>,
     /// Selector specifying which fields to include in a partial response.
@@ -129,21 +118,29 @@ pub struct StoragePeriodObjectAccessControlsPeriodListParams {
     pub upload_type: Option<String>,
     /// Deprecated. Please use quotaUser instead.
     pub user_ip: Option<String>,
-    /// If present, selects a specific revision of this object (as opposed to the latest version, the default).
-    pub generation: Option<String>,
-    /// The project to be billed for this request. Required for Requester Pays buckets.
-    pub user_project: Option<String>,
+    /// Returns results in a directory-like mode. The only supported value is '/'. If set, items will only contain folders that either exactly match the prefix, or are one level below the prefix.
+    pub delimiter: Option<String>,
+    /// Filter results to folders whose names are lexicographically before endOffset. If startOffset is also set, the folders listed will have names between startOffset (inclusive) and endOffset (exclusive).
+    pub end_offset: Option<String>,
+    /// Maximum number of items to return in a single page of responses.
+    pub page_size: Option<i32>,
+    /// A previously-returned page token representing part of the larger set of results to view.
+    pub page_token: Option<String>,
+    /// Filter results to folders whose paths begin with this prefix. If set, the value must either be an empty string or end with a '/'.
+    pub prefix: Option<String>,
+    /// Filter results to folders whose names are lexicographically equal to or after startOffset. If endOffset is also set, the folders listed will have names between startOffset (inclusive) and endOffset (exclusive).
+    pub start_offset: Option<String>,
 }
 
-/// struct for passing parameters to the method [`storage_object_access_controls_patch`]
+/// struct for passing parameters to the method [`storage_folders_rename`]
 #[derive(Clone, Debug, Default)]
-pub struct StoragePeriodObjectAccessControlsPeriodPatchParams {
-    /// Name of a bucket.
+pub struct StoragePeriodFoldersPeriodRenameParams {
+    /// Name of the bucket in which the folders are in.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
-    pub object: String,
-    /// The entity holding the permission. Can be user-userId, user-emailAddress, group-groupId, group-emailAddress, allUsers, or allAuthenticatedUsers.
-    pub entity: String,
+    /// Name of the source folder.
+    pub source_folder: String,
+    /// Name of the destination folder.
+    pub destination_folder: String,
     /// Data format for the response.
     pub alt: Option<String>,
     /// Selector specifying which fields to include in a partial response.
@@ -160,100 +157,57 @@ pub struct StoragePeriodObjectAccessControlsPeriodPatchParams {
     pub upload_type: Option<String>,
     /// Deprecated. Please use quotaUser instead.
     pub user_ip: Option<String>,
-    /// If present, selects a specific revision of this object (as opposed to the latest version, the default).
-    pub generation: Option<String>,
-    /// The project to be billed for this request. Required for Requester Pays buckets.
-    pub user_project: Option<String>,
-    pub object_access_control:
-        Option<crate::google_rest_apis::storage_v1::models::ObjectAccessControl>,
+    /// Makes the operation conditional on whether the source object's current metageneration matches the given value.
+    pub if_source_metageneration_match: Option<String>,
+    /// Makes the operation conditional on whether the source object's current metageneration does not match the given value.
+    pub if_source_metageneration_not_match: Option<String>,
 }
 
-/// struct for passing parameters to the method [`storage_object_access_controls_update`]
-#[derive(Clone, Debug, Default)]
-pub struct StoragePeriodObjectAccessControlsPeriodUpdateParams {
-    /// Name of a bucket.
-    pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
-    pub object: String,
-    /// The entity holding the permission. Can be user-userId, user-emailAddress, group-groupId, group-emailAddress, allUsers, or allAuthenticatedUsers.
-    pub entity: String,
-    /// Data format for the response.
-    pub alt: Option<String>,
-    /// Selector specifying which fields to include in a partial response.
-    pub fields: Option<String>,
-    /// API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
-    pub key: Option<String>,
-    /// OAuth 2.0 token for the current user.
-    pub oauth_token: Option<String>,
-    /// Returns response with indentations and line breaks.
-    pub pretty_print: Option<bool>,
-    /// An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
-    pub quota_user: Option<String>,
-    /// Upload protocol for media (e.g. \"media\", \"multipart\", \"resumable\").
-    pub upload_type: Option<String>,
-    /// Deprecated. Please use quotaUser instead.
-    pub user_ip: Option<String>,
-    /// If present, selects a specific revision of this object (as opposed to the latest version, the default).
-    pub generation: Option<String>,
-    /// The project to be billed for this request. Required for Requester Pays buckets.
-    pub user_project: Option<String>,
-    pub object_access_control:
-        Option<crate::google_rest_apis::storage_v1::models::ObjectAccessControl>,
-}
-
-/// struct for typed errors of method [`storage_object_access_controls_delete`]
+/// struct for typed errors of method [`storage_folders_delete`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum StoragePeriodObjectAccessControlsPeriodDeleteError {
+pub enum StoragePeriodFoldersPeriodDeleteError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`storage_object_access_controls_get`]
+/// struct for typed errors of method [`storage_folders_get`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum StoragePeriodObjectAccessControlsPeriodGetError {
+pub enum StoragePeriodFoldersPeriodGetError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`storage_object_access_controls_insert`]
+/// struct for typed errors of method [`storage_folders_insert`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum StoragePeriodObjectAccessControlsPeriodInsertError {
+pub enum StoragePeriodFoldersPeriodInsertError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`storage_object_access_controls_list`]
+/// struct for typed errors of method [`storage_folders_list`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum StoragePeriodObjectAccessControlsPeriodListError {
+pub enum StoragePeriodFoldersPeriodListError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`storage_object_access_controls_patch`]
+/// struct for typed errors of method [`storage_folders_rename`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum StoragePeriodObjectAccessControlsPeriodPatchError {
+pub enum StoragePeriodFoldersPeriodRenameError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`storage_object_access_controls_update`]
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(untagged)]
-pub enum StoragePeriodObjectAccessControlsPeriodUpdateError {
-    UnknownValue(serde_json::Value),
-}
-
-/// Permanently deletes the ACL entry for the specified entity on the specified object.
-pub async fn storage_object_access_controls_delete(
+/// Permanently deletes a folder. Only applicable to buckets with hierarchical namespace enabled.
+pub async fn storage_folders_delete(
     configuration: &configuration::Configuration,
-    params: StoragePeriodObjectAccessControlsPeriodDeleteParams,
-) -> Result<(), Error<StoragePeriodObjectAccessControlsPeriodDeleteError>> {
+    params: StoragePeriodFoldersPeriodDeleteParams,
+) -> Result<(), Error<StoragePeriodFoldersPeriodDeleteError>> {
     let local_var_configuration = configuration;
 
     // unbox the parameters
     let bucket = params.bucket;
-    let object = params.object;
-    let entity = params.entity;
+    let folder = params.folder;
     let alt = params.alt;
     let fields = params.fields;
     let key = params.key;
@@ -262,17 +216,16 @@ pub async fn storage_object_access_controls_delete(
     let quota_user = params.quota_user;
     let upload_type = params.upload_type;
     let user_ip = params.user_ip;
-    let generation = params.generation;
-    let user_project = params.user_project;
+    let if_metageneration_match = params.if_metageneration_match;
+    let if_metageneration_not_match = params.if_metageneration_not_match;
 
     let local_var_client = &local_var_configuration.client;
 
     let local_var_uri_str = format!(
-        "{}/b/{bucket}/o/{object}/acl/{entity}",
+        "{}/b/{bucket}/folders/{folder}",
         local_var_configuration.base_path,
         bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket),
-        object = crate::google_rest_apis::storage_v1::apis::urlencode(object),
-        entity = crate::google_rest_apis::storage_v1::apis::urlencode(entity)
+        folder = crate::google_rest_apis::storage_v1::apis::urlencode(folder)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::DELETE, local_var_uri_str.as_str());
@@ -307,13 +260,13 @@ pub async fn storage_object_access_controls_delete(
         local_var_req_builder =
             local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_str) = generation {
+    if let Some(ref local_var_str) = if_metageneration_match {
         local_var_req_builder =
-            local_var_req_builder.query(&[("generation", &local_var_str.to_string())]);
+            local_var_req_builder.query(&[("ifMetagenerationMatch", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_str) = user_project {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("userProject", &local_var_str.to_string())]);
+    if let Some(ref local_var_str) = if_metageneration_not_match {
+        local_var_req_builder = local_var_req_builder
+            .query(&[("ifMetagenerationNotMatch", &local_var_str.to_string())]);
     }
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
@@ -335,7 +288,7 @@ pub async fn storage_object_access_controls_delete(
     if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
         Ok(())
     } else {
-        let local_var_entity: Option<StoragePeriodObjectAccessControlsPeriodDeleteError> =
+        let local_var_entity: Option<StoragePeriodFoldersPeriodDeleteError> =
             serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent {
             status: local_var_status,
@@ -346,20 +299,19 @@ pub async fn storage_object_access_controls_delete(
     }
 }
 
-/// Returns the ACL entry for the specified entity on the specified object.
-pub async fn storage_object_access_controls_get(
+/// Returns metadata for the specified folder. Only applicable to buckets with hierarchical namespace enabled.
+pub async fn storage_folders_get(
     configuration: &configuration::Configuration,
-    params: StoragePeriodObjectAccessControlsPeriodGetParams,
+    params: StoragePeriodFoldersPeriodGetParams,
 ) -> Result<
-    crate::google_rest_apis::storage_v1::models::ObjectAccessControl,
-    Error<StoragePeriodObjectAccessControlsPeriodGetError>,
+    crate::google_rest_apis::storage_v1::models::Folder,
+    Error<StoragePeriodFoldersPeriodGetError>,
 > {
     let local_var_configuration = configuration;
 
     // unbox the parameters
     let bucket = params.bucket;
-    let object = params.object;
-    let entity = params.entity;
+    let folder = params.folder;
     let alt = params.alt;
     let fields = params.fields;
     let key = params.key;
@@ -368,17 +320,16 @@ pub async fn storage_object_access_controls_get(
     let quota_user = params.quota_user;
     let upload_type = params.upload_type;
     let user_ip = params.user_ip;
-    let generation = params.generation;
-    let user_project = params.user_project;
+    let if_metageneration_match = params.if_metageneration_match;
+    let if_metageneration_not_match = params.if_metageneration_not_match;
 
     let local_var_client = &local_var_configuration.client;
 
     let local_var_uri_str = format!(
-        "{}/b/{bucket}/o/{object}/acl/{entity}",
+        "{}/b/{bucket}/folders/{folder}",
         local_var_configuration.base_path,
         bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket),
-        object = crate::google_rest_apis::storage_v1::apis::urlencode(object),
-        entity = crate::google_rest_apis::storage_v1::apis::urlencode(entity)
+        folder = crate::google_rest_apis::storage_v1::apis::urlencode(folder)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
@@ -413,13 +364,13 @@ pub async fn storage_object_access_controls_get(
         local_var_req_builder =
             local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_str) = generation {
+    if let Some(ref local_var_str) = if_metageneration_match {
         local_var_req_builder =
-            local_var_req_builder.query(&[("generation", &local_var_str.to_string())]);
+            local_var_req_builder.query(&[("ifMetagenerationMatch", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_str) = user_project {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("userProject", &local_var_str.to_string())]);
+    if let Some(ref local_var_str) = if_metageneration_not_match {
+        local_var_req_builder = local_var_req_builder
+            .query(&[("ifMetagenerationNotMatch", &local_var_str.to_string())]);
     }
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
@@ -441,7 +392,7 @@ pub async fn storage_object_access_controls_get(
     if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
         serde_json::from_str(&local_var_content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<StoragePeriodObjectAccessControlsPeriodGetError> =
+        let local_var_entity: Option<StoragePeriodFoldersPeriodGetError> =
             serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent {
             status: local_var_status,
@@ -452,19 +403,18 @@ pub async fn storage_object_access_controls_get(
     }
 }
 
-/// Creates a new ACL entry on the specified object.
-pub async fn storage_object_access_controls_insert(
+/// Creates a new folder. Only applicable to buckets with hierarchical namespace enabled.
+pub async fn storage_folders_insert(
     configuration: &configuration::Configuration,
-    params: StoragePeriodObjectAccessControlsPeriodInsertParams,
+    params: StoragePeriodFoldersPeriodInsertParams,
 ) -> Result<
-    crate::google_rest_apis::storage_v1::models::ObjectAccessControl,
-    Error<StoragePeriodObjectAccessControlsPeriodInsertError>,
+    crate::google_rest_apis::storage_v1::models::Folder,
+    Error<StoragePeriodFoldersPeriodInsertError>,
 > {
     let local_var_configuration = configuration;
 
     // unbox the parameters
     let bucket = params.bucket;
-    let object = params.object;
     let alt = params.alt;
     let fields = params.fields;
     let key = params.key;
@@ -473,17 +423,15 @@ pub async fn storage_object_access_controls_insert(
     let quota_user = params.quota_user;
     let upload_type = params.upload_type;
     let user_ip = params.user_ip;
-    let generation = params.generation;
-    let user_project = params.user_project;
-    let object_access_control = params.object_access_control;
+    let recursive = params.recursive;
+    let folder = params.folder;
 
     let local_var_client = &local_var_configuration.client;
 
     let local_var_uri_str = format!(
-        "{}/b/{bucket}/o/{object}/acl",
+        "{}/b/{bucket}/folders",
         local_var_configuration.base_path,
-        bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket),
-        object = crate::google_rest_apis::storage_v1::apis::urlencode(object)
+        bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
@@ -518,13 +466,9 @@ pub async fn storage_object_access_controls_insert(
         local_var_req_builder =
             local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_str) = generation {
+    if let Some(ref local_var_str) = recursive {
         local_var_req_builder =
-            local_var_req_builder.query(&[("generation", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = user_project {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("userProject", &local_var_str.to_string())]);
+            local_var_req_builder.query(&[("recursive", &local_var_str.to_string())]);
     }
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
@@ -536,7 +480,7 @@ pub async fn storage_object_access_controls_insert(
     if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };
-    local_var_req_builder = local_var_req_builder.json(&object_access_control);
+    local_var_req_builder = local_var_req_builder.json(&folder);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -547,7 +491,7 @@ pub async fn storage_object_access_controls_insert(
     if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
         serde_json::from_str(&local_var_content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<StoragePeriodObjectAccessControlsPeriodInsertError> =
+        let local_var_entity: Option<StoragePeriodFoldersPeriodInsertError> =
             serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent {
             status: local_var_status,
@@ -558,19 +502,18 @@ pub async fn storage_object_access_controls_insert(
     }
 }
 
-/// Retrieves ACL entries on the specified object.
-pub async fn storage_object_access_controls_list(
+/// Retrieves a list of folders matching the criteria. Only applicable to buckets with hierarchical namespace enabled.
+pub async fn storage_folders_list(
     configuration: &configuration::Configuration,
-    params: StoragePeriodObjectAccessControlsPeriodListParams,
+    params: StoragePeriodFoldersPeriodListParams,
 ) -> Result<
-    crate::google_rest_apis::storage_v1::models::ObjectAccessControls,
-    Error<StoragePeriodObjectAccessControlsPeriodListError>,
+    crate::google_rest_apis::storage_v1::models::Folders,
+    Error<StoragePeriodFoldersPeriodListError>,
 > {
     let local_var_configuration = configuration;
 
     // unbox the parameters
     let bucket = params.bucket;
-    let object = params.object;
     let alt = params.alt;
     let fields = params.fields;
     let key = params.key;
@@ -579,16 +522,19 @@ pub async fn storage_object_access_controls_list(
     let quota_user = params.quota_user;
     let upload_type = params.upload_type;
     let user_ip = params.user_ip;
-    let generation = params.generation;
-    let user_project = params.user_project;
+    let delimiter = params.delimiter;
+    let end_offset = params.end_offset;
+    let page_size = params.page_size;
+    let page_token = params.page_token;
+    let prefix = params.prefix;
+    let start_offset = params.start_offset;
 
     let local_var_client = &local_var_configuration.client;
 
     let local_var_uri_str = format!(
-        "{}/b/{bucket}/o/{object}/acl",
+        "{}/b/{bucket}/folders",
         local_var_configuration.base_path,
-        bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket),
-        object = crate::google_rest_apis::storage_v1::apis::urlencode(object)
+        bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
@@ -623,13 +569,29 @@ pub async fn storage_object_access_controls_list(
         local_var_req_builder =
             local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_str) = generation {
+    if let Some(ref local_var_str) = delimiter {
         local_var_req_builder =
-            local_var_req_builder.query(&[("generation", &local_var_str.to_string())]);
+            local_var_req_builder.query(&[("delimiter", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_str) = user_project {
+    if let Some(ref local_var_str) = end_offset {
         local_var_req_builder =
-            local_var_req_builder.query(&[("userProject", &local_var_str.to_string())]);
+            local_var_req_builder.query(&[("endOffset", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = page_size {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("pageSize", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = page_token {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("pageToken", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = prefix {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("prefix", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = start_offset {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("startOffset", &local_var_str.to_string())]);
     }
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
@@ -651,7 +613,7 @@ pub async fn storage_object_access_controls_list(
     if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
         serde_json::from_str(&local_var_content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<StoragePeriodObjectAccessControlsPeriodListError> =
+        let local_var_entity: Option<StoragePeriodFoldersPeriodListError> =
             serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent {
             status: local_var_status,
@@ -662,20 +624,20 @@ pub async fn storage_object_access_controls_list(
     }
 }
 
-/// Patches an ACL entry on the specified object.
-pub async fn storage_object_access_controls_patch(
+/// Renames a source folder to a destination folder. Only applicable to buckets with hierarchical namespace enabled.
+pub async fn storage_folders_rename(
     configuration: &configuration::Configuration,
-    params: StoragePeriodObjectAccessControlsPeriodPatchParams,
+    params: StoragePeriodFoldersPeriodRenameParams,
 ) -> Result<
-    crate::google_rest_apis::storage_v1::models::ObjectAccessControl,
-    Error<StoragePeriodObjectAccessControlsPeriodPatchError>,
+    crate::google_rest_apis::storage_v1::models::GoogleLongrunningOperation,
+    Error<StoragePeriodFoldersPeriodRenameError>,
 > {
     let local_var_configuration = configuration;
 
     // unbox the parameters
     let bucket = params.bucket;
-    let object = params.object;
-    let entity = params.entity;
+    let source_folder = params.source_folder;
+    let destination_folder = params.destination_folder;
     let alt = params.alt;
     let fields = params.fields;
     let key = params.key;
@@ -684,21 +646,21 @@ pub async fn storage_object_access_controls_patch(
     let quota_user = params.quota_user;
     let upload_type = params.upload_type;
     let user_ip = params.user_ip;
-    let generation = params.generation;
-    let user_project = params.user_project;
-    let object_access_control = params.object_access_control;
+    let if_source_metageneration_match = params.if_source_metageneration_match;
+    let if_source_metageneration_not_match = params.if_source_metageneration_not_match;
 
     let local_var_client = &local_var_configuration.client;
 
     let local_var_uri_str = format!(
-        "{}/b/{bucket}/o/{object}/acl/{entity}",
+        "{}/b/{bucket}/folders/{sourceFolder}/renameTo/folders/{destinationFolder}",
         local_var_configuration.base_path,
         bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket),
-        object = crate::google_rest_apis::storage_v1::apis::urlencode(object),
-        entity = crate::google_rest_apis::storage_v1::apis::urlencode(entity)
+        sourceFolder = crate::google_rest_apis::storage_v1::apis::urlencode(source_folder),
+        destinationFolder =
+            crate::google_rest_apis::storage_v1::apis::urlencode(destination_folder)
     );
     let mut local_var_req_builder =
-        local_var_client.request(reqwest::Method::PATCH, local_var_uri_str.as_str());
+        local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
 
     if let Some(ref local_var_str) = alt {
         local_var_req_builder = local_var_req_builder.query(&[("alt", &local_var_str.to_string())]);
@@ -730,121 +692,13 @@ pub async fn storage_object_access_controls_patch(
         local_var_req_builder =
             local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_str) = generation {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("generation", &local_var_str.to_string())]);
+    if let Some(ref local_var_str) = if_source_metageneration_match {
+        local_var_req_builder = local_var_req_builder
+            .query(&[("ifSourceMetagenerationMatch", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_str) = user_project {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("userProject", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder =
-            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
-    }
-    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
-    };
-    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
-    };
-    local_var_req_builder = local_var_req_builder.json(&object_access_control);
-
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
-
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
-
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
-    } else {
-        let local_var_entity: Option<StoragePeriodObjectAccessControlsPeriodPatchError> =
-            serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent {
-            status: local_var_status,
-            content: local_var_content,
-            entity: local_var_entity,
-        };
-        Err(Error::ResponseError(local_var_error))
-    }
-}
-
-/// Updates an ACL entry on the specified object.
-pub async fn storage_object_access_controls_update(
-    configuration: &configuration::Configuration,
-    params: StoragePeriodObjectAccessControlsPeriodUpdateParams,
-) -> Result<
-    crate::google_rest_apis::storage_v1::models::ObjectAccessControl,
-    Error<StoragePeriodObjectAccessControlsPeriodUpdateError>,
-> {
-    let local_var_configuration = configuration;
-
-    // unbox the parameters
-    let bucket = params.bucket;
-    let object = params.object;
-    let entity = params.entity;
-    let alt = params.alt;
-    let fields = params.fields;
-    let key = params.key;
-    let oauth_token = params.oauth_token;
-    let pretty_print = params.pretty_print;
-    let quota_user = params.quota_user;
-    let upload_type = params.upload_type;
-    let user_ip = params.user_ip;
-    let generation = params.generation;
-    let user_project = params.user_project;
-    let object_access_control = params.object_access_control;
-
-    let local_var_client = &local_var_configuration.client;
-
-    let local_var_uri_str = format!(
-        "{}/b/{bucket}/o/{object}/acl/{entity}",
-        local_var_configuration.base_path,
-        bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket),
-        object = crate::google_rest_apis::storage_v1::apis::urlencode(object),
-        entity = crate::google_rest_apis::storage_v1::apis::urlencode(entity)
-    );
-    let mut local_var_req_builder =
-        local_var_client.request(reqwest::Method::PUT, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_str) = alt {
-        local_var_req_builder = local_var_req_builder.query(&[("alt", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = fields {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("fields", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = key {
-        local_var_req_builder = local_var_req_builder.query(&[("key", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = oauth_token {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("oauth_token", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = pretty_print {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("prettyPrint", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = quota_user {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("quotaUser", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = upload_type {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("uploadType", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = user_ip {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = generation {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("generation", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = user_project {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("userProject", &local_var_str.to_string())]);
+    if let Some(ref local_var_str) = if_source_metageneration_not_match {
+        local_var_req_builder = local_var_req_builder
+            .query(&[("ifSourceMetagenerationNotMatch", &local_var_str.to_string())]);
     }
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
@@ -856,7 +710,6 @@ pub async fn storage_object_access_controls_update(
     if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };
-    local_var_req_builder = local_var_req_builder.json(&object_access_control);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -867,7 +720,7 @@ pub async fn storage_object_access_controls_update(
     if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
         serde_json::from_str(&local_var_content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<StoragePeriodObjectAccessControlsPeriodUpdateError> =
+        let local_var_entity: Option<StoragePeriodFoldersPeriodRenameError> =
             serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent {
             status: local_var_status,
