@@ -227,13 +227,12 @@ impl GoogleEnvironment {
             .domain_name(domain_name)
     }
 
-// Don't understand why this code is duplicate
-//    #[cfg(feature = "tls-webpki-roots" and not(feature = "tls-roots" )) ]
-//    fn init_tls_config(domain_name: String) -> tonic::transport::ClientTlsConfig {
-//        tonic::transport::ClientTlsConfig::new()
-//            .with_webpki_roots()
-//            .domain_name(domain_name)
-//    }
+    #[cfg(feature = "tls-webpki-roots")]
+    fn init_tls_config(domain_name: String) -> tonic::transport::ClientTlsConfig {
+        tonic::transport::ClientTlsConfig::new()
+            .with_webpki_roots()
+            .domain_name(domain_name)
+    }
 }
 
 pub static GCP_DEFAULT_SCOPES: Lazy<Vec<String>> =
