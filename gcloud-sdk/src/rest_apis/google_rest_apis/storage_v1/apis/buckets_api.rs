@@ -121,6 +121,8 @@ pub struct StoragePeriodBucketsPeriodInsertParams {
     pub upload_type: Option<String>,
     /// Deprecated. Please use quotaUser instead.
     pub user_ip: Option<String>,
+    /// When set to true, object retention is enabled for this bucket.
+    pub enable_object_retention: Option<bool>,
     /// Apply a predefined set of access controls to this bucket.
     pub predefined_acl: Option<String>,
     /// Apply a predefined set of default object access controls to this bucket.
@@ -725,6 +727,7 @@ pub async fn storage_buckets_insert(
     let quota_user = params.quota_user;
     let upload_type = params.upload_type;
     let user_ip = params.user_ip;
+    let enable_object_retention = params.enable_object_retention;
     let predefined_acl = params.predefined_acl;
     let predefined_default_object_acl = params.predefined_default_object_acl;
     let projection = params.projection;
@@ -768,6 +771,10 @@ pub async fn storage_buckets_insert(
             local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
     }
     local_var_req_builder = local_var_req_builder.query(&[("project", &project.to_string())]);
+    if let Some(ref local_var_str) = enable_object_retention {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("enableObjectRetention", &local_var_str.to_string())]);
+    }
     if let Some(ref local_var_str) = predefined_acl {
         local_var_req_builder =
             local_var_req_builder.query(&[("predefinedAcl", &local_var_str.to_string())]);

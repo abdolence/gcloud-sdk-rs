@@ -13,15 +13,13 @@ use reqwest;
 use super::{configuration, Error};
 use crate::google_rest_apis::storage_v1::apis::ResponseContent;
 
-/// struct for passing parameters to the method [`storage_object_access_controls_delete`]
+/// struct for passing parameters to the method [`storage_managed_folders_delete`]
 #[derive(Clone, Debug, Default)]
-pub struct StoragePeriodObjectAccessControlsPeriodDeleteParams {
-    /// Name of a bucket.
+pub struct StoragePeriodManagedFoldersPeriodDeleteParams {
+    /// Name of the bucket containing the managed folder.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
-    pub object: String,
-    /// The entity holding the permission. Can be user-userId, user-emailAddress, group-groupId, group-emailAddress, allUsers, or allAuthenticatedUsers.
-    pub entity: String,
+    /// The managed folder name/path.
+    pub managed_folder: String,
     /// Data format for the response.
     pub alt: Option<String>,
     /// Selector specifying which fields to include in a partial response.
@@ -38,21 +36,19 @@ pub struct StoragePeriodObjectAccessControlsPeriodDeleteParams {
     pub upload_type: Option<String>,
     /// Deprecated. Please use quotaUser instead.
     pub user_ip: Option<String>,
-    /// If present, selects a specific revision of this object (as opposed to the latest version, the default).
-    pub generation: Option<String>,
-    /// The project to be billed for this request. Required for Requester Pays buckets.
-    pub user_project: Option<String>,
+    /// If set, only deletes the managed folder if its metageneration matches this value.
+    pub if_metageneration_match: Option<String>,
+    /// If set, only deletes the managed folder if its metageneration does not match this value.
+    pub if_metageneration_not_match: Option<String>,
 }
 
-/// struct for passing parameters to the method [`storage_object_access_controls_get`]
+/// struct for passing parameters to the method [`storage_managed_folders_get`]
 #[derive(Clone, Debug, Default)]
-pub struct StoragePeriodObjectAccessControlsPeriodGetParams {
-    /// Name of a bucket.
+pub struct StoragePeriodManagedFoldersPeriodGetParams {
+    /// Name of the bucket containing the managed folder.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
-    pub object: String,
-    /// The entity holding the permission. Can be user-userId, user-emailAddress, group-groupId, group-emailAddress, allUsers, or allAuthenticatedUsers.
-    pub entity: String,
+    /// The managed folder name/path.
+    pub managed_folder: String,
     /// Data format for the response.
     pub alt: Option<String>,
     /// Selector specifying which fields to include in a partial response.
@@ -69,19 +65,19 @@ pub struct StoragePeriodObjectAccessControlsPeriodGetParams {
     pub upload_type: Option<String>,
     /// Deprecated. Please use quotaUser instead.
     pub user_ip: Option<String>,
-    /// If present, selects a specific revision of this object (as opposed to the latest version, the default).
-    pub generation: Option<String>,
-    /// The project to be billed for this request. Required for Requester Pays buckets.
-    pub user_project: Option<String>,
+    /// Makes the return of the managed folder metadata conditional on whether the managed folder's current metageneration matches the given value.
+    pub if_metageneration_match: Option<String>,
+    /// Makes the return of the managed folder metadata conditional on whether the managed folder's current metageneration does not match the given value.
+    pub if_metageneration_not_match: Option<String>,
 }
 
-/// struct for passing parameters to the method [`storage_object_access_controls_insert`]
+/// struct for passing parameters to the method [`storage_managed_folders_get_iam_policy`]
 #[derive(Clone, Debug, Default)]
-pub struct StoragePeriodObjectAccessControlsPeriodInsertParams {
-    /// Name of a bucket.
+pub struct StoragePeriodManagedFoldersPeriodGetIamPolicyParams {
+    /// Name of the bucket containing the managed folder.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
-    pub object: String,
+    /// The managed folder name/path.
+    pub managed_folder: String,
     /// Data format for the response.
     pub alt: Option<String>,
     /// Selector specifying which fields to include in a partial response.
@@ -98,21 +94,17 @@ pub struct StoragePeriodObjectAccessControlsPeriodInsertParams {
     pub upload_type: Option<String>,
     /// Deprecated. Please use quotaUser instead.
     pub user_ip: Option<String>,
-    /// If present, selects a specific revision of this object (as opposed to the latest version, the default).
-    pub generation: Option<String>,
+    /// The IAM policy format version to be returned. If the optionsRequestedPolicyVersion is for an older version that doesn't support part of the requested IAM policy, the request fails.
+    pub options_requested_policy_version: Option<i32>,
     /// The project to be billed for this request. Required for Requester Pays buckets.
     pub user_project: Option<String>,
-    pub object_access_control:
-        Option<crate::google_rest_apis::storage_v1::models::ObjectAccessControl>,
 }
 
-/// struct for passing parameters to the method [`storage_object_access_controls_list`]
+/// struct for passing parameters to the method [`storage_managed_folders_insert`]
 #[derive(Clone, Debug, Default)]
-pub struct StoragePeriodObjectAccessControlsPeriodListParams {
-    /// Name of a bucket.
+pub struct StoragePeriodManagedFoldersPeriodInsertParams {
+    /// Name of the bucket containing the managed folder.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
-    pub object: String,
     /// Data format for the response.
     pub alt: Option<String>,
     /// Selector specifying which fields to include in a partial response.
@@ -129,21 +121,14 @@ pub struct StoragePeriodObjectAccessControlsPeriodListParams {
     pub upload_type: Option<String>,
     /// Deprecated. Please use quotaUser instead.
     pub user_ip: Option<String>,
-    /// If present, selects a specific revision of this object (as opposed to the latest version, the default).
-    pub generation: Option<String>,
-    /// The project to be billed for this request. Required for Requester Pays buckets.
-    pub user_project: Option<String>,
+    pub managed_folder: Option<crate::google_rest_apis::storage_v1::models::ManagedFolder>,
 }
 
-/// struct for passing parameters to the method [`storage_object_access_controls_patch`]
+/// struct for passing parameters to the method [`storage_managed_folders_list`]
 #[derive(Clone, Debug, Default)]
-pub struct StoragePeriodObjectAccessControlsPeriodPatchParams {
-    /// Name of a bucket.
+pub struct StoragePeriodManagedFoldersPeriodListParams {
+    /// Name of the bucket containing the managed folder.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
-    pub object: String,
-    /// The entity holding the permission. Can be user-userId, user-emailAddress, group-groupId, group-emailAddress, allUsers, or allAuthenticatedUsers.
-    pub entity: String,
     /// Data format for the response.
     pub alt: Option<String>,
     /// Selector specifying which fields to include in a partial response.
@@ -160,23 +145,21 @@ pub struct StoragePeriodObjectAccessControlsPeriodPatchParams {
     pub upload_type: Option<String>,
     /// Deprecated. Please use quotaUser instead.
     pub user_ip: Option<String>,
-    /// If present, selects a specific revision of this object (as opposed to the latest version, the default).
-    pub generation: Option<String>,
-    /// The project to be billed for this request. Required for Requester Pays buckets.
-    pub user_project: Option<String>,
-    pub object_access_control:
-        Option<crate::google_rest_apis::storage_v1::models::ObjectAccessControl>,
+    /// Maximum number of items to return in a single page of responses.
+    pub page_size: Option<i32>,
+    /// A previously-returned page token representing part of the larger set of results to view.
+    pub page_token: Option<String>,
+    /// The managed folder name/path prefix to filter the output list of results.
+    pub prefix: Option<String>,
 }
 
-/// struct for passing parameters to the method [`storage_object_access_controls_update`]
+/// struct for passing parameters to the method [`storage_managed_folders_set_iam_policy`]
 #[derive(Clone, Debug, Default)]
-pub struct StoragePeriodObjectAccessControlsPeriodUpdateParams {
-    /// Name of a bucket.
+pub struct StoragePeriodManagedFoldersPeriodSetIamPolicyParams {
+    /// Name of the bucket containing the managed folder.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
-    pub object: String,
-    /// The entity holding the permission. Can be user-userId, user-emailAddress, group-groupId, group-emailAddress, allUsers, or allAuthenticatedUsers.
-    pub entity: String,
+    /// The managed folder name/path.
+    pub managed_folder: String,
     /// Data format for the response.
     pub alt: Option<String>,
     /// Selector specifying which fields to include in a partial response.
@@ -193,67 +176,99 @@ pub struct StoragePeriodObjectAccessControlsPeriodUpdateParams {
     pub upload_type: Option<String>,
     /// Deprecated. Please use quotaUser instead.
     pub user_ip: Option<String>,
-    /// If present, selects a specific revision of this object (as opposed to the latest version, the default).
-    pub generation: Option<String>,
     /// The project to be billed for this request. Required for Requester Pays buckets.
     pub user_project: Option<String>,
-    pub object_access_control:
-        Option<crate::google_rest_apis::storage_v1::models::ObjectAccessControl>,
+    pub policy: Option<crate::google_rest_apis::storage_v1::models::Policy>,
 }
 
-/// struct for typed errors of method [`storage_object_access_controls_delete`]
+/// struct for passing parameters to the method [`storage_managed_folders_test_iam_permissions`]
+#[derive(Clone, Debug, Default)]
+pub struct StoragePeriodManagedFoldersPeriodTestIamPermissionsParams {
+    /// Name of the bucket containing the managed folder.
+    pub bucket: String,
+    /// The managed folder name/path.
+    pub managed_folder: String,
+    /// Permissions to test.
+    pub permissions: Vec<String>,
+    /// Data format for the response.
+    pub alt: Option<String>,
+    /// Selector specifying which fields to include in a partial response.
+    pub fields: Option<String>,
+    /// API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    pub key: Option<String>,
+    /// OAuth 2.0 token for the current user.
+    pub oauth_token: Option<String>,
+    /// Returns response with indentations and line breaks.
+    pub pretty_print: Option<bool>,
+    /// An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
+    pub quota_user: Option<String>,
+    /// Upload protocol for media (e.g. \"media\", \"multipart\", \"resumable\").
+    pub upload_type: Option<String>,
+    /// Deprecated. Please use quotaUser instead.
+    pub user_ip: Option<String>,
+    /// The project to be billed for this request. Required for Requester Pays buckets.
+    pub user_project: Option<String>,
+}
+
+/// struct for typed errors of method [`storage_managed_folders_delete`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum StoragePeriodObjectAccessControlsPeriodDeleteError {
+pub enum StoragePeriodManagedFoldersPeriodDeleteError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`storage_object_access_controls_get`]
+/// struct for typed errors of method [`storage_managed_folders_get`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum StoragePeriodObjectAccessControlsPeriodGetError {
+pub enum StoragePeriodManagedFoldersPeriodGetError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`storage_object_access_controls_insert`]
+/// struct for typed errors of method [`storage_managed_folders_get_iam_policy`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum StoragePeriodObjectAccessControlsPeriodInsertError {
+pub enum StoragePeriodManagedFoldersPeriodGetIamPolicyError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`storage_object_access_controls_list`]
+/// struct for typed errors of method [`storage_managed_folders_insert`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum StoragePeriodObjectAccessControlsPeriodListError {
+pub enum StoragePeriodManagedFoldersPeriodInsertError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`storage_object_access_controls_patch`]
+/// struct for typed errors of method [`storage_managed_folders_list`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum StoragePeriodObjectAccessControlsPeriodPatchError {
+pub enum StoragePeriodManagedFoldersPeriodListError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`storage_object_access_controls_update`]
+/// struct for typed errors of method [`storage_managed_folders_set_iam_policy`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum StoragePeriodObjectAccessControlsPeriodUpdateError {
+pub enum StoragePeriodManagedFoldersPeriodSetIamPolicyError {
     UnknownValue(serde_json::Value),
 }
 
-/// Permanently deletes the ACL entry for the specified entity on the specified object.
-pub async fn storage_object_access_controls_delete(
+/// struct for typed errors of method [`storage_managed_folders_test_iam_permissions`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum StoragePeriodManagedFoldersPeriodTestIamPermissionsError {
+    UnknownValue(serde_json::Value),
+}
+
+/// Permanently deletes a managed folder.
+pub async fn storage_managed_folders_delete(
     configuration: &configuration::Configuration,
-    params: StoragePeriodObjectAccessControlsPeriodDeleteParams,
-) -> Result<(), Error<StoragePeriodObjectAccessControlsPeriodDeleteError>> {
+    params: StoragePeriodManagedFoldersPeriodDeleteParams,
+) -> Result<(), Error<StoragePeriodManagedFoldersPeriodDeleteError>> {
     let local_var_configuration = configuration;
 
     // unbox the parameters
     let bucket = params.bucket;
-    let object = params.object;
-    let entity = params.entity;
+    let managed_folder = params.managed_folder;
     let alt = params.alt;
     let fields = params.fields;
     let key = params.key;
@@ -262,17 +277,16 @@ pub async fn storage_object_access_controls_delete(
     let quota_user = params.quota_user;
     let upload_type = params.upload_type;
     let user_ip = params.user_ip;
-    let generation = params.generation;
-    let user_project = params.user_project;
+    let if_metageneration_match = params.if_metageneration_match;
+    let if_metageneration_not_match = params.if_metageneration_not_match;
 
     let local_var_client = &local_var_configuration.client;
 
     let local_var_uri_str = format!(
-        "{}/b/{bucket}/o/{object}/acl/{entity}",
+        "{}/b/{bucket}/managedFolders/{managedFolder}",
         local_var_configuration.base_path,
         bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket),
-        object = crate::google_rest_apis::storage_v1::apis::urlencode(object),
-        entity = crate::google_rest_apis::storage_v1::apis::urlencode(entity)
+        managedFolder = crate::google_rest_apis::storage_v1::apis::urlencode(managed_folder)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::DELETE, local_var_uri_str.as_str());
@@ -307,13 +321,13 @@ pub async fn storage_object_access_controls_delete(
         local_var_req_builder =
             local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_str) = generation {
+    if let Some(ref local_var_str) = if_metageneration_match {
         local_var_req_builder =
-            local_var_req_builder.query(&[("generation", &local_var_str.to_string())]);
+            local_var_req_builder.query(&[("ifMetagenerationMatch", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_str) = user_project {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("userProject", &local_var_str.to_string())]);
+    if let Some(ref local_var_str) = if_metageneration_not_match {
+        local_var_req_builder = local_var_req_builder
+            .query(&[("ifMetagenerationNotMatch", &local_var_str.to_string())]);
     }
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
@@ -335,7 +349,7 @@ pub async fn storage_object_access_controls_delete(
     if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
         Ok(())
     } else {
-        let local_var_entity: Option<StoragePeriodObjectAccessControlsPeriodDeleteError> =
+        let local_var_entity: Option<StoragePeriodManagedFoldersPeriodDeleteError> =
             serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent {
             status: local_var_status,
@@ -346,20 +360,19 @@ pub async fn storage_object_access_controls_delete(
     }
 }
 
-/// Returns the ACL entry for the specified entity on the specified object.
-pub async fn storage_object_access_controls_get(
+/// Returns metadata of the specified managed folder.
+pub async fn storage_managed_folders_get(
     configuration: &configuration::Configuration,
-    params: StoragePeriodObjectAccessControlsPeriodGetParams,
+    params: StoragePeriodManagedFoldersPeriodGetParams,
 ) -> Result<
-    crate::google_rest_apis::storage_v1::models::ObjectAccessControl,
-    Error<StoragePeriodObjectAccessControlsPeriodGetError>,
+    crate::google_rest_apis::storage_v1::models::ManagedFolder,
+    Error<StoragePeriodManagedFoldersPeriodGetError>,
 > {
     let local_var_configuration = configuration;
 
     // unbox the parameters
     let bucket = params.bucket;
-    let object = params.object;
-    let entity = params.entity;
+    let managed_folder = params.managed_folder;
     let alt = params.alt;
     let fields = params.fields;
     let key = params.key;
@@ -368,17 +381,16 @@ pub async fn storage_object_access_controls_get(
     let quota_user = params.quota_user;
     let upload_type = params.upload_type;
     let user_ip = params.user_ip;
-    let generation = params.generation;
-    let user_project = params.user_project;
+    let if_metageneration_match = params.if_metageneration_match;
+    let if_metageneration_not_match = params.if_metageneration_not_match;
 
     let local_var_client = &local_var_configuration.client;
 
     let local_var_uri_str = format!(
-        "{}/b/{bucket}/o/{object}/acl/{entity}",
+        "{}/b/{bucket}/managedFolders/{managedFolder}",
         local_var_configuration.base_path,
         bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket),
-        object = crate::google_rest_apis::storage_v1::apis::urlencode(object),
-        entity = crate::google_rest_apis::storage_v1::apis::urlencode(entity)
+        managedFolder = crate::google_rest_apis::storage_v1::apis::urlencode(managed_folder)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
@@ -413,9 +425,113 @@ pub async fn storage_object_access_controls_get(
         local_var_req_builder =
             local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_str) = generation {
+    if let Some(ref local_var_str) = if_metageneration_match {
         local_var_req_builder =
-            local_var_req_builder.query(&[("generation", &local_var_str.to_string())]);
+            local_var_req_builder.query(&[("ifMetagenerationMatch", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = if_metageneration_not_match {
+        local_var_req_builder = local_var_req_builder
+            .query(&[("ifMetagenerationNotMatch", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder =
+            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        serde_json::from_str(&local_var_content).map_err(Error::from)
+    } else {
+        let local_var_entity: Option<StoragePeriodManagedFoldersPeriodGetError> =
+            serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent {
+            status: local_var_status,
+            content: local_var_content,
+            entity: local_var_entity,
+        };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
+/// Returns an IAM policy for the specified managed folder.
+pub async fn storage_managed_folders_get_iam_policy(
+    configuration: &configuration::Configuration,
+    params: StoragePeriodManagedFoldersPeriodGetIamPolicyParams,
+) -> Result<
+    crate::google_rest_apis::storage_v1::models::Policy,
+    Error<StoragePeriodManagedFoldersPeriodGetIamPolicyError>,
+> {
+    let local_var_configuration = configuration;
+
+    // unbox the parameters
+    let bucket = params.bucket;
+    let managed_folder = params.managed_folder;
+    let alt = params.alt;
+    let fields = params.fields;
+    let key = params.key;
+    let oauth_token = params.oauth_token;
+    let pretty_print = params.pretty_print;
+    let quota_user = params.quota_user;
+    let upload_type = params.upload_type;
+    let user_ip = params.user_ip;
+    let options_requested_policy_version = params.options_requested_policy_version;
+    let user_project = params.user_project;
+
+    let local_var_client = &local_var_configuration.client;
+
+    let local_var_uri_str = format!(
+        "{}/b/{bucket}/managedFolders/{managedFolder}/iam",
+        local_var_configuration.base_path,
+        bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket),
+        managedFolder = crate::google_rest_apis::storage_v1::apis::urlencode(managed_folder)
+    );
+    let mut local_var_req_builder =
+        local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_str) = alt {
+        local_var_req_builder = local_var_req_builder.query(&[("alt", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = fields {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("fields", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = key {
+        local_var_req_builder = local_var_req_builder.query(&[("key", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = oauth_token {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("oauth_token", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = pretty_print {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("prettyPrint", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = quota_user {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("quotaUser", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = upload_type {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("uploadType", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = user_ip {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = options_requested_policy_version {
+        local_var_req_builder = local_var_req_builder
+            .query(&[("optionsRequestedPolicyVersion", &local_var_str.to_string())]);
     }
     if let Some(ref local_var_str) = user_project {
         local_var_req_builder =
@@ -441,7 +557,7 @@ pub async fn storage_object_access_controls_get(
     if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
         serde_json::from_str(&local_var_content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<StoragePeriodObjectAccessControlsPeriodGetError> =
+        let local_var_entity: Option<StoragePeriodManagedFoldersPeriodGetIamPolicyError> =
             serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent {
             status: local_var_status,
@@ -452,19 +568,18 @@ pub async fn storage_object_access_controls_get(
     }
 }
 
-/// Creates a new ACL entry on the specified object.
-pub async fn storage_object_access_controls_insert(
+/// Creates a new managed folder.
+pub async fn storage_managed_folders_insert(
     configuration: &configuration::Configuration,
-    params: StoragePeriodObjectAccessControlsPeriodInsertParams,
+    params: StoragePeriodManagedFoldersPeriodInsertParams,
 ) -> Result<
-    crate::google_rest_apis::storage_v1::models::ObjectAccessControl,
-    Error<StoragePeriodObjectAccessControlsPeriodInsertError>,
+    crate::google_rest_apis::storage_v1::models::ManagedFolder,
+    Error<StoragePeriodManagedFoldersPeriodInsertError>,
 > {
     let local_var_configuration = configuration;
 
     // unbox the parameters
     let bucket = params.bucket;
-    let object = params.object;
     let alt = params.alt;
     let fields = params.fields;
     let key = params.key;
@@ -473,17 +588,14 @@ pub async fn storage_object_access_controls_insert(
     let quota_user = params.quota_user;
     let upload_type = params.upload_type;
     let user_ip = params.user_ip;
-    let generation = params.generation;
-    let user_project = params.user_project;
-    let object_access_control = params.object_access_control;
+    let managed_folder = params.managed_folder;
 
     let local_var_client = &local_var_configuration.client;
 
     let local_var_uri_str = format!(
-        "{}/b/{bucket}/o/{object}/acl",
+        "{}/b/{bucket}/managedFolders",
         local_var_configuration.base_path,
-        bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket),
-        object = crate::google_rest_apis::storage_v1::apis::urlencode(object)
+        bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
@@ -518,14 +630,6 @@ pub async fn storage_object_access_controls_insert(
         local_var_req_builder =
             local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_str) = generation {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("generation", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = user_project {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("userProject", &local_var_str.to_string())]);
-    }
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
@@ -536,7 +640,7 @@ pub async fn storage_object_access_controls_insert(
     if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };
-    local_var_req_builder = local_var_req_builder.json(&object_access_control);
+    local_var_req_builder = local_var_req_builder.json(&managed_folder);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -547,7 +651,7 @@ pub async fn storage_object_access_controls_insert(
     if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
         serde_json::from_str(&local_var_content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<StoragePeriodObjectAccessControlsPeriodInsertError> =
+        let local_var_entity: Option<StoragePeriodManagedFoldersPeriodInsertError> =
             serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent {
             status: local_var_status,
@@ -558,19 +662,18 @@ pub async fn storage_object_access_controls_insert(
     }
 }
 
-/// Retrieves ACL entries on the specified object.
-pub async fn storage_object_access_controls_list(
+/// Lists managed folders in the given bucket.
+pub async fn storage_managed_folders_list(
     configuration: &configuration::Configuration,
-    params: StoragePeriodObjectAccessControlsPeriodListParams,
+    params: StoragePeriodManagedFoldersPeriodListParams,
 ) -> Result<
-    crate::google_rest_apis::storage_v1::models::ObjectAccessControls,
-    Error<StoragePeriodObjectAccessControlsPeriodListError>,
+    crate::google_rest_apis::storage_v1::models::ManagedFolders,
+    Error<StoragePeriodManagedFoldersPeriodListError>,
 > {
     let local_var_configuration = configuration;
 
     // unbox the parameters
     let bucket = params.bucket;
-    let object = params.object;
     let alt = params.alt;
     let fields = params.fields;
     let key = params.key;
@@ -579,16 +682,16 @@ pub async fn storage_object_access_controls_list(
     let quota_user = params.quota_user;
     let upload_type = params.upload_type;
     let user_ip = params.user_ip;
-    let generation = params.generation;
-    let user_project = params.user_project;
+    let page_size = params.page_size;
+    let page_token = params.page_token;
+    let prefix = params.prefix;
 
     let local_var_client = &local_var_configuration.client;
 
     let local_var_uri_str = format!(
-        "{}/b/{bucket}/o/{object}/acl",
+        "{}/b/{bucket}/managedFolders",
         local_var_configuration.base_path,
-        bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket),
-        object = crate::google_rest_apis::storage_v1::apis::urlencode(object)
+        bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
@@ -623,13 +726,17 @@ pub async fn storage_object_access_controls_list(
         local_var_req_builder =
             local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_str) = generation {
+    if let Some(ref local_var_str) = page_size {
         local_var_req_builder =
-            local_var_req_builder.query(&[("generation", &local_var_str.to_string())]);
+            local_var_req_builder.query(&[("pageSize", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_str) = user_project {
+    if let Some(ref local_var_str) = page_token {
         local_var_req_builder =
-            local_var_req_builder.query(&[("userProject", &local_var_str.to_string())]);
+            local_var_req_builder.query(&[("pageToken", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = prefix {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("prefix", &local_var_str.to_string())]);
     }
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
@@ -651,7 +758,7 @@ pub async fn storage_object_access_controls_list(
     if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
         serde_json::from_str(&local_var_content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<StoragePeriodObjectAccessControlsPeriodListError> =
+        let local_var_entity: Option<StoragePeriodManagedFoldersPeriodListError> =
             serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent {
             status: local_var_status,
@@ -662,20 +769,19 @@ pub async fn storage_object_access_controls_list(
     }
 }
 
-/// Patches an ACL entry on the specified object.
-pub async fn storage_object_access_controls_patch(
+/// Updates an IAM policy for the specified managed folder.
+pub async fn storage_managed_folders_set_iam_policy(
     configuration: &configuration::Configuration,
-    params: StoragePeriodObjectAccessControlsPeriodPatchParams,
+    params: StoragePeriodManagedFoldersPeriodSetIamPolicyParams,
 ) -> Result<
-    crate::google_rest_apis::storage_v1::models::ObjectAccessControl,
-    Error<StoragePeriodObjectAccessControlsPeriodPatchError>,
+    crate::google_rest_apis::storage_v1::models::Policy,
+    Error<StoragePeriodManagedFoldersPeriodSetIamPolicyError>,
 > {
     let local_var_configuration = configuration;
 
     // unbox the parameters
     let bucket = params.bucket;
-    let object = params.object;
-    let entity = params.entity;
+    let managed_folder = params.managed_folder;
     let alt = params.alt;
     let fields = params.fields;
     let key = params.key;
@@ -684,126 +790,16 @@ pub async fn storage_object_access_controls_patch(
     let quota_user = params.quota_user;
     let upload_type = params.upload_type;
     let user_ip = params.user_ip;
-    let generation = params.generation;
     let user_project = params.user_project;
-    let object_access_control = params.object_access_control;
+    let policy = params.policy;
 
     let local_var_client = &local_var_configuration.client;
 
     let local_var_uri_str = format!(
-        "{}/b/{bucket}/o/{object}/acl/{entity}",
+        "{}/b/{bucket}/managedFolders/{managedFolder}/iam",
         local_var_configuration.base_path,
         bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket),
-        object = crate::google_rest_apis::storage_v1::apis::urlencode(object),
-        entity = crate::google_rest_apis::storage_v1::apis::urlencode(entity)
-    );
-    let mut local_var_req_builder =
-        local_var_client.request(reqwest::Method::PATCH, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_str) = alt {
-        local_var_req_builder = local_var_req_builder.query(&[("alt", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = fields {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("fields", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = key {
-        local_var_req_builder = local_var_req_builder.query(&[("key", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = oauth_token {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("oauth_token", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = pretty_print {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("prettyPrint", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = quota_user {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("quotaUser", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = upload_type {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("uploadType", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = user_ip {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = generation {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("generation", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = user_project {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("userProject", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder =
-            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
-    }
-    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
-    };
-    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
-    };
-    local_var_req_builder = local_var_req_builder.json(&object_access_control);
-
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
-
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
-
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
-    } else {
-        let local_var_entity: Option<StoragePeriodObjectAccessControlsPeriodPatchError> =
-            serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent {
-            status: local_var_status,
-            content: local_var_content,
-            entity: local_var_entity,
-        };
-        Err(Error::ResponseError(local_var_error))
-    }
-}
-
-/// Updates an ACL entry on the specified object.
-pub async fn storage_object_access_controls_update(
-    configuration: &configuration::Configuration,
-    params: StoragePeriodObjectAccessControlsPeriodUpdateParams,
-) -> Result<
-    crate::google_rest_apis::storage_v1::models::ObjectAccessControl,
-    Error<StoragePeriodObjectAccessControlsPeriodUpdateError>,
-> {
-    let local_var_configuration = configuration;
-
-    // unbox the parameters
-    let bucket = params.bucket;
-    let object = params.object;
-    let entity = params.entity;
-    let alt = params.alt;
-    let fields = params.fields;
-    let key = params.key;
-    let oauth_token = params.oauth_token;
-    let pretty_print = params.pretty_print;
-    let quota_user = params.quota_user;
-    let upload_type = params.upload_type;
-    let user_ip = params.user_ip;
-    let generation = params.generation;
-    let user_project = params.user_project;
-    let object_access_control = params.object_access_control;
-
-    let local_var_client = &local_var_configuration.client;
-
-    let local_var_uri_str = format!(
-        "{}/b/{bucket}/o/{object}/acl/{entity}",
-        local_var_configuration.base_path,
-        bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket),
-        object = crate::google_rest_apis::storage_v1::apis::urlencode(object),
-        entity = crate::google_rest_apis::storage_v1::apis::urlencode(entity)
+        managedFolder = crate::google_rest_apis::storage_v1::apis::urlencode(managed_folder)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::PUT, local_var_uri_str.as_str());
@@ -838,10 +834,6 @@ pub async fn storage_object_access_controls_update(
         local_var_req_builder =
             local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_str) = generation {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("generation", &local_var_str.to_string())]);
-    }
     if let Some(ref local_var_str) = user_project {
         local_var_req_builder =
             local_var_req_builder.query(&[("userProject", &local_var_str.to_string())]);
@@ -856,7 +848,7 @@ pub async fn storage_object_access_controls_update(
     if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };
-    local_var_req_builder = local_var_req_builder.json(&object_access_control);
+    local_var_req_builder = local_var_req_builder.json(&policy);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -867,7 +859,124 @@ pub async fn storage_object_access_controls_update(
     if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
         serde_json::from_str(&local_var_content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<StoragePeriodObjectAccessControlsPeriodUpdateError> =
+        let local_var_entity: Option<StoragePeriodManagedFoldersPeriodSetIamPolicyError> =
+            serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent {
+            status: local_var_status,
+            content: local_var_content,
+            entity: local_var_entity,
+        };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
+/// Tests a set of permissions on the given managed folder to see which, if any, are held by the caller.
+pub async fn storage_managed_folders_test_iam_permissions(
+    configuration: &configuration::Configuration,
+    params: StoragePeriodManagedFoldersPeriodTestIamPermissionsParams,
+) -> Result<
+    crate::google_rest_apis::storage_v1::models::TestIamPermissionsResponse,
+    Error<StoragePeriodManagedFoldersPeriodTestIamPermissionsError>,
+> {
+    let local_var_configuration = configuration;
+
+    // unbox the parameters
+    let bucket = params.bucket;
+    let managed_folder = params.managed_folder;
+    let permissions = params.permissions;
+    let alt = params.alt;
+    let fields = params.fields;
+    let key = params.key;
+    let oauth_token = params.oauth_token;
+    let pretty_print = params.pretty_print;
+    let quota_user = params.quota_user;
+    let upload_type = params.upload_type;
+    let user_ip = params.user_ip;
+    let user_project = params.user_project;
+
+    let local_var_client = &local_var_configuration.client;
+
+    let local_var_uri_str = format!(
+        "{}/b/{bucket}/managedFolders/{managedFolder}/iam/testPermissions",
+        local_var_configuration.base_path,
+        bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket),
+        managedFolder = crate::google_rest_apis::storage_v1::apis::urlencode(managed_folder)
+    );
+    let mut local_var_req_builder =
+        local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_str) = alt {
+        local_var_req_builder = local_var_req_builder.query(&[("alt", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = fields {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("fields", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = key {
+        local_var_req_builder = local_var_req_builder.query(&[("key", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = oauth_token {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("oauth_token", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = pretty_print {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("prettyPrint", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = quota_user {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("quotaUser", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = upload_type {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("uploadType", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = user_ip {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
+    }
+    local_var_req_builder = match "multi" {
+        "multi" => local_var_req_builder.query(
+            &permissions
+                .into_iter()
+                .map(|p| ("permissions".to_owned(), p.to_string()))
+                .collect::<Vec<(std::string::String, std::string::String)>>(),
+        ),
+        _ => local_var_req_builder.query(&[(
+            "permissions",
+            &permissions
+                .into_iter()
+                .map(|p| p.to_string())
+                .collect::<Vec<String>>()
+                .join(",")
+                .to_string(),
+        )]),
+    };
+    if let Some(ref local_var_str) = user_project {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("userProject", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder =
+            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        serde_json::from_str(&local_var_content).map_err(Error::from)
+    } else {
+        let local_var_entity: Option<StoragePeriodManagedFoldersPeriodTestIamPermissionsError> =
             serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent {
             status: local_var_status,

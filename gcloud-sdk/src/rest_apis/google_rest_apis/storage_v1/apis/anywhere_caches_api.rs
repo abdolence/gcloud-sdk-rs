@@ -13,15 +13,13 @@ use reqwest;
 use super::{configuration, Error};
 use crate::google_rest_apis::storage_v1::apis::ResponseContent;
 
-/// struct for passing parameters to the method [`storage_object_access_controls_delete`]
+/// struct for passing parameters to the method [`storage_anywhere_caches_disable`]
 #[derive(Clone, Debug, Default)]
-pub struct StoragePeriodObjectAccessControlsPeriodDeleteParams {
-    /// Name of a bucket.
+pub struct StoragePeriodAnywhereCachesPeriodDisableParams {
+    /// Name of the parent bucket.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
-    pub object: String,
-    /// The entity holding the permission. Can be user-userId, user-emailAddress, group-groupId, group-emailAddress, allUsers, or allAuthenticatedUsers.
-    pub entity: String,
+    /// The ID of requested Anywhere Cache instance.
+    pub anywhere_cache_id: String,
     /// Data format for the response.
     pub alt: Option<String>,
     /// Selector specifying which fields to include in a partial response.
@@ -38,21 +36,15 @@ pub struct StoragePeriodObjectAccessControlsPeriodDeleteParams {
     pub upload_type: Option<String>,
     /// Deprecated. Please use quotaUser instead.
     pub user_ip: Option<String>,
-    /// If present, selects a specific revision of this object (as opposed to the latest version, the default).
-    pub generation: Option<String>,
-    /// The project to be billed for this request. Required for Requester Pays buckets.
-    pub user_project: Option<String>,
 }
 
-/// struct for passing parameters to the method [`storage_object_access_controls_get`]
+/// struct for passing parameters to the method [`storage_anywhere_caches_get`]
 #[derive(Clone, Debug, Default)]
-pub struct StoragePeriodObjectAccessControlsPeriodGetParams {
-    /// Name of a bucket.
+pub struct StoragePeriodAnywhereCachesPeriodGetParams {
+    /// Name of the parent bucket.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
-    pub object: String,
-    /// The entity holding the permission. Can be user-userId, user-emailAddress, group-groupId, group-emailAddress, allUsers, or allAuthenticatedUsers.
-    pub entity: String,
+    /// The ID of requested Anywhere Cache instance.
+    pub anywhere_cache_id: String,
     /// Data format for the response.
     pub alt: Option<String>,
     /// Selector specifying which fields to include in a partial response.
@@ -69,19 +61,13 @@ pub struct StoragePeriodObjectAccessControlsPeriodGetParams {
     pub upload_type: Option<String>,
     /// Deprecated. Please use quotaUser instead.
     pub user_ip: Option<String>,
-    /// If present, selects a specific revision of this object (as opposed to the latest version, the default).
-    pub generation: Option<String>,
-    /// The project to be billed for this request. Required for Requester Pays buckets.
-    pub user_project: Option<String>,
 }
 
-/// struct for passing parameters to the method [`storage_object_access_controls_insert`]
+/// struct for passing parameters to the method [`storage_anywhere_caches_insert`]
 #[derive(Clone, Debug, Default)]
-pub struct StoragePeriodObjectAccessControlsPeriodInsertParams {
-    /// Name of a bucket.
+pub struct StoragePeriodAnywhereCachesPeriodInsertParams {
+    /// Name of the parent bucket.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
-    pub object: String,
     /// Data format for the response.
     pub alt: Option<String>,
     /// Selector specifying which fields to include in a partial response.
@@ -98,21 +84,14 @@ pub struct StoragePeriodObjectAccessControlsPeriodInsertParams {
     pub upload_type: Option<String>,
     /// Deprecated. Please use quotaUser instead.
     pub user_ip: Option<String>,
-    /// If present, selects a specific revision of this object (as opposed to the latest version, the default).
-    pub generation: Option<String>,
-    /// The project to be billed for this request. Required for Requester Pays buckets.
-    pub user_project: Option<String>,
-    pub object_access_control:
-        Option<crate::google_rest_apis::storage_v1::models::ObjectAccessControl>,
+    pub anywhere_cache: Option<crate::google_rest_apis::storage_v1::models::AnywhereCache>,
 }
 
-/// struct for passing parameters to the method [`storage_object_access_controls_list`]
+/// struct for passing parameters to the method [`storage_anywhere_caches_list`]
 #[derive(Clone, Debug, Default)]
-pub struct StoragePeriodObjectAccessControlsPeriodListParams {
-    /// Name of a bucket.
+pub struct StoragePeriodAnywhereCachesPeriodListParams {
+    /// Name of the parent bucket.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
-    pub object: String,
     /// Data format for the response.
     pub alt: Option<String>,
     /// Selector specifying which fields to include in a partial response.
@@ -129,21 +108,19 @@ pub struct StoragePeriodObjectAccessControlsPeriodListParams {
     pub upload_type: Option<String>,
     /// Deprecated. Please use quotaUser instead.
     pub user_ip: Option<String>,
-    /// If present, selects a specific revision of this object (as opposed to the latest version, the default).
-    pub generation: Option<String>,
-    /// The project to be billed for this request. Required for Requester Pays buckets.
-    pub user_project: Option<String>,
+    /// Maximum number of items to return in a single page of responses. Maximum 1000.
+    pub page_size: Option<i32>,
+    /// A previously-returned page token representing part of the larger set of results to view.
+    pub page_token: Option<String>,
 }
 
-/// struct for passing parameters to the method [`storage_object_access_controls_patch`]
+/// struct for passing parameters to the method [`storage_anywhere_caches_pause`]
 #[derive(Clone, Debug, Default)]
-pub struct StoragePeriodObjectAccessControlsPeriodPatchParams {
-    /// Name of a bucket.
+pub struct StoragePeriodAnywhereCachesPeriodPauseParams {
+    /// Name of the parent bucket.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
-    pub object: String,
-    /// The entity holding the permission. Can be user-userId, user-emailAddress, group-groupId, group-emailAddress, allUsers, or allAuthenticatedUsers.
-    pub entity: String,
+    /// The ID of requested Anywhere Cache instance.
+    pub anywhere_cache_id: String,
     /// Data format for the response.
     pub alt: Option<String>,
     /// Selector specifying which fields to include in a partial response.
@@ -160,23 +137,15 @@ pub struct StoragePeriodObjectAccessControlsPeriodPatchParams {
     pub upload_type: Option<String>,
     /// Deprecated. Please use quotaUser instead.
     pub user_ip: Option<String>,
-    /// If present, selects a specific revision of this object (as opposed to the latest version, the default).
-    pub generation: Option<String>,
-    /// The project to be billed for this request. Required for Requester Pays buckets.
-    pub user_project: Option<String>,
-    pub object_access_control:
-        Option<crate::google_rest_apis::storage_v1::models::ObjectAccessControl>,
 }
 
-/// struct for passing parameters to the method [`storage_object_access_controls_update`]
+/// struct for passing parameters to the method [`storage_anywhere_caches_resume`]
 #[derive(Clone, Debug, Default)]
-pub struct StoragePeriodObjectAccessControlsPeriodUpdateParams {
-    /// Name of a bucket.
+pub struct StoragePeriodAnywhereCachesPeriodResumeParams {
+    /// Name of the parent bucket.
     pub bucket: String,
-    /// Name of the object. For information about how to URL encode object names to be path safe, see [Encoding URI Path Parts](https://cloud.google.com/storage/docs/request-endpoints#encoding).
-    pub object: String,
-    /// The entity holding the permission. Can be user-userId, user-emailAddress, group-groupId, group-emailAddress, allUsers, or allAuthenticatedUsers.
-    pub entity: String,
+    /// The ID of requested Anywhere Cache instance.
+    pub anywhere_cache_id: String,
     /// Data format for the response.
     pub alt: Option<String>,
     /// Selector specifying which fields to include in a partial response.
@@ -193,173 +162,96 @@ pub struct StoragePeriodObjectAccessControlsPeriodUpdateParams {
     pub upload_type: Option<String>,
     /// Deprecated. Please use quotaUser instead.
     pub user_ip: Option<String>,
-    /// If present, selects a specific revision of this object (as opposed to the latest version, the default).
-    pub generation: Option<String>,
-    /// The project to be billed for this request. Required for Requester Pays buckets.
-    pub user_project: Option<String>,
-    pub object_access_control:
-        Option<crate::google_rest_apis::storage_v1::models::ObjectAccessControl>,
 }
 
-/// struct for typed errors of method [`storage_object_access_controls_delete`]
+/// struct for passing parameters to the method [`storage_anywhere_caches_update`]
+#[derive(Clone, Debug, Default)]
+pub struct StoragePeriodAnywhereCachesPeriodUpdateParams {
+    /// Name of the parent bucket.
+    pub bucket: String,
+    /// The ID of requested Anywhere Cache instance.
+    pub anywhere_cache_id: String,
+    /// Data format for the response.
+    pub alt: Option<String>,
+    /// Selector specifying which fields to include in a partial response.
+    pub fields: Option<String>,
+    /// API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.
+    pub key: Option<String>,
+    /// OAuth 2.0 token for the current user.
+    pub oauth_token: Option<String>,
+    /// Returns response with indentations and line breaks.
+    pub pretty_print: Option<bool>,
+    /// An opaque string that represents a user for quota purposes. Must not exceed 40 characters.
+    pub quota_user: Option<String>,
+    /// Upload protocol for media (e.g. \"media\", \"multipart\", \"resumable\").
+    pub upload_type: Option<String>,
+    /// Deprecated. Please use quotaUser instead.
+    pub user_ip: Option<String>,
+    pub anywhere_cache: Option<crate::google_rest_apis::storage_v1::models::AnywhereCache>,
+}
+
+/// struct for typed errors of method [`storage_anywhere_caches_disable`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum StoragePeriodObjectAccessControlsPeriodDeleteError {
+pub enum StoragePeriodAnywhereCachesPeriodDisableError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`storage_object_access_controls_get`]
+/// struct for typed errors of method [`storage_anywhere_caches_get`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum StoragePeriodObjectAccessControlsPeriodGetError {
+pub enum StoragePeriodAnywhereCachesPeriodGetError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`storage_object_access_controls_insert`]
+/// struct for typed errors of method [`storage_anywhere_caches_insert`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum StoragePeriodObjectAccessControlsPeriodInsertError {
+pub enum StoragePeriodAnywhereCachesPeriodInsertError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`storage_object_access_controls_list`]
+/// struct for typed errors of method [`storage_anywhere_caches_list`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum StoragePeriodObjectAccessControlsPeriodListError {
+pub enum StoragePeriodAnywhereCachesPeriodListError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`storage_object_access_controls_patch`]
+/// struct for typed errors of method [`storage_anywhere_caches_pause`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum StoragePeriodObjectAccessControlsPeriodPatchError {
+pub enum StoragePeriodAnywhereCachesPeriodPauseError {
     UnknownValue(serde_json::Value),
 }
 
-/// struct for typed errors of method [`storage_object_access_controls_update`]
+/// struct for typed errors of method [`storage_anywhere_caches_resume`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum StoragePeriodObjectAccessControlsPeriodUpdateError {
+pub enum StoragePeriodAnywhereCachesPeriodResumeError {
     UnknownValue(serde_json::Value),
 }
 
-/// Permanently deletes the ACL entry for the specified entity on the specified object.
-pub async fn storage_object_access_controls_delete(
+/// struct for typed errors of method [`storage_anywhere_caches_update`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum StoragePeriodAnywhereCachesPeriodUpdateError {
+    UnknownValue(serde_json::Value),
+}
+
+/// Disables an Anywhere Cache instance.
+pub async fn storage_anywhere_caches_disable(
     configuration: &configuration::Configuration,
-    params: StoragePeriodObjectAccessControlsPeriodDeleteParams,
-) -> Result<(), Error<StoragePeriodObjectAccessControlsPeriodDeleteError>> {
-    let local_var_configuration = configuration;
-
-    // unbox the parameters
-    let bucket = params.bucket;
-    let object = params.object;
-    let entity = params.entity;
-    let alt = params.alt;
-    let fields = params.fields;
-    let key = params.key;
-    let oauth_token = params.oauth_token;
-    let pretty_print = params.pretty_print;
-    let quota_user = params.quota_user;
-    let upload_type = params.upload_type;
-    let user_ip = params.user_ip;
-    let generation = params.generation;
-    let user_project = params.user_project;
-
-    let local_var_client = &local_var_configuration.client;
-
-    let local_var_uri_str = format!(
-        "{}/b/{bucket}/o/{object}/acl/{entity}",
-        local_var_configuration.base_path,
-        bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket),
-        object = crate::google_rest_apis::storage_v1::apis::urlencode(object),
-        entity = crate::google_rest_apis::storage_v1::apis::urlencode(entity)
-    );
-    let mut local_var_req_builder =
-        local_var_client.request(reqwest::Method::DELETE, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_str) = alt {
-        local_var_req_builder = local_var_req_builder.query(&[("alt", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = fields {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("fields", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = key {
-        local_var_req_builder = local_var_req_builder.query(&[("key", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = oauth_token {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("oauth_token", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = pretty_print {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("prettyPrint", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = quota_user {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("quotaUser", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = upload_type {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("uploadType", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = user_ip {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = generation {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("generation", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = user_project {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("userProject", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder =
-            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
-    }
-    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
-    };
-    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
-    };
-
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
-
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
-
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        Ok(())
-    } else {
-        let local_var_entity: Option<StoragePeriodObjectAccessControlsPeriodDeleteError> =
-            serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent {
-            status: local_var_status,
-            content: local_var_content,
-            entity: local_var_entity,
-        };
-        Err(Error::ResponseError(local_var_error))
-    }
-}
-
-/// Returns the ACL entry for the specified entity on the specified object.
-pub async fn storage_object_access_controls_get(
-    configuration: &configuration::Configuration,
-    params: StoragePeriodObjectAccessControlsPeriodGetParams,
+    params: StoragePeriodAnywhereCachesPeriodDisableParams,
 ) -> Result<
-    crate::google_rest_apis::storage_v1::models::ObjectAccessControl,
-    Error<StoragePeriodObjectAccessControlsPeriodGetError>,
+    crate::google_rest_apis::storage_v1::models::AnywhereCache,
+    Error<StoragePeriodAnywhereCachesPeriodDisableError>,
 > {
     let local_var_configuration = configuration;
 
     // unbox the parameters
     let bucket = params.bucket;
-    let object = params.object;
-    let entity = params.entity;
+    let anywhere_cache_id = params.anywhere_cache_id;
     let alt = params.alt;
     let fields = params.fields;
     let key = params.key;
@@ -368,122 +260,14 @@ pub async fn storage_object_access_controls_get(
     let quota_user = params.quota_user;
     let upload_type = params.upload_type;
     let user_ip = params.user_ip;
-    let generation = params.generation;
-    let user_project = params.user_project;
 
     let local_var_client = &local_var_configuration.client;
 
     let local_var_uri_str = format!(
-        "{}/b/{bucket}/o/{object}/acl/{entity}",
+        "{}/b/{bucket}/anywhereCaches/{anywhereCacheId}/disable",
         local_var_configuration.base_path,
         bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket),
-        object = crate::google_rest_apis::storage_v1::apis::urlencode(object),
-        entity = crate::google_rest_apis::storage_v1::apis::urlencode(entity)
-    );
-    let mut local_var_req_builder =
-        local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_str) = alt {
-        local_var_req_builder = local_var_req_builder.query(&[("alt", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = fields {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("fields", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = key {
-        local_var_req_builder = local_var_req_builder.query(&[("key", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = oauth_token {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("oauth_token", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = pretty_print {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("prettyPrint", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = quota_user {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("quotaUser", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = upload_type {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("uploadType", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = user_ip {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = generation {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("generation", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = user_project {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("userProject", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder =
-            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
-    }
-    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
-    };
-    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
-    };
-
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
-
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
-
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
-    } else {
-        let local_var_entity: Option<StoragePeriodObjectAccessControlsPeriodGetError> =
-            serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent {
-            status: local_var_status,
-            content: local_var_content,
-            entity: local_var_entity,
-        };
-        Err(Error::ResponseError(local_var_error))
-    }
-}
-
-/// Creates a new ACL entry on the specified object.
-pub async fn storage_object_access_controls_insert(
-    configuration: &configuration::Configuration,
-    params: StoragePeriodObjectAccessControlsPeriodInsertParams,
-) -> Result<
-    crate::google_rest_apis::storage_v1::models::ObjectAccessControl,
-    Error<StoragePeriodObjectAccessControlsPeriodInsertError>,
-> {
-    let local_var_configuration = configuration;
-
-    // unbox the parameters
-    let bucket = params.bucket;
-    let object = params.object;
-    let alt = params.alt;
-    let fields = params.fields;
-    let key = params.key;
-    let oauth_token = params.oauth_token;
-    let pretty_print = params.pretty_print;
-    let quota_user = params.quota_user;
-    let upload_type = params.upload_type;
-    let user_ip = params.user_ip;
-    let generation = params.generation;
-    let user_project = params.user_project;
-    let object_access_control = params.object_access_control;
-
-    let local_var_client = &local_var_configuration.client;
-
-    let local_var_uri_str = format!(
-        "{}/b/{bucket}/o/{object}/acl",
-        local_var_configuration.base_path,
-        bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket),
-        object = crate::google_rest_apis::storage_v1::apis::urlencode(object)
+        anywhereCacheId = crate::google_rest_apis::storage_v1::apis::urlencode(anywhere_cache_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
@@ -518,14 +302,6 @@ pub async fn storage_object_access_controls_insert(
         local_var_req_builder =
             local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_str) = generation {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("generation", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = user_project {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("userProject", &local_var_str.to_string())]);
-    }
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
@@ -536,7 +312,6 @@ pub async fn storage_object_access_controls_insert(
     if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };
-    local_var_req_builder = local_var_req_builder.json(&object_access_control);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -547,7 +322,7 @@ pub async fn storage_object_access_controls_insert(
     if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
         serde_json::from_str(&local_var_content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<StoragePeriodObjectAccessControlsPeriodInsertError> =
+        let local_var_entity: Option<StoragePeriodAnywhereCachesPeriodDisableError> =
             serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent {
             status: local_var_status,
@@ -558,19 +333,19 @@ pub async fn storage_object_access_controls_insert(
     }
 }
 
-/// Retrieves ACL entries on the specified object.
-pub async fn storage_object_access_controls_list(
+/// Returns the metadata of an Anywhere Cache instance.
+pub async fn storage_anywhere_caches_get(
     configuration: &configuration::Configuration,
-    params: StoragePeriodObjectAccessControlsPeriodListParams,
+    params: StoragePeriodAnywhereCachesPeriodGetParams,
 ) -> Result<
-    crate::google_rest_apis::storage_v1::models::ObjectAccessControls,
-    Error<StoragePeriodObjectAccessControlsPeriodListError>,
+    crate::google_rest_apis::storage_v1::models::AnywhereCache,
+    Error<StoragePeriodAnywhereCachesPeriodGetError>,
 > {
     let local_var_configuration = configuration;
 
     // unbox the parameters
     let bucket = params.bucket;
-    let object = params.object;
+    let anywhere_cache_id = params.anywhere_cache_id;
     let alt = params.alt;
     let fields = params.fields;
     let key = params.key;
@@ -579,16 +354,14 @@ pub async fn storage_object_access_controls_list(
     let quota_user = params.quota_user;
     let upload_type = params.upload_type;
     let user_ip = params.user_ip;
-    let generation = params.generation;
-    let user_project = params.user_project;
 
     let local_var_client = &local_var_configuration.client;
 
     let local_var_uri_str = format!(
-        "{}/b/{bucket}/o/{object}/acl",
+        "{}/b/{bucket}/anywhereCaches/{anywhereCacheId}",
         local_var_configuration.base_path,
         bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket),
-        object = crate::google_rest_apis::storage_v1::apis::urlencode(object)
+        anywhereCacheId = crate::google_rest_apis::storage_v1::apis::urlencode(anywhere_cache_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
@@ -623,13 +396,201 @@ pub async fn storage_object_access_controls_list(
         local_var_req_builder =
             local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_str) = generation {
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
-            local_var_req_builder.query(&[("generation", &local_var_str.to_string())]);
+            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    if let Some(ref local_var_str) = user_project {
+    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        serde_json::from_str(&local_var_content).map_err(Error::from)
+    } else {
+        let local_var_entity: Option<StoragePeriodAnywhereCachesPeriodGetError> =
+            serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent {
+            status: local_var_status,
+            content: local_var_content,
+            entity: local_var_entity,
+        };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
+/// Creates an Anywhere Cache instance.
+pub async fn storage_anywhere_caches_insert(
+    configuration: &configuration::Configuration,
+    params: StoragePeriodAnywhereCachesPeriodInsertParams,
+) -> Result<
+    crate::google_rest_apis::storage_v1::models::GoogleLongrunningOperation,
+    Error<StoragePeriodAnywhereCachesPeriodInsertError>,
+> {
+    let local_var_configuration = configuration;
+
+    // unbox the parameters
+    let bucket = params.bucket;
+    let alt = params.alt;
+    let fields = params.fields;
+    let key = params.key;
+    let oauth_token = params.oauth_token;
+    let pretty_print = params.pretty_print;
+    let quota_user = params.quota_user;
+    let upload_type = params.upload_type;
+    let user_ip = params.user_ip;
+    let anywhere_cache = params.anywhere_cache;
+
+    let local_var_client = &local_var_configuration.client;
+
+    let local_var_uri_str = format!(
+        "{}/b/{bucket}/anywhereCaches",
+        local_var_configuration.base_path,
+        bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket)
+    );
+    let mut local_var_req_builder =
+        local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_str) = alt {
+        local_var_req_builder = local_var_req_builder.query(&[("alt", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = fields {
         local_var_req_builder =
-            local_var_req_builder.query(&[("userProject", &local_var_str.to_string())]);
+            local_var_req_builder.query(&[("fields", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = key {
+        local_var_req_builder = local_var_req_builder.query(&[("key", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = oauth_token {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("oauth_token", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = pretty_print {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("prettyPrint", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = quota_user {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("quotaUser", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = upload_type {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("uploadType", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = user_ip {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder =
+            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+    local_var_req_builder = local_var_req_builder.json(&anywhere_cache);
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        serde_json::from_str(&local_var_content).map_err(Error::from)
+    } else {
+        let local_var_entity: Option<StoragePeriodAnywhereCachesPeriodInsertError> =
+            serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent {
+            status: local_var_status,
+            content: local_var_content,
+            entity: local_var_entity,
+        };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
+/// Returns a list of Anywhere Cache instances of the bucket matching the criteria.
+pub async fn storage_anywhere_caches_list(
+    configuration: &configuration::Configuration,
+    params: StoragePeriodAnywhereCachesPeriodListParams,
+) -> Result<
+    crate::google_rest_apis::storage_v1::models::AnywhereCaches,
+    Error<StoragePeriodAnywhereCachesPeriodListError>,
+> {
+    let local_var_configuration = configuration;
+
+    // unbox the parameters
+    let bucket = params.bucket;
+    let alt = params.alt;
+    let fields = params.fields;
+    let key = params.key;
+    let oauth_token = params.oauth_token;
+    let pretty_print = params.pretty_print;
+    let quota_user = params.quota_user;
+    let upload_type = params.upload_type;
+    let user_ip = params.user_ip;
+    let page_size = params.page_size;
+    let page_token = params.page_token;
+
+    let local_var_client = &local_var_configuration.client;
+
+    let local_var_uri_str = format!(
+        "{}/b/{bucket}/anywhereCaches",
+        local_var_configuration.base_path,
+        bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket)
+    );
+    let mut local_var_req_builder =
+        local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_str) = alt {
+        local_var_req_builder = local_var_req_builder.query(&[("alt", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = fields {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("fields", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = key {
+        local_var_req_builder = local_var_req_builder.query(&[("key", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = oauth_token {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("oauth_token", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = pretty_print {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("prettyPrint", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = quota_user {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("quotaUser", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = upload_type {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("uploadType", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = user_ip {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = page_size {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("pageSize", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = page_token {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("pageToken", &local_var_str.to_string())]);
     }
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
@@ -651,7 +612,7 @@ pub async fn storage_object_access_controls_list(
     if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
         serde_json::from_str(&local_var_content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<StoragePeriodObjectAccessControlsPeriodListError> =
+        let local_var_entity: Option<StoragePeriodAnywhereCachesPeriodListError> =
             serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent {
             status: local_var_status,
@@ -662,20 +623,19 @@ pub async fn storage_object_access_controls_list(
     }
 }
 
-/// Patches an ACL entry on the specified object.
-pub async fn storage_object_access_controls_patch(
+/// Pauses an Anywhere Cache instance.
+pub async fn storage_anywhere_caches_pause(
     configuration: &configuration::Configuration,
-    params: StoragePeriodObjectAccessControlsPeriodPatchParams,
+    params: StoragePeriodAnywhereCachesPeriodPauseParams,
 ) -> Result<
-    crate::google_rest_apis::storage_v1::models::ObjectAccessControl,
-    Error<StoragePeriodObjectAccessControlsPeriodPatchError>,
+    crate::google_rest_apis::storage_v1::models::AnywhereCache,
+    Error<StoragePeriodAnywhereCachesPeriodPauseError>,
 > {
     let local_var_configuration = configuration;
 
     // unbox the parameters
     let bucket = params.bucket;
-    let object = params.object;
-    let entity = params.entity;
+    let anywhere_cache_id = params.anywhere_cache_id;
     let alt = params.alt;
     let fields = params.fields;
     let key = params.key;
@@ -684,18 +644,203 @@ pub async fn storage_object_access_controls_patch(
     let quota_user = params.quota_user;
     let upload_type = params.upload_type;
     let user_ip = params.user_ip;
-    let generation = params.generation;
-    let user_project = params.user_project;
-    let object_access_control = params.object_access_control;
 
     let local_var_client = &local_var_configuration.client;
 
     let local_var_uri_str = format!(
-        "{}/b/{bucket}/o/{object}/acl/{entity}",
+        "{}/b/{bucket}/anywhereCaches/{anywhereCacheId}/pause",
         local_var_configuration.base_path,
         bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket),
-        object = crate::google_rest_apis::storage_v1::apis::urlencode(object),
-        entity = crate::google_rest_apis::storage_v1::apis::urlencode(entity)
+        anywhereCacheId = crate::google_rest_apis::storage_v1::apis::urlencode(anywhere_cache_id)
+    );
+    let mut local_var_req_builder =
+        local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_str) = alt {
+        local_var_req_builder = local_var_req_builder.query(&[("alt", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = fields {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("fields", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = key {
+        local_var_req_builder = local_var_req_builder.query(&[("key", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = oauth_token {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("oauth_token", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = pretty_print {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("prettyPrint", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = quota_user {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("quotaUser", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = upload_type {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("uploadType", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = user_ip {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder =
+            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        serde_json::from_str(&local_var_content).map_err(Error::from)
+    } else {
+        let local_var_entity: Option<StoragePeriodAnywhereCachesPeriodPauseError> =
+            serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent {
+            status: local_var_status,
+            content: local_var_content,
+            entity: local_var_entity,
+        };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
+/// Resumes a paused or disabled Anywhere Cache instance.
+pub async fn storage_anywhere_caches_resume(
+    configuration: &configuration::Configuration,
+    params: StoragePeriodAnywhereCachesPeriodResumeParams,
+) -> Result<
+    crate::google_rest_apis::storage_v1::models::AnywhereCache,
+    Error<StoragePeriodAnywhereCachesPeriodResumeError>,
+> {
+    let local_var_configuration = configuration;
+
+    // unbox the parameters
+    let bucket = params.bucket;
+    let anywhere_cache_id = params.anywhere_cache_id;
+    let alt = params.alt;
+    let fields = params.fields;
+    let key = params.key;
+    let oauth_token = params.oauth_token;
+    let pretty_print = params.pretty_print;
+    let quota_user = params.quota_user;
+    let upload_type = params.upload_type;
+    let user_ip = params.user_ip;
+
+    let local_var_client = &local_var_configuration.client;
+
+    let local_var_uri_str = format!(
+        "{}/b/{bucket}/anywhereCaches/{anywhereCacheId}/resume",
+        local_var_configuration.base_path,
+        bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket),
+        anywhereCacheId = crate::google_rest_apis::storage_v1::apis::urlencode(anywhere_cache_id)
+    );
+    let mut local_var_req_builder =
+        local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_str) = alt {
+        local_var_req_builder = local_var_req_builder.query(&[("alt", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = fields {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("fields", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = key {
+        local_var_req_builder = local_var_req_builder.query(&[("key", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = oauth_token {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("oauth_token", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = pretty_print {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("prettyPrint", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = quota_user {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("quotaUser", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = upload_type {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("uploadType", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_str) = user_ip {
+        local_var_req_builder =
+            local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
+    }
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder =
+            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        serde_json::from_str(&local_var_content).map_err(Error::from)
+    } else {
+        let local_var_entity: Option<StoragePeriodAnywhereCachesPeriodResumeError> =
+            serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent {
+            status: local_var_status,
+            content: local_var_content,
+            entity: local_var_entity,
+        };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
+/// Updates the config(ttl and admissionPolicy) of an Anywhere Cache instance.
+pub async fn storage_anywhere_caches_update(
+    configuration: &configuration::Configuration,
+    params: StoragePeriodAnywhereCachesPeriodUpdateParams,
+) -> Result<
+    crate::google_rest_apis::storage_v1::models::GoogleLongrunningOperation,
+    Error<StoragePeriodAnywhereCachesPeriodUpdateError>,
+> {
+    let local_var_configuration = configuration;
+
+    // unbox the parameters
+    let bucket = params.bucket;
+    let anywhere_cache_id = params.anywhere_cache_id;
+    let alt = params.alt;
+    let fields = params.fields;
+    let key = params.key;
+    let oauth_token = params.oauth_token;
+    let pretty_print = params.pretty_print;
+    let quota_user = params.quota_user;
+    let upload_type = params.upload_type;
+    let user_ip = params.user_ip;
+    let anywhere_cache = params.anywhere_cache;
+
+    let local_var_client = &local_var_configuration.client;
+
+    let local_var_uri_str = format!(
+        "{}/b/{bucket}/anywhereCaches/{anywhereCacheId}",
+        local_var_configuration.base_path,
+        bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket),
+        anywhereCacheId = crate::google_rest_apis::storage_v1::apis::urlencode(anywhere_cache_id)
     );
     let mut local_var_req_builder =
         local_var_client.request(reqwest::Method::PATCH, local_var_uri_str.as_str());
@@ -730,14 +875,6 @@ pub async fn storage_object_access_controls_patch(
         local_var_req_builder =
             local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
     }
-    if let Some(ref local_var_str) = generation {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("generation", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = user_project {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("userProject", &local_var_str.to_string())]);
-    }
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder =
             local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
@@ -748,7 +885,7 @@ pub async fn storage_object_access_controls_patch(
     if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };
-    local_var_req_builder = local_var_req_builder.json(&object_access_control);
+    local_var_req_builder = local_var_req_builder.json(&anywhere_cache);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -759,115 +896,7 @@ pub async fn storage_object_access_controls_patch(
     if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
         serde_json::from_str(&local_var_content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<StoragePeriodObjectAccessControlsPeriodPatchError> =
-            serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent {
-            status: local_var_status,
-            content: local_var_content,
-            entity: local_var_entity,
-        };
-        Err(Error::ResponseError(local_var_error))
-    }
-}
-
-/// Updates an ACL entry on the specified object.
-pub async fn storage_object_access_controls_update(
-    configuration: &configuration::Configuration,
-    params: StoragePeriodObjectAccessControlsPeriodUpdateParams,
-) -> Result<
-    crate::google_rest_apis::storage_v1::models::ObjectAccessControl,
-    Error<StoragePeriodObjectAccessControlsPeriodUpdateError>,
-> {
-    let local_var_configuration = configuration;
-
-    // unbox the parameters
-    let bucket = params.bucket;
-    let object = params.object;
-    let entity = params.entity;
-    let alt = params.alt;
-    let fields = params.fields;
-    let key = params.key;
-    let oauth_token = params.oauth_token;
-    let pretty_print = params.pretty_print;
-    let quota_user = params.quota_user;
-    let upload_type = params.upload_type;
-    let user_ip = params.user_ip;
-    let generation = params.generation;
-    let user_project = params.user_project;
-    let object_access_control = params.object_access_control;
-
-    let local_var_client = &local_var_configuration.client;
-
-    let local_var_uri_str = format!(
-        "{}/b/{bucket}/o/{object}/acl/{entity}",
-        local_var_configuration.base_path,
-        bucket = crate::google_rest_apis::storage_v1::apis::urlencode(bucket),
-        object = crate::google_rest_apis::storage_v1::apis::urlencode(object),
-        entity = crate::google_rest_apis::storage_v1::apis::urlencode(entity)
-    );
-    let mut local_var_req_builder =
-        local_var_client.request(reqwest::Method::PUT, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_str) = alt {
-        local_var_req_builder = local_var_req_builder.query(&[("alt", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = fields {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("fields", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = key {
-        local_var_req_builder = local_var_req_builder.query(&[("key", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = oauth_token {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("oauth_token", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = pretty_print {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("prettyPrint", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = quota_user {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("quotaUser", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = upload_type {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("uploadType", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = user_ip {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("userIp", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = generation {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("generation", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_str) = user_project {
-        local_var_req_builder =
-            local_var_req_builder.query(&[("userProject", &local_var_str.to_string())]);
-    }
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder =
-            local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
-    }
-    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
-    };
-    if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
-    };
-    local_var_req_builder = local_var_req_builder.json(&object_access_control);
-
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
-
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
-
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
-    } else {
-        let local_var_entity: Option<StoragePeriodObjectAccessControlsPeriodUpdateError> =
+        let local_var_entity: Option<StoragePeriodAnywhereCachesPeriodUpdateError> =
             serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent {
             status: local_var_status,
