@@ -8,6 +8,14 @@ edition = "2021"
 gcloud-sdk = { path = "./../../gcloud-sdk", default-features = false, features = ["google-rest-storage-v1", "google-rest-compute-v1","tls-webpki-roots"] }
 tokio = { version = "1.20", features = ["full"] }
 tracing = "0.1"
-tracing-subscriber = { version ="0.3", features = ["env-filter"] }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 futures = "0.3"
 bytes = "1.2"
+
+[dependencies.uuid]
+version = "1.8.0"
+features = [
+    "v4",                # Lets you generate random UUIDs
+    "fast-rng",          # Use a faster (but still sufficiently random) RNG
+    "macro-diagnostics", # Enable better diagnostics for compile-time UUIDs
+]

@@ -1,6 +1,12 @@
 #![allow(dead_code)]
 
 use gcloud_sdk::GoogleRestApi;
+use gcloud_sdk::{
+    google::cloud::config,
+    google_rest_apis::storage_v1::{
+        configuration, BucketIamConfiguration, BucketIamConfigurationUniformBucketLevelAccess,
+    },
+};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -20,7 +26,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let response = gcloud_sdk::google_rest_apis::storage_v1::buckets_api::storage_buckets_list(
         &google_rest_client.create_google_storage_v1_config().await?,
         gcloud_sdk::google_rest_apis::storage_v1::buckets_api::StoragePeriodBucketsPeriodListParams {
-            project: google_project_id,
+            project: google_project_id.clone(),
             alt: None,
             fields: None,
             key: None,
@@ -38,6 +44,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     ).await?;
 
     println!("{:?}", response);
+
+    println!("========================================================");
+    test_bucket_creation(
+        "europe-west4".to_string(),
+        google_project_id,
+        &google_rest_client,
+    )
+    .await;
+    println!("========================================================");
 
     test_compute().await;
 
@@ -82,4 +97,63 @@ async fn test_compute() {
     ).await.unwrap();
 
     println!("{:?}", response);
+}
+
+async fn test_bucket_creation(
+    region: String,
+    project_id: String,
+    google_rest_client: &GoogleRestApi,
+) {
+    let bucket_name = format!("test-gcloud-sdk-rs-{}", uuid::Uuid::new_v4());
+    println!("Creating bucket: {}", bucket_name);
+    let insert_param = gcloud_sdk::google_rest_apis::storage_v1::buckets_api::StoragePeriodBucketsPeriodInsertParams {
+        project: project_id,
+        bucket: Some(gcloud_sdk::google_rest_apis::storage_v1::Bucket {
+            name: Some( bucket_name.clone() ),
+            location: Some(region),
+            storage_class: Some("STANDARD".to_string()),
+            retention_policy: None,
+            lifecycle: None,
+            iam_configuration: Some(Box::new(BucketIamConfiguration {
+                uniform_bucket_level_access: Some(Box::new(BucketIamConfigurationUniformBucketLevelAccess {
+                    enabled: Some(true),
+                    locked_time: None,
+                    ..Default::default()
+                })),
+                public_access_prevention: Some("enforced".to_string()),
+                ..Default::default()
+            })),
+            soft_delete_policy: Some(Box::new(gcloud_sdk::google_rest_apis::storage_v1::bucket_soft_delete_policy::BucketSoftDeletePolicy{
+                retention_duration_seconds: Some("0".to_string()),
+                ..Default::default()
+            })),
+            ..Default::default()
+        }),
+        ..Default::default()
+    };
+
+    let configuration_result = google_rest_client.create_google_storage_v1_config().await;
+
+    match configuration_result {
+        Ok(config) => {
+            let response =
+                gcloud_sdk::google_rest_apis::storage_v1::buckets_api::storage_buckets_insert(
+                    &config,
+                    insert_param,
+                )
+                .await;
+
+            match response {
+                Ok(bucket) => {
+                    println!("Bucket created: {}", bucket.name.unwrap());
+                }
+                Err(e) => {
+                    println!("Error creating bucket: {:?}", e);
+                }
+            }
+        }
+        Err(e) => {
+            println!("Error creating configuration: {:?}", e);
+        }
+    };
 }
