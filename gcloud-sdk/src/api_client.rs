@@ -157,10 +157,12 @@ impl GoogleEnvironment {
             debug!("Detected GCP Project ID using environment variables");
             for_env
         } else {
-            let local_creds = crate::token_source::from_env_var(&GCP_DEFAULT_SCOPES)
-                .or_else(|_| crate::token_source::from_well_known_file(&GCP_DEFAULT_SCOPES))
-                .ok()
-                .flatten();
+            let local_creds = match crate::token_source::from_env_var(&GCP_DEFAULT_SCOPES) {
+                Ok(Some(creds)) => Some(creds),
+                Ok(None) | Err(_) => crate::token_source::from_well_known_file(&GCP_DEFAULT_SCOPES)
+                    .ok()
+                    .flatten(),
+            };
 
             let local_quota_project_id =
                 local_creds.and_then(|creds| creds.quota_project_id().map(ToString::to_string));
