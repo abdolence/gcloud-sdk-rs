@@ -37,6 +37,17 @@ pub struct BillingAccount {
     ///      `billingAccounts/012345-567890-ABCDEF`
     #[prost(string, tag = "6")]
     pub parent: ::prost::alloc::string::String,
+    /// Optional. The currency in which the billing account is billed and charged,
+    /// represented as an ISO 4217 code such as `USD`.
+    ///
+    /// Billing account currency is determined at the time of billing account
+    /// creation and cannot be updated subsequently, so this field should not be
+    /// set on update requests. In addition, a subaccount always matches the
+    /// currency of its parent billing account, so this field should not be set on
+    /// subaccount creation requests. Clients can read this field to determine the
+    /// currency of an existing billing account.
+    #[prost(string, tag = "7")]
+    pub currency_code: ::prost::alloc::string::String,
 }
 /// Encapsulation of billing information for a Google Cloud Console project. A
 /// project has at most one associated billing account at a time (but a billing

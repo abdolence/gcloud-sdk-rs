@@ -593,6 +593,13 @@ pub struct UserWorkloadsSecret {
     /// pairs, which can contain sensitive values such as a password, a token, or a
     /// key. The values for all keys have to be base64-encoded strings. For details
     /// see: <https://kubernetes.io/docs/concepts/configuration/secret/>
+    ///
+    /// Example:
+    ///
+    /// {
+    ///    "example": "ZXhhbXBsZV92YWx1ZQ==",
+    ///    "another-example": "YW5vdGhlcl9leGFtcGxlX3ZhbHVl"
+    /// }
     #[prost(map = "string, string", tag = "2")]
     pub data: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -620,6 +627,13 @@ pub struct UserWorkloadsConfigMap {
     /// Optional. The "data" field of Kubernetes ConfigMap, organized in key-value
     /// pairs. For details see:
     /// <https://kubernetes.io/docs/concepts/configuration/configmap/>
+    ///
+    /// Example:
+    ///
+    /// {
+    ///    "example_key": "example_value",
+    ///    "another_key": "another_value"
+    /// }
     #[prost(map = "string, string", tag = "2")]
     pub data: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -933,13 +947,14 @@ pub struct EnvironmentConfig {
     /// composer-1.*.*-airflow-*.*.*.
     #[prost(int32, tag = "3")]
     pub node_count: i32,
-    /// The configuration settings for software inside the environment.
+    /// Optional. The configuration settings for software inside the environment.
     #[prost(message, optional, tag = "4")]
     pub software_config: ::core::option::Option<SoftwareConfig>,
-    /// The configuration used for the Kubernetes Engine cluster.
+    /// Optional. The configuration used for the Kubernetes Engine cluster.
     #[prost(message, optional, tag = "5")]
     pub node_config: ::core::option::Option<NodeConfig>,
-    /// The configuration used for the Private IP Cloud Composer environment.
+    /// Optional. The configuration used for the Private IP Cloud Composer
+    /// environment.
     #[prost(message, optional, tag = "7")]
     pub private_environment_config: ::core::option::Option<PrivateEnvironmentConfig>,
     /// Optional. The network-level access control policy for the Airflow web
@@ -1155,7 +1170,7 @@ pub mod web_server_network_access_control {
 /// Specifies the selection and configuration of software inside the environment.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SoftwareConfig {
-    /// The version of the software running in the environment.
+    /// Optional. The version of the software running in the environment.
     /// This encapsulates both the version of Cloud Composer functionality and the
     /// version of Apache Airflow. It must match the regular expression
     /// `composer-(\[0-9\]+(\.\[0-9\]+\.\[0-9\]+(-preview\.\[0-9\]+)?)?|latest)-airflow-(\[0-9\]+(\.\[0-9\]+(\.\[0-9\]+)?)?)`.
@@ -2090,14 +2105,14 @@ pub struct CloudDataLineageIntegration {
 /// An environment for running orchestration tasks.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Environment {
-    /// The resource name of the environment, in the form:
+    /// Identifier. The resource name of the environment, in the form:
     /// "projects/{projectId}/locations/{locationId}/environments/{environmentId}"
     ///
     /// EnvironmentId must start with a lowercase letter followed by up to 63
     /// lowercase letters, numbers, or hyphens, and cannot end with a hyphen.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Configuration parameters for this environment.
+    /// Optional. Configuration parameters for this environment.
     #[prost(message, optional, tag = "2")]
     pub config: ::core::option::Option<EnvironmentConfig>,
     /// Output only. The UUID (Universally Unique IDentifier) associated with this

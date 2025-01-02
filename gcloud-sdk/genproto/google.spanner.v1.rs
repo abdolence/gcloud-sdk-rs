@@ -1167,6 +1167,9 @@ pub enum TypeCode {
     /// For example, `P1Y2M3DT4H5M6.5S` represents time duration of 1 year, 2
     /// months, 3 days, 4 hours, 5 minutes, and 6.5 seconds.
     Interval = 16,
+    /// Encoded as `string`, in lower-case hexa-decimal format, as described
+    /// in RFC 9562, section 4.
+    Uuid = 17,
 }
 impl TypeCode {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -1191,6 +1194,7 @@ impl TypeCode {
             Self::Proto => "PROTO",
             Self::Enum => "ENUM",
             Self::Interval => "INTERVAL",
+            Self::Uuid => "UUID",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1212,6 +1216,7 @@ impl TypeCode {
             "PROTO" => Some(Self::Proto),
             "ENUM" => Some(Self::Enum),
             "INTERVAL" => Some(Self::Interval),
+            "UUID" => Some(Self::Uuid),
             _ => None,
         }
     }

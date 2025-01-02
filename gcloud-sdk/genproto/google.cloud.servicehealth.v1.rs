@@ -675,7 +675,7 @@ pub struct Asset {
     #[prost(string, tag = "2")]
     pub asset_type: ::prost::alloc::string::String,
 }
-/// Message for requesting list of events.
+/// Requests list of events.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEventsRequest {
     /// Required. Parent value using the form
@@ -723,7 +723,7 @@ pub struct ListEventsRequest {
     #[prost(enumeration = "EventView", tag = "6")]
     pub view: i32,
 }
-/// Message for response to listing events.
+/// Response to request for listing events.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEventsResponse {
     /// Output only. List of events.
@@ -740,7 +740,7 @@ pub struct ListEventsResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Message for getting an event.
+/// Gets information about a specific event.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEventRequest {
     /// Required. Unique name of the event in this scope including project
@@ -753,7 +753,7 @@ pub struct GetEventRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Message for requesting list of organization events.
+/// Requests list of events that affect an organization.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOrganizationEventsRequest {
     /// Required. Parent value using the form
@@ -806,7 +806,7 @@ pub struct ListOrganizationEventsRequest {
     #[prost(enumeration = "OrganizationEventView", tag = "6")]
     pub view: i32,
 }
-/// Message for response to listing organization events.
+/// Response to request for listing organization events.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOrganizationEventsResponse {
     /// Output only. List of organization events affecting an organization.
@@ -823,7 +823,7 @@ pub struct ListOrganizationEventsResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Message for getting an organization event.
+/// Gets information about a specific event affecting an organization.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOrganizationEventRequest {
     /// Required. Unique name of the event in this scope including organization and
@@ -838,7 +838,7 @@ pub struct GetOrganizationEventRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Message for requesting list of organization impacts.
+/// Requests list of projects under an organization affected by an event.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOrganizationImpactsRequest {
     /// Required. Parent value using the form
@@ -888,7 +888,8 @@ pub struct ListOrganizationImpactsRequest {
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }
-/// Message for response to listing organization impacts.
+/// Response to request for listing projects under an organization affected by an
+/// event.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOrganizationImpactsResponse {
     /// Output only. List of
@@ -907,7 +908,7 @@ pub struct ListOrganizationImpactsResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Message for getting an organization impact.
+/// Gets information about an event that affects a project under an organization.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOrganizationImpactRequest {
     /// Required. Name of the resource using the form

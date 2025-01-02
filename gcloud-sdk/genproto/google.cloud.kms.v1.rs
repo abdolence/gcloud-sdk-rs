@@ -98,7 +98,7 @@ pub struct CryptoKey {
     /// where all related cryptographic operations are performed. Only applicable
     /// if [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion] have a
     /// [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] of
-    /// [EXTERNAL_VPC][CryptoKeyVersion.ProtectionLevel.EXTERNAL_VPC], with the
+    /// [EXTERNAL_VPC][google.cloud.kms.v1.ProtectionLevel.EXTERNAL_VPC], with the
     /// resource name in the format `projects/*/locations/*/ekmConnections/*`.
     /// Note, this list is non-exhaustive and may apply to additional
     /// [ProtectionLevels][google.cloud.kms.v1.ProtectionLevel] in the future.
@@ -1520,9 +1520,9 @@ pub mod autokey_client {
         /// Creates a new [KeyHandle][google.cloud.kms.v1.KeyHandle], triggering the
         /// provisioning of a new [CryptoKey][google.cloud.kms.v1.CryptoKey] for CMEK
         /// use with the given resource type in the configured key project and the same
-        /// location. [GetOperation][Operations.GetOperation] should be used to resolve
-        /// the resulting long-running operation and get the resulting
-        /// [KeyHandle][google.cloud.kms.v1.KeyHandle] and
+        /// location. [GetOperation][google.longrunning.Operations.GetOperation] should
+        /// be used to resolve the resulting long-running operation and get the
+        /// resulting [KeyHandle][google.cloud.kms.v1.KeyHandle] and
         /// [CryptoKey][google.cloud.kms.v1.CryptoKey].
         pub async fn create_key_handle(
             &mut self,
@@ -2068,7 +2068,7 @@ pub struct Certificate {
 /// [CryptoKeys][google.cloud.kms.v1.CryptoKey] and
 /// [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion] with a
 /// [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] of
-/// [EXTERNAL_VPC][CryptoKeyVersion.ProtectionLevel.EXTERNAL_VPC], as well as
+/// [EXTERNAL_VPC][google.cloud.kms.v1.ProtectionLevel.EXTERNAL_VPC], as well as
 /// performing cryptographic operations using keys created within the
 /// [EkmConnection][google.cloud.kms.v1.EkmConnection].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2171,6 +2171,7 @@ pub mod ekm_connection {
         /// All [CryptoKeys][google.cloud.kms.v1.CryptoKey] created with this
         /// [EkmConnection][google.cloud.kms.v1.EkmConnection] use EKM-side key
         /// management operations initiated from Cloud KMS. This means that:
+        ///
         /// * When a [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
         /// associated with this [EkmConnection][google.cloud.kms.v1.EkmConnection]
         /// is
@@ -2179,7 +2180,8 @@ pub mod ekm_connection {
         ///    external key material.
         /// * Destruction of external key material associated with this
         ///    [EkmConnection][google.cloud.kms.v1.EkmConnection] can be requested by
-        ///    calling [DestroyCryptoKeyVersion][EkmService.DestroyCryptoKeyVersion].
+        ///    calling
+        ///    [DestroyCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.DestroyCryptoKeyVersion].
         /// * Automatic rotation of key material is supported.
         CloudKms = 2,
     }
@@ -2211,7 +2213,7 @@ pub mod ekm_connection {
 /// [CryptoKeys][google.cloud.kms.v1.CryptoKey] and
 /// [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion] with a
 /// [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] of
-/// [EXTERNAL_VPC][CryptoKeyVersion.ProtectionLevel.EXTERNAL_VPC] in a given
+/// [EXTERNAL_VPC][google.cloud.kms.v1.ProtectionLevel.EXTERNAL_VPC] in a given
 /// project and location.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EkmConfig {
@@ -2871,7 +2873,9 @@ pub struct ImportCryptoKeyVersionRequest {
     /// [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion], the
     /// [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] must be a child of
     /// [ImportCryptoKeyVersionRequest.parent][google.cloud.kms.v1.ImportCryptoKeyVersionRequest.parent],
-    /// have been previously created via [ImportCryptoKeyVersion][], and be in
+    /// have been previously created via
+    /// [ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion],
+    /// and be in
     /// [DESTROYED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROYED]
     /// or
     /// [IMPORT_FAILED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.IMPORT_FAILED]
@@ -3447,7 +3451,8 @@ pub struct MacVerifyRequest {
     /// checksum. [KeyManagementService][google.cloud.kms.v1.KeyManagementService]
     /// will report an error if the checksum verification fails. If you receive a
     /// checksum error, your client should verify that
-    /// CRC32C([MacVerifyRequest.tag][]) is equal to
+    /// CRC32C([MacVerifyRequest.mac][google.cloud.kms.v1.MacVerifyRequest.mac]) is
+    /// equal to
     /// [MacVerifyRequest.mac_crc32c][google.cloud.kms.v1.MacVerifyRequest.mac_crc32c],
     /// and if so, perform a limited number of retries. A persistent mismatch may
     /// indicate an issue in your computation of the CRC32C checksum. Note: This

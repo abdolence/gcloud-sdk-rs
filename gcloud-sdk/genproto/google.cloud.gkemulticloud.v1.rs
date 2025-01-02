@@ -76,9 +76,10 @@ pub struct OperationMetadata {
     pub verb: ::prost::alloc::string::String,
     /// Output only. Identifies whether it has been requested cancellation
     /// for the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
-    /// `Code.CANCELLED`.
+    /// have
+    /// [google.longrunning.Operation.error][google.longrunning.Operation.error]
+    /// value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
 }
@@ -292,6 +293,10 @@ pub struct MonitoringConfig {
     /// Enable Google Cloud Managed Service for Prometheus in the cluster.
     #[prost(message, optional, tag = "2")]
     pub managed_prometheus_config: ::core::option::Option<ManagedPrometheusConfig>,
+    /// Optionally enable GKE metrics.
+    /// Only for Attached Clusters.
+    #[prost(message, optional, tag = "4")]
+    pub cloud_monitoring_config: ::core::option::Option<CloudMonitoringConfig>,
 }
 /// ManagedPrometheusConfig defines the configuration for
 /// Google Cloud Managed Service for Prometheus.
@@ -300,6 +305,16 @@ pub struct ManagedPrometheusConfig {
     /// Enable Managed Collection.
     #[prost(bool, tag = "1")]
     pub enabled: bool,
+}
+/// CloudMonitoringConfig defines the configuration for
+/// built-in Cloud Logging and Monitoring.
+/// Only for Attached Clusters.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct CloudMonitoringConfig {
+    /// Enable GKE-native logging and metrics.
+    /// Only for Attached Clusters.
+    #[prost(bool, optional, tag = "1")]
+    pub enabled: ::core::option::Option<bool>,
 }
 /// Configuration for Binary Authorization.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -516,6 +531,23 @@ pub struct AttachedCluster {
     /// Optional. Security Posture configuration for this cluster.
     #[prost(message, optional, tag = "26")]
     pub security_posture_config: ::core::option::Option<SecurityPostureConfig>,
+    /// Optional. Input only. Tag keys/values directly bound to this resource.
+    ///
+    /// Tag key must be specified in the format <tag namespace>/<tag key name>
+    /// where the tag namespace is the ID of the organization or name of the
+    /// project that the tag key is defined in.
+    /// The short name of a tag key or value can have a maximum length of 256
+    /// characters. The permitted character set for the short name includes UTF-8
+    /// encoded Unicode characters except single quotes ('), double quotes ("),
+    /// backslashes (\), and forward slashes (/).
+    ///
+    /// See [Tags](<http://cloud/resource-manager/docs/tags/tags-overview>)
+    /// for more details on Google Cloud Platform tags.
+    #[prost(map = "string, string", tag = "27")]
+    pub tags: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Nested message and enum types in `AttachedCluster`.
 pub mod attached_cluster {
@@ -674,6 +706,10 @@ pub struct AttachedProxyConfig {
     /// The Kubernetes Secret resource that contains the HTTP(S) proxy
     /// configuration. The secret must be a JSON encoded proxy configuration
     /// as described in
+    /// <https://cloud.google.com/kubernetes-engine/multi-cloud/docs/attached/eks/how-to/use-a-proxy#configure-proxy-support>
+    /// for EKS clusters and
+    /// <https://cloud.google.com/kubernetes-engine/multi-cloud/docs/attached/aks/how-to/use-a-proxy#configure-proxy-support>
+    /// for AKS clusters.
     #[prost(message, optional, tag = "1")]
     pub kubernetes_secret: ::core::option::Option<KubernetesSecret>,
 }
@@ -832,6 +868,7 @@ pub struct UpdateAttachedClusterRequest {
     ///   *   `proxy_config.kubernetes_secret.name`.
     ///   *   `proxy_config.kubernetes_secret.namespace`.
     ///   *   `security_posture_config.vulnerability_mode`
+    ///   *   `monitoring_config.cloud_monitoring_config.enabled`
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }

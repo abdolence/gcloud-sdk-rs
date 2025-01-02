@@ -402,7 +402,8 @@ pub struct TextSentimentEvaluationMetrics {
         classification_evaluation_metrics::ConfusionMatrix,
     >,
 }
-/// Input configuration for [AutoMl.ImportData][google.cloud.automl.v1.AutoMl.ImportData] action.
+/// Input configuration for
+/// [AutoMl.ImportData][google.cloud.automl.v1.AutoMl.ImportData] action.
 ///
 /// The format of input depends on dataset_metadata the Dataset into which
 /// the import is happening has. As input source the
@@ -418,10 +419,10 @@ pub struct TextSentimentEvaluationMetrics {
 /// The formats are represented in EBNF with commas being literal and with
 /// non-terminal symbols defined near the end of this comment. The formats are:
 ///
-/// <h4>AutoML Vision</h4>
+/// #### AutoML Vision
 ///
 ///
-/// <div class="ds-selector-tabs"><section><h5>Classification</h5>
+/// ##### Classification
 ///
 /// See [Preparing your training
 /// data](<https://cloud.google.com/vision/automl/docs/prepare>) for more
@@ -458,7 +459,7 @@ pub struct TextSentimentEvaluationMetrics {
 ///      UNASSIGNED,gs://folder/image4.jpg
 ///
 ///
-/// </section><section><h5>Object Detection</h5>
+/// ##### Object Detection
 /// See [Preparing your training
 /// data](<https://cloud.google.com/vision/automl/object-detection/docs/prepare>)
 /// for more information.
@@ -500,10 +501,10 @@ pub struct TextSentimentEvaluationMetrics {
 /// </div>
 ///
 ///
-/// <h4>AutoML Video Intelligence</h4>
+/// #### AutoML Video Intelligence
 ///
 ///
-/// <div class="ds-selector-tabs"><section><h5>Classification</h5>
+/// ##### Classification
 ///
 /// See [Preparing your training
 /// data](<https://cloud.google.com/video-intelligence/automl/docs/prepare>) for
@@ -546,7 +547,7 @@ pub struct TextSentimentEvaluationMetrics {
 ///
 ///
 ///
-/// </section><section><h5>Object Tracking</h5>
+/// ##### Object Tracking
 ///
 /// See [Preparing your training
 /// data](/video-intelligence/automl/object-tracking/docs/prepare) for more
@@ -597,14 +598,12 @@ pub struct TextSentimentEvaluationMetrics {
 ///       gs://folder/video1.avi,bike,,12.50,.45,.45,,,.55,.55,,
 ///       gs://folder/video2.avi,car,1,0,.1,.9,,,.9,.1,,
 ///       gs://folder/video2.avi,,,,,,,,,,,
-///    </section>
-/// </div>
 ///
 ///
-/// <h4>AutoML Natural Language</h4>
+/// #### AutoML Natural Language
 ///
 ///
-/// <div class="ds-selector-tabs"><section><h5>Entity Extraction</h5>
+/// ##### Entity Extraction
 ///
 /// See [Preparing your training
 /// data](/natural-language/automl/entity-analysis/docs/prepare) for more
@@ -787,7 +786,7 @@ pub struct TextSentimentEvaluationMetrics {
 ///
 ///
 ///
-/// </section><section><h5>Classification</h5>
+/// ##### Classification
 ///
 /// See [Preparing your training
 /// data](<https://cloud.google.com/natural-language/automl/docs/prepare>) for more
@@ -834,7 +833,7 @@ pub struct TextSentimentEvaluationMetrics {
 ///
 ///
 ///
-/// </section><section><h5>Sentiment Analysis</h5>
+/// ##### Sentiment Analysis
 ///
 /// See [Preparing your training
 /// data](<https://cloud.google.com/natural-language/automl/docs/prepare>) for more
@@ -891,13 +890,10 @@ pub struct TextSentimentEvaluationMetrics {
 ///      gs://folder/content.txt,3
 ///      TEST,gs://folder/document.pdf
 ///      VALIDATE,gs://folder/text_files.zip,2
-///    </section>
-/// </div>
 ///
 ///
 ///
-/// <h4>AutoML Tables</h4><div class="ui-datasection-main"><section
-/// class="selected">
+/// #### AutoML Tables
 ///
 /// See [Preparing your training
 /// data](<https://cloud.google.com/automl-tables/docs/prepare>) for more
@@ -936,8 +932,6 @@ pub struct TextSentimentEvaluationMetrics {
 /// and between 1000 and 100,000,000 rows, inclusive. There are at most 5
 /// import data running in parallel.
 ///
-///    </section>
-/// </div>
 ///
 ///
 /// **Input field definitions:**
@@ -1020,7 +1014,7 @@ pub struct InputConfig {
     /// imported data, any string must be up to 25000
     /// characters long.
     ///
-    /// <h4>AutoML Tables</h4>
+    /// #### AutoML Tables
     ///
     /// `schema_inference_version`
     /// : (integer) This value must be supplied.
@@ -1042,8 +1036,9 @@ pub mod input_config {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// The Google Cloud Storage location for the input content.
-        /// For [AutoMl.ImportData][google.cloud.automl.v1.AutoMl.ImportData], `gcs_source` points to a CSV file with
-        /// a structure described in [InputConfig][google.cloud.automl.v1.InputConfig].
+        /// For [AutoMl.ImportData][google.cloud.automl.v1.AutoMl.ImportData],
+        /// `gcs_source` points to a CSV file with a structure described in
+        /// [InputConfig][google.cloud.automl.v1.InputConfig].
         #[prost(message, tag = "1")]
         GcsSource(super::GcsSource),
     }
@@ -1059,8 +1054,8 @@ pub mod input_config {
 /// non-terminal symbols defined near the end of this comment. The formats
 /// are:
 ///
-/// <h4>AutoML Vision</h4>
-/// <div class="ds-selector-tabs"><section><h5>Classification</h5>
+/// #### AutoML Vision
+/// ##### Classification
 ///
 /// One or more CSV files where each line is a single column:
 ///
@@ -1076,7 +1071,7 @@ pub mod input_config {
 ///      gs://folder/image2.gif
 ///      gs://folder/image3.png
 ///
-/// </section><section><h5>Object Detection</h5>
+/// ##### Object Detection
 ///
 /// One or more CSV files where each line is a single column:
 ///
@@ -1091,11 +1086,9 @@ pub mod input_config {
 ///      gs://folder/image1.jpeg
 ///      gs://folder/image2.gif
 ///      gs://folder/image3.png
-///    </section>
-/// </div>
 ///
-/// <h4>AutoML Video Intelligence</h4>
-/// <div class="ds-selector-tabs"><section><h5>Classification</h5>
+/// #### AutoML Video Intelligence
+/// ##### Classification
 ///
 /// One or more CSV files where each line is a single column:
 ///
@@ -1114,7 +1107,7 @@ pub mod input_config {
 ///      gs://folder/video1.mp4,20,60
 ///      gs://folder/vid2.mov,0,inf
 ///
-/// </section><section><h5>Object Tracking</h5>
+/// ##### Object Tracking
 ///
 /// One or more CSV files where each line is a single column:
 ///
@@ -1132,11 +1125,9 @@ pub mod input_config {
 ///      gs://folder/video1.mp4,10,40
 ///      gs://folder/video1.mp4,20,60
 ///      gs://folder/vid2.mov,0,inf
-///    </section>
-/// </div>
 ///
-/// <h4>AutoML Natural Language</h4>
-/// <div class="ds-selector-tabs"><section><h5>Classification</h5>
+/// #### AutoML Natural Language
+/// ##### Classification
 ///
 /// One or more CSV files where each line is a single column:
 ///
@@ -1153,7 +1144,7 @@ pub mod input_config {
 ///      gs://folder/text2.pdf
 ///      gs://folder/text3.tif
 ///
-/// </section><section><h5>Sentiment Analysis</h5>
+/// ##### Sentiment Analysis
 /// One or more CSV files where each line is a single column:
 ///
 ///      GCS_FILE_PATH
@@ -1169,7 +1160,7 @@ pub mod input_config {
 ///      gs://folder/text2.pdf
 ///      gs://folder/text3.tif
 ///
-/// </section><section><h5>Entity Extraction</h5>
+/// ##### Entity Extraction
 ///
 /// One or more JSONL (JSON Lines) files that either provide inline text or
 /// documents. You can only use one format, either inline text or documents,
@@ -1239,11 +1230,8 @@ pub mod input_config {
 ///           }
 ///         }
 ///       }
-///    </section>
-/// </div>
 ///
-/// <h4>AutoML Tables</h4><div class="ui-datasection-main"><section
-/// class="selected">
+/// #### AutoML Tables
 ///
 /// See [Preparing your training
 /// data](<https://cloud.google.com/automl-tables/docs/predict-batch>) for more
@@ -1289,8 +1277,6 @@ pub mod input_config {
 /// input feature column specs must contain values compatible with the
 /// column spec's data types. Prediction on all the rows of the table
 /// will be attempted.
-///    </section>
-/// </div>
 ///
 /// **Input field definitions:**
 ///
@@ -1389,9 +1375,10 @@ pub mod output_config {
     /// The destination of the output.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
-        /// Required. The Google Cloud Storage location where the output is to be written to.
-        /// For Image Object Detection, Text Extraction, Video Classification and
-        /// Tables, in the given directory a new directory will be created with name:
+        /// Required. The Google Cloud Storage location where the output is to be
+        /// written to. For Image Object Detection, Text Extraction, Video
+        /// Classification and Tables, in the given directory a new directory will be
+        /// created with name:
         /// export_data-<dataset-display-name>-<timestamp-of-export-call> where
         /// timestamp is in YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format. All export
         /// output will be written into that directory.
@@ -1659,8 +1646,8 @@ pub mod batch_predict_output_config {
     /// The destination of the output.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
-        /// Required. The Google Cloud Storage location of the directory where the output is to
-        /// be written to.
+        /// Required. The Google Cloud Storage location of the directory where the
+        /// output is to be written to.
         #[prost(message, tag = "1")]
         GcsDestination(super::GcsDestination),
     }
@@ -1722,8 +1709,9 @@ pub mod model_export_output_config {
     /// The destination of the output.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
-        /// Required. The Google Cloud Storage location where the model is to be written to.
-        /// This location may only be set for the following model formats:
+        /// Required. The Google Cloud Storage location where the model is to be
+        /// written to. This location may only be set for the following model
+        /// formats:
         ///    "tflite", "edgetpu_tflite", "tf_saved_model", "tf_js", "core_ml".
         ///
         ///   Under the directory given as the destination a new one with name

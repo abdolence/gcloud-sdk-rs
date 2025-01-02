@@ -433,12 +433,27 @@ pub struct Timepoint {
     #[prost(double, tag = "3")]
     pub time_seconds: f64,
 }
+/// Description of the desired output audio data.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct StreamingAudioConfig {
+    /// Required. The format of the audio byte stream.
+    /// For now, streaming only supports PCM and OGG_OPUS. All other encodings
+    /// will return an error.
+    #[prost(enumeration = "AudioEncoding", tag = "1")]
+    pub audio_encoding: i32,
+    /// Optional. The synthesis sample rate (in hertz) for this audio.
+    #[prost(int32, tag = "2")]
+    pub sample_rate_hertz: i32,
+}
 /// Provides configuration information for the StreamingSynthesize request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingSynthesizeConfig {
     /// Required. The desired voice of the synthesized audio.
     #[prost(message, optional, tag = "1")]
     pub voice: ::core::option::Option<VoiceSelectionParams>,
+    /// Optional. The configuration of the synthesized audio.
+    #[prost(message, optional, tag = "4")]
+    pub streaming_audio_config: ::core::option::Option<StreamingAudioConfig>,
 }
 /// Input to be synthesized.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -566,6 +581,10 @@ pub enum AudioEncoding {
     /// 8-bit samples that compand 14-bit audio samples using G.711 PCMU/A-law.
     /// Audio content returned as ALAW also contains a WAV header.
     Alaw = 6,
+    /// Uncompressed 16-bit signed little-endian samples (Linear PCM).
+    /// Note that as opposed to LINEAR16, audio will not be wrapped in a WAV (or
+    /// any other) header.
+    Pcm = 7,
 }
 impl AudioEncoding {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -581,6 +600,7 @@ impl AudioEncoding {
             Self::OggOpus => "OGG_OPUS",
             Self::Mulaw => "MULAW",
             Self::Alaw => "ALAW",
+            Self::Pcm => "PCM",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -593,6 +613,7 @@ impl AudioEncoding {
             "OGG_OPUS" => Some(Self::OggOpus),
             "MULAW" => Some(Self::Mulaw),
             "ALAW" => Some(Self::Alaw),
+            "PCM" => Some(Self::Pcm),
             _ => None,
         }
     }

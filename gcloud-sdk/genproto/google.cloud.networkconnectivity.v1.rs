@@ -87,6 +87,24 @@ pub struct Hub {
     /// including a count for each reason.
     #[prost(message, optional, tag = "12")]
     pub spoke_summary: ::core::option::Option<SpokeSummary>,
+    /// Optional. The policy mode of this hub. This field can be either
+    /// PRESET or CUSTOM. If unspecified, the
+    /// policy_mode defaults to PRESET.
+    #[prost(enumeration = "PolicyMode", tag = "13")]
+    pub policy_mode: i32,
+    /// Optional. The topology implemented in this hub. Currently, this field is
+    /// only used when policy_mode = PRESET. The available preset topologies are
+    /// MESH and STAR. If preset_topology is unspecified and policy_mode = PRESET,
+    /// the preset_topology defaults to MESH. When policy_mode = CUSTOM,
+    /// the preset_topology is set to PRESET_TOPOLOGY_UNSPECIFIED.
+    #[prost(enumeration = "PresetTopology", tag = "14")]
+    pub preset_topology: i32,
+    /// Optional. Whether Private Service Connect transitivity is enabled for the
+    /// hub. If true, Private Service Connect endpoints in VPC spokes attached to
+    /// the hub are made accessible to other VPC spokes attached to the hub.
+    /// The default value is false.
+    #[prost(bool, optional, tag = "15")]
+    pub export_psc: ::core::option::Option<bool>,
 }
 /// RoutingVPC contains information about the VPC networks associated
 /// with the spokes of a Network Connectivity Center hub.
@@ -159,6 +177,9 @@ pub struct Spoke {
     /// Optional. VPC network that is associated with the spoke.
     #[prost(message, optional, tag = "20")]
     pub linked_vpc_network: ::core::option::Option<LinkedVpcNetwork>,
+    /// Optional. The linked producer VPC that is associated with the spoke.
+    #[prost(message, optional, tag = "26")]
+    pub linked_producer_vpc_network: ::core::option::Option<LinkedProducerVpcNetwork>,
     /// Output only. The Google-generated UUID for the spoke. This value is unique
     /// across all spoke resources. If a spoke is deleted and another with the same
     /// name is created, the new spoke is assigned a different `unique_id`.
@@ -329,11 +350,30 @@ pub struct Route {
     /// Example: projects/12345/locations/global/spokes/SPOKE
     #[prost(string, tag = "11")]
     pub spoke: ::prost::alloc::string::String,
-    /// Output only. The location of the route.
+    /// Output only. The origin location of the route.
     /// Uses the following form: "projects/{project}/locations/{location}"
     /// Example: projects/1234/locations/us-central1
     #[prost(string, tag = "12")]
     pub location: ::prost::alloc::string::String,
+    /// Output only. The priority of this route. Priority is used to break ties in
+    /// cases where a destination matches more than one route. In these cases the
+    /// route with the lowest-numbered priority value wins.
+    #[prost(int64, tag = "13")]
+    pub priority: i64,
+    /// Immutable. The next-hop VPN tunnel for packets on this route.
+    #[prost(message, optional, tag = "14")]
+    pub next_hop_vpn_tunnel: ::core::option::Option<NextHopVpnTunnel>,
+    /// Immutable. The next-hop Router appliance instance for packets on this
+    /// route.
+    #[prost(message, optional, tag = "15")]
+    pub next_hop_router_appliance_instance: ::core::option::Option<
+        NextHopRouterApplianceInstance,
+    >,
+    /// Immutable. The next-hop VLAN attachment for packets on this route.
+    #[prost(message, optional, tag = "16")]
+    pub next_hop_interconnect_attachment: ::core::option::Option<
+        NextHopInterconnectAttachment,
+    >,
 }
 /// A group represents a subset of spokes attached to a hub.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -369,6 +409,29 @@ pub struct Group {
     /// Output only. The current lifecycle state of this group.
     #[prost(enumeration = "State", tag = "7")]
     pub state: i32,
+    /// Optional. The auto-accept setting for this group.
+    #[prost(message, optional, tag = "8")]
+    pub auto_accept: ::core::option::Option<AutoAccept>,
+    /// Output only. The name of the route table that corresponds to this group.
+    /// They use the following form:
+    /// `projects/{project_number}/locations/global/hubs/{hub_id}/routeTables/{route_table_id}`
+    #[prost(string, tag = "9")]
+    pub route_table: ::prost::alloc::string::String,
+}
+/// The auto-accept setting for a group controls whether
+/// proposed spokes are automatically attached to the hub. If auto-accept is
+/// enabled, the spoke immediately is attached to the hub and becomes part of the
+/// group. In this case, the new spoke is in the ACTIVE state.
+/// If auto-accept is disabled, the spoke goes to the INACTIVE
+/// state, and it must be reviewed and accepted by a hub
+/// administrator.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AutoAccept {
+    /// A list of project ids or project numbers for which you want
+    /// to enable auto-accept. The auto-accept setting is applied to
+    /// spokes being created or updated in these projects.
+    #[prost(string, repeated, tag = "1")]
+    pub auto_accept_projects: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for
 /// [HubService.ListHubs][google.cloud.networkconnectivity.v1.HubService.ListHubs]
@@ -607,6 +670,191 @@ pub struct ListHubSpokesResponse {
     /// Locations that could not be reached.
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// The request for
+/// [HubService.QueryHubStatus][google.cloud.networkconnectivity.v1.HubService.QueryHubStatus].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryHubStatusRequest {
+    /// Required. The name of the hub.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The maximum number of results to return per page.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. An expression that filters the list of results.
+    /// The filter can be used to filter the results by the following fields:
+    ///    * `psc_propagation_status.source_spoke`
+    ///    * `psc_propagation_status.source_group`
+    ///    * `psc_propagation_status.source_forwarding_rule`
+    ///    * `psc_propagation_status.target_spoke`
+    ///    * `psc_propagation_status.target_group`
+    ///    * `psc_propagation_status.code`
+    ///    * `psc_propagation_status.message`
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Sort the results in ascending order by the specified fields.
+    /// A comma-separated list of any of these fields:
+    ///    * `psc_propagation_status.source_spoke`
+    ///    * `psc_propagation_status.source_group`
+    ///    * `psc_propagation_status.source_forwarding_rule`
+    ///    * `psc_propagation_status.target_spoke`
+    ///    * `psc_propagation_status.target_group`
+    ///    * `psc_propagation_status.code`
+    /// If `group_by` is set, the value of the `order_by` field must be the
+    /// same as or a subset of the `group_by` field.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+    /// Optional. Aggregate the results by the specified fields.
+    /// A comma-separated list of any of these fields:
+    ///    * `psc_propagation_status.source_spoke`
+    ///    * `psc_propagation_status.source_group`
+    ///    * `psc_propagation_status.source_forwarding_rule`
+    ///    * `psc_propagation_status.target_spoke`
+    ///    * `psc_propagation_status.target_group`
+    ///    * `psc_propagation_status.code`
+    #[prost(string, tag = "6")]
+    pub group_by: ::prost::alloc::string::String,
+}
+/// The response for
+/// [HubService.QueryHubStatus][google.cloud.networkconnectivity.v1.HubService.QueryHubStatus].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryHubStatusResponse {
+    /// The list of hub status.
+    #[prost(message, repeated, tag = "1")]
+    pub hub_status_entries: ::prost::alloc::vec::Vec<HubStatusEntry>,
+    /// The token for the next page of the response. To see more results,
+    /// use this value as the page_token for your next request. If this value
+    /// is empty, there are no more results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// A hub status entry represents the status of a set of propagated Private
+/// Service Connect connections grouped by certain fields.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HubStatusEntry {
+    /// The number of propagated Private Service Connect connections with this
+    /// status. If the `group_by` field was not set in the request message, the
+    /// value of this field is 1.
+    #[prost(int32, tag = "1")]
+    pub count: i32,
+    /// The fields that this entry is grouped by. This has the same value as the
+    /// `group_by` field in the request message.
+    #[prost(string, tag = "2")]
+    pub group_by: ::prost::alloc::string::String,
+    /// The Private Service Connect propagation status.
+    #[prost(message, optional, tag = "3")]
+    pub psc_propagation_status: ::core::option::Option<PscPropagationStatus>,
+}
+/// The status of one or more propagated Private Service Connect connections in a
+/// hub.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PscPropagationStatus {
+    /// The name of the spoke that the source forwarding rule belongs to.
+    #[prost(string, tag = "1")]
+    pub source_spoke: ::prost::alloc::string::String,
+    /// The name of the group that the source spoke belongs to.
+    #[prost(string, tag = "2")]
+    pub source_group: ::prost::alloc::string::String,
+    /// The name of the forwarding rule exported to the hub.
+    #[prost(string, tag = "3")]
+    pub source_forwarding_rule: ::prost::alloc::string::String,
+    /// The name of the spoke that the source forwarding rule propagates to.
+    #[prost(string, tag = "4")]
+    pub target_spoke: ::prost::alloc::string::String,
+    /// The name of the group that the target spoke belongs to.
+    #[prost(string, tag = "5")]
+    pub target_group: ::prost::alloc::string::String,
+    /// The propagation status.
+    #[prost(enumeration = "psc_propagation_status::Code", tag = "6")]
+    pub code: i32,
+    /// The human-readable summary of the Private Service Connect connection
+    /// propagation status.
+    #[prost(string, tag = "7")]
+    pub message: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `PscPropagationStatus`.
+pub mod psc_propagation_status {
+    /// The Code enum represents the state of the Private Service Connect
+    /// propagation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Code {
+        /// The code is unspecified.
+        Unspecified = 0,
+        /// The propagated Private Service Connect connection is ready.
+        Ready = 1,
+        /// The Private Service Connect connection is propagating. This is a
+        /// transient state.
+        Propagating = 2,
+        /// The Private Service Connect connection propagation failed because the VPC
+        /// network or the project of the target spoke has exceeded the connection
+        /// limit set by the producer.
+        ErrorProducerPropagatedConnectionLimitExceeded = 3,
+        /// The Private Service Connect connection propagation failed because the NAT
+        /// IP subnet space has been exhausted. It is equivalent to the `Needs
+        /// attention` status of the Private Service Connect connection. See
+        /// <https://cloud.google.com/vpc/docs/about-accessing-vpc-hosted-services-endpoints#connection-statuses.>
+        ErrorProducerNatIpSpaceExhausted = 4,
+        /// The Private Service Connect connection propagation failed because the
+        /// `PSC_ILB_CONSUMER_FORWARDING_RULES_PER_PRODUCER_NETWORK` quota in the
+        /// producer VPC network has been exceeded.
+        ErrorProducerQuotaExceeded = 5,
+        /// The Private Service Connect connection propagation failed because the
+        /// `PSC_PROPAGATED_CONNECTIONS_PER_VPC_NETWORK` quota in the consumer
+        /// VPC network has been exceeded.
+        ErrorConsumerQuotaExceeded = 6,
+    }
+    impl Code {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CODE_UNSPECIFIED",
+                Self::Ready => "READY",
+                Self::Propagating => "PROPAGATING",
+                Self::ErrorProducerPropagatedConnectionLimitExceeded => {
+                    "ERROR_PRODUCER_PROPAGATED_CONNECTION_LIMIT_EXCEEDED"
+                }
+                Self::ErrorProducerNatIpSpaceExhausted => {
+                    "ERROR_PRODUCER_NAT_IP_SPACE_EXHAUSTED"
+                }
+                Self::ErrorProducerQuotaExceeded => "ERROR_PRODUCER_QUOTA_EXCEEDED",
+                Self::ErrorConsumerQuotaExceeded => "ERROR_CONSUMER_QUOTA_EXCEEDED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "READY" => Some(Self::Ready),
+                "PROPAGATING" => Some(Self::Propagating),
+                "ERROR_PRODUCER_PROPAGATED_CONNECTION_LIMIT_EXCEEDED" => {
+                    Some(Self::ErrorProducerPropagatedConnectionLimitExceeded)
+                }
+                "ERROR_PRODUCER_NAT_IP_SPACE_EXHAUSTED" => {
+                    Some(Self::ErrorProducerNatIpSpaceExhausted)
+                }
+                "ERROR_PRODUCER_QUOTA_EXCEEDED" => Some(Self::ErrorProducerQuotaExceeded),
+                "ERROR_CONSUMER_QUOTA_EXCEEDED" => Some(Self::ErrorConsumerQuotaExceeded),
+                _ => None,
+            }
+        }
+    }
 }
 /// The request for
 /// [HubService.ListSpokes][google.cloud.networkconnectivity.v1.HubService.ListSpokes].
@@ -958,6 +1206,11 @@ pub struct LinkedVpnTunnels {
     /// Output only. The VPC network where these VPN tunnels are located.
     #[prost(string, tag = "3")]
     pub vpc_network: ::prost::alloc::string::String,
+    /// Optional. IP ranges allowed to be included during import from hub (does not
+    /// control transit connectivity). The only allowed value for now is
+    /// "ALL_IPV4_RANGES".
+    #[prost(string, repeated, tag = "5")]
+    pub include_import_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A collection of VLAN attachment resources. These resources should
 /// be redundant attachments that all advertise the same prefixes to Google
@@ -976,6 +1229,11 @@ pub struct LinkedInterconnectAttachments {
     /// Output only. The VPC network where these VLAN attachments are located.
     #[prost(string, tag = "3")]
     pub vpc_network: ::prost::alloc::string::String,
+    /// Optional. IP ranges allowed to be included during import from hub (does not
+    /// control transit connectivity). The only allowed value for now is
+    /// "ALL_IPV4_RANGES".
+    #[prost(string, repeated, tag = "5")]
+    pub include_import_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A collection of router appliance instances. If you configure multiple router
 /// appliance instances to receive data from the same set of sites outside of
@@ -995,6 +1253,11 @@ pub struct LinkedRouterApplianceInstances {
     /// located.
     #[prost(string, tag = "3")]
     pub vpc_network: ::prost::alloc::string::String,
+    /// Optional. IP ranges allowed to be included during import from hub (does not
+    /// control transit connectivity). The only allowed value for now is
+    /// "ALL_IPV4_RANGES".
+    #[prost(string, repeated, tag = "5")]
+    pub include_import_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// An existing VPC network.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1005,6 +1268,38 @@ pub struct LinkedVpcNetwork {
     /// Optional. IP ranges encompassing the subnets to be excluded from peering.
     #[prost(string, repeated, tag = "2")]
     pub exclude_export_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. IP ranges allowed to be included from peering.
+    #[prost(string, repeated, tag = "3")]
+    pub include_export_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. The list of Producer VPC spokes that this VPC spoke is a
+    /// service consumer VPC spoke for. These producer VPCs are connected through
+    /// VPC peering to this spoke's backing VPC network.
+    #[prost(string, repeated, tag = "4")]
+    pub producer_vpc_spokes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LinkedProducerVpcNetwork {
+    /// Immutable. The URI of the Service Consumer VPC that the Producer VPC is
+    /// peered with.
+    #[prost(string, tag = "1")]
+    pub network: ::prost::alloc::string::String,
+    /// Output only. The Service Consumer Network spoke.
+    #[prost(string, tag = "6")]
+    pub service_consumer_vpc_spoke: ::prost::alloc::string::String,
+    /// Immutable. The name of the VPC peering between the Service Consumer VPC and
+    /// the Producer VPC (defined in the Tenant project) which is added to the NCC
+    /// hub. This peering must be in ACTIVE state.
+    #[prost(string, tag = "2")]
+    pub peering: ::prost::alloc::string::String,
+    /// Output only. The URI of the Producer VPC.
+    #[prost(string, tag = "5")]
+    pub producer_network: ::prost::alloc::string::String,
+    /// Optional. IP ranges encompassing the subnets to be excluded from peering.
+    #[prost(string, repeated, tag = "3")]
+    pub exclude_export_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. IP ranges allowed to be included from peering.
+    #[prost(string, repeated, tag = "4")]
+    pub include_export_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A router appliance instance is a Compute Engine virtual machine (VM) instance
 /// that acts as a BGP speaker. A router appliance instance is specified by the
@@ -1031,6 +1326,52 @@ pub struct NextHopVpcNetwork {
     /// The URI of the VPC network resource
     #[prost(string, tag = "1")]
     pub uri: ::prost::alloc::string::String,
+}
+/// A route next hop that leads to a VPN tunnel resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NextHopVpnTunnel {
+    /// The URI of the VPN tunnel resource.
+    #[prost(string, tag = "1")]
+    pub uri: ::prost::alloc::string::String,
+    /// The VPC network where this VPN tunnel is located.
+    #[prost(string, tag = "2")]
+    pub vpc_network: ::prost::alloc::string::String,
+    /// Indicates whether site-to-site data transfer is allowed for this VPN tunnel
+    /// resource. Data transfer is available only in [supported
+    /// locations](<https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations>).
+    #[prost(bool, tag = "3")]
+    pub site_to_site_data_transfer: bool,
+}
+/// A route next hop that leads to a Router appliance instance.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NextHopRouterApplianceInstance {
+    /// The URI of the Router appliance instance.
+    #[prost(string, tag = "1")]
+    pub uri: ::prost::alloc::string::String,
+    /// The VPC network where this VM is located.
+    #[prost(string, tag = "2")]
+    pub vpc_network: ::prost::alloc::string::String,
+    /// Indicates whether site-to-site data transfer is allowed for this Router
+    /// appliance instance resource. Data transfer is available only in [supported
+    /// locations](<https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations>).
+    #[prost(bool, tag = "3")]
+    pub site_to_site_data_transfer: bool,
+}
+/// A route next hop that leads to an interconnect attachment resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NextHopInterconnectAttachment {
+    /// The URI of the interconnect attachment resource.
+    #[prost(string, tag = "1")]
+    pub uri: ::prost::alloc::string::String,
+    /// The VPC network where this interconnect attachment is located.
+    #[prost(string, tag = "2")]
+    pub vpc_network: ::prost::alloc::string::String,
+    /// Indicates whether site-to-site data transfer is allowed for this
+    /// interconnect attachment resource. Data transfer is available only in
+    /// [supported
+    /// locations](<https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations>).
+    #[prost(bool, tag = "3")]
+    pub site_to_site_data_transfer: bool,
 }
 /// Summarizes information about the spokes associated with a hub.
 /// The summary includes a count of spokes according to type
@@ -1101,6 +1442,38 @@ pub struct GetGroupRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// Request for
+/// [HubService.UpdateGroup][google.cloud.networkconnectivity.v1.HubService.UpdateGroup]
+/// method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateGroupRequest {
+    /// Optional. In the case of an update to an existing group, field mask is used
+    /// to specify the fields to be overwritten. The fields specified in the
+    /// update_mask are relative to the resource, not the full request. A field is
+    /// overwritten if it is in the mask. If the user does not provide a mask, then
+    /// all fields are overwritten.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. The state that the group should be in after the update.
+    #[prost(message, optional, tag = "2")]
+    pub group: ::core::option::Option<Group>,
+    /// Optional. A request ID to identify requests. Specify a unique request ID so
+    /// that if you must retry your request, the server knows to ignore the request
+    /// if it has already been completed. The server guarantees that a request
+    /// doesn't result in creation of duplicate commitments for at least 60
+    /// minutes.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check to see whether the original operation
+    /// was received. If it was, the server ignores the second request. This
+    /// behavior prevents clients from mistakenly creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID, with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
 /// Supported features for a location
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -1146,6 +1519,10 @@ pub enum RouteType {
     /// The route leads to a destination within the secondary address range of the
     /// VPC network's subnet.
     VpcSecondarySubnet = 2,
+    /// The route leads to a destination in a dynamic route. Dynamic routes are
+    /// derived from Border Gateway Protocol (BGP) advertisements received from an
+    /// NCC hybrid spoke.
+    DynamicRoute = 3,
 }
 impl RouteType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -1157,6 +1534,7 @@ impl RouteType {
             Self::Unspecified => "ROUTE_TYPE_UNSPECIFIED",
             Self::VpcPrimarySubnet => "VPC_PRIMARY_SUBNET",
             Self::VpcSecondarySubnet => "VPC_SECONDARY_SUBNET",
+            Self::DynamicRoute => "DYNAMIC_ROUTE",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1165,6 +1543,7 @@ impl RouteType {
             "ROUTE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
             "VPC_PRIMARY_SUBNET" => Some(Self::VpcPrimarySubnet),
             "VPC_SECONDARY_SUBNET" => Some(Self::VpcSecondarySubnet),
+            "DYNAMIC_ROUTE" => Some(Self::DynamicRoute),
             _ => None,
         }
     }
@@ -1243,6 +1622,8 @@ pub enum SpokeType {
     RouterAppliance = 3,
     /// Spokes associated with VPC networks.
     VpcNetwork = 4,
+    /// Spokes that are backed by a producer VPC network.
+    ProducerVpcNetwork = 7,
 }
 impl SpokeType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -1256,6 +1637,7 @@ impl SpokeType {
             Self::InterconnectAttachment => "INTERCONNECT_ATTACHMENT",
             Self::RouterAppliance => "ROUTER_APPLIANCE",
             Self::VpcNetwork => "VPC_NETWORK",
+            Self::ProducerVpcNetwork => "PRODUCER_VPC_NETWORK",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1266,6 +1648,74 @@ impl SpokeType {
             "INTERCONNECT_ATTACHMENT" => Some(Self::InterconnectAttachment),
             "ROUTER_APPLIANCE" => Some(Self::RouterAppliance),
             "VPC_NETWORK" => Some(Self::VpcNetwork),
+            "PRODUCER_VPC_NETWORK" => Some(Self::ProducerVpcNetwork),
+            _ => None,
+        }
+    }
+}
+/// This enum controls the policy mode used in a hub.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum PolicyMode {
+    /// Policy mode is unspecified. It defaults to PRESET
+    /// with preset_topology = MESH.
+    Unspecified = 0,
+    /// Hub uses one of the preset topologies.
+    Preset = 1,
+}
+impl PolicyMode {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "POLICY_MODE_UNSPECIFIED",
+            Self::Preset => "PRESET",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "POLICY_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+            "PRESET" => Some(Self::Preset),
+            _ => None,
+        }
+    }
+}
+/// The list of available preset topologies.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum PresetTopology {
+    /// Preset topology is unspecified. When policy_mode = PRESET,
+    /// it defaults to MESH.
+    Unspecified = 0,
+    /// Mesh topology is implemented. Group `default` is automatically created.
+    /// All spokes in the hub are added to group `default`.
+    Mesh = 2,
+    /// Star topology is implemented. Two groups, `center` and `edge`, are
+    /// automatically created along with hub creation. Spokes have to join one of
+    /// the groups during creation.
+    Star = 3,
+}
+impl PresetTopology {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "PRESET_TOPOLOGY_UNSPECIFIED",
+            Self::Mesh => "MESH",
+            Self::Star => "STAR",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "PRESET_TOPOLOGY_UNSPECIFIED" => Some(Self::Unspecified),
+            "MESH" => Some(Self::Mesh),
+            "STAR" => Some(Self::Star),
             _ => None,
         }
     }
@@ -1544,6 +1994,37 @@ pub mod hub_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Query the Private Service Connect propagation status of a Network
+        /// Connectivity Center hub.
+        pub async fn query_hub_status(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryHubStatusRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryHubStatusResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.HubService/QueryHubStatus",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.HubService",
+                        "QueryHubStatus",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Lists the Network Connectivity Center spokes in a specified project and
         /// location.
         pub async fn list_spokes(
@@ -1810,7 +2291,7 @@ pub mod hub_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists routes in a given project.
+        /// Lists routes in a given route table.
         pub async fn list_routes(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRoutesRequest>,
@@ -1840,7 +2321,7 @@ pub mod hub_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists route tables in a given project.
+        /// Lists route tables in a given hub.
         pub async fn list_route_tables(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRouteTablesRequest>,
@@ -1923,6 +2404,36 @@ pub mod hub_service_client {
                     GrpcMethod::new(
                         "google.cloud.networkconnectivity.v1.HubService",
                         "ListGroups",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the parameters of a Network Connectivity Center group.
+        pub async fn update_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateGroupRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.HubService/UpdateGroup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.HubService",
+                        "UpdateGroup",
                     ),
                 );
             self.inner.unary(req, path, codec).await

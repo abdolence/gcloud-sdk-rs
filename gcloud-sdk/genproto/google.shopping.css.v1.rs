@@ -15,8 +15,8 @@ pub struct ListChildAccountsRequest {
     pub full_name: ::core::option::Option<::prost::alloc::string::String>,
     /// Optional. The maximum number of accounts to return. The service may return
     /// fewer than this value. If unspecified, at most 50 accounts will be
-    /// returned. The maximum value is 1000; values above 1000 will be coerced to
-    /// 1000.
+    /// returned. The maximum value is 100; values above 100 will be coerced to
+    /// 100.
     #[prost(int32, tag = "4")]
     pub page_size: i32,
     /// Optional. A page token, received from a previous `ListChildAccounts` call.
@@ -569,7 +569,7 @@ pub mod account_labels_service_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Lists the labels assigned to an account.
+        /// Lists the labels owned by an account.
         pub async fn list_account_labels(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAccountLabelsRequest>,
@@ -695,19 +695,19 @@ pub struct Attributes {
     /// within the context of Product Ads.
     #[prost(string, optional, tag = "42")]
     pub cpp_ads_redirect: ::core::option::Option<::prost::alloc::string::String>,
-    /// Low Price of the aggregate offer.
+    /// Low Price of the CSS Product.
     #[prost(message, optional, tag = "3")]
     pub low_price: ::core::option::Option<super::super::r#type::Price>,
-    /// High Price of the aggregate offer.
+    /// High Price of the CSS Product.
     #[prost(message, optional, tag = "4")]
     pub high_price: ::core::option::Option<super::super::r#type::Price>,
-    /// The number of aggregate offers.
+    /// The number of CSS Products.
     #[prost(int64, optional, tag = "5")]
     pub number_of_offers: ::core::option::Option<i64>,
     /// Condition of the headline offer.
     #[prost(string, optional, tag = "6")]
     pub headline_offer_condition: ::core::option::Option<::prost::alloc::string::String>,
-    /// Headline Price of the aggregate offer.
+    /// Headline Price of the CSS Product.
     #[prost(message, optional, tag = "7")]
     pub headline_offer_price: ::core::option::Option<super::super::r#type::Price>,
     /// Link to the headline offer.
@@ -718,7 +718,7 @@ pub struct Attributes {
     pub headline_offer_mobile_link: ::core::option::Option<
         ::prost::alloc::string::String,
     >,
-    /// Headline Price of the aggregate offer.
+    /// Headline Price of the CSS Product.
     #[prost(message, optional, tag = "41")]
     pub headline_offer_shipping_price: ::core::option::Option<
         super::super::r#type::Price,
@@ -971,15 +971,15 @@ pub mod css_product_status {
         /// The name of the destination
         #[prost(string, tag = "1")]
         pub destination: ::prost::alloc::string::String,
-        /// List of country codes (ISO 3166-1 alpha-2) where the aggregate offer is
+        /// List of country codes (ISO 3166-1 alpha-2) where the CSS Product is
         /// approved.
         #[prost(string, repeated, tag = "2")]
         pub approved_countries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// List of country codes (ISO 3166-1 alpha-2) where the aggregate offer is
+        /// List of country codes (ISO 3166-1 alpha-2) where the CSS Product is
         /// pending approval.
         #[prost(string, repeated, tag = "3")]
         pub pending_countries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// List of country codes (ISO 3166-1 alpha-2) where the aggregate offer is
+        /// List of country codes (ISO 3166-1 alpha-2) where the CSS Product is
         /// disapproved.
         #[prost(string, repeated, tag = "4")]
         pub disapproved_countries: ::prost::alloc::vec::Vec<
@@ -992,7 +992,7 @@ pub mod css_product_status {
         /// The error code of the issue.
         #[prost(string, tag = "1")]
         pub code: ::prost::alloc::string::String,
-        /// How this issue affects serving of the aggregate offer.
+        /// How this issue affects serving of the CSS Product.
         #[prost(string, tag = "2")]
         pub servability: ::prost::alloc::string::String,
         /// Whether the issue can be resolved by the merchant.
@@ -1014,7 +1014,7 @@ pub mod css_product_status {
         #[prost(string, tag = "8")]
         pub documentation: ::prost::alloc::string::String,
         /// List of country codes (ISO 3166-1 alpha-2) where issue applies to the
-        /// aggregate offer.
+        /// CSS Product.
         #[prost(string, repeated, tag = "9")]
         pub applicable_countries: ::prost::alloc::vec::Vec<
             ::prost::alloc::string::String,
@@ -1118,6 +1118,7 @@ pub struct CssProductInput {
     /// valid region code. For example: 'DE' for Germany, 'FR' for France.
     #[prost(string, tag = "5")]
     pub feed_label: ::prost::alloc::string::String,
+    /// DEPRECATED. Use expiration_date instead.
     /// Represents the existing version (freshness) of the CSS Product, which
     /// can be used to preserve the right order when multiple updates are done at
     /// the same time.
@@ -1135,6 +1136,7 @@ pub struct CssProductInput {
     ///
     /// If the operation is prevented, the aborted exception will be
     /// thrown.
+    #[deprecated]
     #[prost(message, optional, tag = "6")]
     pub freshness_time: ::core::option::Option<::prost_types::Timestamp>,
     /// A list of CSS Product attributes.
@@ -1161,13 +1163,42 @@ pub struct InsertCssProductInputRequest {
     /// Required. The CSS Product Input to insert.
     #[prost(message, optional, tag = "2")]
     pub css_product_input: ::core::option::Option<CssProductInput>,
-    /// Required. The primary or supplemental feed id. If CSS Product already
-    /// exists and feed id provided is different, then the CSS Product will be
-    /// moved to a new feed. Note: For now, CSSs do not need to provide feed ids as
-    /// we create feeds on the fly. We do not have supplemental feed support for
-    /// CSS Products yet.
+    /// Optional. DEPRECATED. Feed id is not required for CSS Products.
+    /// The primary or supplemental feed id. If CSS Product already exists and
+    /// feed id provided is different, then the CSS Product will be moved to a
+    /// new feed.
+    /// Note: For now, CSSs do not need to provide feed ids as we create
+    /// feeds on the fly.
+    /// We do not have supplemental feed support for CSS Products yet.
+    #[deprecated]
     #[prost(int64, tag = "3")]
     pub feed_id: i64,
+}
+/// Request message for the UpdateCssProductInput method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateCssProductInputRequest {
+    /// Required. The CSS product input resource to update. Information you submit
+    /// will be applied to the processed CSS product as well.
+    #[prost(message, optional, tag = "1")]
+    pub css_product_input: ::core::option::Option<CssProductInput>,
+    /// The list of CSS product attributes to be updated.
+    ///
+    /// If the update mask is omitted, then it is treated as implied field mask
+    /// equivalent to all fields that are populated (have a non-empty value).
+    ///
+    /// Attributes specified in the update mask without a value specified in the
+    /// body will be deleted from the CSS product.
+    ///
+    /// Update mask can only be specified for top level fields in
+    /// attributes and custom attributes.
+    ///
+    /// To specify the update mask for custom attributes you need to add the
+    /// `custom_attribute.` prefix.
+    ///
+    /// Providing special "*" value for full CSS product replacement is not
+    /// supported.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for the DeleteCssProductInput method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1313,6 +1344,39 @@ pub mod css_product_inputs_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Updates the existing Css Product input in your CSS Center account.
+        ///
+        /// After inserting, updating, or deleting a CSS Product input, it may take
+        /// several minutes before the processed Css Product can be retrieved.
+        pub async fn update_css_product_input(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateCssProductInputRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::CssProductInput>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.shopping.css.v1.CssProductInputsService/UpdateCssProductInput",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.shopping.css.v1.CssProductInputsService",
+                        "UpdateCssProductInput",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Deletes a CSS Product input from your CSS Center account.
         ///
         /// After a delete it may take several minutes until the input is no longer
@@ -1352,7 +1416,7 @@ pub struct GetCssProductRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The processed CSS Product(a.k.a Aggregate Offer internally).
+/// The processed CSS Product.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CssProduct {
     /// The name of the CSS Product.

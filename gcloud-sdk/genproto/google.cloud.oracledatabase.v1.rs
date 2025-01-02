@@ -2192,19 +2192,19 @@ pub struct CloudExadataInfrastructureProperties {
     /// Output only. Deep link to the OCI console to view this resource.
     #[prost(string, tag = "9")]
     pub oci_url: ::prost::alloc::string::String,
-    /// Optional. The number of enabled CPU cores.
+    /// Output only. The number of enabled CPU cores.
     #[prost(int32, tag = "10")]
     pub cpu_count: i32,
     /// Output only. The total number of CPU cores available.
     #[prost(int32, tag = "11")]
     pub max_cpu_count: i32,
-    /// Optional. The memory allocated in GBs.
+    /// Output only. The memory allocated in GBs.
     #[prost(int32, tag = "12")]
     pub memory_size_gb: i32,
     /// Output only. The total memory available in GBs.
     #[prost(int32, tag = "13")]
     pub max_memory_gb: i32,
-    /// Optional. The local node storage allocated in GBs.
+    /// Output only. The local node storage allocated in GBs.
     #[prost(int32, tag = "14")]
     pub db_node_storage_size_gb: i32,
     /// Output only. The total local node storage available in GBs.

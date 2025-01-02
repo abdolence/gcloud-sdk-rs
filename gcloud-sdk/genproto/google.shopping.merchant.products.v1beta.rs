@@ -79,11 +79,12 @@ pub struct Attributes {
     /// categories through the API.
     #[prost(string, optional, tag = "25")]
     pub google_product_category: ::core::option::Option<::prost::alloc::string::String>,
-    /// Global Trade Item Number
+    /// Global Trade Item Numbers
     /// ([GTIN](<https://support.google.com/merchants/answer/188494#gtin>)) of the
     /// item.
-    #[prost(string, optional, tag = "26")]
-    pub gtin: ::core::option::Option<::prost::alloc::string::String>,
+    /// You can provide up to 10 GTINs.
+    #[prost(string, repeated, tag = "26")]
+    pub gtin: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Shared identifier for all variants of the same product.
     #[prost(string, optional, tag = "27")]
     pub item_group_id: ::core::option::Option<::prost::alloc::string::String>,
@@ -199,8 +200,7 @@ pub struct Attributes {
     /// Tax information.
     #[prost(message, repeated, tag = "51")]
     pub taxes: ::prost::alloc::vec::Vec<Tax>,
-    /// The tax category of the product, used to configure detailed tax nexus
-    /// in account-level tax settings.
+    /// The tax category of the product.
     #[prost(string, optional, tag = "52")]
     pub tax_category: ::core::option::Option<::prost::alloc::string::String>,
     /// The energy efficiency class as defined in EU directive 2010/30/EU.
@@ -508,6 +508,19 @@ pub struct LoyaltyProgram {
     /// The amount of loyalty points earned on a purchase.
     #[prost(int64, optional, tag = "5")]
     pub loyalty_points: ::core::option::Option<i64>,
+    /// A date range during which the item is eligible for member price. If not
+    /// specified, the member price is always applicable. The date range is
+    /// represented by a pair of ISO 8601 dates separated by a space,
+    /// comma, or slash.
+    #[prost(message, optional, tag = "6")]
+    pub member_price_effective_date: ::core::option::Option<
+        super::super::super::super::r#type::Interval,
+    >,
+    /// The label of the shipping benefit. If the field has value, this offer has
+    /// loyalty shipping benefit. If the field value isn't provided, the item is
+    /// not eligible for loyalty shipping for the given loyalty tier.
+    #[prost(string, optional, tag = "7")]
+    pub shipping_label: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// The Shipping of the product.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -545,48 +558,48 @@ pub struct Shipping {
     /// Minimum handling time (inclusive) between when the order is received and
     /// shipped in business days. 0 means that the order is shipped on the same
     /// day as it is received if it happens before the cut-off time.
-    /// [minHandlingTime][google.shopping.content.bundles.Products.Shipping.min_handling_time]
+    /// [minHandlingTime][google.shopping.merchant.products.v1beta.Shipping.min_handling_time]
     /// can only be present together with
-    /// [maxHandlingTime][google.shopping.content.bundles.Products.Shipping.max_handling_time];
+    /// [maxHandlingTime][google.shopping.merchant.products.v1beta.Shipping.max_handling_time];
     /// but it is not required if
-    /// [maxHandlingTime][google.shopping.content.bundles.Products.Shipping.max_handling_time]
+    /// [maxHandlingTime][google.shopping.merchant.products.v1beta.Shipping.max_handling_time]
     /// is present.
     #[prost(int64, optional, tag = "8")]
     pub min_handling_time: ::core::option::Option<i64>,
     /// Maximum handling time (inclusive) between when the order is received and
     /// shipped in business days. 0 means that the order is shipped on the same
     /// day as it is received if it happens before the cut-off time. Both
-    /// [maxHandlingTime][google.shopping.content.bundles.Products.Shipping.max_handling_time]
+    /// [maxHandlingTime][google.shopping.merchant.products.v1beta.Shipping.max_handling_time]
     /// and
-    /// [maxTransitTime][google.shopping.content.bundles.Products.Shipping.max_transit_time]
+    /// [maxTransitTime][google.shopping.merchant.products.v1beta.Shipping.max_transit_time]
     /// are required if providing shipping speeds.
-    /// [minHandlingTime][google.shopping.content.bundles.Products.Shipping.min_handling_time]
+    /// [minHandlingTime][google.shopping.merchant.products.v1beta.Shipping.min_handling_time]
     /// is optional if
-    /// [maxHandlingTime][google.shopping.content.bundles.Products.Shipping.max_handling_time]
+    /// [maxHandlingTime][google.shopping.merchant.products.v1beta.Shipping.max_handling_time]
     /// is present.
     #[prost(int64, optional, tag = "9")]
     pub max_handling_time: ::core::option::Option<i64>,
     /// Minimum transit time (inclusive) between when the order has shipped and
     /// when it is delivered in business days. 0 means that the order is
     /// delivered on the same day as it ships.
-    /// [minTransitTime][google.shopping.content.bundles.Products.Shipping.min_transit_time]
+    /// [minTransitTime][google.shopping.merchant.products.v1beta.Shipping.min_transit_time]
     /// can only be present together with
-    /// [maxTransitTime][google.shopping.content.bundles.Products.Shipping.max_transit_time];
+    /// [maxTransitTime][google.shopping.merchant.products.v1beta.Shipping.max_transit_time];
     /// but it is not required if
-    /// [maxTransitTime][google.shopping.content.bundles.Products.Shipping.max_transit_time]
+    /// [maxTransitTime][google.shopping.merchant.products.v1beta.Shipping.max_transit_time]
     /// is present.
     #[prost(int64, optional, tag = "10")]
     pub min_transit_time: ::core::option::Option<i64>,
     /// Maximum transit time (inclusive) between when the order has shipped and
     /// when it is delivered in business days. 0 means that the order is
     /// delivered on the same day as it ships. Both
-    /// [maxHandlingTime][google.shopping.content.bundles.Products.Shipping.max_handling_time]
+    /// [maxHandlingTime][google.shopping.merchant.products.v1beta.Shipping.max_handling_time]
     /// and
-    /// [maxTransitTime][google.shopping.content.bundles.Products.Shipping.max_transit_time]
+    /// [maxTransitTime][google.shopping.merchant.products.v1beta.Shipping.max_transit_time]
     /// are required if providing shipping speeds.
-    /// [minTransitTime][google.shopping.content.bundles.Products.Shipping.min_transit_time]
+    /// [minTransitTime][google.shopping.merchant.products.v1beta.Shipping.min_transit_time]
     /// is optional if
-    /// [maxTransitTime][google.shopping.content.bundles.Products.Shipping.max_transit_time]
+    /// [maxTransitTime][google.shopping.merchant.products.v1beta.Shipping.max_transit_time]
     /// is present.
     #[prost(int64, optional, tag = "11")]
     pub max_transit_time: ::core::option::Option<i64>,
@@ -917,16 +930,16 @@ impl SubscriptionPeriod {
 /// processed product that you see in Merchant Center, in Shopping ads, or across
 /// Google surfaces. Product inputs, rules and supplemental data source data are
 /// combined to create the processed
-/// [product][google.shopping.content.bundles.Products.Product].
+/// [Product][google.shopping.merchant.products.v1beta.Product].
 ///
 /// Required product input attributes to pass data validation checks are
 /// primarily defined in the [Products Data
 /// Specification](<https://support.google.com/merchants/answer/188494>).
 ///
 /// The following attributes are required:
-/// [feedLabel][google.shopping.content.bundles.Products.feed_label],
-/// [contentLanguage][google.shopping.content.bundles.Products.content_language]
-/// and [offerId][google.shopping.content.bundles.Products.offer_id].
+/// [feedLabel][google.shopping.merchant.products.v1beta.Product.feed_label],
+/// [contentLanguage][google.shopping.merchant.products.v1beta.Product.content_language]
+/// and [offerId][google.shopping.merchant.products.v1beta.Product.offer_id].
 ///
 /// After inserting, updating, or deleting a product input, it may take several
 /// minutes before the processed product can be retrieved.
@@ -939,6 +952,10 @@ pub struct ProductInput {
     /// Identifier. The name of the product input.
     /// Format:
     /// `"{productinput.name=accounts/{account}/productInputs/{productinput}}"`
+    /// where the last section `productinput` consists of 4 parts:
+    /// channel~content_language~feed_label~offer_id
+    /// example for product input name is
+    /// "accounts/123/productInputs/online~en~US~sku123"
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The name of the processed product.
@@ -1028,6 +1045,10 @@ pub struct InsertProductInputRequest {
 pub struct DeleteProductInputRequest {
     /// Required. The name of the product input resource to delete.
     /// Format: accounts/{account}/productInputs/{product}
+    /// where the last section `product` consists of 4 parts:
+    /// channel~content_language~feed_label~offer_id
+    /// example for product name is
+    /// "accounts/123/productInputs/online~en~US~sku123"
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The primary or supplemental data source from which the product
@@ -1194,10 +1215,10 @@ pub mod product_inputs_service_client {
     }
 }
 /// The processed product, built from multiple [product
-/// inputs][\[google.shopping.content.bundles.Products.ProductInput\] after
-/// applying rules and supplemental data sources. This processed product matches
-/// what is shown in your Merchant Center account and in Shopping ads and other
-/// surfaces across Google. Each product is built from exactly one primary
+/// inputs][google.shopping.merchant.products.v1main.ProductInput]
+/// after applying rules and supplemental data sources. This processed product
+/// matches what is shown in your Merchant Center account and in Shopping ads and
+/// other surfaces across Google. Each product is built from exactly one primary
 /// data source product input, and multiple supplemental data source inputs.
 /// After inserting, updating, or deleting a product input, it may take
 /// several minutes before the updated processed product can be retrieved.
@@ -1210,7 +1231,10 @@ pub mod product_inputs_service_client {
 pub struct Product {
     /// The name of the product.
     /// Format:
-    /// `"{product.name=accounts/{account}/products/{product}}"`
+    /// `"{product.name=accounts/{account}/products/{product}}"` where the last
+    /// section `product` consists of 4 parts:
+    /// channel~content_language~feed_label~offer_id
+    /// example for product name is "accounts/123/products/online~en~US~sku123"
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The
@@ -1278,6 +1302,10 @@ pub struct Product {
 pub struct GetProductRequest {
     /// Required. The name of the product to retrieve.
     /// Format: `accounts/{account}/products/{product}`
+    /// where the last section `product` consists of 4 parts:
+    /// channel~content_language~feed_label~offer_id
+    /// example for product name is
+    /// "accounts/123/products/online~en~US~sku123"
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1290,7 +1318,7 @@ pub struct ListProductsRequest {
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of products to return. The service may return fewer than
     /// this value.
-    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    /// The maximum value is 250; values above 250 will be coerced to 250.
     /// If unspecified, the maximum number of products will be returned.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
