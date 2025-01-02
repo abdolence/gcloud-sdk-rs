@@ -131,6 +131,12 @@ pub mod conversation {
             /// the call.
             #[prost(string, tag = "4")]
             pub disposition_code: ::prost::alloc::string::String,
+            /// The agent type, e.g. HUMAN_AGENT.
+            #[prost(
+                enumeration = "super::super::conversation_participant::Role",
+                tag = "5"
+            )]
+            pub agent_type: i32,
         }
     }
     /// A message representing the transcript of a conversation.

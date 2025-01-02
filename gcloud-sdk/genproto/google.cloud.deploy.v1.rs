@@ -1057,6 +1057,7 @@ pub struct GkeCluster {
     ///
     /// Only specify this option when `cluster` is a [private GKE
     /// cluster](<https://cloud.google.com/kubernetes-engine/docs/concepts/private-cluster-concept>).
+    /// Note that `internal_ip` and `dns_endpoint` cannot both be set to true.
     #[prost(bool, tag = "2")]
     pub internal_ip: bool,
     /// Optional. If set, used to configure a
@@ -1064,6 +1065,10 @@ pub struct GkeCluster {
     /// to the Kubernetes server.
     #[prost(string, tag = "3")]
     pub proxy_url: ::prost::alloc::string::String,
+    /// Optional. If set, the cluster will be accessed using the DNS endpoint. Note
+    /// that `dns_endpoint` and `internal_ip` cannot both be set to true.
+    #[prost(bool, tag = "4")]
+    pub dns_endpoint: bool,
 }
 /// Information specifying an Anthos Cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2035,9 +2040,9 @@ pub struct Release {
     /// client has an up-to-date value before proceeding.
     #[prost(string, tag = "16")]
     pub etag: ::prost::alloc::string::String,
-    /// The Skaffold version to use when operating on this release, such as
-    /// "1.20.0". Not all versions are valid; Cloud Deploy supports a specific set
-    /// of versions.
+    /// Optional. The Skaffold version to use when operating on this release, such
+    /// as "1.20.0". Not all versions are valid; Cloud Deploy supports a specific
+    /// set of versions.
     ///
     /// If unset, the most recent supported Skaffold version will be used.
     #[prost(string, tag = "19")]
@@ -3411,9 +3416,10 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
-    /// `Code.CANCELLED`.
+    /// have
+    /// [google.longrunning.Operation.error][google.longrunning.Operation.error]
+    /// value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.

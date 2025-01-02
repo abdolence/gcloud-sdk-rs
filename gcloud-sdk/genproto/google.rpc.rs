@@ -264,11 +264,12 @@ pub struct ErrorInfo {
     pub domain: ::prost::alloc::string::String,
     /// Additional structured details about this error.
     ///
-    /// Keys should match /\[a-zA-Z0-9-_\]/ and be limited to 64 characters in
+    /// Keys must match a regular expression of `[a-z][a-zA-Z0-9-_]+` but should
+    /// ideally be lowerCamelCase. Also, they must be limited to 64 characters in
     /// length. When identifying the current value of an exceeded limit, the units
     /// should be contained in the key, not the value.  For example, rather than
-    /// {"instanceLimit": "100/request"}, should be returned as,
-    /// {"instanceLimitPerRequest": "100"}, if the client exceeds the number of
+    /// `{"instanceLimit": "100/request"}`, should be returned as,
+    /// `{"instanceLimitPerRequest": "100"}`, if the client exceeds the number of
     /// instances that can be created in a single (batch) request.
     #[prost(map = "string, string", tag = "3")]
     pub metadata: ::std::collections::HashMap<
@@ -433,6 +434,18 @@ pub mod bad_request {
         /// A description of why the request element is bad.
         #[prost(string, tag = "2")]
         pub description: ::prost::alloc::string::String,
+        /// The reason of the field-level error. This is a constant value that
+        /// identifies the proximate cause of the field-level error. It should
+        /// uniquely identify the type of the FieldViolation within the scope of the
+        /// google.rpc.ErrorInfo.domain. This should be at most 63
+        /// characters and match a regular expression of `[A-Z][A-Z0-9_]+\[A-Z0-9\]`,
+        /// which represents UPPER_SNAKE_CASE.
+        #[prost(string, tag = "3")]
+        pub reason: ::prost::alloc::string::String,
+        /// Provides a localized error message for field-level errors that is safe to
+        /// return to the API consumer.
+        #[prost(message, optional, tag = "4")]
+        pub localized_message: ::core::option::Option<super::LocalizedMessage>,
     }
 }
 /// Contains metadata about the request that clients can attach when filing a bug

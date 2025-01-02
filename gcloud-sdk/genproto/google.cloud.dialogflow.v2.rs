@@ -1383,8 +1383,8 @@ pub enum SpeechModelVariant {
     /// No model variant specified. In this case Dialogflow defaults to
     /// USE_BEST_AVAILABLE.
     Unspecified = 0,
-    /// Use the best available variant of the [Speech
-    /// model][InputAudioConfig.model] that the caller is eligible for.
+    /// Use the best available variant of the [Speech model][model] that the caller
+    /// is eligible for.
     ///
     /// Please see the [Dialogflow
     /// docs](<https://cloud.google.com/dialogflow/docs/data-logging>) for
@@ -4891,7 +4891,7 @@ pub struct DetectIntentRequest {
     #[prost(bytes = "vec", tag = "5")]
     pub input_audio: ::prost::alloc::vec::Vec<u8>,
 }
-/// The message returned from the DetectIntent method.
+/// The message returned from the [DetectIntent][] method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetectIntentResponse {
     /// The unique identifier of the response. It can be used to
@@ -5038,8 +5038,8 @@ pub struct QueryResult {
     /// was not set.
     ///
     /// This field is not guaranteed to be accurate or set. In particular this
-    /// field isn't set for StreamingDetectIntent since the streaming endpoint has
-    /// separate confidence estimates per portion of the audio in
+    /// field isn't set for [StreamingDetectIntent][] since the streaming endpoint
+    /// has separate confidence estimates per portion of the audio in
     /// StreamingRecognitionResult.
     #[prost(float, tag = "2")]
     pub speech_recognition_confidence: f32,
@@ -5126,8 +5126,7 @@ pub struct QueryResult {
     pub sentiment_analysis_result: ::core::option::Option<SentimentAnalysisResult>,
 }
 /// The top-level message sent by the client to the
-/// [Sessions.StreamingDetectIntent][google.cloud.dialogflow.v2.Sessions.StreamingDetectIntent]
-/// method.
+/// [StreamingDetectIntent][] method.
 ///
 /// Multiple request messages should be sent in order:
 ///
@@ -5307,11 +5306,13 @@ pub struct CloudConversationDebuggingInfo {
     >,
 }
 /// The top-level message returned from the
-/// `StreamingDetectIntent` method.
+/// [StreamingDetectIntent][] method.
 ///
 /// Multiple response messages can be returned in order:
 ///
-/// 1.  If the `StreamingDetectIntentRequest.input_audio` field was
+/// 1.  If the
+/// [StreamingDetectIntentRequest.input_audio][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.input_audio]
+/// field was
 ///      set, the `recognition_result` field is populated for one
 ///      or more messages.
 ///      See the
@@ -5351,7 +5352,8 @@ pub struct StreamingDetectIntentResponse {
     #[prost(message, optional, tag = "6")]
     pub output_audio_config: ::core::option::Option<OutputAudioConfig>,
     /// Debugging info that would get populated when
-    /// `StreamingDetectIntentRequest.enable_debugging_info` is set to true.
+    /// [StreamingDetectIntentRequest.enable_debugging_info][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.enable_debugging_info]
+    /// is set to true.
     #[prost(message, optional, tag = "8")]
     pub debugging_info: ::core::option::Option<CloudConversationDebuggingInfo>,
 }
@@ -5549,9 +5551,9 @@ pub struct SentimentAnalysisRequestConfig {
 /// The result of sentiment analysis. Sentiment analysis inspects user input
 /// and identifies the prevailing subjective opinion, especially to determine a
 /// user's attitude as positive, negative, or neutral.
-/// For [Participants.DetectIntent][], it needs to be configured in
+/// For [DetectIntent][], it needs to be configured in
 /// [DetectIntentRequest.query_params][google.cloud.dialogflow.v2.DetectIntentRequest.query_params].
-/// For [Participants.StreamingDetectIntent][], it needs to be configured in
+/// For [StreamingDetectIntent][], it needs to be configured in
 /// [StreamingDetectIntentRequest.query_params][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.query_params].
 /// And for
 /// [Participants.AnalyzeContent][google.cloud.dialogflow.v2.Participants.AnalyzeContent]
@@ -5797,9 +5799,9 @@ pub struct Participant {
     ///     Dialogflow adds the obfuscated user id with the participant.
     ///
     /// 2. If you set this field in
-    ///     [AnalyzeContent][google.cloud.dialogflow.v2.AnalyzeContentRequest.obfuscated_external_user_id]
+    ///     [AnalyzeContent][google.cloud.dialogflow.v2.AnalyzeContentRequest.participant]
     ///     or
-    ///     [StreamingAnalyzeContent][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.obfuscated_external_user_id],
+    ///     [StreamingAnalyzeContent][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.participant],
     ///     Dialogflow will update
     ///     [Participant.obfuscated_external_user_id][google.cloud.dialogflow.v2.Participant.obfuscated_external_user_id].
     ///
@@ -6078,8 +6080,9 @@ pub struct AnalyzeContentResponse {
     #[prost(message, optional, tag = "2")]
     pub reply_audio: ::core::option::Option<OutputAudio>,
     /// Only set if a Dialogflow automated agent has responded.
-    /// Note that: [AutomatedAgentReply.detect_intent_response.output_audio][]
-    /// and [AutomatedAgentReply.detect_intent_response.output_audio_config][]
+    /// Note that in [AutomatedAgentReply.DetectIntentResponse][],
+    /// [Sessions.DetectIntentResponse.output_audio][]
+    /// and [Sessions.DetectIntentResponse.output_audio_config][]
     /// are always empty, use
     /// [reply_audio][google.cloud.dialogflow.v2.AnalyzeContentResponse.reply_audio]
     /// instead.
@@ -6193,7 +6196,8 @@ pub struct StreamingAnalyzeContentRequest {
     /// and
     /// [AudioEncoding.AUDIO_ENCODING_MULAW][google.cloud.dialogflow.v2.AudioEncoding.AUDIO_ENCODING_MULAW]
     /// - Lifecycle: conversation should be in `Assist Stage`, go to
-    ///    [Conversation.CreateConversation][] for more information.
+    ///    [Conversations.CreateConversation][google.cloud.dialogflow.v2.Conversations.CreateConversation]
+    ///    for more information.
     ///
     /// InvalidArgument Error will be returned if the one of restriction checks
     /// failed.
@@ -6297,9 +6301,9 @@ pub struct StreamingAnalyzeContentResponse {
     /// has content.
     #[prost(message, optional, tag = "3")]
     pub reply_audio: ::core::option::Option<OutputAudio>,
-    /// Only set if a Dialogflow automated agent has responded.
-    /// Note that: [AutomatedAgentReply.detect_intent_response.output_audio][]
-    /// and [AutomatedAgentReply.detect_intent_response.output_audio_config][]
+    /// Note that in [AutomatedAgentReply.DetectIntentResponse][],
+    /// [Sessions.DetectIntentResponse.output_audio][]
+    /// and [Sessions.DetectIntentResponse.output_audio_config][]
     /// are always empty, use
     /// [reply_audio][google.cloud.dialogflow.v2.StreamingAnalyzeContentResponse.reply_audio]
     /// instead.
@@ -7386,8 +7390,9 @@ pub mod participants_client {
 ///     returned to the customers.
 /// 2. The customer uses the
 /// [AnswerRecord.name][google.cloud.dialogflow.v2.AnswerRecord.name] to call the
-///     [UpdateAnswerRecord][] method to send feedback about a specific answer
-///     that they believe is wrong.
+///     [AnswerRecords.UpdateAnswerRecord][google.cloud.dialogflow.v2.AnswerRecords.UpdateAnswerRecord]
+///     method to send feedback about a specific answer that they believe is
+///     wrong.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnswerRecord {
     /// The unique identifier of this answer record.
@@ -8003,6 +8008,19 @@ pub struct ConversationProfile {
     /// format of [ConversationEvent][google.cloud.dialogflow.v2.ConversationEvent]
     #[prost(message, optional, tag = "8")]
     pub new_message_event_notification_config: ::core::option::Option<
+        NotificationConfig,
+    >,
+    /// Optional. Configuration for publishing transcription intermediate results.
+    /// Event will be sent in format of
+    /// [ConversationEvent][google.cloud.dialogflow.v2.ConversationEvent]. If
+    /// configured, the following information will be populated as
+    /// [ConversationEvent][google.cloud.dialogflow.v2.ConversationEvent] Pub/Sub
+    /// message attributes:
+    /// - "participant_id"
+    /// - "participant_role"
+    /// - "message_id"
+    #[prost(message, optional, tag = "21")]
+    pub new_recognition_result_notification_config: ::core::option::Option<
         NotificationConfig,
     >,
     /// Settings for speech transcription.
@@ -8745,7 +8763,7 @@ pub mod suggestion_feature {
     }
 }
 /// The request message for
-/// [ConversationProfiles.SetSuggestionFeature][].
+/// [ConversationProfiles.SetSuggestionFeatureConfig][google.cloud.dialogflow.v2.ConversationProfiles.SetSuggestionFeatureConfig].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetSuggestionFeatureConfigRequest {
     /// Required. The Conversation Profile to add or update the suggestion feature
@@ -8763,7 +8781,8 @@ pub struct SetSuggestionFeatureConfigRequest {
         human_agent_assistant_config::SuggestionFeatureConfig,
     >,
 }
-/// The request message for [ConversationProfiles.ClearFeature][].
+/// The request message for
+/// [ConversationProfiles.ClearSuggestionFeatureConfig][google.cloud.dialogflow.v2.ConversationProfiles.ClearSuggestionFeatureConfig].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClearSuggestionFeatureConfigRequest {
     /// Required. The Conversation Profile to add or update the suggestion feature
@@ -8779,7 +8798,8 @@ pub struct ClearSuggestionFeatureConfigRequest {
     #[prost(enumeration = "suggestion_feature::Type", tag = "3")]
     pub suggestion_feature_type: i32,
 }
-/// Metadata for a [ConversationProfile.SetSuggestionFeatureConfig][]
+/// Metadata for a
+/// [ConversationProfiles.SetSuggestionFeatureConfig][google.cloud.dialogflow.v2.ConversationProfiles.SetSuggestionFeatureConfig]
 /// operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetSuggestionFeatureConfigOperationMetadata {
@@ -8799,7 +8819,8 @@ pub struct SetSuggestionFeatureConfigOperationMetadata {
     #[prost(message, optional, tag = "4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-/// Metadata for a [ConversationProfile.ClearSuggestionFeatureConfig][]
+/// Metadata for a
+/// [ConversationProfiles.ClearSuggestionFeatureConfig][google.cloud.dialogflow.v2.ConversationProfiles.ClearSuggestionFeatureConfig]
 /// operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClearSuggestionFeatureConfigOperationMetadata {
@@ -8974,7 +8995,9 @@ pub mod conversation_profiles_client {
         }
         /// Creates a conversation profile in the specified project.
         ///
-        /// [ConversationProfile.CreateTime][] and [ConversationProfile.UpdateTime][]
+        /// [ConversationProfile.create_time][google.cloud.dialogflow.v2.ConversationProfile.create_time]
+        /// and
+        /// [ConversationProfile.update_time][google.cloud.dialogflow.v2.ConversationProfile.update_time]
         /// aren't populated in the response. You can retrieve them via
         /// [GetConversationProfile][google.cloud.dialogflow.v2.ConversationProfiles.GetConversationProfile]
         /// API.
@@ -9009,7 +9032,9 @@ pub mod conversation_profiles_client {
         }
         /// Updates the specified conversation profile.
         ///
-        /// [ConversationProfile.CreateTime][] and [ConversationProfile.UpdateTime][]
+        /// [ConversationProfile.create_time][google.cloud.dialogflow.v2.ConversationProfile.create_time]
+        /// and
+        /// [ConversationProfile.update_time][google.cloud.dialogflow.v2.ConversationProfile.update_time]
         /// aren't populated in the response. You can retrieve them via
         /// [GetConversationProfile][google.cloud.dialogflow.v2.ConversationProfiles.GetConversationProfile]
         /// API.
@@ -10154,9 +10179,11 @@ pub struct SuggestConversationSummaryResponse {
     #[prost(string, tag = "2")]
     pub latest_message: ::prost::alloc::string::String,
     /// Number of messages prior to and including
-    /// [last_conversation_message][] used to compile the suggestion. It may be
-    /// smaller than the [SuggestSummaryRequest.context_size][] field in the
-    /// request if there weren't that many messages in the conversation.
+    /// [latest_message][google.cloud.dialogflow.v2.SuggestConversationSummaryResponse.latest_message]
+    /// used to compile the suggestion. It may be smaller than the
+    /// [SuggestConversationSummaryRequest.context_size][google.cloud.dialogflow.v2.SuggestConversationSummaryRequest.context_size]
+    /// field in the request if there weren't that many messages in the
+    /// conversation.
     #[prost(int32, tag = "3")]
     pub context_size: i32,
 }
@@ -10245,9 +10272,11 @@ pub struct GenerateStatelessSummaryResponse {
     #[prost(string, tag = "2")]
     pub latest_message: ::prost::alloc::string::String,
     /// Number of messages prior to and including
-    /// [last_conversation_message][] used to compile the suggestion. It may be
-    /// smaller than the [GenerateStatelessSummaryRequest.context_size][] field in
-    /// the request if there weren't that many messages in the conversation.
+    /// [latest_message][google.cloud.dialogflow.v2.GenerateStatelessSummaryResponse.latest_message]
+    /// used to compile the suggestion. It may be smaller than the
+    /// [GenerateStatelessSummaryRequest.max_context_size][google.cloud.dialogflow.v2.GenerateStatelessSummaryRequest.max_context_size]
+    /// field in the request if there weren't that many messages in the
+    /// conversation.
     #[prost(int32, tag = "3")]
     pub context_size: i32,
 }
@@ -11359,7 +11388,7 @@ pub struct ImportConversationDataOperationResponse {
     #[prost(int32, tag = "3")]
     pub import_count: i32,
 }
-/// Metadata for [ConversationDatasets][CreateConversationDataset].
+/// Metadata for [CreateConversationDataset][].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConversationDatasetOperationMetadata {
     /// The resource name of the conversation dataset that will be created. Format:
@@ -11368,7 +11397,7 @@ pub struct CreateConversationDatasetOperationMetadata {
     #[prost(string, tag = "1")]
     pub conversation_dataset: ::prost::alloc::string::String,
 }
-/// Metadata for [ConversationDatasets][DeleteConversationDataset].
+/// Metadata for [DeleteConversationDataset][].
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeleteConversationDatasetOperationMetadata {}
 /// Generated client implementations.
@@ -11665,7 +11694,7 @@ pub struct ConversationEvent {
     #[prost(message, optional, tag = "3")]
     pub error_status: ::core::option::Option<super::super::super::rpc::Status>,
     /// Payload of conversation event.
-    #[prost(oneof = "conversation_event::Payload", tags = "4")]
+    #[prost(oneof = "conversation_event::Payload", tags = "4, 5")]
     pub payload: ::core::option::Option<conversation_event::Payload>,
 }
 /// Nested message and enum types in `ConversationEvent`.
@@ -11699,6 +11728,11 @@ pub mod conversation_event {
         /// telephony. It is configured in
         /// [ConversationProfile.new_message_event_notification_config][google.cloud.dialogflow.v2.ConversationProfile.new_message_event_notification_config]
         NewMessage = 5,
+        /// An existing conversation has received a new speech recognition result.
+        /// This is mainly for delivering intermediate transcripts. The notification
+        /// is configured in
+        /// [ConversationProfile.new_recognition_event_notification_config][].
+        NewRecognitionResult = 7,
         /// Unrecoverable error during a telephone call.
         ///
         /// In general non-recoverable errors only occur if something was
@@ -11723,6 +11757,7 @@ pub mod conversation_event {
                 Self::ConversationFinished => "CONVERSATION_FINISHED",
                 Self::HumanInterventionNeeded => "HUMAN_INTERVENTION_NEEDED",
                 Self::NewMessage => "NEW_MESSAGE",
+                Self::NewRecognitionResult => "NEW_RECOGNITION_RESULT",
                 Self::UnrecoverableError => "UNRECOVERABLE_ERROR",
             }
         }
@@ -11734,6 +11769,7 @@ pub mod conversation_event {
                 "CONVERSATION_FINISHED" => Some(Self::ConversationFinished),
                 "HUMAN_INTERVENTION_NEEDED" => Some(Self::HumanInterventionNeeded),
                 "NEW_MESSAGE" => Some(Self::NewMessage),
+                "NEW_RECOGNITION_RESULT" => Some(Self::NewRecognitionResult),
                 "UNRECOVERABLE_ERROR" => Some(Self::UnrecoverableError),
                 _ => None,
             }
@@ -11745,6 +11781,9 @@ pub mod conversation_event {
         /// Payload of NEW_MESSAGE event.
         #[prost(message, tag = "4")]
         NewMessagePayload(super::Message),
+        /// Payload of NEW_RECOGNITION_RESULT event.
+        #[prost(message, tag = "5")]
+        NewRecognitionResultPayload(super::StreamingRecognitionResult),
     }
 }
 /// Represents a conversation model.

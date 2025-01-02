@@ -27,6 +27,12 @@ pub struct Cluster {
     /// Output only. The current state of the cluster.
     #[prost(enumeration = "cluster::State", tag = "10")]
     pub state: i32,
+    /// Output only. Reserved for future use.
+    #[prost(bool, optional, tag = "11")]
+    pub satisfies_pzi: ::core::option::Option<bool>,
+    /// Output only. Reserved for future use.
+    #[prost(bool, optional, tag = "12")]
+    pub satisfies_pzs: ::core::option::Option<bool>,
     /// Platform specific configuration properties for a Kafka cluster.
     #[prost(oneof = "cluster::PlatformConfig", tags = "9")]
     pub platform_config: ::core::option::Option<cluster::PlatformConfig>,

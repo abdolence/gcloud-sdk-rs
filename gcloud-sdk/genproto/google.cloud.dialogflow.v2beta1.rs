@@ -9645,6 +9645,19 @@ pub struct ConversationProfile {
     pub new_message_event_notification_config: ::core::option::Option<
         NotificationConfig,
     >,
+    /// Optional. Configuration for publishing transcription intermediate results.
+    /// Event will be sent in format of
+    /// [ConversationEvent][google.cloud.dialogflow.v2beta1.ConversationEvent]. If
+    /// configured, the following information will be populated as
+    /// [ConversationEvent][google.cloud.dialogflow.v2beta1.ConversationEvent]
+    /// Pub/Sub message attributes:
+    /// - "participant_id"
+    /// - "participant_role"
+    /// - "message_id"
+    #[prost(message, optional, tag = "21")]
+    pub new_recognition_result_notification_config: ::core::option::Option<
+        NotificationConfig,
+    >,
     /// Settings for speech transcription.
     #[prost(message, optional, tag = "9")]
     pub stt_config: ::core::option::Option<SpeechToTextConfig>,
@@ -12827,7 +12840,7 @@ pub struct ConversationEvent {
     #[prost(message, optional, tag = "3")]
     pub error_status: ::core::option::Option<super::super::super::rpc::Status>,
     /// Payload of conversation event.
-    #[prost(oneof = "conversation_event::Payload", tags = "4")]
+    #[prost(oneof = "conversation_event::Payload", tags = "4, 5")]
     pub payload: ::core::option::Option<conversation_event::Payload>,
 }
 /// Nested message and enum types in `ConversationEvent`.
@@ -12861,6 +12874,11 @@ pub mod conversation_event {
         /// telephony. It is configured in
         /// [ConversationProfile.new_message_event_notification_config][google.cloud.dialogflow.v2beta1.ConversationProfile.new_message_event_notification_config]
         NewMessage = 5,
+        /// An existing conversation has received a new speech recognition result.
+        /// This is mainly for delivering intermediate transcripts. The notification
+        /// is configured in
+        /// [ConversationProfile.new_recognition_event_notification_config][].
+        NewRecognitionResult = 7,
         /// Unrecoverable error during a telephone call.
         ///
         /// In general non-recoverable errors only occur if something was
@@ -12885,6 +12903,7 @@ pub mod conversation_event {
                 Self::ConversationFinished => "CONVERSATION_FINISHED",
                 Self::HumanInterventionNeeded => "HUMAN_INTERVENTION_NEEDED",
                 Self::NewMessage => "NEW_MESSAGE",
+                Self::NewRecognitionResult => "NEW_RECOGNITION_RESULT",
                 Self::UnrecoverableError => "UNRECOVERABLE_ERROR",
             }
         }
@@ -12896,6 +12915,7 @@ pub mod conversation_event {
                 "CONVERSATION_FINISHED" => Some(Self::ConversationFinished),
                 "HUMAN_INTERVENTION_NEEDED" => Some(Self::HumanInterventionNeeded),
                 "NEW_MESSAGE" => Some(Self::NewMessage),
+                "NEW_RECOGNITION_RESULT" => Some(Self::NewRecognitionResult),
                 "UNRECOVERABLE_ERROR" => Some(Self::UnrecoverableError),
                 _ => None,
             }
@@ -12907,6 +12927,9 @@ pub mod conversation_event {
         /// Payload of NEW_MESSAGE event.
         #[prost(message, tag = "4")]
         NewMessagePayload(super::Message),
+        /// Payload of NEW_RECOGNITION_RESULT event.
+        #[prost(message, tag = "5")]
+        NewRecognitionResultPayload(super::StreamingRecognitionResult),
     }
 }
 /// Google Cloud Storage locations for the inputs.

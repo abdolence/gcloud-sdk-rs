@@ -602,7 +602,8 @@ pub struct BidiWriteObjectRequest {
     pub write_offset: i64,
     /// Checksums for the complete object. If the checksums computed by the service
     /// don't match the specified checksums the call will fail. May only be
-    /// provided in last request (with finish_write set).
+    /// provided in the first request or the
+    /// last request (with finish_write set).
     #[prost(message, optional, tag = "6")]
     pub object_checksums: ::core::option::Option<ObjectChecksums>,
     /// For each BidiWriteObjectRequest where state_lookup is `true` or the client
@@ -943,6 +944,75 @@ pub struct RewriteResponse {
     /// is present in the response only when copying completes.
     #[prost(message, optional, tag = "5")]
     pub resource: ::core::option::Option<Object>,
+}
+/// Request message for MoveObject.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MoveObjectRequest {
+    /// Required. Name of the bucket in which the object resides.
+    #[prost(string, tag = "1")]
+    pub bucket: ::prost::alloc::string::String,
+    /// Required. Name of the source object.
+    #[prost(string, tag = "2")]
+    pub source_object: ::prost::alloc::string::String,
+    /// Required. Name of the destination object.
+    #[prost(string, tag = "3")]
+    pub destination_object: ::prost::alloc::string::String,
+    /// Optional. Makes the operation conditional on whether the source object's
+    /// current generation matches the given value. `if_source_generation_match`
+    /// and `if_source_generation_not_match` conditions are mutually exclusive:
+    /// it's an error for both of them to be set in the request.
+    #[prost(int64, optional, tag = "4")]
+    pub if_source_generation_match: ::core::option::Option<i64>,
+    /// Optional. Makes the operation conditional on whether the source object's
+    /// current generation does not match the given value.
+    /// `if_source_generation_match` and `if_source_generation_not_match`
+    /// conditions are mutually exclusive: it's an error for both of them to be set
+    /// in the request.
+    #[prost(int64, optional, tag = "5")]
+    pub if_source_generation_not_match: ::core::option::Option<i64>,
+    /// Optional. Makes the operation conditional on whether the source object's
+    /// current metageneration matches the given value.
+    /// `if_source_metageneration_match` and `if_source_metageneration_not_match`
+    /// conditions are mutually exclusive: it's an error for both of them to be set
+    /// in the request.
+    #[prost(int64, optional, tag = "6")]
+    pub if_source_metageneration_match: ::core::option::Option<i64>,
+    /// Optional. Makes the operation conditional on whether the source object's
+    /// current metageneration does not match the given value.
+    /// `if_source_metageneration_match` and `if_source_metageneration_not_match`
+    /// conditions are mutually exclusive: it's an error for both of them to be set
+    /// in the request.
+    #[prost(int64, optional, tag = "7")]
+    pub if_source_metageneration_not_match: ::core::option::Option<i64>,
+    /// Optional. Makes the operation conditional on whether the destination
+    /// object's current generation matches the given value. Setting to 0 makes the
+    /// operation succeed only if there are no live versions of the object.
+    /// `if_generation_match` and `if_generation_not_match` conditions are mutually
+    /// exclusive: it's an error for both of them to be set in the request.
+    #[prost(int64, optional, tag = "8")]
+    pub if_generation_match: ::core::option::Option<i64>,
+    /// Optional. Makes the operation conditional on whether the destination
+    /// object's current generation does not match the given value. If no live
+    /// object exists, the precondition fails. Setting to 0 makes the operation
+    /// succeed only if there is a live version of the object.
+    /// `if_generation_match` and `if_generation_not_match` conditions are mutually
+    /// exclusive: it's an error for both of them to be set in the request.
+    #[prost(int64, optional, tag = "9")]
+    pub if_generation_not_match: ::core::option::Option<i64>,
+    /// Optional. Makes the operation conditional on whether the destination
+    /// object's current metageneration matches the given value.
+    /// `if_metageneration_match` and `if_metageneration_not_match` conditions are
+    /// mutually exclusive: it's an error for both of them to be set in the
+    /// request.
+    #[prost(int64, optional, tag = "10")]
+    pub if_metageneration_match: ::core::option::Option<i64>,
+    /// Optional. Makes the operation conditional on whether the destination
+    /// object's current metageneration does not match the given value.
+    /// `if_metageneration_match` and `if_metageneration_not_match` conditions are
+    /// mutually exclusive: it's an error for both of them to be set in the
+    /// request.
+    #[prost(int64, optional, tag = "11")]
+    pub if_metageneration_not_match: ::core::option::Option<i64>,
 }
 /// Request message StartResumableWrite.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1797,6 +1867,9 @@ pub struct Object {
     /// became noncurrent.
     #[prost(message, optional, tag = "12")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the object was finalized.
+    #[prost(message, optional, tag = "36")]
+    pub finalize_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Content-Type of the object data, matching
     /// [<https://tools.ietf.org/html/rfc7231#section-3.1.1.5][RFC> 7231 §3.1.1.5].
     /// If an object is stored without a Content-Type, it is served as
@@ -2759,6 +2832,28 @@ pub mod storage_client {
                 .insert(
                     GrpcMethod::new("google.storage.v2.Storage", "QueryWriteStatus"),
                 );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Moves the source object to the destination object in the same bucket.
+        pub async fn move_object(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MoveObjectRequest>,
+        ) -> std::result::Result<tonic::Response<super::Object>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.v2.Storage/MoveObject",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.storage.v2.Storage", "MoveObject"));
             self.inner.unary(req, path, codec).await
         }
     }

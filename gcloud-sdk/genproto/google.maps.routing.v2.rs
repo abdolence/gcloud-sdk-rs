@@ -375,6 +375,98 @@ impl PolylineEncoding {
         }
     }
 }
+/// Details corresponding to a given index or contiguous segment of a polyline.
+/// Given a polyline with points P_0, P_1, ... , P_N (zero-based index), the
+/// `PolylineDetails` defines an interval and associated metadata.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PolylineDetails {
+    /// Flyover details along the polyline.
+    #[prost(message, repeated, tag = "12")]
+    pub flyover_info: ::prost::alloc::vec::Vec<polyline_details::FlyoverInfo>,
+    /// Narrow road details along the polyline.
+    #[prost(message, repeated, tag = "13")]
+    pub narrow_road_info: ::prost::alloc::vec::Vec<polyline_details::NarrowRoadInfo>,
+}
+/// Nested message and enum types in `PolylineDetails`.
+pub mod polyline_details {
+    /// Encapsulates the start and end indexes for a polyline detail.
+    /// For instances where the data corresponds to a single point, `start_index`
+    /// and `end_index` will be equal.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct PolylinePointIndex {
+        /// The start index of this detail in the polyline.
+        #[prost(int32, optional, tag = "1")]
+        pub start_index: ::core::option::Option<i32>,
+        /// The end index of this detail in the polyline.
+        #[prost(int32, optional, tag = "2")]
+        pub end_index: ::core::option::Option<i32>,
+    }
+    /// Encapsulates information about flyovers along the polyline.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct FlyoverInfo {
+        /// Output only. Denotes whether a flyover exists for a given stretch of the
+        /// polyline.
+        #[prost(enumeration = "RoadFeatureState", tag = "1")]
+        pub flyover_presence: i32,
+        /// The location of flyover related information along the polyline.
+        #[prost(message, optional, tag = "2")]
+        pub polyline_point_index: ::core::option::Option<PolylinePointIndex>,
+    }
+    /// Encapsulates information about narrow roads along the polyline.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct NarrowRoadInfo {
+        /// Output only. Denotes whether a narrow road exists for a given stretch of
+        /// the polyline.
+        #[prost(enumeration = "RoadFeatureState", tag = "1")]
+        pub narrow_road_presence: i32,
+        /// The location of narrow road related information along the polyline.
+        #[prost(message, optional, tag = "2")]
+        pub polyline_point_index: ::core::option::Option<PolylinePointIndex>,
+    }
+    /// Encapsulates the states of road features along a stretch of polyline.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RoadFeatureState {
+        /// The road feature's state was not computed (default value).
+        Unspecified = 0,
+        /// The road feature exists.
+        Exists = 1,
+        /// The road feature does not exist.
+        DoesNotExist = 2,
+    }
+    impl RoadFeatureState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ROAD_FEATURE_STATE_UNSPECIFIED",
+                Self::Exists => "EXISTS",
+                Self::DoesNotExist => "DOES_NOT_EXIST",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ROAD_FEATURE_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "EXISTS" => Some(Self::Exists),
+                "DOES_NOT_EXIST" => Some(Self::DoesNotExist),
+                _ => None,
+            }
+        }
+    }
+}
 /// Labels for the [`Route`][google.maps.routing.v2.Route] that are useful to
 /// identify specific properties of the route to compare against others.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -815,6 +907,9 @@ pub struct Route {
     /// that have Via waypoints.
     #[prost(string, tag = "12")]
     pub route_token: ::prost::alloc::string::String,
+    /// Contains information about details along the polyline.
+    #[prost(message, optional, tag = "14")]
+    pub polyline_details: ::core::option::Option<PolylineDetails>,
 }
 /// Nested message and enum types in `Route`.
 pub mod route {
@@ -2233,6 +2328,18 @@ pub mod compute_routes_request {
         /// is meant to be read as-is. This content is for display only.
         /// Do not programmatically parse it.
         HtmlFormattedNavigationInstructions = 4,
+        /// Flyover information for the route(s). The
+        /// `routes.polyline_details.flyover_info` fieldmask must be specified to
+        /// return this information. This data will only currently be populated for
+        /// certain metros in India. This feature is experimental, and the
+        /// SKU/charge is subject to change.
+        FlyoverInfoOnPolyline = 7,
+        /// Narrow road information for the route(s). The
+        /// `routes.polyline_details.narrow_road_info` fieldmask must be specified
+        /// to return this information. This data will only currently be populated
+        /// for certain metros in India. This feature is experimental, and the
+        /// SKU/charge is subject to change.
+        NarrowRoadInfoOnPolyline = 8,
     }
     impl ExtraComputation {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2248,6 +2355,8 @@ pub mod compute_routes_request {
                 Self::HtmlFormattedNavigationInstructions => {
                     "HTML_FORMATTED_NAVIGATION_INSTRUCTIONS"
                 }
+                Self::FlyoverInfoOnPolyline => "FLYOVER_INFO_ON_POLYLINE",
+                Self::NarrowRoadInfoOnPolyline => "NARROW_ROAD_INFO_ON_POLYLINE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2260,6 +2369,8 @@ pub mod compute_routes_request {
                 "HTML_FORMATTED_NAVIGATION_INSTRUCTIONS" => {
                     Some(Self::HtmlFormattedNavigationInstructions)
                 }
+                "FLYOVER_INFO_ON_POLYLINE" => Some(Self::FlyoverInfoOnPolyline),
+                "NARROW_ROAD_INFO_ON_POLYLINE" => Some(Self::NarrowRoadInfoOnPolyline),
                 _ => None,
             }
         }

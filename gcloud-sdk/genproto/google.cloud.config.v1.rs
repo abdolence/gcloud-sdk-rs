@@ -64,7 +64,7 @@ pub struct Deployment {
     /// - The field cannot be updated, including changing its presence
     #[prost(string, optional, tag = "15")]
     pub artifacts_gcs_bucket: ::core::option::Option<::prost::alloc::string::String>,
-    /// Optional. User-specified Service Account (SA) credentials to be used when
+    /// Required. User-specified Service Account (SA) credentials to be used when
     /// actuating resources.
     /// Format: `projects/{projectID}/serviceAccounts/{serviceAccount}`
     #[prost(string, optional, tag = "16")]
@@ -325,22 +325,24 @@ pub struct TerraformBlueprint {
         TerraformVariable,
     >,
     /// Location of the source configs.
+    /// Required.
     #[prost(oneof = "terraform_blueprint::Source", tags = "1, 2")]
     pub source: ::core::option::Option<terraform_blueprint::Source>,
 }
 /// Nested message and enum types in `TerraformBlueprint`.
 pub mod terraform_blueprint {
     /// Location of the source configs.
+    /// Required.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
-        /// Required. URI of an object in Google Cloud Storage.
+        /// URI of an object in Google Cloud Storage.
         /// Format: `gs://{bucket}/{object}`
         ///
         /// URI may also specify an object version for zipped objects.
         /// Format: `gs://{bucket}/{object}#{version}`
         #[prost(string, tag = "1")]
         GcsSource(::prost::alloc::string::String),
-        /// Required. URI of a public Git repo.
+        /// URI of a public Git repo.
         #[prost(message, tag = "2")]
         GitSource(super::GitSource),
     }
@@ -671,9 +673,9 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation of the
     /// operation. Operations that have successfully been cancelled have
-    /// [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
-    /// `Code.CANCELLED`.
+    /// [google.longrunning.Operation.error][google.longrunning.Operation.error]
+    /// value with a [google.rpc.Status.code][google.rpc.Status.code] of `1`,
+    /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.
@@ -1291,7 +1293,7 @@ pub struct ListResourcesRequest {
 /// A response to a 'ListResources' call. Contains a list of Resources.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListResourcesResponse {
-    /// List of [Resources][]s.
+    /// List of [Resources][google.cloud.config.v1.Resource].
     #[prost(message, repeated, tag = "1")]
     pub resources: ::prost::alloc::vec::Vec<Resource>,
     /// A token to request the next page of resources from the 'ListResources'
@@ -1444,7 +1446,7 @@ pub struct Preview {
     /// Optional. Current mode of preview.
     #[prost(enumeration = "preview::PreviewMode", tag = "15")]
     pub preview_mode: i32,
-    /// Optional. User-specified Service Account (SA) credentials to be used when
+    /// Required. User-specified Service Account (SA) credentials to be used when
     /// previewing resources.
     /// Format: `projects/{projectID}/serviceAccounts/{serviceAccount}`
     #[prost(string, tag = "7")]
@@ -1501,6 +1503,15 @@ pub struct Preview {
     /// Example: "=1.3.10".
     #[prost(string, optional, tag = "19")]
     pub tf_version_constraint: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Arbitrary key-value metadata storage e.g. to help client tools
+    /// identifiy preview during automation. See
+    /// <https://google.aip.dev/148#annotations> for details on format and size
+    /// limitations.
+    #[prost(map = "string, string", tag = "20")]
+    pub annotations: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Blueprint to preview.
     #[prost(oneof = "preview::Blueprint", tags = "6")]
     pub blueprint: ::core::option::Option<preview::Blueprint>,
@@ -1879,7 +1890,7 @@ pub struct ListPreviewsRequest {
 /// A response to a `ListPreviews` call. Contains a list of Previews.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPreviewsResponse {
-    /// List of [Previews][]s.
+    /// List of [Previews][google.cloud.config.v1.Preview].
     #[prost(message, repeated, tag = "1")]
     pub previews: ::prost::alloc::vec::Vec<Preview>,
     /// Token to be supplied to the next ListPreviews request via `page_token`
@@ -2400,7 +2411,7 @@ pub mod config_client {
                 .insert(GrpcMethod::new("google.cloud.config.v1.Config", "GetResource"));
             self.inner.unary(req, path, codec).await
         }
-        /// Lists [Resource][google.cloud.config.v1.Resource]s in a given revision.
+        /// Lists [Resources][google.cloud.config.v1.Resource] in a given revision.
         pub async fn list_resources(
             &mut self,
             request: impl tonic::IntoRequest<super::ListResourcesRequest>,
