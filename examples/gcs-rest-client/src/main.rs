@@ -76,14 +76,13 @@ async fn test_compute() {
         .create_google_compute_v1_config()
         .await
         .unwrap();
-    let request = gcloud_sdk::google_rest_apis::compute_v1::instances_api::ComputePeriodInstancesPeriodStartParams {
+    let request = gcloud_sdk::google_rest_apis::compute_v1::instances_api::ComputePeriodInstancesPeriodListParams {
         project: google_project_id.to_string(),
-        instance: "abd-test-micro".into(),
         zone: "us-central1-a".into(),
         ..Default::default()
     };
     let response =
-        gcloud_sdk::google_rest_apis::compute_v1::instances_api::compute_instances_start(
+        gcloud_sdk::google_rest_apis::compute_v1::instances_api::compute_instances_list(
             &compute_config,
             request,
         )
