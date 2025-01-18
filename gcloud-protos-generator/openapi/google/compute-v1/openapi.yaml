@@ -40771,7 +40771,7 @@ paths:
           application/json:
             schema:
               type: object
-              nullable: falsae
+              nullable: false
       responses:
         "200":
           content:

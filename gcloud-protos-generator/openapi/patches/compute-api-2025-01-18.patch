@@ -11,7 +11,7 @@ index b1bd7a087..6771756a0 100644
 +          application/json:
 +            schema:
 +              type: object
-+              nullable: falsae
++              nullable: false
        responses:
          "200":
            content:
