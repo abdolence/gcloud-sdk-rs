@@ -72,14 +72,19 @@ async fn test_compute() {
 
     let google_rest_client = gcloud_sdk::GoogleRestApi::new().await.unwrap();
 
-    let response = gcloud_sdk::google_rest_apis::compute_v1::instances_api::compute_instances_list(
-        &google_rest_client.create_google_compute_v1_config().await.unwrap(),
-        gcloud_sdk::google_rest_apis::compute_v1::instances_api::ComputePeriodInstancesPeriodListParams {
-            project: google_project_id.to_string(),
-            zone: "us-central1-a".to_string(),
-            ..Default::default()
-        }
-    ).await.unwrap();
+    let compute_config = google_rest_client.create_google_compute_v1_config().await.unwrap();
+    let request = gcloud_sdk::google_rest_apis::compute_v1::instances_api::ComputePeriodInstancesPeriodStartParams {
+        project: google_project_id.to_string(),
+        instance: "abd-test-micro".into(),
+        zone: "us-central1-a".into(),
+        ..Default::default()
+    };
+    let response =
+        gcloud_sdk::google_rest_apis::compute_v1::instances_api::compute_instances_start(
+            &compute_config,
+            request,
+        )
+            .await.unwrap();
 
     println!("{:?}", response);
 }
