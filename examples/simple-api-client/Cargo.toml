@@ -6,7 +6,7 @@ edition = "2021"
 
 [dependencies]
 #gcloud-sdk = { version = "0.25.0", git = "https://github.com/abdolence/gcloud-sdk-rs.git", branch = "master", default-features = false, features = ["tls-webpki-roots","google-logging-v2"] }
-gcloud-sdk = { path = "./../../gcloud-sdk", default-features = false,  features = ["tls-webpki-roots","google-logging-v2"] }
+gcloud-sdk = { path = "./../../gcloud-sdk", default-features = false,  features = ["tls-webpki-roots","google-logging-v2", "external-account-aws"] }
 tokio = { version = "1", features = ["full"] }
 tracing = "0.1"
 tracing-subscriber = { version ="0.3", features = ["env-filter"] }
