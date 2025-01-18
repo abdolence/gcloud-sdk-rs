@@ -72,7 +72,10 @@ async fn test_compute() {
 
     let google_rest_client = gcloud_sdk::GoogleRestApi::new().await.unwrap();
 
-    let compute_config = google_rest_client.create_google_compute_v1_config().await.unwrap();
+    let compute_config = google_rest_client
+        .create_google_compute_v1_config()
+        .await
+        .unwrap();
     let request = gcloud_sdk::google_rest_apis::compute_v1::instances_api::ComputePeriodInstancesPeriodStartParams {
         project: google_project_id.to_string(),
         instance: "abd-test-micro".into(),
@@ -84,7 +87,8 @@ async fn test_compute() {
             &compute_config,
             request,
         )
-            .await.unwrap();
+        .await
+        .unwrap();
 
     println!("{:?}", response);
 }
