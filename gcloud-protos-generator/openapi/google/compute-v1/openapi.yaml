@@ -40766,6 +40766,12 @@ paths:
           name: requestId
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              nullable: falsae
       responses:
         "200":
           content:
