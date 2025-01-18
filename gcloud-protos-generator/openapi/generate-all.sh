@@ -4,7 +4,7 @@ set -oe pipefail
 
 SCRIPT_LOCATION=$( dirname -- "$0"; );
 SPEC_LOCATIONS="$SCRIPT_LOCATION/google"
-GENERATOR_LOCATION="$SCRIPT_LOCATION/generator/openapi-generator-cli-7.1.0.jar"
+GENERATOR_LOCATION="$SCRIPT_LOCATION/generator/openapi-generator-cli-7.9.0.jar"
 GCLOUD_SDK_DIR="$SCRIPT_LOCATION/../../gcloud-sdk"
 TEMPLATES_DIR="$SCRIPT_LOCATION/templates"
 
@@ -40,9 +40,11 @@ do
     sed -i "s/_period_/_/g" "$TEMP_OUTPUT"/"$API_NAME"/src/apis/*.rs
     sed -i "s/crate::models/crate::google_rest_apis::$API_NAME::models/g" "$TEMP_OUTPUT"/"$API_NAME"/src/apis/*.rs
     sed -i "s/crate::models/crate::google_rest_apis::$API_NAME::models/g" "$TEMP_OUTPUT"/"$API_NAME"/src/models/*.rs
+    sed -i "s/crate::{apis::ResponseContent, models}/crate::google_rest_apis::$API_NAME::{apis::ResponseContent,models}/g" "$TEMP_OUTPUT"/"$API_NAME"/src/apis/*.rs
+    sed -i "s/crate::{apis::ResponseContent, models}/crate::google_rest_apis::$API_NAME::{apis::ResponseContent,models}/g" "$TEMP_OUTPUT"/"$API_NAME"/src/models/*.rs
 
-    sed -i '1s;^;use serde::{Serialize,Deserialize}\;;' "$TEMP_OUTPUT"/"$API_NAME"/src/apis/*.rs
-    sed -i '1s;^;use serde::{Serialize,Deserialize}\;;' "$TEMP_OUTPUT"/"$API_NAME"/src/models/*.rs
+    #sed -i '1s;^;use serde::{Serialize,Deserialize}\;;' "$TEMP_OUTPUT"/"$API_NAME"/src/apis/*.rs
+    #sed -i '1s;^;use serde::{Serialize,Deserialize}\;;' "$TEMP_OUTPUT"/"$API_NAME"/src/models/*.rs
 
     # Version 7.1.0 of the generator does not generate Default trait for models and apis.
     # Hopefully they will fix it with additional parameter, until then - hello sed!

@@ -1,4 +1,3 @@
-use serde::{Deserialize, Serialize};
 pub mod change;
 pub use self::change::Change;
 pub mod changes_list_response;
