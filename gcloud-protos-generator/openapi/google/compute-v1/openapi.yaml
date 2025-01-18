@@ -40900,6 +40900,12 @@ paths:
           name: requestId
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              nullable: false
       responses:
         "200":
           content:
