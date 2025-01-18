@@ -67,9 +67,7 @@ pub async fn subject_token(
         ExternalCredentialSource::UrlBased(ref url_creds) => {
             subject_token_url(client, url_creds).await
         }
-        ExternalCredentialSource::FileBased(ref url_creds) => {
-            subject_token_file(url_creds).await
-        },
+        ExternalCredentialSource::FileBased(ref url_creds) => subject_token_file(url_creds).await,
         #[cfg(feature = "external-account-aws")]
         ExternalCredentialSource::Aws(Aws {
             regional_cred_verification_url,
