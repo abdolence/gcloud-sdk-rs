@@ -81,13 +81,12 @@ async fn test_compute() {
         zone: "us-central1-a".into(),
         ..Default::default()
     };
-    let response =
-        gcloud_sdk::google_rest_apis::compute_v1::instances_api::compute_instances_list(
-            &compute_config,
-            request,
-        )
-        .await
-        .unwrap();
+    let response = gcloud_sdk::google_rest_apis::compute_v1::instances_api::compute_instances_list(
+        &compute_config,
+        request,
+    )
+    .await
+    .unwrap();
 
     println!("{:?}", response);
 }
