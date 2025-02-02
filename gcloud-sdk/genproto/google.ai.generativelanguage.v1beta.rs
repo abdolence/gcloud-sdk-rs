@@ -240,6 +240,17 @@ pub struct Tool {
     /// Optional. Enables the model to execute code as part of generation.
     #[prost(message, optional, tag = "3")]
     pub code_execution: ::core::option::Option<CodeExecution>,
+    /// Optional. GoogleSearch tool type.
+    /// Tool to support Google Search in Model. Powered by Google.
+    #[prost(message, optional, tag = "4")]
+    pub google_search: ::core::option::Option<tool::GoogleSearch>,
+}
+/// Nested message and enum types in `Tool`.
+pub mod tool {
+    /// GoogleSearch tool type.
+    /// Tool to support Google Search in Model. Powered by Google.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct GoogleSearch {}
 }
 /// Tool to retrieve public web data for grounding, powered by Google.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -409,12 +420,21 @@ pub struct FunctionDeclaration {
     /// for the parameter.
     #[prost(message, optional, tag = "3")]
     pub parameters: ::core::option::Option<Schema>,
+    /// Optional. Describes the output from this function in JSON Schema format.
+    /// Reflects the Open API 3.03 Response Object. The Schema defines the type
+    /// used for the response value of the function.
+    #[prost(message, optional, tag = "4")]
+    pub response: ::core::option::Option<Schema>,
 }
 /// A predicted `FunctionCall` returned from the model that contains
 /// a string representing the `FunctionDeclaration.name` with the
 /// arguments and their values.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunctionCall {
+    /// Optional. The unique id of the function call. If populated, the client to
+    /// execute the `function_call` and return the response with the matching `id`.
+    #[prost(string, tag = "3")]
+    pub id: ::prost::alloc::string::String,
     /// Required. The name of the function to call.
     /// Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum
     /// length of 63.
@@ -431,6 +451,10 @@ pub struct FunctionCall {
 /// based on model prediction.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunctionResponse {
+    /// Optional. The id of the function call this response is for. Populated by
+    /// the client to match the corresponding function call `id`.
+    #[prost(string, tag = "3")]
+    pub id: ::prost::alloc::string::String,
     /// Required. The name of the function to call.
     /// Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum
     /// length of 63.
@@ -1584,6 +1608,7 @@ pub mod discuss_service_client {
     }
 }
 /// A file uploaded to the API.
+/// Next ID: 15
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct File {
     /// Immutable. Identifier. The `File` resource name. The ID (name excluding the
@@ -2259,7 +2284,7 @@ pub mod chunk_data {
 pub struct GenerateContentRequest {
     /// Required. The name of the `Model` to use for generating the completion.
     ///
-    /// Format: `name=models/{model}`.
+    /// Format: `models/{model}`.
     #[prost(string, tag = "1")]
     pub model: ::prost::alloc::string::String,
     /// Optional. Developer set [system
@@ -2305,8 +2330,8 @@ pub struct GenerateContentRequest {
     /// `SafetyCategory` provided in the list, the API will use the default safety
     /// setting for that category. Harm categories HARM_CATEGORY_HATE_SPEECH,
     /// HARM_CATEGORY_SEXUALLY_EXPLICIT, HARM_CATEGORY_DANGEROUS_CONTENT,
-    /// HARM_CATEGORY_HARASSMENT are supported. Refer to the
-    /// [guide](<https://ai.google.dev/gemini-api/docs/safety-settings>)
+    /// HARM_CATEGORY_HARASSMENT, HARM_CATEGORY_CIVIC_INTEGRITY are supported.
+    /// Refer to the [guide](<https://ai.google.dev/gemini-api/docs/safety-settings>)
     /// for detailed information on available safety settings. Also refer to the
     /// [Safety guidance](<https://ai.google.dev/gemini-api/docs/safety-guidance>) to
     /// learn how to incorporate safety considerations in your AI applications.
@@ -2320,6 +2345,37 @@ pub struct GenerateContentRequest {
     /// to serve the prediction. Format: `cachedContents/{cachedContent}`
     #[prost(string, optional, tag = "9")]
     pub cached_content: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// The configuration for the prebuilt speaker to use.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PrebuiltVoiceConfig {
+    /// The name of the preset voice to use.
+    #[prost(string, optional, tag = "1")]
+    pub voice_name: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// The configuration for the voice to use.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VoiceConfig {
+    /// The configuration for the speaker to use.
+    #[prost(oneof = "voice_config::VoiceConfig", tags = "1")]
+    pub voice_config: ::core::option::Option<voice_config::VoiceConfig>,
+}
+/// Nested message and enum types in `VoiceConfig`.
+pub mod voice_config {
+    /// The configuration for the speaker to use.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum VoiceConfig {
+        /// The configuration for the prebuilt voice to use.
+        #[prost(message, tag = "1")]
+        PrebuiltVoiceConfig(super::PrebuiltVoiceConfig),
+    }
+}
+/// The speech generation config.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SpeechConfig {
+    /// The configuration for the speaker to use.
+    #[prost(message, optional, tag = "1")]
+    pub voice_config: ::core::option::Option<VoiceConfig>,
 }
 /// Configuration options for model generation and outputs. Not all parameters
 /// are configurable for every model.
@@ -2442,6 +2498,79 @@ pub struct GenerationConfig {
     /// [Candidate.logprobs_result][google.ai.generativelanguage.v1beta.Candidate.logprobs_result].
     #[prost(int32, optional, tag = "18")]
     pub logprobs: ::core::option::Option<i32>,
+    /// Optional. Enables enhanced civic answers. It may not be available for all
+    /// models.
+    #[prost(bool, optional, tag = "19")]
+    pub enable_enhanced_civic_answers: ::core::option::Option<bool>,
+    /// Optional. The requested modalities of the response. Represents the set of
+    /// modalities that the model can return, and should be expected in the
+    /// response. This is an exact match to the modalities of the response.
+    ///
+    /// A model may have multiple combinations of supported modalities. If the
+    /// requested modalities do not match any of the supported combinations, an
+    /// error will be returned.
+    ///
+    /// An empty list is equivalent to requesting only text.
+    #[prost(
+        enumeration = "generation_config::Modality",
+        repeated,
+        packed = "false",
+        tag = "20"
+    )]
+    pub response_modalities: ::prost::alloc::vec::Vec<i32>,
+    /// Optional. The speech generation config.
+    #[prost(message, optional, tag = "21")]
+    pub speech_config: ::core::option::Option<SpeechConfig>,
+}
+/// Nested message and enum types in `GenerationConfig`.
+pub mod generation_config {
+    /// Supported modalities of the response.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Modality {
+        /// Default value.
+        Unspecified = 0,
+        /// Indicates the model should return text.
+        Text = 1,
+        /// Indicates the model should return images.
+        Image = 2,
+        /// Indicates the model should return audio.
+        Audio = 3,
+    }
+    impl Modality {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MODALITY_UNSPECIFIED",
+                Self::Text => "TEXT",
+                Self::Image => "IMAGE",
+                Self::Audio => "AUDIO",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODALITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "TEXT" => Some(Self::Text),
+                "IMAGE" => Some(Self::Image),
+                "AUDIO" => Some(Self::Audio),
+                _ => None,
+            }
+        }
+    }
 }
 /// Configuration for retrieving grounding content from a `Corpus` or
 /// `Document` created using the Semantic Retriever API.
@@ -2536,6 +2665,8 @@ pub mod generate_content_response {
             Blocklist = 3,
             /// Prompt was blocked due to prohibited content.
             ProhibitedContent = 4,
+            /// Candidates blocked due to unsafe image generation content.
+            ImageSafety = 5,
         }
         impl BlockReason {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -2549,6 +2680,7 @@ pub mod generate_content_response {
                     Self::Other => "OTHER",
                     Self::Blocklist => "BLOCKLIST",
                     Self::ProhibitedContent => "PROHIBITED_CONTENT",
+                    Self::ImageSafety => "IMAGE_SAFETY",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2559,6 +2691,7 @@ pub mod generate_content_response {
                     "OTHER" => Some(Self::Other),
                     "BLOCKLIST" => Some(Self::Blocklist),
                     "PROHIBITED_CONTENT" => Some(Self::ProhibitedContent),
+                    "IMAGE_SAFETY" => Some(Self::ImageSafety),
                     _ => None,
                 }
             }
@@ -2671,6 +2804,9 @@ pub mod candidate {
         Spii = 9,
         /// The function call generated by the model is invalid.
         MalformedFunctionCall = 10,
+        /// Token generation stopped because generated images contain safety
+        /// violations.
+        ImageSafety = 11,
     }
     impl FinishReason {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2690,6 +2826,7 @@ pub mod candidate {
                 Self::ProhibitedContent => "PROHIBITED_CONTENT",
                 Self::Spii => "SPII",
                 Self::MalformedFunctionCall => "MALFORMED_FUNCTION_CALL",
+                Self::ImageSafety => "IMAGE_SAFETY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2706,6 +2843,7 @@ pub mod candidate {
                 "PROHIBITED_CONTENT" => Some(Self::ProhibitedContent),
                 "SPII" => Some(Self::Spii),
                 "MALFORMED_FUNCTION_CALL" => Some(Self::MalformedFunctionCall),
+                "IMAGE_SAFETY" => Some(Self::ImageSafety),
                 _ => None,
             }
         }

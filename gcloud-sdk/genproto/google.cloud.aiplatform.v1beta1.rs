@@ -3285,6 +3285,9 @@ pub struct Model {
     /// The description of this version.
     #[prost(string, tag = "30")]
     pub version_description: ::prost::alloc::string::String,
+    /// The default checkpoint id of a model version.
+    #[prost(string, tag = "53")]
+    pub default_checkpoint_id: ::prost::alloc::string::String,
     /// The schemata that describe formats of the Model's predictions and
     /// explanations as given and returned via
     /// [PredictionService.Predict][google.cloud.aiplatform.v1beta1.PredictionService.Predict]
@@ -5215,6 +5218,9 @@ pub struct ToolConfig {
     /// Optional. Function calling config.
     #[prost(message, optional, tag = "1")]
     pub function_calling_config: ::core::option::Option<FunctionCallingConfig>,
+    /// Optional. Retrieval config.
+    #[prost(message, optional, tag = "2")]
+    pub retrieval_config: ::core::option::Option<RetrievalConfig>,
 }
 /// Function calling config.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5282,6 +5288,16 @@ pub mod function_calling_config {
             }
         }
     }
+}
+/// Retrieval config.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RetrievalConfig {
+    /// The location of the user.
+    #[prost(message, optional, tag = "1")]
+    pub lat_lng: ::core::option::Option<super::super::super::r#type::LatLng>,
+    /// The language code of the user.
+    #[prost(string, optional, tag = "2")]
+    pub language_code: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Specifies the context retrieval config.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6323,6 +6339,16 @@ pub struct RetrievalMetadata {
     #[prost(float, tag = "2")]
     pub google_search_dynamic_retrieval_score: f32,
 }
+/// Represents token counting info for a single modality.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ModalityTokenCount {
+    /// The modality associated with this token count.
+    #[prost(enumeration = "Modality", tag = "1")]
+    pub modality: i32,
+    /// Number of tokens.
+    #[prost(int32, tag = "2")]
+    pub token_count: i32,
+}
 /// Harm categories that will block the content.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -6364,6 +6390,51 @@ impl HarmCategory {
             "HARM_CATEGORY_HARASSMENT" => Some(Self::Harassment),
             "HARM_CATEGORY_SEXUALLY_EXPLICIT" => Some(Self::SexuallyExplicit),
             "HARM_CATEGORY_CIVIC_INTEGRITY" => Some(Self::CivicIntegrity),
+            _ => None,
+        }
+    }
+}
+/// Content Part modality
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum Modality {
+    /// Unspecified modality.
+    Unspecified = 0,
+    /// Plain text.
+    Text = 1,
+    /// Image.
+    Image = 2,
+    /// Video.
+    Video = 3,
+    /// Audio.
+    Audio = 4,
+    /// Document, e.g. PDF.
+    Document = 5,
+}
+impl Modality {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "MODALITY_UNSPECIFIED",
+            Self::Text => "TEXT",
+            Self::Image => "IMAGE",
+            Self::Video => "VIDEO",
+            Self::Audio => "AUDIO",
+            Self::Document => "DOCUMENT",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "MODALITY_UNSPECIFIED" => Some(Self::Unspecified),
+            "TEXT" => Some(Self::Text),
+            "IMAGE" => Some(Self::Image),
+            "VIDEO" => Some(Self::Video),
+            "AUDIO" => Some(Self::Audio),
+            "DOCUMENT" => Some(Self::Document),
             _ => None,
         }
     }
@@ -10741,6 +10812,34 @@ pub mod error_analysis_annotation {
         }
     }
 }
+/// The configs for autorater. This is applicable to both EvaluateInstances and
+/// EvaluateDataset.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AutoraterConfig {
+    /// Optional. Number of samples for each instance in the dataset.
+    /// If not specified, the default is 4. Minimum value is 1, maximum value
+    /// is 32.
+    #[prost(int32, optional, tag = "1")]
+    pub sampling_count: ::core::option::Option<i32>,
+    /// Optional. Whether to flip the candidate and baseline responses.
+    /// This is only applicable to the pairwise metric. If enabled, also provide
+    /// PairwiseMetricSpec.candidate_response_field_name and
+    /// PairwiseMetricSpec.baseline_response_field_name. When rendering
+    /// PairwiseMetricSpec.metric_prompt_template, the candidate and baseline
+    /// fields will be flipped for half of the samples to reduce bias.
+    #[prost(bool, optional, tag = "2")]
+    pub flip_enabled: ::core::option::Option<bool>,
+    /// Optional. The fully qualified name of the publisher model or tuned
+    /// autorater endpoint to use.
+    ///
+    /// Publisher model format:
+    /// `projects/{project}/locations/{location}/publishers/*/models/*`
+    ///
+    /// Tuned model endpoint format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    #[prost(string, tag = "3")]
+    pub autorater_model: ::prost::alloc::string::String,
+}
 /// Request message for EvaluationService.EvaluateInstances.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvaluateInstancesRequest {
@@ -10748,10 +10847,13 @@ pub struct EvaluateInstancesRequest {
     /// Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
     pub location: ::prost::alloc::string::String,
+    /// Optional. Autorater config used for evaluation.
+    #[prost(message, optional, tag = "30")]
+    pub autorater_config: ::core::option::Option<AutoraterConfig>,
     /// Instances and specs for evaluation
     #[prost(
         oneof = "evaluate_instances_request::MetricInputs",
-        tags = "2, 3, 4, 5, 6, 8, 9, 12, 7, 23, 14, 15, 10, 24, 16, 17, 18, 28, 29, 19, 20, 21, 22, 33, 34, 35, 37, 38, 39"
+        tags = "2, 3, 4, 5, 6, 8, 9, 12, 7, 23, 14, 15, 10, 24, 16, 17, 18, 28, 29, 19, 20, 21, 22, 31, 32, 33, 34, 35, 37, 38, 39"
     )]
     pub metric_inputs: ::core::option::Option<evaluate_instances_request::MetricInputs>,
 }
@@ -10837,6 +10939,13 @@ pub mod evaluate_instances_request {
         /// Input for tool parameter key value match metric.
         #[prost(message, tag = "22")]
         ToolParameterKvMatchInput(super::ToolParameterKvMatchInput),
+        /// Translation metrics.
+        /// Input for Comet metric.
+        #[prost(message, tag = "31")]
+        CometInput(super::CometInput),
+        /// Input for Metricx metric.
+        #[prost(message, tag = "32")]
+        MetricxInput(super::MetricxInput),
         /// Input for trajectory exact match metric.
         #[prost(message, tag = "33")]
         TrajectoryExactMatchInput(super::TrajectoryExactMatchInput),
@@ -10864,7 +10973,7 @@ pub struct EvaluateInstancesResponse {
     /// EvaluationRequest.instances.
     #[prost(
         oneof = "evaluate_instances_response::EvaluationResults",
-        tags = "1, 2, 3, 4, 5, 7, 8, 11, 6, 22, 13, 14, 9, 23, 15, 16, 17, 27, 28, 18, 19, 20, 21, 31, 32, 33, 35, 36, 37"
+        tags = "1, 2, 3, 4, 5, 7, 8, 11, 6, 22, 13, 14, 9, 23, 15, 16, 17, 27, 28, 18, 19, 20, 21, 29, 30, 31, 32, 33, 35, 36, 37"
     )]
     pub evaluation_results: ::core::option::Option<
         evaluate_instances_response::EvaluationResults,
@@ -10954,6 +11063,13 @@ pub mod evaluate_instances_response {
         /// Results for tool parameter key value match metric.
         #[prost(message, tag = "21")]
         ToolParameterKvMatchResults(super::ToolParameterKvMatchResults),
+        /// Translation metrics.
+        /// Result for Comet metric.
+        #[prost(message, tag = "29")]
+        CometResult(super::CometResult),
+        /// Result for Metricx metric.
+        #[prost(message, tag = "30")]
+        MetricxResult(super::MetricxResult),
         /// Result for trajectory exact match metric.
         #[prost(message, tag = "31")]
         TrajectoryExactMatchResults(super::TrajectoryExactMatchResults),
@@ -11786,6 +11902,9 @@ pub struct PointwiseMetricSpec {
     /// Required. Metric prompt template for pointwise metric.
     #[prost(string, optional, tag = "1")]
     pub metric_prompt_template: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. System instructions for pointwise metric.
+    #[prost(string, optional, tag = "2")]
+    pub system_instruction: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Spec for pointwise metric result.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -11833,6 +11952,15 @@ pub struct PairwiseMetricSpec {
     /// Required. Metric prompt template for pairwise metric.
     #[prost(string, optional, tag = "1")]
     pub metric_prompt_template: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. The field name of the candidate response.
+    #[prost(string, tag = "2")]
+    pub candidate_response_field_name: ::prost::alloc::string::String,
+    /// Optional. The field name of the baseline response.
+    #[prost(string, tag = "3")]
+    pub baseline_response_field_name: ::prost::alloc::string::String,
+    /// Optional. System instructions for pairwise metric.
+    #[prost(string, optional, tag = "4")]
+    pub system_instruction: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Spec for pairwise metric result.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -12001,6 +12129,192 @@ pub struct ToolParameterKvMatchResults {
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ToolParameterKvMatchMetricValue {
     /// Output only. Tool parameter key value match score.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+}
+/// Input for Comet metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CometInput {
+    /// Required. Spec for comet metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<CometSpec>,
+    /// Required. Comet instance.
+    #[prost(message, optional, tag = "2")]
+    pub instance: ::core::option::Option<CometInstance>,
+}
+/// Spec for Comet metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CometSpec {
+    /// Required. Which version to use for evaluation.
+    #[prost(enumeration = "comet_spec::CometVersion", optional, tag = "1")]
+    pub version: ::core::option::Option<i32>,
+    /// Optional. Source language in BCP-47 format.
+    #[prost(string, tag = "2")]
+    pub source_language: ::prost::alloc::string::String,
+    /// Optional. Target language in BCP-47 format. Covers both prediction and
+    /// reference.
+    #[prost(string, tag = "3")]
+    pub target_language: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `CometSpec`.
+pub mod comet_spec {
+    /// Comet version options.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CometVersion {
+        /// Comet version unspecified.
+        Unspecified = 0,
+        /// Comet 22 for translation + source + reference
+        /// (source-reference-combined).
+        Comet22SrcRef = 2,
+    }
+    impl CometVersion {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "COMET_VERSION_UNSPECIFIED",
+                Self::Comet22SrcRef => "COMET_22_SRC_REF",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COMET_VERSION_UNSPECIFIED" => Some(Self::Unspecified),
+                "COMET_22_SRC_REF" => Some(Self::Comet22SrcRef),
+                _ => None,
+            }
+        }
+    }
+}
+/// Spec for Comet instance - The fields used for evaluation are dependent on the
+/// comet version.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CometInstance {
+    /// Required. Output of the evaluated model.
+    #[prost(string, optional, tag = "1")]
+    pub prediction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Ground truth used to compare against the prediction.
+    #[prost(string, optional, tag = "2")]
+    pub reference: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Source text in original language.
+    #[prost(string, optional, tag = "3")]
+    pub source: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Spec for Comet result - calculates the comet score for the given instance
+/// using the version specified in the spec.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct CometResult {
+    /// Output only. Comet score. Range depends on version.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+}
+/// Input for MetricX metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MetricxInput {
+    /// Required. Spec for Metricx metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<MetricxSpec>,
+    /// Required. Metricx instance.
+    #[prost(message, optional, tag = "2")]
+    pub instance: ::core::option::Option<MetricxInstance>,
+}
+/// Spec for MetricX metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MetricxSpec {
+    /// Required. Which version to use for evaluation.
+    #[prost(enumeration = "metricx_spec::MetricxVersion", optional, tag = "1")]
+    pub version: ::core::option::Option<i32>,
+    /// Optional. Source language in BCP-47 format.
+    #[prost(string, tag = "2")]
+    pub source_language: ::prost::alloc::string::String,
+    /// Optional. Target language in BCP-47 format. Covers both prediction and
+    /// reference.
+    #[prost(string, tag = "3")]
+    pub target_language: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `MetricxSpec`.
+pub mod metricx_spec {
+    /// MetricX Version options.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MetricxVersion {
+        /// MetricX version unspecified.
+        Unspecified = 0,
+        /// MetricX 2024 (2.6) for translation + reference (reference-based).
+        Metricx24Ref = 1,
+        /// MetricX 2024 (2.6) for translation + source (QE).
+        Metricx24Src = 2,
+        /// MetricX 2024 (2.6) for translation + source + reference
+        /// (source-reference-combined).
+        Metricx24SrcRef = 3,
+    }
+    impl MetricxVersion {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "METRICX_VERSION_UNSPECIFIED",
+                Self::Metricx24Ref => "METRICX_24_REF",
+                Self::Metricx24Src => "METRICX_24_SRC",
+                Self::Metricx24SrcRef => "METRICX_24_SRC_REF",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "METRICX_VERSION_UNSPECIFIED" => Some(Self::Unspecified),
+                "METRICX_24_REF" => Some(Self::Metricx24Ref),
+                "METRICX_24_SRC" => Some(Self::Metricx24Src),
+                "METRICX_24_SRC_REF" => Some(Self::Metricx24SrcRef),
+                _ => None,
+            }
+        }
+    }
+}
+/// Spec for MetricX instance - The fields used for evaluation are dependent on
+/// the MetricX version.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MetricxInstance {
+    /// Required. Output of the evaluated model.
+    #[prost(string, optional, tag = "1")]
+    pub prediction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Ground truth used to compare against the prediction.
+    #[prost(string, optional, tag = "2")]
+    pub reference: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Source text in original language.
+    #[prost(string, optional, tag = "3")]
+    pub source: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Spec for MetricX result - calculates the MetricX score for the given instance
+/// using the version specified in the spec.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct MetricxResult {
+    /// Output only. MetricX score. Range depends on version.
     #[prost(float, optional, tag = "1")]
     pub score: ::core::option::Option<f32>,
 }
@@ -19428,6 +19742,29 @@ pub struct ListFeatureMonitorsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Request message for
+/// [FeatureRegistryService.UpdateFeatureMonitor][google.cloud.aiplatform.v1beta1.FeatureRegistryService.UpdateFeatureMonitor].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateFeatureMonitorRequest {
+    /// Required. The FeatureMonitor's `name` field is used to identify the
+    /// FeatureMonitor to be updated. Format:
+    /// `projects/{project}/locations/{location}/featureGroups/{feature_group}/featureMonitors/{feature_monitor}`
+    #[prost(message, optional, tag = "1")]
+    pub feature_monitor: ::core::option::Option<FeatureMonitor>,
+    /// Optional. Field mask is used to specify the fields to be overwritten in the
+    /// FeatureMonitor resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then only the non-empty fields present in the
+    /// request will be overwritten. Set the update_mask to `*` to override all
+    /// fields.
+    ///
+    /// Updatable fields:
+    ///
+    ///    * `labels`
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for
 /// [FeatureRegistryService.DeleteFeatureMonitor][google.cloud.aiplatform.v1beta1.FeatureRegistryService.DeleteFeatureMonitor].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteFeatureMonitorRequest {
@@ -19483,6 +19820,13 @@ pub struct UpdateFeatureOperationMetadata {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFeatureMonitorOperationMetadata {
     /// Operation metadata for Feature.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Details of operations that perform update FeatureMonitor.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateFeatureMonitorOperationMetadata {
+    /// Operation metadata for FeatureMonitor.
     #[prost(message, optional, tag = "1")]
     pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
@@ -20071,6 +20415,36 @@ pub mod feature_registry_service_client {
                     GrpcMethod::new(
                         "google.cloud.aiplatform.v1beta1.FeatureRegistryService",
                         "ListFeatureMonitors",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the parameters of a single FeatureMonitor.
+        pub async fn update_feature_monitor(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateFeatureMonitorRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.FeatureRegistryService/UpdateFeatureMonitor",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.FeatureRegistryService",
+                        "UpdateFeatureMonitor",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -32488,6 +32862,59 @@ pub struct ListModelVersionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
+/// [ModelService.ListModelVersionCheckpoints][google.cloud.aiplatform.v1beta1.ModelService.ListModelVersionCheckpoints].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListModelVersionCheckpointsRequest {
+    /// Required. The name of the model version to list checkpoints for.
+    /// `projects/{project}/locations/{location}/models/{model}@{version}`
+    /// Example: `projects/{project}/locations/{location}/models/{model}@2`
+    /// or
+    /// `projects/{project}/locations/{location}/models/{model}@golden`
+    /// If no version ID or alias is specified, the latest version will be
+    /// used.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The standard list page size.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The standard list page token.
+    /// Typically obtained via
+    /// [next_page_token][google.cloud.aiplatform.v1beta1.ListModelVersionCheckpointsResponse.next_page_token]
+    /// of the previous
+    /// [ListModelVersionCheckpoints][google.cloud.aiplatform.v1beta1.ModelService.ListModelVersionCheckpoints]
+    /// call.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// A proto representation of a Spanner-stored ModelVersionCheckpoint.
+/// The meaning of the fields is equivalent to their in-Spanner counterparts.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ModelVersionCheckpoint {
+    /// The ID of the checkpoint.
+    #[prost(string, tag = "1")]
+    pub checkpoint_id: ::prost::alloc::string::String,
+    /// The epoch of the checkpoint.
+    #[prost(int64, tag = "2")]
+    pub epoch: i64,
+    /// The step of the checkpoint.
+    #[prost(int64, tag = "3")]
+    pub step: i64,
+}
+/// Response message for
+/// [ModelService.ListModelVersionCheckpoints][google.cloud.aiplatform.v1beta1.ModelService.ListModelVersionCheckpoints]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListModelVersionCheckpointsResponse {
+    /// List of Model Version checkpoints.
+    #[prost(message, repeated, tag = "1")]
+    pub checkpoints: ::prost::alloc::vec::Vec<ModelVersionCheckpoint>,
+    /// A token to retrieve the next page of results.
+    /// Pass to
+    /// [ListModelVersionCheckpointsRequest.page_token][google.cloud.aiplatform.v1beta1.ListModelVersionCheckpointsRequest.page_token]
+    /// to obtain that page.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for
 /// [ModelService.UpdateModel][google.cloud.aiplatform.v1beta1.ModelService.UpdateModel].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateModelRequest {
@@ -33094,6 +33521,36 @@ pub mod model_service_client {
                     GrpcMethod::new(
                         "google.cloud.aiplatform.v1beta1.ModelService",
                         "ListModelVersions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists checkpoints of the specified model version.
+        pub async fn list_model_version_checkpoints(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListModelVersionCheckpointsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListModelVersionCheckpointsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.ModelService/ListModelVersionCheckpoints",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.ModelService",
+                        "ListModelVersionCheckpoints",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -33791,7 +34248,11 @@ pub struct NotebookRuntimeTemplate {
     /// The description of the NotebookRuntimeTemplate.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
-    /// Output only. The default template to use if not specified.
+    /// Output only. Deprecated: This field has no behavior. Use
+    /// notebook_runtime_type = 'ONE_CLICK' instead.
+    ///
+    /// The default template to use if not specified.
+    #[deprecated]
     #[prost(bool, tag = "4")]
     pub is_default: bool,
     /// Optional. Immutable. The specification of a single machine for the
@@ -33806,6 +34267,15 @@ pub struct NotebookRuntimeTemplate {
     /// Optional. Network spec.
     #[prost(message, optional, tag = "12")]
     pub network_spec: ::core::option::Option<NetworkSpec>,
+    /// Deprecated: This field is ignored and the "Vertex AI Notebook Service
+    /// Account"
+    /// (service-PROJECT_NUMBER@gcp-sa-aiplatform-vm.iam.gserviceaccount.com) is
+    /// used for the runtime workload identity.
+    /// See
+    /// <https://cloud.google.com/iam/docs/service-agents#vertex-ai-notebook-service-account>
+    /// for more details.
+    /// For NotebookExecutionJob, use NotebookExecutionJob.service_account instead.
+    ///
     /// The service account that the runtime workload runs as.
     /// You can use any service account within the same project, but you
     /// must have the service account user permission to use the instance.
@@ -33813,6 +34283,7 @@ pub struct NotebookRuntimeTemplate {
     /// If not specified, the [Compute Engine default service
     /// account](<https://cloud.google.com/compute/docs/access/service-accounts#default_service_account>)
     /// is used.
+    #[deprecated]
     #[prost(string, tag = "13")]
     pub service_account: ::prost::alloc::string::String,
     /// Used to perform consistent read-modify-write updates. If not set, a blind
@@ -33897,7 +34368,15 @@ pub struct NotebookRuntime {
     /// The description of the NotebookRuntime.
     #[prost(string, tag = "11")]
     pub description: ::prost::alloc::string::String,
-    /// Output only. The service account that the NotebookRuntime workload runs as.
+    /// Output only. Deprecated: This field is no longer used and the "Vertex AI
+    /// Notebook Service Account"
+    /// (service-PROJECT_NUMBER@gcp-sa-aiplatform-vm.iam.gserviceaccount.com) is
+    /// used for the runtime workload identity.
+    /// See
+    /// <https://cloud.google.com/iam/docs/service-agents#vertex-ai-notebook-service-account>
+    /// for more details.
+    ///
+    /// The service account that the NotebookRuntime workload runs as.
     #[prost(string, tag = "13")]
     pub service_account: ::prost::alloc::string::String,
     /// Output only. The runtime (instance) state of the NotebookRuntime.
@@ -33942,9 +34421,27 @@ pub struct NotebookRuntime {
     /// Output only. The type of the notebook runtime.
     #[prost(enumeration = "NotebookRuntimeType", tag = "19")]
     pub notebook_runtime_type: i32,
+    /// Output only. The specification of a single machine used by the notebook
+    /// runtime.
+    #[prost(message, optional, tag = "20")]
+    pub machine_spec: ::core::option::Option<MachineSpec>,
+    /// Output only. The specification of [persistent
+    /// disk][<https://cloud.google.com/compute/docs/disks/persistent-disks]>
+    /// attached to the notebook runtime as data disk storage.
+    #[prost(message, optional, tag = "21")]
+    pub data_persistent_disk_spec: ::core::option::Option<PersistentDiskSpec>,
+    /// Output only. Network spec of the notebook runtime.
+    #[prost(message, optional, tag = "22")]
+    pub network_spec: ::core::option::Option<NetworkSpec>,
     /// Output only. The idle shutdown configuration of the notebook runtime.
     #[prost(message, optional, tag = "23")]
     pub idle_shutdown_config: ::core::option::Option<NotebookIdleShutdownConfig>,
+    /// Output only. EUC configuration of the notebook runtime.
+    #[prost(message, optional, tag = "24")]
+    pub euc_config: ::core::option::Option<NotebookEucConfig>,
+    /// Output only. Runtime Shielded VM spec.
+    #[prost(message, optional, tag = "32")]
+    pub shielded_vm_config: ::core::option::Option<ShieldedVmConfig>,
     /// Optional. The Compute Engine tags to add to runtime (see [Tagging
     /// instances](<https://cloud.google.com/vpc/docs/add-remove-network-tags>)).
     #[prost(string, repeated, tag = "25")]
@@ -38336,7 +38833,7 @@ pub struct CountTokensRequest {
 }
 /// Response message for
 /// [PredictionService.CountTokens][google.cloud.aiplatform.v1beta1.PredictionService.CountTokens].
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CountTokensResponse {
     /// The total number of tokens counted across all instances from the request.
     #[prost(int32, tag = "1")]
@@ -38345,6 +38842,9 @@ pub struct CountTokensResponse {
     /// the request.
     #[prost(int32, tag = "2")]
     pub total_billable_characters: i32,
+    /// Output only. List of modalities that were processed in the request input.
+    #[prost(message, repeated, tag = "3")]
+    pub prompt_tokens_details: ::prost::alloc::vec::Vec<ModalityTokenCount>,
 }
 /// Request message for \[PredictionService.GenerateContent\].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -38501,7 +39001,7 @@ pub mod generate_content_response {
         }
     }
     /// Usage metadata about response(s).
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct UsageMetadata {
         /// Number of tokens in the request. When `cached_content` is set, this is
         /// still the total effective prompt size meaning this includes the number of
@@ -38518,6 +39018,18 @@ pub mod generate_content_response {
         /// content).
         #[prost(int32, tag = "5")]
         pub cached_content_token_count: i32,
+        /// Output only. List of modalities that were processed in the request input.
+        #[prost(message, repeated, tag = "9")]
+        pub prompt_tokens_details: ::prost::alloc::vec::Vec<super::ModalityTokenCount>,
+        /// Output only. List of modalities of the cached content in the request
+        /// input.
+        #[prost(message, repeated, tag = "10")]
+        pub cache_tokens_details: ::prost::alloc::vec::Vec<super::ModalityTokenCount>,
+        /// Output only. List of modalities that were returned in the response.
+        #[prost(message, repeated, tag = "11")]
+        pub candidates_tokens_details: ::prost::alloc::vec::Vec<
+            super::ModalityTokenCount,
+        >,
     }
 }
 /// Request message for \[PredictionService.ChatCompletions\]

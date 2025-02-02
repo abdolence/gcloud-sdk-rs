@@ -2711,7 +2711,8 @@ pub struct LocationFilter {
     /// [PostingRegion.TELECOMMUTE][google.cloud.talent.v4.PostingRegion.TELECOMMUTE]
     /// and have additional [Job.addresses][google.cloud.talent.v4.Job.addresses]
     /// may still be matched based on other location filters using
-    /// [address][google.cloud.talent.v4.LocationFilter.address] or [latlng][].
+    /// [address][google.cloud.talent.v4.LocationFilter.address] or
+    /// [lat_lng][google.cloud.talent.v4.LocationFilter.lat_lng].
     ///
     /// This filter can be used by itself to search exclusively for telecommuting
     /// jobs, or it can be combined with another location
@@ -3072,13 +3073,16 @@ pub struct Job {
     /// search experience.
     ///
     /// Jobs with multiple addresses must have their addresses with the same
-    /// [LocationType][] to allow location filtering to work properly. (For
-    /// example, a Job with addresses "1600 Amphitheatre Parkway, Mountain View,
-    /// CA, USA" and "London, UK" may not have location filters applied correctly
-    /// at search time since the first is a [LocationType.STREET_ADDRESS][] and the
-    /// second is a [LocationType.LOCALITY][].) If a job needs to have multiple
-    /// addresses, it is suggested to split it into multiple jobs with same
-    /// LocationTypes.
+    /// [LocationType][google.cloud.talent.v4.Location.LocationType] to allow
+    /// location filtering to work properly. (For example, a Job with addresses
+    /// "1600 Amphitheatre Parkway, Mountain View, CA, USA" and "London, UK" may
+    /// not have location filters applied correctly at search time since the first
+    /// is a
+    /// [LocationType.STREET_ADDRESS][google.cloud.talent.v4.Location.LocationType.STREET_ADDRESS]
+    /// and the second is a
+    /// [LocationType.LOCALITY][google.cloud.talent.v4.Location.LocationType.LOCALITY].)
+    /// If a job needs to have multiple addresses, it is suggested to split it into
+    /// multiple jobs with same LocationTypes.
     ///
     /// The maximum number of allowed characters is 500.
     #[prost(string, repeated, tag = "6")]
@@ -3243,10 +3247,11 @@ pub struct Job {
     /// [posting_publish_time][google.cloud.talent.v4.Job.posting_publish_time]
     /// must be set before
     /// [posting_expire_time][google.cloud.talent.v4.Job.posting_expire_time]. The
-    /// purpose of this feature is to allow other objects, such as [Application][],
-    /// to refer a job that didn't exist in the system prior to becoming expired.
-    /// If you want to modify a job that was expired on creation, delete it and
-    /// create a new one.
+    /// purpose of this feature is to allow other objects, such as
+    /// [ApplicationInfo][google.cloud.talent.v4.Job.ApplicationInfo], to refer a
+    /// job that didn't exist in the system prior to becoming expired. If you want
+    /// to modify a job that was expired on creation, delete it and create a new
+    /// one.
     ///
     /// If this value isn't provided at the time of job creation or is invalid,
     /// the job posting expires after 30 days from the job's creation time. For
@@ -3763,6 +3768,13 @@ pub struct SearchJobsRequest {
     /// if no value is specified.
     #[prost(enumeration = "search_jobs_request::KeywordMatchMode", tag = "18")]
     pub keyword_match_mode: i32,
+    /// Optional. The relevance threshold of the search results.
+    ///
+    /// Default to Google defined threshold, leveraging a balance of
+    /// precision and recall to deliver both highly accurate results and
+    /// comprehensive coverage of relevant information.
+    #[prost(enumeration = "search_jobs_request::RelevanceThreshold", tag = "19")]
+    pub relevance_threshold: i32,
 }
 /// Nested message and enum types in `SearchJobsRequest`.
 pub mod search_jobs_request {
@@ -4085,6 +4097,60 @@ pub mod search_jobs_request {
             }
         }
     }
+    /// The relevance threshold of the search results. The higher relevance
+    /// threshold is, the higher relevant results are shown and the less number of
+    /// results are returned.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RelevanceThreshold {
+        /// Default value. In this case, server behavior defaults to Google defined
+        /// threshold.
+        Unspecified = 0,
+        /// Lowest relevance threshold.
+        Lowest = 1,
+        /// Low relevance threshold.
+        Low = 2,
+        /// Medium relevance threshold.
+        Medium = 3,
+        /// High relevance threshold.
+        High = 4,
+    }
+    impl RelevanceThreshold {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "RELEVANCE_THRESHOLD_UNSPECIFIED",
+                Self::Lowest => "LOWEST",
+                Self::Low => "LOW",
+                Self::Medium => "MEDIUM",
+                Self::High => "HIGH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RELEVANCE_THRESHOLD_UNSPECIFIED" => Some(Self::Unspecified),
+                "LOWEST" => Some(Self::Lowest),
+                "LOW" => Some(Self::Low),
+                "MEDIUM" => Some(Self::Medium),
+                "HIGH" => Some(Self::High),
+                _ => None,
+            }
+        }
+    }
 }
 /// Response for SearchJob method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4214,7 +4280,7 @@ pub struct BatchUpdateJobsRequest {
     ///
     /// If [update_mask][google.cloud.talent.v4.BatchUpdateJobsRequest.update_mask]
     /// is provided, The [Job][google.cloud.talent.v4.Job] inside
-    /// [JobResult][JobOperationResult.JobResult]
+    /// [JobResult][google.cloud.talent.v4.JobResult]
     /// will only contains fields that is updated, plus the Id of the Job.
     /// Otherwise,  [Job][google.cloud.talent.v4.Job] will include all fields,
     /// which can yield a very large response.

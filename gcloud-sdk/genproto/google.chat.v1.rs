@@ -236,6 +236,159 @@ pub mod user {
         }
     }
 }
+/// A reaction to a message.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Reaction {
+    /// Identifier. The resource name of the reaction.
+    ///
+    /// Format: `spaces/{space}/messages/{message}/reactions/{reaction}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The user who created the reaction.
+    #[prost(message, optional, tag = "2")]
+    pub user: ::core::option::Option<User>,
+    /// Required. The emoji used in the reaction.
+    #[prost(message, optional, tag = "3")]
+    pub emoji: ::core::option::Option<Emoji>,
+}
+/// An emoji that is used as a reaction to a message.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Emoji {
+    /// Required. The content of the emoji.
+    #[prost(oneof = "emoji::Content", tags = "1, 2")]
+    pub content: ::core::option::Option<emoji::Content>,
+}
+/// Nested message and enum types in `Emoji`.
+pub mod emoji {
+    /// Required. The content of the emoji.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Content {
+        /// Optional. A basic emoji represented by a unicode string.
+        #[prost(string, tag = "1")]
+        Unicode(::prost::alloc::string::String),
+        /// A custom emoji.
+        #[prost(message, tag = "2")]
+        CustomEmoji(super::CustomEmoji),
+    }
+}
+/// Represents a custom emoji.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomEmoji {
+    /// Output only. Unique key for the custom emoji resource.
+    #[prost(string, tag = "1")]
+    pub uid: ::prost::alloc::string::String,
+}
+/// The number of people who reacted to a message with a specific emoji.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EmojiReactionSummary {
+    /// Output only. Emoji associated with the reactions.
+    #[prost(message, optional, tag = "1")]
+    pub emoji: ::core::option::Option<Emoji>,
+    /// Output only. The total number of reactions using the associated emoji.
+    #[prost(int32, optional, tag = "2")]
+    pub reaction_count: ::core::option::Option<i32>,
+}
+/// Creates a reaction to a message.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateReactionRequest {
+    /// Required. The message where the reaction is created.
+    ///
+    /// Format: `spaces/{space}/messages/{message}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The reaction to create.
+    #[prost(message, optional, tag = "2")]
+    pub reaction: ::core::option::Option<Reaction>,
+}
+/// Lists reactions to a message.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListReactionsRequest {
+    /// Required. The message users reacted to.
+    ///
+    /// Format: `spaces/{space}/messages/{message}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of reactions returned. The service can return
+    /// fewer reactions than this value. If unspecified, the default value is 25.
+    /// The maximum value is 200; values above 200 are changed to 200.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. (If resuming from a previous query.)
+    ///
+    /// A page token received from a previous list reactions call. Provide this
+    /// to retrieve the subsequent page.
+    ///
+    /// When paginating, the filter value should match the call that provided the
+    /// page token. Passing a different value might lead to unexpected results.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. A query filter.
+    ///
+    /// You can filter reactions by
+    /// [emoji](<https://developers.google.com/workspace/chat/api/reference/rest/v1/Emoji>)
+    /// (either `emoji.unicode` or `emoji.custom_emoji.uid`) and
+    /// [user](<https://developers.google.com/workspace/chat/api/reference/rest/v1/User>)
+    /// (`user.name`).
+    ///
+    /// To filter reactions for multiple emojis or users, join similar fields
+    /// with the `OR` operator, such as `emoji.unicode = "🙂" OR emoji.unicode =
+    /// "👍"` and `user.name = "users/AAAAAA" OR user.name = "users/BBBBBB"`.
+    ///
+    /// To filter reactions by emoji and user, use the `AND` operator, such as
+    /// `emoji.unicode = "🙂" AND user.name = "users/AAAAAA"`.
+    ///
+    /// If your query uses both `AND` and `OR`, group them with parentheses.
+    ///
+    /// For example, the following queries are valid:
+    ///
+    /// ```
+    /// user.name = "users/{user}"
+    /// emoji.unicode = "🙂"
+    /// emoji.custom_emoji.uid = "{uid}"
+    /// emoji.unicode = "🙂" OR emoji.unicode = "👍"
+    /// emoji.unicode = "🙂" OR emoji.custom_emoji.uid = "{uid}"
+    /// emoji.unicode = "🙂" AND user.name = "users/{user}"
+    /// (emoji.unicode = "🙂" OR emoji.custom_emoji.uid = "{uid}")
+    /// AND user.name = "users/{user}"
+    /// ```
+    ///
+    /// The following queries are invalid:
+    ///
+    /// ```
+    /// emoji.unicode = "🙂" AND emoji.unicode = "👍"
+    /// emoji.unicode = "🙂" AND emoji.custom_emoji.uid = "{uid}"
+    /// emoji.unicode = "🙂" OR user.name = "users/{user}"
+    /// emoji.unicode = "🙂" OR emoji.custom_emoji.uid = "{uid}" OR
+    /// user.name = "users/{user}"
+    /// emoji.unicode = "🙂" OR emoji.custom_emoji.uid = "{uid}"
+    /// AND user.name = "users/{user}"
+    /// ```
+    ///
+    /// Invalid queries are rejected by the server with an `INVALID_ARGUMENT`
+    /// error.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Response to a list reactions request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListReactionsResponse {
+    /// List of reactions in the requested (or first) page.
+    #[prost(message, repeated, tag = "1")]
+    pub reactions: ::prost::alloc::vec::Vec<Reaction>,
+    /// Continuation token to retrieve the next page of results. It's empty
+    /// for the last page of results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Deletes a reaction to a message.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteReactionRequest {
+    /// Required. Name of the reaction to delete.
+    ///
+    /// Format: `spaces/{space}/messages/{message}/reactions/{reaction}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
 /// Output only. Annotations associated with the plain-text body of the message.
 /// To add basic formatting to a text message, see
 /// [Format text
@@ -277,7 +430,7 @@ pub struct Annotation {
     #[prost(int32, tag = "3")]
     pub length: i32,
     /// Additional metadata about the annotation.
-    #[prost(oneof = "annotation::Metadata", tags = "4, 5, 6")]
+    #[prost(oneof = "annotation::Metadata", tags = "4, 5, 6, 7")]
     pub metadata: ::core::option::Option<annotation::Metadata>,
 }
 /// Nested message and enum types in `Annotation`.
@@ -294,6 +447,9 @@ pub mod annotation {
         /// The metadata for a rich link.
         #[prost(message, tag = "6")]
         RichLinkMetadata(super::RichLinkMetadata),
+        /// The metadata for a custom emoji.
+        #[prost(message, tag = "7")]
+        CustomEmojiMetadata(super::CustomEmojiMetadata),
     }
 }
 /// Annotation metadata for user mentions (@).
@@ -484,6 +640,13 @@ pub mod rich_link_metadata {
         ChatSpaceLinkData(super::ChatSpaceLinkData),
     }
 }
+/// Annotation metadata for custom emoji.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomEmojiMetadata {
+    /// The custom emoji.
+    #[prost(message, optional, tag = "1")]
+    pub custom_emoji: ::core::option::Option<CustomEmoji>,
+}
 /// Data for Google Drive links.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DriveLinkData {
@@ -527,6 +690,8 @@ pub enum AnnotationType {
     SlashCommand = 2,
     /// A rich link annotation.
     RichLink = 3,
+    /// A custom emoji annotation.
+    CustomEmoji = 4,
 }
 impl AnnotationType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -539,6 +704,7 @@ impl AnnotationType {
             Self::UserMention => "USER_MENTION",
             Self::SlashCommand => "SLASH_COMMAND",
             Self::RichLink => "RICH_LINK",
+            Self::CustomEmoji => "CUSTOM_EMOJI",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -548,6 +714,7 @@ impl AnnotationType {
             "USER_MENTION" => Some(Self::UserMention),
             "SLASH_COMMAND" => Some(Self::SlashCommand),
             "RICH_LINK" => Some(Self::RichLink),
+            "CUSTOM_EMOJI" => Some(Self::CustomEmoji),
             _ => None,
         }
     }
@@ -1554,159 +1721,6 @@ pub struct MatchedUrl {
     /// Output only. The URL that was matched.
     #[prost(string, tag = "2")]
     pub url: ::prost::alloc::string::String,
-}
-/// A reaction to a message.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Reaction {
-    /// Identifier. The resource name of the reaction.
-    ///
-    /// Format: `spaces/{space}/messages/{message}/reactions/{reaction}`
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Output only. The user who created the reaction.
-    #[prost(message, optional, tag = "2")]
-    pub user: ::core::option::Option<User>,
-    /// Required. The emoji used in the reaction.
-    #[prost(message, optional, tag = "3")]
-    pub emoji: ::core::option::Option<Emoji>,
-}
-/// An emoji that is used as a reaction to a message.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Emoji {
-    /// Required. The content of the emoji.
-    #[prost(oneof = "emoji::Content", tags = "1, 2")]
-    pub content: ::core::option::Option<emoji::Content>,
-}
-/// Nested message and enum types in `Emoji`.
-pub mod emoji {
-    /// Required. The content of the emoji.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Content {
-        /// Optional. A basic emoji represented by a unicode string.
-        #[prost(string, tag = "1")]
-        Unicode(::prost::alloc::string::String),
-        /// Output only. A custom emoji.
-        #[prost(message, tag = "2")]
-        CustomEmoji(super::CustomEmoji),
-    }
-}
-/// Represents a custom emoji.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomEmoji {
-    /// Output only. Unique key for the custom emoji resource.
-    #[prost(string, tag = "1")]
-    pub uid: ::prost::alloc::string::String,
-}
-/// The number of people who reacted to a message with a specific emoji.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct EmojiReactionSummary {
-    /// Output only. Emoji associated with the reactions.
-    #[prost(message, optional, tag = "1")]
-    pub emoji: ::core::option::Option<Emoji>,
-    /// Output only. The total number of reactions using the associated emoji.
-    #[prost(int32, optional, tag = "2")]
-    pub reaction_count: ::core::option::Option<i32>,
-}
-/// Creates a reaction to a message.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateReactionRequest {
-    /// Required. The message where the reaction is created.
-    ///
-    /// Format: `spaces/{space}/messages/{message}`
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. The reaction to create.
-    #[prost(message, optional, tag = "2")]
-    pub reaction: ::core::option::Option<Reaction>,
-}
-/// Lists reactions to a message.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListReactionsRequest {
-    /// Required. The message users reacted to.
-    ///
-    /// Format: `spaces/{space}/messages/{message}`
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Optional. The maximum number of reactions returned. The service can return
-    /// fewer reactions than this value. If unspecified, the default value is 25.
-    /// The maximum value is 200; values above 200 are changed to 200.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// Optional. (If resuming from a previous query.)
-    ///
-    /// A page token received from a previous list reactions call. Provide this
-    /// to retrieve the subsequent page.
-    ///
-    /// When paginating, the filter value should match the call that provided the
-    /// page token. Passing a different value might lead to unexpected results.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-    /// Optional. A query filter.
-    ///
-    /// You can filter reactions by
-    /// [emoji](<https://developers.google.com/workspace/chat/api/reference/rest/v1/Emoji>)
-    /// (either `emoji.unicode` or `emoji.custom_emoji.uid`) and
-    /// [user](<https://developers.google.com/workspace/chat/api/reference/rest/v1/User>)
-    /// (`user.name`).
-    ///
-    /// To filter reactions for multiple emojis or users, join similar fields
-    /// with the `OR` operator, such as `emoji.unicode = "🙂" OR emoji.unicode =
-    /// "👍"` and `user.name = "users/AAAAAA" OR user.name = "users/BBBBBB"`.
-    ///
-    /// To filter reactions by emoji and user, use the `AND` operator, such as
-    /// `emoji.unicode = "🙂" AND user.name = "users/AAAAAA"`.
-    ///
-    /// If your query uses both `AND` and `OR`, group them with parentheses.
-    ///
-    /// For example, the following queries are valid:
-    ///
-    /// ```
-    /// user.name = "users/{user}"
-    /// emoji.unicode = "🙂"
-    /// emoji.custom_emoji.uid = "{uid}"
-    /// emoji.unicode = "🙂" OR emoji.unicode = "👍"
-    /// emoji.unicode = "🙂" OR emoji.custom_emoji.uid = "{uid}"
-    /// emoji.unicode = "🙂" AND user.name = "users/{user}"
-    /// (emoji.unicode = "🙂" OR emoji.custom_emoji.uid = "{uid}")
-    /// AND user.name = "users/{user}"
-    /// ```
-    ///
-    /// The following queries are invalid:
-    ///
-    /// ```
-    /// emoji.unicode = "🙂" AND emoji.unicode = "👍"
-    /// emoji.unicode = "🙂" AND emoji.custom_emoji.uid = "{uid}"
-    /// emoji.unicode = "🙂" OR user.name = "users/{user}"
-    /// emoji.unicode = "🙂" OR emoji.custom_emoji.uid = "{uid}" OR
-    /// user.name = "users/{user}"
-    /// emoji.unicode = "🙂" OR emoji.custom_emoji.uid = "{uid}"
-    /// AND user.name = "users/{user}"
-    /// ```
-    ///
-    /// Invalid queries are rejected by the server with an `INVALID_ARGUMENT`
-    /// error.
-    #[prost(string, tag = "4")]
-    pub filter: ::prost::alloc::string::String,
-}
-/// Response to a list reactions request.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListReactionsResponse {
-    /// List of reactions in the requested (or first) page.
-    #[prost(message, repeated, tag = "1")]
-    pub reactions: ::prost::alloc::vec::Vec<Reaction>,
-    /// Continuation token to retrieve the next page of results. It's empty
-    /// for the last page of results.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// Deletes a reaction to a message.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteReactionRequest {
-    /// Required. Name of the reaction to delete.
-    ///
-    /// Format: `spaces/{space}/messages/{message}/reactions/{reaction}`
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
 }
 /// A [slash
 /// command](<https://developers.google.com/workspace/chat/slash-commands>) in
@@ -4915,8 +4929,7 @@ pub mod chat_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Creates a reaction and adds it to a message. Only unicode emojis are
-        /// supported. For an example, see
+        /// Creates a reaction and adds it to a message. For an example, see
         /// [Add a reaction to a
         /// message](https://developers.google.com/workspace/chat/create-reactions).
         ///
@@ -4973,8 +4986,7 @@ pub mod chat_service_client {
                 .insert(GrpcMethod::new("google.chat.v1.ChatService", "ListReactions"));
             self.inner.unary(req, path, codec).await
         }
-        /// Deletes a reaction to a message. Only unicode emojis are supported.
-        /// For an example, see
+        /// Deletes a reaction to a message. For an example, see
         /// [Delete a
         /// reaction](https://developers.google.com/workspace/chat/delete-reactions).
         ///

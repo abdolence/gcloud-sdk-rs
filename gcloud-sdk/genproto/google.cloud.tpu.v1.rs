@@ -155,6 +155,8 @@ pub mod node {
         Hidden = 14,
         /// TPU node is currently unhiding.
         Unhiding = 15,
+        /// TPU node has unknown state after a failed repair.
+        Unknown = 16,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -178,6 +180,7 @@ pub mod node {
                 Self::Hiding => "HIDING",
                 Self::Hidden => "HIDDEN",
                 Self::Unhiding => "UNHIDING",
+                Self::Unknown => "UNKNOWN",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -198,6 +201,7 @@ pub mod node {
                 "HIDING" => Some(Self::Hiding),
                 "HIDDEN" => Some(Self::Hidden),
                 "UNHIDING" => Some(Self::Unhiding),
+                "UNKNOWN" => Some(Self::Unknown),
                 _ => None,
             }
         }

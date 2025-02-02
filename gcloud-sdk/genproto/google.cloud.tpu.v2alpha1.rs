@@ -102,6 +102,9 @@ pub struct SchedulingConfig {
     /// Whether the node is created under a reservation.
     #[prost(bool, tag = "2")]
     pub reserved: bool,
+    /// Optional. Defines whether the node is Spot VM.
+    #[prost(bool, tag = "3")]
+    pub spot: bool,
 }
 /// A network endpoint over which a TPU worker can be reached.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -145,6 +148,10 @@ pub struct NetworkConfig {
     /// workers to forward routes.
     #[prost(bool, tag = "4")]
     pub can_ip_forward: bool,
+    /// Optional. Specifies networking queue count for TPU VM instance's network
+    /// interface.
+    #[prost(int32, tag = "6")]
+    pub queue_count: i32,
 }
 /// A service account.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -180,9 +187,17 @@ pub struct Node {
     /// Required. The runtime version running in the Node.
     #[prost(string, tag = "11")]
     pub runtime_version: ::prost::alloc::string::String,
-    /// Network configurations for the TPU node.
+    /// Network configurations for the TPU node. network_config and network_configs
+    /// are mutually exclusive, you can only specify one of them. If both are
+    /// specified, an error will be returned.
     #[prost(message, optional, tag = "36")]
     pub network_config: ::core::option::Option<NetworkConfig>,
+    /// Optional. Repeated network configurations for the TPU node. This field is
+    /// used to specify multiple networks configs for the TPU node. network_config
+    /// and network_configs are mutually exclusive, you can only specify one of
+    /// them. If both are specified, an error will be returned.
+    #[prost(message, repeated, tag = "50")]
+    pub network_configs: ::prost::alloc::vec::Vec<NetworkConfig>,
     /// The CIDR block that the TPU node will use when selecting an IP address.
     /// This CIDR block must be a /29 block; the Compute Engine networks API
     /// forbids a smaller block, and using a larger block would be wasteful (a
@@ -253,9 +268,15 @@ pub struct Node {
     /// Output only. Whether the Node belongs to a Multislice group.
     #[prost(bool, tag = "47")]
     pub multislice_node: bool,
+    /// Optional. Whether Autocheckpoint is enabled.
+    #[prost(bool, tag = "48")]
+    pub autocheckpoint_enabled: bool,
     /// Optional. Boot disk configuration.
     #[prost(message, optional, tag = "49")]
     pub boot_disk_config: ::core::option::Option<BootDiskConfig>,
+    /// Output only. Upcoming maintenance on this TPU node.
+    #[prost(message, optional, tag = "51")]
+    pub upcoming_maintenance: ::core::option::Option<UpcomingMaintenance>,
 }
 /// Nested message and enum types in `Node`.
 pub mod node {
@@ -305,6 +326,8 @@ pub mod node {
         Hidden = 14,
         /// TPU node is currently unhiding.
         Unhiding = 15,
+        /// TPU node has unknown state after a failed repair.
+        Unknown = 16,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -328,6 +351,7 @@ pub mod node {
                 Self::Hiding => "HIDING",
                 Self::Hidden => "HIDDEN",
                 Self::Unhiding => "UNHIDING",
+                Self::Unknown => "UNKNOWN",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -348,6 +372,7 @@ pub mod node {
                 "HIDING" => Some(Self::Hiding),
                 "HIDDEN" => Some(Self::Hidden),
                 "UNHIDING" => Some(Self::Unhiding),
+                "UNKNOWN" => Some(Self::Unknown),
                 _ => None,
             }
         }
@@ -460,6 +485,9 @@ pub struct QueuedResource {
     /// Output only. Immutable. The name of the QueuedResource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Output only. The time when the QueuedResource was created.
+    #[prost(message, optional, tag = "11")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The queueing policy of the QueuedRequest.
     #[prost(message, optional, tag = "5")]
     pub queueing_policy: ::core::option::Option<queued_resource::QueueingPolicy>,
@@ -528,6 +556,57 @@ pub mod queued_resource {
                 /// provided we use queued_resource_id as the node_id_prefix.
                 #[prost(string, tag = "2")]
                 pub node_id_prefix: ::prost::alloc::string::String,
+                /// Optional. The workload type for the multi-node request.
+                #[prost(enumeration = "multi_node_params::WorkloadType", tag = "4")]
+                pub workload_type: i32,
+            }
+            /// Nested message and enum types in `MultiNodeParams`.
+            pub mod multi_node_params {
+                /// The workload type for the multi-node request.
+                #[derive(
+                    Clone,
+                    Copy,
+                    Debug,
+                    PartialEq,
+                    Eq,
+                    Hash,
+                    PartialOrd,
+                    Ord,
+                    ::prost::Enumeration
+                )]
+                #[repr(i32)]
+                pub enum WorkloadType {
+                    /// Not specified.
+                    Unspecified = 0,
+                    /// All of the nodes are available most of the time.
+                    /// Recommended for training workloads.
+                    ThroughputOptimized = 1,
+                    /// Most of the nodes are available all of the time.
+                    /// Recommended for serving workloads.
+                    AvailabilityOptimized = 2,
+                }
+                impl WorkloadType {
+                    /// String value of the enum field names used in the ProtoBuf definition.
+                    ///
+                    /// The values are not transformed in any way and thus are considered stable
+                    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                    pub fn as_str_name(&self) -> &'static str {
+                        match self {
+                            Self::Unspecified => "WORKLOAD_TYPE_UNSPECIFIED",
+                            Self::ThroughputOptimized => "THROUGHPUT_OPTIMIZED",
+                            Self::AvailabilityOptimized => "AVAILABILITY_OPTIMIZED",
+                        }
+                    }
+                    /// Creates an enum from field names used in the ProtoBuf definition.
+                    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                        match value {
+                            "WORKLOAD_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                            "THROUGHPUT_OPTIMIZED" => Some(Self::ThroughputOptimized),
+                            "AVAILABILITY_OPTIMIZED" => Some(Self::AvailabilityOptimized),
+                            _ => None,
+                        }
+                    }
+                }
             }
         }
     }
@@ -614,7 +693,9 @@ pub struct QueuedResourceState {
     /// State of the QueuedResource request.
     #[prost(enumeration = "queued_resource_state::State", tag = "1")]
     pub state: i32,
-    /// Output only. The initiator of the QueuedResources's current state.
+    /// Output only. The initiator of the QueuedResources's current state. Used to
+    /// indicate whether the SUSPENDING/SUSPENDED state was initiated by the user
+    /// or the service.
     #[prost(enumeration = "queued_resource_state::StateInitiator", tag = "10")]
     pub state_initiator: i32,
     /// Further data for the state.
@@ -1251,6 +1332,212 @@ pub struct SimulateMaintenanceEventRequest {
     #[prost(string, repeated, tag = "2")]
     pub worker_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Request for
+/// [PerformMaintenance][google.cloud.tpu.v2alpha1.Tpu.PerformMaintenance].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PerformMaintenanceRequest {
+    /// Required. The resource name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for
+/// [PerformMaintenanceQueuedResource][google.cloud.tpu.v2alpha1.Tpu.PerformMaintenanceQueuedResource].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PerformMaintenanceQueuedResourceRequest {
+    /// Required. The name of the QueuedResource which holds the nodes to perform
+    /// maintenance on.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The names of the nodes to perform maintenance on.
+    #[prost(string, repeated, tag = "2")]
+    pub node_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// A reservation describes the amount of a resource 'allotted' for a defined
+/// period of time.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Reservation {
+    /// The reservation name with the format:
+    /// projects/{projectID}/locations/{location}/reservations/{reservationID}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The state of the Reservation.
+    #[prost(enumeration = "reservation::State", tag = "3")]
+    pub state: i32,
+    /// The kind of reservation.
+    #[prost(oneof = "reservation::Kind", tags = "2")]
+    pub kind: ::core::option::Option<reservation::Kind>,
+}
+/// Nested message and enum types in `Reservation`.
+pub mod reservation {
+    /// Details of a standard reservation.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Standard {
+        /// The size of the reservation, in the units specified in the
+        /// 'capacity_units' field.
+        #[prost(int32, tag = "1")]
+        pub size: i32,
+        /// Capacity units this reservation is measured in.
+        #[prost(enumeration = "standard::CapacityUnits", tag = "2")]
+        pub capacity_units: i32,
+        /// The resource type of the reservation.
+        #[prost(string, tag = "3")]
+        pub resource_type: ::prost::alloc::string::String,
+        /// The start and end time of the reservation.
+        #[prost(message, optional, tag = "4")]
+        pub interval: ::core::option::Option<
+            super::super::super::super::r#type::Interval,
+        >,
+        /// The current usage of the reservation.
+        #[prost(message, optional, tag = "5")]
+        pub usage: ::core::option::Option<standard::Usage>,
+    }
+    /// Nested message and enum types in `Standard`.
+    pub mod standard {
+        /// Usage details of a reservation.
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct Usage {
+            /// The real-time value of usage within the reservation, with the unit
+            /// specified in field capacity_units.
+            #[prost(int64, tag = "1")]
+            pub total: i64,
+        }
+        /// Units in which capacity for a reservation is measured.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum CapacityUnits {
+            /// The capacity units is not known/set.
+            Unspecified = 0,
+            /// The capacity unit is set to CORES.
+            Cores = 1,
+            /// The capacity unit is set to CHIPS.
+            Chips = 2,
+        }
+        impl CapacityUnits {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "CAPACITY_UNITS_UNSPECIFIED",
+                    Self::Cores => "CORES",
+                    Self::Chips => "CHIPS",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "CAPACITY_UNITS_UNSPECIFIED" => Some(Self::Unspecified),
+                    "CORES" => Some(Self::Cores),
+                    "CHIPS" => Some(Self::Chips),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// State of the Reservation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The Reservation state is unspecified.
+        Unspecified = 0,
+        /// The Reservation has been approved.
+        Approved = 3,
+        /// The Reservation is being provisioned.
+        Provisioning = 4,
+        /// The Reservation is active.
+        Active = 5,
+        /// The Reservation is being deprovisioned.
+        Deprovisioning = 6,
+        /// The Reservation is past its end date.
+        Expired = 7,
+        /// The Reservation encountered a failure during mutation.
+        Failed = 8,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Approved => "APPROVED",
+                Self::Provisioning => "PROVISIONING",
+                Self::Active => "ACTIVE",
+                Self::Deprovisioning => "DEPROVISIONING",
+                Self::Expired => "EXPIRED",
+                Self::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "APPROVED" => Some(Self::Approved),
+                "PROVISIONING" => Some(Self::Provisioning),
+                "ACTIVE" => Some(Self::Active),
+                "DEPROVISIONING" => Some(Self::Deprovisioning),
+                "EXPIRED" => Some(Self::Expired),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+    /// The kind of reservation.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Kind {
+        /// A standard reservation.
+        #[prost(message, tag = "2")]
+        Standard(Standard),
+    }
+}
+/// Request for
+/// [ListReservations][google.cloud.tpu.v2alpha1.Tpu.ListReservations].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListReservationsRequest {
+    /// Required. The parent for reservations.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of items to return. Defaults to 0 if not specified,
+    /// which means no limit.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The next_page_token value returned from a previous List request, if any.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response for
+/// [ListReservations][google.cloud.tpu.v2alpha1.Tpu.ListReservations].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListReservationsResponse {
+    /// The listed reservations.
+    #[prost(message, repeated, tag = "1")]
+    pub reservations: ::prost::alloc::vec::Vec<Reservation>,
+    /// The next page token or empty if none.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
 /// A TPU accelerator configuration.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AcceleratorConfig {
@@ -1285,6 +1572,12 @@ pub mod accelerator_config {
         V3 = 4,
         /// TPU v4.
         V4 = 7,
+        /// TPU v5lite pod.
+        V5litePod = 9,
+        /// TPU v5.
+        V5p = 10,
+        /// TPU v6e.
+        V6e = 11,
     }
     impl Type {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1297,6 +1590,9 @@ pub mod accelerator_config {
                 Self::V2 => "V2",
                 Self::V3 => "V3",
                 Self::V4 => "V4",
+                Self::V5litePod => "V5LITE_POD",
+                Self::V5p => "V5P",
+                Self::V6e => "V6E",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1306,6 +1602,9 @@ pub mod accelerator_config {
                 "V2" => Some(Self::V2),
                 "V3" => Some(Self::V3),
                 "V4" => Some(Self::V4),
+                "V5LITE_POD" => Some(Self::V5litePod),
+                "V5P" => Some(Self::V5p),
+                "V6E" => Some(Self::V6e),
                 _ => None,
             }
         }
@@ -1355,6 +1654,126 @@ pub mod customer_encryption_key {
         /// /cryptoKeyVersions/1</pre>
         #[prost(string, tag = "7")]
         KmsKeyName(::prost::alloc::string::String),
+    }
+}
+/// Upcoming Maintenance notification information.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpcomingMaintenance {
+    /// Defines the type of maintenance.
+    #[prost(enumeration = "upcoming_maintenance::MaintenanceType", optional, tag = "1")]
+    pub r#type: ::core::option::Option<i32>,
+    /// Indicates if the maintenance can be customer triggered.
+    #[prost(bool, optional, tag = "5")]
+    pub can_reschedule: ::core::option::Option<bool>,
+    /// The current start time of the maintenance window.
+    /// This timestamp value is in RFC3339 text format.
+    #[prost(string, optional, tag = "6")]
+    pub window_start_time: ::core::option::Option<::prost::alloc::string::String>,
+    /// The time by which the maintenance disruption will be completed.
+    /// This timestamp value is in RFC3339 text format.
+    #[prost(string, optional, tag = "7")]
+    pub window_end_time: ::core::option::Option<::prost::alloc::string::String>,
+    /// The latest time for the planned maintenance window to start.
+    /// This timestamp value is in RFC3339 text format.
+    #[prost(string, optional, tag = "8")]
+    pub latest_window_start_time: ::core::option::Option<::prost::alloc::string::String>,
+    /// The status of the maintenance.
+    #[prost(
+        enumeration = "upcoming_maintenance::MaintenanceStatus",
+        optional,
+        tag = "9"
+    )]
+    pub maintenance_status: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `UpcomingMaintenance`.
+pub mod upcoming_maintenance {
+    /// The type of maintenance for this notification.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MaintenanceType {
+        /// No type specified. Do not use this value.
+        UnknownType = 0,
+        /// Scheduled maintenance (e.g. maintenance after uptime guarantee is
+        /// complete).
+        Scheduled = 1,
+        /// Unscheduled maintenance (e.g. emergency maintenance during
+        /// uptime guarantee).
+        Unscheduled = 2,
+    }
+    impl MaintenanceType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::UnknownType => "UNKNOWN_TYPE",
+                Self::Scheduled => "SCHEDULED",
+                Self::Unscheduled => "UNSCHEDULED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN_TYPE" => Some(Self::UnknownType),
+                "SCHEDULED" => Some(Self::Scheduled),
+                "UNSCHEDULED" => Some(Self::Unscheduled),
+                _ => None,
+            }
+        }
+    }
+    /// The status of the maintenance for this notification.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MaintenanceStatus {
+        /// Unknown maintenance status. Do not use this value.
+        Unknown = 0,
+        /// There is pending maintenance.
+        Pending = 1,
+        /// There is ongoing maintenance on this VM.
+        Ongoing = 2,
+    }
+    impl MaintenanceStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unknown => "UNKNOWN",
+                Self::Pending => "PENDING",
+                Self::Ongoing => "ONGOING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN" => Some(Self::Unknown),
+                "PENDING" => Some(Self::Pending),
+                "ONGOING" => Some(Self::Ongoing),
+                _ => None,
+            }
+        }
     }
 }
 /// Generated client implementations.
@@ -1623,6 +2042,36 @@ pub mod tpu_client {
                 .insert(GrpcMethod::new("google.cloud.tpu.v2alpha1.Tpu", "UpdateNode"));
             self.inner.unary(req, path, codec).await
         }
+        /// Perform manual maintenance on a node.
+        pub async fn perform_maintenance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PerformMaintenanceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.tpu.v2alpha1.Tpu/PerformMaintenance",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.tpu.v2alpha1.Tpu",
+                        "PerformMaintenance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Lists queued resources.
         pub async fn list_queued_resources(
             &mut self,
@@ -1763,6 +2212,38 @@ pub mod tpu_client {
                     GrpcMethod::new(
                         "google.cloud.tpu.v2alpha1.Tpu",
                         "ResetQueuedResource",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Perform manual maintenance on specific nodes of a QueuedResource.
+        pub async fn perform_maintenance_queued_resource(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::PerformMaintenanceQueuedResourceRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.tpu.v2alpha1.Tpu/PerformMaintenanceQueuedResource",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.tpu.v2alpha1.Tpu",
+                        "PerformMaintenanceQueuedResource",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -1938,6 +2419,33 @@ pub mod tpu_client {
                         "google.cloud.tpu.v2alpha1.Tpu",
                         "GetGuestAttributes",
                     ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves the reservations for the given project in the given location.
+        pub async fn list_reservations(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListReservationsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListReservationsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.tpu.v2alpha1.Tpu/ListReservations",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.tpu.v2alpha1.Tpu", "ListReservations"),
                 );
             self.inner.unary(req, path, codec).await
         }

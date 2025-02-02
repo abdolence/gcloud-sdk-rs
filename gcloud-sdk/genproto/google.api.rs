@@ -1138,6 +1138,14 @@ pub struct SelectiveGapicGeneration {
     /// on public client surfaces.
     #[prost(string, repeated, tag = "1")]
     pub methods: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Setting this to true indicates to the client generators that methods
+    /// that would be excluded from the generation should instead be generated
+    /// in a way that indicates these methods should not be consumed by
+    /// end users. How this is expressed is up to individual language
+    /// implementations to decide. Some examples may be: added annotations,
+    /// obfuscated identifiers, or other language idiomatic patterns.
+    #[prost(bool, tag = "2")]
+    pub generate_omitted_as_internal: bool,
 }
 /// The organization for which the client libraries are being published.
 /// Affects the url where generated docs are published, etc.

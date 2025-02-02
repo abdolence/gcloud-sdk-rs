@@ -700,6 +700,7 @@ pub struct IosRoboTest {
     /// An optional Roboscript to customize the crawl. See
     /// <https://firebase.google.com/docs/test-lab/android/robo-scripts-reference>
     /// for more information about Roboscripts.
+    /// The maximum allowed file size of the roboscript is 10MiB.
     #[prost(message, optional, tag = "5")]
     pub robo_script: ::core::option::Option<FileReference>,
 }

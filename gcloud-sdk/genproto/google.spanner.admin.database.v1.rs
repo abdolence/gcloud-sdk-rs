@@ -978,7 +978,7 @@ pub mod backup_schedule {
 pub struct CrontabSpec {
     /// Required. Textual representation of the crontab. User can customize the
     /// backup frequency and the backup version time using the cron
-    /// expression. The version time must be in UTC timzeone.
+    /// expression. The version time must be in UTC timezone.
     ///
     /// The backup will contain an externally consistent copy of the
     /// database at the version time. Allowed frequencies are 12 hour, 1 day,
@@ -1859,6 +1859,60 @@ pub struct ListDatabaseRolesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// The request for
+/// [AddSplitPoints][google.spanner.admin.database.v1.DatabaseAdmin.AddSplitPoints].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AddSplitPointsRequest {
+    /// Required. The database on whose tables/indexes split points are to be
+    /// added. Values are of the form
+    /// `projects/<project>/instances/<instance>/databases/<database>`.
+    #[prost(string, tag = "1")]
+    pub database: ::prost::alloc::string::String,
+    /// Required. The split points to add.
+    #[prost(message, repeated, tag = "2")]
+    pub split_points: ::prost::alloc::vec::Vec<SplitPoints>,
+    /// Optional. A user-supplied tag associated with the split points.
+    /// For example, "intital_data_load", "special_event_1".
+    /// Defaults to "CloudAddSplitPointsAPI" if not specified.
+    /// The length of the tag must not exceed 50 characters,else will be trimmed.
+    /// Only valid UTF8 characters are allowed.
+    #[prost(string, tag = "3")]
+    pub initiator: ::prost::alloc::string::String,
+}
+/// The response for
+/// [AddSplitPoints][google.spanner.admin.database.v1.DatabaseAdmin.AddSplitPoints].
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct AddSplitPointsResponse {}
+/// The split points of a table/index.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SplitPoints {
+    /// The table to split.
+    #[prost(string, tag = "1")]
+    pub table: ::prost::alloc::string::String,
+    /// The index to split.
+    /// If specified, the `table` field must refer to the index's base table.
+    #[prost(string, tag = "2")]
+    pub index: ::prost::alloc::string::String,
+    /// Required. The list of split keys, i.e., the split boundaries.
+    #[prost(message, repeated, tag = "3")]
+    pub keys: ::prost::alloc::vec::Vec<split_points::Key>,
+    /// Optional. The expiration timestamp of the split points.
+    /// A timestamp in the past means immediate expiration.
+    /// The maximum value can be 30 days in the future.
+    /// Defaults to 10 days in the future if not specified.
+    #[prost(message, optional, tag = "5")]
+    pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `SplitPoints`.
+pub mod split_points {
+    /// A split key.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Key {
+        /// Required. The column values making up the split key.
+        #[prost(message, optional, tag = "1")]
+        pub key_parts: ::core::option::Option<::prost_types::ListValue>,
+    }
+}
 /// Indicates the type of the restore source.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -2712,6 +2766,36 @@ pub mod database_admin_client {
                     GrpcMethod::new(
                         "google.spanner.admin.database.v1.DatabaseAdmin",
                         "ListDatabaseRoles",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Adds split points to specified tables, indexes of a database.
+        pub async fn add_split_points(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AddSplitPointsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::AddSplitPointsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.spanner.admin.database.v1.DatabaseAdmin/AddSplitPoints",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "AddSplitPoints",
                     ),
                 );
             self.inner.unary(req, path, codec).await

@@ -204,7 +204,7 @@ pub struct HttpOptions {
 pub enum HttpAuthorizationHeader {
     /// Default value, equivalent to `SYSTEM_ID_TOKEN`
     Unspecified = 0,
-    /// Send an ID token for the project-specific Google Workspace Add-ons system
+    /// Send an ID token for the project-specific Google Workspace add-ons system
     /// service account (default)
     SystemIdToken = 1,
     /// Send an ID token for the end user
