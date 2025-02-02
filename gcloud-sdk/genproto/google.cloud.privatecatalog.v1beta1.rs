@@ -108,7 +108,7 @@ pub struct SearchVersionsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Catalog {
     /// Output only. The resource name of the target catalog, in the format of
-    /// `catalogs/{catalog}'.
+    /// `catalogs/{catalog}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The descriptive name of the catalog as it appears in UIs.
@@ -475,7 +475,7 @@ pub mod git_source {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Version {
     /// Output only. The resource name of the version, in the format
-    /// `catalogs/{catalog}/products/{product}/versions/[a-z][-a-z0-9]*\[a-z0-9\]'.
+    /// `catalogs/{catalog}/products/{product}/versions/[a-z][-a-z0-9]*\[a-z0-9\]`.
     ///
     /// A unique identifier for the version under a product.
     #[prost(string, tag = "1")]

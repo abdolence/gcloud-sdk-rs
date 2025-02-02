@@ -270,6 +270,20 @@ pub struct UploadedMavenArtifact {
     #[prost(message, optional, tag = "3")]
     pub push_timing: ::core::option::Option<TimeSpan>,
 }
+/// A Go module artifact uploaded to Artifact Registry using the GoModule
+/// directive.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UploadedGoModule {
+    /// URI of the uploaded artifact.
+    #[prost(string, tag = "1")]
+    pub uri: ::prost::alloc::string::String,
+    /// Hash types and values of the Go Module Artifact.
+    #[prost(message, optional, tag = "2")]
+    pub file_hashes: ::core::option::Option<FileHashes>,
+    /// Output only. Stores timing information for pushing the specified artifact.
+    #[prost(message, optional, tag = "3")]
+    pub push_timing: ::core::option::Option<TimeSpan>,
+}
 /// An npm package uploaded to Artifact Registry using the NpmPackage
 /// directive.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -457,6 +471,10 @@ pub struct Results {
     /// Maven artifacts uploaded to Artifact Registry at the end of the build.
     #[prost(message, repeated, tag = "9")]
     pub maven_artifacts: ::prost::alloc::vec::Vec<UploadedMavenArtifact>,
+    /// Optional. Go module artifacts uploaded to Artifact Registry at the end of
+    /// the build.
+    #[prost(message, repeated, tag = "10")]
+    pub go_modules: ::prost::alloc::vec::Vec<UploadedGoModule>,
     /// Npm packages uploaded to Artifact Registry at the end of the build.
     #[prost(message, repeated, tag = "12")]
     pub npm_packages: ::prost::alloc::vec::Vec<UploadedNpmPackage>,
@@ -880,6 +898,12 @@ pub struct Artifacts {
     /// If any artifacts fail to be pushed, the build is marked FAILURE.
     #[prost(message, repeated, tag = "3")]
     pub maven_artifacts: ::prost::alloc::vec::Vec<artifacts::MavenArtifact>,
+    /// Optional. A list of Go modules to be uploaded to Artifact Registry upon
+    /// successful completion of all build steps.
+    ///
+    /// If any objects fail to be pushed, the build is marked FAILURE.
+    #[prost(message, repeated, tag = "4")]
+    pub go_modules: ::prost::alloc::vec::Vec<artifacts::GoModule>,
     /// A list of Python packages to be uploaded to Artifact Registry upon
     /// successful completion of all build steps.
     ///
@@ -951,6 +975,41 @@ pub mod artifacts {
         /// Registry.
         #[prost(string, tag = "5")]
         pub version: ::prost::alloc::string::String,
+    }
+    /// Go module to upload to Artifact Registry upon successful completion of all
+    /// build steps. A module refers to all dependencies in a go.mod file.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GoModule {
+        /// Optional. Artifact Registry repository name.
+        ///
+        /// Specified Go modules will be zipped and uploaded to Artifact Registry
+        /// with this location as a prefix.
+        /// e.g. my-go-repo
+        #[prost(string, tag = "1")]
+        pub repository_name: ::prost::alloc::string::String,
+        /// Optional. Location of the Artifact Registry repository. i.e. us-east1
+        /// Defaults to the build’s location.
+        #[prost(string, tag = "2")]
+        pub repository_location: ::prost::alloc::string::String,
+        /// Optional. Project ID of the Artifact Registry repository.
+        /// Defaults to the build project.
+        #[prost(string, tag = "3")]
+        pub repository_project_id: ::prost::alloc::string::String,
+        /// Optional. Source path of the go.mod file in the build's workspace. If not
+        /// specified, this will default to the current directory.
+        /// e.g. ~/code/go/mypackage
+        #[prost(string, tag = "4")]
+        pub source_path: ::prost::alloc::string::String,
+        /// Optional. The Go module's "module path".
+        /// e.g. example.com/foo/v2
+        #[prost(string, tag = "5")]
+        pub module_path: ::prost::alloc::string::String,
+        /// Optional. The Go module's semantic version in the form vX.Y.Z. e.g.
+        /// v0.1.1 Pre-release identifiers can also be added by appending a dash and
+        /// dot separated ASCII alphanumeric characters and hyphens.
+        /// e.g. v0.2.3-alpha.x.12m.5
+        #[prost(string, tag = "6")]
+        pub module_version: ::prost::alloc::string::String,
     }
     /// Python package to upload to Artifact Registry upon successful completion
     /// of all build steps. A package can encapsulate multiple objects to be
@@ -1077,6 +1136,8 @@ pub mod hash {
         Sha256 = 1,
         /// Use a md5 hash.
         Md5 = 2,
+        /// Dirhash of a Go module's source code which is then hex-encoded.
+        GoModuleH1 = 3,
         /// Use a sha512 hash.
         Sha512 = 4,
     }
@@ -1090,6 +1151,7 @@ pub mod hash {
                 Self::None => "NONE",
                 Self::Sha256 => "SHA256",
                 Self::Md5 => "MD5",
+                Self::GoModuleH1 => "GO_MODULE_H1",
                 Self::Sha512 => "SHA512",
             }
         }
@@ -1099,6 +1161,7 @@ pub mod hash {
                 "NONE" => Some(Self::None),
                 "SHA256" => Some(Self::Sha256),
                 "MD5" => Some(Self::Md5),
+                "GO_MODULE_H1" => Some(Self::GoModuleH1),
                 "SHA512" => Some(Self::Sha512),
                 _ => None,
             }
@@ -2237,6 +2300,11 @@ pub struct BuildOptions {
     /// Optional. Option to specify how default logs buckets are setup.
     #[prost(enumeration = "build_options::DefaultLogsBucketBehavior", tag = "21")]
     pub default_logs_bucket_behavior: i32,
+    /// Optional. Option to specify whether structured logging is enabled.
+    ///
+    /// If true, JSON-formatted logs are parsed as structured logs.
+    #[prost(bool, tag = "23")]
+    pub enable_structured_logging: bool,
 }
 /// Nested message and enum types in `BuildOptions`.
 pub mod build_options {

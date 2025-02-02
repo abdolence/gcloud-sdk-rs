@@ -5640,7 +5640,7 @@ pub mod status_condition {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkConfig {
     /// Output only. The relative name of the Google Compute Engine
-    /// [network][google.container.v1.NetworkConfig.network](<https://cloud.google.com/compute/docs/networks-and-firewalls#networks>)
+    /// [network](<https://cloud.google.com/compute/docs/networks-and-firewalls#networks>)
     /// to which the cluster is connected. Example:
     /// projects/my-project/global/networks/my-network
     #[prost(string, tag = "1")]

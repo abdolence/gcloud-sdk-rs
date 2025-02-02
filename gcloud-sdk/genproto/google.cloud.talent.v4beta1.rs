@@ -3847,6 +3847,13 @@ pub struct SearchJobsRequest {
     /// if no value is specified.
     #[prost(enumeration = "search_jobs_request::KeywordMatchMode", tag = "18")]
     pub keyword_match_mode: i32,
+    /// Optional. The relevance threshold of the search results.
+    ///
+    /// Default to Google defined threshold, leveraging a balance of
+    /// precision and recall to deliver both highly accurate results and
+    /// comprehensive coverage of relevant information.
+    #[prost(enumeration = "search_jobs_request::RelevanceThreshold", tag = "19")]
+    pub relevance_threshold: i32,
 }
 /// Nested message and enum types in `SearchJobsRequest`.
 pub mod search_jobs_request {
@@ -4137,6 +4144,60 @@ pub mod search_jobs_request {
                 "KEYWORD_MATCH_DISABLED" => Some(Self::KeywordMatchDisabled),
                 "KEYWORD_MATCH_ALL" => Some(Self::KeywordMatchAll),
                 "KEYWORD_MATCH_TITLE_ONLY" => Some(Self::KeywordMatchTitleOnly),
+                _ => None,
+            }
+        }
+    }
+    /// The relevance threshold of the search results. The higher relevance
+    /// threshold is, the higher relevant results are shown and the less number of
+    /// results are returned.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RelevanceThreshold {
+        /// Default value. In this case, server behavior defaults to Google defined
+        /// threshold.
+        Unspecified = 0,
+        /// Lowest relevance threshold.
+        Lowest = 1,
+        /// Low relevance threshold.
+        Low = 2,
+        /// Medium relevance threshold.
+        Medium = 3,
+        /// High relevance threshold.
+        High = 4,
+    }
+    impl RelevanceThreshold {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "RELEVANCE_THRESHOLD_UNSPECIFIED",
+                Self::Lowest => "LOWEST",
+                Self::Low => "LOW",
+                Self::Medium => "MEDIUM",
+                Self::High => "HIGH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RELEVANCE_THRESHOLD_UNSPECIFIED" => Some(Self::Unspecified),
+                "LOWEST" => Some(Self::Lowest),
+                "LOW" => Some(Self::Low),
+                "MEDIUM" => Some(Self::Medium),
+                "HIGH" => Some(Self::High),
                 _ => None,
             }
         }

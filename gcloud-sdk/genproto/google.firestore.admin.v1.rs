@@ -1887,6 +1887,20 @@ pub struct ListBackupsRequest {
     /// locations.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
+    /// An expression that filters the list of returned backups.
+    ///
+    /// A filter expression consists of a field name, a comparison operator, and a
+    /// value for filtering.
+    /// The value must be a string, a number, or a boolean. The comparison operator
+    /// must be one of: `<`, `>`, `<=`, `>=`, `!=`, `=`, or `:`.
+    /// Colon `:` is the contains operator. Filter rules are not case sensitive.
+    ///
+    /// The following fields in the [Backup][google.firestore.admin.v1.Backup] are
+    /// eligible for filtering:
+    ///
+    ///    * `database_uid` (supports `=` only)
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
 }
 /// The response for
 /// [FirestoreAdmin.ListBackups][google.firestore.admin.v1.FirestoreAdmin.ListBackups].

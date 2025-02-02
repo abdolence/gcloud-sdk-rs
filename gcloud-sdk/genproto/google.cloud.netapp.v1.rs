@@ -272,6 +272,12 @@ pub struct Backup {
     /// backup size + sum(incremental backup size)
     #[prost(int64, tag = "10")]
     pub chain_storage_bytes: i64,
+    /// Output only. Reserved for future use
+    #[prost(bool, tag = "11")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use
+    #[prost(bool, tag = "12")]
+    pub satisfies_pzi: bool,
 }
 /// Nested message and enum types in `Backup`.
 pub mod backup {
@@ -1053,6 +1059,230 @@ pub mod kms_config {
         }
     }
 }
+/// ListQuotaRulesRequest for listing quota rules.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListQuotaRulesRequest {
+    /// Required. Parent value for ListQuotaRulesRequest
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Requested page size. Server may return fewer items than
+    /// requested. If unspecified, the server will pick an appropriate default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results the server should return.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filtering results
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Hint for how to order the results
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// ListQuotaRulesResponse is the response to a ListQuotaRulesRequest.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListQuotaRulesResponse {
+    /// List of quota rules
+    #[prost(message, repeated, tag = "1")]
+    pub quota_rules: ::prost::alloc::vec::Vec<QuotaRule>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// GetQuotaRuleRequest for getting a quota rule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetQuotaRuleRequest {
+    /// Required. Name of the quota rule
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// CreateQuotaRuleRequest for creating a quota rule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateQuotaRuleRequest {
+    /// Required. Parent value for CreateQuotaRuleRequest
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Fields of the to be created quota rule.
+    #[prost(message, optional, tag = "2")]
+    pub quota_rule: ::core::option::Option<QuotaRule>,
+    /// Required. ID of the quota rule to create. Must be unique within the parent
+    /// resource. Must contain only letters, numbers, underscore and hyphen, with
+    /// the first character a letter or underscore, the last a letter or underscore
+    /// or a number, and a 63 character maximum.
+    #[prost(string, tag = "3")]
+    pub quota_rule_id: ::prost::alloc::string::String,
+}
+/// UpdateQuotaRuleRequest for updating a quota rule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateQuotaRuleRequest {
+    /// Optional. Field mask is used to specify the fields to be overwritten in the
+    /// Quota Rule resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then all fields will be overwritten.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. The quota rule being updated
+    #[prost(message, optional, tag = "2")]
+    pub quota_rule: ::core::option::Option<QuotaRule>,
+}
+/// DeleteQuotaRuleRequest for deleting a single quota rule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteQuotaRuleRequest {
+    /// Required. Name of the quota rule.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// QuotaRule specifies the maximum disk space a user or group can use within a
+/// volume. They can be used for creating default and individual quota rules.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QuotaRule {
+    /// Identifier. The resource name of the quota rule.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/volumes/volumes/{volume_id}/quotaRules/{quota_rule_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The quota rule applies to the specified user or group, identified
+    /// by a Unix UID/GID, Windows SID, or null for default.
+    #[prost(string, tag = "2")]
+    pub target: ::prost::alloc::string::String,
+    /// Required. The type of quota rule.
+    #[prost(enumeration = "quota_rule::Type", tag = "3")]
+    pub r#type: i32,
+    /// Required. The maximum allowed disk space in MiB.
+    #[prost(int32, tag = "4")]
+    pub disk_limit_mib: i32,
+    /// Output only. State of the quota rule
+    #[prost(enumeration = "quota_rule::State", tag = "6")]
+    pub state: i32,
+    /// Output only. State details of the quota rule
+    #[prost(string, tag = "7")]
+    pub state_details: ::prost::alloc::string::String,
+    /// Output only. Create time of the quota rule
+    #[prost(message, optional, tag = "8")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Description of the quota rule
+    #[prost(string, tag = "9")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. Labels of the quota rule
+    #[prost(map = "string, string", tag = "10")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+}
+/// Nested message and enum types in `QuotaRule`.
+pub mod quota_rule {
+    /// Types of Quota Rule
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// Unspecified type for quota rule
+        Unspecified = 0,
+        /// Individual user quota rule
+        IndividualUserQuota = 1,
+        /// Individual group quota rule
+        IndividualGroupQuota = 2,
+        /// Default user quota rule
+        DefaultUserQuota = 3,
+        /// Default group quota rule
+        DefaultGroupQuota = 4,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::IndividualUserQuota => "INDIVIDUAL_USER_QUOTA",
+                Self::IndividualGroupQuota => "INDIVIDUAL_GROUP_QUOTA",
+                Self::DefaultUserQuota => "DEFAULT_USER_QUOTA",
+                Self::DefaultGroupQuota => "DEFAULT_GROUP_QUOTA",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INDIVIDUAL_USER_QUOTA" => Some(Self::IndividualUserQuota),
+                "INDIVIDUAL_GROUP_QUOTA" => Some(Self::IndividualGroupQuota),
+                "DEFAULT_USER_QUOTA" => Some(Self::DefaultUserQuota),
+                "DEFAULT_GROUP_QUOTA" => Some(Self::DefaultGroupQuota),
+                _ => None,
+            }
+        }
+    }
+    /// Quota Rule states
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Unspecified state for quota rule
+        Unspecified = 0,
+        /// Quota rule is creating
+        Creating = 1,
+        /// Quota rule is updating
+        Updating = 2,
+        /// Quota rule is deleting
+        Deleting = 3,
+        /// Quota rule is ready
+        Ready = 4,
+        /// Quota rule is in error state.
+        Error = 5,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Updating => "UPDATING",
+                Self::Deleting => "DELETING",
+                Self::Ready => "READY",
+                Self::Error => "ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "UPDATING" => Some(Self::Updating),
+                "DELETING" => Some(Self::Deleting),
+                "READY" => Some(Self::Ready),
+                "ERROR" => Some(Self::Error),
+                _ => None,
+            }
+        }
+    }
+}
 /// Metadata for a given
 /// [google.cloud.location.Location][google.cloud.location.Location].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1060,6 +1290,9 @@ pub struct LocationMetadata {
     /// Output only. Supported service levels in a location.
     #[prost(enumeration = "ServiceLevel", repeated, packed = "false", tag = "1")]
     pub supported_service_levels: ::prost::alloc::vec::Vec<i32>,
+    /// Output only. Supported flex performance in a location.
+    #[prost(enumeration = "FlexPerformance", repeated, packed = "false", tag = "2")]
+    pub supported_flex_performance: ::prost::alloc::vec::Vec<i32>,
 }
 /// The service level of a storage pool and its volumes.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1102,6 +1335,39 @@ impl ServiceLevel {
         }
     }
 }
+/// Flex Storage Pool performance.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum FlexPerformance {
+    /// Unspecified flex performance.
+    Unspecified = 0,
+    /// Flex Storage Pool with default performance.
+    Default = 1,
+    /// Flex Storage Pool with custom performance.
+    Custom = 2,
+}
+impl FlexPerformance {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "FLEX_PERFORMANCE_UNSPECIFIED",
+            Self::Default => "FLEX_PERFORMANCE_DEFAULT",
+            Self::Custom => "FLEX_PERFORMANCE_CUSTOM",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "FLEX_PERFORMANCE_UNSPECIFIED" => Some(Self::Unspecified),
+            "FLEX_PERFORMANCE_DEFAULT" => Some(Self::Default),
+            "FLEX_PERFORMANCE_CUSTOM" => Some(Self::Custom),
+            _ => None,
+        }
+    }
+}
 /// The volume encryption key source.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -1131,6 +1397,35 @@ impl EncryptionType {
             "ENCRYPTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
             "SERVICE_MANAGED" => Some(Self::ServiceManaged),
             "CLOUD_KMS" => Some(Self::CloudKms),
+            _ => None,
+        }
+    }
+}
+/// Type of directory service
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DirectoryServiceType {
+    /// Directory service type is not specified.
+    Unspecified = 0,
+    /// Active directory policy attached to the storage pool.
+    ActiveDirectory = 1,
+}
+impl DirectoryServiceType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "DIRECTORY_SERVICE_TYPE_UNSPECIFIED",
+            Self::ActiveDirectory => "ACTIVE_DIRECTORY",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DIRECTORY_SERVICE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "ACTIVE_DIRECTORY" => Some(Self::ActiveDirectory),
             _ => None,
         }
     }
@@ -1597,6 +1892,9 @@ pub struct MountOption {
     /// Instructions for mounting
     #[prost(string, tag = "4")]
     pub instructions: ::prost::alloc::string::String,
+    /// Output only. IP Address.
+    #[prost(string, tag = "5")]
+    pub ip_address: ::prost::alloc::string::String,
 }
 /// The RestoreParameters if volume is created from a snapshot or backup.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1705,9 +2003,7 @@ pub mod tiering_policy {
 /// The Hybrid Replication parameters for the volume.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HybridReplicationParameters {
-    /// Required. Desired Identifier (name) of the replication which will be created for this volume.
-    /// Format:
-    /// `projects/{project_id}/locations/{location}/volumes/{volume_id}/replications/{replication_id}`
+    /// Required. Desired name for the replication of this volume.
     #[prost(string, tag = "1")]
     pub replication: ::prost::alloc::string::String,
     /// Required. Name of the user's local source volume to be peered with the
@@ -2318,6 +2614,18 @@ pub struct HybridPeeringDetails {
     /// Optional. Temporary passphrase generated to accept cluster peering command.
     #[prost(string, tag = "4")]
     pub passphrase: ::prost::alloc::string::String,
+    /// Optional. Name of the user's local source volume to be peered with the
+    /// destination volume.
+    #[prost(string, tag = "5")]
+    pub peer_volume_name: ::prost::alloc::string::String,
+    /// Optional. Name of the user's local source cluster to be peered with the
+    /// destination cluster.
+    #[prost(string, tag = "6")]
+    pub peer_cluster_name: ::prost::alloc::string::String,
+    /// Optional. Name of the user's local source vserver svm to be peered with the
+    /// destination vserver svm.
+    #[prost(string, tag = "7")]
+    pub peer_svm_name: ::prost::alloc::string::String,
 }
 /// ListReplications lists replications.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2822,6 +3130,12 @@ pub struct StoragePool {
     /// Optional. Specifies the active zone for regional storagePool.
     #[prost(string, tag = "21")]
     pub zone: ::prost::alloc::string::String,
+    /// Output only. Reserved for future use
+    #[prost(bool, tag = "23")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use
+    #[prost(bool, tag = "24")]
+    pub satisfies_pzi: bool,
 }
 /// Nested message and enum types in `StoragePool`.
 pub mod storage_pool {
@@ -2888,6 +3202,17 @@ pub mod storage_pool {
             }
         }
     }
+}
+/// ValidateDirectoryServiceRequest validates the directory service policy
+/// attached to the storage pool.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ValidateDirectoryServiceRequest {
+    /// Required. Name of the storage pool
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Type of directory service policy attached to the storage pool.
+    #[prost(enumeration = "DirectoryServiceType", tag = "2")]
+    pub directory_service_type: i32,
 }
 /// Represents the metadata of the long-running operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3139,6 +3464,37 @@ pub mod net_app_client {
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new("google.cloud.netapp.v1.NetApp", "DeleteStoragePool"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// ValidateDirectoryService does a connectivity check for a directory service
+        /// policy attached to the storage pool.
+        pub async fn validate_directory_service(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ValidateDirectoryServiceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.netapp.v1.NetApp/ValidateDirectoryService",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.netapp.v1.NetApp",
+                        "ValidateDirectoryService",
+                    ),
                 );
             self.inner.unary(req, path, codec).await
         }
@@ -4474,6 +4830,138 @@ pub mod net_app_client {
                         "google.cloud.netapp.v1.NetApp",
                         "DeleteBackupPolicy",
                     ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns list of all quota rules in a location.
+        pub async fn list_quota_rules(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListQuotaRulesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListQuotaRulesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.netapp.v1.NetApp/ListQuotaRules",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.netapp.v1.NetApp", "ListQuotaRules"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns details of the specified quota rule.
+        pub async fn get_quota_rule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetQuotaRuleRequest>,
+        ) -> std::result::Result<tonic::Response<super::QuotaRule>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.netapp.v1.NetApp/GetQuotaRule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.netapp.v1.NetApp", "GetQuotaRule"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new quota rule.
+        pub async fn create_quota_rule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateQuotaRuleRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.netapp.v1.NetApp/CreateQuotaRule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.netapp.v1.NetApp", "CreateQuotaRule"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a quota rule.
+        pub async fn update_quota_rule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateQuotaRuleRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.netapp.v1.NetApp/UpdateQuotaRule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.netapp.v1.NetApp", "UpdateQuotaRule"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a quota rule.
+        pub async fn delete_quota_rule(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteQuotaRuleRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.netapp.v1.NetApp/DeleteQuotaRule",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.netapp.v1.NetApp", "DeleteQuotaRule"),
                 );
             self.inner.unary(req, path, codec).await
         }

@@ -37,6 +37,7 @@ pub struct OracleProfile {
     pub secret_manager_stored_password: ::prost::alloc::string::String,
 }
 /// Configuration for Oracle Automatic Storage Management (ASM) connection.
+/// .
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OracleAsmConfig {
     /// Required. Hostname for the Oracle ASM connection.
@@ -48,7 +49,7 @@ pub struct OracleAsmConfig {
     /// Required. Username for the Oracle ASM connection.
     #[prost(string, tag = "3")]
     pub username: ::prost::alloc::string::String,
-    /// Required. Password for the Oracle ASM connection.
+    /// Optional. Password for the Oracle ASM connection.
     #[prost(string, tag = "4")]
     pub password: ::prost::alloc::string::String,
     /// Required. ASM service name for the Oracle ASM connection.
@@ -104,6 +105,12 @@ pub struct PostgresqlProfile {
     /// Required. Database for the PostgreSQL connection.
     #[prost(string, tag = "5")]
     pub database: ::prost::alloc::string::String,
+    /// Optional. SSL configuration for the PostgreSQL connection.
+    /// In case PostgresqlSslConfig is not set, the connection will use the default
+    /// SSL mode, which is `prefer` (i.e. this mode will only use encryption if
+    /// enabled from database side, otherwise will use unencrypted communication)
+    #[prost(message, optional, tag = "7")]
+    pub ssl_config: ::core::option::Option<PostgresqlSslConfig>,
 }
 /// SQLServer database profile.
 /// Next ID: 8.
@@ -192,7 +199,7 @@ pub struct VpcPeeringConfig {
 /// between Datastream and a customer's network.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PrivateConnection {
-    /// Output only. The resource's name.
+    /// Output only. Identifier. The resource's name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The create time of the resource.
@@ -291,7 +298,7 @@ pub struct PrivateConnectivity {
 /// used for defining a route for a private connection.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Route {
-    /// Output only. The resource's name.
+    /// Output only. Identifier. The resource's name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The create time of the resource.
@@ -355,11 +362,75 @@ pub struct OracleSslConfig {
     #[prost(bool, tag = "2")]
     pub ca_certificate_set: bool,
 }
+/// PostgreSQL SSL configuration information.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PostgresqlSslConfig {
+    /// The encryption settings available for PostgreSQL connection profiles.
+    /// This captures various SSL mode supported by PostgreSQL, which includes
+    /// TLS encryption with server verification, TLS encryption with both server
+    /// and client verification and no TLS encryption.
+    #[prost(oneof = "postgresql_ssl_config::EncryptionSetting", tags = "1, 2")]
+    pub encryption_setting: ::core::option::Option<
+        postgresql_ssl_config::EncryptionSetting,
+    >,
+}
+/// Nested message and enum types in `PostgresqlSslConfig`.
+pub mod postgresql_ssl_config {
+    /// Message represents the option where Datastream will enforce the encryption
+    /// and authenticate the server identity. ca_certificate must be set if user
+    /// selects this option.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ServerVerification {
+        /// Required. Input only. PEM-encoded server root CA certificate.
+        #[prost(string, tag = "1")]
+        pub ca_certificate: ::prost::alloc::string::String,
+    }
+    /// Message represents the option where Datastream will enforce the encryption
+    /// and authenticate the server identity as well as the client identity.
+    /// ca_certificate, client_certificate and client_key must be set if user
+    /// selects this option.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ServerAndClientVerification {
+        /// Required. Input only. PEM-encoded certificate used by the source database
+        /// to authenticate the client identity (i.e., the Datastream's identity).
+        /// This certificate is signed by either a root certificate trusted by the
+        /// server or one or more intermediate certificates (which is stored with the
+        /// leaf certificate) to link the this certificate to the trusted root
+        /// certificate.
+        #[prost(string, tag = "1")]
+        pub client_certificate: ::prost::alloc::string::String,
+        /// Required. Input only. PEM-encoded private key associated with the client
+        /// certificate. This value will be used during the SSL/TLS handshake,
+        /// allowing the PostgreSQL server to authenticate the client's identity,
+        /// i.e. identity of the Datastream.
+        #[prost(string, tag = "2")]
+        pub client_key: ::prost::alloc::string::String,
+        /// Required. Input only. PEM-encoded server root CA certificate.
+        #[prost(string, tag = "3")]
+        pub ca_certificate: ::prost::alloc::string::String,
+    }
+    /// The encryption settings available for PostgreSQL connection profiles.
+    /// This captures various SSL mode supported by PostgreSQL, which includes
+    /// TLS encryption with server verification, TLS encryption with both server
+    /// and client verification and no TLS encryption.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum EncryptionSetting {
+        ///  If this field is set, the communication will be encrypted with TLS
+        ///   encryption and the server identity will be authenticated.
+        #[prost(message, tag = "1")]
+        ServerVerification(ServerVerification),
+        /// If this field is set, the communication will be encrypted with TLS
+        /// encryption and both the server identity and the client identity will be
+        /// authenticated.
+        #[prost(message, tag = "2")]
+        ServerAndClientVerification(ServerAndClientVerification),
+    }
+}
 /// A set of reusable connection configurations to be used as a source or
 /// destination for a stream.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConnectionProfile {
-    /// Output only. The resource's name.
+    /// Output only. Identifier. The resource's name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The create time of the resource.
@@ -1137,7 +1208,7 @@ pub mod destination_config {
 /// A resource representing streaming data from a source to a destination.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Stream {
-    /// Output only. The stream's name.
+    /// Output only. Identifier. The stream's name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The creation time of the stream.
@@ -1303,7 +1374,7 @@ pub mod stream {
 /// A specific stream object (e.g a specific DB table).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamObject {
-    /// Output only. The object resource's name.
+    /// Output only. Identifier. The object resource's name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The creation time of the object.

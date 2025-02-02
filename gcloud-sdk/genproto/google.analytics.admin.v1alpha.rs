@@ -954,7 +954,7 @@ pub mod audience_event_trigger {
         }
     }
 }
-/// A resource message representing a GA4 Audience.
+/// A resource message representing an Audience.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Audience {
     /// Output only. The resource name for this Audience resource.
@@ -1624,7 +1624,7 @@ pub struct ExpandedDataSetFilterExpressionList {
     #[prost(message, repeated, tag = "1")]
     pub filter_expressions: ::prost::alloc::vec::Vec<ExpandedDataSetFilterExpression>,
 }
-/// A resource message representing a GA4 ExpandedDataSet.
+/// A resource message representing an `ExpandedDataSet`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExpandedDataSet {
     /// Output only. The resource name for this ExpandedDataSet resource.
@@ -1693,7 +1693,7 @@ pub struct Account {
     #[prost(string, tag = "7")]
     pub gmp_organization: ::prost::alloc::string::String,
 }
-/// A resource message representing a Google Analytics GA4 property.
+/// A resource message representing a Google Analytics property.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Property {
     /// Output only. Resource name of this property.
@@ -1902,7 +1902,7 @@ pub mod data_stream {
         IosAppStreamData(IosAppStreamData),
     }
 }
-/// A link between a GA4 property and a Firebase project.
+/// A link between a Google Analytics property and a Firebase project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirebaseLink {
     /// Output only. Example format: properties/1234/firebaseLinks/5678
@@ -1935,7 +1935,7 @@ pub struct GlobalSiteTag {
     #[prost(string, tag = "2")]
     pub snippet: ::prost::alloc::string::String,
 }
-/// A link between a GA4 property and a Google Ads account.
+/// A link between a Google Analytics property and a Google Ads account.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoogleAdsLink {
     /// Output only. Format:
@@ -1997,7 +1997,7 @@ pub struct DataSharingSettings {
     pub sharing_with_others_enabled: bool,
 }
 /// A virtual resource representing an overview of an account and
-/// all its child GA4 properties.
+/// all its child Google Analytics properties.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccountSummary {
     /// Resource name for this account summary.
@@ -2017,7 +2017,7 @@ pub struct AccountSummary {
     #[prost(message, repeated, tag = "4")]
     pub property_summaries: ::prost::alloc::vec::Vec<PropertySummary>,
 }
-/// A virtual resource representing metadata for a GA4 property.
+/// A virtual resource representing metadata for a Google Analytics property.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PropertySummary {
     /// Resource name of property referred to by this property summary
@@ -2152,7 +2152,7 @@ pub struct ConversionValues {
 /// Event setting conditions to match an event.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventMapping {
-    /// Required. Name of the GA4 event. It must always be set.
+    /// Required. Name of the Google Analytics event. It must always be set.
     /// The max allowed display name length is 40 UTF-16 code units.
     #[prost(string, tag = "1")]
     pub event_name: ::prost::alloc::string::String,
@@ -2329,7 +2329,8 @@ pub mod change_history_change {
         }
     }
 }
-/// A link between a GA4 property and a Display & Video 360 advertiser.
+/// A link between a Google Analytics property and a Display & Video 360
+/// advertiser.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisplayVideo360AdvertiserLink {
     /// Output only. The resource name for this DisplayVideo360AdvertiserLink
@@ -2350,21 +2351,21 @@ pub struct DisplayVideo360AdvertiserLink {
     #[prost(message, optional, tag = "4")]
     pub ads_personalization_enabled: ::core::option::Option<bool>,
     /// Immutable. Enables the import of campaign data from Display & Video 360
-    /// into the GA4 property. After link creation, this can only be updated from
-    /// the Display & Video 360 product. If this field is not set on create, it
-    /// will be defaulted to true.
+    /// into the Google Analytics property. After link creation, this can only be
+    /// updated from the Display & Video 360 product. If this field is not set on
+    /// create, it will be defaulted to true.
     #[prost(message, optional, tag = "5")]
     pub campaign_data_sharing_enabled: ::core::option::Option<bool>,
     /// Immutable. Enables the import of cost data from Display & Video 360 into
-    /// the GA4 property. This can only be enabled if campaign_data_sharing_enabled
-    /// is enabled. After link creation, this can only be updated from the Display
-    /// & Video 360 product. If this field is not set on create, it will be
-    /// defaulted to true.
+    /// the Google Analytics property. This can only be enabled if
+    /// `campaign_data_sharing_enabled` is true. After link creation, this can
+    /// only be updated from the Display & Video 360 product. If this field is not
+    /// set on create, it will be defaulted to true.
     #[prost(message, optional, tag = "6")]
     pub cost_data_sharing_enabled: ::core::option::Option<bool>,
 }
-/// A proposal for a link between a GA4 property and a Display & Video 360
-/// advertiser.
+/// A proposal for a link between a Google Analytics property and a Display &
+/// Video 360 advertiser.
 ///
 /// A proposal is converted to a DisplayVideo360AdvertiserLink once approved.
 /// Google Analytics admins approve inbound proposals while Display & Video 360
@@ -2410,7 +2411,7 @@ pub struct DisplayVideo360AdvertiserLinkProposal {
     #[prost(message, optional, tag = "8")]
     pub cost_data_sharing_enabled: ::core::option::Option<bool>,
 }
-/// A link between a GA4 property and a Search Ads 360 entity.
+/// A link between a Google Analytics property and a Search Ads 360 entity.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAds360Link {
     /// Output only. The resource name for this SearchAds360Link resource.
@@ -2424,16 +2425,16 @@ pub struct SearchAds360Link {
     #[prost(string, tag = "2")]
     pub advertiser_id: ::prost::alloc::string::String,
     /// Immutable. Enables the import of campaign data from Search Ads 360 into the
-    /// GA4 property. After link creation, this can only be updated from the Search
-    /// Ads 360 product.
-    /// If this field is not set on create, it will be defaulted to true.
+    /// Google Analytics property. After link creation, this can only be updated
+    /// from the Search Ads 360 product. If this field is not set on create, it
+    /// will be defaulted to true.
     #[prost(message, optional, tag = "3")]
     pub campaign_data_sharing_enabled: ::core::option::Option<bool>,
-    /// Immutable. Enables the import of cost data from Search Ads 360 to the GA4
-    /// property. This can only be enabled if campaign_data_sharing_enabled is
-    /// enabled. After link creation, this can only be updated from
-    /// the Search Ads 360 product.
-    /// If this field is not set on create, it will be defaulted to true.
+    /// Immutable. Enables the import of cost data from Search Ads 360 to the
+    /// Google Analytics property. This can only be enabled if
+    /// campaign_data_sharing_enabled is enabled. After link creation, this can
+    /// only be updated from the Search Ads 360 product. If this field is not set
+    /// on create, it will be defaulted to true.
     #[prost(message, optional, tag = "4")]
     pub cost_data_sharing_enabled: ::core::option::Option<bool>,
     /// Output only. The display name of the Search Ads 360 Advertiser.
@@ -3151,9 +3152,12 @@ pub struct DataRetentionSettings {
     /// Format: properties/{property}/dataRetentionSettings
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The length of time that event-level data is retained.
+    /// Required. The length of time that event-level data is retained.
     #[prost(enumeration = "data_retention_settings::RetentionDuration", tag = "2")]
     pub event_data_retention: i32,
+    /// Required. The length of time that user-level data is retained.
+    #[prost(enumeration = "data_retention_settings::RetentionDuration", tag = "4")]
+    pub user_data_retention: i32,
     /// If true, reset the retention period for the user identifier with every
     /// event from that user.
     #[prost(bool, tag = "3")]
@@ -3182,13 +3186,13 @@ pub mod data_retention_settings {
         /// The data retention time duration is 14 months.
         FourteenMonths = 3,
         /// The data retention time duration is 26 months.
-        /// Available to 360 properties only.
+        /// Available to 360 properties only. Available for event data only.
         TwentySixMonths = 4,
         /// The data retention time duration is 38 months.
-        /// Available to 360 properties only.
+        /// Available to 360 properties only. Available for event data only.
         ThirtyEightMonths = 5,
         /// The data retention time duration is 50 months.
-        /// Available to 360 properties only.
+        /// Available to 360 properties only. Available for event data only.
         FiftyMonths = 6,
     }
     impl RetentionDuration {
@@ -3544,7 +3548,7 @@ pub mod access_binding {
         User(::prost::alloc::string::String),
     }
 }
-/// A link between a GA4 Property and BigQuery project.
+/// A link between a Google Analytics property and BigQuery project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryLink {
     /// Output only. Resource name of this BigQuery link.
@@ -3687,7 +3691,8 @@ pub struct DataRedactionSettings {
     #[prost(string, repeated, tag = "4")]
     pub query_parameter_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// A link between a GA4 Property and an AdSense for Content ad client.
+/// A link between a Google Analytics property and an AdSense for Content ad
+/// client.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdSenseLink {
     /// Output only. The resource name for this AdSense Link resource.
@@ -3695,8 +3700,8 @@ pub struct AdSenseLink {
     /// Example: properties/1234/adSenseLinks/6789
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Immutable. The AdSense ad client code that the GA4 property is linked to.
-    /// Example format: "ca-pub-1234567890"
+    /// Immutable. The AdSense ad client code that the Google Analytics property is
+    /// linked to. Example format: "ca-pub-1234567890"
     #[prost(string, tag = "2")]
     pub ad_client_code: ::prost::alloc::string::String,
 }
@@ -4255,17 +4260,17 @@ impl LinkProposalState {
         }
     }
 }
-/// Types of Property resources.
+/// Types of `Property` resources.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum PropertyType {
     /// Unknown or unspecified property type
     Unspecified = 0,
-    /// Ordinary GA4 property
+    /// Ordinary Google Analytics property
     Ordinary = 1,
-    /// GA4 subproperty
+    /// Google Analytics subproperty
     Subproperty = 2,
-    /// GA4 rollup property
+    /// Google Analytics rollup property
     Rollup = 3,
 }
 impl PropertyType {
@@ -4531,7 +4536,7 @@ pub mod subproperty_event_filter_clause {
         }
     }
 }
-/// A resource message representing a GA4 Subproperty event filter.
+/// A resource message representing a Google Analytics subproperty event filter.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubpropertyEventFilter {
     /// Output only. Format:
@@ -4556,9 +4561,9 @@ pub struct RunAccessReportRequest {
     /// access for all properties under that account.
     ///
     /// To request at the property level, entity should be for example
-    /// 'properties/123' if "123" is your GA4 property ID. To request at the
-    /// account level, entity should be for example 'accounts/1234' if "1234" is
-    /// your GA4 Account ID.
+    /// 'properties/123' if "123" is your Google Analytics property ID. To request
+    /// at the account level, entity should be for example 'accounts/1234' if
+    /// "1234" is your Google Analytics Account ID.
     #[prost(string, tag = "1")]
     pub entity: ::prost::alloc::string::String,
     /// The dimensions requested and displayed in the response. Requests are
@@ -5069,9 +5074,14 @@ pub struct SearchChangeHistoryEventsRequest {
     #[prost(message, optional, tag = "7")]
     pub latest_change_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. The maximum number of ChangeHistoryEvent items to return.
-    /// The service may return fewer than this value, even if there are additional
-    /// pages. If unspecified, at most 50 items will be returned.
-    /// The maximum value is 200 (higher values will be coerced to the maximum).
+    /// If unspecified, at most 50 items will be returned. The maximum value is 200
+    /// (higher values will be coerced to the maximum).
+    ///
+    /// Note that the service may return a page with fewer items than this value
+    /// specifies (potentially even zero), and that there still may be additional
+    /// pages. If you want a particular number of items, you'll need to continue
+    /// requesting additional pages using `page_token` until you get the needed
+    /// number.
     #[prost(int32, tag = "8")]
     pub page_size: i32,
     /// Optional. A page token, received from a previous
@@ -6986,7 +6996,7 @@ pub mod analytics_admin_service_client {
     )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// Service Interface for the Analytics Admin API (GA4).
+    /// Service Interface for the Google Analytics Admin API.
     #[derive(Debug, Clone)]
     pub struct AnalyticsAdminServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -7096,7 +7106,7 @@ pub mod analytics_admin_service_client {
         }
         /// Returns all accounts accessible by the caller.
         ///
-        /// Note that these accounts might not currently have GA4 properties.
+        /// Note that these accounts might not currently have GA properties.
         /// Soft-deleted (ie: "trashed") accounts are excluded by default.
         /// Returns an empty list if no relevant accounts are found.
         pub async fn list_accounts(
@@ -7252,7 +7262,7 @@ pub mod analytics_admin_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lookup for a single "GA4" Property.
+        /// Lookup for a single GA Property.
         pub async fn get_property(
             &mut self,
             request: impl tonic::IntoRequest<super::GetPropertyRequest>,
@@ -7281,7 +7291,6 @@ pub mod analytics_admin_service_client {
         }
         /// Returns child Properties under the specified parent Account.
         ///
-        /// Only "GA4" properties will be returned.
         /// Properties will be excluded if the caller does not have access.
         /// Soft-deleted (ie: "trashed") properties are excluded by default.
         /// Returns an empty list if no relevant properties are found.
@@ -7314,7 +7323,8 @@ pub mod analytics_admin_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Creates an "GA4" property with the specified location and attributes.
+        /// Creates a Google Analytics property with the specified location and
+        /// attributes.
         pub async fn create_property(
             &mut self,
             request: impl tonic::IntoRequest<super::CreatePropertyRequest>,
@@ -7351,7 +7361,7 @@ pub mod analytics_admin_service_client {
         /// will be permanently purged.
         /// https://support.google.com/analytics/answer/6154772
         ///
-        /// Returns an error if the target is not found, or is not a GA4 Property.
+        /// Returns an error if the target is not found.
         pub async fn delete_property(
             &mut self,
             request: impl tonic::IntoRequest<super::DeletePropertyRequest>,
@@ -7662,7 +7672,7 @@ pub mod analytics_admin_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lookup for a single "GA4" MeasurementProtocolSecret.
+        /// Lookup for a single MeasurementProtocolSecret.
         pub async fn get_measurement_protocol_secret(
             &mut self,
             request: impl tonic::IntoRequest<super::GetMeasurementProtocolSecretRequest>,
@@ -8012,6 +8022,9 @@ pub mod analytics_admin_service_client {
         }
         /// Searches through all changes to an account or its children given the
         /// specified set of filters.
+        ///
+        /// Only returns the subset of changes supported by the API. The UI may return
+        /// additional changes.
         pub async fn search_change_history_events(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchChangeHistoryEventsRequest>,
@@ -9597,12 +9610,17 @@ pub mod analytics_admin_service_client {
         /// only be requested on Google Analytics 360 properties. This method is only
         /// available to Administrators.
         ///
-        /// These data access records include GA4 UI Reporting, GA4 UI Explorations,
-        /// GA4 Data API, and other products like Firebase & Admob that can retrieve
+        /// These data access records include GA UI Reporting, GA UI Explorations,
+        /// GA Data API, and other products like Firebase & Admob that can retrieve
         /// data from Google Analytics through a linkage. These records don't include
         /// property configuration changes like adding a stream or changing a
         /// property's time zone. For configuration change history, see
         /// [searchChangeHistoryEvents](https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1alpha/accounts/searchChangeHistoryEvents).
+        ///
+        /// To give your feedback on this API, complete the [Google Analytics Access
+        /// Reports
+        /// feedback](https://docs.google.com/forms/d/e/1FAIpQLSdmEBUrMzAEdiEKk5TV5dEHvDUZDRlgWYdQdAeSdtR4hVjEhw/viewform)
+        /// form.
         pub async fn run_access_report(
             &mut self,
             request: impl tonic::IntoRequest<super::RunAccessReportRequest>,

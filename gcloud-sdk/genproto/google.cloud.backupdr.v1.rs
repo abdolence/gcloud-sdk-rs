@@ -39,8 +39,8 @@ pub struct BackupPlan {
     #[prost(enumeration = "backup_plan::State", tag = "7")]
     pub state: i32,
     /// Required. The resource type to which the `BackupPlan` will be applied.
-    /// Examples include, "compute.googleapis.com/Instance" and
-    /// "storage.googleapis.com/Bucket".
+    /// Examples include, "compute.googleapis.com/Instance",
+    /// "sqladmin.googleapis.com/Instance", or "alloydb.googleapis.com/Cluster".
     #[prost(string, tag = "8")]
     pub resource_type: ::prost::alloc::string::String,
     /// Optional. `etag` is returned from the service in the response. As a user of
@@ -125,10 +125,14 @@ pub struct BackupRule {
     /// Required. Configures the duration for which backup data will be kept. It is
     /// defined in “days”. The value should be greater than or equal to minimum
     /// enforced retention of the backup vault.
+    ///
+    /// Minimum value is 1 and maximum value is 90 for hourly backups.
+    /// Minimum value is 1 and maximum value is 90 for daily backups.
+    /// Minimum value is 7 and maximum value is 186 for weekly backups.
+    /// Minimum value is 30 and maximum value is 732 for monthly backups.
+    /// Minimum value is 365 and maximum value is 36159 for yearly backups.
     #[prost(int32, tag = "4")]
     pub backup_retention_days: i32,
-    /// Required.
-    ///
     /// The schedule that defines the automated backup workloads for this
     /// `BackupRule`.
     #[prost(oneof = "backup_rule::BackupScheduleOneof", tags = "5")]
@@ -136,8 +140,6 @@ pub struct BackupRule {
 }
 /// Nested message and enum types in `BackupRule`.
 pub mod backup_rule {
-    /// Required.
-    ///
     /// The schedule that defines the automated backup workloads for this
     /// `BackupRule`.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -506,7 +508,8 @@ pub struct BackupPlanAssociation {
     /// projects/{project}/locations/{location}/backupPlanAssociations/{backupPlanAssociationId}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. Resource type of workload on which backupplan is applied
+    /// Required. Immutable. Resource type of workload on which backupplan is
+    /// applied
     #[prost(string, tag = "2")]
     pub resource_type: ::prost::alloc::string::String,
     /// Required. Immutable. Resource name of workload on which backupplan is
@@ -530,11 +533,8 @@ pub struct BackupPlanAssociation {
     /// Output only. The config info related to backup rules.
     #[prost(message, repeated, tag = "8")]
     pub rules_config_info: ::prost::alloc::vec::Vec<RuleConfigInfo>,
-    /// Output only. Output Only.
-    ///
-    /// Resource name of data source which will be used as storage location for
-    /// backups taken.
-    /// Format :
+    /// Output only. Resource name of data source which will be used as storage
+    /// location for backups taken. Format :
     /// projects/{project}/locations/{location}/backupVaults/{backupvault}/dataSources/{datasource}
     #[prost(string, tag = "9")]
     pub data_source: ::prost::alloc::string::String,
@@ -596,17 +596,13 @@ pub mod backup_plan_association {
 /// Message for rules config info.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuleConfigInfo {
-    /// Output only. Output Only.
-    ///
-    /// Backup Rule id fetched from backup plan.
+    /// Output only. Backup Rule id fetched from backup plan.
     #[prost(string, tag = "1")]
     pub rule_id: ::prost::alloc::string::String,
     /// Output only. The last backup state for rule.
     #[prost(enumeration = "rule_config_info::LastBackupState", tag = "3")]
     pub last_backup_state: i32,
-    /// Output only. Output Only.
-    ///
-    /// google.rpc.Status object to store the last backup error.
+    /// Output only. google.rpc.Status object to store the last backup error.
     #[prost(message, optional, tag = "4")]
     pub last_backup_error: ::core::option::Option<super::super::super::rpc::Status>,
     /// Output only. The point in time when the last successful backup was captured
@@ -2392,8 +2388,7 @@ pub struct BackupVault {
     /// Output only. Total size of the storage used by all backup resources.
     #[prost(int64, tag = "19")]
     pub total_stored_bytes: i64,
-    /// Output only. Output only
-    /// Immutable after resource creation until resource deletion.
+    /// Output only. Immutable after resource creation until resource deletion.
     #[prost(string, tag = "21")]
     pub uid: ::prost::alloc::string::String,
     /// Optional. User annotations. See <https://google.aip.dev/128#annotations>
@@ -2405,8 +2400,6 @@ pub struct BackupVault {
     >,
     /// Optional. Note: This field is added for future use case and will not be
     /// supported in the current release.
-    ///
-    /// Optional.
     ///
     /// Access restriction for the backup vault.
     /// Default value is WITHIN_ORGANIZATION if not provided during creation.
@@ -2480,7 +2473,8 @@ pub mod backup_vault {
     )]
     #[repr(i32)]
     pub enum AccessRestriction {
-        /// Access restriction not set.
+        /// Access restriction not set. If user does not provide any value or pass
+        /// this value, it will be changed to WITHIN_ORGANIZATION.
         Unspecified = 0,
         /// Access to or from resources outside your current project will be denied.
         WithinProject = 1,
@@ -2489,6 +2483,9 @@ pub mod backup_vault {
         WithinOrganization = 2,
         /// No access restriction.
         Unrestricted = 3,
+        /// Access to or from resources outside your current organization will be
+        /// denied except for backup appliance.
+        WithinOrgButUnrestrictedForBa = 4,
     }
     impl AccessRestriction {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2501,6 +2498,9 @@ pub mod backup_vault {
                 Self::WithinProject => "WITHIN_PROJECT",
                 Self::WithinOrganization => "WITHIN_ORGANIZATION",
                 Self::Unrestricted => "UNRESTRICTED",
+                Self::WithinOrgButUnrestrictedForBa => {
+                    "WITHIN_ORG_BUT_UNRESTRICTED_FOR_BA"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2510,6 +2510,9 @@ pub mod backup_vault {
                 "WITHIN_PROJECT" => Some(Self::WithinProject),
                 "WITHIN_ORGANIZATION" => Some(Self::WithinOrganization),
                 "UNRESTRICTED" => Some(Self::Unrestricted),
+                "WITHIN_ORG_BUT_UNRESTRICTED_FOR_BA" => {
+                    Some(Self::WithinOrgButUnrestrictedForBa)
+                }
                 _ => None,
             }
         }
@@ -3301,6 +3304,10 @@ pub struct DeleteBackupVaultRequest {
     /// succeed but no action will be taken.
     #[prost(bool, tag = "6")]
     pub allow_missing: bool,
+    /// Optional. If set to true, backupvault deletion will proceed even if there
+    /// are backup plans referencing the backupvault. The default is 'false'.
+    #[prost(bool, tag = "7")]
+    pub ignore_backup_plan_references: bool,
 }
 /// Request message for listing DataSources.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3819,8 +3826,9 @@ pub struct ManagementServer {
     /// Output only. The ManagementServer state.
     #[prost(enumeration = "management_server::InstanceState", tag = "7")]
     pub state: i32,
-    /// Required. VPC networks to which the ManagementServer instance is connected.
-    /// For this version, only a single network is supported.
+    /// Optional. VPC networks to which the ManagementServer instance is connected.
+    /// For this version, only a single network is supported. This field is
+    /// optional if MS is created without PSA
     #[prost(message, repeated, tag = "8")]
     pub networks: ::prost::alloc::vec::Vec<NetworkConfig>,
     /// Optional. Server specified ETag for the ManagementServer resource to
@@ -4065,6 +4073,49 @@ pub struct DeleteManagementServerRequest {
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
+/// Request message for initializing the service.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InitializeServiceRequest {
+    /// Required. The resource name of the serviceConfig used to initialize the
+    /// service. Format:
+    /// `projects/{project_id}/locations/{location}/serviceConfig`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The resource type to which the default service config will be
+    /// applied. Examples include, "compute.googleapis.com/Instance" and
+    /// "storage.googleapis.com/Bucket".
+    #[prost(string, tag = "2")]
+    pub resource_type: ::prost::alloc::string::String,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Response message for initializing the service.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InitializeServiceResponse {
+    /// The resource name of the default `BackupVault` created.
+    /// Format:
+    /// `projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}`.
+    #[prost(string, tag = "1")]
+    pub backup_vault_name: ::prost::alloc::string::String,
+    /// The resource name of the default `BackupPlan` created.
+    /// Format:
+    /// `projects/{project_id}/locations/{location}/backupPlans/{backup_plan_id}`.
+    #[prost(string, tag = "2")]
+    pub backup_plan_name: ::prost::alloc::string::String,
+}
 /// Represents the metadata of the long-running operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
@@ -4085,9 +4136,10 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
-    /// 'Code.CANCELLED'.
+    /// have
+    /// [google.longrunning.Operation.error][google.longrunning.Operation.error]
+    /// value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// corresponding to 'Code.CANCELLED'.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.
@@ -4966,6 +5018,36 @@ pub mod backup_dr_client {
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new("google.cloud.backupdr.v1.BackupDR", "TriggerBackup"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Initializes the service related config for a project.
+        pub async fn initialize_service(
+            &mut self,
+            request: impl tonic::IntoRequest<super::InitializeServiceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.backupdr.v1.BackupDR/InitializeService",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.backupdr.v1.BackupDR",
+                        "InitializeService",
+                    ),
                 );
             self.inner.unary(req, path, codec).await
         }

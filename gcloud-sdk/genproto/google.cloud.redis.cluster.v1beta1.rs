@@ -120,11 +120,158 @@ pub struct GetClusterCertificateAuthorityRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// Request for \[ListBackupCollections\]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListBackupCollectionsRequest {
+    /// Required. The resource name of the backupCollection location using the
+    /// form:
+    ///      `projects/{project_id}/locations/{location_id}`
+    /// where `location_id` refers to a GCP region.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of items to return.
+    ///
+    /// If not specified, a default value of 1000 will be used by the service.
+    /// Regardless of the page_size value, the response may include a partial list
+    /// and a caller should only rely on response's
+    /// [`next_page_token`][google.cloud.redis.cluster.v1beta1.ListBackupCollectionsResponse.next_page_token]
+    /// to determine if there are more clusters left to be queried.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The `next_page_token` value returned from a previous
+    /// \[ListBackupCollections\] request, if any.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response for \[ListBackupCollections\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListBackupCollectionsResponse {
+    /// A list of backupCollections in the project.
+    ///
+    /// If the `location_id` in the parent field of the request is "-", all regions
+    /// available to the project are queried, and the results aggregated.
+    /// If in such an aggregated query a location is unavailable, a placeholder
+    /// backupCollection entry is included in the response with the `name` field
+    /// set to a value of the form
+    /// `projects/{project_id}/locations/{location_id}/backupCollections/`- and the
+    /// `status` field set to ERROR and `status_message` field set to "location not
+    /// available for ListBackupCollections".
+    #[prost(message, repeated, tag = "1")]
+    pub backup_collections: ::prost::alloc::vec::Vec<BackupCollection>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request for \[GetBackupCollection\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetBackupCollectionRequest {
+    /// Required. Redis backupCollection resource name using the form:
+    ///      `projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}`
+    /// where `location_id` refers to a GCP region.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for \[ListBackups\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListBackupsRequest {
+    /// Required. The resource name of the backupCollection using the form:
+    /// `projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of items to return.
+    ///
+    /// If not specified, a default value of 1000 will be used by the service.
+    /// Regardless of the page_size value, the response may include a partial list
+    /// and a caller should only rely on response's
+    /// [`next_page_token`][google.cloud.redis.cluster.v1beta1.ListBackupsResponse.next_page_token]
+    /// to determine if there are more clusters left to be queried.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The `next_page_token` value returned from a previous
+    /// \[ListBackupCollections\] request, if any.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response for \[ListBackups\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListBackupsResponse {
+    /// A list of backups in the project.
+    #[prost(message, repeated, tag = "1")]
+    pub backups: ::prost::alloc::vec::Vec<Backup>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Backups that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request for \[GetBackup\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetBackupRequest {
+    /// Required. Redis backup resource name using the form:
+    /// `projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}/backups/{backup_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for \[DeleteBackup\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteBackupRequest {
+    /// Required. Redis backup resource name using the form:
+    /// `projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}/backups/{backup_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Idempotent request UUID.
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request for \[ExportBackup\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportBackupRequest {
+    /// Required. Redis backup resource name using the form:
+    /// `projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}/backups/{backup_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Specify destination to export a backup.
+    #[prost(oneof = "export_backup_request::Destination", tags = "3")]
+    pub destination: ::core::option::Option<export_backup_request::Destination>,
+}
+/// Nested message and enum types in `ExportBackupRequest`.
+pub mod export_backup_request {
+    /// Required. Specify destination to export a backup.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Destination {
+        /// Google Cloud Storage bucket, like "my-bucket".
+        #[prost(string, tag = "3")]
+        GcsBucket(::prost::alloc::string::String),
+    }
+}
+/// Request for \[BackupCluster\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BackupClusterRequest {
+    /// Required. Redis cluster resource name using the form:
+    ///   `projects/{project_id}/locations/{location_id}/clusters/{cluster_id}`
+    /// where `location_id` refers to a GCP region.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. TTL for the backup to expire. Value range is 1 day to 100 years.
+    /// If not specified, the default value is 100 years.
+    #[prost(message, optional, tag = "2")]
+    pub ttl: ::core::option::Option<::prost_types::Duration>,
+    /// Optional. The id of the backup to be created. If not specified, the
+    /// default value (\[YYYYMMDDHHMMSS\]_[Shortened Cluster UID] is used.
+    #[prost(string, optional, tag = "3")]
+    pub backup_id: ::core::option::Option<::prost::alloc::string::String>,
+}
 /// A cluster instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Cluster {
-    /// Required. Unique name of the resource in this scope including project and
-    /// location using the form:
+    /// Required. Identifier. Unique name of the resource in this scope including
+    /// project and location using the form:
     ///      `projects/{project_id}/locations/{location_id}/clusters/{cluster_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -153,10 +300,10 @@ pub struct Cluster {
     /// the next integer.
     #[prost(int32, optional, tag = "13")]
     pub size_gb: ::core::option::Option<i32>,
-    /// Required. Number of shards for the Redis cluster.
+    /// Optional. Number of shards for the Redis cluster.
     #[prost(int32, optional, tag = "14")]
     pub shard_count: ::core::option::Option<i32>,
-    /// Required. Each PscConfig configures the consumer network where IPs will
+    /// Optional. Each PscConfig configures the consumer network where IPs will
     /// be designated to the cluster for client access through Private Service
     /// Connect Automation. Currently, only one PscConfig is supported.
     #[prost(message, repeated, tag = "15")]
@@ -165,8 +312,8 @@ pub struct Cluster {
     /// connect to the cluster. Currently only one discovery endpoint is supported.
     #[prost(message, repeated, tag = "16")]
     pub discovery_endpoints: ::prost::alloc::vec::Vec<DiscoveryEndpoint>,
-    /// Output only. PSC connections for discovery of the cluster topology and
-    /// accessing the cluster.
+    /// Output only. The list of PSC connections that are auto-created through
+    /// service connectivity automation.
     #[prost(message, repeated, tag = "17")]
     pub psc_connections: ::prost::alloc::vec::Vec<PscConnection>,
     /// Output only. Additional information about the current state of the cluster.
@@ -193,9 +340,44 @@ pub struct Cluster {
     /// to distribute cluster resources within the region.
     #[prost(message, optional, tag = "23")]
     pub zone_distribution_config: ::core::option::Option<ZoneDistributionConfig>,
+    /// Optional. Cross cluster replication config.
+    #[prost(message, optional, tag = "24")]
+    pub cross_cluster_replication_config: ::core::option::Option<
+        CrossClusterReplicationConfig,
+    >,
     /// Optional. The delete operation will fail when the value is set to true.
     #[prost(bool, optional, tag = "25")]
     pub deletion_protection_enabled: ::core::option::Option<bool>,
+    /// Optional. ClusterMaintenancePolicy determines when to allow or deny
+    /// updates.
+    #[prost(message, optional, tag = "26")]
+    pub maintenance_policy: ::core::option::Option<ClusterMaintenancePolicy>,
+    /// Output only. ClusterMaintenanceSchedule Output only Published maintenance
+    /// schedule.
+    #[prost(message, optional, tag = "27")]
+    pub maintenance_schedule: ::core::option::Option<ClusterMaintenanceSchedule>,
+    /// Output only. Service attachment details to configure Psc connections
+    #[prost(message, repeated, tag = "30")]
+    pub psc_service_attachments: ::prost::alloc::vec::Vec<PscServiceAttachment>,
+    /// Optional. A list of cluster enpoints.
+    #[prost(message, repeated, tag = "36")]
+    pub cluster_endpoints: ::prost::alloc::vec::Vec<ClusterEndpoint>,
+    /// Optional. Output only. The backup collection full resource name. Example:
+    /// projects/{project}/locations/{location}/backupCollections/{collection}
+    #[prost(string, optional, tag = "39")]
+    pub backup_collection: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. The KMS key used to encrypt the at-rest data of the cluster.
+    #[prost(string, optional, tag = "40")]
+    pub kms_key: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. The automated backup config for the cluster.
+    #[prost(message, optional, tag = "42")]
+    pub automated_backup_config: ::core::option::Option<AutomatedBackupConfig>,
+    /// Output only. Encryption information of the data at rest of the cluster.
+    #[prost(message, optional, tag = "43")]
+    pub encryption_info: ::core::option::Option<EncryptionInfo>,
+    /// The source to import from.
+    #[prost(oneof = "cluster::ImportSources", tags = "34, 35")]
+    pub import_sources: ::core::option::Option<cluster::ImportSources>,
 }
 /// Nested message and enum types in `Cluster`.
 pub mod cluster {
@@ -223,6 +405,27 @@ pub mod cluster {
             #[prost(message, tag = "1")]
             UpdateInfo(UpdateInfo),
         }
+    }
+    /// Backups stored in Cloud Storage buckets.
+    /// The Cloud Storage buckets need to be the same region as the clusters.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GcsBackupSource {
+        /// Optional. URIs of the GCS objects to import.
+        /// Example: gs://bucket1/object1, gs://bucket2/folder2/object2
+        #[prost(string, repeated, tag = "1")]
+        pub uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// Backups that generated and managed by memorystore.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ManagedBackupSource {
+        /// Optional. Example:
+        /// //redis.googleapis.com/projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup}
+        /// A shorter version (without the prefix) of the backup name is also
+        /// supported, like
+        /// projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup_id}
+        /// In this case, it assumes the backup is under redis.googleapis.com.
+        #[prost(string, tag = "1")]
+        pub backup: ::prost::alloc::string::String,
     }
     /// Represents the different states of a Redis cluster.
     #[derive(
@@ -275,6 +478,455 @@ pub mod cluster {
             }
         }
     }
+    /// The source to import from.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ImportSources {
+        /// Optional. Backups stored in Cloud Storage buckets.
+        /// The Cloud Storage buckets need to be the same region as the clusters.
+        /// Read permission is required to import from the provided Cloud Storage
+        /// objects.
+        #[prost(message, tag = "34")]
+        GcsSource(GcsBackupSource),
+        /// Optional. Backups generated and managed by memorystore service.
+        #[prost(message, tag = "35")]
+        ManagedBackupSource(ManagedBackupSource),
+    }
+}
+/// The automated backup config for a cluster.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct AutomatedBackupConfig {
+    /// Optional. The automated backup mode. If the mode is disabled, the other
+    /// fields will be ignored.
+    #[prost(enumeration = "automated_backup_config::AutomatedBackupMode", tag = "1")]
+    pub automated_backup_mode: i32,
+    /// Optional. How long to keep automated backups before the backups are
+    /// deleted. The value should be between 1 day and 365 days. If not specified,
+    /// the default value is 35 days.
+    #[prost(message, optional, tag = "3")]
+    pub retention: ::core::option::Option<::prost_types::Duration>,
+    /// The schedule of automated backups.
+    #[prost(oneof = "automated_backup_config::Schedule", tags = "2")]
+    pub schedule: ::core::option::Option<automated_backup_config::Schedule>,
+}
+/// Nested message and enum types in `AutomatedBackupConfig`.
+pub mod automated_backup_config {
+    /// This schedule allows the backup to be triggered at a fixed frequency
+    /// (currently only daily is supported).
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct FixedFrequencySchedule {
+        /// Required. The start time of every automated backup in UTC. It must be set
+        /// to the start of an hour. This field is required.
+        #[prost(message, optional, tag = "2")]
+        pub start_time: ::core::option::Option<
+            super::super::super::super::super::r#type::TimeOfDay,
+        >,
+    }
+    /// The automated backup mode.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AutomatedBackupMode {
+        /// Default value. Automated backup config is not specified.
+        Unspecified = 0,
+        /// Automated backup config disabled.
+        Disabled = 1,
+        /// Automated backup config enabled.
+        Enabled = 2,
+    }
+    impl AutomatedBackupMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "AUTOMATED_BACKUP_MODE_UNSPECIFIED",
+                Self::Disabled => "DISABLED",
+                Self::Enabled => "ENABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "AUTOMATED_BACKUP_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DISABLED" => Some(Self::Disabled),
+                "ENABLED" => Some(Self::Enabled),
+                _ => None,
+            }
+        }
+    }
+    /// The schedule of automated backups.
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    pub enum Schedule {
+        /// Optional. Trigger automated backups at a fixed frequency.
+        #[prost(message, tag = "2")]
+        FixedFrequencySchedule(FixedFrequencySchedule),
+    }
+}
+/// BackupCollection of a cluster.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BackupCollection {
+    /// Identifier. Full resource path of the backup collection.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The cluster uid of the backup collection.
+    #[prost(string, tag = "3")]
+    pub cluster_uid: ::prost::alloc::string::String,
+    /// Output only. The full resource path of the cluster the backup collection
+    /// belongs to. Example:
+    /// projects/{project}/locations/{location}/clusters/{cluster}
+    #[prost(string, tag = "4")]
+    pub cluster: ::prost::alloc::string::String,
+    /// Output only. The KMS key used to encrypt the backups under this backup
+    /// collection.
+    #[prost(string, tag = "5")]
+    pub kms_key: ::prost::alloc::string::String,
+    /// Output only. System assigned unique identifier of the backup collection.
+    #[prost(string, tag = "6")]
+    pub uid: ::prost::alloc::string::String,
+}
+/// Backup of a cluster.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Backup {
+    /// Identifier. Full resource path of the backup. the last part of the name is
+    /// the backup id with the following format: \[YYYYMMDDHHMMSS\]_[Shorted Cluster
+    /// UID] OR customer specified while backup cluster. Example:
+    /// 20240515123000_1234
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The time when the backup was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Cluster resource path of this backup.
+    #[prost(string, tag = "3")]
+    pub cluster: ::prost::alloc::string::String,
+    /// Output only. Cluster uid of this backup.
+    #[prost(string, tag = "4")]
+    pub cluster_uid: ::prost::alloc::string::String,
+    /// Output only. Total size of the backup in bytes.
+    #[prost(int64, tag = "5")]
+    pub total_size_bytes: i64,
+    /// Output only. The time when the backup will expire.
+    #[prost(message, optional, tag = "6")]
+    pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. redis-7.2, valkey-7.5
+    #[prost(string, tag = "7")]
+    pub engine_version: ::prost::alloc::string::String,
+    /// Output only. List of backup files of the backup.
+    #[prost(message, repeated, tag = "8")]
+    pub backup_files: ::prost::alloc::vec::Vec<BackupFile>,
+    /// Output only. Node type of the cluster.
+    #[prost(enumeration = "NodeType", tag = "9")]
+    pub node_type: i32,
+    /// Output only. Number of replicas for the cluster.
+    #[prost(int32, tag = "10")]
+    pub replica_count: i32,
+    /// Output only. Number of shards for the cluster.
+    #[prost(int32, tag = "11")]
+    pub shard_count: i32,
+    /// Output only. Type of the backup.
+    #[prost(enumeration = "backup::BackupType", tag = "12")]
+    pub backup_type: i32,
+    /// Output only. State of the backup.
+    #[prost(enumeration = "backup::State", tag = "13")]
+    pub state: i32,
+    /// Output only. Encryption information of the backup.
+    #[prost(message, optional, tag = "14")]
+    pub encryption_info: ::core::option::Option<EncryptionInfo>,
+    /// Output only. System assigned unique identifier of the backup.
+    #[prost(string, tag = "15")]
+    pub uid: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `Backup`.
+pub mod backup {
+    /// Type of the backup.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum BackupType {
+        /// The default value, not set.
+        Unspecified = 0,
+        /// On-demand backup.
+        OnDemand = 1,
+        /// Automated backup.
+        Automated = 2,
+    }
+    impl BackupType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "BACKUP_TYPE_UNSPECIFIED",
+                Self::OnDemand => "ON_DEMAND",
+                Self::Automated => "AUTOMATED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BACKUP_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ON_DEMAND" => Some(Self::OnDemand),
+                "AUTOMATED" => Some(Self::Automated),
+                _ => None,
+            }
+        }
+    }
+    /// State of the backup.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The default value, not set.
+        Unspecified = 0,
+        /// The backup is being created.
+        Creating = 1,
+        /// The backup is active to be used.
+        Active = 2,
+        /// The backup is being deleted.
+        Deleting = 3,
+        /// The backup is currently suspended due to reasons like project deletion,
+        /// billing account closure, etc.
+        Suspended = 4,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Active => "ACTIVE",
+                Self::Deleting => "DELETING",
+                Self::Suspended => "SUSPENDED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "ACTIVE" => Some(Self::Active),
+                "DELETING" => Some(Self::Deleting),
+                "SUSPENDED" => Some(Self::Suspended),
+                _ => None,
+            }
+        }
+    }
+}
+/// Backup is consisted of multiple backup files.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BackupFile {
+    /// Output only. e.g: <shard-id>.rdb
+    #[prost(string, tag = "1")]
+    pub file_name: ::prost::alloc::string::String,
+    /// Output only. Size of the backup file in bytes.
+    #[prost(int64, tag = "2")]
+    pub size_bytes: i64,
+    /// Output only. The time when the backup file was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Configuration of a service attachment of the cluster, for creating PSC
+/// connections.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PscServiceAttachment {
+    /// Output only. Service attachment URI which your self-created PscConnection
+    /// should use as target
+    #[prost(string, tag = "1")]
+    pub service_attachment: ::prost::alloc::string::String,
+    /// Output only. Type of a PSC connection targeting this service attachment.
+    #[prost(enumeration = "ConnectionType", tag = "3")]
+    pub connection_type: i32,
+}
+/// Cross cluster replication config.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CrossClusterReplicationConfig {
+    /// The role of the cluster in cross cluster replication.
+    #[prost(enumeration = "cross_cluster_replication_config::ClusterRole", tag = "1")]
+    pub cluster_role: i32,
+    /// Details of the primary cluster that is used as the replication source for
+    /// this secondary cluster.
+    ///
+    /// This field is only set for a secondary cluster.
+    #[prost(message, optional, tag = "2")]
+    pub primary_cluster: ::core::option::Option<
+        cross_cluster_replication_config::RemoteCluster,
+    >,
+    /// List of secondary clusters that are replicating from this primary cluster.
+    ///
+    /// This field is only set for a primary cluster.
+    #[prost(message, repeated, tag = "3")]
+    pub secondary_clusters: ::prost::alloc::vec::Vec<
+        cross_cluster_replication_config::RemoteCluster,
+    >,
+    /// Output only. The last time cross cluster replication config was updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. An output only view of all the member clusters participating
+    /// in the cross cluster replication. This view will be provided by every
+    /// member cluster irrespective of its cluster role(primary or secondary).
+    ///
+    /// A primary cluster can provide information about all the secondary clusters
+    /// replicating from it. However, a secondary cluster only knows about the
+    /// primary cluster from which it is replicating. However, for scenarios, where
+    /// the primary cluster is unavailable(e.g. regional outage), a GetCluster
+    /// request can be sent to any other member cluster and this field will list
+    /// all the member clusters participating in cross cluster replication.
+    #[prost(message, optional, tag = "5")]
+    pub membership: ::core::option::Option<cross_cluster_replication_config::Membership>,
+}
+/// Nested message and enum types in `CrossClusterReplicationConfig`.
+pub mod cross_cluster_replication_config {
+    /// Details of the remote cluster associated with this cluster in a cross
+    /// cluster replication setup.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RemoteCluster {
+        /// The full resource path of the remote cluster in
+        /// the format: projects/<project>/locations/<region>/clusters/<cluster-id>
+        #[prost(string, tag = "1")]
+        pub cluster: ::prost::alloc::string::String,
+        /// Output only. The unique identifier of the remote cluster.
+        #[prost(string, tag = "2")]
+        pub uid: ::prost::alloc::string::String,
+    }
+    /// An output only view of all the member clusters participating in the cross
+    /// cluster replication.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Membership {
+        /// Output only. The primary cluster that acts as the source of replication
+        /// for the secondary clusters.
+        #[prost(message, optional, tag = "1")]
+        pub primary_cluster: ::core::option::Option<RemoteCluster>,
+        /// Output only. The list of secondary clusters replicating from the primary
+        /// cluster.
+        #[prost(message, repeated, tag = "2")]
+        pub secondary_clusters: ::prost::alloc::vec::Vec<RemoteCluster>,
+    }
+    /// The role of the cluster in cross cluster replication.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ClusterRole {
+        /// Cluster role is not set.
+        /// The behavior is equivalent to NONE.
+        Unspecified = 0,
+        /// This cluster does not participate in cross cluster replication. It is an
+        /// independent cluster and does not replicate to or from any other clusters.
+        None = 1,
+        /// A cluster that allows both reads and writes. Any data written to this
+        /// cluster is also replicated to the attached secondary clusters.
+        Primary = 2,
+        /// A cluster that allows only reads and replicates data from a primary
+        /// cluster.
+        Secondary = 3,
+    }
+    impl ClusterRole {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CLUSTER_ROLE_UNSPECIFIED",
+                Self::None => "NONE",
+                Self::Primary => "PRIMARY",
+                Self::Secondary => "SECONDARY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CLUSTER_ROLE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "PRIMARY" => Some(Self::Primary),
+                "SECONDARY" => Some(Self::Secondary),
+                _ => None,
+            }
+        }
+    }
+}
+/// Maintenance policy per cluster.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ClusterMaintenancePolicy {
+    /// Output only. The time when the policy was created i.e. Maintenance Window
+    /// or Deny Period was assigned.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the policy was updated i.e. Maintenance Window
+    /// or Deny Period was updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Maintenance window that is applied to resources covered by this
+    /// policy. Minimum 1. For the current version, the maximum number of
+    /// weekly_maintenance_window is expected to be one.
+    #[prost(message, repeated, tag = "3")]
+    pub weekly_maintenance_window: ::prost::alloc::vec::Vec<
+        ClusterWeeklyMaintenanceWindow,
+    >,
+}
+/// Time window specified for weekly operations.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ClusterWeeklyMaintenanceWindow {
+    /// Allows to define schedule that runs specified day of the week.
+    #[prost(enumeration = "super::super::super::super::r#type::DayOfWeek", tag = "1")]
+    pub day: i32,
+    /// Start time of the window in UTC.
+    #[prost(message, optional, tag = "2")]
+    pub start_time: ::core::option::Option<
+        super::super::super::super::r#type::TimeOfDay,
+    >,
+}
+/// Upcoming maitenance schedule.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ClusterMaintenanceSchedule {
+    /// Output only. The start time of any upcoming scheduled maintenance for this
+    /// instance.
+    #[prost(message, optional, tag = "1")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The end time of any upcoming scheduled maintenance for this
+    /// instance.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PscConfig {
@@ -302,6 +954,84 @@ pub struct DiscoveryEndpoint {
 /// Details of consumer resources in a PSC connection.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PscConnection {
+    /// Required. The PSC connection id of the forwarding rule connected to the
+    /// service attachment.
+    #[prost(string, tag = "1")]
+    pub psc_connection_id: ::prost::alloc::string::String,
+    /// Required. The IP allocated on the consumer network for the PSC forwarding
+    /// rule.
+    #[prost(string, tag = "2")]
+    pub address: ::prost::alloc::string::String,
+    /// Required. The URI of the consumer side forwarding rule.
+    /// Example:
+    /// projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}.
+    #[prost(string, tag = "3")]
+    pub forwarding_rule: ::prost::alloc::string::String,
+    /// Optional. Project ID of the consumer project where the forwarding rule is
+    /// created in.
+    #[prost(string, tag = "4")]
+    pub project_id: ::prost::alloc::string::String,
+    /// Required. The consumer network where the IP address resides, in the form of
+    /// projects/{project_id}/global/networks/{network_id}.
+    #[prost(string, tag = "5")]
+    pub network: ::prost::alloc::string::String,
+    /// Required. The service attachment which is the target of the PSC connection,
+    /// in the form of
+    /// projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
+    #[prost(string, tag = "6")]
+    pub service_attachment: ::prost::alloc::string::String,
+    /// Output only. The status of the PSC connection.
+    /// Please note that this value is updated periodically.
+    /// To get the latest status of a PSC connection, follow
+    /// <https://cloud.google.com/vpc/docs/configure-private-service-connect-services#endpoint-details.>
+    #[prost(enumeration = "PscConnectionStatus", tag = "8")]
+    pub psc_connection_status: i32,
+    /// Output only. Type of the PSC connection.
+    #[prost(enumeration = "ConnectionType", tag = "10")]
+    pub connection_type: i32,
+}
+/// ClusterEndpoint consists of PSC connections that are created
+/// as a group in each VPC network for accessing the cluster. In each group,
+/// there shall be one connection for each service attachment in the cluster.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ClusterEndpoint {
+    /// A group of PSC connections. They are created in the same VPC network, one
+    /// for each service attachment in the cluster.
+    #[prost(message, repeated, tag = "1")]
+    pub connections: ::prost::alloc::vec::Vec<ConnectionDetail>,
+}
+/// Detailed information of each PSC connection.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConnectionDetail {
+    /// A PSC connection to a cluster could either be created through Service
+    /// Connectivity Automation (auto-registered connection) during the cluster
+    /// creation, or it could be created by customer themselves (user-registered
+    /// connection).
+    #[prost(oneof = "connection_detail::Connection", tags = "1, 2")]
+    pub connection: ::core::option::Option<connection_detail::Connection>,
+}
+/// Nested message and enum types in `ConnectionDetail`.
+pub mod connection_detail {
+    /// A PSC connection to a cluster could either be created through Service
+    /// Connectivity Automation (auto-registered connection) during the cluster
+    /// creation, or it could be created by customer themselves (user-registered
+    /// connection).
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Connection {
+        /// Detailed information of a PSC connection that is created through
+        /// service connectivity automation.
+        #[prost(message, tag = "1")]
+        PscAutoConnection(super::PscAutoConnection),
+        /// Detailed information of a PSC connection that is created by the customer
+        /// who owns the cluster.
+        #[prost(message, tag = "2")]
+        PscConnection(super::PscConnection),
+    }
+}
+/// Details of consumer resources in a PSC connection that is created through
+/// Service Connectivity Automation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PscAutoConnection {
     /// Output only. The PSC connection id of the forwarding rule connected to the
     /// service attachment.
     #[prost(string, tag = "1")]
@@ -315,14 +1045,27 @@ pub struct PscConnection {
     /// projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}.
     #[prost(string, tag = "3")]
     pub forwarding_rule: ::prost::alloc::string::String,
-    /// Output only. The consumer project_id where the forwarding rule is created
+    /// Required. The consumer project_id where the forwarding rule is created
     /// from.
     #[prost(string, tag = "4")]
     pub project_id: ::prost::alloc::string::String,
-    /// The consumer network where the IP address resides, in the form of
+    /// Required. The consumer network where the IP address resides, in the form of
     /// projects/{project_id}/global/networks/{network_id}.
     #[prost(string, tag = "5")]
     pub network: ::prost::alloc::string::String,
+    /// Output only. The service attachment which is the target of the PSC
+    /// connection, in the form of
+    /// projects/{project-id}/regions/{region}/serviceAttachments/{service-attachment-id}.
+    #[prost(string, tag = "6")]
+    pub service_attachment: ::prost::alloc::string::String,
+    /// Output only. The status of the PSC connection.
+    /// Please note that this value is updated periodically.
+    /// Please use Private Service Connect APIs for the latest status.
+    #[prost(enumeration = "PscConnectionStatus", tag = "8")]
+    pub psc_connection_status: i32,
+    /// Output only. Type of the PSC connection.
+    #[prost(enumeration = "ConnectionType", tag = "9")]
+    pub connection_type: i32,
 }
 /// Pre-defined metadata fields.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -502,8 +1245,8 @@ pub mod cluster_persistence_config {
             /// fsync every second. Fast enough, and you may lose 1 second of data if
             /// there is a disaster
             Everysec = 2,
-            /// fsync every time new commands are appended to the AOF. It has the best
-            /// data loss protection at the cost of performance
+            /// fsync every time new write commands are appended to the AOF. It has the
+            /// best data loss protection at the cost of performance
             Always = 3,
         }
         impl AppendFsync {
@@ -595,9 +1338,6 @@ pub struct ZoneDistributionConfig {
 /// Nested message and enum types in `ZoneDistributionConfig`.
 pub mod zone_distribution_config {
     /// Defines various modes of zone distribution.
-    /// Currently supports two modes, can be expanded in future to support more
-    /// types of distribution modes.
-    /// design doc: go/same-zone-cluster
     #[derive(
         Clone,
         Copy,
@@ -643,6 +1383,240 @@ pub mod zone_distribution_config {
         }
     }
 }
+/// Request for rescheduling a cluster maintenance.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RescheduleClusterMaintenanceRequest {
+    /// Required. Redis Cluster instance resource name using the form:
+    ///      `projects/{project_id}/locations/{location_id}/clusters/{cluster_id}`
+    /// where `location_id` refers to a GCP region.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. If reschedule type is SPECIFIC_TIME, must set up schedule_time as
+    /// well.
+    #[prost(
+        enumeration = "reschedule_cluster_maintenance_request::RescheduleType",
+        tag = "2"
+    )]
+    pub reschedule_type: i32,
+    /// Optional. Timestamp when the maintenance shall be rescheduled to if
+    /// reschedule_type=SPECIFIC_TIME, in RFC 3339 format, for
+    /// example `2012-11-15T16:19:00.094Z`.
+    #[prost(message, optional, tag = "3")]
+    pub schedule_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `RescheduleClusterMaintenanceRequest`.
+pub mod reschedule_cluster_maintenance_request {
+    /// Reschedule options.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RescheduleType {
+        /// Not set.
+        Unspecified = 0,
+        /// If the user wants to schedule the maintenance to happen now.
+        Immediate = 1,
+        /// If the user wants to reschedule the maintenance to a specific time.
+        SpecificTime = 3,
+    }
+    impl RescheduleType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "RESCHEDULE_TYPE_UNSPECIFIED",
+                Self::Immediate => "IMMEDIATE",
+                Self::SpecificTime => "SPECIFIC_TIME",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RESCHEDULE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IMMEDIATE" => Some(Self::Immediate),
+                "SPECIFIC_TIME" => Some(Self::SpecificTime),
+                _ => None,
+            }
+        }
+    }
+}
+/// EncryptionInfo describes the encryption information of a cluster or a backup.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EncryptionInfo {
+    /// Output only. Type of encryption.
+    #[prost(enumeration = "encryption_info::Type", tag = "1")]
+    pub encryption_type: i32,
+    /// Output only. KMS key versions that are being used to protect the data
+    /// at-rest.
+    #[prost(string, repeated, tag = "2")]
+    pub kms_key_versions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. The state of the primary version of the KMS key perceived by
+    /// the system. This field is not populated in backups.
+    #[prost(enumeration = "encryption_info::KmsKeyState", tag = "3")]
+    pub kms_key_primary_state: i32,
+    /// Output only. The most recent time when the encryption info was updated.
+    #[prost(message, optional, tag = "4")]
+    pub last_update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `EncryptionInfo`.
+pub mod encryption_info {
+    /// Possible encryption types.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// Encryption type not specified. Defaults to GOOGLE_DEFAULT_ENCRYPTION.
+        Unspecified = 0,
+        /// The data is encrypted at rest with a key that is fully managed by Google.
+        /// No key version will be populated. This is the default state.
+        GoogleDefaultEncryption = 1,
+        /// The data is encrypted at rest with a key that is managed by the customer.
+        /// KMS key versions will be populated.
+        CustomerManagedEncryption = 2,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::GoogleDefaultEncryption => "GOOGLE_DEFAULT_ENCRYPTION",
+                Self::CustomerManagedEncryption => "CUSTOMER_MANAGED_ENCRYPTION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GOOGLE_DEFAULT_ENCRYPTION" => Some(Self::GoogleDefaultEncryption),
+                "CUSTOMER_MANAGED_ENCRYPTION" => Some(Self::CustomerManagedEncryption),
+                _ => None,
+            }
+        }
+    }
+    /// The state of the KMS key perceived by the system. Refer to the public
+    /// documentation for the impact of each state.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum KmsKeyState {
+        /// The default value. This value is unused.
+        Unspecified = 0,
+        /// The KMS key is enabled and correctly configured.
+        Enabled = 1,
+        /// Permission denied on the KMS key.
+        PermissionDenied = 2,
+        /// The KMS key is disabled.
+        Disabled = 3,
+        /// The KMS key is destroyed.
+        Destroyed = 4,
+        /// The KMS key is scheduled to be destroyed.
+        DestroyScheduled = 5,
+        /// The EKM key is unreachable.
+        EkmKeyUnreachableDetected = 6,
+        /// Billing is disabled for the project.
+        BillingDisabled = 7,
+        /// All other unknown failures.
+        UnknownFailure = 8,
+    }
+    impl KmsKeyState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "KMS_KEY_STATE_UNSPECIFIED",
+                Self::Enabled => "ENABLED",
+                Self::PermissionDenied => "PERMISSION_DENIED",
+                Self::Disabled => "DISABLED",
+                Self::Destroyed => "DESTROYED",
+                Self::DestroyScheduled => "DESTROY_SCHEDULED",
+                Self::EkmKeyUnreachableDetected => "EKM_KEY_UNREACHABLE_DETECTED",
+                Self::BillingDisabled => "BILLING_DISABLED",
+                Self::UnknownFailure => "UNKNOWN_FAILURE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "KMS_KEY_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENABLED" => Some(Self::Enabled),
+                "PERMISSION_DENIED" => Some(Self::PermissionDenied),
+                "DISABLED" => Some(Self::Disabled),
+                "DESTROYED" => Some(Self::Destroyed),
+                "DESTROY_SCHEDULED" => Some(Self::DestroyScheduled),
+                "EKM_KEY_UNREACHABLE_DETECTED" => Some(Self::EkmKeyUnreachableDetected),
+                "BILLING_DISABLED" => Some(Self::BillingDisabled),
+                "UNKNOWN_FAILURE" => Some(Self::UnknownFailure),
+                _ => None,
+            }
+        }
+    }
+}
+/// Status of the PSC connection.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum PscConnectionStatus {
+    /// PSC connection status is not specified.
+    Unspecified = 0,
+    /// The connection is active
+    Active = 1,
+    /// Connection not found
+    NotFound = 2,
+}
+impl PscConnectionStatus {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "PSC_CONNECTION_STATUS_UNSPECIFIED",
+            Self::Active => "PSC_CONNECTION_STATUS_ACTIVE",
+            Self::NotFound => "PSC_CONNECTION_STATUS_NOT_FOUND",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "PSC_CONNECTION_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+            "PSC_CONNECTION_STATUS_ACTIVE" => Some(Self::Active),
+            "PSC_CONNECTION_STATUS_NOT_FOUND" => Some(Self::NotFound),
+            _ => None,
+        }
+    }
+}
 /// Available authorization mode of a Redis cluster.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -680,6 +1654,7 @@ impl AuthorizationMode {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum NodeType {
+    /// Node type unspecified
     Unspecified = 0,
     /// Redis shared core nano node_type.
     RedisSharedCoreNano = 1,
@@ -751,6 +1726,43 @@ impl TransitEncryptionMode {
         }
     }
 }
+/// Type of a PSC connection, for cluster access purpose.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ConnectionType {
+    /// Cluster endpoint Type is not set
+    Unspecified = 0,
+    /// Cluster endpoint that will be used as for cluster topology discovery.
+    Discovery = 1,
+    /// Cluster endpoint that will be used as primary endpoint to access primary.
+    Primary = 2,
+    /// Cluster endpoint that will be used as reader endpoint to access replicas.
+    Reader = 3,
+}
+impl ConnectionType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "CONNECTION_TYPE_UNSPECIFIED",
+            Self::Discovery => "CONNECTION_TYPE_DISCOVERY",
+            Self::Primary => "CONNECTION_TYPE_PRIMARY",
+            Self::Reader => "CONNECTION_TYPE_READER",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CONNECTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "CONNECTION_TYPE_DISCOVERY" => Some(Self::Discovery),
+            "CONNECTION_TYPE_PRIMARY" => Some(Self::Primary),
+            "CONNECTION_TYPE_READER" => Some(Self::Reader),
+            _ => None,
+        }
+    }
+}
 /// Generated client implementations.
 pub mod cloud_redis_cluster_client {
     #![allow(
@@ -777,12 +1789,6 @@ pub mod cloud_redis_cluster_client {
     ///
     /// Note that location_id must be a GCP `region`; for example:
     /// * `projects/redpepper-1290/locations/us-central1/clusters/my-redis`
-    ///
-    /// We use API version selector for Flex APIs
-    /// * The versioning strategy is release-based versioning
-    /// * Our backend CLH only deals with the superset version (called v1main)
-    /// * Existing backend for Redis Gen1 and MRR is not touched.
-    /// * More details in go/redis-flex-api-versioning
     #[derive(Debug, Clone)]
     pub struct CloudRedisClusterClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -1058,6 +2064,258 @@ pub mod cloud_redis_cluster_client {
                     GrpcMethod::new(
                         "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
                         "GetClusterCertificateAuthority",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Reschedules upcoming maintenance event.
+        pub async fn reschedule_cluster_maintenance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RescheduleClusterMaintenanceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.redis.cluster.v1beta1.CloudRedisCluster/RescheduleClusterMaintenance",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "RescheduleClusterMaintenance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all backup collections owned by a consumer project in either the
+        /// specified location (region) or all locations.
+        ///
+        /// If `location_id` is specified as `-` (wildcard), then all regions
+        /// available to the project are queried, and the results are aggregated.
+        pub async fn list_backup_collections(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListBackupCollectionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListBackupCollectionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.redis.cluster.v1beta1.CloudRedisCluster/ListBackupCollections",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "ListBackupCollections",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get a backup collection.
+        pub async fn get_backup_collection(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetBackupCollectionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::BackupCollection>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.redis.cluster.v1beta1.CloudRedisCluster/GetBackupCollection",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "GetBackupCollection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all backups owned by a backup collection.
+        pub async fn list_backups(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListBackupsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListBackupsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.redis.cluster.v1beta1.CloudRedisCluster/ListBackups",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "ListBackups",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the details of a specific backup.
+        pub async fn get_backup(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetBackupRequest>,
+        ) -> std::result::Result<tonic::Response<super::Backup>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.redis.cluster.v1beta1.CloudRedisCluster/GetBackup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "GetBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a specific backup.
+        pub async fn delete_backup(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteBackupRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.redis.cluster.v1beta1.CloudRedisCluster/DeleteBackup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "DeleteBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Exports a specific backup to a customer target Cloud Storage URI.
+        pub async fn export_backup(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ExportBackupRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.redis.cluster.v1beta1.CloudRedisCluster/ExportBackup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "ExportBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Backup Redis Cluster.
+        /// If this is the first time a backup is being created, a backup collection
+        /// will be created at the backend, and this backup belongs to this collection.
+        /// Both collection and backup will have a resource name. Backup will be
+        /// executed for each shard. A replica (primary if nonHA) will be selected to
+        /// perform the execution. Backup call will be rejected if there is an ongoing
+        /// backup or update operation. Be aware that during preview, if the cluster's
+        /// internal software version is too old, critical update will be performed
+        /// before actual backup. Once the internal software version is updated to the
+        /// minimum version required by the backup feature, subsequent backups will not
+        /// require critical update. After preview, there will be no critical update
+        /// needed for backup.
+        pub async fn backup_cluster(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BackupClusterRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.redis.cluster.v1beta1.CloudRedisCluster/BackupCluster",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.redis.cluster.v1beta1.CloudRedisCluster",
+                        "BackupCluster",
                     ),
                 );
             self.inner.unary(req, path, codec).await

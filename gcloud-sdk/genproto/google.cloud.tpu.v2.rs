@@ -102,6 +102,9 @@ pub struct SchedulingConfig {
     /// Whether the node is created under a reservation.
     #[prost(bool, tag = "2")]
     pub reserved: bool,
+    /// Optional. Defines whether the node is Spot VM.
+    #[prost(bool, tag = "3")]
+    pub spot: bool,
 }
 /// A network endpoint over which a TPU worker can be reached.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -145,6 +148,10 @@ pub struct NetworkConfig {
     /// workers to forward routes.
     #[prost(bool, tag = "4")]
     pub can_ip_forward: bool,
+    /// Optional. Specifies networking queue count for TPU VM instance's network
+    /// interface.
+    #[prost(int32, tag = "6")]
+    pub queue_count: i32,
 }
 /// A service account.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -180,9 +187,17 @@ pub struct Node {
     /// Required. The runtime version running in the Node.
     #[prost(string, tag = "11")]
     pub runtime_version: ::prost::alloc::string::String,
-    /// Network configurations for the TPU node.
+    /// Network configurations for the TPU node. network_config and network_configs
+    /// are mutually exclusive, you can only specify one of them. If both are
+    /// specified, an error will be returned.
     #[prost(message, optional, tag = "36")]
     pub network_config: ::core::option::Option<NetworkConfig>,
+    /// Optional. Repeated network configurations for the TPU node. This field is
+    /// used to specify multiple networks configs for the TPU node. network_config
+    /// and network_configs are mutually exclusive, you can only specify one of
+    /// them. If both are specified, an error will be returned.
+    #[prost(message, repeated, tag = "49")]
+    pub network_configs: ::prost::alloc::vec::Vec<NetworkConfig>,
     /// The CIDR block that the TPU node will use when selecting an IP address.
     /// This CIDR block must be a /29 block; the Compute Engine networks API
     /// forbids a smaller block, and using a larger block would be wasteful (a
@@ -302,6 +317,8 @@ pub mod node {
         Hidden = 14,
         /// TPU node is currently unhiding.
         Unhiding = 15,
+        /// TPU node has unknown state after a failed repair.
+        Unknown = 16,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -325,6 +342,7 @@ pub mod node {
                 Self::Hiding => "HIDING",
                 Self::Hidden => "HIDDEN",
                 Self::Unhiding => "UNHIDING",
+                Self::Unknown => "UNKNOWN",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -345,6 +363,7 @@ pub mod node {
                 "HIDING" => Some(Self::Hiding),
                 "HIDDEN" => Some(Self::Hidden),
                 "UNHIDING" => Some(Self::Unhiding),
+                "UNKNOWN" => Some(Self::Unknown),
                 _ => None,
             }
         }
@@ -454,6 +473,372 @@ pub mod node {
         }
     }
 }
+/// A QueuedResource represents a request for resources that will be placed
+/// in a queue and fulfilled when the necessary resources are available.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueuedResource {
+    /// Output only. Immutable. The name of the QueuedResource.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The time when the QueuedResource was created.
+    #[prost(message, optional, tag = "11")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. The queueing policy of the QueuedRequest.
+    #[prost(message, optional, tag = "5")]
+    pub queueing_policy: ::core::option::Option<queued_resource::QueueingPolicy>,
+    /// Output only. State of the QueuedResource request.
+    #[prost(message, optional, tag = "6")]
+    pub state: ::core::option::Option<QueuedResourceState>,
+    /// Optional. Name of the reservation in which the resource should be
+    /// provisioned. Format:
+    /// projects/{project}/locations/{zone}/reservations/{reservation}
+    #[prost(string, tag = "7")]
+    pub reservation_name: ::prost::alloc::string::String,
+    /// Resource specification.
+    #[prost(oneof = "queued_resource::Resource", tags = "2")]
+    pub resource: ::core::option::Option<queued_resource::Resource>,
+    /// Tier specifies the required tier.
+    #[prost(oneof = "queued_resource::Tier", tags = "3, 4")]
+    pub tier: ::core::option::Option<queued_resource::Tier>,
+}
+/// Nested message and enum types in `QueuedResource`.
+pub mod queued_resource {
+    /// Details of the TPU resource(s) being requested.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Tpu {
+        /// Optional. The TPU node(s) being requested.
+        #[prost(message, repeated, tag = "1")]
+        pub node_spec: ::prost::alloc::vec::Vec<tpu::NodeSpec>,
+    }
+    /// Nested message and enum types in `Tpu`.
+    pub mod tpu {
+        /// Details of the TPU node(s) being requested. Users can request either a
+        /// single node or multiple nodes.
+        /// NodeSpec provides the specification for node(s) to be created.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct NodeSpec {
+            /// Required. The parent resource name.
+            #[prost(string, tag = "1")]
+            pub parent: ::prost::alloc::string::String,
+            /// Required. The node.
+            #[prost(message, optional, tag = "4")]
+            pub node: ::core::option::Option<super::super::Node>,
+            /// Either a node_id or multislice_params.
+            #[prost(oneof = "node_spec::NameStrategy", tags = "2, 3")]
+            pub name_strategy: ::core::option::Option<node_spec::NameStrategy>,
+        }
+        /// Nested message and enum types in `NodeSpec`.
+        pub mod node_spec {
+            /// Parameters to specify for multislice QueuedResource requests. This
+            /// message must be populated in case of multislice requests instead of
+            /// node_id.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct MultisliceParams {
+                /// Required. Number of nodes with this spec. The system will attempt
+                /// to provision "node_count" nodes as part of the request.
+                /// This needs to be > 1.
+                #[prost(int32, tag = "1")]
+                pub node_count: i32,
+                /// Optional. Prefix of node_ids in case of multislice request.
+                /// Should follow the `^\[A-Za-z0-9_.~+%-\]+$` regex format.
+                /// If node_count = 3 and node_id_prefix = "np", node ids of nodes
+                /// created will be "np-0", "np-1", "np-2". If this field is not
+                /// provided we use queued_resource_id as the node_id_prefix.
+                #[prost(string, tag = "2")]
+                pub node_id_prefix: ::prost::alloc::string::String,
+            }
+            /// Either a node_id or multislice_params.
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum NameStrategy {
+                /// Optional. The unqualified resource name. Should follow the
+                /// `^\[A-Za-z0-9_.~+%-\]+$` regex format. This is only specified when
+                /// requesting a single node. In case of multislice requests,
+                /// multislice_params must be populated instead.
+                #[prost(string, tag = "2")]
+                NodeId(::prost::alloc::string::String),
+                /// Optional. Fields to specify in case of multislice request.
+                #[prost(message, tag = "3")]
+                MultisliceParams(MultisliceParams),
+            }
+        }
+    }
+    /// Spot tier definition.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct Spot {}
+    /// Guaranteed tier definition.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct Guaranteed {
+        /// Optional. Defines the minimum duration of the guarantee. If specified,
+        /// the requested resources will only be provisioned if they can be
+        /// allocated for at least the given duration.
+        #[prost(message, optional, tag = "1")]
+        pub min_duration: ::core::option::Option<::prost_types::Duration>,
+    }
+    /// Defines the policy of the QueuedRequest.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct QueueingPolicy {
+        /// Time flexibility specification.
+        #[prost(
+            oneof = "queueing_policy::StartTimingConstraints",
+            tags = "1, 2, 3, 4, 5"
+        )]
+        pub start_timing_constraints: ::core::option::Option<
+            queueing_policy::StartTimingConstraints,
+        >,
+    }
+    /// Nested message and enum types in `QueueingPolicy`.
+    pub mod queueing_policy {
+        /// Time flexibility specification.
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        pub enum StartTimingConstraints {
+            /// Optional. A relative time after which resources should not be created.
+            /// If the request cannot be fulfilled by this time the request will be
+            /// failed.
+            #[prost(message, tag = "1")]
+            ValidUntilDuration(::prost_types::Duration),
+            /// Optional. An absolute time after which resources should not be created.
+            /// If the request cannot be fulfilled by this time the request will be
+            /// failed.
+            #[prost(message, tag = "2")]
+            ValidUntilTime(::prost_types::Timestamp),
+            /// Optional. A relative time after which resources may be created.
+            #[prost(message, tag = "3")]
+            ValidAfterDuration(::prost_types::Duration),
+            /// Optional. An absolute time after which resources may be created.
+            #[prost(message, tag = "4")]
+            ValidAfterTime(::prost_types::Timestamp),
+            /// Optional. An absolute time interval within which resources may be
+            /// created.
+            #[prost(message, tag = "5")]
+            ValidInterval(super::super::super::super::super::r#type::Interval),
+        }
+    }
+    /// Resource specification.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Resource {
+        /// Optional. Defines a TPU resource.
+        #[prost(message, tag = "2")]
+        Tpu(Tpu),
+    }
+    /// Tier specifies the required tier.
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    pub enum Tier {
+        /// Optional. The Spot tier.
+        #[prost(message, tag = "3")]
+        Spot(Spot),
+        /// Optional. The Guaranteed tier
+        #[prost(message, tag = "4")]
+        Guaranteed(Guaranteed),
+    }
+}
+/// QueuedResourceState defines the details of the QueuedResource request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueuedResourceState {
+    /// Output only. State of the QueuedResource request.
+    #[prost(enumeration = "queued_resource_state::State", tag = "1")]
+    pub state: i32,
+    /// Output only. The initiator of the QueuedResources's current state. Used to
+    /// indicate whether the SUSPENDING/SUSPENDED state was initiated by the user
+    /// or the service.
+    #[prost(enumeration = "queued_resource_state::StateInitiator", tag = "10")]
+    pub state_initiator: i32,
+    /// Further data for the state.
+    #[prost(oneof = "queued_resource_state::StateData", tags = "2, 3, 4, 5, 6, 7, 8, 9")]
+    pub state_data: ::core::option::Option<queued_resource_state::StateData>,
+}
+/// Nested message and enum types in `QueuedResourceState`.
+pub mod queued_resource_state {
+    /// Further data for the creating state.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct CreatingData {}
+    /// Further data for the accepted state.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct AcceptedData {}
+    /// Further data for the provisioning state.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct ProvisioningData {}
+    /// Further data for the failed state.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct FailedData {
+        /// Output only. The error that caused the queued resource to enter the
+        /// FAILED state.
+        #[prost(message, optional, tag = "1")]
+        pub error: ::core::option::Option<super::super::super::super::rpc::Status>,
+    }
+    /// Further data for the deleting state.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct DeletingData {}
+    /// Further data for the active state.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct ActiveData {}
+    /// Further data for the suspending state.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct SuspendingData {}
+    /// Further data for the suspended state.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct SuspendedData {}
+    /// Output only state of the request
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// State of the QueuedResource request is not known/set.
+        Unspecified = 0,
+        /// The QueuedResource request has been received. We're still working on
+        /// determining if we will be able to honor this request.
+        Creating = 1,
+        /// The QueuedResource request has passed initial validation/admission
+        /// control and has been persisted in the queue.
+        Accepted = 2,
+        /// The QueuedResource request has been selected. The
+        /// associated resources are currently being provisioned (or very soon
+        /// will begin provisioning).
+        Provisioning = 3,
+        /// The request could not be completed. This may be due to some
+        /// late-discovered problem with the request itself, or due to
+        /// unavailability of resources within the constraints of the request
+        /// (e.g., the 'valid until' start timing constraint expired).
+        Failed = 4,
+        /// The QueuedResource is being deleted.
+        Deleting = 5,
+        /// The resources specified in the QueuedResource request have been
+        /// provisioned and are ready for use by the end-user/consumer.
+        Active = 6,
+        /// The resources specified in the QueuedResource request are being
+        /// deleted. This may have been initiated by the user, or
+        /// the Cloud TPU service. Inspect the state data for more details.
+        Suspending = 7,
+        /// The resources specified in the QueuedResource request have been
+        /// deleted.
+        Suspended = 8,
+        /// The QueuedResource request has passed initial validation and has been
+        /// persisted in the queue. It will remain in this state until there are
+        /// sufficient free resources to begin provisioning your request. Wait times
+        /// will vary significantly depending on demand levels. When demand is high,
+        /// not all requests can be immediately provisioned. If you
+        /// need more reliable obtainability of TPUs consider purchasing a
+        /// reservation. To put a limit on how long you are willing to wait, use
+        /// [timing
+        /// constraints](<https://cloud.google.com/tpu/docs/queued-resources#request_a_queued_resource_before_a_specified_time>).
+        WaitingForResources = 9,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Accepted => "ACCEPTED",
+                Self::Provisioning => "PROVISIONING",
+                Self::Failed => "FAILED",
+                Self::Deleting => "DELETING",
+                Self::Active => "ACTIVE",
+                Self::Suspending => "SUSPENDING",
+                Self::Suspended => "SUSPENDED",
+                Self::WaitingForResources => "WAITING_FOR_RESOURCES",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "ACCEPTED" => Some(Self::Accepted),
+                "PROVISIONING" => Some(Self::Provisioning),
+                "FAILED" => Some(Self::Failed),
+                "DELETING" => Some(Self::Deleting),
+                "ACTIVE" => Some(Self::Active),
+                "SUSPENDING" => Some(Self::Suspending),
+                "SUSPENDED" => Some(Self::Suspended),
+                "WAITING_FOR_RESOURCES" => Some(Self::WaitingForResources),
+                _ => None,
+            }
+        }
+    }
+    /// The initiator of the QueuedResource's SUSPENDING/SUSPENDED state.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum StateInitiator {
+        /// The state initiator is unspecified.
+        Unspecified = 0,
+        /// The current QueuedResource state was initiated by the user.
+        User = 1,
+        /// The current QueuedResource state was initiated by the service.
+        Service = 2,
+    }
+    impl StateInitiator {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_INITIATOR_UNSPECIFIED",
+                Self::User => "USER",
+                Self::Service => "SERVICE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_INITIATOR_UNSPECIFIED" => Some(Self::Unspecified),
+                "USER" => Some(Self::User),
+                "SERVICE" => Some(Self::Service),
+                _ => None,
+            }
+        }
+    }
+    /// Further data for the state.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum StateData {
+        /// Output only. Further data for the creating state.
+        #[prost(message, tag = "2")]
+        CreatingData(CreatingData),
+        /// Output only. Further data for the accepted state.
+        #[prost(message, tag = "3")]
+        AcceptedData(AcceptedData),
+        /// Output only. Further data for the provisioning state.
+        #[prost(message, tag = "4")]
+        ProvisioningData(ProvisioningData),
+        /// Output only. Further data for the failed state.
+        #[prost(message, tag = "5")]
+        FailedData(FailedData),
+        /// Output only. Further data for the deleting state.
+        #[prost(message, tag = "6")]
+        DeletingData(DeletingData),
+        /// Output only. Further data for the active state.
+        #[prost(message, tag = "7")]
+        ActiveData(ActiveData),
+        /// Output only. Further data for the suspending state.
+        #[prost(message, tag = "8")]
+        SuspendingData(SuspendingData),
+        /// Output only. Further data for the suspended state.
+        #[prost(message, tag = "9")]
+        SuspendedData(SuspendedData),
+    }
+}
 /// Request for [ListNodes][google.cloud.tpu.v2.Tpu.ListNodes].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNodesRequest {
@@ -532,6 +917,86 @@ pub struct UpdateNodeRequest {
     /// Required. The node. Only fields specified in update_mask are updated.
     #[prost(message, optional, tag = "2")]
     pub node: ::core::option::Option<Node>,
+}
+/// Request for
+/// [ListQueuedResources][google.cloud.tpu.v2.Tpu.ListQueuedResources].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListQueuedResourcesRequest {
+    /// Required. The parent resource name.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of items to return.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The next_page_token value returned from a previous List request,
+    /// if any.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response for
+/// [ListQueuedResources][google.cloud.tpu.v2.Tpu.ListQueuedResources].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListQueuedResourcesResponse {
+    /// The listed queued resources.
+    #[prost(message, repeated, tag = "1")]
+    pub queued_resources: ::prost::alloc::vec::Vec<QueuedResource>,
+    /// The next page token or empty if none.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request for [GetQueuedResource][google.cloud.tpu.v2.Tpu.GetQueuedResource]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetQueuedResourceRequest {
+    /// Required. The resource name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for
+/// [CreateQueuedResource][google.cloud.tpu.v2.Tpu.CreateQueuedResource].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateQueuedResourceRequest {
+    /// Required. The parent resource name.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The unqualified resource name. Should follow the
+    /// `^\[A-Za-z0-9_.~+%-\]+$` regex format.
+    #[prost(string, tag = "2")]
+    pub queued_resource_id: ::prost::alloc::string::String,
+    /// Required. The queued resource.
+    #[prost(message, optional, tag = "3")]
+    pub queued_resource: ::core::option::Option<QueuedResource>,
+    /// Optional. Idempotent request UUID.
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request for
+/// [DeleteQueuedResource][google.cloud.tpu.v2.Tpu.DeleteQueuedResource].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteQueuedResourceRequest {
+    /// Required. The resource name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Idempotent request UUID.
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. If set to true, all running nodes belonging to this queued
+    /// resource will be deleted first and then the queued resource will be
+    /// deleted. Otherwise (i.e. force=false), the queued resource will only be
+    /// deleted if its nodes have already been deleted or the queued resource is in
+    /// the ACCEPTED, FAILED, or SUSPENDED state.
+    #[prost(bool, tag = "3")]
+    pub force: bool,
+}
+/// Request for
+/// [ResetQueuedResource][google.cloud.tpu.v2.Tpu.ResetQueuedResource].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResetQueuedResourceRequest {
+    /// Required. The name of the queued resource.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// The per-product per-project service identity for Cloud TPU service.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -823,6 +1288,12 @@ pub mod accelerator_config {
         V3 = 4,
         /// TPU v4.
         V4 = 7,
+        /// TPU v5lite pod.
+        V5litePod = 9,
+        /// TPU v5p.
+        V5p = 10,
+        /// TPU v6e.
+        V6e = 11,
     }
     impl Type {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -835,6 +1306,9 @@ pub mod accelerator_config {
                 Self::V2 => "V2",
                 Self::V3 => "V3",
                 Self::V4 => "V4",
+                Self::V5litePod => "V5LITE_POD",
+                Self::V5p => "V5P",
+                Self::V6e => "V6E",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -844,6 +1318,9 @@ pub mod accelerator_config {
                 "V2" => Some(Self::V2),
                 "V3" => Some(Self::V3),
                 "V4" => Some(Self::V4),
+                "V5LITE_POD" => Some(Self::V5litePod),
+                "V5P" => Some(Self::V5p),
+                "V6E" => Some(Self::V6e),
                 _ => None,
             }
         }
@@ -1120,6 +1597,136 @@ pub mod tpu_client {
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("google.cloud.tpu.v2.Tpu", "UpdateNode"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists queued resources.
+        pub async fn list_queued_resources(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListQueuedResourcesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListQueuedResourcesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.tpu.v2.Tpu/ListQueuedResources",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.tpu.v2.Tpu", "ListQueuedResources"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a queued resource.
+        pub async fn get_queued_resource(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetQueuedResourceRequest>,
+        ) -> std::result::Result<tonic::Response<super::QueuedResource>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.tpu.v2.Tpu/GetQueuedResource",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.cloud.tpu.v2.Tpu", "GetQueuedResource"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a QueuedResource TPU instance.
+        pub async fn create_queued_resource(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateQueuedResourceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.tpu.v2.Tpu/CreateQueuedResource",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.tpu.v2.Tpu", "CreateQueuedResource"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a QueuedResource TPU instance.
+        pub async fn delete_queued_resource(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteQueuedResourceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.tpu.v2.Tpu/DeleteQueuedResource",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.tpu.v2.Tpu", "DeleteQueuedResource"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Resets a QueuedResource TPU instance
+        pub async fn reset_queued_resource(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ResetQueuedResourceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.tpu.v2.Tpu/ResetQueuedResource",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.tpu.v2.Tpu", "ResetQueuedResource"),
+                );
             self.inner.unary(req, path, codec).await
         }
         /// Generates the Cloud TPU service identity for the project.

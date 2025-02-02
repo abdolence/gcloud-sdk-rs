@@ -4,16 +4,28 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Space {
     /// Immutable. Resource name of the space.
-    /// Format: `spaces/{space}`
+    ///
+    /// Format: `spaces/{space}`.
+    ///
+    /// `{space}` is the resource identifier for the space. It's a unique,
+    /// server-generated ID and is case sensitive. For example, `jQCFfuBOdN5z`.
+    ///
+    /// For more information, see [How Meet identifies a meeting
+    /// space](<https://developers.google.com/meet/api/guides/meeting-spaces#identify-meeting-space>).
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. URI used to join meetings, such as
+    /// Output only. URI used to join meetings consisting of
+    /// `<https://meet.google.com/`> followed by the `meeting_code`. For example,
     /// `<https://meet.google.com/abc-mnop-xyz`.>
     #[prost(string, tag = "2")]
     pub meeting_uri: ::prost::alloc::string::String,
-    /// Output only. Type friendly code to join the meeting. Format:
-    /// `\[a-z\]+-\[a-z\]+-\[a-z\]+` such as `abc-mnop-xyz`. The maximum length is 128
-    /// characters. Can only be used as an alias of the space ID to get the space.
+    /// Output only. Type friendly unique string used to join the meeting.
+    ///
+    /// Format: `\[a-z\]+-\[a-z\]+-\[a-z\]+`. For example, `abc-mnop-xyz`.
+    ///
+    /// The maximum length is 128 characters.
+    ///
+    /// Can only be used as an alias of the space name to get the space.
     #[prost(string, tag = "3")]
     pub meeting_code: ::prost::alloc::string::String,
     /// Configuration pertaining to the meeting space.
@@ -478,6 +490,24 @@ pub struct CreateSpaceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSpaceRequest {
     /// Required. Resource name of the space.
+    ///
+    /// Format: `spaces/{space}` or `spaces/{meetingCode}`.
+    ///
+    /// `{space}` is the resource identifier for the space. It's a unique,
+    /// server-generated ID and is case sensitive. For example, `jQCFfuBOdN5z`.
+    ///
+    /// `{meetingCode}` is an alias for the space. It's a typeable, unique
+    /// character string and is non-case sensitive. For example, `abc-mnop-xyz`.
+    /// The maximum length is 128 characters.
+    ///
+    /// A `meetingCode` shouldn't be stored long term as it can become
+    /// dissociated from a meeting space and can be reused for different meeting
+    /// spaces in the future. Generally, a `meetingCode` expires 365 days after
+    /// last use. For more information, see [Learn about meeting codes in Google
+    /// Meet](<https://support.google.com/meet/answer/10710509>).
+    ///
+    /// For more information, see [How Meet identifies a meeting
+    /// space](<https://developers.google.com/meet/api/guides/meeting-spaces#identify-meeting-space>).
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -488,9 +518,11 @@ pub struct UpdateSpaceRequest {
     #[prost(message, optional, tag = "1")]
     pub space: ::core::option::Option<Space>,
     /// Optional. Field mask used to specify the fields to be updated in the space.
-    /// If update_mask isn't provided, it defaults to '*' and updates all
-    /// fields provided in the request, including deleting fields not set in the
+    /// If update_mask isn't provided(not set, set with empty paths, or only has ""
+    /// as paths), it defaults to update all fields provided with values in the
     /// request.
+    /// Using "*" as update_mask will update all fields, including deleting fields
+    /// not set in the request.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -498,6 +530,14 @@ pub struct UpdateSpaceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EndActiveConferenceRequest {
     /// Required. Resource name of the space.
+    ///
+    /// Format: `spaces/{space}`.
+    ///
+    /// `{space}` is the resource identifier for the space. It's a unique,
+    /// server-generated ID and is case sensitive. For example, `jQCFfuBOdN5z`.
+    ///
+    /// For more information, see [How Meet identifies a meeting
+    /// space](<https://developers.google.com/meet/api/guides/meeting-spaces#identify-meeting-space>).
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -529,7 +569,13 @@ pub struct ListConferenceRecordsRequest {
     /// * `start_time`
     /// * `end_time`
     ///
-    /// For example, `space.meeting_code = "abc-mnop-xyz"`.
+    /// For example, consider the following filters:
+    ///
+    /// * `space.name = "spaces/NAME"`
+    /// * `space.meeting_code = "abc-mnop-xyz"`
+    /// * `start_time>="2024-01-01T00:00:00.000Z" AND
+    /// start_time<="2024-01-02T00:00:00.000Z"`
+    /// * `end_time IS NULL`
     #[prost(string, tag = "3")]
     pub filter: ::prost::alloc::string::String,
 }
@@ -865,7 +911,10 @@ pub mod spaces_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Gets a space by `space_id` or `meeting_code`.
+        /// Gets details about a meeting space.
+        ///
+        /// For an example, see [Get a meeting
+        /// space](https://developers.google.com/meet/api/guides/meeting-spaces#get-meeting-space).
         pub async fn get_space(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSpaceRequest>,
@@ -889,7 +938,10 @@ pub mod spaces_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Updates a space.
+        /// Updates details about a meeting space.
+        ///
+        /// For an example, see [Update a meeting
+        /// space](https://developers.google.com/meet/api/guides/meeting-spaces#update-meeting-space).
         pub async fn update_space(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateSpaceRequest>,
@@ -914,6 +966,9 @@ pub mod spaces_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Ends an active conference (if there's one).
+        ///
+        /// For an example, see [End active
+        /// conference](https://developers.google.com/meet/api/guides/meeting-spaces#end-active-conference).
         pub async fn end_active_conference(
             &mut self,
             request: impl tonic::IntoRequest<super::EndActiveConferenceRequest>,

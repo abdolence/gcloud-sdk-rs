@@ -455,6 +455,214 @@ pub struct ReadObjectResponse {
     #[prost(message, optional, tag = "4")]
     pub metadata: ::core::option::Option<Object>,
 }
+/// Describes the object to read in a BidiReadObject request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BidiReadObjectSpec {
+    /// Required. The name of the bucket containing the object to read.
+    #[prost(string, tag = "1")]
+    pub bucket: ::prost::alloc::string::String,
+    /// Required. The name of the object to read.
+    #[prost(string, tag = "2")]
+    pub object: ::prost::alloc::string::String,
+    /// If present, selects a specific revision of this object (as opposed
+    /// to the latest version, the default).
+    #[prost(int64, tag = "3")]
+    pub generation: i64,
+    /// Makes the operation conditional on whether the object's current generation
+    /// matches the given value. Setting to 0 makes the operation succeed only if
+    /// there are no live versions of the object.
+    #[prost(int64, optional, tag = "4")]
+    pub if_generation_match: ::core::option::Option<i64>,
+    /// Makes the operation conditional on whether the object's live generation
+    /// does not match the given value. If no live object exists, the precondition
+    /// fails. Setting to 0 makes the operation succeed only if there is a live
+    /// version of the object.
+    #[prost(int64, optional, tag = "5")]
+    pub if_generation_not_match: ::core::option::Option<i64>,
+    /// Makes the operation conditional on whether the object's current
+    /// metageneration matches the given value.
+    #[prost(int64, optional, tag = "6")]
+    pub if_metageneration_match: ::core::option::Option<i64>,
+    /// Makes the operation conditional on whether the object's current
+    /// metageneration does not match the given value.
+    #[prost(int64, optional, tag = "7")]
+    pub if_metageneration_not_match: ::core::option::Option<i64>,
+    /// A set of parameters common to Storage API requests concerning an object.
+    #[prost(message, optional, tag = "8")]
+    pub common_object_request_params: ::core::option::Option<CommonObjectRequestParams>,
+    /// Mask specifying which fields to read.
+    /// The checksummed_data field and its children will always be present.
+    /// If no mask is specified, will default to all fields except metadata.owner
+    /// and metadata.acl.
+    /// * may be used to mean "all fields".
+    /// As per <https://google.aip.dev/161,> this field is deprecated.
+    /// As an alternative, grpc metadata can be used:
+    /// <https://cloud.google.com/apis/docs/system-parameters#definitions>
+    #[deprecated]
+    #[prost(message, optional, tag = "12")]
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// The client can optionally set this field. The read handle is an optimized
+    /// way of creating new streams. Read handles are generated and periodically
+    /// refreshed from prior reads.
+    #[prost(message, optional, tag = "13")]
+    pub read_handle: ::core::option::Option<BidiReadHandle>,
+    /// The routing token that influences request routing for the stream. Must be
+    /// provided if a BidiReadObjectRedirectedError is returned.
+    #[prost(string, optional, tag = "14")]
+    pub routing_token: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Request message for BidiReadObject.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BidiReadObjectRequest {
+    /// The first message of each stream should set this field. If this is not
+    /// the first message, an error will be returned. Describes the object to read.
+    #[prost(message, optional, tag = "1")]
+    pub read_object_spec: ::core::option::Option<BidiReadObjectSpec>,
+    /// Provides a list of 0 or more (up to 100) ranges to read. If a single range
+    /// is large enough to require multiple responses, they are guaranteed to be
+    /// delivered in increasing offset order. There are no ordering guarantees
+    /// across ranges. When no ranges are provided, the response message will not
+    /// include ObjectRangeData. For full object downloads, the offset and size can
+    /// be set to 0.
+    #[prost(message, repeated, tag = "8")]
+    pub read_ranges: ::prost::alloc::vec::Vec<ReadRange>,
+}
+/// Response message for BidiReadObject.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BidiReadObjectResponse {
+    /// A portion of the object's data. The service **may** leave data
+    /// empty for any given ReadResponse. This enables the service to inform the
+    /// client that the request is still live while it is running an operation to
+    /// generate more data.
+    /// The service **may** pipeline multiple responses belonging to different read
+    /// requests. Each ObjectRangeData entry will have a read_id
+    /// set to the same value as the corresponding source read request.
+    #[prost(message, repeated, tag = "6")]
+    pub object_data_ranges: ::prost::alloc::vec::Vec<ObjectRangeData>,
+    /// Metadata of the object whose media is being returned.
+    /// Only populated in the first response in the stream and not populated when
+    /// the stream is opened with a read handle.
+    #[prost(message, optional, tag = "4")]
+    pub metadata: ::core::option::Option<Object>,
+    /// This field will be periodically refreshed, however it may not be set in
+    /// every response. It allows the client to more efficiently open subsequent
+    /// bidirectional streams to the same object.
+    #[prost(message, optional, tag = "7")]
+    pub read_handle: ::core::option::Option<BidiReadHandle>,
+}
+/// Error proto containing details for a redirected read. This error is only
+/// returned on initial open in case of a redirect.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BidiReadObjectRedirectedError {
+    /// The read handle for the redirected read. The client can use this for the
+    /// subsequent open.
+    #[prost(message, optional, tag = "1")]
+    pub read_handle: ::core::option::Option<BidiReadHandle>,
+    /// The routing token that should be used when reopening the read stream.
+    #[prost(string, optional, tag = "2")]
+    pub routing_token: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Error proto containing details for a redirected write. This error is only
+/// returned on initial open in case of a redirect.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BidiWriteObjectRedirectedError {
+    /// The routing token that should be used when reopening the write stream.
+    #[prost(string, optional, tag = "1")]
+    pub routing_token: ::core::option::Option<::prost::alloc::string::String>,
+    /// Opaque value describing a previous write.
+    #[prost(message, optional, tag = "2")]
+    pub write_handle: ::core::option::Option<BidiWriteHandle>,
+    /// The generation of the object that triggered the redirect.
+    /// Note that if this error was returned as part of an appendable object
+    /// create, this object generation is now successfully created and
+    /// append_object_spec should be used when reconnecting.
+    #[prost(int64, optional, tag = "3")]
+    pub generation: ::core::option::Option<i64>,
+}
+/// Error extension proto containing details for all outstanding reads on the
+/// failed stream
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BidiReadObjectError {
+    /// The error code for each outstanding read_range
+    #[prost(message, repeated, tag = "1")]
+    pub read_range_errors: ::prost::alloc::vec::Vec<ReadRangeError>,
+}
+/// Error extension proto containing details for a single range read
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReadRangeError {
+    /// The id of the corresponding read_range
+    #[prost(int64, tag = "1")]
+    pub read_id: i64,
+    /// The status which should be an enum value of \[google.rpc.Code\].
+    #[prost(message, optional, tag = "2")]
+    pub status: ::core::option::Option<super::super::rpc::Status>,
+}
+/// Describes a range of bytes to read in a BidiReadObjectRanges request.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ReadRange {
+    /// Required. The offset for the first byte to return in the read, relative to
+    /// the start of the object.
+    ///
+    /// A negative read_offset value will be interpreted as the number of bytes
+    /// back from the end of the object to be returned. For example, if an object's
+    /// length is 15 bytes, a ReadObjectRequest with read_offset = -5 and
+    /// read_length = 3 would return bytes 10 through 12 of the object. Requesting
+    /// a negative offset with magnitude larger than the size of the object will
+    /// return the entire object. A read_offset larger than the size of the object
+    /// will result in an OutOfRange error.
+    #[prost(int64, tag = "1")]
+    pub read_offset: i64,
+    /// Optional. The maximum number of data bytes the server is allowed to return
+    /// across all response messages with the same read_id. A read_length of zero
+    /// indicates to read until the resource end, and a negative read_length will
+    /// cause an error. If the stream returns fewer bytes than allowed by the
+    /// read_length and no error occurred, the stream includes all data from the
+    /// read_offset to the resource end.
+    #[prost(int64, tag = "2")]
+    pub read_length: i64,
+    /// Required. Read identifier provided by the client. When the client issues
+    /// more than one outstanding ReadRange on the same stream, responses can be
+    /// mapped back to their corresponding requests using this value. Clients must
+    /// ensure that all outstanding requests have different read_id values. The
+    /// server may close the stream with an error if this condition is not met.
+    #[prost(int64, tag = "3")]
+    pub read_id: i64,
+}
+/// Contains data and metadata for a range of an object.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ObjectRangeData {
+    /// A portion of the data for the object.
+    #[prost(message, optional, tag = "1")]
+    pub checksummed_data: ::core::option::Option<ChecksummedData>,
+    /// The ReadRange describes the content being returned with read_id set to the
+    /// corresponding ReadObjectRequest in the stream. Multiple ObjectRangeData
+    /// messages may have the same read_id but increasing offsets.
+    /// ReadObjectResponse messages with the same read_id are guaranteed to be
+    /// delivered in increasing offset order.
+    #[prost(message, optional, tag = "2")]
+    pub read_range: ::core::option::Option<ReadRange>,
+    /// If set, indicates there are no more bytes to read for the given ReadRange.
+    #[prost(bool, tag = "3")]
+    pub range_end: bool,
+}
+/// BidiReadHandle contains a handle from a previous BiDiReadObject
+/// invocation. The client can use this instead of BidiReadObjectSpec as an
+/// optimized way of opening subsequent bidirectional streams to the same object.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BidiReadHandle {
+    /// Required. Opaque value describing a previous read.
+    #[prost(bytes = "vec", tag = "1")]
+    pub handle: ::prost::alloc::vec::Vec<u8>,
+}
+/// BidiWriteHandle contains a handle from a previous BidiWriteObject
+/// invocation. The client can use this as an optimized way of opening subsequent
+/// bidirectional streams to the same object.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BidiWriteHandle {
+    /// Required. Opaque value describing a previous write.
+    #[prost(bytes = "vec", tag = "1")]
+    pub handle: ::prost::alloc::vec::Vec<u8>,
+}
 /// Describes an attempt to insert an object, possibly over multiple requests.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteObjectSpec {
@@ -494,6 +702,10 @@ pub struct WriteObjectSpec {
     /// number of bytes.
     #[prost(int64, optional, tag = "8")]
     pub object_size: ::core::option::Option<i64>,
+    /// If true, the object will be created in appendable mode.
+    /// This field may only be set when using BidiWriteObject.
+    #[prost(bool, optional, tag = "9")]
+    pub appendable: ::core::option::Option<bool>,
 }
 /// Request message for WriteObject.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -582,6 +794,35 @@ pub mod write_object_response {
         Resource(super::Object),
     }
 }
+/// Describes an attempt to append to an object, possibly over multiple requests.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AppendObjectSpec {
+    /// Required. The name of the bucket containing the object to write.
+    #[prost(string, tag = "1")]
+    pub bucket: ::prost::alloc::string::String,
+    /// Required. The name of the object to open for writing.
+    #[prost(string, tag = "2")]
+    pub object: ::prost::alloc::string::String,
+    /// Required. The generation number of the object to open for writing.
+    #[prost(int64, tag = "3")]
+    pub generation: i64,
+    /// Makes the operation conditional on whether the object's current
+    /// metageneration matches the given value.
+    #[prost(int64, optional, tag = "4")]
+    pub if_metageneration_match: ::core::option::Option<i64>,
+    /// Makes the operation conditional on whether the object's current
+    /// metageneration does not match the given value.
+    #[prost(int64, optional, tag = "5")]
+    pub if_metageneration_not_match: ::core::option::Option<i64>,
+    /// An optional routing token that influences request routing for the stream.
+    /// Must be provided if a BidiWriteObjectRedirectedError is returned.
+    #[prost(string, optional, tag = "6")]
+    pub routing_token: ::core::option::Option<::prost::alloc::string::String>,
+    /// An optional write handle returned from a previous BidiWriteObjectResponse
+    /// message or a BidiWriteObjectRedirectedError error.
+    #[prost(message, optional, tag = "7")]
+    pub write_handle: ::core::option::Option<BidiWriteHandle>,
+}
 /// Request message for BidiWriteObject.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BidiWriteObjectRequest {
@@ -636,7 +877,7 @@ pub struct BidiWriteObjectRequest {
     #[prost(message, optional, tag = "10")]
     pub common_object_request_params: ::core::option::Option<CommonObjectRequestParams>,
     /// The first message of each stream should set one of the following.
-    #[prost(oneof = "bidi_write_object_request::FirstMessage", tags = "1, 2")]
+    #[prost(oneof = "bidi_write_object_request::FirstMessage", tags = "1, 2, 11")]
     pub first_message: ::core::option::Option<bidi_write_object_request::FirstMessage>,
     /// A portion of the data for the object.
     #[prost(oneof = "bidi_write_object_request::Data", tags = "4")]
@@ -655,6 +896,9 @@ pub mod bidi_write_object_request {
         /// destination bucket and object name, preconditions, etc.
         #[prost(message, tag = "2")]
         WriteObjectSpec(super::WriteObjectSpec),
+        /// For appendable uploads. Describes the object to append to.
+        #[prost(message, tag = "11")]
+        AppendObjectSpec(super::AppendObjectSpec),
     }
     /// A portion of the data for the object.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -668,6 +912,11 @@ pub mod bidi_write_object_request {
 /// Response message for BidiWriteObject.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BidiWriteObjectResponse {
+    /// An optional write handle that will periodically be present in response
+    /// messages. Clients should save it for later use in establishing a new stream
+    /// if a connection is interrupted.
+    #[prost(message, optional, tag = "3")]
+    pub write_handle: ::core::option::Option<BidiWriteHandle>,
     /// The response will set one of the following.
     #[prost(oneof = "bidi_write_object_response::WriteStatus", tags = "1, 2")]
     pub write_status: ::core::option::Option<bidi_write_object_response::WriteStatus>,
@@ -1017,25 +1266,28 @@ pub struct MoveObjectRequest {
 /// Request message StartResumableWrite.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartResumableWriteRequest {
-    /// Required. The destination bucket, object, and metadata, as well as any
-    /// preconditions.
+    /// Required. Contains the information necessary to start a resumable write.
     #[prost(message, optional, tag = "1")]
     pub write_object_spec: ::core::option::Option<WriteObjectSpec>,
-    /// A set of parameters common to Storage API requests concerning an object.
+    /// A set of parameters common to Storage API requests related to an object.
     #[prost(message, optional, tag = "3")]
     pub common_object_request_params: ::core::option::Option<CommonObjectRequestParams>,
-    /// The checksums of the complete object. This will be used to validate the
-    /// uploaded object. For each upload, object_checksums can be provided with
-    /// either StartResumableWriteRequest or the WriteObjectRequest with
-    /// finish_write set to `true`.
+    /// The checksums of the complete object. This is used to validate the
+    /// uploaded object. For each upload, `object_checksums` can be provided when
+    /// initiating a resumable upload with`StartResumableWriteRequest` or when
+    /// completing a write with `WriteObjectRequest` with
+    /// `finish_write` set to `true`.
     #[prost(message, optional, tag = "5")]
     pub object_checksums: ::core::option::Option<ObjectChecksums>,
 }
 /// Response object for `StartResumableWrite`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartResumableWriteResponse {
-    /// The upload_id of the newly started resumable write operation. This
-    /// value should be copied into the `WriteObjectRequest.upload_id` field.
+    /// A unique identifier for the initiated resumable write operation.
+    /// As the ID grants write access, you should keep it confidential during
+    /// the upload to prevent unauthorized access and data tampering during your
+    /// upload. This ID should be included in subsequent `WriteObject` requests to
+    /// upload the object data.
     #[prost(string, tag = "1")]
     pub upload_id: ::prost::alloc::string::String,
 }
@@ -2436,12 +2688,26 @@ pub mod storage_client {
                 .insert(GrpcMethod::new("google.storage.v2.Storage", "ComposeObject"));
             self.inner.unary(req, path, codec).await
         }
-        /// Deletes an object and its metadata.
+        /// Deletes an object and its metadata. Deletions are permanent if versioning
+        /// is not enabled for the bucket, or if the generation parameter is used, or
+        /// if [soft delete](https://cloud.google.com/storage/docs/soft-delete) is not
+        /// enabled for the bucket.
+        /// When this API is used to delete an object from a bucket that has soft
+        /// delete policy enabled, the object becomes soft deleted, and the
+        /// `softDeleteTime` and `hardDeleteTime` properties are set on the object.
+        /// This API cannot be used to permanently delete soft-deleted objects.
+        /// Soft-deleted objects are permanently deleted according to their
+        /// `hardDeleteTime`.
         ///
-        /// Deletions are normally permanent when versioning is disabled or whenever
-        /// the generation parameter is used. However, if soft delete is enabled for
-        /// the bucket, deleted objects can be restored using RestoreObject until the
-        /// soft delete retention period has passed.
+        /// You can use the [`RestoreObject`][google.storage.v2.Storage.RestoreObject]
+        /// API to restore soft-deleted objects until the soft delete retention period
+        /// has passed.
+        ///
+        /// **IAM Permissions**:
+        ///
+        /// Requires `storage.objects.delete`
+        /// [IAM permission](https://cloud.google.com/iam/docs/overview#permissions) on
+        /// the bucket.
         pub async fn delete_object(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteObjectRequest>,
@@ -2519,7 +2785,14 @@ pub mod storage_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Retrieves an object's metadata.
+        /// Retrieves object metadata.
+        ///
+        /// **IAM Permissions**:
+        ///
+        /// Requires `storage.objects.get`
+        /// [IAM permission](https://cloud.google.com/iam/docs/overview#permissions) on
+        /// the bucket. To return object ACLs, the authenticated user must also have
+        /// the `storage.objects.getIamPolicy` permission.
         pub async fn get_object(
             &mut self,
             request: impl tonic::IntoRequest<super::GetObjectRequest>,
@@ -2541,7 +2814,13 @@ pub mod storage_client {
                 .insert(GrpcMethod::new("google.storage.v2.Storage", "GetObject"));
             self.inner.unary(req, path, codec).await
         }
-        /// Reads an object's data.
+        /// Retrieves object data.
+        ///
+        /// **IAM Permissions**:
+        ///
+        /// Requires `storage.objects.get`
+        /// [IAM permission](https://cloud.google.com/iam/docs/overview#permissions) on
+        /// the bucket.
         pub async fn read_object(
             &mut self,
             request: impl tonic::IntoRequest<super::ReadObjectRequest>,
@@ -2565,6 +2844,51 @@ pub mod storage_client {
             req.extensions_mut()
                 .insert(GrpcMethod::new("google.storage.v2.Storage", "ReadObject"));
             self.inner.server_streaming(req, path, codec).await
+        }
+        /// Reads an object's data.
+        ///
+        /// This is a bi-directional API with the added support for reading multiple
+        /// ranges within one stream both within and across multiple messages.
+        /// If the server encountered an error for any of the inputs, the stream will
+        /// be closed with the relevant error code.
+        /// Because the API allows for multiple outstanding requests, when the stream
+        /// is closed the error response will contain a BidiReadObjectRangesError proto
+        /// in the error extension describing the error for each outstanding read_id.
+        ///
+        /// **IAM Permissions**:
+        ///
+        /// Requires `storage.objects.get`
+        ///
+        /// [IAM permission](https://cloud.google.com/iam/docs/overview#permissions) on
+        /// the bucket.
+        ///
+        /// This API is currently in preview and is not yet available for general
+        /// use.
+        pub async fn bidi_read_object(
+            &mut self,
+            request: impl tonic::IntoStreamingRequest<
+                Message = super::BidiReadObjectRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<tonic::codec::Streaming<super::BidiReadObjectResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.v2.Storage/BidiReadObject",
+            );
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.storage.v2.Storage", "BidiReadObject"));
+            self.inner.streaming(req, path, codec).await
         }
         /// Updates an object's metadata.
         /// Equivalent to JSON API's storage.objects.patch.
@@ -2642,12 +2966,18 @@ pub mod storage_client {
         /// whether the service views the object as complete.
         ///
         /// Attempting to resume an already finalized object will result in an OK
-        /// status, with a WriteObjectResponse containing the finalized object's
+        /// status, with a `WriteObjectResponse` containing the finalized object's
         /// metadata.
         ///
         /// Alternatively, the BidiWriteObject operation may be used to write an
         /// object with controls over flushing and the ability to fetch the ability to
         /// determine the current persisted size.
+        ///
+        /// **IAM Permissions**:
+        ///
+        /// Requires `storage.objects.create`
+        /// [IAM permission](https://cloud.google.com/iam/docs/overview#permissions) on
+        /// the bucket.
         pub async fn write_object(
             &mut self,
             request: impl tonic::IntoStreamingRequest<
@@ -2716,6 +3046,13 @@ pub mod storage_client {
             self.inner.streaming(req, path, codec).await
         }
         /// Retrieves a list of objects matching the criteria.
+        ///
+        /// **IAM Permissions**:
+        ///
+        /// The authenticated user requires `storage.objects.list`
+        /// [IAM permission](https://cloud.google.com/iam/docs/overview#permissions)
+        /// to use this method. To return object ACLs, the authenticated user must also
+        /// have the `storage.objects.getIamPolicy` permission.
         pub async fn list_objects(
             &mut self,
             request: impl tonic::IntoRequest<super::ListObjectsRequest>,
@@ -2766,9 +3103,19 @@ pub mod storage_client {
                 .insert(GrpcMethod::new("google.storage.v2.Storage", "RewriteObject"));
             self.inner.unary(req, path, codec).await
         }
-        /// Starts a resumable write. How long the write operation remains valid, and
-        /// what happens when the write operation becomes invalid, are
-        /// service-dependent.
+        /// Starts a resumable write operation. This
+        /// method is part of the [Resumable
+        /// upload](https://cloud.google.com/storage/docs/resumable-uploads) feature.
+        /// This allows you to upload large objects in multiple chunks, which is more
+        /// resilient to network interruptions than a single upload. The validity
+        /// duration of the write operation, and the consequences of it becoming
+        /// invalid, are service-dependent.
+        ///
+        /// **IAM Permissions**:
+        ///
+        /// Requires `storage.objects.create`
+        /// [IAM permission](https://cloud.google.com/iam/docs/overview#permissions) on
+        /// the bucket.
         pub async fn start_resumable_write(
             &mut self,
             request: impl tonic::IntoRequest<super::StartResumableWriteRequest>,
@@ -2795,18 +3142,22 @@ pub mod storage_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Determines the `persisted_size` for an object that is being written, which
-        /// can then be used as the `write_offset` for the next `Write()` call.
+        /// Determines the `persisted_size` of an object that is being written. This
+        /// method is part of the [resumable
+        /// upload](https://cloud.google.com/storage/docs/resumable-uploads) feature.
+        /// The returned value is the size of the object that has been persisted so
+        /// far. The value can be used as the `write_offset` for the next `Write()`
+        /// call.
         ///
-        /// If the object does not exist (i.e., the object has been deleted, or the
-        /// first `Write()` has not yet reached the service), this method returns the
+        /// If the object does not exist, meaning if it was deleted, or the
+        /// first `Write()` has not yet reached the service, this method returns the
         /// error `NOT_FOUND`.
         ///
-        /// The client **may** call `QueryWriteStatus()` at any time to determine how
-        /// much data has been processed for this object. This is useful if the
-        /// client is buffering data and needs to know which data can be safely
-        /// evicted. For any sequence of `QueryWriteStatus()` calls for a given
-        /// object name, the sequence of returned `persisted_size` values will be
+        /// This method is useful for clients that buffer data and need to know which
+        /// data can be safely evicted. The client can call `QueryWriteStatus()` at any
+        /// time to determine how much data has been logged for this object.
+        /// For any sequence of `QueryWriteStatus()` calls for a given
+        /// object name, the sequence of returned `persisted_size` values are
         /// non-decreasing.
         pub async fn query_write_status(
             &mut self,

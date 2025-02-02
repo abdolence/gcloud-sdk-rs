@@ -19,14 +19,20 @@ pub struct HttpTarget {
     /// Which HTTP method to use for the request.
     #[prost(enumeration = "HttpMethod", tag = "2")]
     pub http_method: i32,
+    /// HTTP request headers.
+    ///
+    /// This map contains the header field names and values.
+    ///
     /// The user can specify HTTP request headers to send with the job's
-    /// HTTP request. This map contains the header field names and
-    /// values. Repeated headers are not supported, but a header value can
-    /// contain commas. These headers represent a subset of the headers
-    /// that will accompany the job's HTTP request. Some HTTP request
-    /// headers will be ignored or replaced. A partial list of headers that
-    /// will be ignored or replaced is below:
-    /// - Host: This will be computed by Cloud Scheduler and derived from
+    /// HTTP request. Repeated headers are not supported, but a header value can
+    /// contain commas.
+    ///
+    /// The following headers represent a subset of the headers
+    /// that accompany the job's HTTP request. Some HTTP request
+    /// headers are ignored or replaced. A partial list of headers that
+    /// are ignored or replaced is below:
+    ///
+    /// * Host: This will be computed by Cloud Scheduler and derived from
     /// [uri][google.cloud.scheduler.v1.HttpTarget.uri].
     /// * `Content-Length`: This will be computed by Cloud Scheduler.
     /// * `User-Agent`: This will be set to `"Google-Cloud-Scheduler"`.
@@ -37,6 +43,15 @@ pub struct HttpTarget {
     /// * `X-CloudScheduler-ScheduleTime`: For Cloud Scheduler jobs specified in
     /// the unix-cron format, this header will contain the job schedule as an
     /// offset of UTC parsed according to RFC3339.
+    ///
+    /// If the job has a [body][google.cloud.scheduler.v1.HttpTarget.body] and the
+    /// following headers are not set by the user, Cloud Scheduler sets default
+    /// values:
+    ///
+    /// * `Content-Type`: This will be set to `"application/octet-stream"`. You
+    ///    can override this default by explicitly setting `Content-Type` to a
+    ///    particular media type when creating the job. For example, you can set
+    ///    `Content-Type` to `"application/json"`.
     ///
     /// The total size of headers must be less than 80KB.
     #[prost(map = "string, string", tag = "3")]
@@ -132,20 +147,18 @@ pub struct AppEngineHttpTarget {
     /// the unix-cron format, this header will contain the job schedule as an
     /// offset of UTC parsed according to RFC3339.
     ///
-    /// If the job has an
-    /// [body][google.cloud.scheduler.v1.AppEngineHttpTarget.body], Cloud Scheduler
-    /// sets the following headers:
+    /// If the job has a [body][google.cloud.scheduler.v1.AppEngineHttpTarget.body]
+    /// and the following headers are not set by the user, Cloud Scheduler sets
+    /// default values:
     ///
-    /// * `Content-Type`: By default, the `Content-Type` header is set to
-    ///    `"application/octet-stream"`. The default can be overridden by explictly
-    ///    setting `Content-Type` to a particular media type when the job is
-    ///    created.
-    ///    For example, `Content-Type` can be set to `"application/json"`.
-    /// * `Content-Length`: This is computed by Cloud Scheduler. This value is
-    ///    output only. It cannot be changed.
+    /// * `Content-Type`: This will be set to `"application/octet-stream"`. You
+    ///    can override this default by explicitly setting `Content-Type` to a
+    ///    particular media type when creating the job. For example, you can set
+    ///    `Content-Type` to `"application/json"`.
     ///
     /// The headers below are output only. They cannot be set or overridden:
     ///
+    /// * `Content-Length`: This is computed by Cloud Scheduler.
     /// * `X-Google-*`: For Google internal use only.
     /// * `X-AppEngine-*`: For Google internal use only.
     ///
@@ -445,7 +458,11 @@ pub struct Job {
     /// If [retry_count][google.cloud.scheduler.v1.RetryConfig.retry_count] > 0 and
     /// a job attempt fails, the job will be tried a total of
     /// [retry_count][google.cloud.scheduler.v1.RetryConfig.retry_count] times,
-    /// with exponential backoff, until the next scheduled start time.
+    /// with exponential backoff, until the next scheduled start time. If
+    /// retry_count is 0, a job attempt will not be retried if it fails. Instead
+    /// the Cloud Scheduler system will wait for the next scheduled execution time.
+    /// Setting retry_count to 0 does not prevent failed jobs from running
+    /// according to schedule after the failure.
     #[prost(string, tag = "20")]
     pub schedule: ::prost::alloc::string::String,
     /// Specifies the time zone to be used in interpreting
@@ -600,9 +617,10 @@ pub struct RetryConfig {
     ///
     /// The default value of retry_count is zero.
     ///
-    /// If retry_count is zero, a job attempt will *not* be retried if
+    /// If retry_count is 0, a job attempt will not be retried if
     /// it fails. Instead the Cloud Scheduler system will wait for the
-    /// next scheduled execution time.
+    /// next scheduled execution time. Setting retry_count to 0 does not prevent
+    /// failed jobs from running according to schedule after the failure.
     ///
     /// If retry_count is set to a non-zero number then Cloud Scheduler
     /// will retry failed attempts, using exponential backoff,
@@ -647,7 +665,7 @@ pub struct RetryConfig {
     /// [min_backoff_duration][google.cloud.scheduler.v1.RetryConfig.min_backoff_duration]
     /// is 10s,
     /// [max_backoff_duration][google.cloud.scheduler.v1.RetryConfig.max_backoff_duration]
-    /// is 300s, and `max_doublings` is 3, then the a job will first be retried in
+    /// is 300s, and `max_doublings` is 3, then the job will first be retried in
     /// 10s. The retry interval will double three times, and then increase linearly
     /// by 2^3 * 10s.  Finally, the job will retry at intervals of
     /// [max_backoff_duration][google.cloud.scheduler.v1.RetryConfig.max_backoff_duration]
@@ -681,11 +699,7 @@ pub struct ListJobsRequest {
     /// request the next page of results, page_token must be the value of
     /// [next_page_token][google.cloud.scheduler.v1.ListJobsResponse.next_page_token]
     /// returned from the previous call to
-    /// [ListJobs][google.cloud.scheduler.v1.CloudScheduler.ListJobs]. It is an
-    /// error to switch the value of
-    /// [filter][google.cloud.scheduler.v1.ListJobsRequest.filter] or
-    /// [order_by][google.cloud.scheduler.v1.ListJobsRequest.order_by] while
-    /// iterating through pages.
+    /// [ListJobs][google.cloud.scheduler.v1.CloudScheduler.ListJobs].
     #[prost(string, tag = "6")]
     pub page_token: ::prost::alloc::string::String,
 }
