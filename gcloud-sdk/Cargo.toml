@@ -425,11 +425,12 @@ maps-fleetengine-v1 = []
 
 # REST features
 google-rest-bigquery-v2 = ["rest"]
-google-rest-storage-v1 = ["rest"]
-google-rest-sqladmin-v1 = ["rest"]
-google-rest-dns-v1 = ["rest"]
 google-rest-compute-v1 = ["rest"]
+google-rest-dns-v1 = ["rest"]
 google-rest-identitytoolkit-v3 = ["rest"]
+google-rest-servicecontrol-v1 = ["rest"]
+google-rest-sqladmin-v1 = ["rest"]
+google-rest-storage-v1 = ["rest"]
 
 [dependencies]
 tonic = { version = "0.12", features = ["tls"] }

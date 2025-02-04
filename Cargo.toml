@@ -13,4 +13,5 @@ members = [
     "examples/id-token",
     "examples/iam-client",
     "examples/artifact-registry-client",
+    "examples/servicecontrol-client",
 ]
