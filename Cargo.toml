@@ -12,4 +12,5 @@ members = [
     "examples/kms-client",
     "examples/id-token",
     "examples/iam-client",
+    "examples/artifact-registry-client",
 ]

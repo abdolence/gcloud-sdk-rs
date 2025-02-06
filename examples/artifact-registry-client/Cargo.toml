@@ -1,0 +1,11 @@
+[package]
+name = "artifact-registry-client-example"
+version = "0.3.0"
+authors = ["grundjoseph@gmail.com"]
+edition = "2021"
+
+[dependencies]
+gcloud-sdk = { path = "./../../gcloud-sdk", default-features = false, features = ["google-devtools-artifactregistry-v1", "tls-webpki-roots"] }
+tokio = { version = "1.20", features = ["full"] }
+tracing = "0.1"
+tracing-subscriber = { version ="0.3", features = ["env-filter"] }
