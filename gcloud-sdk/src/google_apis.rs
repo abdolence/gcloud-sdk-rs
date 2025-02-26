@@ -4128,6 +4128,7 @@ pub mod google {
                 feature = "google-spanner-executor-v1",
                 feature = "google-spanner-v1",
                 feature = "google-storage-control-v2",
+                feature = "google-storage-v2",
                 feature = "google-storagetransfer-v1",
                 feature = "google-streetview-publish-v1",
                 feature = "grafeas-v1",
