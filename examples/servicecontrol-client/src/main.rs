@@ -34,10 +34,7 @@ fn format_check_errors(errs: &[servicecontrol_v1::CheckError]) -> String {
         .join(", ")
 }
 
-async fn services_check(
-    client: GoogleRestApi,
-    service_name: impl ToString,
-) -> Result<(), Error> {
+async fn services_check(client: GoogleRestApi, service_name: impl ToString) -> Result<(), Error> {
     let cfg = client.create_google_servicecontrol_v1_config().await?;
 
     let response = servicecontrol_v1::services_api::servicecontrol_services_check(

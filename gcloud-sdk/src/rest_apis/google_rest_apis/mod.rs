@@ -18,4 +18,3 @@ pub mod storage_v1;
 
 #[cfg(any(feature = "google-rest-servicecontrol-v1"))]
 pub mod servicecontrol_v1;
-
