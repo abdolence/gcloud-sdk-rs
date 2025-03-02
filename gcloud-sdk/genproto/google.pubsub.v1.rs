@@ -1510,6 +1510,7 @@ pub struct JavaScriptUdf {
     /// Required. JavaScript code that contains a function `function_name` with the
     /// below signature:
     ///
+    /// ```
     ///    /**
     ///    * Transforms a Pub/Sub message.
     ///
@@ -1535,6 +1536,7 @@ pub struct JavaScriptUdf {
     ///
     ///    function <function_name>(message, metadata) {
     ///    }
+    /// ```
     #[prost(string, tag = "2")]
     pub code: ::prost::alloc::string::String,
 }

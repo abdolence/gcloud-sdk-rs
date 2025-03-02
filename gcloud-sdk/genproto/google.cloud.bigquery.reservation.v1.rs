@@ -15,13 +15,7 @@ pub struct Reservation {
     /// Queries using this reservation might use more slots during runtime if
     /// ignore_idle_slots is set to false, or autoscaling is enabled.
     ///
-    /// If edition is EDITION_UNSPECIFIED and total slot_capacity of the
-    /// reservation and its siblings exceeds the total slot_count of all capacity
-    /// commitments, the request will fail with
-    /// `google.rpc.Code.RESOURCE_EXHAUSTED`.
-    ///
-    /// If edition is any value but EDITION_UNSPECIFIED, then the above requirement
-    /// is not needed. The total slot_capacity of the reservation and its siblings
+    /// The total slot_capacity of the reservation and its siblings
     /// may exceed the total slot_count of capacity commitments. In that case, the
     /// exceeding slots will be charged with the autoscale SKU. You can increase
     /// the number of baseline slots in a reservation every few minutes. If you
@@ -70,8 +64,8 @@ pub struct Reservation {
     /// Edition of the reservation.
     #[prost(enumeration = "Edition", tag = "17")]
     pub edition: i32,
-    /// Optional. The current location of the reservation's primary replica. This
-    /// field is only set for reservations using the managed disaster recovery
+    /// Output only. The current location of the reservation's primary replica.
+    /// This field is only set for reservations using the managed disaster recovery
     /// feature.
     #[prost(string, tag = "18")]
     pub primary_location: ::prost::alloc::string::String,
@@ -82,11 +76,21 @@ pub struct Reservation {
     /// a non-failover reservation to a failover reservation(or vice versa).
     #[prost(string, tag = "19")]
     pub secondary_location: ::prost::alloc::string::String,
-    /// Optional. The location where the reservation was originally created. This
-    /// is set only during the failover reservation's creation. All billing charges
-    /// for the failover reservation will be applied to this location.
+    /// Output only. The location where the reservation was originally created.
+    /// This is set only during the failover reservation's creation. All billing
+    /// charges for the failover reservation will be applied to this location.
     #[prost(string, tag = "20")]
     pub original_primary_location: ::prost::alloc::string::String,
+    /// Output only. The Disaster Recovery(DR) replication status of the
+    /// reservation. This is only available for the primary replicas of DR/failover
+    /// reservations and provides information about the both the staleness of the
+    /// secondary and the last error encountered while trying to replicate changes
+    /// from the primary to the secondary. If this field is blank, it means that
+    /// the reservation is either not a DR reservation or the reservation is a DR
+    /// secondary or that any replication operations on the reservation have
+    /// succeeded.
+    #[prost(message, optional, tag = "24")]
+    pub replication_status: ::core::option::Option<reservation::ReplicationStatus>,
 }
 /// Nested message and enum types in `Reservation`.
 pub mod reservation {
@@ -103,6 +107,26 @@ pub mod reservation {
         /// Number of slots to be scaled when needed.
         #[prost(int64, tag = "2")]
         pub max_slots: i64,
+    }
+    /// Disaster Recovery(DR) replication status of the reservation.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ReplicationStatus {
+        /// Output only. The last error encountered while trying to replicate changes
+        /// from the primary to the secondary. This field is only available if the
+        /// replication has not succeeded since.
+        #[prost(message, optional, tag = "1")]
+        pub error: ::core::option::Option<
+            super::super::super::super::super::rpc::Status,
+        >,
+        /// Output only. The time at which the last error was encountered while
+        /// trying to replicate changes from the primary to the secondary. This field
+        /// is only available if the replication has not succeeded since.
+        #[prost(message, optional, tag = "2")]
+        pub last_error_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Output only. A timestamp corresponding to the last change on the primary
+        /// that was successfully replicated to the secondary.
+        #[prost(message, optional, tag = "3")]
+        pub last_replication_time: ::core::option::Option<::prost_types::Timestamp>,
     }
 }
 /// Capacity commitment is a way to purchase compute capacity for BigQuery jobs
@@ -544,6 +568,16 @@ pub struct Assignment {
     /// Output only. State of the assignment.
     #[prost(enumeration = "assignment::State", tag = "6")]
     pub state: i32,
+    /// Optional. This field controls if "Gemini in BigQuery"
+    /// (<https://cloud.google.com/gemini/docs/bigquery/overview>) features should be
+    /// enabled for this reservation assignment, which is not on by default.
+    /// "Gemini in BigQuery" has a distinct compliance posture from BigQuery.  If
+    /// this field is set to true, the assignment job type is QUERY, and
+    /// the parent reservation edition is ENTERPRISE_PLUS, then the assignment will
+    /// give the grantee project/organization access to "Gemini in BigQuery"
+    /// features.
+    #[prost(bool, tag = "10")]
+    pub enable_gemini_in_bigquery: bool,
 }
 /// Nested message and enum types in `Assignment`.
 pub mod assignment {
@@ -573,6 +607,9 @@ pub mod assignment {
         MlExternal = 3,
         /// Background jobs that BigQuery runs for the customers in the background.
         Background = 4,
+        /// Continuous SQL jobs will use this reservation. Reservations with
+        /// continuous assignments cannot be mixed with non-continuous assignments.
+        Continuous = 6,
     }
     impl JobType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -586,6 +623,7 @@ pub mod assignment {
                 Self::Query => "QUERY",
                 Self::MlExternal => "ML_EXTERNAL",
                 Self::Background => "BACKGROUND",
+                Self::Continuous => "CONTINUOUS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -596,6 +634,7 @@ pub mod assignment {
                 "QUERY" => Some(Self::Query),
                 "ML_EXTERNAL" => Some(Self::MlExternal),
                 "BACKGROUND" => Some(Self::Background),
+                "CONTINUOUS" => Some(Self::Continuous),
                 _ => None,
             }
         }

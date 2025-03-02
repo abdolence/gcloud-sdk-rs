@@ -298,6 +298,8 @@ pub enum EvConnectorType {
     UnspecifiedGbT = 8,
     /// Unspecified wall outlet.
     UnspecifiedWallOutlet = 9,
+    /// The North American Charging System (NACS), standardized as SAE J3400.
+    Nacs = 10,
 }
 impl EvConnectorType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -316,6 +318,7 @@ impl EvConnectorType {
             Self::Tesla => "EV_CONNECTOR_TYPE_TESLA",
             Self::UnspecifiedGbT => "EV_CONNECTOR_TYPE_UNSPECIFIED_GB_T",
             Self::UnspecifiedWallOutlet => "EV_CONNECTOR_TYPE_UNSPECIFIED_WALL_OUTLET",
+            Self::Nacs => "EV_CONNECTOR_TYPE_NACS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -333,6 +336,7 @@ impl EvConnectorType {
             "EV_CONNECTOR_TYPE_UNSPECIFIED_WALL_OUTLET" => {
                 Some(Self::UnspecifiedWallOutlet)
             }
+            "EV_CONNECTOR_TYPE_NACS" => Some(Self::Nacs),
             _ => None,
         }
     }

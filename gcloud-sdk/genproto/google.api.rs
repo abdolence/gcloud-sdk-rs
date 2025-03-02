@@ -977,6 +977,12 @@ pub mod python_settings {
         /// packages.
         #[prost(bool, tag = "2")]
         pub protobuf_pythonic_types_enabled: bool,
+        /// Disables generation of an unversioned Python package for this client
+        /// library. This means that the module names will need to be versioned in
+        /// import statements. For example `import google.cloud.library_v2` instead
+        /// of `import google.cloud.library`.
+        #[prost(bool, tag = "3")]
+        pub unversioned_package_disabled: bool,
     }
 }
 /// Settings for Node client libraries.
@@ -2406,9 +2412,9 @@ pub struct Page {
     /// `[Java][Tutorial.Java]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The Markdown content of the page. You can use <code>&#40;== include {path}
-    /// ==&#41;</code> to include content from a Markdown file. The content can be
-    /// used to produce the documentation page such as HTML format page.
+    /// The Markdown content of the page. You can use ```(== include {path}
+    /// ==)``` to include content from a Markdown file. The content can be used
+    /// to produce the documentation page such as HTML format page.
     #[prost(string, tag = "2")]
     pub content: ::prost::alloc::string::String,
     /// Subpages of this page. The order of subpages specified here will be
@@ -4205,7 +4211,7 @@ pub struct QuotaLimit {
 /// The routing header consists of one or multiple key-value pairs. Every key
 /// and value must be percent-encoded, and joined together in the format of
 /// `key1=value1&key2=value2`.
-/// In the examples below I am skipping the percent-encoding for readablity.
+/// The examples below skip the percent-encoding for readability.
 ///
 /// Example 1
 ///

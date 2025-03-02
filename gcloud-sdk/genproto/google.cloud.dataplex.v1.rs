@@ -4178,7 +4178,8 @@ pub struct Entry {
     /// `{project_id_or_number}.{location_id}.{aspect_type_id}@{path}`
     #[prost(map = "string, message", tag = "9")]
     pub aspects: ::std::collections::HashMap<::prost::alloc::string::String, Aspect>,
-    /// Optional. Immutable. The resource name of the parent entry.
+    /// Optional. Immutable. The resource name of the parent entry, in the format
+    /// `projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}/entries/{entry_id}`.
     #[prost(string, tag = "10")]
     pub parent_entry: ::prost::alloc::string::String,
     /// Optional. A name for the entry that can be referenced by an external
@@ -4759,6 +4760,7 @@ pub struct SearchEntriesRequest {
     pub page_token: ::prost::alloc::string::String,
     /// Optional. Specifies the ordering of results.
     /// Supported values are:
+    ///
     /// * `relevance` (default)
     /// * `last_modified_timestamp`
     /// * `last_modified_timestamp asc`
@@ -5133,6 +5135,10 @@ pub mod metadata_job {
             /// metadata import file are modified. Use this mode to modify a subset of
             /// resources while leaving unreferenced resources unchanged.
             Incremental = 2,
+            /// If entry sync mode is NONE, then the entry-specific fields (apart from
+            /// aspects) are not modified and the aspects are modified according to the
+            /// aspect_sync_mode
+            None = 3,
         }
         impl SyncMode {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -5144,6 +5150,7 @@ pub mod metadata_job {
                     Self::Unspecified => "SYNC_MODE_UNSPECIFIED",
                     Self::Full => "FULL",
                     Self::Incremental => "INCREMENTAL",
+                    Self::None => "NONE",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5152,6 +5159,7 @@ pub mod metadata_job {
                     "SYNC_MODE_UNSPECIFIED" => Some(Self::Unspecified),
                     "FULL" => Some(Self::Full),
                     "INCREMENTAL" => Some(Self::Incremental),
+                    "NONE" => Some(Self::None),
                     _ => None,
                 }
             }
@@ -7615,11 +7623,11 @@ pub struct DataQualityRuleResult {
     /// evaluation, or
     /// * exclude `null` rows from the `evaluated_count`, by setting
     /// `ignore_nulls = true`.
+    ///
+    /// This field is not set for rule SqlAssertion.
     #[prost(int64, tag = "9")]
     pub evaluated_count: i64,
-    /// The number of rows which passed a rule evaluation.
-    ///
-    /// This field is only valid for row-level type rules.
+    /// This field is not set for rule SqlAssertion.
     #[prost(int64, tag = "8")]
     pub passed_count: i64,
     /// The number of rows with null values in the specified column.
@@ -9331,11 +9339,17 @@ pub struct GenerateDataQualityRulesResponse {
 ///
 /// For example:
 ///
-/// * Data Quality: generates queries based on the rules and runs against the
-///    data to get data quality check results.
-/// * Data Profile: analyzes the data in table(s) and generates insights about
+/// * Data quality: generates queries based on the rules and runs against the
+///    data to get data quality check results. For more information, see [Auto
+///    data quality
+///    overview](<https://cloud.google.com/dataplex/docs/auto-data-quality-overview>).
+/// * Data profile: analyzes the data in tables and generates insights about
 ///    the structure, content and relationships (such as null percent,
-///    cardinality, min/max/mean, etc).
+///    cardinality, min/max/mean, etc). For more information, see [About data
+///    profiling](<https://cloud.google.com/dataplex/docs/data-profiling-overview>).
+/// * Data discovery: scans data in Cloud Storage buckets to extract and then
+///    catalog metadata. For more information, see [Discover and catalog Cloud
+///    Storage data](<https://cloud.google.com/bigquery/docs/automatic-discovery>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataScan {
     /// Output only. Identifier. The relative resource name of the scan, of the

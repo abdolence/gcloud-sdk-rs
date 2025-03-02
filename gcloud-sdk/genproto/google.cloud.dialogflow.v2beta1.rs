@@ -1293,7 +1293,7 @@ pub struct SpeechToTextConfig {
     /// information.
     #[prost(bool, tag = "9")]
     pub enable_word_info: bool,
-    /// Use timeout based endpointing, interpreting endpointer sensitivy as
+    /// Use timeout based endpointing, interpreting endpointer sensitivity as
     /// seconds of timeout value.
     #[prost(bool, tag = "11")]
     pub use_timeout_based_endpointing: bool,
@@ -6835,7 +6835,8 @@ pub struct Message {
     /// Output only. The time when the message was created in Contact Center AI.
     #[prost(message, optional, tag = "6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Optional. The time when the message was sent.
+    /// Optional. The time when the message was sent. For voice messages, this is
+    /// the time when an utterance started.
     #[prost(message, optional, tag = "9")]
     pub send_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The annotation for the message.
@@ -7241,8 +7242,8 @@ pub struct AnalyzeContentRequest {
     /// CX agent.
     #[prost(message, optional, tag = "18")]
     pub cx_parameters: ::core::option::Option<::prost_types::Struct>,
-    /// The unique identifier of the CX page to override the `current_page` in the
-    /// session.
+    /// The unique identifier of the Dialogflow CX page to override the
+    /// `current_page` in the session.
     /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
     /// ID>/flows/<Flow ID>/pages/<Page ID>`.
     ///
@@ -7261,6 +7262,7 @@ pub struct AnalyzeContentRequest {
     /// perspective. It is used for identifying the same message under one
     /// participant.
     ///
+    /// For BatchCreateMessages API only:
     /// Given two messages under the same participant:
     /// * If send time are different regardless of whether the content of the
     /// messages are exactly the same, the conversation will regard them as
@@ -7451,8 +7453,8 @@ pub struct StreamingAnalyzeContentRequest {
     /// CX agent.
     #[prost(message, optional, tag = "13")]
     pub cx_parameters: ::core::option::Option<::prost_types::Struct>,
-    /// The unique identifier of the CX page to override the `current_page` in the
-    /// session.
+    /// The unique identifier of the Dialogflow CX page to override the
+    /// `current_page` in the session.
     /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
     /// ID>/flows/<Flow ID>/pages/<Page ID>`.
     ///
@@ -7488,10 +7490,10 @@ pub struct StreamingAnalyzeContentRequest {
     /// <https://cloud.google.com/agent-assist/docs/extended-streaming>
     #[prost(bool, tag = "11")]
     pub enable_extended_streaming: bool,
-    /// Enable partial virtual agent responses. If this flag is not enabled,
-    /// response stream still contains only one final response even if some
-    /// `Fulfillment`s in Dialogflow virtual agent have been configured to return
-    /// partial responses.
+    /// Optional. Enable partial responses from Dialogflow CX agent. If this flag
+    /// is not enabled, response stream still contains only one final response even
+    /// if some `Fulfillment`s in Dialogflow CX agent have been configured to
+    /// return partial responses.
     #[prost(bool, tag = "12")]
     pub enable_partial_automated_agent_reply: bool,
     /// if true, `StreamingAnalyzeContentResponse.debugging_info` will get
@@ -7626,6 +7628,9 @@ pub struct StreamingAnalyzeContentResponse {
     /// `StreamingAnalyzeContentRequest.enable_debugging_info` is set to true.
     #[prost(message, optional, tag = "11")]
     pub debugging_info: ::core::option::Option<CloudConversationDebuggingInfo>,
+    /// The name of the actual Cloud speech model used for speech recognition.
+    #[prost(string, tag = "13")]
+    pub speech_model: ::prost::alloc::string::String,
 }
 /// Represents a part of a message possibly annotated with an entity. The part
 /// can be an entity or purely a part of the message between two entities or
@@ -8209,7 +8214,8 @@ pub mod response_message {
     ///
     /// You may set this, for example:
     ///
-    /// * In the entry fulfillment of a CX Page if entering the page indicates
+    /// * In the entry fulfillment of a Dialogflow CX Page if entering the page
+    /// indicates
     ///    something went extremely wrong in the conversation.
     /// * In a webhook response when you determine that the customer issue can only
     ///    be handled by a human.
@@ -8332,7 +8338,7 @@ pub struct SuggestKnowledgeAssistRequest {
     #[prost(int32, tag = "3")]
     pub context_size: i32,
     /// Optional. The previously suggested query for the given conversation. This
-    /// helps identify whether the next suggestion we generate is resonably
+    /// helps identify whether the next suggestion we generate is reasonably
     /// different from the previous one. This is useful to avoid similar
     /// suggestions within the conversation.
     #[prost(string, tag = "4")]
@@ -9144,7 +9150,7 @@ pub struct AgentAssistantFeedback {
     /// * Suggested document says: "Items must be returned/exchanged within 60
     ///    days of the purchase date."
     /// * Ground truth: "No return or exchange is allowed."
-    /// * \[document_correctness\]: INCORRECT
+    /// * [document_correctness][google.cloud.dialogflow.v2beta1.AgentAssistantFeedback.document_correctness]: [INCORRECT][google.cloud.dialogflow.v2beta1.AgentAssistantFeedback.DocumentCorrectness.INCORRECT]
     #[prost(enumeration = "agent_assistant_feedback::DocumentCorrectness", tag = "2")]
     pub document_correctness: i32,
     /// Optional. Whether or not the suggested document is efficient. For example,
@@ -9375,11 +9381,22 @@ pub struct ListAnswerRecordsRequest {
     /// ID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. Filters to restrict results to specific answer records.
+    /// Optional. Filters to restrict results to specific answer records. The
+    /// expression has the following syntax:
+    ///
+    ///    <field> <operator> <value> \[AND <field> <operator> <value>\] ...
+    ///
+    /// The following fields and operators are supported:
+    /// * conversation_id with equals(=) operator
+    ///
+    /// Examples:
+    ///
+    /// * "conversation_id=bar" matches answer records in the
+    ///    projects/foo/locations/global/conversations/bar conversation
+    ///    (assuming the parent is projects/foo/locations/global).
     ///
     /// For more information about filtering, see
     /// [API Filtering](<https://aip.dev/160>).
-    #[deprecated]
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The maximum number of records to return in a single page.
@@ -11475,9 +11492,57 @@ pub struct Conversation {
     /// Output only. The time the conversation was finished.
     #[prost(message, optional, tag = "6")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The telephony connection information.
+    #[prost(message, optional, tag = "10")]
+    pub telephony_connection_info: ::core::option::Option<
+        conversation::TelephonyConnectionInfo,
+    >,
 }
 /// Nested message and enum types in `Conversation`.
 pub mod conversation {
+    /// The information about phone calls connected via phone gateway to the
+    /// conversation.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TelephonyConnectionInfo {
+        /// Output only. The number dialed to connect this call in E.164 format.
+        #[prost(string, tag = "2")]
+        pub dialed_number: ::prost::alloc::string::String,
+        /// Optional. SDP of the call. It's initially the SDP answer to the endpoint,
+        /// but maybe later updated for the purpose of making the link active, etc.
+        #[prost(string, tag = "5")]
+        pub sdp: ::prost::alloc::string::String,
+        /// Output only. The SIP headers from the initial SIP INVITE.
+        #[prost(message, repeated, tag = "12")]
+        pub sip_headers: ::prost::alloc::vec::Vec<telephony_connection_info::SipHeader>,
+        /// Output only. The mime content from the initial SIP INVITE.
+        #[prost(message, repeated, tag = "13")]
+        pub extra_mime_contents: ::prost::alloc::vec::Vec<
+            telephony_connection_info::MimeContent,
+        >,
+    }
+    /// Nested message and enum types in `TelephonyConnectionInfo`.
+    pub mod telephony_connection_info {
+        /// The SIP headers from the initial SIP INVITE.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct SipHeader {
+            /// Optional. The name of the header.
+            #[prost(string, tag = "1")]
+            pub name: ::prost::alloc::string::String,
+            /// Optional. The value of the header.
+            #[prost(string, tag = "2")]
+            pub value: ::prost::alloc::string::String,
+        }
+        /// The mime content from the initial SIP INVITE.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct MimeContent {
+            /// Optional. The mime type of the content.
+            #[prost(string, tag = "1")]
+            pub mime_type: ::prost::alloc::string::String,
+            /// Optional. The content payload.
+            #[prost(bytes = "vec", tag = "2")]
+            pub content: ::prost::alloc::vec::Vec<u8>,
+        }
+    }
     /// Enumeration of the completion status of the conversation.
     #[derive(
         Clone,
@@ -11523,7 +11588,7 @@ pub mod conversation {
     }
     /// Enumeration of the different conversation stages a conversation can be in.
     /// Reference:
-    /// <https://cloud.google.com/dialogflow/priv/docs/contact-center/basics#stages>
+    /// <https://cloud.google.com/agent-assist/docs/basics#conversation_stages>
     #[derive(
         Clone,
         Copy,
@@ -11574,6 +11639,9 @@ pub mod conversation {
 /// a particular conversation over telephony.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversationPhoneNumber {
+    /// Output only. Desired country code for the phone number.
+    #[prost(int32, tag = "2")]
+    pub country_code: i32,
     /// Output only. The phone number to connect to this conversation.
     #[prost(string, tag = "3")]
     pub phone_number: ::prost::alloc::string::String,
@@ -12022,12 +12090,21 @@ pub mod search_knowledge_request {
         #[prost(message, repeated, tag = "1")]
         pub boost_specs: ::prost::alloc::vec::Vec<search_config::BoostSpecs>,
         /// Optional. Filter specification for data store queries.
+        ///
+        /// Maps from datastore name to the filter expression for that datastore. Do
+        /// not specify more than one FilterSpecs for each datastore name. If
+        /// multiple FilterSpecs are provided for the same datastore name, the
+        /// behavior is undefined.
         #[prost(message, repeated, tag = "2")]
         pub filter_specs: ::prost::alloc::vec::Vec<search_config::FilterSpecs>,
     }
     /// Nested message and enum types in `SearchConfig`.
     pub mod search_config {
         /// Boost specifications for data stores.
+        ///
+        /// Maps from datastore name to their boost configuration. Do not specify
+        /// more than one BoostSpecs for each datastore name. If multiple BoostSpecs
+        /// are provided for the same datastore name, the behavior is undefined.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct BoostSpecs {
             /// Optional. Data Stores where the boosting configuration is applied. The
@@ -12049,7 +12126,7 @@ pub mod search_knowledge_request {
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct BoostSpec {
                 /// Optional. Condition boost specifications. If a document matches
-                /// multiple conditions in the specifictions, boost scores from these
+                /// multiple conditions in the specifications, boost scores from these
                 /// specifications are all applied and combined in a non-linear way.
                 /// Maximum number of specifications is 20.
                 #[prost(message, repeated, tag = "1")]
@@ -12142,8 +12219,21 @@ pub mod search_knowledge_request {
                         /// The control points used to define the curve. The curve defined
                         /// through these control points can only be monotonically increasing
                         /// or decreasing(constant values are acceptable).
-                        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
-                        pub struct ControlPoint {}
+                        #[derive(Clone, PartialEq, ::prost::Message)]
+                        pub struct ControlPoint {
+                            /// Optional. Can be one of:
+                            /// 1. The numerical field value.
+                            /// 2. The duration spec for freshness:
+                            /// The value must be formatted as an XSD `dayTimeDuration` value
+                            /// (a restricted subset of an ISO 8601 duration value). The
+                            /// pattern for this is: `[nD][T[nH][nM][nS]]`.
+                            #[prost(string, tag = "1")]
+                            pub attribute_value: ::prost::alloc::string::String,
+                            /// Optional. The value between -1 to 1 by which to boost the score
+                            /// if the attribute_value evaluates to the value specified above.
+                            #[prost(float, tag = "2")]
+                            pub boost_amount: f32,
+                        }
                         /// The attribute(or function) for which the custom ranking is to be
                         /// applied.
                         #[derive(
@@ -15314,6 +15404,367 @@ pub mod knowledge_bases_client {
                     GrpcMethod::new(
                         "google.cloud.dialogflow.v2beta1.KnowledgeBases",
                         "UpdateKnowledgeBase",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Represents a phone number.
+/// `PhoneNumber` resources enable phone calls to be answered by Dialogflow
+/// services and are added to a project through a
+/// [PhoneNumberOrder][google.cloud.dialogflow.v2beta1.PhoneNumberOrder].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PhoneNumber {
+    /// Optional. The unique identifier of this phone number.
+    /// Required for
+    /// [PhoneNumbers.UpdatePhoneNumber][google.cloud.dialogflow.v2beta1.PhoneNumbers.UpdatePhoneNumber]
+    /// method. Format: `projects/<Project ID>/phoneNumbers/<PhoneNumber ID>`.
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/phoneNumbers/<PhoneNumber ID>`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Phone number in [E.164](<https://en.wikipedia.org/wiki/E.164>)
+    /// format. An example of a correctly formatted phone number: +15556767888.
+    #[prost(string, tag = "2")]
+    pub phone_number: ::prost::alloc::string::String,
+    /// Optional. The conversation profile calls to this `PhoneNumber` should use.
+    /// The project ID here should be the same as the one in
+    /// [name][google.cloud.dialogflow.v2beta1.PhoneNumber.name].
+    /// Format: `projects/<Project ID>/conversationProfiles/<ConversationProfile
+    /// ID>`.
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/conversationProfiles/<ConversationProfile ID>`.
+    #[prost(string, tag = "3")]
+    pub conversation_profile: ::prost::alloc::string::String,
+    /// Output only. The state of the `PhoneNumber`. Defaults to `ACTIVE`.
+    /// `PhoneNumber` objects set to `DELETE_REQUESTED` always decline incoming
+    /// calls and can be removed completely within 30 days.
+    #[prost(enumeration = "phone_number::LifecycleState", tag = "4")]
+    pub lifecycle_state: i32,
+}
+/// Nested message and enum types in `PhoneNumber`.
+pub mod phone_number {
+    /// The states that a `PhoneNumber` can be in.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum LifecycleState {
+        /// This value is never used.
+        Unspecified = 0,
+        /// Number is active and can receive phone calls.
+        Active = 1,
+        /// Number is pending deletion, and cannot receive calls.
+        DeleteRequested = 2,
+    }
+    impl LifecycleState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "LIFECYCLE_STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::DeleteRequested => "DELETE_REQUESTED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LIFECYCLE_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "DELETE_REQUESTED" => Some(Self::DeleteRequested),
+                _ => None,
+            }
+        }
+    }
+}
+/// The request message for
+/// [PhoneNumbers.DeletePhoneNumber][google.cloud.dialogflow.v2beta1.PhoneNumbers.DeletePhoneNumber].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeletePhoneNumberRequest {
+    /// Required. The unique identifier of the `PhoneNumber` to delete.
+    /// Format: `projects/<Project ID>/phoneNumbers/<PhoneNumber ID>`.
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/phoneNumbers/<PhoneNumber ID>`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request message for
+/// [PhoneNumbers.UndeletePhoneNumber][google.cloud.dialogflow.v2beta1.PhoneNumbers.UndeletePhoneNumber].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UndeletePhoneNumberRequest {
+    /// Required. The unique identifier of the `PhoneNumber` to delete.
+    /// Format: `projects/<Project ID>/phoneNumbers/<PhoneNumber ID>`.
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/phoneNumbers/<PhoneNumber ID>`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request message for
+/// [PhoneNumbers.ListPhoneNumbers][google.cloud.dialogflow.v2beta1.PhoneNumbers.ListPhoneNumbers].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListPhoneNumbersRequest {
+    /// Required. The project to list all `PhoneNumber` resources from.
+    /// Format: `projects/<Project ID>`.
+    /// Format: `projects/<Project ID>/locations/<Location ID>`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of items to return in a single page.
+    /// The default value is 100. The maximum value is 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The next_page_token value returned from a previous list request.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Controls whether `PhoneNumber` resources in the
+    /// [DELETE_REQUESTED][google.cloud.dialogflow.v2beta1.PhoneNumber.LifecycleState.DELETE_REQUESTED]
+    /// state should be returned. Defaults to false.
+    #[prost(bool, tag = "4")]
+    pub show_deleted: bool,
+}
+/// The response message for
+/// [PhoneNumbers.ListPhoneNumbers][google.cloud.dialogflow.v2beta1.PhoneNumbers.ListPhoneNumbers].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListPhoneNumbersResponse {
+    /// The list of `PhoneNumber` resources. There is a maximum number of items
+    /// returned based on the page_size field in the request.
+    #[prost(message, repeated, tag = "1")]
+    pub phone_numbers: ::prost::alloc::vec::Vec<PhoneNumber>,
+    /// Token to retrieve the next page of results, or empty if there are no
+    /// more results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The request message for
+/// [PhoneNumbers.UpdatePhoneNumber][google.cloud.dialogflow.v2beta1.PhoneNumbers.UpdatePhoneNumber].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdatePhoneNumberRequest {
+    /// Required. The `PhoneNumber` to update.
+    #[prost(message, optional, tag = "1")]
+    pub phone_number: ::core::option::Option<PhoneNumber>,
+    /// Optional. The mask to control which fields get updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Generated client implementations.
+pub mod phone_numbers_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service for managing
+    /// [PhoneNumbers][google.cloud.dialogflow.v2beta1.PhoneNumber].
+    #[derive(Debug, Clone)]
+    pub struct PhoneNumbersClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl PhoneNumbersClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> PhoneNumbersClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> PhoneNumbersClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            PhoneNumbersClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Returns the list of all phone numbers in the specified project.
+        pub async fn list_phone_numbers(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListPhoneNumbersRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListPhoneNumbersResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2beta1.PhoneNumbers/ListPhoneNumbers",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2beta1.PhoneNumbers",
+                        "ListPhoneNumbers",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the specified `PhoneNumber`.
+        pub async fn update_phone_number(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdatePhoneNumberRequest>,
+        ) -> std::result::Result<tonic::Response<super::PhoneNumber>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2beta1.PhoneNumbers/UpdatePhoneNumber",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2beta1.PhoneNumbers",
+                        "UpdatePhoneNumber",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Requests deletion of a `PhoneNumber`. The `PhoneNumber` is moved into the
+        /// [DELETE_REQUESTED][google.cloud.dialogflow.v2beta1.PhoneNumber.LifecycleState.DELETE_REQUESTED]
+        /// state immediately, and is deleted approximately 30 days later. This method
+        /// may only be called on a `PhoneNumber` in the
+        /// [ACTIVE][google.cloud.dialogflow.v2beta1.PhoneNumber.LifecycleState.ACTIVE]
+        /// state.
+        pub async fn delete_phone_number(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeletePhoneNumberRequest>,
+        ) -> std::result::Result<tonic::Response<super::PhoneNumber>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2beta1.PhoneNumbers/DeletePhoneNumber",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2beta1.PhoneNumbers",
+                        "DeletePhoneNumber",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Cancels the deletion request for a `PhoneNumber`. This method may only be
+        /// called on a `PhoneNumber` in the
+        /// [DELETE_REQUESTED][google.cloud.dialogflow.v2beta1.PhoneNumber.LifecycleState.DELETE_REQUESTED]
+        /// state.
+        pub async fn undelete_phone_number(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UndeletePhoneNumberRequest>,
+        ) -> std::result::Result<tonic::Response<super::PhoneNumber>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2beta1.PhoneNumbers/UndeletePhoneNumber",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2beta1.PhoneNumbers",
+                        "UndeletePhoneNumber",
                     ),
                 );
             self.inner.unary(req, path, codec).await

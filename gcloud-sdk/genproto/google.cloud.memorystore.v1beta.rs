@@ -348,10 +348,12 @@ pub mod instance {
     pub enum Mode {
         /// Mode is not specified.
         Unspecified = 0,
-        /// Instance is in standalone mode.
+        /// Deprecated: Use CLUSTER_DISABLED instead.
         Standalone = 1,
         /// Instance is in cluster mode.
         Cluster = 2,
+        /// Cluster mode is disabled for the instance.
+        ClusterDisabled = 4,
     }
     impl Mode {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -363,6 +365,7 @@ pub mod instance {
                 Self::Unspecified => "MODE_UNSPECIFIED",
                 Self::Standalone => "STANDALONE",
                 Self::Cluster => "CLUSTER",
+                Self::ClusterDisabled => "CLUSTER_DISABLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -371,6 +374,7 @@ pub mod instance {
                 "MODE_UNSPECIFIED" => Some(Self::Unspecified),
                 "STANDALONE" => Some(Self::Standalone),
                 "CLUSTER" => Some(Self::Cluster),
+                "CLUSTER_DISABLED" => Some(Self::ClusterDisabled),
                 _ => None,
             }
         }

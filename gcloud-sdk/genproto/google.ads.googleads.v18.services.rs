@@ -19187,9 +19187,12 @@ pub struct SearchGoogleAdsRequest {
     /// the next page of results.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Number of elements to retrieve in a single page.
-    /// When too large a page is requested, the server may decide to
-    /// further limit the number of returned resources.
+    /// This field is deprecated and will be removed in
+    /// a future version of the API. As of v17, Google Ads API will return a
+    /// `PAGE_SIZE_NOT_SUPPORTED` error if this field is set in the request body.
+    /// See
+    /// <https://ads-developers.googleblog.com/2024/07/upcoming-changes-to-page-size-in-google.html>
+    /// to learn more details.
     #[prost(int32, tag = "4")]
     pub page_size: i32,
     /// If true, the request is validated but not executed.

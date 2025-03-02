@@ -2988,12 +2988,12 @@ pub mod process_options {
             #[prost(bool, tag = "2")]
             pub include_ancestor_headings: bool,
             /// Optional. The number of tokens to group together when evaluating
-            /// semantic similarity.
+            /// semantic similarity. THIS FIELD IS NOT YET USED.
             #[prost(bool, tag = "3")]
             pub semantic_chunking_group_size: bool,
             /// Optional. The percentile of cosine dissimilarity that must be exceeded
             /// between a group of tokens and the next. The smaller this number is, the
-            /// more chunks will be generated.
+            /// more chunks will be generated. THIS FIELD IS NOT YET USED.
             #[prost(int32, tag = "4")]
             pub breakpoint_percentile_threshold: i32,
         }

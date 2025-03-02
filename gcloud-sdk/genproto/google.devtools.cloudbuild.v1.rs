@@ -458,8 +458,9 @@ pub struct Results {
     /// corresponding to build step indices.
     ///
     /// [Cloud Builders](<https://cloud.google.com/cloud-build/docs/cloud-builders>)
-    /// can produce this output by writing to `$BUILDER_OUTPUT/output`.
-    /// Only the first 4KB of data is stored.
+    /// can produce this output by writing to `$BUILDER_OUTPUT/output`. Only the
+    /// first 50KB of data is stored. Note that the `$BUILDER_OUTPUT` variable is
+    /// read-only and can't be substituted.
     #[prost(bytes = "vec", repeated, tag = "6")]
     pub build_step_outputs: ::prost::alloc::vec::Vec<::prost::alloc::vec::Vec<u8>>,
     /// Time to push all non-container artifacts to Cloud Storage.
@@ -648,9 +649,16 @@ pub struct Build {
     /// build.
     #[prost(message, repeated, tag = "49")]
     pub warnings: ::prost::alloc::vec::Vec<build::Warning>,
+    /// Optional. Configuration for git operations.
+    #[prost(message, optional, tag = "48")]
+    pub git_config: ::core::option::Option<GitConfig>,
     /// Output only. Contains information about the build when status=FAILURE.
     #[prost(message, optional, tag = "51")]
     pub failure_info: ::core::option::Option<build::FailureInfo>,
+    /// Optional. Dependencies that the Cloud Build worker will fetch before
+    /// executing user steps.
+    #[prost(message, repeated, tag = "56")]
+    pub dependencies: ::prost::alloc::vec::Vec<Dependency>,
 }
 /// Nested message and enum types in `Build`.
 pub mod build {
@@ -858,6 +866,91 @@ pub mod build {
                 _ => None,
             }
         }
+    }
+}
+/// A dependency that the Cloud Build worker will fetch before executing user
+/// steps.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Dependency {
+    /// The type of dependency to fetch.
+    #[prost(oneof = "dependency::Dep", tags = "1, 2")]
+    pub dep: ::core::option::Option<dependency::Dep>,
+}
+/// Nested message and enum types in `Dependency`.
+pub mod dependency {
+    /// Represents a git repository as a build dependency.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GitSourceDependency {
+        /// Required. The kind of repo (url or dev connect).
+        #[prost(message, optional, tag = "1")]
+        pub repository: ::core::option::Option<GitSourceRepository>,
+        /// Required. The revision that we will fetch the repo at.
+        #[prost(string, tag = "2")]
+        pub revision: ::prost::alloc::string::String,
+        /// Optional. True if submodules should be fetched too (default false).
+        #[prost(bool, tag = "3")]
+        pub recurse_submodules: bool,
+        /// Optional. How much history should be fetched for the build (default 1, -1
+        /// for all history).
+        #[prost(int64, tag = "4")]
+        pub depth: i64,
+        /// Required. Where should the files be placed on the worker.
+        #[prost(string, tag = "5")]
+        pub dest_path: ::prost::alloc::string::String,
+    }
+    /// A repository for a git source.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GitSourceRepository {
+        /// The type of git source repo (url or dev connect).
+        #[prost(oneof = "git_source_repository::Repotype", tags = "1, 2")]
+        pub repotype: ::core::option::Option<git_source_repository::Repotype>,
+    }
+    /// Nested message and enum types in `GitSourceRepository`.
+    pub mod git_source_repository {
+        /// The type of git source repo (url or dev connect).
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Repotype {
+            /// Location of the Git repository.
+            #[prost(string, tag = "1")]
+            Url(::prost::alloc::string::String),
+            /// The Developer Connect Git repository link or the url that matches a
+            /// repository link in the current project, formatted as
+            /// `projects/*/locations/*/connections/*/gitRepositoryLink/*`
+            #[prost(string, tag = "2")]
+            DeveloperConnect(::prost::alloc::string::String),
+        }
+    }
+    /// The type of dependency to fetch.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Dep {
+        /// If set to true disable all dependency fetching (ignoring the default
+        /// source as well).
+        #[prost(bool, tag = "1")]
+        Empty(bool),
+        /// Represents a git repository as a build dependency.
+        #[prost(message, tag = "2")]
+        GitSource(GitSourceDependency),
+    }
+}
+/// GitConfig is a configuration for git operations.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GitConfig {
+    /// Configuration for HTTP related git operations.
+    #[prost(message, optional, tag = "1")]
+    pub http: ::core::option::Option<git_config::HttpConfig>,
+}
+/// Nested message and enum types in `GitConfig`.
+pub mod git_config {
+    /// HttpConfig is a configuration for HTTP related git operations.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct HttpConfig {
+        /// SecretVersion resource of the HTTP proxy URL. The Service Account used in
+        /// the build (either the default Service Account or
+        /// user-specified Service Account) should have
+        /// `secretmanager.versions.access` permissions on this secret. The proxy URL
+        /// should be in format `[protocol://][user\[:password\]@]proxyhost\[:port\]`.
+        #[prost(string, tag = "1")]
+        pub proxy_secret_version_name: ::prost::alloc::string::String,
     }
 }
 /// Artifacts produced by a build that should be uploaded upon
@@ -1723,8 +1816,9 @@ pub struct BuildTrigger {
     pub source_to_build: ::core::option::Option<GitRepoSource>,
     /// The service account used for all user-controlled operations including
     /// UpdateBuildTrigger, RunBuildTrigger, CreateBuild, and CancelBuild.
-    /// If no service account is set, then the standard Cloud Build service account
-    /// (\[PROJECT_NUM\]@system.gserviceaccount.com) will be used instead.
+    /// If no service account is set and the legacy Cloud Build service account
+    /// (`\[PROJECT_NUM\]@cloudbuild.gserviceaccount.com`) is the default for the
+    /// project then it will be used instead.
     /// Format: `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT_ID_OR_EMAIL}`
     #[prost(string, tag = "33")]
     pub service_account: ::prost::alloc::string::String,
@@ -2021,8 +2115,14 @@ pub mod webhook_config {
 /// Requests.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PullRequestFilter {
-    /// Configure builds to run whether a repository owner or collaborator need to
-    /// comment `/gcbrun`.
+    /// If CommentControl is enabled, depending on the setting, builds may not
+    /// fire until a repository writer comments `/gcbrun` on a pull
+    /// request or `/gcbrun` is in the pull request description.
+    /// Only PR comments that contain `/gcbrun` will trigger builds.
+    ///
+    /// If CommentControl is set to disabled, comments with `/gcbrun` from a user
+    /// with repository write permission or above will
+    /// still trigger builds to run.
     #[prost(enumeration = "pull_request_filter::CommentControl", tag = "5")]
     pub comment_control: i32,
     /// If true, branches that do NOT match the git_ref will trigger a build.
@@ -2035,7 +2135,15 @@ pub struct PullRequestFilter {
 }
 /// Nested message and enum types in `PullRequestFilter`.
 pub mod pull_request_filter {
-    /// Controls behavior of Pull Request comments.
+    /// Controls whether or not a `/gcbrun` comment is required from a user with
+    /// repository write permission or above in order to
+    /// trigger Build runs for pull requests. Pull Request update events differ
+    /// between repo types.
+    /// Check repo specific guides
+    /// ([GitHub](<https://cloud.google.com/build/docs/automating-builds/github/build-repos-from-github-enterprise#creating_a_github_enterprise_trigger>),
+    /// [Bitbucket](<https://cloud.google.com/build/docs/automating-builds/bitbucket/build-repos-from-bitbucket-server#creating_a_bitbucket_server_trigger>),
+    /// [GitLab](<https://cloud.google.com/build/docs/automating-builds/gitlab/build-repos-from-gitlab#creating_a_gitlab_trigger>)
+    /// for details.
     #[derive(
         Clone,
         Copy,
@@ -2049,13 +2157,21 @@ pub mod pull_request_filter {
     )]
     #[repr(i32)]
     pub enum CommentControl {
-        /// Do not require comments on Pull Requests before builds are triggered.
+        /// Do not require `/gcbrun` comments from a user with repository write
+        /// permission or above on pull requests before builds are triggered.
+        /// Comments that contain `/gcbrun` will still fire builds so this should
+        /// be thought of as comments not required.
         CommentsDisabled = 0,
-        /// Enforce that repository owners or collaborators must comment on Pull
-        /// Requests before builds are triggered.
+        /// Builds will only fire in response to pull requests if:
+        /// 1. The pull request author has repository write permission or above and
+        /// `/gcbrun` is in the PR description.
+        /// 2. A user with repository writer permissions or above comments `/gcbrun`
+        /// on a pull request authored by any user.
         CommentsEnabled = 1,
-        /// Enforce that repository owners or collaborators must comment on external
-        /// contributors' Pull Requests before builds are triggered.
+        /// Builds will only fire in response to pull requests if:
+        /// 1. The pull request author is a repository writer or above.
+        /// 2. If the author does not have write permissions, a user with write
+        /// permissions or above must comment `/gcbrun` in order to fire a build.
         CommentsEnabledForExternalContributorsOnly = 2,
     }
     impl CommentControl {
@@ -2231,7 +2347,7 @@ pub struct BuildOptions {
     /// "disk free"; some of the space will be used by the operating system and
     /// build utilities. Also note that this is the minimum disk size that will be
     /// allocated for the build -- the build may run with a larger disk than
-    /// requested. At present, the maximum disk size is 2000GB; builds that request
+    /// requested. At present, the maximum disk size is 4000GB; builds that request
     /// more than the maximum are rejected with an error.
     #[prost(int64, tag = "6")]
     pub disk_size_gb: i64,
@@ -2641,6 +2757,8 @@ pub struct ReceiveTriggerWebhookRequest {
 /// ReceiveTriggerWebhook method.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReceiveTriggerWebhookResponse {}
+/// GitHubEnterpriseConfig represents a configuration for a GitHub Enterprise
+/// server.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GitHubEnterpriseConfig {
     /// Optional. The full resource name for the GitHubEnterpriseConfig

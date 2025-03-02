@@ -1681,6 +1681,9 @@ pub mod deletion_metadata {
         CreatorViaApp = 5,
         /// A Chat app deleted the message on behalf of the space owner.
         SpaceOwnerViaApp = 6,
+        /// A member of the space deleted the message. Human users can delete
+        /// messages sent by apps.
+        SpaceMember = 7,
     }
     impl DeletionType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1696,6 +1699,7 @@ pub mod deletion_metadata {
                 Self::AppMessageExpiry => "APP_MESSAGE_EXPIRY",
                 Self::CreatorViaApp => "CREATOR_VIA_APP",
                 Self::SpaceOwnerViaApp => "SPACE_OWNER_VIA_APP",
+                Self::SpaceMember => "SPACE_MEMBER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1708,6 +1712,7 @@ pub mod deletion_metadata {
                 "APP_MESSAGE_EXPIRY" => Some(Self::AppMessageExpiry),
                 "CREATOR_VIA_APP" => Some(Self::CreatorViaApp),
                 "SPACE_OWNER_VIA_APP" => Some(Self::SpaceOwnerViaApp),
+                "SPACE_MEMBER" => Some(Self::SpaceMember),
                 _ => None,
             }
         }
@@ -1723,7 +1728,7 @@ pub struct MatchedUrl {
     pub url: ::prost::alloc::string::String,
 }
 /// A [slash
-/// command](<https://developers.google.com/workspace/chat/slash-commands>) in
+/// command](<https://developers.google.com/workspace/chat/commands>) in
 /// Google Chat.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SlashCommand {
