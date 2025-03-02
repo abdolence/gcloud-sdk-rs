@@ -65,7 +65,7 @@ pub mod advanced_settings {
         /// Timeout before detecting no speech.
         #[prost(message, optional, tag = "2")]
         pub no_speech_timeout: ::core::option::Option<::prost_types::Duration>,
-        /// Use timeout based endpointing, interpreting endpointer sensitivy as
+        /// Use timeout based endpointing, interpreting endpointer sensitivity as
         /// seconds of timeout value.
         #[prost(bool, tag = "3")]
         pub use_timeout_based_endpointing: bool,
@@ -168,7 +168,7 @@ pub struct SpeechWordInfo {
 ///
 /// The client provides this configuration in terms of the durations of those
 /// two phases. The durations are measured in terms of the audio length from the
-/// the start of the input audio.
+/// start of the input audio.
 ///
 /// No-speech event is a response with END_OF_UTTERANCE without any transcript
 /// following up.
@@ -642,6 +642,11 @@ pub struct DataStoreConnection {
     /// `projects/{project}/locations/{location}/dataStores/{data_store}`
     #[prost(string, tag = "2")]
     pub data_store: ::prost::alloc::string::String,
+    /// The document processing mode for the data store connection. Should only be
+    /// set for PUBLIC_WEB and UNSTRUCTURED data stores. If not set it is
+    /// considered as DOCUMENTS, as this is the legacy mode.
+    #[prost(enumeration = "DocumentProcessingMode", tag = "4")]
+    pub document_processing_mode: i32,
 }
 /// Data store connection feature output signals.
 /// Might be only partially field if processing stop before the final answer.
@@ -1012,6 +1017,41 @@ impl DataStoreType {
             "PUBLIC_WEB" => Some(Self::PublicWeb),
             "UNSTRUCTURED" => Some(Self::Unstructured),
             "STRUCTURED" => Some(Self::Structured),
+            _ => None,
+        }
+    }
+}
+/// The document processing mode of the data store.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DocumentProcessingMode {
+    /// Not specified. This should be set for STRUCTURED type data stores. Due to
+    /// legacy reasons this is considered as DOCUMENTS for STRUCTURED and
+    /// PUBLIC_WEB data stores.
+    Unspecified = 0,
+    /// Documents are processed as documents.
+    Documents = 1,
+    /// Documents are converted to chunks.
+    Chunks = 2,
+}
+impl DocumentProcessingMode {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "DOCUMENT_PROCESSING_MODE_UNSPECIFIED",
+            Self::Documents => "DOCUMENTS",
+            Self::Chunks => "CHUNKS",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DOCUMENT_PROCESSING_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+            "DOCUMENTS" => Some(Self::Documents),
+            "CHUNKS" => Some(Self::Chunks),
             _ => None,
         }
     }
@@ -1523,7 +1563,7 @@ pub struct Page {
     /// They route the conversation to another page in the same flow, or another
     /// flow.
     ///
-    /// When we are in a certain page, the TransitionRoutes are evalauted in the
+    /// When we are in a certain page, the TransitionRoutes are evaluated in the
     /// following order:
     ///
     /// *   TransitionRoutes defined in the page with intent specified.
@@ -2579,7 +2619,7 @@ pub struct Flow {
     /// way regardless of the current page. Transition routes defined in the page
     /// have higher priority than those defined in the flow.
     ///
-    /// TransitionRoutes are evalauted in the following order:
+    /// TransitionRoutes are evaluated in the following order:
     ///
     /// *   TransitionRoutes with intent specified.
     /// *   TransitionRoutes with only condition specified.
@@ -3737,6 +3777,14 @@ pub struct Agent {
     pub client_certificate_settings: ::core::option::Option<
         agent::ClientCertificateSettings,
     >,
+    /// Optional. Output only. A read only boolean field reflecting Zone Separation
+    /// status of the agent.
+    #[prost(bool, optional, tag = "45")]
+    pub satisfies_pzs: ::core::option::Option<bool>,
+    /// Optional. Output only. A read only boolean field reflecting Zone Isolation
+    /// status of the agent.
+    #[prost(bool, optional, tag = "46")]
+    pub satisfies_pzi: ::core::option::Option<bool>,
     /// The resource to start the conversations with for the agent.
     #[prost(oneof = "agent::SessionEntryResource", tags = "16, 39")]
     pub session_entry_resource: ::core::option::Option<agent::SessionEntryResource>,
@@ -6012,6 +6060,9 @@ pub struct ToolUse {
     /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.
     #[prost(string, tag = "1")]
     pub tool: ::prost::alloc::string::String,
+    /// Output only. The display name of the tool.
+    #[prost(string, tag = "8")]
+    pub display_name: ::prost::alloc::string::String,
     /// Optional. Name of the action to be called during the tool use.
     #[prost(string, tag = "2")]
     pub action: ::prost::alloc::string::String,
@@ -6030,6 +6081,9 @@ pub struct PlaybookInvocation {
     /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>`.
     #[prost(string, tag = "1")]
     pub playbook: ::prost::alloc::string::String,
+    /// Output only. The display name of the playbook.
+    #[prost(string, tag = "5")]
+    pub display_name: ::prost::alloc::string::String,
     /// Optional. Input of the child playbook invocation.
     #[prost(message, optional, tag = "2")]
     pub playbook_input: ::core::option::Option<PlaybookInput>,
@@ -6048,6 +6102,9 @@ pub struct FlowInvocation {
     /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>`.
     #[prost(string, tag = "1")]
     pub flow: ::prost::alloc::string::String,
+    /// Output only. The display name of the flow.
+    #[prost(string, tag = "7")]
+    pub display_name: ::prost::alloc::string::String,
     /// Optional. A list of input parameters for the flow.
     #[prost(message, optional, tag = "5")]
     pub input_action_parameters: ::core::option::Option<::prost_types::Struct>,
@@ -8042,27 +8099,22 @@ pub struct CloudConversationDebuggingInfo {
 /// [StreamingDetectIntent][google.cloud.dialogflow.cx.v3beta1.Sessions.StreamingDetectIntent]
 /// method.
 ///
-/// Multiple response messages (N) can be returned in order.
-///
-/// The first (N-1) responses set either the `recognition_result` or
-/// `detect_intent_response` field, depending on the request:
+/// Multiple response messages can be returned in order:
 ///
 /// *   If the `StreamingDetectIntentRequest.query_input.audio` field was
-///      set, and the `StreamingDetectIntentRequest.enable_partial_response`
-///      field was false, the `recognition_result` field is populated for each
-///      of the (N-1) responses.
-///      See the
-///      [StreamingRecognitionResult][google.cloud.dialogflow.cx.v3beta1.StreamingRecognitionResult]
-///      message for details about the result message sequence.
+///      set, the first M messages contain `recognition_result`.
+///      Each `recognition_result` represents a more complete transcript of what
+///      the user said. The last `recognition_result` has `is_final` set to
+///      `true`.
 ///
 /// *   If the `StreamingDetectIntentRequest.enable_partial_response` field was
 ///      true, the `detect_intent_response` field is populated for each
-///      of the (N-1) responses, where 1 <= N <= 4.
+///      of the following N responses, where 0 <= N <= 5.
 ///      These responses set the
 ///      [DetectIntentResponse.response_type][google.cloud.dialogflow.cx.v3beta1.DetectIntentResponse.response_type]
 ///      field to `PARTIAL`.
 ///
-/// For the final Nth response message, the `detect_intent_response` is fully
+/// For the last response message, the `detect_intent_response` is fully
 /// populated, and
 /// [DetectIntentResponse.response_type][google.cloud.dialogflow.cx.v3beta1.DetectIntentResponse.response_type]
 /// is set to `FINAL`.
@@ -8328,10 +8380,10 @@ pub struct QueryParameters {
     ///   this list.
     #[prost(string, repeated, tag = "14")]
     pub flow_versions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. Start the session with the specified
-    /// [playbook][google.cloud.dialogflow.cx.v3beta1.Playbook]. You can only
-    /// specify the playbook at the beginning of the session. Otherwise, an error
-    /// will be thrown.
+    /// Optional. The unique identifier of the
+    /// [playbook][google.cloud.dialogflow.cx.v3beta1.Playbook] to start or
+    /// continue the session with. If `current_playbook` is specified, the previous
+    /// state of the session will be ignored by Dialogflow.
     ///
     /// Format:
     /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>`.
@@ -8387,6 +8439,7 @@ pub struct QueryParameters {
     /// request then
     /// DetectIntentResponse.query_result.data_store_connection_signals
     /// will be filled with data that can help evaluations.
+    #[deprecated]
     #[prost(bool, tag = "25")]
     pub populate_data_store_connection_signals: bool,
 }
@@ -8394,9 +8447,18 @@ pub struct QueryParameters {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchConfig {
     /// Optional. Boosting configuration for the datastores.
+    ///
+    /// Maps from datastore name to their boost configuration. Do not specify more
+    /// than one BoostSpecs for each datastore name. If multiple BoostSpecs are
+    /// provided for the same datastore name, the behavior is undefined.
     #[prost(message, repeated, tag = "1")]
     pub boost_specs: ::prost::alloc::vec::Vec<BoostSpecs>,
     /// Optional. Filter configuration for the datastores.
+    ///
+    /// Maps from datastore name to the filter expression for that datastore. Do
+    /// not specify more than one FilterSpecs for each datastore name. If multiple
+    /// FilterSpecs are provided for the same datastore name, the behavior is
+    /// undefined.
     #[prost(message, repeated, tag = "2")]
     pub filter_specs: ::prost::alloc::vec::Vec<FilterSpecs>,
 }
@@ -8407,8 +8469,8 @@ pub struct SearchConfig {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BoostSpec {
     /// Optional. Condition boost specifications. If a document matches multiple
-    /// conditions in the specifictions, boost scores from these specifications are
-    /// all applied and combined in a non-linear way. Maximum number of
+    /// conditions in the specifications, boost scores from these specifications
+    /// are all applied and combined in a non-linear way. Maximum number of
     /// specifications is 20.
     #[prost(message, repeated, tag = "1")]
     pub condition_boost_specs: ::prost::alloc::vec::Vec<boost_spec::ConditionBoostSpec>,
@@ -8820,9 +8882,7 @@ pub struct QueryResult {
     #[prost(bool, tag = "32")]
     pub allow_answer_feedback: bool,
     /// Optional. Data store connection feature output signals.
-    /// Filled only when data stores are involved in serving the query and
-    /// DetectIntentRequest.populate_data_store_connection_signals is set to true
-    /// in the request.
+    /// Filled only when data stores are involved in serving the query.
     #[prost(message, optional, tag = "35")]
     pub data_store_connection_signals: ::core::option::Option<
         DataStoreConnectionSignals,
@@ -9152,7 +9212,7 @@ pub struct FulfillIntentResponse {
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SentimentAnalysisResult {
     /// Sentiment score between -1.0 (negative sentiment) and 1.0 (positive
-    /// sentiment).
+    ///   sentiment).
     #[prost(float, tag = "1")]
     pub score: f32,
     /// A non-negative number in the [0, +inf) range, which represents the absolute
@@ -11367,8 +11427,7 @@ pub mod webhook {
         #[deprecated]
         #[prost(string, tag = "3")]
         pub password: ::prost::alloc::string::String,
-        /// The HTTP request headers to send together with webhook
-        /// requests.
+        /// The HTTP request headers to send together with webhook requests.
         #[prost(map = "string, string", tag = "4")]
         pub request_headers: ::std::collections::HashMap<
             ::prost::alloc::string::String,
@@ -13386,10 +13445,17 @@ pub mod conversation {
         /// The time that the interaction was created.
         #[prost(message, optional, tag = "6")]
         pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Answer feedback for the final response.
+        #[prost(message, optional, tag = "7")]
+        pub answer_feedback: ::core::option::Option<super::AnswerFeedback>,
         /// Missing transition predicted for the interaction. This field is set only
         /// if the interaction match type was no-match.
         #[prost(message, optional, tag = "8")]
         pub missing_transition: ::core::option::Option<interaction::MissingTransition>,
+        /// Metrics associated with different processing steps. Names and number of
+        /// steps depend on the request and can change without a notice.
+        #[prost(message, repeated, tag = "9")]
+        pub step_metrics: ::prost::alloc::vec::Vec<interaction::StepMetrics>,
     }
     /// Nested message and enum types in `Interaction`.
     pub mod interaction {
@@ -13405,6 +13471,16 @@ pub mod conversation {
             /// transition was missed on a given page.
             #[prost(float, tag = "2")]
             pub score: f32,
+        }
+        /// Metrics of each processing step.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct StepMetrics {
+            /// Name of the request processing step.
+            #[prost(string, tag = "1")]
+            pub name: ::prost::alloc::string::String,
+            /// Processing latency of the step.
+            #[prost(message, optional, tag = "2")]
+            pub latency: ::core::option::Option<::prost_types::Duration>,
         }
     }
     /// Represents the type of a conversation.
@@ -15340,7 +15416,8 @@ pub struct Playbook {
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// Required. High level description of the goal the playbook intend to
-    /// accomplish.
+    /// accomplish. A goal should be concise since it's visible to other playbooks
+    /// that may reference this playbook.
     #[prost(string, tag = "3")]
     pub goal: ::prost::alloc::string::String,
     /// Optional. Defined structured input parameters for this playbook.
@@ -15378,6 +15455,13 @@ pub struct Playbook {
     /// Optional. Llm model settings for the playbook.
     #[prost(message, optional, tag = "14")]
     pub llm_model_settings: ::core::option::Option<LlmModelSettings>,
+    /// Optional. Playbook level Settings for speech to text detection.
+    #[prost(message, optional, tag = "20")]
+    pub speech_settings: ::core::option::Option<advanced_settings::SpeechSettings>,
+    /// Optional. A list of registered handlers to execute based on the specified
+    /// triggers.
+    #[prost(message, repeated, tag = "16")]
+    pub handlers: ::prost::alloc::vec::Vec<Handler>,
 }
 /// Nested message and enum types in `Playbook`.
 pub mod playbook {
@@ -15404,6 +15488,11 @@ pub mod playbook {
     /// Message of the Instruction of the playbook.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Instruction {
+        /// General guidelines for the playbook. These are unstructured instructions
+        /// that are not directly part of the goal, e.g. "Always be polite". It's
+        /// valid for this text to be long and used instead of steps altogether.
+        #[prost(string, tag = "1")]
+        pub guidelines: ::prost::alloc::string::String,
         /// Ordered list of step by step execution instructions to accomplish
         /// target goal.
         #[prost(message, repeated, tag = "2")]
@@ -15494,6 +15583,60 @@ pub struct DeletePlaybookVersionRequest {
     /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>/versions/<VersionID>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+}
+/// Handler can be used to define custom logic to be executed based on the
+/// user-specified triggers.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Handler {
+    /// Specifies the type of handler to invoke.
+    #[prost(oneof = "handler::Handler", tags = "1, 3")]
+    pub handler: ::core::option::Option<handler::Handler>,
+}
+/// Nested message and enum types in `Handler`.
+pub mod handler {
+    /// A handler that is triggered by the specified
+    /// [event][google.cloud.dialogflow.cx.v3beta1.Handler.EventHandler.event].
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct EventHandler {
+        /// Required. The name of the event that triggers this handler.
+        #[prost(string, tag = "1")]
+        pub event: ::prost::alloc::string::String,
+        /// Optional. The condition that must be satisfied to trigger this handler.
+        #[prost(string, tag = "3")]
+        pub condition: ::prost::alloc::string::String,
+        /// Required. The fulfillment to call when the event occurs.
+        #[prost(message, optional, tag = "2")]
+        pub fulfillment: ::core::option::Option<super::Fulfillment>,
+    }
+    /// A handler that is triggered on the specific
+    /// [lifecycle_stage][google.cloud.dialogflow.cx.v3beta1.Handler.LifecycleHandler.lifecycle_stage]
+    /// of the playbook execution.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct LifecycleHandler {
+        /// Required. The name of the lifecycle stage that triggers this handler.
+        /// Supported values:
+        /// * `playbook-start`
+        /// * `pre-action-selection`
+        /// * `pre-action-execution`
+        #[prost(string, tag = "1")]
+        pub lifecycle_stage: ::prost::alloc::string::String,
+        /// Optional. The condition that must be satisfied to trigger this handler.
+        #[prost(string, tag = "2")]
+        pub condition: ::prost::alloc::string::String,
+        /// Required. The fulfillment to call when this handler is triggered.
+        #[prost(message, optional, tag = "3")]
+        pub fulfillment: ::core::option::Option<super::Fulfillment>,
+    }
+    /// Specifies the type of handler to invoke.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Handler {
+        /// A handler triggered by event.
+        #[prost(message, tag = "1")]
+        EventHandler(EventHandler),
+        /// A handler triggered during specific lifecycle of the playbook execution.
+        #[prost(message, tag = "3")]
+        LifecycleHandler(LifecycleHandler),
+    }
 }
 /// Generated client implementations.
 pub mod playbooks_client {

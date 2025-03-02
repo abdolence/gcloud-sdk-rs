@@ -109,8 +109,9 @@ pub struct Clustering {
     /// clustering fields should be prioritized from most to least important
     /// for filtering purposes.
     ///
-    /// Additional information on limitations can be found here:
-    /// <https://cloud.google.com/bigquery/docs/creating-clustered-tables#limitations>
+    /// For additional information, see
+    /// [Introduction to clustered
+    /// tables](<https://cloud.google.com/bigquery/docs/clustered-tables#limitations>).
     #[prost(string, repeated, tag = "1")]
     pub fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -143,12 +144,12 @@ pub struct EncryptionConfiguration {
     pub kms_key_name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Options defining open source compatible datasets living in the BigQuery
-/// catalog. Contains metadata of open source database, schema
+/// catalog. Contains metadata of open source database, schema,
 /// or namespace represented by the current dataset.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExternalCatalogDatasetOptions {
     /// Optional. A map of key value pairs defining the parameters and properties
-    /// of the open source schema. Maximum size of 2Mib.
+    /// of the open source schema. Maximum size of 2MiB.
     #[prost(map = "string, string", tag = "1")]
     pub parameters: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -1008,7 +1009,7 @@ pub struct GetDatasetRequest {
     /// version 3. Dataset with no conditional role bindings in access policy may
     /// specify any valid value or leave the field unset.
     ///
-    /// This field will be maped to \[IAM Policy version\]
+    /// This field will be mapped to \[IAM Policy version\]
     /// (<https://cloud.google.com/iam/docs/policies#versions>) and will be used to
     /// fetch policy from IAM.
     ///
@@ -1107,7 +1108,7 @@ pub struct InsertDatasetRequest {
     /// If unset or if 0 or 1 value is used for dataset with conditional
     /// bindings, request will be rejected.
     ///
-    /// This field will be maped to IAM Policy version
+    /// This field will be mapped to IAM Policy version
     /// (<https://cloud.google.com/iam/docs/policies#versions>) and will be used to
     /// set policy in IAM.
     #[prost(int32, tag = "4")]
@@ -1145,7 +1146,7 @@ pub struct UpdateOrPatchDatasetRequest {
     /// If unset or if 0 or 1 value is used for dataset with conditional
     /// bindings, request will be rejected.
     ///
-    /// This field will be maped to IAM Policy version
+    /// This field will be mapped to IAM Policy version
     /// (<https://cloud.google.com/iam/docs/policies#versions>) and will be used to
     /// set policy in IAM.
     #[prost(int32, tag = "5")]
@@ -1184,7 +1185,7 @@ pub struct ListDatasetsRequest {
     pub all: bool,
     /// An expression for filtering the results of the request by label.
     /// The syntax is `labels.<name>\[:<value>\]`.
-    /// Multiple filters can be ANDed together by connecting with a space.
+    /// Multiple filters can be AND-ed together by connecting with a space.
     /// Example: `labels.department:receiving labels.active`.
     /// See [Filtering datasets using
     /// labels](<https://cloud.google.com/bigquery/docs/filtering-labels#filtering_datasets_using_labels>)
@@ -1618,12 +1619,12 @@ pub struct ErrorProto {
     pub message: ::prost::alloc::string::String,
 }
 /// Metadata about open source compatible table. The fields contained in
-/// these options correspond to hive metastore's table level properties.
+/// these options correspond to Hive metastore's table-level properties.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExternalCatalogTableOptions {
-    /// Optional. A map of key value pairs defining the parameters and properties
-    /// of the open source table. Corresponds with hive meta store table
-    /// parameters. Maximum size of 4Mib.
+    /// Optional. A map of the key-value pairs defining the parameters and
+    /// properties of the open source table. Corresponds with Hive metastore table
+    /// parameters. Maximum size of 4MiB.
     #[prost(map = "string, string", tag = "1")]
     pub parameters: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -1633,10 +1634,10 @@ pub struct ExternalCatalogTableOptions {
     /// storage of this table.
     #[prost(message, optional, tag = "2")]
     pub storage_descriptor: ::core::option::Option<StorageDescriptor>,
-    /// Optional. The connection specifying the credentials to be used to read
-    /// external storage, such as Azure Blob, Cloud Storage, or S3. The connection
-    /// is needed to read the open source table from BigQuery Engine. The
-    /// connection_id can have the form
+    /// Optional. A connection ID that specifies the credentials to be used to read
+    /// external storage, such as Azure Blob, Cloud Storage, or Amazon S3. This
+    /// connection is needed to read the open source table from BigQuery. The
+    /// connection_id format must be either
     /// `<project_id>.<location_id>.<connection_id>` or
     /// `projects/<project_id>/locations/<location_id>/connections/<connection_id>`.
     #[prost(string, tag = "3")]
@@ -1793,7 +1794,7 @@ pub struct HivePartitioningOptions {
 #[repr(i32)]
 pub enum JsonExtension {
     /// The default if provided value is not one included in the enum, or the value
-    /// is not specified. The source formate is parsed without any modification.
+    /// is not specified. The source format is parsed without any modification.
     Unspecified = 0,
     /// Use GeoJSON variant of JSON. See <https://tools.ietf.org/html/rfc7946.>
     Geojson = 1,
@@ -2234,7 +2235,7 @@ pub struct ExternalDataConfiguration {
     /// * (39,9) -> BIGNUMERIC (NUMERIC cannot hold 30 integer digits);
     /// * (38,10) -> BIGNUMERIC (NUMERIC cannot hold 10 fractional digits);
     /// * (76,38) -> BIGNUMERIC;
-    /// * (77,38) -> BIGNUMERIC (error if value exeeds supported range).
+    /// * (77,38) -> BIGNUMERIC (error if value exceeds supported range).
     ///
     /// This field cannot contain duplicate types. The order of the types in this
     /// field is ignored. For example, \["BIGNUMERIC", "NUMERIC"\] is the same as
@@ -2980,6 +2981,12 @@ pub struct JobConfigurationQuery {
     /// general usage.
     #[prost(message, optional, tag = "36")]
     pub continuous: ::core::option::Option<bool>,
+    /// Optional. This is only supported for a SELECT query using a temporary
+    /// table. If set, the query is allowed to write results incrementally to the
+    /// temporary result table. This may incur a performance penalty. This option
+    /// cannot be used with Legacy SQL. This feature is not yet available.
+    #[prost(bool, tag = "37")]
+    pub write_incremental_results: bool,
 }
 /// Options related to script execution.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -3296,7 +3303,7 @@ pub struct JobConfigurationLoad {
     /// * (39,9) -> BIGNUMERIC (NUMERIC cannot hold 30 integer digits);
     /// * (38,10) -> BIGNUMERIC (NUMERIC cannot hold 10 fractional digits);
     /// * (76,38) -> BIGNUMERIC;
-    /// * (77,38) -> BIGNUMERIC (error if value exeeds supported range).
+    /// * (77,38) -> BIGNUMERIC (error if value exceeds supported range).
     ///
     /// This field cannot contain duplicate types. The order of the types in this
     /// field is ignored. For example, \["BIGNUMERIC", "NUMERIC"\] is the same as
@@ -4260,7 +4267,7 @@ pub mod model {
             /// The F1 score is an average of recall and precision. For multiclass this
             /// is a macro-averaged metric.
             F1Score = 10,
-            /// Logorithmic Loss. For multiclass this is a macro-averaged metric.
+            /// Logarithmic Loss. For multiclass this is a macro-averaged metric.
             LogLoss = 11,
             /// Area Under an ROC Curve. For multiclass this is a macro-averaged
             /// metric.
@@ -4372,7 +4379,7 @@ pub mod model {
         pub accuracy: ::core::option::Option<f64>,
         /// Threshold at which the metrics are computed. For binary
         /// classification models this is the positive class threshold.
-        /// For multi-class classfication models this is the confidence
+        /// For multi-class classification models this is the confidence
         /// threshold.
         #[prost(message, optional, tag = "4")]
         pub threshold: ::core::option::Option<f64>,
@@ -5030,7 +5037,7 @@ pub mod model {
             /// rows (from smallest to largest) in the corresponding column are used
             /// as training data, and the rest are eval data. It respects the order
             /// in Orderable data types:
-            /// <https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#data-type-properties>
+            /// <https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#data_type_properties>
             #[prost(string, tag = "12")]
             pub data_split_column: ::prost::alloc::string::String,
             /// The strategy to determine learn rate for the current iteration.
@@ -5184,6 +5191,15 @@ pub mod model {
             pub time_series_id_columns: ::prost::alloc::vec::Vec<
                 ::prost::alloc::string::String,
             >,
+            /// The forecast limit lower bound that was used during ARIMA model
+            /// training with limits. To see more details of the algorithm:
+            /// <https://otexts.com/fpp2/limits.html>
+            #[prost(double, tag = "99")]
+            pub forecast_limit_lower_bound: f64,
+            /// The forecast limit upper bound that was used during ARIMA model
+            /// training with limits.
+            #[prost(double, tag = "100")]
+            pub forecast_limit_upper_bound: f64,
             /// The number of periods ahead that need to be forecasted.
             #[prost(int64, tag = "44")]
             pub horizon: i64,
@@ -6291,7 +6307,7 @@ pub mod model {
         Us = 65,
         /// Venezuela
         Ve = 66,
-        /// Viet Nam
+        /// Vietnam
         Vn = 67,
         /// South Africa
         Za = 68,
@@ -7541,6 +7557,108 @@ pub mod index_unused_reason {
         }
     }
 }
+/// Indicates the stored columns usage in the query.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StoredColumnsUsage {
+    /// Specifies whether the query was accelerated with stored columns.
+    #[prost(bool, optional, tag = "1")]
+    pub is_query_accelerated: ::core::option::Option<bool>,
+    /// Specifies the base table.
+    #[prost(message, optional, tag = "2")]
+    pub base_table: ::core::option::Option<TableReference>,
+    /// If stored columns were not used, explain why.
+    #[prost(message, repeated, tag = "3")]
+    pub stored_columns_unused_reasons: ::prost::alloc::vec::Vec<
+        stored_columns_usage::StoredColumnsUnusedReason,
+    >,
+}
+/// Nested message and enum types in `StoredColumnsUsage`.
+pub mod stored_columns_usage {
+    /// If the stored column was not used, explain why.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct StoredColumnsUnusedReason {
+        /// Specifies the high-level reason for the unused scenario, each reason must
+        /// have a code associated.
+        #[prost(enumeration = "stored_columns_unused_reason::Code", optional, tag = "1")]
+        pub code: ::core::option::Option<i32>,
+        /// Specifies the detailed description for the scenario.
+        #[prost(string, optional, tag = "2")]
+        pub message: ::core::option::Option<::prost::alloc::string::String>,
+        /// Specifies which columns were not covered by the stored columns for the
+        /// specified code up to 20 columns. This is populated when the code is
+        /// STORED_COLUMNS_COVER_INSUFFICIENT and BASE_TABLE_HAS_CLS.
+        #[prost(string, repeated, tag = "3")]
+        pub uncovered_columns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// Nested message and enum types in `StoredColumnsUnusedReason`.
+    pub mod stored_columns_unused_reason {
+        /// Indicates the high-level reason for the scenario when stored columns
+        /// cannot be used in the query.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Code {
+            /// Default value.
+            Unspecified = 0,
+            /// If stored columns do not fully cover the columns.
+            StoredColumnsCoverInsufficient = 1,
+            /// If the base table has RLS (Row Level Security).
+            BaseTableHasRls = 2,
+            /// If the base table has CLS (Column Level Security).
+            BaseTableHasCls = 3,
+            /// If the provided prefilter is not supported.
+            UnsupportedPrefilter = 4,
+            /// If an internal error is preventing stored columns from being used.
+            InternalError = 5,
+            /// Indicates that the reason stored columns cannot be used in the query is
+            /// not covered by any of the other StoredColumnsUnusedReason options.
+            OtherReason = 6,
+        }
+        impl Code {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "CODE_UNSPECIFIED",
+                    Self::StoredColumnsCoverInsufficient => {
+                        "STORED_COLUMNS_COVER_INSUFFICIENT"
+                    }
+                    Self::BaseTableHasRls => "BASE_TABLE_HAS_RLS",
+                    Self::BaseTableHasCls => "BASE_TABLE_HAS_CLS",
+                    Self::UnsupportedPrefilter => "UNSUPPORTED_PREFILTER",
+                    Self::InternalError => "INTERNAL_ERROR",
+                    Self::OtherReason => "OTHER_REASON",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "STORED_COLUMNS_COVER_INSUFFICIENT" => {
+                        Some(Self::StoredColumnsCoverInsufficient)
+                    }
+                    "BASE_TABLE_HAS_RLS" => Some(Self::BaseTableHasRls),
+                    "BASE_TABLE_HAS_CLS" => Some(Self::BaseTableHasCls),
+                    "UNSUPPORTED_PREFILTER" => Some(Self::UnsupportedPrefilter),
+                    "INTERNAL_ERROR" => Some(Self::InternalError),
+                    "OTHER_REASON" => Some(Self::OtherReason),
+                    _ => None,
+                }
+            }
+        }
+    }
+}
 /// Statistics for a search query.
 /// Populated as part of JobStatistics2.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -7621,6 +7739,10 @@ pub struct VectorSearchStatistics {
     /// `indexUsageMode` is `FULLY_USED`, this field is not populated.
     #[prost(message, repeated, tag = "2")]
     pub index_unused_reasons: ::prost::alloc::vec::Vec<IndexUnusedReason>,
+    /// Specifies the usage of stored columns in the query when stored columns are
+    /// used in the query.
+    #[prost(message, repeated, tag = "3")]
+    pub stored_columns_usages: ::prost::alloc::vec::Vec<StoredColumnsUsage>,
 }
 /// Nested message and enum types in `VectorSearchStatistics`.
 pub mod vector_search_statistics {
@@ -7795,7 +7917,7 @@ pub struct JobStatistics2 {
     /// [`INSERT`](<https://cloud.google.com/bigquery/docs/reference/standard-sql/dml-syntax#insert_statement>)
     /// statement.
     /// * `UPDATE`:
-    /// [`UPDATE`](<https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#update_statement>)
+    /// [`UPDATE`](<https://cloud.google.com/bigquery/docs/reference/standard-sql/dml-syntax#update_statement>)
     /// statement.
     /// * `DELETE`:
     /// [`DELETE`](<https://cloud.google.com/bigquery/docs/reference/standard-sql/data-manipulation-language>)
@@ -7807,7 +7929,7 @@ pub struct JobStatistics2 {
     /// TABLE`](<https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_table_statement>)
     /// statement, without `AS SELECT`.
     /// * `CREATE_TABLE_AS_SELECT`: [`CREATE TABLE AS
-    /// SELECT`](<https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#query_statement>)
+    /// SELECT`](<https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_table_statement>)
     /// statement.
     /// * `CREATE_VIEW`: [`CREATE
     /// VIEW`](<https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#create_view_statement>)
@@ -7885,7 +8007,7 @@ pub struct JobStatistics2 {
     /// VIEW`](<https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#alter_materialized_view_set_options_statement>)
     /// statement.
     /// * `ALTER_SCHEMA`: [`ALTER
-    /// SCHEMA`](<https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#aalter_schema_set_options_statement>)
+    /// SCHEMA`](<https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#alter_schema_set_options_statement>)
     /// statement.
     /// * `SCRIPT`:
     /// [`SCRIPT`](<https://cloud.google.com/bigquery/docs/reference/standard-sql/procedural-language>).
@@ -8565,7 +8687,7 @@ pub mod materialized_view {
         BaseTableTruncated = 3,
         /// View is invalidated because of a data change in one or more base tables.
         /// It could be any recent change if the
-        /// [`max_staleness`](<https://cloud.google.com/bigquery/docs/materialized-views-create#max_staleness>)
+        /// [`maxStaleness`](<https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#Table.FIELDS.max_staleness>)
         /// option is not set for the view, or otherwise any change outside of the
         /// staleness window.
         BaseTableDataChange = 4,
@@ -8740,7 +8862,7 @@ pub enum ReservationEdition {
     Standard = 1,
     /// Enterprise edition.
     Enterprise = 2,
-    /// Enterprise plus edition.
+    /// Enterprise Plus edition.
     EnterprisePlus = 3,
 }
 impl ReservationEdition {
@@ -8834,16 +8956,15 @@ pub struct CancelJobRequest {
     /// Required. Job ID of the job to cancel
     #[prost(string, tag = "2")]
     pub job_id: ::prost::alloc::string::String,
-    /// The geographic location of the job. You must specify the location to run
-    /// the job for the following scenarios:
+    /// The geographic location of the job. You must
+    /// [specify the
+    /// location](<https://cloud.google.com/bigquery/docs/locations#specify_locations>)
+    /// to run the job for the following scenarios:
     ///
     /// * If the location to run a job is not in the `us` or
     ///    the `eu` multi-regional location
     /// * If the job's location is in a single region (for example,
     ///    `us-central1`)
-    ///
-    /// For more information, see
-    /// <https://cloud.google.com/bigquery/docs/locations#specifying_your_location.>
     #[prost(string, tag = "3")]
     pub location: ::prost::alloc::string::String,
 }
@@ -8874,8 +8995,9 @@ pub struct GetJobRequest {
     /// * If the job's location is in a single region (for example,
     ///    `us-central1`)
     ///
-    /// For more information, see
-    /// <https://cloud.google.com/bigquery/docs/locations#specifying_your_location.>
+    /// For more information, see how to
+    /// [specify
+    /// locations](<https://cloud.google.com/bigquery/docs/locations#specify_locations>).
     #[prost(string, tag = "3")]
     pub location: ::prost::alloc::string::String,
 }
@@ -8902,8 +9024,10 @@ pub struct DeleteJobRequest {
     #[prost(string, tag = "2")]
     pub job_id: ::prost::alloc::string::String,
     /// The geographic location of the job. Required.
-    /// See details at:
-    /// <https://cloud.google.com/bigquery/docs/locations#specifying_your_location.>
+    ///
+    /// For more information, see how to
+    /// [specify
+    /// locations](<https://cloud.google.com/bigquery/docs/locations#specify_locations>).
     #[prost(string, tag = "3")]
     pub location: ::prost::alloc::string::String,
 }
@@ -9131,8 +9255,9 @@ pub struct GetQueryResultsRequest {
     /// * If the job's location is in a single region (for example,
     /// `us-central1`)
     ///
-    /// For more information, see
-    /// <https://cloud.google.com/bigquery/docs/locations#specifying_your_location.>
+    /// For more information, see how to
+    /// [specify
+    /// locations](<https://cloud.google.com/bigquery/docs/locations#specify_locations>).
     #[prost(string, tag = "7")]
     pub location: ::prost::alloc::string::String,
     /// Optional. Output format adjustments.
@@ -9275,8 +9400,10 @@ pub struct QueryRequest {
     /// Query parameters for GoogleSQL queries.
     #[prost(message, repeated, tag = "12")]
     pub query_parameters: ::prost::alloc::vec::Vec<QueryParameter>,
-    /// The geographic location where the job should run. See details at
-    /// <https://cloud.google.com/bigquery/docs/locations#specifying_your_location.>
+    /// The geographic location where the job should run.
+    /// For more information, see how to
+    /// [specify
+    /// locations](<https://cloud.google.com/bigquery/docs/locations#specify_locations>).
     #[prost(string, tag = "13")]
     pub location: ::prost::alloc::string::String,
     /// Optional. Output format adjustments.
@@ -9348,6 +9475,12 @@ pub struct QueryRequest {
     /// [Preview](<https://cloud.google.com/products/#product-launch-stages>)
     #[prost(enumeration = "query_request::JobCreationMode", tag = "22")]
     pub job_creation_mode: i32,
+    /// Optional. This is only supported for SELECT query. If set, the query is
+    /// allowed to write results incrementally to the temporary result table. This
+    /// may incur a performance penalty. This option cannot be used with Legacy
+    /// SQL. This feature is not yet available.
+    #[prost(bool, tag = "25")]
+    pub write_incremental_results: bool,
 }
 /// Nested message and enum types in `QueryRequest`.
 pub mod query_request {
@@ -9429,6 +9562,12 @@ pub struct QueryResponse {
     /// [Preview](<https://cloud.google.com/products/#product-launch-stages>)
     #[prost(string, tag = "14")]
     pub query_id: ::prost::alloc::string::String,
+    /// Output only. The geographic location of the query.
+    ///
+    /// For more information about BigQuery locations, see:
+    /// <https://cloud.google.com/bigquery/docs/locations>
+    #[prost(string, tag = "18")]
+    pub location: ::prost::alloc::string::String,
     /// The total number of rows in the complete query result set, which can be
     /// more than the number of rows in this single page of results.
     #[prost(message, optional, tag = "4")]
@@ -9451,6 +9590,15 @@ pub struct QueryResponse {
     /// run.
     #[prost(message, optional, tag = "7")]
     pub total_bytes_processed: ::core::option::Option<i64>,
+    /// Output only. If the project is configured to use on-demand pricing,
+    /// then this field contains the total bytes billed for the job.
+    /// If the project is configured to use flat-rate pricing, then you are
+    /// not billed for bytes and this field is informational only.
+    #[prost(int64, optional, tag = "16")]
+    pub total_bytes_billed: ::core::option::Option<i64>,
+    /// Output only. Number of slot ms the user is actually billed for.
+    #[prost(int64, optional, tag = "17")]
+    pub total_slot_ms: ::core::option::Option<i64>,
     /// Whether the query has completed or not. If rows or totalRows are present,
     /// this will always be true. If this is false, totalRows will not be
     /// available.
@@ -9478,6 +9626,19 @@ pub struct QueryResponse {
     /// MERGE or TRUNCATE.
     #[prost(message, optional, tag = "13")]
     pub dml_stats: ::core::option::Option<DmlStats>,
+    /// Output only. Creation time of this query, in milliseconds since the epoch.
+    /// This field will be present on all queries.
+    #[prost(int64, optional, tag = "19")]
+    pub creation_time: ::core::option::Option<i64>,
+    /// Output only. Start time of this query, in milliseconds since the epoch.
+    /// This field will be present when the query job transitions from the PENDING
+    /// state to either RUNNING or DONE.
+    #[prost(int64, optional, tag = "20")]
+    pub start_time: ::core::option::Option<i64>,
+    /// Output only. End time of this query, in milliseconds since the epoch. This
+    /// field will be present whenever a query job is in the DONE state.
+    #[prost(int64, optional, tag = "21")]
+    pub end_time: ::core::option::Option<i64>,
 }
 /// Generated client implementations.
 pub mod job_service_client {
@@ -9776,6 +9937,39 @@ pub struct LocationMetadata {
     /// This is for any API consumers that need the legacy “US” and “EU” locations.
     #[prost(string, tag = "1")]
     pub legacy_location_id: ::prost::alloc::string::String,
+}
+/// The classification of managed table types that can be created.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ManagedTableType {
+    /// No managed table type specified.
+    Unspecified = 0,
+    /// The managed table is a native BigQuery table.
+    Native = 1,
+    /// The managed table is a BigQuery table for Apache Iceberg.
+    Iceberg = 2,
+}
+impl ManagedTableType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "MANAGED_TABLE_TYPE_UNSPECIFIED",
+            Self::Native => "NATIVE",
+            Self::Iceberg => "ICEBERG",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "MANAGED_TABLE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "NATIVE" => Some(Self::Native),
+            "ICEBERG" => Some(Self::Iceberg),
+            _ => None,
+        }
+    }
 }
 /// The partitioning information, which includes managed table, external table
 /// and metastore partitioned table partition information.
@@ -10513,7 +10707,7 @@ pub mod routine {
     /// JavaScript UDF determinism levels.
     ///
     /// If all JavaScript UDFs are DETERMINISTIC, the query result is
-    /// potentially cachable (see below). If any JavaScript UDF is
+    /// potentially cacheable (see below). If any JavaScript UDF is
     /// NOT_DETERMINISTIC, the query result is not cacheable.
     ///
     /// Even if a JavaScript UDF is deterministic, many other factors can prevent
@@ -11113,6 +11307,99 @@ pub struct ListRowAccessPoliciesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// Request message for the GetRowAccessPolicy method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetRowAccessPolicyRequest {
+    /// Required. Project ID of the table to get the row access policy.
+    #[prost(string, tag = "1")]
+    pub project_id: ::prost::alloc::string::String,
+    /// Required. Dataset ID of the table to get the row access policy.
+    #[prost(string, tag = "2")]
+    pub dataset_id: ::prost::alloc::string::String,
+    /// Required. Table ID of the table to get the row access policy.
+    #[prost(string, tag = "3")]
+    pub table_id: ::prost::alloc::string::String,
+    /// Required. Policy ID of the row access policy.
+    #[prost(string, tag = "4")]
+    pub policy_id: ::prost::alloc::string::String,
+}
+/// Request message for the CreateRowAccessPolicy method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateRowAccessPolicyRequest {
+    /// Required. Project ID of the table to get the row access policy.
+    #[prost(string, tag = "1")]
+    pub project_id: ::prost::alloc::string::String,
+    /// Required. Dataset ID of the table to get the row access policy.
+    #[prost(string, tag = "2")]
+    pub dataset_id: ::prost::alloc::string::String,
+    /// Required. Table ID of the table to get the row access policy.
+    #[prost(string, tag = "3")]
+    pub table_id: ::prost::alloc::string::String,
+    /// Required. The row access policy to create.
+    #[prost(message, optional, tag = "4")]
+    pub row_access_policy: ::core::option::Option<RowAccessPolicy>,
+}
+/// Request message for the UpdateRowAccessPolicy method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateRowAccessPolicyRequest {
+    /// Required. Project ID of the table to get the row access policy.
+    #[prost(string, tag = "1")]
+    pub project_id: ::prost::alloc::string::String,
+    /// Required. Dataset ID of the table to get the row access policy.
+    #[prost(string, tag = "2")]
+    pub dataset_id: ::prost::alloc::string::String,
+    /// Required. Table ID of the table to get the row access policy.
+    #[prost(string, tag = "3")]
+    pub table_id: ::prost::alloc::string::String,
+    /// Required. Policy ID of the row access policy.
+    #[prost(string, tag = "4")]
+    pub policy_id: ::prost::alloc::string::String,
+    /// Required. The row access policy to update.
+    #[prost(message, optional, tag = "5")]
+    pub row_access_policy: ::core::option::Option<RowAccessPolicy>,
+}
+/// Request message for the DeleteRowAccessPolicy method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteRowAccessPolicyRequest {
+    /// Required. Project ID of the table to delete the row access policy.
+    #[prost(string, tag = "1")]
+    pub project_id: ::prost::alloc::string::String,
+    /// Required. Dataset ID of the table to delete the row access policy.
+    #[prost(string, tag = "2")]
+    pub dataset_id: ::prost::alloc::string::String,
+    /// Required. Table ID of the table to delete the row access policy.
+    #[prost(string, tag = "3")]
+    pub table_id: ::prost::alloc::string::String,
+    /// Required. Policy ID of the row access policy.
+    #[prost(string, tag = "4")]
+    pub policy_id: ::prost::alloc::string::String,
+    /// If set to true, it deletes the row access policy even if it's the last row
+    /// access policy on the table and the deletion will widen the access rather
+    /// narrowing it.
+    #[prost(bool, optional, tag = "5")]
+    pub force: ::core::option::Option<bool>,
+}
+/// Request message for the BatchDeleteRowAccessPoliciesRequest method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchDeleteRowAccessPoliciesRequest {
+    /// Required. Project ID of the table to delete the row access policies.
+    #[prost(string, tag = "1")]
+    pub project_id: ::prost::alloc::string::String,
+    /// Required. Dataset ID of the table to delete the row access policies.
+    #[prost(string, tag = "2")]
+    pub dataset_id: ::prost::alloc::string::String,
+    /// Required. Table ID of the table to delete the row access policies.
+    #[prost(string, tag = "3")]
+    pub table_id: ::prost::alloc::string::String,
+    /// Required. Policy IDs of the row access policies.
+    #[prost(string, repeated, tag = "4")]
+    pub policy_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// If set to true, it deletes the row access policy even if it's the last row
+    /// access policy on the table and the deletion will widen the access rather
+    /// narrowing it.
+    #[prost(bool, optional, tag = "5")]
+    pub force: ::core::option::Option<bool>,
+}
 /// Represents access on a subset of rows on the specified table, defined by its
 /// filter predicate. Access to the subset of rows is controlled by its IAM
 /// policy.
@@ -11144,6 +11431,31 @@ pub struct RowAccessPolicy {
     /// milliseconds since the epoch.
     #[prost(message, optional, tag = "5")]
     pub last_modified_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Input only. The optional list of iam_member users or groups that
+    /// specifies the initial members that the row-level access policy should be
+    /// created with.
+    ///
+    /// grantees types:
+    /// - "user:alice@example.com": An email address that represents a specific
+    /// Google account.
+    /// - "serviceAccount:my-other-app@appspot.gserviceaccount.com": An email
+    /// address that represents a service account.
+    /// - "group:admins@example.com": An email address that represents a Google
+    /// group.
+    /// - "domain:example.com":The Google Workspace domain (primary) that
+    /// represents all the users of that domain.
+    /// - "allAuthenticatedUsers": A special identifier that represents all service
+    /// accounts and all users on the internet who have authenticated with a Google
+    /// Account. This identifier includes accounts that aren't connected to a
+    /// Google Workspace or Cloud Identity domain, such as personal Gmail accounts.
+    /// Users who aren't authenticated, such as anonymous visitors, aren't
+    /// included.
+    /// - "allUsers":A special identifier that represents anyone who is on
+    /// the internet, including authenticated and unauthenticated users. Because
+    /// BigQuery requires authentication before a user can access the service,
+    /// allUsers includes only authenticated users.
+    #[prost(string, repeated, tag = "6")]
+    pub grantees: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Generated client implementations.
 pub mod row_access_policy_service_client {
@@ -11265,6 +11577,150 @@ pub mod row_access_policy_service_client {
                     GrpcMethod::new(
                         "google.cloud.bigquery.v2.RowAccessPolicyService",
                         "ListRowAccessPolicies",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the specified row access policy by policy ID.
+        pub async fn get_row_access_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetRowAccessPolicyRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::RowAccessPolicy>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.v2.RowAccessPolicyService/GetRowAccessPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.v2.RowAccessPolicyService",
+                        "GetRowAccessPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a row access policy.
+        pub async fn create_row_access_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateRowAccessPolicyRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::RowAccessPolicy>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.v2.RowAccessPolicyService/CreateRowAccessPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.v2.RowAccessPolicyService",
+                        "CreateRowAccessPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a row access policy.
+        pub async fn update_row_access_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateRowAccessPolicyRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::RowAccessPolicy>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.v2.RowAccessPolicyService/UpdateRowAccessPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.v2.RowAccessPolicyService",
+                        "UpdateRowAccessPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a row access policy.
+        pub async fn delete_row_access_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteRowAccessPolicyRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.v2.RowAccessPolicyService/DeleteRowAccessPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.v2.RowAccessPolicyService",
+                        "DeleteRowAccessPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes provided row access policies.
+        pub async fn batch_delete_row_access_policies(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchDeleteRowAccessPoliciesRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.v2.RowAccessPolicyService/BatchDeleteRowAccessPolicies",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.bigquery.v2.RowAccessPolicyService",
+                        "BatchDeleteRowAccessPolicies",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -11421,7 +11877,7 @@ pub struct ViewDefinition {
     /// Can only be set for GoogleSQL views.
     #[prost(bool, tag = "4")]
     pub use_explicit_column_names: bool,
-    /// Optional. Specifices the privacy policy for the view.
+    /// Optional. Specifies the privacy policy for the view.
     #[prost(message, optional, tag = "5")]
     pub privacy_policy: ::core::option::Option<PrivacyPolicy>,
     /// Optional. Foreign view representations.
@@ -11458,7 +11914,10 @@ pub struct MaterializedViewDefinition {
     #[prost(message, optional, tag = "4")]
     pub refresh_interval_ms: ::core::option::Option<u64>,
     /// Optional. This option declares the intention to construct a materialized
-    /// view that isn't refreshed incrementally.
+    /// view that isn't refreshed incrementally. Non-incremental materialized views
+    /// support an expanded range of SQL queries. The
+    /// `allow_non_incremental_definition` option can't be changed after the
+    /// materialized view is created.
     #[prost(message, optional, tag = "6")]
     pub allow_non_incremental_definition: ::core::option::Option<bool>,
 }
@@ -11637,6 +12096,10 @@ pub struct Table {
     /// Optional. Specifies the configuration of a BigLake managed table.
     #[prost(message, optional, tag = "45")]
     pub biglake_configuration: ::core::option::Option<BigLakeConfiguration>,
+    /// Optional. If set, overrides the default managed table type configured in
+    /// the dataset.
+    #[prost(enumeration = "ManagedTableType", tag = "55")]
+    pub managed_table_type: i32,
     /// Output only. The geographic location where the table resides. This value
     /// is inherited from the dataset.
     #[prost(string, tag = "20")]
@@ -11908,7 +12371,7 @@ pub struct ListFormatView {
     /// false if in GoogleSQL.
     #[prost(message, optional, tag = "1")]
     pub use_legacy_sql: ::core::option::Option<bool>,
-    /// Specifices the privacy policy for the view.
+    /// Specifies the privacy policy for the view.
     #[prost(message, optional, tag = "2")]
     pub privacy_policy: ::core::option::Option<PrivacyPolicy>,
 }

@@ -33,7 +33,7 @@ pub struct CreateChallengeRequest {
     pub challenge: ::core::option::Option<Challenge>,
 }
 /// A request for an OIDC token, providing all the necessary information needed
-/// for this service to verify the plaform state of the requestor.
+/// for this service to verify the platform state of the requestor.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VerifyAttestationRequest {
     /// Required. The name of the Challenge whose nonce was used to generate the
@@ -56,6 +56,10 @@ pub struct VerifyAttestationRequest {
     /// the token output.
     #[prost(message, optional, tag = "5")]
     pub token_options: ::core::option::Option<TokenOptions>,
+    /// Optional. An optional indicator of the attester, only applies to certain
+    /// products.
+    #[prost(string, tag = "8")]
+    pub attester: ::prost::alloc::string::String,
     /// An optional tee attestation report, used to populate hardware rooted
     /// claims.
     #[prost(oneof = "verify_attestation_request::TeeAttestation", tags = "6, 7")]

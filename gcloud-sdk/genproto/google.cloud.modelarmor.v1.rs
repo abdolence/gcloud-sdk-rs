@@ -73,8 +73,8 @@ pub struct FloorSetting {
     #[prost(message, optional, tag = "4")]
     pub filter_config: ::core::option::Option<FilterConfig>,
     /// Optional. Floor Settings enforcement status.
-    #[prost(bool, tag = "5")]
-    pub enable_floor_setting_enforcement: bool,
+    #[prost(bool, optional, tag = "5")]
+    pub enable_floor_setting_enforcement: ::core::option::Option<bool>,
 }
 /// Message for requesting list of Templates
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -475,10 +475,9 @@ pub struct SdpAdvancedConfig {
     /// If only inspect template is provided (de-identify template not provided),
     /// then Sensitive Data Protection InspectContent action is performed during
     /// Sanitization. All Sensitive Data Protection findings identified during
-    /// inspection will be returned as SdpFinding in SdpInsepctionResult e.g.
-    /// `organizations/{organization}/inspectTemplates/{inspect_template}`,
-    /// `projects/{project}/inspectTemplates/{inspect_template}`
-    /// `organizations/{organization}/locations/{location}/inspectTemplates/{inspect_template}`
+    /// inspection will be returned as SdpFinding in SdpInsepctionResult.
+    ///
+    ///   e.g.
     /// `projects/{project}/locations/{location}/inspectTemplates/{inspect_template}`
     #[prost(string, tag = "1")]
     pub inspect_template: ::prost::alloc::string::String,
@@ -492,9 +491,6 @@ pub struct SdpAdvancedConfig {
     /// in inspect template.
     ///
     /// e.g.
-    /// `organizations/{organization}/deidentifyTemplates/{deidentify_template}`,
-    /// `projects/{project}/deidentifyTemplates/{deidentify_template}`
-    /// `organizations/{organization}/locations/{location}/deidentifyTemplates/{deidentify_template}`
     /// `projects/{project}/locations/{location}/deidentifyTemplates/{deidentify_template}`
     #[prost(string, tag = "2")]
     pub deidentify_template: ::prost::alloc::string::String,
@@ -613,7 +609,7 @@ pub mod filter_result {
         MaliciousUriFilterResult(super::MaliciousUriFilterResult),
         /// CSAM filter results.
         #[prost(message, tag = "5")]
-        CsamFilterFilterResult(super::CsamFilterResult),
+        CsamFilterResult(super::CsamFilterResult),
         /// Virus scan results.
         #[prost(message, tag = "6")]
         VirusScanFilterResult(super::VirusScanFilterResult),
@@ -810,6 +806,9 @@ pub struct SdpDeidentifyResult {
     /// Total size in bytes that were transformed during deidentification.
     #[prost(int64, tag = "5")]
     pub transformed_bytes: i64,
+    /// List of Sensitive Data Protection info-types that were de-identified.
+    #[prost(string, repeated, tag = "6")]
+    pub info_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Finding corresponding to Sensitive Data Protection filter.
 #[derive(Clone, PartialEq, ::prost::Message)]

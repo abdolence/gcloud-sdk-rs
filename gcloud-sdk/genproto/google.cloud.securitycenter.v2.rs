@@ -540,14 +540,24 @@ pub struct AdaptiveProtection {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Attack {
     /// Total PPS (packets per second) volume of attack.
-    #[prost(int32, tag = "1")]
-    pub volume_pps: i32,
+    #[prost(int64, tag = "4")]
+    pub volume_pps_long: i64,
     /// Total BPS (bytes per second) volume of attack.
-    #[prost(int32, tag = "2")]
-    pub volume_bps: i32,
+    #[prost(int64, tag = "5")]
+    pub volume_bps_long: i64,
     /// Type of attack, for example, 'SYN-flood', 'NTP-udp', or 'CHARGEN-udp'.
     #[prost(string, tag = "3")]
     pub classification: ::prost::alloc::string::String,
+    /// Total PPS (packets per second) volume of attack. Deprecated - refer to
+    /// volume_pps_long instead.
+    #[deprecated]
+    #[prost(int32, tag = "1")]
+    pub volume_pps: i32,
+    /// Total BPS (bytes per second) volume of attack. Deprecated - refer to
+    /// volume_bps_long instead.
+    #[deprecated]
+    #[prost(int32, tag = "2")]
+    pub volume_bps: i32,
 }
 /// The [data profile](<https://cloud.google.com/dlp/docs/data-profiles>)
 /// associated with the finding.
@@ -771,6 +781,220 @@ pub struct Container {
     #[prost(message, optional, tag = "5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// Details about a data access attempt made by a principal not authorized under
+/// applicable data security policy.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataAccessEvent {
+    /// Unique identifier for data access event.
+    #[prost(string, tag = "1")]
+    pub event_id: ::prost::alloc::string::String,
+    /// The email address of the principal that accessed the data. The principal
+    /// could be a user account, service account, Google group, or other.
+    #[prost(string, tag = "2")]
+    pub principal_email: ::prost::alloc::string::String,
+    /// The operation performed by the principal to access the data.
+    #[prost(enumeration = "data_access_event::Operation", tag = "3")]
+    pub operation: i32,
+    /// Timestamp of data access event.
+    #[prost(message, optional, tag = "4")]
+    pub event_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `DataAccessEvent`.
+pub mod data_access_event {
+    /// The operation of a data access event.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Operation {
+        /// The operation is unspecified.
+        Unspecified = 0,
+        /// Represents a read operation.
+        Read = 1,
+        /// Represents a move operation.
+        Move = 2,
+        /// Represents a copy operation.
+        Copy = 3,
+    }
+    impl Operation {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "OPERATION_UNSPECIFIED",
+                Self::Read => "READ",
+                Self::Move => "MOVE",
+                Self::Copy => "COPY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OPERATION_UNSPECIFIED" => Some(Self::Unspecified),
+                "READ" => Some(Self::Read),
+                "MOVE" => Some(Self::Move),
+                "COPY" => Some(Self::Copy),
+                _ => None,
+            }
+        }
+    }
+}
+/// Details about a data flow event, in which either the data is moved to or is
+/// accessed from a non-compliant geo-location, as defined in the applicable data
+/// security policy.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataFlowEvent {
+    /// Unique identifier for data flow event.
+    #[prost(string, tag = "1")]
+    pub event_id: ::prost::alloc::string::String,
+    /// The email address of the principal that initiated the data flow event. The
+    /// principal could be a user account, service account, Google group, or other.
+    #[prost(string, tag = "2")]
+    pub principal_email: ::prost::alloc::string::String,
+    /// The operation performed by the principal for the data flow event.
+    #[prost(enumeration = "data_flow_event::Operation", tag = "3")]
+    pub operation: i32,
+    /// Non-compliant location of the principal or the data destination.
+    #[prost(string, tag = "4")]
+    pub violated_location: ::prost::alloc::string::String,
+    /// Timestamp of data flow event.
+    #[prost(message, optional, tag = "5")]
+    pub event_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `DataFlowEvent`.
+pub mod data_flow_event {
+    /// The operation of a data flow event.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Operation {
+        /// The operation is unspecified.
+        Unspecified = 0,
+        /// Represents a read operation.
+        Read = 1,
+        /// Represents a move operation.
+        Move = 2,
+        /// Represents a copy operation.
+        Copy = 3,
+    }
+    impl Operation {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "OPERATION_UNSPECIFIED",
+                Self::Read => "READ",
+                Self::Move => "MOVE",
+                Self::Copy => "COPY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OPERATION_UNSPECIFIED" => Some(Self::Unspecified),
+                "READ" => Some(Self::Read),
+                "MOVE" => Some(Self::Move),
+                "COPY" => Some(Self::Copy),
+                _ => None,
+            }
+        }
+    }
+}
+/// Details about data retention deletion violations, in which the data is
+/// non-compliant based on their retention or deletion time, as defined in the
+/// applicable data security policy. The Data Retention Deletion (DRD) control is
+/// a control of the DSPM (Data Security Posture Management) suite that enables
+/// organizations to manage data retention and deletion policies in compliance
+/// with regulations, such as GDPR and CRPA. DRD supports two primary policy
+/// types: maximum storage length (max TTL) and minimum storage length (min TTL).
+/// Both are aimed at helping organizations meet regulatory and data management
+/// commitments.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct DataRetentionDeletionEvent {
+    /// Timestamp indicating when the event was detected.
+    #[prost(message, optional, tag = "2")]
+    pub event_detection_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Number of objects that violated the policy for this resource. If the number
+    /// is less than 1,000, then the value of this field is the exact number. If
+    /// the number of objects that violated the policy is greater than or equal to
+    /// 1,000, then the value of this field is 1000.
+    #[prost(int64, tag = "3")]
+    pub data_object_count: i64,
+    /// Maximum duration of retention allowed from the DRD control. This comes
+    /// from the DRD control where users set a max TTL for their data. For example,
+    /// suppose that a user sets the max TTL for a Cloud Storage bucket to 90 days.
+    /// However, an object in that bucket is 100 days old. In this case, a
+    /// DataRetentionDeletionEvent will be generated for that Cloud Storage bucket,
+    /// and the max_retention_allowed is 90 days.
+    #[prost(message, optional, tag = "4")]
+    pub max_retention_allowed: ::core::option::Option<::prost_types::Duration>,
+    /// Type of the DRD event.
+    #[prost(enumeration = "data_retention_deletion_event::EventType", tag = "5")]
+    pub event_type: i32,
+}
+/// Nested message and enum types in `DataRetentionDeletionEvent`.
+pub mod data_retention_deletion_event {
+    /// Type of the DRD event.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum EventType {
+        /// Unspecified event type.
+        Unspecified = 0,
+        /// The maximum retention time has been exceeded.
+        MaxTtlExceeded = 1,
+    }
+    impl EventType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "EVENT_TYPE_UNSPECIFIED",
+                Self::MaxTtlExceeded => "EVENT_TYPE_MAX_TTL_EXCEEDED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "EVENT_TYPE_MAX_TTL_EXCEEDED" => Some(Self::MaxTtlExceeded),
+                _ => None,
+            }
+        }
+    }
+}
 /// Represents database access information, such as queries. A database may be a
 /// sub-resource of an instance (as in the case of Cloud SQL instances or Cloud
 /// Spanner instances), or the database instance itself. Some database resources
@@ -809,6 +1033,14 @@ pub struct Database {
     /// list](<https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1/SqlDatabaseVersion>).
     #[prost(string, tag = "6")]
     pub version: ::prost::alloc::string::String,
+}
+/// Contains information about the disk associated with the finding.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Disk {
+    /// The name of the disk, for example,
+    /// `<https://www.googleapis.com/compute/v1/projects/{project-id}/zones/{zone-id}/disks/{disk-id}`.>
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// Exfiltration represents a data exfiltration attempt from one or more sources
 /// to one or more targets. The `sources` attribute lists the sources of the
@@ -1677,7 +1909,6 @@ pub mod mitre_attack {
     }
     /// MITRE ATT&CK techniques that can be referenced by SCC findings.
     /// See: <https://attack.mitre.org/techniques/enterprise/>
-    /// Next ID: 65
     #[derive(
         Clone,
         Copy,
@@ -1783,6 +2014,8 @@ pub mod mitre_attack {
         StealWebSessionCookie = 25,
         /// T1543
         CreateOrModifySystemProcess = 24,
+        /// T1546
+        EventTriggeredExecution = 65,
         /// T1548
         AbuseElevationControlMechanism = 34,
         /// T1552
@@ -1815,6 +2048,8 @@ pub mod mitre_attack {
         ScanningIpBlocks = 2,
         /// T1609
         ContainerAdministrationCommand = 60,
+        /// T1610
+        DeployContainer = 66,
         /// T1611
         EscapeToHost = 61,
         /// T1613
@@ -1887,6 +2122,7 @@ pub mod mitre_attack {
                 Self::AccountAccessRemoval => "ACCOUNT_ACCESS_REMOVAL",
                 Self::StealWebSessionCookie => "STEAL_WEB_SESSION_COOKIE",
                 Self::CreateOrModifySystemProcess => "CREATE_OR_MODIFY_SYSTEM_PROCESS",
+                Self::EventTriggeredExecution => "EVENT_TRIGGERED_EXECUTION",
                 Self::AbuseElevationControlMechanism => {
                     "ABUSE_ELEVATION_CONTROL_MECHANISM"
                 }
@@ -1909,6 +2145,7 @@ pub mod mitre_attack {
                 Self::ContainerAdministrationCommand => {
                     "CONTAINER_ADMINISTRATION_COMMAND"
                 }
+                Self::DeployContainer => "DEPLOY_CONTAINER",
                 Self::EscapeToHost => "ESCAPE_TO_HOST",
                 Self::ContainerAndResourceDiscovery => "CONTAINER_AND_RESOURCE_DISCOVERY",
                 Self::StealOrForgeAuthenticationCertificates => {
@@ -1983,6 +2220,7 @@ pub mod mitre_attack {
                 "CREATE_OR_MODIFY_SYSTEM_PROCESS" => {
                     Some(Self::CreateOrModifySystemProcess)
                 }
+                "EVENT_TRIGGERED_EXECUTION" => Some(Self::EventTriggeredExecution),
                 "ABUSE_ELEVATION_CONTROL_MECHANISM" => {
                     Some(Self::AbuseElevationControlMechanism)
                 }
@@ -2009,6 +2247,7 @@ pub mod mitre_attack {
                 "CONTAINER_ADMINISTRATION_COMMAND" => {
                     Some(Self::ContainerAdministrationCommand)
                 }
+                "DEPLOY_CONTAINER" => Some(Self::DeployContainer),
                 "ESCAPE_TO_HOST" => Some(Self::EscapeToHost),
                 "CONTAINER_AND_RESOURCE_DISCOVERY" => {
                     Some(Self::ContainerAndResourceDiscovery)
@@ -2042,7 +2281,7 @@ pub struct Notebook {
 /// Contains information about the org policies associated with the finding.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OrgPolicy {
-    /// The resource name of the org policy.
+    /// Identifier. The resource name of the org policy.
     /// Example:
     /// "organizations/{organization_id}/policies/{constraint_name}"
     #[prost(string, tag = "1")]
@@ -2276,6 +2515,9 @@ pub struct Cve {
     /// Date the first publicly available exploit or PoC was released.
     #[prost(message, optional, tag = "9")]
     pub exploit_release_date: ::core::option::Option<::prost_types::Timestamp>,
+    /// Date of the earliest known exploitation.
+    #[prost(message, optional, tag = "10")]
+    pub first_exploitation_date: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `Cve`.
 pub mod cve {
@@ -3054,6 +3296,20 @@ pub struct Finding {
     /// This field cannot be updated. Its value is ignored in all update requests.
     #[prost(message, repeated, tag = "57")]
     pub group_memberships: ::prost::alloc::vec::Vec<GroupMembership>,
+    /// Disk associated with the finding.
+    #[prost(message, optional, tag = "58")]
+    pub disk: ::core::option::Option<Disk>,
+    /// Data access events associated with the finding.
+    #[prost(message, repeated, tag = "61")]
+    pub data_access_events: ::prost::alloc::vec::Vec<DataAccessEvent>,
+    /// Data flow events associated with the finding.
+    #[prost(message, repeated, tag = "62")]
+    pub data_flow_events: ::prost::alloc::vec::Vec<DataFlowEvent>,
+    /// Data retention deletion events associated with the finding.
+    #[prost(message, repeated, tag = "64")]
+    pub data_retention_deletion_events: ::prost::alloc::vec::Vec<
+        DataRetentionDeletionEvent,
+    >,
 }
 /// Nested message and enum types in `Finding`.
 pub mod finding {
@@ -3316,6 +3572,9 @@ pub mod finding {
         /// Describes a combination of security issues that represent a more severe
         /// security problem when taken together.
         ToxicCombination = 7,
+        /// Describes a potential security risk to data assets that contain sensitive
+        /// data.
+        SensitiveDataRisk = 8,
     }
     impl FindingClass {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3332,6 +3591,7 @@ pub mod finding {
                 Self::SccError => "SCC_ERROR",
                 Self::PostureViolation => "POSTURE_VIOLATION",
                 Self::ToxicCombination => "TOXIC_COMBINATION",
+                Self::SensitiveDataRisk => "SENSITIVE_DATA_RISK",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3345,6 +3605,7 @@ pub mod finding {
                 "SCC_ERROR" => Some(Self::SccError),
                 "POSTURE_VIOLATION" => Some(Self::PostureViolation),
                 "TOXIC_COMBINATION" => Some(Self::ToxicCombination),
+                "SENSITIVE_DATA_RISK" => Some(Self::SensitiveDataRisk),
                 _ => None,
             }
         }
@@ -3704,6 +3965,9 @@ pub struct AzureMetadata {
     /// The Azure resource group associated with the resource.
     #[prost(message, optional, tag = "3")]
     pub resource_group: ::core::option::Option<azure_metadata::AzureResourceGroup>,
+    /// The Azure Entra tenant associated with the resource.
+    #[prost(message, optional, tag = "7")]
+    pub tenant: ::core::option::Option<azure_metadata::AzureTenant>,
 }
 /// Nested message and enum types in `AzureMetadata`.
 pub mod azure_metadata {
@@ -3732,9 +3996,23 @@ pub mod azure_metadata {
     /// Represents an Azure resource group.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AzureResourceGroup {
+        /// The ID of the Azure resource group.
+        #[prost(string, tag = "2")]
+        pub id: ::prost::alloc::string::String,
         /// The name of the Azure resource group. This is not a UUID.
         #[prost(string, tag = "1")]
         pub name: ::prost::alloc::string::String,
+    }
+    /// Represents a Microsoft Entra tenant.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AzureTenant {
+        /// The ID of the Microsoft Entra tenant, for example,
+        /// "a11aaa11-aa11-1aa1-11aa-1aaa11a".
+        #[prost(string, tag = "1")]
+        pub id: ::prost::alloc::string::String,
+        /// The display name of the Azure tenant.
+        #[prost(string, tag = "2")]
+        pub display_name: ::prost::alloc::string::String,
     }
 }
 /// Represents the path of resources leading up to the resource this finding is
@@ -3908,8 +4186,9 @@ pub struct ResourceValueConfig {
     #[prost(enumeration = "ResourceValue", tag = "2")]
     pub resource_value: i32,
     /// Tag values combined with `AND` to check against.
-    /// Values in the form "tagValues/123"
-    /// Example: `\[ "tagValues/123", "tagValues/456", "tagValues/789" \]`
+    /// For Google Cloud resources, they are tag value IDs in the form of
+    /// "tagValues/123". Example: `[ "tagValues/123", "tagValues/456",
+    /// "tagValues/789" ]`
     /// <https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing>
     #[prost(string, repeated, tag = "3")]
     pub tag_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,

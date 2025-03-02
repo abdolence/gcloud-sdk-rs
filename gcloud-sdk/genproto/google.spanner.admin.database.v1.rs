@@ -281,6 +281,12 @@ pub struct Backup {
     /// retained by the backup system.
     #[prost(message, optional, tag = "18")]
     pub oldest_version_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The instance partition(s) storing the backup.
+    ///
+    /// This is the same as the list of the instance partition(s) that the database
+    /// had footprint in at the backup's `version_time`.
+    #[prost(message, repeated, tag = "19")]
+    pub instance_partitions: ::prost::alloc::vec::Vec<BackupInstancePartition>,
 }
 /// Nested message and enum types in `Backup`.
 pub mod backup {
@@ -901,6 +907,14 @@ pub struct FullBackupSpec {}
 /// incremental backup chain is always a full backup.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct IncrementalBackupSpec {}
+/// Instance partition information for the backup.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BackupInstancePartition {
+    /// A unique identifier for the instance partition. Values are of the form
+    /// `projects/<project>/instances/<instance>/instancePartitions/<instance_partition_id>`
+    #[prost(string, tag = "1")]
+    pub instance_partition: ::prost::alloc::string::String,
+}
 /// Defines specifications of the backup schedule.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackupScheduleSpec {

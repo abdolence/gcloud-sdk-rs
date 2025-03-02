@@ -839,6 +839,12 @@ pub mod job_status {
         /// The Job will be deleted, but has not been deleted yet. Typically this is
         /// because resources used by the Job are still being cleaned up.
         DeletionInProgress = 6,
+        /// The Job cancellation is in progress, this is because the resources used
+        /// by the Job are still being cleaned up.
+        CancellationInProgress = 7,
+        /// The Job has been cancelled, the task executions were stopped and the
+        /// resources were cleaned up.
+        Cancelled = 8,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -854,6 +860,8 @@ pub mod job_status {
                 Self::Succeeded => "SUCCEEDED",
                 Self::Failed => "FAILED",
                 Self::DeletionInProgress => "DELETION_IN_PROGRESS",
+                Self::CancellationInProgress => "CANCELLATION_IN_PROGRESS",
+                Self::Cancelled => "CANCELLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -866,6 +874,8 @@ pub mod job_status {
                 "SUCCEEDED" => Some(Self::Succeeded),
                 "FAILED" => Some(Self::Failed),
                 "DELETION_IN_PROGRESS" => Some(Self::DeletionInProgress),
+                "CANCELLATION_IN_PROGRESS" => Some(Self::CancellationInProgress),
+                "CANCELLED" => Some(Self::Cancelled),
                 _ => None,
             }
         }
@@ -1558,6 +1568,31 @@ pub struct DeleteJobRequest {
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
+/// CancelJob Request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CancelJobRequest {
+    /// Required. Job name.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes after the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Response to the CancelJob request.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct CancelJobResponse {}
 /// ListJob Request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobsRequest {
@@ -1825,6 +1860,33 @@ pub mod batch_service_client {
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new("google.cloud.batch.v1.BatchService", "DeleteJob"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Cancel a Job.
+        pub async fn cancel_job(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CancelJobRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.batch.v1.BatchService/CancelJob",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.batch.v1.BatchService", "CancelJob"),
                 );
             self.inner.unary(req, path, codec).await
         }

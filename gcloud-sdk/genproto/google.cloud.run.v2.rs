@@ -56,7 +56,7 @@ pub mod submit_build_request {
         /// The build will clean up the temporary image on a best-effort basis.
         #[prost(string, tag = "3")]
         pub cache_image_uri: ::prost::alloc::string::String,
-        /// Optional. The base image used to opt into automatic base image updates.
+        /// Optional. The base image to use for the build.
         #[prost(string, tag = "4")]
         pub base_image: ::prost::alloc::string::String,
         /// Optional. User-provided build-time environment variables.
@@ -70,6 +70,11 @@ pub mod submit_build_request {
         /// a scratch base image, so the base layers can be appended at run time.
         #[prost(bool, tag = "6")]
         pub enable_automatic_updates: bool,
+        /// Optional. project_descriptor stores the path to the project descriptor
+        /// file. When empty, it means that there is no project descriptor file in
+        /// the source.
+        #[prost(string, tag = "7")]
+        pub project_descriptor: ::prost::alloc::string::String,
     }
     /// Location of source.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -692,6 +697,13 @@ pub struct Container {
     /// Names of the containers that must start before this container.
     #[prost(string, repeated, tag = "12")]
     pub depends_on: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Base image for this container. Only supported for services. If set, it
+    /// indicates that the service is enrolled into automatic base image update.
+    #[prost(string, tag = "13")]
+    pub base_image_uri: ::prost::alloc::string::String,
+    /// Output only. The build info of the container image.
+    #[prost(message, optional, tag = "15")]
+    pub build_info: ::core::option::Option<BuildInfo>,
 }
 /// ResourceRequirements describes the compute resource requirements.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1093,6 +1105,17 @@ pub struct GrpcAction {
     #[prost(string, tag = "2")]
     pub service: ::prost::alloc::string::String,
 }
+/// Build information of the image.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BuildInfo {
+    /// Output only. Entry point of the function when the image is a Cloud Run
+    /// function.
+    #[prost(string, tag = "1")]
+    pub function_target: ::prost::alloc::string::String,
+    /// Output only. Source code location of the image.
+    #[prost(string, tag = "2")]
+    pub source_location: ::prost::alloc::string::String,
+}
 /// VPC Access settings. For more information on sending traffic to a VPC
 /// network, visit <https://cloud.google.com/run/docs/configuring/connecting-vpc.>
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1301,6 +1324,53 @@ pub struct NodeSelector {
     /// Required. GPU accelerator type to attach to an instance.
     #[prost(string, tag = "1")]
     pub accelerator: ::prost::alloc::string::String,
+}
+/// Describes the Build step of the function that builds a container from the
+/// given source.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BuildConfig {
+    /// Output only. The Cloud Build name of the latest successful deployment of
+    /// the function.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The Cloud Storage bucket URI where the function source code is located.
+    #[prost(string, tag = "2")]
+    pub source_location: ::prost::alloc::string::String,
+    /// Optional. The name of the function (as defined in source code) that will be
+    /// executed. Defaults to the resource name suffix, if not specified. For
+    /// backward compatibility, if function with given name is not found, then the
+    /// system will try to use function named "function".
+    #[prost(string, tag = "3")]
+    pub function_target: ::prost::alloc::string::String,
+    /// Optional. Artifact Registry URI to store the built image.
+    #[prost(string, tag = "4")]
+    pub image_uri: ::prost::alloc::string::String,
+    /// Optional. The base image used to build the function.
+    #[prost(string, tag = "5")]
+    pub base_image: ::prost::alloc::string::String,
+    /// Optional. Sets whether the function will receive automatic base image
+    /// updates.
+    #[prost(bool, tag = "6")]
+    pub enable_automatic_updates: bool,
+    /// Optional. Name of the Cloud Build Custom Worker Pool that should be used to
+    /// build the Cloud Run function. The format of this field is
+    /// `projects/{project}/locations/{region}/workerPools/{workerPool}` where
+    /// `{project}` and `{region}` are the project id and region respectively where
+    /// the worker pool is defined and `{workerPool}` is the short name of the
+    /// worker pool.
+    #[prost(string, tag = "7")]
+    pub worker_pool: ::prost::alloc::string::String,
+    /// Optional. User-provided build-time environment variables for the function
+    #[prost(map = "string, string", tag = "8")]
+    pub environment_variables: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. Service account to be used for building the container. The format
+    /// of this field is
+    /// `projects/{projectId}/serviceAccounts/{serviceAccountEmail}`.
+    #[prost(string, tag = "9")]
+    pub service_account: ::prost::alloc::string::String,
 }
 /// Allowed ingress traffic for the Container.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1548,6 +1618,9 @@ pub struct Execution {
     /// deleted.
     #[prost(string, tag = "2")]
     pub uid: ::prost::alloc::string::String,
+    /// Output only. Email address of the authenticated creator.
+    #[prost(string, tag = "32")]
+    pub creator: ::prost::alloc::string::String,
     /// Output only. A number that monotonically increases every time the user
     /// modifies the desired state.
     #[prost(int64, tag = "3")]
@@ -1602,7 +1675,8 @@ pub struct Execution {
     /// [Google Cloud Platform Launch
     /// Stages](<https://cloud.google.com/terms/launch-stages>). Cloud Run supports
     /// `ALPHA`, `BETA`, and `GA`.
-    /// <p>Note that this value might not be what was used
+    ///
+    /// Note that this value might not be what was used
     /// as input. For example, if ALPHA was provided as input in the parent
     /// resource, but only BETA and GA-level features are were, this field will be
     /// BETA.
@@ -2163,7 +2237,7 @@ pub struct Job {
     /// Set the launch stage to a preview stage on input to allow use of preview
     /// features in that stage. On read (or output), describes whether the resource
     /// uses preview features.
-    /// <p>
+    ///
     /// For example, if ALPHA is provided as input, but only BETA and GA-level
     /// features are used, this field will be BETA on output.
     #[prost(enumeration = "super::super::super::api::LaunchStage", tag = "14")]
@@ -2774,7 +2848,8 @@ pub struct Revision {
     /// [Google Cloud Platform Launch
     /// Stages](<https://cloud.google.com/terms/launch-stages>). Cloud Run supports
     /// `ALPHA`, `BETA`, and `GA`.
-    /// <p>Note that this value might not be what was used
+    ///
+    /// Note that this value might not be what was used
     /// as input. For example, if ALPHA was provided as input in the parent
     /// resource, but only BETA and GA-level features are were, this field will be
     /// BETA.
@@ -3375,7 +3450,7 @@ pub struct Service {
     #[prost(message, optional, tag = "9")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. For a deleted resource, the time after which it will be
-    /// permamently deleted.
+    /// permanently deleted.
     #[prost(message, optional, tag = "10")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Email address of the authenticated creator.
@@ -3402,7 +3477,7 @@ pub struct Service {
     /// Set the launch stage to a preview stage on input to allow use of preview
     /// features in that stage. On read (or output), describes whether the resource
     /// uses preview features.
-    /// <p>
+    ///
     /// For example, if ALPHA is provided as input, but only BETA and GA-level
     /// features are used, this field will be BETA on output.
     #[prost(enumeration = "super::super::super::api::LaunchStage", tag = "16")]
@@ -3480,6 +3555,9 @@ pub struct Service {
     /// Output only. Reserved for future use.
     #[prost(bool, tag = "38")]
     pub satisfies_pzs: bool,
+    /// Optional. Configuration for building a Cloud Run function.
+    #[prost(message, optional, tag = "41")]
+    pub build_config: ::core::option::Option<BuildConfig>,
     /// Output only. Returns true if the Service is currently being acted upon by
     /// the system to bring it into the desired state.
     ///
@@ -3487,7 +3565,7 @@ pub struct Service {
     /// will asynchronously perform all necessary steps to bring the Service to the
     /// desired serving state. This process is called reconciliation.
     /// While reconciliation is in process, `observed_generation`,
-    /// `latest_ready_revison`, `traffic_statuses`, and `uri` will have transient
+    /// `latest_ready_revision`, `traffic_statuses`, and `uri` will have transient
     /// values that might mismatch the intended state: Once reconciliation is over
     /// (and this field is false), there are two possible outcomes: reconciliation
     /// succeeded and the serving state matches the Service, or there was an error,

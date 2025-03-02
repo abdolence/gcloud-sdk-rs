@@ -107,7 +107,7 @@ pub struct AutomationRunEvent {
 /// configuration can progress.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeliveryPipeline {
-    /// Optional. Name of the `DeliveryPipeline`. Format is
+    /// Identifier. Name of the `DeliveryPipeline`. Format is
     /// `projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}`.
     /// The `deliveryPipeline` component must match
     /// `[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?`
@@ -116,11 +116,12 @@ pub struct DeliveryPipeline {
     /// Output only. Unique identifier of the `DeliveryPipeline`.
     #[prost(string, tag = "2")]
     pub uid: ::prost::alloc::string::String,
-    /// Description of the `DeliveryPipeline`. Max length is 255 characters.
+    /// Optional. Description of the `DeliveryPipeline`. Max length is 255
+    /// characters.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
-    /// User annotations. These attributes can only be set and used by the
-    /// user, and not by Cloud Deploy.
+    /// Optional. User annotations. These attributes can only be set and used by
+    /// the user, and not by Cloud Deploy.
     #[prost(map = "string, string", tag = "4")]
     pub annotations: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -156,7 +157,7 @@ pub struct DeliveryPipeline {
     /// client has an up-to-date value before proceeding.
     #[prost(string, tag = "10")]
     pub etag: ::prost::alloc::string::String,
-    /// When suspended, no new releases or rollouts can be created,
+    /// Optional. When suspended, no new releases or rollouts can be created,
     /// but in-progress ones will complete.
     #[prost(bool, tag = "12")]
     pub suspended: bool,
@@ -169,7 +170,7 @@ pub mod delivery_pipeline {
     /// The ordering configuration of the `DeliveryPipeline`.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Pipeline {
-        /// SerialPipeline defines a sequential set of stages for a
+        /// Optional. SerialPipeline defines a sequential set of stages for a
         /// `DeliveryPipeline`.
         #[prost(message, tag = "8")]
         SerialPipeline(super::SerialPipeline),
@@ -178,7 +179,7 @@ pub mod delivery_pipeline {
 /// SerialPipeline defines a sequential set of stages for a `DeliveryPipeline`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SerialPipeline {
-    /// Each stage specifies configuration for a `Target`. The ordering
+    /// Optional. Each stage specifies configuration for a `Target`. The ordering
     /// of this list defines the promotion flow.
     #[prost(message, repeated, tag = "1")]
     pub stages: ::prost::alloc::vec::Vec<Stage>,
@@ -186,16 +187,16 @@ pub struct SerialPipeline {
 /// Stage specifies a location to which to deploy.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Stage {
-    /// The target_id to which this stage points. This field refers exclusively to
-    /// the last segment of a target name. For example, this field would just be
-    /// `my-target` (rather than
+    /// Optional. The target_id to which this stage points. This field refers
+    /// exclusively to the last segment of a target name. For example, this field
+    /// would just be `my-target` (rather than
     /// `projects/project/locations/location/targets/my-target`). The location of
     /// the `Target` is inferred to be the same as the location of the
     /// `DeliveryPipeline` that contains this `Stage`.
     #[prost(string, tag = "1")]
     pub target_id: ::prost::alloc::string::String,
-    /// Skaffold profiles to use when rendering the manifest for this stage's
-    /// `Target`.
+    /// Optional. Skaffold profiles to use when rendering the manifest for this
+    /// stage's `Target`.
     #[prost(string, repeated, tag = "2")]
     pub profiles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The strategy to use for a `Rollout` to this stage.
@@ -235,12 +236,12 @@ pub mod strategy {
     /// Deployment strategy details.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DeploymentStrategy {
-        /// Standard deployment strategy executes a single deploy and allows
-        /// verifying the deployment.
+        /// Optional. Standard deployment strategy executes a single deploy and
+        /// allows verifying the deployment.
         #[prost(message, tag = "1")]
         Standard(super::Standard),
-        /// Canary deployment strategy provides progressive percentage based
-        /// deployments to a Target.
+        /// Optional. Canary deployment strategy provides progressive percentage
+        /// based deployments to a Target.
         #[prost(message, tag = "2")]
         Canary(super::Canary),
     }
@@ -264,7 +265,7 @@ pub struct Postdeploy {
 /// Standard represents the standard deployment strategy.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Standard {
-    /// Whether to verify a deployment.
+    /// Optional. Whether to verify a deployment.
     #[prost(bool, tag = "1")]
     pub verify: bool,
     /// Optional. Configuration for the predeploy job. If this is not configured,
@@ -293,12 +294,12 @@ pub mod canary {
     /// The mode to use for the canary deployment strategy.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Mode {
-        /// Configures the progressive based deployment for a Target.
+        /// Optional. Configures the progressive based deployment for a Target.
         #[prost(message, tag = "2")]
         CanaryDeployment(super::CanaryDeployment),
-        /// Configures the progressive based deployment for a Target, but allows
-        /// customizing at the phase level where a phase represents each of the
-        /// percentage deployments.
+        /// Optional. Configures the progressive based deployment for a Target, but
+        /// allows customizing at the phase level where a phase represents each of
+        /// the percentage deployments.
         #[prost(message, tag = "3")]
         CustomCanaryDeployment(super::CustomCanaryDeployment),
     }
@@ -313,7 +314,7 @@ pub struct CanaryDeployment {
     /// n is 0 <= n <= 100.
     #[prost(int32, repeated, packed = "false", tag = "1")]
     pub percentages: ::prost::alloc::vec::Vec<i32>,
-    /// Whether to run verify tests after each percentage deployment.
+    /// Optional. Whether to run verify tests after each percentage deployment.
     #[prost(bool, tag = "2")]
     pub verify: bool,
     /// Optional. Configuration for the predeploy job of the first phase. If this
@@ -350,12 +351,12 @@ pub mod custom_canary_deployment {
         /// Required. Percentage deployment for the phase.
         #[prost(int32, tag = "2")]
         pub percentage: i32,
-        /// Skaffold profiles to use when rendering the manifest for this phase.
-        /// These are in addition to the profiles list specified in the
+        /// Optional. Skaffold profiles to use when rendering the manifest for this
+        /// phase. These are in addition to the profiles list specified in the
         /// `DeliveryPipeline` stage.
         #[prost(string, repeated, tag = "3")]
         pub profiles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// Whether to run verify tests after the deployment.
+        /// Optional. Whether to run verify tests after the deployment.
         #[prost(bool, tag = "4")]
         pub verify: bool,
         /// Optional. Configuration for the predeploy job of this phase. If this is
@@ -461,10 +462,10 @@ pub mod kubernetes_config {
     /// The service definition configuration.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ServiceDefinition {
-        /// Kubernetes Gateway API service mesh configuration.
+        /// Optional. Kubernetes Gateway API service mesh configuration.
         #[prost(message, tag = "1")]
         GatewayServiceMesh(GatewayServiceMesh),
-        /// Kubernetes Service networking configuration.
+        /// Optional. Kubernetes Service networking configuration.
         #[prost(message, tag = "2")]
         ServiceNetworking(ServiceNetworking),
     }
@@ -472,8 +473,8 @@ pub mod kubernetes_config {
 /// CloudRunConfig contains the Cloud Run runtime configuration.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudRunConfig {
-    /// Whether Cloud Deploy should update the traffic stanza in a Cloud Run
-    /// Service on the user's behalf to facilitate traffic splitting. This is
+    /// Optional. Whether Cloud Deploy should update the traffic stanza in a Cloud
+    /// Run Service on the user's behalf to facilitate traffic splitting. This is
     /// required to be true for CanaryDeployments, but optional for
     /// CustomCanaryDeployments.
     #[prost(bool, tag = "1")]
@@ -504,10 +505,10 @@ pub mod runtime_config {
     /// The runtime configuration details.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum RuntimeConfig {
-        /// Kubernetes runtime configuration.
+        /// Optional. Kubernetes runtime configuration.
         #[prost(message, tag = "1")]
         Kubernetes(super::KubernetesConfig),
-        /// Cloud Run runtime configuration.
+        /// Optional. Cloud Run runtime configuration.
         #[prost(message, tag = "2")]
         CloudRun(super::CloudRunConfig),
     }
@@ -788,7 +789,7 @@ pub struct RollbackTargetResponse {
 /// can be deployed.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Target {
-    /// Optional. Name of the `Target`. Format is
+    /// Identifier. Name of the `Target`. Format is
     /// `projects/{project}/locations/{location}/targets/{target}`.
     /// The `target` component must match `[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?`
     #[prost(string, tag = "1")]
@@ -854,7 +855,7 @@ pub struct Target {
     /// client has an up-to-date value before proceeding.
     #[prost(string, tag = "12")]
     pub etag: ::prost::alloc::string::String,
-    /// Configurations for all execution that relates to this `Target`.
+    /// Optional. Configurations for all execution that relates to this `Target`.
     /// Each `ExecutionEnvironmentUsage` value may only be used in a single
     /// configuration; using the same value multiple times is an error.
     /// When one or more configurations are specified, they must include the
@@ -1066,7 +1067,7 @@ pub struct GkeCluster {
     #[prost(string, tag = "3")]
     pub proxy_url: ::prost::alloc::string::String,
     /// Optional. If set, the cluster will be accessed using the DNS endpoint. Note
-    /// that `dns_endpoint` and `internal_ip` cannot both be set to true.
+    /// that both `dns_endpoint` and `internal_ip` cannot be set to true.
     #[prost(bool, tag = "4")]
     pub dns_endpoint: bool,
 }
@@ -1277,7 +1278,7 @@ pub struct DeleteTargetRequest {
 /// supported runtimes.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomTargetType {
-    /// Optional. Name of the `CustomTargetType`. Format is
+    /// Identifier. Name of the `CustomTargetType`. Format is
     /// `projects/{project}/locations/{location}/customTargetTypes/{customTargetType}`.
     /// The `customTargetType` component must match
     /// `[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?`
@@ -1338,8 +1339,8 @@ pub mod custom_target_type {
     /// Defines the `CustomTargetType` renderer and deployer.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Definition {
-        /// Configures render and deploy for the `CustomTargetType` using Skaffold
-        /// custom actions.
+        /// Optional. Configures render and deploy for the `CustomTargetType` using
+        /// Skaffold custom actions.
         #[prost(message, tag = "10")]
         CustomActions(super::CustomTargetSkaffoldActions),
     }
@@ -1417,13 +1418,14 @@ pub mod skaffold_modules {
     /// The source that contains the Skaffold Config modules.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
-        /// Remote git repository containing the Skaffold Config modules.
+        /// Optional. Remote git repository containing the Skaffold Config modules.
         #[prost(message, tag = "2")]
         Git(SkaffoldGitSource),
-        /// Cloud Storage bucket containing the Skaffold Config modules.
+        /// Optional. Cloud Storage bucket containing the Skaffold Config modules.
         #[prost(message, tag = "3")]
         GoogleCloudStorage(SkaffoldGcsSource),
-        /// Cloud Build V2 repository containing the Skaffold Config modules.
+        /// Optional. Cloud Build V2 repository containing the Skaffold Config
+        /// modules.
         #[prost(message, tag = "4")]
         GoogleCloudBuildRepo(SkaffoldGcbRepoSource),
     }
@@ -1599,11 +1601,11 @@ pub struct DeployPolicy {
     /// Output only. Unique identifier of the `DeployPolicy`.
     #[prost(string, tag = "2")]
     pub uid: ::prost::alloc::string::String,
-    /// Description of the `DeployPolicy`. Max length is 255 characters.
+    /// Optional. Description of the `DeployPolicy`. Max length is 255 characters.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
-    /// User annotations. These attributes can only be set and used by the
-    /// user, and not by Cloud Deploy. Annotations must meet the following
+    /// Optional. User annotations. These attributes can only be set and used by
+    /// the user, and not by Cloud Deploy. Annotations must meet the following
     /// constraints:
     ///
     /// * Annotations are key/value pairs.
@@ -1646,8 +1648,8 @@ pub struct DeployPolicy {
     /// Output only. Most recent time at which the deploy policy was updated.
     #[prost(message, optional, tag = "7")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// When suspended, the policy will not prevent actions from occurring, even
-    /// if the action violates the policy.
+    /// Optional. When suspended, the policy will not prevent actions from
+    /// occurring, even if the action violates the policy.
     #[prost(bool, tag = "8")]
     pub suspended: bool,
     /// Required. Selected resources to which the policy will be applied. At least
@@ -1731,8 +1733,8 @@ pub struct DeployPolicyResourceSelector {
 /// Contains criteria for selecting DeliveryPipelines.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeliveryPipelineAttribute {
-    /// ID of the `DeliveryPipeline`. The value of this field could be one of the
-    /// following:
+    /// Optional. ID of the `DeliveryPipeline`. The value of this field could be
+    /// one of the following:
     ///
     /// * The last segment of a pipeline name
     /// * "*", all delivery pipelines in a location
@@ -1749,7 +1751,7 @@ pub struct DeliveryPipelineAttribute {
 /// for a Deploy Policy or for an Automation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetAttribute {
-    /// ID of the `Target`. The value of this field could be one of the
+    /// Optional. ID of the `Target`. The value of this field could be one of the
     /// following:
     ///
     /// * The last segment of a target name
@@ -1773,7 +1775,7 @@ pub struct PolicyRule {
 pub mod policy_rule {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Rule {
-        /// Rollout restrictions.
+        /// Optional. Rollout restrictions.
         #[prost(message, tag = "2")]
         RolloutRestriction(super::RolloutRestriction),
     }
@@ -1965,7 +1967,7 @@ pub struct PolicyViolationDetails {
 /// that can be deployed.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Release {
-    /// Optional. Name of the `Release`. Format is
+    /// Identifier. Name of the `Release`. Format is
     /// `projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}`.
     /// The `release` component must match `[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?`
     #[prost(string, tag = "1")]
@@ -1973,12 +1975,13 @@ pub struct Release {
     /// Output only. Unique identifier of the `Release`.
     #[prost(string, tag = "2")]
     pub uid: ::prost::alloc::string::String,
-    /// Description of the `Release`. Max length is 255 characters.
+    /// Optional. Description of the `Release`. Max length is 255 characters.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
-    /// User annotations. These attributes can only be set and used by the
-    /// user, and not by Cloud Deploy. See <https://google.aip.dev/128#annotations>
-    /// for more details such as format and size limitations.
+    /// Optional. User annotations. These attributes can only be set and used by
+    /// the user, and not by Cloud Deploy. See
+    /// <https://google.aip.dev/128#annotations> for more details such as format and
+    /// size limitations.
     #[prost(map = "string, string", tag = "4")]
     pub annotations: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -2012,13 +2015,14 @@ pub struct Release {
     /// Output only. Time at which the render completed.
     #[prost(message, optional, tag = "8")]
     pub render_end_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Cloud Storage URI of tar.gz archive containing Skaffold configuration.
+    /// Optional. Cloud Storage URI of tar.gz archive containing Skaffold
+    /// configuration.
     #[prost(string, tag = "17")]
     pub skaffold_config_uri: ::prost::alloc::string::String,
-    /// Filepath of the Skaffold config inside of the config URI.
+    /// Optional. Filepath of the Skaffold config inside of the config URI.
     #[prost(string, tag = "9")]
     pub skaffold_config_path: ::prost::alloc::string::String,
-    /// List of artifacts to pass through to Skaffold command.
+    /// Optional. List of artifacts to pass through to Skaffold command.
     #[prost(message, repeated, tag = "10")]
     pub build_artifacts: ::prost::alloc::vec::Vec<BuildArtifact>,
     /// Output only. Snapshot of the parent pipeline taken at release creation
@@ -2477,11 +2481,11 @@ pub struct GetDeployPolicyRequest {
 /// Description of an a image to use during Skaffold rendering.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BuildArtifact {
-    /// Image name in Skaffold configuration.
+    /// Optional. Image name in Skaffold configuration.
     #[prost(string, tag = "3")]
     pub image: ::prost::alloc::string::String,
-    /// Image tag to use. This will generally be the full path to an image, such
-    /// as "gcr.io/my-project/busybox:1.2.3" or
+    /// Optional. Image tag to use. This will generally be the full path to an
+    /// image, such as "gcr.io/my-project/busybox:1.2.3" or
     /// "gcr.io/my-project/busybox@sha256:abc123".
     #[prost(string, tag = "2")]
     pub tag: ::prost::alloc::string::String,
@@ -2656,7 +2660,7 @@ pub struct CreateReleaseRequest {
 /// A `Rollout` contains information around a specific deployment to a `Target`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Rollout {
-    /// Optional. Name of the `Rollout`. Format is
+    /// Identifier. Name of the `Rollout`. Format is
     /// `projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/{rollout}`.
     /// The `rollout` component must match `[a-z](\[a-z0-9-\]{0,61}\[a-z0-9\])?`
     #[prost(string, tag = "1")]
@@ -2664,13 +2668,14 @@ pub struct Rollout {
     /// Output only. Unique identifier of the `Rollout`.
     #[prost(string, tag = "2")]
     pub uid: ::prost::alloc::string::String,
-    /// Description of the `Rollout` for user purposes. Max length is 255
+    /// Optional. Description of the `Rollout` for user purposes. Max length is 255
     /// characters.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
-    /// User annotations. These attributes can only be set and used by the
-    /// user, and not by Cloud Deploy. See <https://google.aip.dev/128#annotations>
-    /// for more details such as format and size limitations.
+    /// Optional. User annotations. These attributes can only be set and used by
+    /// the user, and not by Cloud Deploy. See
+    /// <https://google.aip.dev/128#annotations> for more details such as format and
+    /// size limitations.
     #[prost(map = "string, string", tag = "4")]
     pub annotations: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -3142,15 +3147,15 @@ pub mod phase {
 /// Deployment job composition.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeploymentJobs {
+    /// Output only. The predeploy Job, which is the first job on the phase.
+    #[prost(message, optional, tag = "3")]
+    pub predeploy_job: ::core::option::Option<Job>,
     /// Output only. The deploy Job. This is the deploy job in the phase.
     #[prost(message, optional, tag = "1")]
     pub deploy_job: ::core::option::Option<Job>,
     /// Output only. The verify Job. Runs after a deploy if the deploy succeeds.
     #[prost(message, optional, tag = "2")]
     pub verify_job: ::core::option::Option<Job>,
-    /// Output only. The predeploy Job, which is the first job on the phase.
-    #[prost(message, optional, tag = "3")]
-    pub predeploy_job: ::core::option::Option<Job>,
     /// Output only. The postdeploy Job, which is the last job on the phase.
     #[prost(message, optional, tag = "4")]
     pub postdeploy_job: ::core::option::Option<Job>,
@@ -3535,7 +3540,7 @@ pub struct AbandonReleaseResponse {}
 /// A `JobRun` contains information of a single `Rollout` job evaluation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobRun {
-    /// Optional. Name of the `JobRun`. Format is
+    /// Output only. Name of the `JobRun`. Format is
     /// `projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{releases}/rollouts/{rollouts}/jobRuns/{uuid}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -4190,7 +4195,7 @@ pub struct Automation {
 /// to which an Automation is going to be applied.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutomationResourceSelector {
-    /// Contains attributes about a target.
+    /// Optional. Contains attributes about a target.
     #[prost(message, repeated, tag = "1")]
     pub targets: ::prost::alloc::vec::Vec<TargetAttribute>,
 }
