@@ -98,6 +98,11 @@ The latter obtains user access credentials via a web flow and puts them in the w
 This command is useful when you are developing code that would normally use a service account but need to run the code in a local development environment where it's easier to provide user credentials.
 So to work for local development you need to use `gcloud auth application-default login`.
 
+### Routing headers
+Some of the APIs (notable KMS, Artifact Registry and others) require additionally specify headers such as `x-goog-request-params`.
+You can find an example how to handle it [here](https://github.com/abdolence/kms-aead-rs/blob/b8bb496800625a660be0c9896366d7407b8aa714/src/providers/gcp_kms_encryption.rs#L114)
+
+
 ## High-level APIs
 Sometimes using proto generated APIs are tedious and cumbersome, so you may need to introduce facade APIs on top of them:
 * [firestore](https://github.com/abdolence/firestore-rs) - to work with Firestore;
