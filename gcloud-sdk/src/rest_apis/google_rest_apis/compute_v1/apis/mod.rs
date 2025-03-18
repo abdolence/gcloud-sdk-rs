@@ -1,3 +1,4 @@
+use serde::{Deserialize, Serialize};
 use std::error;
 use std::fmt;
 

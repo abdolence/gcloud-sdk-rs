@@ -1,3 +1,4 @@
+use serde::{Deserialize, Serialize};
 pub mod aggregate_classification_metrics;
 pub use self::aggregate_classification_metrics::AggregateClassificationMetrics;
 pub mod argument;

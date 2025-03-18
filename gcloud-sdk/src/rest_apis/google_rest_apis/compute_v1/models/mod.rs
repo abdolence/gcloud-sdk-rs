@@ -1,3 +1,4 @@
+use serde::{Deserialize, Serialize};
 pub mod accelerator_config;
 pub use self::accelerator_config::AcceleratorConfig;
 pub mod accelerator_type;

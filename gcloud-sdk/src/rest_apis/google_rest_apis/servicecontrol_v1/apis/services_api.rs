@@ -11,7 +11,7 @@ use serde::{Deserialize, Serialize}; /*
 use reqwest;
 
 use super::{configuration, Error};
-use crate::google_rest_apis::servicecontrol_v1::apis::ResponseContent;
+use crate::google_rest_apis::servicecontrol_v1::{apis::ResponseContent, models};
 
 /// struct for passing parameters to the method [`servicecontrol_services_allocate_quota`]
 #[derive(Clone, Debug, Default)]
@@ -40,8 +40,7 @@ pub struct ServicecontrolPeriodServicesPeriodAllocateQuotaParams {
     pub upload_protocol: Option<String>,
     /// Legacy upload protocol for media (e.g. \"media\", \"multipart\").
     pub upload_type: Option<String>,
-    pub allocate_quota_request:
-        Option<crate::google_rest_apis::servicecontrol_v1::models::AllocateQuotaRequest>,
+    pub allocate_quota_request: Option<models::AllocateQuotaRequest>,
 }
 
 /// struct for passing parameters to the method [`servicecontrol_services_check`]
@@ -71,7 +70,7 @@ pub struct ServicecontrolPeriodServicesPeriodCheckParams {
     pub upload_protocol: Option<String>,
     /// Legacy upload protocol for media (e.g. \"media\", \"multipart\").
     pub upload_type: Option<String>,
-    pub check_request: Option<crate::google_rest_apis::servicecontrol_v1::models::CheckRequest>,
+    pub check_request: Option<models::CheckRequest>,
 }
 
 /// struct for passing parameters to the method [`servicecontrol_services_report`]
@@ -101,7 +100,7 @@ pub struct ServicecontrolPeriodServicesPeriodReportParams {
     pub upload_protocol: Option<String>,
     /// Legacy upload protocol for media (e.g. \"media\", \"multipart\").
     pub upload_type: Option<String>,
-    pub report_request: Option<crate::google_rest_apis::servicecontrol_v1::models::ReportRequest>,
+    pub report_request: Option<models::ReportRequest>,
 }
 
 /// struct for typed errors of method [`servicecontrol_services_allocate_quota`]
@@ -130,7 +129,7 @@ pub async fn servicecontrol_services_allocate_quota(
     configuration: &configuration::Configuration,
     params: ServicecontrolPeriodServicesPeriodAllocateQuotaParams,
 ) -> Result<
-    crate::google_rest_apis::servicecontrol_v1::models::AllocateQuotaResponse,
+    models::AllocateQuotaResponse,
     Error<ServicecontrolPeriodServicesPeriodAllocateQuotaError>,
 > {
     let local_var_configuration = configuration;
@@ -238,10 +237,7 @@ pub async fn servicecontrol_services_allocate_quota(
 pub async fn servicecontrol_services_check(
     configuration: &configuration::Configuration,
     params: ServicecontrolPeriodServicesPeriodCheckParams,
-) -> Result<
-    crate::google_rest_apis::servicecontrol_v1::models::CheckResponse,
-    Error<ServicecontrolPeriodServicesPeriodCheckError>,
-> {
+) -> Result<models::CheckResponse, Error<ServicecontrolPeriodServicesPeriodCheckError>> {
     let local_var_configuration = configuration;
 
     // unbox the parameters
@@ -324,8 +320,6 @@ pub async fn servicecontrol_services_check(
     local_var_req_builder = local_var_req_builder.json(&check_request);
 
     let local_var_req = local_var_req_builder.build()?;
-    eprintln!("{local_var_req:?}");
-    eprintln!("{}\n\n", serde_json::to_string(&check_request).unwrap());
     let local_var_resp = local_var_client.execute(local_var_req).await?;
 
     let local_var_status = local_var_resp.status();
@@ -349,10 +343,7 @@ pub async fn servicecontrol_services_check(
 pub async fn servicecontrol_services_report(
     configuration: &configuration::Configuration,
     params: ServicecontrolPeriodServicesPeriodReportParams,
-) -> Result<
-    crate::google_rest_apis::servicecontrol_v1::models::ReportResponse,
-    Error<ServicecontrolPeriodServicesPeriodReportError>,
-> {
+) -> Result<models::ReportResponse, Error<ServicecontrolPeriodServicesPeriodReportError>> {
     let local_var_configuration = configuration;
 
     // unbox the parameters
