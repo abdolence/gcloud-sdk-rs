@@ -1,3 +1,4 @@
+use serde::{Deserialize, Serialize};
 pub mod create_auth_uri_response;
 pub use self::create_auth_uri_response::CreateAuthUriResponse;
 pub mod delete_account_response;
