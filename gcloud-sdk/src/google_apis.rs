@@ -75,52 +75,52 @@ pub mod google {
             }
         }
         pub mod googleads {
-            pub mod v17 {
+            pub mod v19 {
                 pub mod common {
                     #[cfg(
                         any(
-                            feature = "google-ads-googleads-v17-common",
-                            feature = "google-ads-googleads-v17-errors",
-                            feature = "google-ads-googleads-v17-resources",
-                            feature = "google-ads-googleads-v17-services",
+                            feature = "google-ads-googleads-v19-common",
+                            feature = "google-ads-googleads-v19-errors",
+                            feature = "google-ads-googleads-v19-resources",
+                            feature = "google-ads-googleads-v19-services",
                         )
                     )]
-                    include_proto!("google.ads.googleads.v17.common");
+                    include_proto!("google.ads.googleads.v19.common");
                 }
                 pub mod enums {
                     #[cfg(
                         any(
-                            feature = "google-ads-googleads-v17-common",
-                            feature = "google-ads-googleads-v17-enums",
-                            feature = "google-ads-googleads-v17-errors",
-                            feature = "google-ads-googleads-v17-resources",
-                            feature = "google-ads-googleads-v17-services",
+                            feature = "google-ads-googleads-v19-common",
+                            feature = "google-ads-googleads-v19-enums",
+                            feature = "google-ads-googleads-v19-errors",
+                            feature = "google-ads-googleads-v19-resources",
+                            feature = "google-ads-googleads-v19-services",
                         )
                     )]
-                    include_proto!("google.ads.googleads.v17.enums");
+                    include_proto!("google.ads.googleads.v19.enums");
                 }
                 pub mod errors {
                     #[cfg(
                         any(
-                            feature = "google-ads-googleads-v17-errors",
-                            feature = "google-ads-googleads-v17-resources",
-                            feature = "google-ads-googleads-v17-services",
+                            feature = "google-ads-googleads-v19-errors",
+                            feature = "google-ads-googleads-v19-resources",
+                            feature = "google-ads-googleads-v19-services",
                         )
                     )]
-                    include_proto!("google.ads.googleads.v17.errors");
+                    include_proto!("google.ads.googleads.v19.errors");
                 }
                 pub mod resources {
                     #[cfg(
                         any(
-                            feature = "google-ads-googleads-v17-resources",
-                            feature = "google-ads-googleads-v17-services",
+                            feature = "google-ads-googleads-v19-resources",
+                            feature = "google-ads-googleads-v19-services",
                         )
                     )]
-                    include_proto!("google.ads.googleads.v17.resources");
+                    include_proto!("google.ads.googleads.v19.resources");
                 }
                 pub mod services {
-                    #[cfg(any(feature = "google-ads-googleads-v17-services"))]
-                    include_proto!("google.ads.googleads.v17.services");
+                    #[cfg(any(feature = "google-ads-googleads-v19-services"))]
+                    include_proto!("google.ads.googleads.v19.services");
                 }
             }
         }
@@ -225,9 +225,9 @@ pub mod google {
                 feature = "google-ads-googleads-v16-common",
                 feature = "google-ads-googleads-v16-resources",
                 feature = "google-ads-googleads-v16-services",
-                feature = "google-ads-googleads-v17-common",
-                feature = "google-ads-googleads-v17-resources",
-                feature = "google-ads-googleads-v17-services",
+                feature = "google-ads-googleads-v19-common",
+                feature = "google-ads-googleads-v19-resources",
+                feature = "google-ads-googleads-v19-services",
                 feature = "google-ads-searchads360-v0-common",
                 feature = "google-ads-searchads360-v0-resources",
                 feature = "google-ads-searchads360-v0-services",
@@ -3285,7 +3285,7 @@ pub mod google {
                 feature = "google-ads-admanager-v1",
                 feature = "google-ads-googleads-v15-services",
                 feature = "google-ads-googleads-v16-services",
-                feature = "google-ads-googleads-v17-services",
+                feature = "google-ads-googleads-v19-services",
                 feature = "google-ai-generativelanguage-v1beta",
                 feature = "google-ai-generativelanguage-v1beta3",
                 feature = "google-analytics-data-v1alpha",
@@ -3856,7 +3856,7 @@ pub mod google {
                 feature = "google-ads-admanager-v1",
                 feature = "google-ads-googleads-v15-services",
                 feature = "google-ads-googleads-v16-services",
-                feature = "google-ads-googleads-v17-services",
+                feature = "google-ads-googleads-v19-services",
                 feature = "google-ai-generativelanguage-v1beta",
                 feature = "google-ai-generativelanguage-v1beta3",
                 feature = "google-analytics-data-v1alpha",
