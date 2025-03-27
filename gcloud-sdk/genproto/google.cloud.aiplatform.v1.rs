@@ -2424,6 +2424,32 @@ pub struct EnvVar {
     #[prost(string, tag = "2")]
     pub value: ::prost::alloc::string::String,
 }
+/// Reference to a secret stored in the Cloud Secret Manager that will
+/// provide the value for this environment variable.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SecretRef {
+    /// Required. The name of the secret in Cloud Secret Manager.
+    /// Format: {secret_name}.
+    #[prost(string, tag = "1")]
+    pub secret: ::prost::alloc::string::String,
+    /// The Cloud Secret Manager secret version.
+    /// Can be 'latest' for the latest version, an integer for a specific
+    /// version, or a version alias.
+    #[prost(string, tag = "2")]
+    pub version: ::prost::alloc::string::String,
+}
+/// Represents an environment variable where the value is a secret in Cloud
+/// Secret Manager.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SecretEnvVar {
+    /// Required. Name of the secret environment variable.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Reference to a secret stored in the Cloud Secret Manager that
+    /// will provide the value for this environment variable.
+    #[prost(message, optional, tag = "2")]
+    pub secret_ref: ::core::option::Option<SecretRef>,
+}
 /// A trained machine learning Model.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Model {
@@ -2946,6 +2972,12 @@ pub struct ModelGardenSource {
     /// Required. The model garden source model resource name.
     #[prost(string, tag = "1")]
     pub public_model_name: ::prost::alloc::string::String,
+    /// Optional. The model garden source model version ID.
+    #[prost(string, tag = "3")]
+    pub version_id: ::prost::alloc::string::String,
+    /// Optional. Whether to avoid pulling the model from the HF cache.
+    #[prost(bool, tag = "4")]
+    pub skip_hf_model_cache: bool,
 }
 /// Contains information about the source of the models generated from Generative
 /// AI Studio.
@@ -4558,6 +4590,9 @@ pub struct RagRetrievalConfig {
     /// Optional. Config for filters.
     #[prost(message, optional, tag = "3")]
     pub filter: ::core::option::Option<rag_retrieval_config::Filter>,
+    /// Optional. Config for ranking and reranking.
+    #[prost(message, optional, tag = "4")]
+    pub ranking: ::core::option::Option<rag_retrieval_config::Ranking>,
 }
 /// Nested message and enum types in `RagRetrievalConfig`.
 pub mod rag_retrieval_config {
@@ -4587,6 +4622,566 @@ pub mod rag_retrieval_config {
             #[prost(double, tag = "4")]
             VectorSimilarityThreshold(f64),
         }
+    }
+    /// Config for ranking and reranking.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Ranking {
+        /// Config options for ranking. Currently only Rank Service is supported.
+        #[prost(oneof = "ranking::RankingConfig", tags = "1, 3")]
+        pub ranking_config: ::core::option::Option<ranking::RankingConfig>,
+    }
+    /// Nested message and enum types in `Ranking`.
+    pub mod ranking {
+        /// Config for Rank Service.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct RankService {
+            /// Optional. The model name of the rank service.
+            /// Format: `semantic-ranker-512@latest`
+            #[prost(string, optional, tag = "1")]
+            pub model_name: ::core::option::Option<::prost::alloc::string::String>,
+        }
+        /// Config for LlmRanker.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct LlmRanker {
+            /// Optional. The model name used for ranking.
+            /// Format: `gemini-1.5-pro`
+            #[prost(string, optional, tag = "1")]
+            pub model_name: ::core::option::Option<::prost::alloc::string::String>,
+        }
+        /// Config options for ranking. Currently only Rank Service is supported.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum RankingConfig {
+            /// Optional. Config for Rank Service.
+            #[prost(message, tag = "1")]
+            RankService(RankService),
+            /// Optional. Config for LlmRanker.
+            #[prost(message, tag = "3")]
+            LlmRanker(LlmRanker),
+        }
+    }
+}
+/// Config for the embedding model to use for RAG.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RagEmbeddingModelConfig {
+    /// The model config to use.
+    #[prost(oneof = "rag_embedding_model_config::ModelConfig", tags = "1")]
+    pub model_config: ::core::option::Option<rag_embedding_model_config::ModelConfig>,
+}
+/// Nested message and enum types in `RagEmbeddingModelConfig`.
+pub mod rag_embedding_model_config {
+    /// Config representing a model hosted on Vertex Prediction Endpoint.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct VertexPredictionEndpoint {
+        /// Required. The endpoint resource name.
+        /// Format:
+        /// `projects/{project}/locations/{location}/publishers/{publisher}/models/{model}`
+        /// or
+        /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
+        #[prost(string, tag = "1")]
+        pub endpoint: ::prost::alloc::string::String,
+        /// Output only. The resource name of the model that is deployed on the
+        /// endpoint. Present only when the endpoint is not a publisher model.
+        /// Pattern:
+        /// `projects/{project}/locations/{location}/models/{model}`
+        #[prost(string, tag = "2")]
+        pub model: ::prost::alloc::string::String,
+        /// Output only. Version ID of the model that is deployed on the endpoint.
+        /// Present only when the endpoint is not a publisher model.
+        #[prost(string, tag = "3")]
+        pub model_version_id: ::prost::alloc::string::String,
+    }
+    /// The model config to use.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ModelConfig {
+        /// The Vertex AI Prediction Endpoint that either refers to a publisher model
+        /// or an endpoint that is hosting a 1P fine-tuned text embedding model.
+        /// Endpoints hosting non-1P fine-tuned text embedding models are
+        /// currently not supported.
+        /// This is used for dense vector search.
+        #[prost(message, tag = "1")]
+        VertexPredictionEndpoint(VertexPredictionEndpoint),
+    }
+}
+/// Config for the Vector DB to use for RAG.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RagVectorDbConfig {
+    /// Authentication config for the chosen Vector DB.
+    #[prost(message, optional, tag = "5")]
+    pub api_auth: ::core::option::Option<ApiAuth>,
+    /// Optional. Immutable. The embedding model config of the Vector DB.
+    #[prost(message, optional, tag = "7")]
+    pub rag_embedding_model_config: ::core::option::Option<RagEmbeddingModelConfig>,
+    /// The config for the Vector DB.
+    #[prost(oneof = "rag_vector_db_config::VectorDb", tags = "1, 3, 6")]
+    pub vector_db: ::core::option::Option<rag_vector_db_config::VectorDb>,
+}
+/// Nested message and enum types in `RagVectorDbConfig`.
+pub mod rag_vector_db_config {
+    /// The config for the default RAG-managed Vector DB.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct RagManagedDb {}
+    /// The config for the Pinecone.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Pinecone {
+        /// Pinecone index name.
+        /// This value cannot be changed after it's set.
+        #[prost(string, tag = "1")]
+        pub index_name: ::prost::alloc::string::String,
+    }
+    /// The config for the Vertex Vector Search.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct VertexVectorSearch {
+        /// The resource name of the Index Endpoint.
+        /// Format:
+        /// `projects/{project}/locations/{location}/indexEndpoints/{index_endpoint}`
+        #[prost(string, tag = "1")]
+        pub index_endpoint: ::prost::alloc::string::String,
+        /// The resource name of the Index.
+        /// Format:
+        /// `projects/{project}/locations/{location}/indexes/{index}`
+        #[prost(string, tag = "2")]
+        pub index: ::prost::alloc::string::String,
+    }
+    /// The config for the Vector DB.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum VectorDb {
+        /// The config for the RAG-managed Vector DB.
+        #[prost(message, tag = "1")]
+        RagManagedDb(RagManagedDb),
+        /// The config for the Pinecone.
+        #[prost(message, tag = "3")]
+        Pinecone(Pinecone),
+        /// The config for the Vertex Vector Search.
+        #[prost(message, tag = "6")]
+        VertexVectorSearch(VertexVectorSearch),
+    }
+}
+/// RagFile status.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FileStatus {
+    /// Output only. RagFile state.
+    #[prost(enumeration = "file_status::State", tag = "1")]
+    pub state: i32,
+    /// Output only. Only when the `state` field is ERROR.
+    #[prost(string, tag = "2")]
+    pub error_status: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `FileStatus`.
+pub mod file_status {
+    /// RagFile state.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// RagFile state is unspecified.
+        Unspecified = 0,
+        /// RagFile resource has been created and indexed successfully.
+        Active = 1,
+        /// RagFile resource is in a problematic state.
+        /// See `error_message` field for details.
+        Error = 2,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Error => "ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "ERROR" => Some(Self::Error),
+                _ => None,
+            }
+        }
+    }
+}
+/// Config for the Vertex AI Search.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VertexAiSearchConfig {
+    /// Vertex AI Search Serving Config resource full name. For example,
+    /// `projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/servingConfigs/{serving_config}`
+    /// or
+    /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/servingConfigs/{serving_config}`.
+    #[prost(string, tag = "1")]
+    pub serving_config: ::prost::alloc::string::String,
+}
+/// RagCorpus status.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CorpusStatus {
+    /// Output only. RagCorpus life state.
+    #[prost(enumeration = "corpus_status::State", tag = "1")]
+    pub state: i32,
+    /// Output only. Only when the `state` field is ERROR.
+    #[prost(string, tag = "2")]
+    pub error_status: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `CorpusStatus`.
+pub mod corpus_status {
+    /// RagCorpus life state.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// This state is not supposed to happen.
+        Unknown = 0,
+        /// RagCorpus resource entry is initialized, but hasn't done validation.
+        Initialized = 1,
+        /// RagCorpus is provisioned successfully and is ready to serve.
+        Active = 2,
+        /// RagCorpus is in a problematic situation.
+        /// See `error_message` field for details.
+        Error = 3,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unknown => "UNKNOWN",
+                Self::Initialized => "INITIALIZED",
+                Self::Active => "ACTIVE",
+                Self::Error => "ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN" => Some(Self::Unknown),
+                "INITIALIZED" => Some(Self::Initialized),
+                "ACTIVE" => Some(Self::Active),
+                "ERROR" => Some(Self::Error),
+                _ => None,
+            }
+        }
+    }
+}
+/// A RagCorpus is a RagFile container and a project can have multiple
+/// RagCorpora.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RagCorpus {
+    /// Output only. The resource name of the RagCorpus.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The display name of the RagCorpus.
+    /// The name can be up to 128 characters long and can consist of any UTF-8
+    /// characters.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. The description of the RagCorpus.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. Timestamp when this RagCorpus was created.
+    #[prost(message, optional, tag = "4")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when this RagCorpus was last updated.
+    #[prost(message, optional, tag = "5")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. RagCorpus state.
+    #[prost(message, optional, tag = "8")]
+    pub corpus_status: ::core::option::Option<CorpusStatus>,
+    /// The backend config of the RagCorpus.
+    /// It can be data store and/or retrieval engine.
+    #[prost(oneof = "rag_corpus::BackendConfig", tags = "9, 10")]
+    pub backend_config: ::core::option::Option<rag_corpus::BackendConfig>,
+}
+/// Nested message and enum types in `RagCorpus`.
+pub mod rag_corpus {
+    /// The backend config of the RagCorpus.
+    /// It can be data store and/or retrieval engine.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum BackendConfig {
+        /// Optional. Immutable. The config for the Vector DBs.
+        #[prost(message, tag = "9")]
+        VectorDbConfig(super::RagVectorDbConfig),
+        /// Optional. Immutable. The config for the Vertex AI Search.
+        #[prost(message, tag = "10")]
+        VertexAiSearchConfig(super::VertexAiSearchConfig),
+    }
+}
+/// A RagFile contains user data for chunking, embedding and indexing.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RagFile {
+    /// Output only. The resource name of the RagFile.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The display name of the RagFile.
+    /// The name can be up to 128 characters long and can consist of any UTF-8
+    /// characters.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. The description of the RagFile.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. Timestamp when this RagFile was created.
+    #[prost(message, optional, tag = "6")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when this RagFile was last updated.
+    #[prost(message, optional, tag = "7")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. State of the RagFile.
+    #[prost(message, optional, tag = "13")]
+    pub file_status: ::core::option::Option<FileStatus>,
+    /// The origin location of the RagFile if it is imported from Google Cloud
+    /// Storage or Google Drive.
+    #[prost(oneof = "rag_file::RagFileSource", tags = "8, 9, 10, 11, 12, 14")]
+    pub rag_file_source: ::core::option::Option<rag_file::RagFileSource>,
+}
+/// Nested message and enum types in `RagFile`.
+pub mod rag_file {
+    /// The origin location of the RagFile if it is imported from Google Cloud
+    /// Storage or Google Drive.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum RagFileSource {
+        /// Output only. Google Cloud Storage location of the RagFile.
+        /// It does not support wildcards in the Cloud Storage uri for now.
+        #[prost(message, tag = "8")]
+        GcsSource(super::GcsSource),
+        /// Output only. Google Drive location. Supports importing individual files
+        /// as well as Google Drive folders.
+        #[prost(message, tag = "9")]
+        GoogleDriveSource(super::GoogleDriveSource),
+        /// Output only. The RagFile is encapsulated and uploaded in the
+        /// UploadRagFile request.
+        #[prost(message, tag = "10")]
+        DirectUploadSource(super::DirectUploadSource),
+        /// The RagFile is imported from a Slack channel.
+        #[prost(message, tag = "11")]
+        SlackSource(super::SlackSource),
+        /// The RagFile is imported from a Jira query.
+        #[prost(message, tag = "12")]
+        JiraSource(super::JiraSource),
+        /// The RagFile is imported from a SharePoint source.
+        #[prost(message, tag = "14")]
+        SharePointSources(super::SharePointSources),
+    }
+}
+/// A RagChunk includes the content of a chunk of a RagFile, and associated
+/// metadata.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RagChunk {
+    /// The content of the chunk.
+    #[prost(string, tag = "1")]
+    pub text: ::prost::alloc::string::String,
+    /// If populated, represents where the chunk starts and ends in the document.
+    #[prost(message, optional, tag = "2")]
+    pub page_span: ::core::option::Option<rag_chunk::PageSpan>,
+}
+/// Nested message and enum types in `RagChunk`.
+pub mod rag_chunk {
+    /// Represents where the chunk starts and ends in the document.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct PageSpan {
+        /// Page where chunk starts in the document. Inclusive. 1-indexed.
+        #[prost(int32, tag = "1")]
+        pub first_page: i32,
+        /// Page where chunk ends in the document. Inclusive. 1-indexed.
+        #[prost(int32, tag = "2")]
+        pub last_page: i32,
+    }
+}
+/// Specifies the size and overlap of chunks for RagFiles.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct RagFileChunkingConfig {
+    /// Specifies the chunking config for RagFiles.
+    #[prost(oneof = "rag_file_chunking_config::ChunkingConfig", tags = "3")]
+    pub chunking_config: ::core::option::Option<
+        rag_file_chunking_config::ChunkingConfig,
+    >,
+}
+/// Nested message and enum types in `RagFileChunkingConfig`.
+pub mod rag_file_chunking_config {
+    /// Specifies the fixed length chunking config.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct FixedLengthChunking {
+        /// The size of the chunks.
+        #[prost(int32, tag = "1")]
+        pub chunk_size: i32,
+        /// The overlap between chunks.
+        #[prost(int32, tag = "2")]
+        pub chunk_overlap: i32,
+    }
+    /// Specifies the chunking config for RagFiles.
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    pub enum ChunkingConfig {
+        /// Specifies the fixed length chunking config.
+        #[prost(message, tag = "3")]
+        FixedLengthChunking(FixedLengthChunking),
+    }
+}
+/// Specifies the transformation config for RagFiles.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct RagFileTransformationConfig {
+    /// Specifies the chunking config for RagFiles.
+    #[prost(message, optional, tag = "1")]
+    pub rag_file_chunking_config: ::core::option::Option<RagFileChunkingConfig>,
+}
+/// Specifies the parsing config for RagFiles.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RagFileParsingConfig {
+    /// The parser to use for RagFiles.
+    #[prost(oneof = "rag_file_parsing_config::Parser", tags = "4")]
+    pub parser: ::core::option::Option<rag_file_parsing_config::Parser>,
+}
+/// Nested message and enum types in `RagFileParsingConfig`.
+pub mod rag_file_parsing_config {
+    /// Document AI Layout Parser config.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct LayoutParser {
+        /// The full resource name of a Document AI processor or processor version.
+        /// The processor must have type `LAYOUT_PARSER_PROCESSOR`. If specified, the
+        /// `additional_config.parse_as_scanned_pdf` field must be false.
+        /// Format:
+        /// * `projects/{project_id}/locations/{location}/processors/{processor_id}`
+        /// * `projects/{project_id}/locations/{location}/processors/{processor_id}/processorVersions/{processor_version_id}`
+        #[prost(string, tag = "1")]
+        pub processor_name: ::prost::alloc::string::String,
+        /// The maximum number of requests the job is allowed to make to the Document
+        /// AI processor per minute. Consult
+        /// <https://cloud.google.com/document-ai/quotas> and the Quota page for your
+        /// project to set an appropriate value here. If unspecified, a default value
+        /// of 120 QPM would be used.
+        #[prost(int32, tag = "2")]
+        pub max_parsing_requests_per_min: i32,
+    }
+    /// The parser to use for RagFiles.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Parser {
+        /// The Layout Parser to use for RagFiles.
+        #[prost(message, tag = "4")]
+        LayoutParser(LayoutParser),
+    }
+}
+/// Config for uploading RagFile.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct UploadRagFileConfig {
+    /// Specifies the transformation config for RagFiles.
+    #[prost(message, optional, tag = "3")]
+    pub rag_file_transformation_config: ::core::option::Option<
+        RagFileTransformationConfig,
+    >,
+}
+/// Config for importing RagFiles.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportRagFilesConfig {
+    /// Specifies the transformation config for RagFiles.
+    #[prost(message, optional, tag = "16")]
+    pub rag_file_transformation_config: ::core::option::Option<
+        RagFileTransformationConfig,
+    >,
+    /// Optional. Specifies the parsing config for RagFiles.
+    /// RAG will use the default parser if this field is not set.
+    #[prost(message, optional, tag = "8")]
+    pub rag_file_parsing_config: ::core::option::Option<RagFileParsingConfig>,
+    /// Optional. The max number of queries per minute that this job is allowed to
+    /// make to the embedding model specified on the corpus. This value is specific
+    /// to this job and not shared across other import jobs. Consult the Quotas
+    /// page on the project to set an appropriate value here.
+    /// If unspecified, a default value of 1,000 QPM would be used.
+    #[prost(int32, tag = "5")]
+    pub max_embedding_requests_per_min: i32,
+    /// The source of the import.
+    #[prost(oneof = "import_rag_files_config::ImportSource", tags = "2, 3, 6, 7, 13")]
+    pub import_source: ::core::option::Option<import_rag_files_config::ImportSource>,
+    /// Optional. If provided, all partial failures are written to the sink.
+    /// Deprecated. Prefer to use the `import_result_sink`.
+    #[prost(oneof = "import_rag_files_config::PartialFailureSink", tags = "11, 12")]
+    pub partial_failure_sink: ::core::option::Option<
+        import_rag_files_config::PartialFailureSink,
+    >,
+    /// Optional. If provided, all successfully imported files and all partial
+    /// failures are written to the sink.
+    #[prost(oneof = "import_rag_files_config::ImportResultSink", tags = "14, 15")]
+    pub import_result_sink: ::core::option::Option<
+        import_rag_files_config::ImportResultSink,
+    >,
+}
+/// Nested message and enum types in `ImportRagFilesConfig`.
+pub mod import_rag_files_config {
+    /// The source of the import.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ImportSource {
+        /// Google Cloud Storage location. Supports importing individual files as
+        /// well as entire Google Cloud Storage directories. Sample formats:
+        /// - `gs://bucket_name/my_directory/object_name/my_file.txt`
+        /// - `gs://bucket_name/my_directory`
+        #[prost(message, tag = "2")]
+        GcsSource(super::GcsSource),
+        /// Google Drive location. Supports importing individual files as
+        /// well as Google Drive folders.
+        #[prost(message, tag = "3")]
+        GoogleDriveSource(super::GoogleDriveSource),
+        /// Slack channels with their corresponding access tokens.
+        #[prost(message, tag = "6")]
+        SlackSource(super::SlackSource),
+        /// Jira queries with their corresponding authentication.
+        #[prost(message, tag = "7")]
+        JiraSource(super::JiraSource),
+        /// SharePoint sources.
+        #[prost(message, tag = "13")]
+        SharePointSources(super::SharePointSources),
+    }
+    /// Optional. If provided, all partial failures are written to the sink.
+    /// Deprecated. Prefer to use the `import_result_sink`.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum PartialFailureSink {
+        /// The Cloud Storage path to write partial failures to.
+        /// Deprecated. Prefer to use `import_result_gcs_sink`.
+        #[prost(message, tag = "11")]
+        PartialFailureGcsSink(super::GcsDestination),
+        /// The BigQuery destination to write partial failures to. It should be a
+        /// bigquery table resource name (e.g.
+        /// "bq://projectId.bqDatasetId.bqTableId"). The dataset must exist. If the
+        /// table does not exist, it will be created with the expected schema. If the
+        /// table exists, the schema will be validated and data will be added to this
+        /// existing table.
+        /// Deprecated. Prefer to use `import_result_bq_sink`.
+        #[prost(message, tag = "12")]
+        PartialFailureBigquerySink(super::BigQueryDestination),
+    }
+    /// Optional. If provided, all successfully imported files and all partial
+    /// failures are written to the sink.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ImportResultSink {
+        /// The Cloud Storage path to write import result to.
+        #[prost(message, tag = "14")]
+        ImportResultGcsSink(super::GcsDestination),
+        /// The BigQuery destination to write import result to. It should be a
+        /// bigquery table resource name (e.g.
+        /// "bq://projectId.bqDatasetId.bqTableId"). The dataset must exist. If the
+        /// table does not exist, it will be created with the expected schema. If the
+        /// table exists, the schema will be validated and data will be added to this
+        /// existing table.
+        #[prost(message, tag = "15")]
+        ImportResultBigquerySink(super::BigQueryDestination),
     }
 }
 /// The base structured datatype containing multi-part content of a message.
@@ -5319,6 +5914,20 @@ pub mod grounding_chunk {
         /// Text of the attribution.
         #[prost(string, optional, tag = "3")]
         pub text: ::core::option::Option<::prost::alloc::string::String>,
+        /// Tool-specific details about the retrieved context.
+        #[prost(oneof = "retrieved_context::ContextDetails", tags = "4")]
+        pub context_details: ::core::option::Option<retrieved_context::ContextDetails>,
+    }
+    /// Nested message and enum types in `RetrievedContext`.
+    pub mod retrieved_context {
+        /// Tool-specific details about the retrieved context.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum ContextDetails {
+            /// Additional context for the RAG retrieval result. This is only populated
+            /// when using the RAG retrieval tool.
+            #[prost(message, tag = "4")]
+            RagChunk(super::super::RagChunk),
+        }
     }
     /// Chunk type.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -7342,7 +7951,7 @@ pub mod dataset_service_client {
     }
     impl<T> DatasetServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -7363,13 +7972,13 @@ pub mod dataset_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             DatasetServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -8625,7 +9234,7 @@ pub mod deployment_resource_pool_service_client {
     }
     impl<T> DeploymentResourcePoolServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -8646,13 +9255,13 @@ pub mod deployment_resource_pool_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             DeploymentResourcePoolServiceClient::new(
@@ -9182,7 +9791,7 @@ pub mod endpoint_service_client {
     }
     impl<T> EndpointServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -9203,13 +9812,13 @@ pub mod endpoint_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             EndpointServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -11518,7 +12127,7 @@ pub mod evaluation_service_client {
     }
     impl<T> EvaluationServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -11539,13 +12148,13 @@ pub mod evaluation_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             EvaluationServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -13188,7 +13797,7 @@ pub mod feature_online_store_admin_service_client {
     }
     impl<T> FeatureOnlineStoreAdminServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -13209,13 +13818,13 @@ pub mod feature_online_store_admin_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             FeatureOnlineStoreAdminServiceClient::new(
@@ -14093,7 +14702,7 @@ pub mod featurestore_online_serving_service_client {
     }
     impl<T> FeaturestoreOnlineServingServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -14114,13 +14723,13 @@ pub mod featurestore_online_serving_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             FeaturestoreOnlineServingServiceClient::new(
@@ -14653,7 +15262,7 @@ pub mod feature_online_store_service_client {
     }
     impl<T> FeatureOnlineStoreServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -14674,13 +15283,13 @@ pub mod feature_online_store_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             FeatureOnlineStoreServiceClient::new(
@@ -16140,7 +16749,7 @@ pub mod featurestore_service_client {
     }
     impl<T> FeaturestoreServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -16161,13 +16770,13 @@ pub mod featurestore_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             FeaturestoreServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -17050,7 +17659,7 @@ pub mod feature_registry_service_client {
     }
     impl<T> FeatureRegistryServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -17071,13 +17680,13 @@ pub mod feature_registry_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             FeatureRegistryServiceClient::new(
@@ -17540,7 +18149,7 @@ pub mod gen_ai_cache_service_client {
     }
     impl<T> GenAiCacheServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -17561,13 +18170,13 @@ pub mod gen_ai_cache_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             GenAiCacheServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -18206,7 +18815,7 @@ pub mod gen_ai_tuning_service_client {
     }
     impl<T> GenAiTuningServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -18227,13 +18836,13 @@ pub mod gen_ai_tuning_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             GenAiTuningServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -20256,7 +20865,7 @@ pub mod index_endpoint_service_client {
     }
     impl<T> IndexEndpointServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -20277,13 +20886,13 @@ pub mod index_endpoint_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             IndexEndpointServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -20911,7 +21520,7 @@ pub mod index_service_client {
     }
     impl<T> IndexServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -20932,13 +21541,13 @@ pub mod index_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             IndexServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -23130,7 +23739,7 @@ pub mod job_service_client {
     }
     impl<T> JobServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -23151,13 +23760,13 @@ pub mod job_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             JobServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -24935,7 +25544,7 @@ pub mod prediction_service_client {
     }
     impl<T> PredictionServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -24956,13 +25565,13 @@ pub mod prediction_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             PredictionServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -25500,7 +26109,7 @@ pub mod llm_utility_service_client {
     }
     impl<T> LlmUtilityServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -25521,13 +26130,13 @@ pub mod llm_utility_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             LlmUtilityServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -25802,7 +26411,7 @@ pub mod match_service_client {
     }
     impl<T> MatchServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -25823,13 +26432,13 @@ pub mod match_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             MatchServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -26979,7 +27588,7 @@ pub mod metadata_service_client {
     }
     impl<T> MetadataServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -27000,13 +27609,13 @@ pub mod metadata_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             MetadataServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -28381,7 +28990,7 @@ pub mod migration_service_client {
     }
     impl<T> MigrationServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -28402,13 +29011,13 @@ pub mod migration_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             MigrationServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -29323,7 +29932,7 @@ pub mod model_garden_service_client {
     }
     impl<T> ModelGardenServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -29344,13 +29953,13 @@ pub mod model_garden_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ModelGardenServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -30102,7 +30711,7 @@ pub mod model_service_client {
     }
     impl<T> ModelServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -30123,13 +30732,13 @@ pub mod model_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ModelServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -31962,7 +32571,7 @@ pub mod notebook_service_client {
     }
     impl<T> NotebookServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -31983,13 +32592,13 @@ pub mod notebook_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             NotebookServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -32970,7 +33579,7 @@ pub mod persistent_resource_service_client {
     }
     impl<T> PersistentResourceServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -32991,13 +33600,13 @@ pub mod persistent_resource_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             PersistentResourceServiceClient::new(
@@ -34544,7 +35153,7 @@ pub mod pipeline_service_client {
     }
     impl<T> PipelineServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -34565,13 +35174,13 @@ pub mod pipeline_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             PipelineServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -34994,13 +35603,23 @@ pub mod pipeline_service_client {
 /// ReasoningEngine configurations
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReasoningEngineSpec {
-    /// Required. User provided package spec of the ReasoningEngine.
+    /// Optional. User provided package spec of the ReasoningEngine.
+    /// Ignored when users directly specify a deployment image through
+    /// `deployment_spec.first_party_image_override`, but keeping the
+    /// field_behavior to avoid introducing breaking changes.
     #[prost(message, optional, tag = "2")]
     pub package_spec: ::core::option::Option<reasoning_engine_spec::PackageSpec>,
+    /// Optional. The specification of a Reasoning Engine deployment.
+    #[prost(message, optional, tag = "4")]
+    pub deployment_spec: ::core::option::Option<reasoning_engine_spec::DeploymentSpec>,
     /// Optional. Declarations for object class methods in OpenAPI specification
     /// format.
     #[prost(message, repeated, tag = "3")]
     pub class_methods: ::prost::alloc::vec::Vec<::prost_types::Struct>,
+    /// Optional. The OSS agent framework used to develop the agent.
+    /// Currently supported values: "langchain", "langgraph", "ag2", "custom".
+    #[prost(string, tag = "5")]
+    pub agent_framework: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `ReasoningEngineSpec`.
 pub mod reasoning_engine_spec {
@@ -35021,6 +35640,22 @@ pub mod reasoning_engine_spec {
         #[prost(string, tag = "4")]
         pub python_version: ::prost::alloc::string::String,
     }
+    /// The specification of a Reasoning Engine deployment.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DeploymentSpec {
+        /// Optional. Environment variables to be set with the Reasoning Engine
+        /// deployment. The environment variables can be updated through the
+        /// UpdateReasoningEngine API.
+        #[prost(message, repeated, tag = "1")]
+        pub env: ::prost::alloc::vec::Vec<super::EnvVar>,
+        /// Optional. Environment variables where the value is a secret in Cloud
+        /// Secret Manager.
+        /// To use this feature, add 'Secret Manager Secret Accessor' role
+        /// (roles/secretmanager.secretAccessor) to AI Platform Reasoning Engine
+        /// Service Agent.
+        #[prost(message, repeated, tag = "2")]
+        pub secret_env: ::prost::alloc::vec::Vec<super::SecretEnvVar>,
+    }
 }
 /// ReasoningEngine provides a customizable runtime for models to determine
 /// which actions to take and in which order.
@@ -35035,7 +35670,7 @@ pub struct ReasoningEngine {
     /// Optional. The description of the ReasoningEngine.
     #[prost(string, tag = "7")]
     pub description: ::prost::alloc::string::String,
-    /// Required. Configurations of the ReasoningEngine
+    /// Optional. Configurations of the ReasoningEngine
     #[prost(message, optional, tag = "3")]
     pub spec: ::core::option::Option<ReasoningEngineSpec>,
     /// Output only. Timestamp when this ReasoningEngine was created.
@@ -35119,7 +35754,7 @@ pub mod reasoning_engine_execution_service_client {
     }
     impl<T> ReasoningEngineExecutionServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -35140,13 +35775,13 @@ pub mod reasoning_engine_execution_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ReasoningEngineExecutionServiceClient::new(
@@ -35341,6 +35976,11 @@ pub struct DeleteReasoningEngineRequest {
     /// `projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. If set to true, child resources of this reasoning engine will
+    /// also be deleted. Otherwise, the request will fail with FAILED_PRECONDITION
+    /// error when the reasoning engine has undeleted child resources.
+    #[prost(bool, tag = "2")]
+    pub force: bool,
 }
 /// Generated client implementations.
 pub mod reasoning_engine_service_client {
@@ -35371,7 +36011,7 @@ pub mod reasoning_engine_service_client {
     }
     impl<T> ReasoningEngineServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -35392,13 +36032,13 @@ pub mod reasoning_engine_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ReasoningEngineServiceClient::new(
@@ -35961,7 +36601,7 @@ pub mod schedule_service_client {
     }
     impl<T> ScheduleServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -35982,13 +36622,13 @@ pub mod schedule_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ScheduleServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -36410,7 +37050,7 @@ pub mod specialist_pool_service_client {
     }
     impl<T> SpecialistPoolServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -36431,13 +37071,13 @@ pub mod specialist_pool_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SpecialistPoolServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -37713,7 +38353,7 @@ pub mod tensorboard_service_client {
     }
     impl<T> TensorboardServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -37734,13 +38374,13 @@ pub mod tensorboard_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             TensorboardServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -38690,431 +39330,6 @@ pub mod tensorboard_service_client {
         }
     }
 }
-/// Config for the embedding model to use for RAG.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RagEmbeddingModelConfig {
-    /// The model config to use.
-    #[prost(oneof = "rag_embedding_model_config::ModelConfig", tags = "1")]
-    pub model_config: ::core::option::Option<rag_embedding_model_config::ModelConfig>,
-}
-/// Nested message and enum types in `RagEmbeddingModelConfig`.
-pub mod rag_embedding_model_config {
-    /// Config representing a model hosted on Vertex Prediction Endpoint.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct VertexPredictionEndpoint {
-        /// Required. The endpoint resource name.
-        /// Format:
-        /// `projects/{project}/locations/{location}/publishers/{publisher}/models/{model}`
-        /// or
-        /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
-        #[prost(string, tag = "1")]
-        pub endpoint: ::prost::alloc::string::String,
-        /// Output only. The resource name of the model that is deployed on the
-        /// endpoint. Present only when the endpoint is not a publisher model.
-        /// Pattern:
-        /// `projects/{project}/locations/{location}/models/{model}`
-        #[prost(string, tag = "2")]
-        pub model: ::prost::alloc::string::String,
-        /// Output only. Version ID of the model that is deployed on the endpoint.
-        /// Present only when the endpoint is not a publisher model.
-        #[prost(string, tag = "3")]
-        pub model_version_id: ::prost::alloc::string::String,
-    }
-    /// The model config to use.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum ModelConfig {
-        /// The Vertex AI Prediction Endpoint that either refers to a publisher model
-        /// or an endpoint that is hosting a 1P fine-tuned text embedding model.
-        /// Endpoints hosting non-1P fine-tuned text embedding models are
-        /// currently not supported.
-        /// This is used for dense vector search.
-        #[prost(message, tag = "1")]
-        VertexPredictionEndpoint(VertexPredictionEndpoint),
-    }
-}
-/// Config for the Vector DB to use for RAG.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RagVectorDbConfig {
-    /// Authentication config for the chosen Vector DB.
-    #[prost(message, optional, tag = "5")]
-    pub api_auth: ::core::option::Option<ApiAuth>,
-    /// Optional. Immutable. The embedding model config of the Vector DB.
-    #[prost(message, optional, tag = "7")]
-    pub rag_embedding_model_config: ::core::option::Option<RagEmbeddingModelConfig>,
-    /// The config for the Vector DB.
-    #[prost(oneof = "rag_vector_db_config::VectorDb", tags = "1, 3, 6")]
-    pub vector_db: ::core::option::Option<rag_vector_db_config::VectorDb>,
-}
-/// Nested message and enum types in `RagVectorDbConfig`.
-pub mod rag_vector_db_config {
-    /// The config for the default RAG-managed Vector DB.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
-    pub struct RagManagedDb {}
-    /// The config for the Pinecone.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Pinecone {
-        /// Pinecone index name.
-        /// This value cannot be changed after it's set.
-        #[prost(string, tag = "1")]
-        pub index_name: ::prost::alloc::string::String,
-    }
-    /// The config for the Vertex Vector Search.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct VertexVectorSearch {
-        /// The resource name of the Index Endpoint.
-        /// Format:
-        /// `projects/{project}/locations/{location}/indexEndpoints/{index_endpoint}`
-        #[prost(string, tag = "1")]
-        pub index_endpoint: ::prost::alloc::string::String,
-        /// The resource name of the Index.
-        /// Format:
-        /// `projects/{project}/locations/{location}/indexes/{index}`
-        #[prost(string, tag = "2")]
-        pub index: ::prost::alloc::string::String,
-    }
-    /// The config for the Vector DB.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum VectorDb {
-        /// The config for the RAG-managed Vector DB.
-        #[prost(message, tag = "1")]
-        RagManagedDb(RagManagedDb),
-        /// The config for the Pinecone.
-        #[prost(message, tag = "3")]
-        Pinecone(Pinecone),
-        /// The config for the Vertex Vector Search.
-        #[prost(message, tag = "6")]
-        VertexVectorSearch(VertexVectorSearch),
-    }
-}
-/// RagFile status.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FileStatus {
-    /// Output only. RagFile state.
-    #[prost(enumeration = "file_status::State", tag = "1")]
-    pub state: i32,
-    /// Output only. Only when the `state` field is ERROR.
-    #[prost(string, tag = "2")]
-    pub error_status: ::prost::alloc::string::String,
-}
-/// Nested message and enum types in `FileStatus`.
-pub mod file_status {
-    /// RagFile state.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum State {
-        /// RagFile state is unspecified.
-        Unspecified = 0,
-        /// RagFile resource has been created and indexed successfully.
-        Active = 1,
-        /// RagFile resource is in a problematic state.
-        /// See `error_message` field for details.
-        Error = 2,
-    }
-    impl State {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                Self::Unspecified => "STATE_UNSPECIFIED",
-                Self::Active => "ACTIVE",
-                Self::Error => "ERROR",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
-                "ACTIVE" => Some(Self::Active),
-                "ERROR" => Some(Self::Error),
-                _ => None,
-            }
-        }
-    }
-}
-/// RagCorpus status.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CorpusStatus {
-    /// Output only. RagCorpus life state.
-    #[prost(enumeration = "corpus_status::State", tag = "1")]
-    pub state: i32,
-    /// Output only. Only when the `state` field is ERROR.
-    #[prost(string, tag = "2")]
-    pub error_status: ::prost::alloc::string::String,
-}
-/// Nested message and enum types in `CorpusStatus`.
-pub mod corpus_status {
-    /// RagCorpus life state.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum State {
-        /// This state is not supposed to happen.
-        Unknown = 0,
-        /// RagCorpus resource entry is initialized, but hasn't done validation.
-        Initialized = 1,
-        /// RagCorpus is provisioned successfully and is ready to serve.
-        Active = 2,
-        /// RagCorpus is in a problematic situation.
-        /// See `error_message` field for details.
-        Error = 3,
-    }
-    impl State {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                Self::Unknown => "UNKNOWN",
-                Self::Initialized => "INITIALIZED",
-                Self::Active => "ACTIVE",
-                Self::Error => "ERROR",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "UNKNOWN" => Some(Self::Unknown),
-                "INITIALIZED" => Some(Self::Initialized),
-                "ACTIVE" => Some(Self::Active),
-                "ERROR" => Some(Self::Error),
-                _ => None,
-            }
-        }
-    }
-}
-/// A RagCorpus is a RagFile container and a project can have multiple
-/// RagCorpora.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RagCorpus {
-    /// Output only. The resource name of the RagCorpus.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Required. The display name of the RagCorpus.
-    /// The name can be up to 128 characters long and can consist of any UTF-8
-    /// characters.
-    #[prost(string, tag = "2")]
-    pub display_name: ::prost::alloc::string::String,
-    /// Optional. The description of the RagCorpus.
-    #[prost(string, tag = "3")]
-    pub description: ::prost::alloc::string::String,
-    /// Output only. Timestamp when this RagCorpus was created.
-    #[prost(message, optional, tag = "4")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Timestamp when this RagCorpus was last updated.
-    #[prost(message, optional, tag = "5")]
-    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. RagCorpus state.
-    #[prost(message, optional, tag = "8")]
-    pub corpus_status: ::core::option::Option<CorpusStatus>,
-    /// The backend config of the RagCorpus.
-    /// It can be data store and/or retrieval engine.
-    #[prost(oneof = "rag_corpus::BackendConfig", tags = "9")]
-    pub backend_config: ::core::option::Option<rag_corpus::BackendConfig>,
-}
-/// Nested message and enum types in `RagCorpus`.
-pub mod rag_corpus {
-    /// The backend config of the RagCorpus.
-    /// It can be data store and/or retrieval engine.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum BackendConfig {
-        /// Optional. Immutable. The config for the Vector DBs.
-        #[prost(message, tag = "9")]
-        VectorDbConfig(super::RagVectorDbConfig),
-    }
-}
-/// A RagFile contains user data for chunking, embedding and indexing.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RagFile {
-    /// Output only. The resource name of the RagFile.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Required. The display name of the RagFile.
-    /// The name can be up to 128 characters long and can consist of any UTF-8
-    /// characters.
-    #[prost(string, tag = "2")]
-    pub display_name: ::prost::alloc::string::String,
-    /// Optional. The description of the RagFile.
-    #[prost(string, tag = "3")]
-    pub description: ::prost::alloc::string::String,
-    /// Output only. Timestamp when this RagFile was created.
-    #[prost(message, optional, tag = "6")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Timestamp when this RagFile was last updated.
-    #[prost(message, optional, tag = "7")]
-    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. State of the RagFile.
-    #[prost(message, optional, tag = "13")]
-    pub file_status: ::core::option::Option<FileStatus>,
-    /// The origin location of the RagFile if it is imported from Google Cloud
-    /// Storage or Google Drive.
-    #[prost(oneof = "rag_file::RagFileSource", tags = "8, 9, 10, 11, 12, 14")]
-    pub rag_file_source: ::core::option::Option<rag_file::RagFileSource>,
-}
-/// Nested message and enum types in `RagFile`.
-pub mod rag_file {
-    /// The origin location of the RagFile if it is imported from Google Cloud
-    /// Storage or Google Drive.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum RagFileSource {
-        /// Output only. Google Cloud Storage location of the RagFile.
-        /// It does not support wildcards in the Cloud Storage uri for now.
-        #[prost(message, tag = "8")]
-        GcsSource(super::GcsSource),
-        /// Output only. Google Drive location. Supports importing individual files
-        /// as well as Google Drive folders.
-        #[prost(message, tag = "9")]
-        GoogleDriveSource(super::GoogleDriveSource),
-        /// Output only. The RagFile is encapsulated and uploaded in the
-        /// UploadRagFile request.
-        #[prost(message, tag = "10")]
-        DirectUploadSource(super::DirectUploadSource),
-        /// The RagFile is imported from a Slack channel.
-        #[prost(message, tag = "11")]
-        SlackSource(super::SlackSource),
-        /// The RagFile is imported from a Jira query.
-        #[prost(message, tag = "12")]
-        JiraSource(super::JiraSource),
-        /// The RagFile is imported from a SharePoint source.
-        #[prost(message, tag = "14")]
-        SharePointSources(super::SharePointSources),
-    }
-}
-/// Specifies the size and overlap of chunks for RagFiles.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
-pub struct RagFileChunkingConfig {
-    /// Specifies the chunking config for RagFiles.
-    #[prost(oneof = "rag_file_chunking_config::ChunkingConfig", tags = "3")]
-    pub chunking_config: ::core::option::Option<
-        rag_file_chunking_config::ChunkingConfig,
-    >,
-}
-/// Nested message and enum types in `RagFileChunkingConfig`.
-pub mod rag_file_chunking_config {
-    /// Specifies the fixed length chunking config.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
-    pub struct FixedLengthChunking {
-        /// The size of the chunks.
-        #[prost(int32, tag = "1")]
-        pub chunk_size: i32,
-        /// The overlap between chunks.
-        #[prost(int32, tag = "2")]
-        pub chunk_overlap: i32,
-    }
-    /// Specifies the chunking config for RagFiles.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
-    pub enum ChunkingConfig {
-        /// Specifies the fixed length chunking config.
-        #[prost(message, tag = "3")]
-        FixedLengthChunking(FixedLengthChunking),
-    }
-}
-/// Specifies the transformation config for RagFiles.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
-pub struct RagFileTransformationConfig {
-    /// Specifies the chunking config for RagFiles.
-    #[prost(message, optional, tag = "1")]
-    pub rag_file_chunking_config: ::core::option::Option<RagFileChunkingConfig>,
-}
-/// Config for uploading RagFile.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
-pub struct UploadRagFileConfig {
-    /// Specifies the transformation config for RagFiles.
-    #[prost(message, optional, tag = "3")]
-    pub rag_file_transformation_config: ::core::option::Option<
-        RagFileTransformationConfig,
-    >,
-}
-/// Config for importing RagFiles.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ImportRagFilesConfig {
-    /// Specifies the transformation config for RagFiles.
-    #[prost(message, optional, tag = "16")]
-    pub rag_file_transformation_config: ::core::option::Option<
-        RagFileTransformationConfig,
-    >,
-    /// Optional. The max number of queries per minute that this job is allowed to
-    /// make to the embedding model specified on the corpus. This value is specific
-    /// to this job and not shared across other import jobs. Consult the Quotas
-    /// page on the project to set an appropriate value here.
-    /// If unspecified, a default value of 1,000 QPM would be used.
-    #[prost(int32, tag = "5")]
-    pub max_embedding_requests_per_min: i32,
-    /// The source of the import.
-    #[prost(oneof = "import_rag_files_config::ImportSource", tags = "2, 3, 6, 7, 13")]
-    pub import_source: ::core::option::Option<import_rag_files_config::ImportSource>,
-    /// Optional. If provided, all partial failures are written to the sink.
-    /// Deprecated. Prefer to use the `import_result_sink`.
-    #[prost(oneof = "import_rag_files_config::PartialFailureSink", tags = "11, 12")]
-    pub partial_failure_sink: ::core::option::Option<
-        import_rag_files_config::PartialFailureSink,
-    >,
-}
-/// Nested message and enum types in `ImportRagFilesConfig`.
-pub mod import_rag_files_config {
-    /// The source of the import.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum ImportSource {
-        /// Google Cloud Storage location. Supports importing individual files as
-        /// well as entire Google Cloud Storage directories. Sample formats:
-        /// - `gs://bucket_name/my_directory/object_name/my_file.txt`
-        /// - `gs://bucket_name/my_directory`
-        #[prost(message, tag = "2")]
-        GcsSource(super::GcsSource),
-        /// Google Drive location. Supports importing individual files as
-        /// well as Google Drive folders.
-        #[prost(message, tag = "3")]
-        GoogleDriveSource(super::GoogleDriveSource),
-        /// Slack channels with their corresponding access tokens.
-        #[prost(message, tag = "6")]
-        SlackSource(super::SlackSource),
-        /// Jira queries with their corresponding authentication.
-        #[prost(message, tag = "7")]
-        JiraSource(super::JiraSource),
-        /// SharePoint sources.
-        #[prost(message, tag = "13")]
-        SharePointSources(super::SharePointSources),
-    }
-    /// Optional. If provided, all partial failures are written to the sink.
-    /// Deprecated. Prefer to use the `import_result_sink`.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum PartialFailureSink {
-        /// The Cloud Storage path to write partial failures to.
-        /// Deprecated. Prefer to use `import_result_gcs_sink`.
-        #[prost(message, tag = "11")]
-        PartialFailureGcsSink(super::GcsDestination),
-        /// The BigQuery destination to write partial failures to. It should be a
-        /// bigquery table resource name (e.g.
-        /// "bq://projectId.bqDatasetId.bqTableId"). The dataset must exist. If the
-        /// table does not exist, it will be created with the expected schema. If the
-        /// table exists, the schema will be validated and data will be added to this
-        /// existing table.
-        /// Deprecated. Prefer to use `import_result_bq_sink`.
-        #[prost(message, tag = "12")]
-        PartialFailureBigquerySink(super::BigQueryDestination),
-    }
-}
 /// Request message for
 /// [VertexRagDataService.CreateRagCorpus][google.cloud.aiplatform.v1.VertexRagDataService.CreateRagCorpus].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -39399,7 +39614,7 @@ pub mod vertex_rag_data_service_client {
     }
     impl<T> VertexRagDataServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -39420,13 +39635,13 @@ pub mod vertex_rag_data_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             VertexRagDataServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -39871,6 +40086,9 @@ pub mod rag_contexts {
         /// means the most relevant and 2 means the least relevant.
         #[prost(double, optional, tag = "6")]
         pub score: ::core::option::Option<f64>,
+        /// Context of the retrieved chunk.
+        #[prost(message, optional, tag = "7")]
+        pub chunk: ::core::option::Option<super::RagChunk>,
     }
 }
 /// Response message for
@@ -40005,6 +40223,9 @@ pub struct Fact {
     /// most relevant and 2 means the least relevant.
     #[prost(double, optional, tag = "6")]
     pub score: ::core::option::Option<f64>,
+    /// If present, chunk properties.
+    #[prost(message, optional, tag = "7")]
+    pub chunk: ::core::option::Option<RagChunk>,
 }
 /// Claim that is extracted from the input text and facts that support it.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -40051,7 +40272,7 @@ pub mod vertex_rag_service_client {
     }
     impl<T> VertexRagServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -40072,13 +40293,13 @@ pub mod vertex_rag_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             VertexRagServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -40562,7 +40783,7 @@ pub mod vizier_service_client {
     }
     impl<T> VizierServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -40583,13 +40804,13 @@ pub mod vizier_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             VizierServiceClient::new(InterceptedService::new(inner, interceptor))

@@ -2,7 +2,7 @@
 /// The primary data source for local and online products.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PrimaryProductDataSource {
-    /// Required. Immutable. Specifies the type of data source channel.
+    /// Optional. Immutable. Specifies the type of data source channel.
     #[prost(enumeration = "primary_product_data_source::Channel", tag = "3")]
     pub channel: i32,
     /// Optional. Immutable. The feed label that is specified on the data source
@@ -43,6 +43,25 @@ pub struct PrimaryProductDataSource {
     /// data sources will be replaced.
     #[prost(message, optional, tag = "7")]
     pub default_rule: ::core::option::Option<primary_product_data_source::DefaultRule>,
+    /// Optional. A list of destinations describing where products of the data
+    /// source can be shown.
+    ///
+    /// When retrieving the data source, the list contains all the destinations
+    /// that can be used for the data source, including the ones that are disabled
+    /// for the data source but enabled for the account.
+    ///
+    /// Only destinations that are enabled on the account, for example through
+    /// program participation, can be enabled on the data source.
+    ///
+    /// If unset, during creation, the destinations will be inherited based on the
+    /// account level program participation.
+    ///
+    /// If set, during creation or update, the data source will be set only for the
+    /// specified destinations.
+    ///
+    /// Updating this field requires at least one destination.
+    #[prost(message, repeated, tag = "10")]
+    pub destinations: ::prost::alloc::vec::Vec<primary_product_data_source::Destination>,
 }
 /// Nested message and enum types in `PrimaryProductDataSource`.
 pub mod primary_product_data_source {
@@ -71,6 +90,67 @@ pub mod primary_product_data_source {
         /// to `self` if the attribute is not set in `1001`.
         #[prost(message, repeated, tag = "1")]
         pub take_from_data_sources: ::prost::alloc::vec::Vec<super::DataSourceReference>,
+    }
+    /// Destinations also known as [Marketing
+    /// methods](<https://support.google.com/merchants/answer/15130232>) selections.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct Destination {
+        /// [Marketing methods](<https://support.google.com/merchants/answer/15130232>)
+        /// (also known as destination) selections.
+        #[prost(
+            enumeration = "super::super::super::super::r#type::destination::DestinationEnum",
+            tag = "1"
+        )]
+        pub destination: i32,
+        /// The state of the destination.
+        #[prost(enumeration = "destination::State", tag = "2")]
+        pub state: i32,
+    }
+    /// Nested message and enum types in `Destination`.
+    pub mod destination {
+        /// The state of the destination.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum State {
+            /// Not specified.
+            Unspecified = 0,
+            /// Indicates that the destination is enabled.
+            Enabled = 1,
+            /// Indicates that the destination is disabled.
+            Disabled = 2,
+        }
+        impl State {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "STATE_UNSPECIFIED",
+                    Self::Enabled => "ENABLED",
+                    Self::Disabled => "DISABLED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ENABLED" => Some(Self::Enabled),
+                    "DISABLED" => Some(Self::Disabled),
+                    _ => None,
+                }
+            }
+        }
     }
     /// Data Source Channel.
     ///
@@ -551,9 +631,8 @@ pub mod data_source {
         /// source.
         #[prost(message, tag = "7")]
         RegionalInventoryDataSource(super::RegionalInventoryDataSource),
-        /// The
-        /// [promotion](<https://support.google.com/merchants/answer/2906014>) data
-        /// source.
+        /// The [promotion](<https://support.google.com/merchants/answer/2906014>)
+        /// data source.
         #[prost(message, tag = "8")]
         PromotionDataSource(super::PromotionDataSource),
         /// The [product
@@ -682,7 +761,7 @@ pub mod data_sources_service_client {
     }
     impl<T> DataSourcesServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -703,13 +782,13 @@ pub mod data_sources_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             DataSourcesServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -1112,7 +1191,7 @@ pub mod file_uploads_service_client {
     }
     impl<T> FileUploadsServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -1133,13 +1212,13 @@ pub mod file_uploads_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             FileUploadsServiceClient::new(InterceptedService::new(inner, interceptor))

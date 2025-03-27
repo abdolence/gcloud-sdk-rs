@@ -176,9 +176,15 @@ pub struct Precipitation {
     /// The probability of precipitation (values from 0 to 100).
     #[prost(message, optional, tag = "1")]
     pub probability: ::core::option::Option<PrecipitationProbability>,
-    /// The amount of precipitation (rain or snow), measured as liquid water
-    /// equivalent, that has accumulated over a period of time. Note: QPF is an
-    /// abbreviation for Quantitative Precipitation Forecast (please see the
+    /// The amount of snow, measured as liquid water equivalent, that has
+    /// accumulated over a period of time. Note: QPF is an abbreviation for
+    /// Quantitative Precipitation Forecast (please see the
+    /// QuantitativePrecipitationForecast definition for more details).
+    #[prost(message, optional, tag = "3")]
+    pub snow_qpf: ::core::option::Option<QuantitativePrecipitationForecast>,
+    /// The amount of rain, measured as liquid water equivalent, that has
+    /// accumulated over a period of time. Note: QPF is an abbreviation for
+    /// Quantitative Precipitation Forecast (please see the
     /// QuantitativePrecipitationForecast definition for more details).
     #[prost(message, optional, tag = "4")]
     pub qpf: ::core::option::Option<QuantitativePrecipitationForecast>,
@@ -1159,9 +1165,16 @@ pub mod lookup_current_conditions_response {
         /// The minimum (low) temperature in the past 24 hours.
         #[prost(message, optional, tag = "3")]
         pub min_temperature: ::core::option::Option<super::Temperature>,
-        /// The amount of precipitation (rain or snow), measured as liquid water
-        /// equivalent, that has accumulated over the last 24 hours. Note: QPF is an
-        /// abbreviation for Quantitative Precipitation Forecast (please see the
+        /// The amount of snow, measured as liquid water equivalent,
+        /// that has accumulated over the last 24 hours.
+        /// Note: QPF is an abbreviation for Quantitative Precipitation Forecast
+        /// (please see the QuantitativePrecipitationForecast definition for more
+        /// details).
+        #[prost(message, optional, tag = "5")]
+        pub snow_qpf: ::core::option::Option<super::QuantitativePrecipitationForecast>,
+        /// The amount of rain, measured as liquid water equivalent, that has
+        /// accumulated over the last 24 hours. Note: QPF is an abbreviation for
+        /// Quantitative Precipitation Forecast (please see the
         /// QuantitativePrecipitationForecast definition for more details).
         #[prost(message, optional, tag = "6")]
         pub qpf: ::core::option::Option<super::QuantitativePrecipitationForecast>,
@@ -1330,7 +1343,7 @@ pub mod weather_client {
     }
     impl<T> WeatherClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -1351,13 +1364,13 @@ pub mod weather_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             WeatherClient::new(InterceptedService::new(inner, interceptor))

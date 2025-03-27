@@ -3,11 +3,13 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Workflow {
     /// The resource name of the workflow.
-    /// Format: projects/{project}/locations/{location}/workflows/{workflow}
+    /// Format: projects/{project}/locations/{location}/workflows/{workflow}.
+    /// This is a workflow-wide field and is not tied to a specific revision.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Description of the workflow provided by the user.
-    /// Must be at most 1000 unicode characters long.
+    /// Must be at most 1000 Unicode characters long.
+    /// This is a workflow-wide field and is not tied to a specific revision.
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
     /// Output only. State of the workflow deployment.
@@ -27,9 +29,11 @@ pub struct Workflow {
     #[prost(string, tag = "4")]
     pub revision_id: ::prost::alloc::string::String,
     /// Output only. The timestamp for when the workflow was created.
+    /// This is a workflow-wide field and is not tied to a specific revision.
     #[prost(message, optional, tag = "5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The timestamp for when the workflow was last updated.
+    /// This is a workflow-wide field and is not tied to a specific revision.
     #[prost(message, optional, tag = "6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The timestamp for the latest revision of the workflow's
@@ -41,6 +45,7 @@ pub struct Workflow {
     /// than 63 characters and can only contain lowercase letters, numeric
     /// characters, underscores, and dashes. Label keys must start with a letter.
     /// International characters are allowed.
+    /// This is a workflow-wide field and is not tied to a specific revision.
     #[prost(map = "string, string", tag = "8")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -86,10 +91,34 @@ pub struct Workflow {
     pub call_log_level: i32,
     /// Optional. User-defined environment variables associated with this workflow
     /// revision. This map has a maximum length of 20. Each string can take up to
-    /// 40KiB. Keys cannot be empty strings and cannot start with “GOOGLE” or
-    /// “WORKFLOWS".
+    /// 4KiB. Keys cannot be empty strings and cannot start with "GOOGLE" or
+    /// "WORKFLOWS".
     #[prost(map = "string, string", tag = "14")]
     pub user_env_vars: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. Describes the execution history level to apply to this workflow.
+    #[prost(enumeration = "ExecutionHistoryLevel", tag = "15")]
+    pub execution_history_level: i32,
+    /// Output only. A list of all KMS crypto keys used to encrypt or decrypt the
+    /// data associated with the workflow.
+    #[prost(string, repeated, tag = "16")]
+    pub all_kms_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. A list of all KMS crypto key versions used to encrypt or
+    /// decrypt the data associated with the workflow.
+    #[prost(string, repeated, tag = "17")]
+    pub all_kms_keys_versions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. The resource name of a KMS crypto key version used to encrypt
+    /// or decrypt the data associated with the workflow.
+    ///
+    /// Format:
+    /// projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{cryptoKey}/cryptoKeyVersions/{cryptoKeyVersion}
+    #[prost(string, tag = "18")]
+    pub crypto_key_version: ::prost::alloc::string::String,
+    /// Optional. Input only. Immutable. Tags associated with this workflow.
+    #[prost(map = "string, string", tag = "19")]
+    pub tags: ::std::collections::HashMap<
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
@@ -278,6 +307,16 @@ pub struct ListWorkflowsRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Filter to restrict results to specific workflows.
+    /// For details, see <a href="<https://google.aip.dev/160">
+    /// class="external">AIP-160</a>.
+    ///
+    /// For example, if you are using the Google APIs Explorer:
+    ///
+    /// `state="SUCCEEDED"`
+    ///
+    /// or
+    ///
+    /// `createTime>"2023-08-01" AND state="FAILED"`
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Comma-separated list of fields that specify the order of the results.
@@ -384,6 +423,71 @@ pub struct OperationMetadata {
     #[prost(string, tag = "5")]
     pub api_version: ::prost::alloc::string::String,
 }
+/// Request for the
+/// [ListWorkflowRevisions][google.cloud.workflows.v1.Workflows.ListWorkflowRevisions]
+/// method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListWorkflowRevisionsRequest {
+    /// Required. Workflow for which the revisions should be listed.
+    /// Format: projects/{project}/locations/{location}/workflows/{workflow}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The maximum number of revisions to return per page. If a value is not
+    /// specified, a default value of 20 is used. The maximum permitted value is
+    /// 100. Values greater than 100 are coerced down to 100.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The page token, received from a previous ListWorkflowRevisions call.
+    /// Provide this to retrieve the subsequent page.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response for the
+/// [ListWorkflowRevisions][google.cloud.workflows.v1.Workflows.ListWorkflowRevisions]
+/// method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListWorkflowRevisionsResponse {
+    /// The revisions of the workflow, ordered in reverse chronological order.
+    #[prost(message, repeated, tag = "1")]
+    pub workflows: ::prost::alloc::vec::Vec<Workflow>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Define possible options for enabling the execution history level.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ExecutionHistoryLevel {
+    /// The default/unset value.
+    Unspecified = 0,
+    /// Enable execution history basic feature.
+    ExecutionHistoryBasic = 1,
+    /// Enable execution history detailed feature.
+    ExecutionHistoryDetailed = 2,
+}
+impl ExecutionHistoryLevel {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "EXECUTION_HISTORY_LEVEL_UNSPECIFIED",
+            Self::ExecutionHistoryBasic => "EXECUTION_HISTORY_BASIC",
+            Self::ExecutionHistoryDetailed => "EXECUTION_HISTORY_DETAILED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "EXECUTION_HISTORY_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+            "EXECUTION_HISTORY_BASIC" => Some(Self::ExecutionHistoryBasic),
+            "EXECUTION_HISTORY_DETAILED" => Some(Self::ExecutionHistoryDetailed),
+            _ => None,
+        }
+    }
+}
 /// Generated client implementations.
 pub mod workflows_client {
     #![allow(
@@ -415,7 +519,7 @@ pub mod workflows_client {
     }
     impl<T> WorkflowsClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -436,13 +540,13 @@ pub mod workflows_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             WorkflowsClient::new(InterceptedService::new(inner, interceptor))
@@ -627,6 +731,36 @@ pub mod workflows_client {
                     GrpcMethod::new(
                         "google.cloud.workflows.v1.Workflows",
                         "UpdateWorkflow",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists revisions for a given workflow.
+        pub async fn list_workflow_revisions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListWorkflowRevisionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListWorkflowRevisionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.workflows.v1.Workflows/ListWorkflowRevisions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.workflows.v1.Workflows",
+                        "ListWorkflowRevisions",
                     ),
                 );
             self.inner.unary(req, path, codec).await

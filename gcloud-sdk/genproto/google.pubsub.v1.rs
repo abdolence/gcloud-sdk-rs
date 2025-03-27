@@ -357,7 +357,7 @@ pub mod schema_service_client {
     }
     impl<T> SchemaServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -378,13 +378,13 @@ pub mod schema_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SchemaServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -1543,10 +1543,15 @@ pub struct JavaScriptUdf {
 /// All supported message transforms types.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MessageTransform {
-    /// Optional. If set to true, the transform is enabled. If false, the transform
-    /// is disabled and will not be applied to messages. Defaults to `true`.
+    /// Optional. This field is deprecated, use the `disabled` field to disable
+    /// transforms.
+    #[deprecated]
     #[prost(bool, tag = "3")]
     pub enabled: bool,
+    /// Optional. If true, the transform is disabled and will not be applied to
+    /// messages. Defaults to `false`.
+    #[prost(bool, tag = "4")]
+    pub disabled: bool,
     /// The type of transform to apply to messages.
     #[prost(oneof = "message_transform::Transform", tags = "2")]
     pub transform: ::core::option::Option<message_transform::Transform>,
@@ -3033,7 +3038,7 @@ pub mod publisher_client {
     }
     impl<T> PublisherClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -3054,13 +3059,13 @@ pub mod publisher_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             PublisherClient::new(InterceptedService::new(inner, interceptor))
@@ -3365,7 +3370,7 @@ pub mod subscriber_client {
     }
     impl<T> SubscriberClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -3386,13 +3391,13 @@ pub mod subscriber_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SubscriberClient::new(InterceptedService::new(inner, interceptor))

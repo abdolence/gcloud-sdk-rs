@@ -42,11 +42,11 @@ pub struct AutonomousDatabase {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Required. The name of the VPC network used by the Autonomous Database in
+    /// Optional. The name of the VPC network used by the Autonomous Database in
     /// the following format: projects/{project}/global/networks/{network}
     #[prost(string, tag = "9")]
     pub network: ::prost::alloc::string::String,
-    /// Required. The subnet CIDR range for the Autonmous Database.
+    /// Optional. The subnet CIDR range for the Autonmous Database.
     #[prost(string, tag = "10")]
     pub cidr: ::prost::alloc::string::String,
     /// Output only. The date and time that the Autonomous Database was created.
@@ -2083,6 +2083,8 @@ pub mod entitlement {
         Active = 3,
         /// Account is suspended.
         AccountSuspended = 4,
+        /// Entitlement is not approved in private marketplace.
+        NotApprovedInPrivateMarketplace = 5,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2096,6 +2098,9 @@ pub mod entitlement {
                 Self::AccountNotActive => "ACCOUNT_NOT_ACTIVE",
                 Self::Active => "ACTIVE",
                 Self::AccountSuspended => "ACCOUNT_SUSPENDED",
+                Self::NotApprovedInPrivateMarketplace => {
+                    "NOT_APPROVED_IN_PRIVATE_MARKETPLACE"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2106,6 +2111,9 @@ pub mod entitlement {
                 "ACCOUNT_NOT_ACTIVE" => Some(Self::AccountNotActive),
                 "ACTIVE" => Some(Self::Active),
                 "ACCOUNT_SUSPENDED" => Some(Self::AccountSuspended),
+                "NOT_APPROVED_IN_PRIVATE_MARKETPLACE" => {
+                    Some(Self::NotApprovedInPrivateMarketplace)
+                }
                 _ => None,
             }
         }
@@ -2369,8 +2377,7 @@ pub struct MaintenanceWindow {
     #[prost(int32, tag = "6")]
     pub lead_time_week: i32,
     /// Optional. Cloud CloudExadataInfrastructure node patching method, either
-    /// "ROLLING"
-    ///   or "NONROLLING". Default value is ROLLING.
+    /// "ROLLING" or "NONROLLING". Default value is ROLLING.
     #[prost(enumeration = "maintenance_window::PatchingMode", tag = "7")]
     pub patching_mode: i32,
     /// Optional. Determines the amount of time the system will wait before the
@@ -3395,7 +3402,7 @@ pub mod oracle_database_client {
     }
     impl<T> OracleDatabaseClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -3416,13 +3423,13 @@ pub mod oracle_database_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             OracleDatabaseClient::new(InterceptedService::new(inner, interceptor))

@@ -289,6 +289,187 @@ pub mod nfs_export_options {
         }
     }
 }
+/// Replica configuration for the instance.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReplicaConfig {
+    /// Output only. The replica state.
+    #[prost(enumeration = "replica_config::State", tag = "1")]
+    pub state: i32,
+    /// Output only. Additional information about the replication state, if
+    /// available.
+    #[prost(
+        enumeration = "replica_config::StateReason",
+        repeated,
+        packed = "false",
+        tag = "2"
+    )]
+    pub state_reasons: ::prost::alloc::vec::Vec<i32>,
+    /// Optional. The peer instance.
+    #[prost(string, tag = "3")]
+    pub peer_instance: ::prost::alloc::string::String,
+    /// Output only. The timestamp of the latest replication snapshot taken on the
+    /// active instance and is already replicated safely.
+    #[prost(message, optional, tag = "10")]
+    pub last_active_sync_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `ReplicaConfig`.
+pub mod replica_config {
+    /// The replica state.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// State not set.
+        Unspecified = 0,
+        /// The replica is being created.
+        Creating = 1,
+        /// The replica is ready.
+        Ready = 3,
+        /// The replica is being removed.
+        Removing = 4,
+        /// The replica is experiencing an issue and might be unusable. You can get
+        /// further details from the `stateReasons` field of the `ReplicaConfig`
+        /// object.
+        Failed = 5,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Ready => "READY",
+                Self::Removing => "REMOVING",
+                Self::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "READY" => Some(Self::Ready),
+                "REMOVING" => Some(Self::Removing),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+    /// Additional information about the replication state, if available.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum StateReason {
+        /// Reason not specified.
+        Unspecified = 0,
+        /// The peer instance is unreachable.
+        PeerInstanceUnreachable = 1,
+        /// The remove replica peer instance operation failed.
+        RemoveFailed = 2,
+    }
+    impl StateReason {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_REASON_UNSPECIFIED",
+                Self::PeerInstanceUnreachable => "PEER_INSTANCE_UNREACHABLE",
+                Self::RemoveFailed => "REMOVE_FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "PEER_INSTANCE_UNREACHABLE" => Some(Self::PeerInstanceUnreachable),
+                "REMOVE_FAILED" => Some(Self::RemoveFailed),
+                _ => None,
+            }
+        }
+    }
+}
+/// Replication specifications.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Replication {
+    /// Optional. The replication role.
+    #[prost(enumeration = "replication::Role", tag = "1")]
+    pub role: i32,
+    /// Optional. Replication configuration for the replica instance associated
+    /// with this instance. Only a single replica is supported.
+    #[prost(message, repeated, tag = "2")]
+    pub replicas: ::prost::alloc::vec::Vec<ReplicaConfig>,
+}
+/// Nested message and enum types in `Replication`.
+pub mod replication {
+    /// Replication role.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Role {
+        /// Role not set.
+        Unspecified = 0,
+        /// The instance is the `ACTIVE` replication member, functions as
+        /// the replication source instance.
+        Active = 1,
+        /// The instance is the `STANDBY` replication member, functions as
+        /// the replication destination instance.
+        Standby = 2,
+    }
+    impl Role {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ROLE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Standby => "STANDBY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ROLE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "STANDBY" => Some(Self::Standby),
+                _ => None,
+            }
+        }
+    }
+}
 /// A Filestore instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Instance {
@@ -347,9 +528,126 @@ pub struct Instance {
         tag = "15"
     )]
     pub suspension_reasons: ::prost::alloc::vec::Vec<i32>,
+    /// Optional. Replication configuration.
+    #[prost(message, optional, tag = "19")]
+    pub replication: ::core::option::Option<Replication>,
+    /// Optional. Input only. Immutable. Tag key-value pairs bound to this
+    /// resource. Each key must be a namespaced name and each value a short name.
+    /// Example:
+    /// "123456789012/environment" : "production",
+    /// "123456789013/costCenter" : "marketing"
+    /// See the documentation for more information:
+    /// - Namespaced name:
+    /// <https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing#retrieving_tag_key>
+    /// - Short name:
+    /// <https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing#retrieving_tag_value>
+    #[prost(map = "string, string", tag = "20")]
+    pub tags: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Immutable. The protocol indicates the access protocol for all shares in the
+    /// instance. This field is immutable and it cannot be changed after the
+    /// instance has been created. Default value: `NFS_V3`.
+    #[prost(enumeration = "instance::FileProtocol", tag = "21")]
+    pub protocol: i32,
+    /// Output only. Indicates whether this instance supports configuring its
+    /// performance. If true, the user can configure the instance's performance by
+    /// using the 'performance_config' field.
+    #[prost(bool, tag = "23")]
+    pub custom_performance_supported: bool,
+    /// Optional. Used to configure performance.
+    #[prost(message, optional, tag = "24")]
+    pub performance_config: ::core::option::Option<instance::PerformanceConfig>,
+    /// Output only. Used for getting performance limits.
+    #[prost(message, optional, tag = "25")]
+    pub performance_limits: ::core::option::Option<instance::PerformanceLimits>,
+    /// Optional. Indicates whether the instance is protected against deletion.
+    #[prost(bool, tag = "26")]
+    pub deletion_protection_enabled: bool,
+    /// Optional. The reason for enabling deletion protection.
+    #[prost(string, tag = "27")]
+    pub deletion_protection_reason: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Instance`.
 pub mod instance {
+    /// IOPS per TB.
+    /// Filestore defines TB as 1024^4 bytes (TiB).
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct IopsPerTb {
+        /// Required. Maximum IOPS per TiB.
+        #[prost(int64, tag = "2")]
+        pub max_iops_per_tb: i64,
+    }
+    /// Fixed IOPS (input/output operations per second) parameters.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct FixedIops {
+        /// Required. Maximum IOPS.
+        #[prost(int64, tag = "2")]
+        pub max_iops: i64,
+    }
+    /// Used for setting the performance configuration.
+    /// If the user doesn't specify PerformanceConfig, automatically provision
+    /// the default performance settings as described in
+    /// <https://cloud.google.com/filestore/docs/performance.> Larger instances will
+    /// be linearly set to more IOPS. If the instance's capacity is increased or
+    /// decreased, its performance will be automatically adjusted upwards or
+    /// downwards accordingly (respectively).
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct PerformanceConfig {
+        #[prost(oneof = "performance_config::Mode", tags = "4, 2")]
+        pub mode: ::core::option::Option<performance_config::Mode>,
+    }
+    /// Nested message and enum types in `PerformanceConfig`.
+    pub mod performance_config {
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        pub enum Mode {
+            /// Provision IOPS dynamically based on the capacity of the instance.
+            /// Provisioned IOPS will be calculated by multiplying the capacity of the
+            /// instance in TiB by the `iops_per_tb` value. For example, for a 2 TiB
+            /// instance with an `iops_per_tb` value of 17000 the provisioned IOPS will
+            /// be 34000.
+            ///
+            /// If the calculated value is outside the supported range for the
+            /// instance's capacity during instance creation, instance creation will
+            /// fail with an `InvalidArgument` error. Similarly, if an instance
+            /// capacity update would result in a value outside the supported range,
+            /// the update will fail with an `InvalidArgument` error.
+            #[prost(message, tag = "4")]
+            IopsPerTb(super::IopsPerTb),
+            /// Choose a fixed provisioned IOPS value for the instance, which will
+            /// remain constant regardless of instance capacity. Value must be a
+            /// multiple of 1000.
+            ///
+            /// If the chosen value is outside the supported range for the instance's
+            /// capacity during instance creation, instance creation will fail with an
+            /// `InvalidArgument` error. Similarly, if an instance capacity update
+            /// would result in a value outside the supported range, the update will
+            /// fail with an `InvalidArgument` error.
+            #[prost(message, tag = "2")]
+            FixedIops(super::FixedIops),
+        }
+    }
+    /// The enforced performance limits, calculated from the instance's performance
+    /// configuration.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct PerformanceLimits {
+        /// Output only. The max IOPS.
+        #[prost(int64, tag = "7")]
+        pub max_iops: i64,
+        /// Output only. The max read IOPS.
+        #[prost(int64, tag = "1")]
+        pub max_read_iops: i64,
+        /// Output only. The max write IOPS.
+        #[prost(int64, tag = "2")]
+        pub max_write_iops: i64,
+        /// Output only. The max read throughput in bytes per second.
+        #[prost(int64, tag = "5")]
+        pub max_read_throughput_bps: i64,
+        /// Output only. The max write throughput in bytes per second.
+        #[prost(int64, tag = "6")]
+        pub max_write_throughput_bps: i64,
+    }
     /// The instance state.
     #[derive(
         Clone,
@@ -391,6 +689,8 @@ pub mod instance {
         Resuming = 10,
         /// The instance is reverting to a snapshot.
         Reverting = 12,
+        /// The replica instance is being promoted.
+        Promoting = 13,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -410,6 +710,7 @@ pub mod instance {
                 Self::Suspending => "SUSPENDING",
                 Self::Resuming => "RESUMING",
                 Self::Reverting => "REVERTING",
+                Self::Promoting => "PROMOTING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -426,6 +727,7 @@ pub mod instance {
                 "SUSPENDING" => Some(Self::Suspending),
                 "RESUMING" => Some(Self::Resuming),
                 "REVERTING" => Some(Self::Reverting),
+                "PROMOTING" => Some(Self::Promoting),
                 _ => None,
             }
         }
@@ -544,6 +846,50 @@ pub mod instance {
             }
         }
     }
+    /// File access protocol.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum FileProtocol {
+        /// FILE_PROTOCOL_UNSPECIFIED serves a "not set" default value when
+        /// a FileProtocol is a separate field in a message.
+        Unspecified = 0,
+        /// NFS 3.0.
+        NfsV3 = 1,
+        /// NFS 4.1.
+        NfsV41 = 2,
+    }
+    impl FileProtocol {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "FILE_PROTOCOL_UNSPECIFIED",
+                Self::NfsV3 => "NFS_V3",
+                Self::NfsV41 => "NFS_V4_1",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FILE_PROTOCOL_UNSPECIFIED" => Some(Self::Unspecified),
+                "NFS_V3" => Some(Self::NfsV3),
+                "NFS_V4_1" => Some(Self::NfsV41),
+                _ => None,
+            }
+        }
+    }
 }
 /// CreateInstanceRequest creates an instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -579,6 +925,9 @@ pub struct UpdateInstanceRequest {
     /// * "description"
     /// * "file_shares"
     /// * "labels"
+    /// * "performance_config"
+    /// * "deletion_protection_enabled"
+    /// * "deletion_protection_reason"
     #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Only fields specified in update_mask are updated.
@@ -614,9 +963,8 @@ pub mod restore_instance_request {
 /// specified snapshot.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RevertInstanceRequest {
-    /// Required.
+    /// Required. The resource name of the instance, in the format
     /// `projects/{project_id}/locations/{location_id}/instances/{instance_id}`.
-    /// The resource name of the instance, in the format
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The snapshot resource ID, in the format 'my-snapshot', where the
@@ -677,7 +1025,7 @@ pub struct ListInstancesResponse {
     /// if there are no more results in the list.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
-    /// Locations that could not be reached.
+    /// Unordered list. Locations that could not be reached.
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -708,6 +1056,21 @@ pub struct Snapshot {
     /// snapshot content
     #[prost(int64, tag = "6")]
     pub filesystem_used_bytes: i64,
+    /// Optional. Input only. Immutable. Tag key-value pairs bound to this
+    /// resource. Each key must be a namespaced name and each value a short name.
+    /// Example:
+    /// "123456789012/environment" : "production",
+    /// "123456789013/costCenter" : "marketing"
+    /// See the documentation for more information:
+    /// - Namespaced name:
+    /// <https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing#retrieving_tag_key>
+    /// - Short name:
+    /// <https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing#retrieving_tag_value>
+    #[prost(map = "string, string", tag = "7")]
+    pub tags: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Nested message and enum types in `Snapshot`.
 pub mod snapshot {
@@ -825,6 +1188,10 @@ pub struct ListSnapshotsRequest {
     /// List filter.
     #[prost(string, tag = "5")]
     pub filter: ::prost::alloc::string::String,
+    /// Optional. If true, allow partial responses for multi-regional Aggregated
+    /// List requests.
+    #[prost(bool, tag = "6")]
+    pub return_partial_success: bool,
 }
 /// ListSnapshotsResponse is the result of ListSnapshotsRequest.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -836,6 +1203,9 @@ pub struct ListSnapshotsResponse {
     /// if there are no more results in the list.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Unordered list. Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A Filestore backup.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -894,6 +1264,25 @@ pub struct Backup {
     /// Immutable. KMS key name used for data encryption.
     #[prost(string, tag = "13")]
     pub kms_key: ::prost::alloc::string::String,
+    /// Optional. Input only. Immutable. Tag key-value pairs bound to this
+    /// resource. Each key must be a namespaced name and each value a short name.
+    /// Example:
+    /// "123456789012/environment" : "production",
+    /// "123456789013/costCenter" : "marketing"
+    /// See the documentation for more information:
+    /// - Namespaced name:
+    /// <https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing#retrieving_tag_key>
+    /// - Short name:
+    /// <https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing#retrieving_tag_value>
+    #[prost(map = "string, string", tag = "15")]
+    pub tags: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. The file system protocol of the source Filestore instance that
+    /// this backup is created from.
+    #[prost(enumeration = "instance::FileProtocol", tag = "16")]
+    pub file_system_protocol: i32,
 }
 /// Nested message and enum types in `Backup`.
 pub mod backup {
@@ -995,6 +1384,20 @@ pub struct UpdateBackupRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
+/// PromoteReplicaRequest promotes a Filestore standby instance (replica).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PromoteReplicaRequest {
+    /// Required. The resource name of the instance, in the format
+    /// `projects/{project_id}/locations/{location_id}/instances/{instance_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The resource name of the peer instance to promote, in the format
+    /// `projects/{project_id}/locations/{location_id}/instances/{instance_id}`.
+    /// The peer instance is required if the operation is called on an active
+    /// instance.
+    #[prost(string, tag = "2")]
+    pub peer_instance: ::prost::alloc::string::String,
+}
 /// GetBackupRequest gets the state of a backup.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBackupRequest {
@@ -1044,7 +1447,7 @@ pub struct ListBackupsResponse {
     /// if there are no more results in the list.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
-    /// Locations that could not be reached.
+    /// Unordered list. Locations that could not be reached.
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -1095,7 +1498,7 @@ pub mod cloud_filestore_manager_client {
     }
     impl<T> CloudFilestoreManagerClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -1116,13 +1519,13 @@ pub mod cloud_filestore_manager_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             CloudFilestoreManagerClient::new(InterceptedService::new(inner, interceptor))
@@ -1665,6 +2068,36 @@ pub mod cloud_filestore_manager_client {
                     GrpcMethod::new(
                         "google.cloud.filestore.v1.CloudFilestoreManager",
                         "UpdateBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Promote the standby instance (replica).
+        pub async fn promote_replica(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PromoteReplicaRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.filestore.v1.CloudFilestoreManager/PromoteReplica",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.filestore.v1.CloudFilestoreManager",
+                        "PromoteReplica",
                     ),
                 );
             self.inner.unary(req, path, codec).await

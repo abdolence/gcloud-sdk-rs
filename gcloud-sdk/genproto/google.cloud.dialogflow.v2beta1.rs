@@ -546,7 +546,7 @@ pub mod agents_client {
     }
     impl<T> AgentsClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -567,13 +567,13 @@ pub mod agents_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             AgentsClient::new(InterceptedService::new(inner, interceptor))
@@ -1266,6 +1266,8 @@ pub struct SpeechToTextConfig {
     #[prost(string, tag = "2")]
     pub model: ::prost::alloc::string::String,
     /// List of names of Cloud Speech phrase sets that are used for transcription.
+    /// For phrase set limitations, please refer to [Cloud Speech API quotas and
+    /// limits](<https://cloud.google.com/speech-to-text/quotas#content>).
     #[prost(string, repeated, tag = "4")]
     pub phrase_sets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Audio encoding of the audio content to process.
@@ -1625,6 +1627,741 @@ impl OutputAudioEncoding {
         }
     }
 }
+/// Request message of CreateGenerator.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateGeneratorRequest {
+    /// Required. The project/location to create generator for. Format:
+    /// `projects/<Project ID>/locations/<Location ID>`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The generator to create.
+    #[prost(message, optional, tag = "2")]
+    pub generator: ::core::option::Option<Generator>,
+    /// Optional. The ID to use for the generator, which will become the final
+    /// component of the generator's resource name.
+    ///
+    /// The generator ID must be compliant with the regression formula
+    /// `[a-zA-Z][a-zA-Z0-9_-]*` with the characters length in range of \[3,64\].
+    /// If the field is not provided, an Id will be auto-generated.
+    /// If the field is provided, the caller is responsible for
+    /// 1. the uniqueness of the ID, otherwise the request will be rejected.
+    /// 2. the consistency for whether to use custom ID or not under a project to
+    /// better ensure uniqueness.
+    #[prost(string, tag = "3")]
+    pub generator_id: ::prost::alloc::string::String,
+}
+/// Request message of GetGenerator.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetGeneratorRequest {
+    /// Required. The generator resource name to retrieve. Format:
+    /// `projects/<Project ID>/locations/<Location ID>`/generators/<Generator ID>`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message of ListGenerators.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListGeneratorsRequest {
+    /// Required. The project/location to list generators for. Format:
+    /// `projects/<Project ID>/locations/<Location ID>`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of conversation models to return in a single page.
+    /// Default to 10.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The next_page_token value returned from a previous list request.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response of ListGenerators.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListGeneratorsResponse {
+    /// List of generators retrieved.
+    #[prost(message, repeated, tag = "1")]
+    pub generators: ::prost::alloc::vec::Vec<Generator>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request of DeleteGenerator.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteGeneratorRequest {
+    /// Required. The generator resource name to delete. Format:
+    /// `projects/<Project ID>/locations/<Location ID>/generators/<Generator ID>`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request of UpdateGenerator.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateGeneratorRequest {
+    /// Required. The generator to update.
+    /// The name field of generator is to identify the generator to update.
+    #[prost(message, optional, tag = "1")]
+    pub generator: ::core::option::Option<Generator>,
+    /// Optional. The list of fields to update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Represents a message entry of a conversation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MessageEntry {
+    /// Optional. Participant role of the message.
+    #[prost(enumeration = "message_entry::Role", tag = "1")]
+    pub role: i32,
+    /// Optional. Transcript content of the message.
+    #[prost(string, tag = "2")]
+    pub text: ::prost::alloc::string::String,
+    /// Optional. The language of the text. See [Language
+    /// Support](<https://cloud.google.com/dialogflow/docs/reference/language>) for a
+    /// list of the currently supported language codes.
+    #[prost(string, tag = "3")]
+    pub language_code: ::prost::alloc::string::String,
+    /// Optional. Create time of the message entry.
+    #[prost(message, optional, tag = "4")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `MessageEntry`.
+pub mod message_entry {
+    /// Enumeration of the roles a participant can play in a conversation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Role {
+        /// Participant role not set.
+        Unspecified = 0,
+        /// Participant is a human agent.
+        HumanAgent = 1,
+        /// Participant is an automated agent, such as a Dialogflow agent.
+        AutomatedAgent = 2,
+        /// Participant is an end user that has called or chatted with
+        /// Dialogflow services.
+        EndUser = 3,
+    }
+    impl Role {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ROLE_UNSPECIFIED",
+                Self::HumanAgent => "HUMAN_AGENT",
+                Self::AutomatedAgent => "AUTOMATED_AGENT",
+                Self::EndUser => "END_USER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ROLE_UNSPECIFIED" => Some(Self::Unspecified),
+                "HUMAN_AGENT" => Some(Self::HumanAgent),
+                "AUTOMATED_AGENT" => Some(Self::AutomatedAgent),
+                "END_USER" => Some(Self::EndUser),
+                _ => None,
+            }
+        }
+    }
+}
+/// Context of the conversation, including transcripts.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConversationContext {
+    /// Optional. List of message transcripts in the conversation.
+    #[prost(message, repeated, tag = "1")]
+    pub message_entries: ::prost::alloc::vec::Vec<MessageEntry>,
+}
+/// List of summarization sections.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SummarizationSectionList {
+    /// Optional. Summarization sections.
+    #[prost(message, repeated, tag = "1")]
+    pub summarization_sections: ::prost::alloc::vec::Vec<SummarizationSection>,
+}
+/// Providing examples in the generator (i.e. building a few-shot generator)
+/// helps convey the desired format of the LLM response.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FewShotExample {
+    /// Optional. Conversation transcripts.
+    #[prost(message, optional, tag = "3")]
+    pub conversation_context: ::core::option::Option<ConversationContext>,
+    /// Optional. Key is the placeholder field name in input, value is the value of
+    /// the placeholder. E.g. instruction contains "@price", and ingested data has
+    /// <"price", "10">
+    #[prost(map = "string, string", tag = "4")]
+    pub extra_info: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Required. Example output of the model.
+    #[prost(message, optional, tag = "7")]
+    pub output: ::core::option::Option<GeneratorSuggestion>,
+    /// Instruction list of this few_shot example.
+    #[prost(oneof = "few_shot_example::InstructionList", tags = "6")]
+    pub instruction_list: ::core::option::Option<few_shot_example::InstructionList>,
+}
+/// Nested message and enum types in `FewShotExample`.
+pub mod few_shot_example {
+    /// Instruction list of this few_shot example.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum InstructionList {
+        /// Summarization sections.
+        #[prost(message, tag = "6")]
+        SummarizationSectionList(super::SummarizationSectionList),
+    }
+}
+/// The parameters of inference.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct InferenceParameter {
+    /// Optional. Maximum number of the output tokens for the generator.
+    #[prost(int32, optional, tag = "1")]
+    pub max_output_tokens: ::core::option::Option<i32>,
+    /// Optional. Controls the randomness of LLM predictions.
+    /// Low temperature = less random. High temperature = more random.
+    /// If unset (or 0), uses a default value of 0.
+    #[prost(double, optional, tag = "2")]
+    pub temperature: ::core::option::Option<f64>,
+    /// Optional. Top-k changes how the model selects tokens for output. A top-k of
+    /// 1 means the selected token is the most probable among all tokens in the
+    /// model's vocabulary (also called greedy decoding), while a top-k of 3 means
+    /// that the next token is selected from among the 3 most probable tokens
+    /// (using temperature). For each token selection step, the top K tokens with
+    /// the highest probabilities are sampled. Then tokens are further filtered
+    /// based on topP with the final token selected using temperature sampling.
+    /// Specify a lower value for less random responses and a higher value for more
+    /// random responses. Acceptable value is \[1, 40\], default to 40.
+    #[prost(int32, optional, tag = "3")]
+    pub top_k: ::core::option::Option<i32>,
+    /// Optional. Top-p changes how the model selects tokens for output. Tokens are
+    /// selected from most K (see topK parameter) probable to least until the sum
+    /// of their probabilities equals the top-p value. For example, if tokens A, B,
+    /// and C have a probability of 0.3, 0.2, and 0.1 and the top-p value is 0.5,
+    /// then the model will select either A or B as the next token (using
+    /// temperature) and doesn't consider C. The default top-p value is 0.95.
+    /// Specify a lower value for less random responses and a higher value for more
+    /// random responses. Acceptable value is \[0.0, 1.0\], default to 0.95.
+    #[prost(double, optional, tag = "4")]
+    pub top_p: ::core::option::Option<f64>,
+}
+/// Represents the section of summarization.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SummarizationSection {
+    /// Optional. Name of the section, for example, "situation".
+    #[prost(string, tag = "1")]
+    pub key: ::prost::alloc::string::String,
+    /// Optional. Definition of the section, for example, "what the customer needs
+    /// help with or has question about."
+    #[prost(string, tag = "2")]
+    pub definition: ::prost::alloc::string::String,
+    /// Optional. Type of the summarization section.
+    #[prost(enumeration = "summarization_section::Type", tag = "3")]
+    pub r#type: i32,
+}
+/// Nested message and enum types in `SummarizationSection`.
+pub mod summarization_section {
+    /// Type enum of the summarization sections.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// Undefined section type, does not return anything.
+        Unspecified = 0,
+        /// What the customer needs help with or has question about.
+        /// Section name: "situation".
+        Situation = 1,
+        /// What the agent does to help the customer.
+        /// Section name: "action".
+        Action = 2,
+        /// Result of the customer service. A single word describing the result
+        /// of the conversation.
+        /// Section name: "resolution".
+        Resolution = 3,
+        /// Reason for cancellation if the customer requests for a cancellation.
+        /// "N/A" otherwise.
+        /// Section name: "reason_for_cancellation".
+        ReasonForCancellation = 4,
+        /// "Unsatisfied" or "Satisfied" depending on the customer's feelings at
+        /// the end of the conversation.
+        /// Section name: "customer_satisfaction".
+        CustomerSatisfaction = 5,
+        /// Key entities extracted from the conversation, such as ticket number,
+        /// order number, dollar amount, etc.
+        /// Section names are prefixed by "entities/".
+        Entities = 6,
+        /// Customer defined sections.
+        CustomerDefined = 7,
+        /// Concise version of the situation section. This type is only available if
+        /// type SITUATION is not selected.
+        SituationConcise = 9,
+        /// Concise version of the action section. This type is only available if
+        /// type ACTION is not selected.
+        ActionConcise = 10,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Situation => "SITUATION",
+                Self::Action => "ACTION",
+                Self::Resolution => "RESOLUTION",
+                Self::ReasonForCancellation => "REASON_FOR_CANCELLATION",
+                Self::CustomerSatisfaction => "CUSTOMER_SATISFACTION",
+                Self::Entities => "ENTITIES",
+                Self::CustomerDefined => "CUSTOMER_DEFINED",
+                Self::SituationConcise => "SITUATION_CONCISE",
+                Self::ActionConcise => "ACTION_CONCISE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SITUATION" => Some(Self::Situation),
+                "ACTION" => Some(Self::Action),
+                "RESOLUTION" => Some(Self::Resolution),
+                "REASON_FOR_CANCELLATION" => Some(Self::ReasonForCancellation),
+                "CUSTOMER_SATISFACTION" => Some(Self::CustomerSatisfaction),
+                "ENTITIES" => Some(Self::Entities),
+                "CUSTOMER_DEFINED" => Some(Self::CustomerDefined),
+                "SITUATION_CONCISE" => Some(Self::SituationConcise),
+                "ACTION_CONCISE" => Some(Self::ActionConcise),
+                _ => None,
+            }
+        }
+    }
+}
+/// Summarization context that customer can configure.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SummarizationContext {
+    /// Optional. List of sections. Note it contains both predefined section sand
+    /// customer defined sections.
+    #[prost(message, repeated, tag = "1")]
+    pub summarization_sections: ::prost::alloc::vec::Vec<SummarizationSection>,
+    /// Optional. List of few shot examples.
+    #[prost(message, repeated, tag = "2")]
+    pub few_shot_examples: ::prost::alloc::vec::Vec<FewShotExample>,
+    /// Optional. Version of the feature. If not set, default to latest version.
+    /// Current candidates are \["1.0"\].
+    #[prost(string, tag = "3")]
+    pub version: ::prost::alloc::string::String,
+    /// Optional. The target language of the generated summary. The language code
+    /// for conversation will be used if this field is empty. Supported 2.0 and
+    /// later versions.
+    #[prost(string, tag = "6")]
+    pub output_language_code: ::prost::alloc::string::String,
+}
+/// Free form generator context that customer can configure.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FreeFormContext {
+    /// Optional. Free form text input to LLM.
+    #[prost(string, tag = "1")]
+    pub text: ::prost::alloc::string::String,
+}
+/// LLM generator.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Generator {
+    /// Output only. Identifier. The resource name of the generator. Format:
+    /// `projects/<Project ID>/locations/<Location ID>/generators/<Generator ID>`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Human readable description of the generator.
+    #[prost(string, tag = "2")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. Inference parameters for this generator.
+    #[prost(message, optional, tag = "4")]
+    pub inference_parameter: ::core::option::Option<InferenceParameter>,
+    /// Optional. The trigger event of the generator. It defines when the generator
+    /// is triggered in a conversation.
+    #[prost(enumeration = "TriggerEvent", tag = "5")]
+    pub trigger_event: i32,
+    /// Output only. Creation time of this generator.
+    #[prost(message, optional, tag = "8")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Update time of this generator.
+    #[prost(message, optional, tag = "9")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Required. Input context of the generator.
+    #[prost(oneof = "generator::Context", tags = "11, 13")]
+    pub context: ::core::option::Option<generator::Context>,
+    /// The foundation model to use for generating suggestions. If a foundation
+    /// model isn't specified here, a model specifically tuned for the feature
+    /// type (and version when applicable) will be used.
+    #[prost(oneof = "generator::FoundationModel", tags = "15")]
+    pub foundation_model: ::core::option::Option<generator::FoundationModel>,
+}
+/// Nested message and enum types in `Generator`.
+pub mod generator {
+    /// Required. Input context of the generator.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Context {
+        /// Input of free from generator to LLM.
+        #[prost(message, tag = "11")]
+        FreeFormContext(super::FreeFormContext),
+        /// Input of Summarization feature.
+        #[prost(message, tag = "13")]
+        SummarizationContext(super::SummarizationContext),
+    }
+    /// The foundation model to use for generating suggestions. If a foundation
+    /// model isn't specified here, a model specifically tuned for the feature
+    /// type (and version when applicable) will be used.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum FoundationModel {
+        /// Optional. The published Large Language Model name.
+        /// * To use the latest model version, specify the model name without version
+        ///    number. Example: `text-bison`
+        /// * To use a stable model version, specify the version number as well.
+        ///    Example: `text-bison@002`.
+        #[prost(string, tag = "15")]
+        PublishedModel(::prost::alloc::string::String),
+    }
+}
+/// Suggestion generated using free form generator.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FreeFormSuggestion {
+    /// Required. Free form suggestion.
+    #[prost(string, tag = "1")]
+    pub response: ::prost::alloc::string::String,
+}
+/// Suggested summary of the conversation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SummarySuggestion {
+    /// Required. All the parts of generated summary.
+    #[prost(message, repeated, tag = "1")]
+    pub summary_sections: ::prost::alloc::vec::Vec<summary_suggestion::SummarySection>,
+}
+/// Nested message and enum types in `SummarySuggestion`.
+pub mod summary_suggestion {
+    /// A component of the generated summary.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SummarySection {
+        /// Required. Name of the section.
+        #[prost(string, tag = "1")]
+        pub section: ::prost::alloc::string::String,
+        /// Required. Summary text for the section.
+        #[prost(string, tag = "2")]
+        pub summary: ::prost::alloc::string::String,
+    }
+}
+/// Suggestion generated using a Generator.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GeneratorSuggestion {
+    /// The suggestion could be one of the many types
+    #[prost(oneof = "generator_suggestion::Suggestion", tags = "1, 2")]
+    pub suggestion: ::core::option::Option<generator_suggestion::Suggestion>,
+}
+/// Nested message and enum types in `GeneratorSuggestion`.
+pub mod generator_suggestion {
+    /// The suggestion could be one of the many types
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Suggestion {
+        /// Optional. Free form suggestion.
+        #[prost(message, tag = "1")]
+        FreeFormSuggestion(super::FreeFormSuggestion),
+        /// Optional. Suggested summary.
+        #[prost(message, tag = "2")]
+        SummarySuggestion(super::SummarySuggestion),
+    }
+}
+/// The event that triggers the generator and LLM execution.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum TriggerEvent {
+    /// Default value for TriggerEvent.
+    Unspecified = 0,
+    /// Triggers when each chat message or voice utterance ends.
+    EndOfUtterance = 1,
+    /// Triggers on the conversation manually by API calls, such as
+    /// Conversations.GenerateStatelessSuggestion and
+    /// Conversations.GenerateSuggestions.
+    ManualCall = 2,
+    /// Triggers after each customer message only.
+    CustomerMessage = 3,
+    /// Triggers after each agent message only.
+    AgentMessage = 4,
+}
+impl TriggerEvent {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "TRIGGER_EVENT_UNSPECIFIED",
+            Self::EndOfUtterance => "END_OF_UTTERANCE",
+            Self::ManualCall => "MANUAL_CALL",
+            Self::CustomerMessage => "CUSTOMER_MESSAGE",
+            Self::AgentMessage => "AGENT_MESSAGE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TRIGGER_EVENT_UNSPECIFIED" => Some(Self::Unspecified),
+            "END_OF_UTTERANCE" => Some(Self::EndOfUtterance),
+            "MANUAL_CALL" => Some(Self::ManualCall),
+            "CUSTOMER_MESSAGE" => Some(Self::CustomerMessage),
+            "AGENT_MESSAGE" => Some(Self::AgentMessage),
+            _ => None,
+        }
+    }
+}
+/// Generated client implementations.
+pub mod generators_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Generator Service for LLM powered Agent Assist. This service manages the
+    /// configurations of user owned Generators, such as description, context and
+    /// instruction, input/output format, etc. The generator resources will be used
+    /// inside a conversation and will be triggered by TriggerEvent to query LLM for
+    /// answers.
+    #[derive(Debug, Clone)]
+    pub struct GeneratorsClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl GeneratorsClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> GeneratorsClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> GeneratorsClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            GeneratorsClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Creates a generator.
+        pub async fn create_generator(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateGeneratorRequest>,
+        ) -> std::result::Result<tonic::Response<super::Generator>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2beta1.Generators/CreateGenerator",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2beta1.Generators",
+                        "CreateGenerator",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves a generator.
+        pub async fn get_generator(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetGeneratorRequest>,
+        ) -> std::result::Result<tonic::Response<super::Generator>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2beta1.Generators/GetGenerator",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2beta1.Generators",
+                        "GetGenerator",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists generators.
+        pub async fn list_generators(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListGeneratorsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListGeneratorsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2beta1.Generators/ListGenerators",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2beta1.Generators",
+                        "ListGenerators",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a generator.
+        pub async fn delete_generator(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteGeneratorRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2beta1.Generators/DeleteGenerator",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2beta1.Generators",
+                        "DeleteGenerator",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a generator.
+        pub async fn update_generator(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateGeneratorRequest>,
+        ) -> std::result::Result<tonic::Response<super::Generator>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2beta1.Generators/UpdateGenerator",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2beta1.Generators",
+                        "UpdateGenerator",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// Dialogflow contexts are similar to natural language context. If a person says
 /// to you "they are orange", you need context in order to understand what "they"
 /// is referring to. Similarly, for Dialogflow to handle an end-user expression
@@ -1856,7 +2593,7 @@ pub mod contexts_client {
     }
     impl<T> ContextsClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -1877,13 +2614,13 @@ pub mod contexts_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ContextsClient::new(InterceptedService::new(inner, interceptor))
@@ -3914,7 +4651,7 @@ pub mod intents_client {
     }
     impl<T> IntentsClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -3935,13 +4672,13 @@ pub mod intents_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             IntentsClient::new(InterceptedService::new(inner, interceptor))
@@ -4671,7 +5408,7 @@ pub mod entity_types_client {
     }
     impl<T> EntityTypesClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -4692,13 +5429,13 @@ pub mod entity_types_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             EntityTypesClient::new(InterceptedService::new(inner, interceptor))
@@ -5346,7 +6083,7 @@ pub mod session_entity_types_client {
     }
     impl<T> SessionEntityTypesClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -5367,13 +6104,13 @@ pub mod session_entity_types_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SessionEntityTypesClient::new(InterceptedService::new(inner, interceptor))
@@ -6530,7 +7267,7 @@ pub mod sessions_client {
     }
     impl<T> SessionsClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -6551,13 +7288,13 @@ pub mod sessions_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SessionsClient::new(InterceptedService::new(inner, interceptor))
@@ -7811,7 +8548,7 @@ pub struct SuggestionResult {
     /// Different type of suggestion response.
     #[prost(
         oneof = "suggestion_result::SuggestionResponse",
-        tags = "1, 2, 8, 3, 4, 5, 7"
+        tags = "1, 2, 8, 3, 4, 5, 7, 9"
     )]
     pub suggestion_response: ::core::option::Option<
         suggestion_result::SuggestionResponse,
@@ -7843,6 +8580,10 @@ pub mod suggestion_result {
         /// SuggestDialogflowAssistsResponse if request is for ENTITY_EXTRACTION.
         #[prost(message, tag = "7")]
         SuggestEntityExtractionResponse(super::SuggestDialogflowAssistsResponse),
+        /// Suggestions generated using generators triggered by customer or agent
+        /// messages.
+        #[prost(message, tag = "9")]
+        GenerateSuggestionsResponse(super::GenerateSuggestionsResponse),
     }
 }
 /// The request message for
@@ -7993,6 +8734,42 @@ pub struct SuggestSmartRepliesResponse {
     /// conversation.
     #[prost(int32, tag = "3")]
     pub context_size: i32,
+}
+/// The response message for
+/// [Conversations.GenerateSuggestions][google.cloud.dialogflow.v2beta1.Conversations.GenerateSuggestions].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateSuggestionsResponse {
+    /// The answers generated for the conversation based on context.
+    #[prost(message, repeated, tag = "1")]
+    pub generator_suggestion_answers: ::prost::alloc::vec::Vec<
+        generate_suggestions_response::GeneratorSuggestionAnswer,
+    >,
+    /// The name of the latest conversation message used as context for
+    /// compiling suggestion.
+    ///
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/conversations/<Conversation ID>/messages/<Message ID>`.
+    #[prost(string, tag = "2")]
+    pub latest_message: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `GenerateSuggestionsResponse`.
+pub mod generate_suggestions_response {
+    /// A GeneratorSuggestion answer.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GeneratorSuggestionAnswer {
+        /// Suggestion details.
+        #[prost(message, optional, tag = "1")]
+        pub generator_suggestion: ::core::option::Option<super::GeneratorSuggestion>,
+        /// The name of the generator used to generate this suggestion. Format:
+        /// `projects/<Project ID>/locations/<Location ID>/generators/<Generator
+        /// ID>`.
+        #[prost(string, tag = "2")]
+        pub source_generator: ::prost::alloc::string::String,
+        /// Answer record that uniquely identifies the suggestion. This can be used
+        /// to provide suggestion feedback.
+        #[prost(string, tag = "3")]
+        pub answer_record: ::prost::alloc::string::String,
+    }
 }
 /// The response message for
 /// [Participants.SuggestDialogflowAssists][google.cloud.dialogflow.v2beta1.Participants.SuggestDialogflowAssists].
@@ -8481,7 +9258,7 @@ pub mod participants_client {
     }
     impl<T> ParticipantsClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -8502,13 +9279,13 @@ pub mod participants_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ParticipantsClient::new(InterceptedService::new(inner, interceptor))
@@ -9468,7 +10245,7 @@ pub mod answer_records_client {
     }
     impl<T> AnswerRecordsClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -9489,13 +10266,13 @@ pub mod answer_records_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             AnswerRecordsClient::new(InterceptedService::new(inner, interceptor))
@@ -10456,7 +11233,7 @@ pub mod conversation_profiles_client {
     }
     impl<T> ConversationProfilesClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -10477,13 +11254,13 @@ pub mod conversation_profiles_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ConversationProfilesClient::new(InterceptedService::new(inner, interceptor))
@@ -10765,685 +11542,6 @@ pub mod conversation_profiles_client {
         }
     }
 }
-/// Request message of CreateGenerator.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateGeneratorRequest {
-    /// Required. The project/location to create generator for. Format:
-    /// `projects/<Project ID>/locations/<Location ID>`
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. The generator to create.
-    #[prost(message, optional, tag = "2")]
-    pub generator: ::core::option::Option<Generator>,
-    /// Optional. The ID to use for the generator, which will become the final
-    /// component of the generator's resource name.
-    ///
-    /// The generator ID must be compliant with the regression formula
-    /// `[a-zA-Z][a-zA-Z0-9_-]*` with the characters length in range of \[3,64\].
-    /// If the field is not provided, an Id will be auto-generated.
-    /// If the field is provided, the caller is responsible for
-    /// 1. the uniqueness of the ID, otherwise the request will be rejected.
-    /// 2. the consistency for whether to use custom ID or not under a project to
-    /// better ensure uniqueness.
-    #[prost(string, tag = "3")]
-    pub generator_id: ::prost::alloc::string::String,
-}
-/// Request message of GetGenerator.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetGeneratorRequest {
-    /// Required. The generator resource name to retrieve. Format:
-    /// `projects/<Project ID>/locations/<Location ID>`/generators/<Generator ID>`
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Request message of ListGenerators.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListGeneratorsRequest {
-    /// Required. The project/location to list generators for. Format:
-    /// `projects/<Project ID>/locations/<Location ID>`
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of conversation models to return in a single page.
-    /// Default to 10.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// Optional. The next_page_token value returned from a previous list request.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-}
-/// Response of ListGenerators.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListGeneratorsResponse {
-    /// List of generators retrieved.
-    #[prost(message, repeated, tag = "1")]
-    pub generators: ::prost::alloc::vec::Vec<Generator>,
-    /// Token to retrieve the next page of results, or empty if there are no more
-    /// results in the list.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// Request of DeleteGenerator.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteGeneratorRequest {
-    /// Required. The generator resource name to delete. Format:
-    /// `projects/<Project ID>/locations/<Location ID>/generators/<Generator ID>`
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Request of UpdateGenerator.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateGeneratorRequest {
-    /// Required. The generator to update.
-    /// The name field of generator is to identify the generator to update.
-    #[prost(message, optional, tag = "1")]
-    pub generator: ::core::option::Option<Generator>,
-    /// Optional. The list of fields to update.
-    #[prost(message, optional, tag = "2")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-}
-/// Represents a message entry of a conversation.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MessageEntry {
-    /// Optional. Participant role of the message.
-    #[prost(enumeration = "message_entry::Role", tag = "1")]
-    pub role: i32,
-    /// Optional. Transcript content of the message.
-    #[prost(string, tag = "2")]
-    pub text: ::prost::alloc::string::String,
-    /// Optional. The language of the text. See [Language
-    /// Support](<https://cloud.google.com/dialogflow/docs/reference/language>) for a
-    /// list of the currently supported language codes.
-    #[prost(string, tag = "3")]
-    pub language_code: ::prost::alloc::string::String,
-    /// Optional. Create time of the message entry.
-    #[prost(message, optional, tag = "4")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-}
-/// Nested message and enum types in `MessageEntry`.
-pub mod message_entry {
-    /// Enumeration of the roles a participant can play in a conversation.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum Role {
-        /// Participant role not set.
-        Unspecified = 0,
-        /// Participant is a human agent.
-        HumanAgent = 1,
-        /// Participant is an automated agent, such as a Dialogflow agent.
-        AutomatedAgent = 2,
-        /// Participant is an end user that has called or chatted with
-        /// Dialogflow services.
-        EndUser = 3,
-    }
-    impl Role {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                Self::Unspecified => "ROLE_UNSPECIFIED",
-                Self::HumanAgent => "HUMAN_AGENT",
-                Self::AutomatedAgent => "AUTOMATED_AGENT",
-                Self::EndUser => "END_USER",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "ROLE_UNSPECIFIED" => Some(Self::Unspecified),
-                "HUMAN_AGENT" => Some(Self::HumanAgent),
-                "AUTOMATED_AGENT" => Some(Self::AutomatedAgent),
-                "END_USER" => Some(Self::EndUser),
-                _ => None,
-            }
-        }
-    }
-}
-/// Context of the conversation, including transcripts.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversationContext {
-    /// Optional. List of message transcripts in the conversation.
-    #[prost(message, repeated, tag = "1")]
-    pub message_entries: ::prost::alloc::vec::Vec<MessageEntry>,
-}
-/// List of summarization sections.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SummarizationSectionList {
-    /// Optional. Summarization sections.
-    #[prost(message, repeated, tag = "1")]
-    pub summarization_sections: ::prost::alloc::vec::Vec<SummarizationSection>,
-}
-/// Providing examples in the generator (i.e. building a few-shot generator)
-/// helps convey the desired format of the LLM response.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FewShotExample {
-    /// Optional. Conversation transcripts.
-    #[prost(message, optional, tag = "3")]
-    pub conversation_context: ::core::option::Option<ConversationContext>,
-    /// Optional. Key is the placeholder field name in input, value is the value of
-    /// the placeholder. E.g. instruction contains "@price", and ingested data has
-    /// <"price", "10">
-    #[prost(map = "string, string", tag = "4")]
-    pub extra_info: ::std::collections::HashMap<
-        ::prost::alloc::string::String,
-        ::prost::alloc::string::String,
-    >,
-    /// Required. Example output of the model.
-    #[prost(message, optional, tag = "7")]
-    pub output: ::core::option::Option<GeneratorSuggestion>,
-    /// Instruction list of this few_shot example.
-    #[prost(oneof = "few_shot_example::InstructionList", tags = "6")]
-    pub instruction_list: ::core::option::Option<few_shot_example::InstructionList>,
-}
-/// Nested message and enum types in `FewShotExample`.
-pub mod few_shot_example {
-    /// Instruction list of this few_shot example.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum InstructionList {
-        /// Summarization sections.
-        #[prost(message, tag = "6")]
-        SummarizationSectionList(super::SummarizationSectionList),
-    }
-}
-/// The parameters of inference.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
-pub struct InferenceParameter {
-    /// Optional. Maximum number of the output tokens for the generator.
-    #[prost(int32, optional, tag = "1")]
-    pub max_output_tokens: ::core::option::Option<i32>,
-    /// Optional. Controls the randomness of LLM predictions.
-    /// Low temperature = less random. High temperature = more random.
-    /// If unset (or 0), uses a default value of 0.
-    #[prost(double, optional, tag = "2")]
-    pub temperature: ::core::option::Option<f64>,
-    /// Optional. Top-k changes how the model selects tokens for output. A top-k of
-    /// 1 means the selected token is the most probable among all tokens in the
-    /// model's vocabulary (also called greedy decoding), while a top-k of 3 means
-    /// that the next token is selected from among the 3 most probable tokens
-    /// (using temperature). For each token selection step, the top K tokens with
-    /// the highest probabilities are sampled. Then tokens are further filtered
-    /// based on topP with the final token selected using temperature sampling.
-    /// Specify a lower value for less random responses and a higher value for more
-    /// random responses. Acceptable value is \[1, 40\], default to 40.
-    #[prost(int32, optional, tag = "3")]
-    pub top_k: ::core::option::Option<i32>,
-    /// Optional. Top-p changes how the model selects tokens for output. Tokens are
-    /// selected from most K (see topK parameter) probable to least until the sum
-    /// of their probabilities equals the top-p value. For example, if tokens A, B,
-    /// and C have a probability of 0.3, 0.2, and 0.1 and the top-p value is 0.5,
-    /// then the model will select either A or B as the next token (using
-    /// temperature) and doesn't consider C. The default top-p value is 0.95.
-    /// Specify a lower value for less random responses and a higher value for more
-    /// random responses. Acceptable value is \[0.0, 1.0\], default to 0.95.
-    #[prost(double, optional, tag = "4")]
-    pub top_p: ::core::option::Option<f64>,
-}
-/// Represents the section of summarization.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SummarizationSection {
-    /// Optional. Name of the section, for example, "situation".
-    #[prost(string, tag = "1")]
-    pub key: ::prost::alloc::string::String,
-    /// Optional. Definition of the section, for example, "what the customer needs
-    /// help with or has question about."
-    #[prost(string, tag = "2")]
-    pub definition: ::prost::alloc::string::String,
-    /// Optional. Type of the summarization section.
-    #[prost(enumeration = "summarization_section::Type", tag = "3")]
-    pub r#type: i32,
-}
-/// Nested message and enum types in `SummarizationSection`.
-pub mod summarization_section {
-    /// Type enum of the summarization sections.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum Type {
-        /// Undefined section type, does not return anything.
-        Unspecified = 0,
-        /// What the customer needs help with or has question about.
-        /// Section name: "situation".
-        Situation = 1,
-        /// What the agent does to help the customer.
-        /// Section name: "action".
-        Action = 2,
-        /// Result of the customer service. A single word describing the result
-        /// of the conversation.
-        /// Section name: "resolution".
-        Resolution = 3,
-        /// Reason for cancellation if the customer requests for a cancellation.
-        /// "N/A" otherwise.
-        /// Section name: "reason_for_cancellation".
-        ReasonForCancellation = 4,
-        /// "Unsatisfied" or "Satisfied" depending on the customer's feelings at
-        /// the end of the conversation.
-        /// Section name: "customer_satisfaction".
-        CustomerSatisfaction = 5,
-        /// Key entities extracted from the conversation, such as ticket number,
-        /// order number, dollar amount, etc.
-        /// Section names are prefixed by "entities/".
-        Entities = 6,
-        /// Customer defined sections.
-        CustomerDefined = 7,
-    }
-    impl Type {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                Self::Unspecified => "TYPE_UNSPECIFIED",
-                Self::Situation => "SITUATION",
-                Self::Action => "ACTION",
-                Self::Resolution => "RESOLUTION",
-                Self::ReasonForCancellation => "REASON_FOR_CANCELLATION",
-                Self::CustomerSatisfaction => "CUSTOMER_SATISFACTION",
-                Self::Entities => "ENTITIES",
-                Self::CustomerDefined => "CUSTOMER_DEFINED",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
-                "SITUATION" => Some(Self::Situation),
-                "ACTION" => Some(Self::Action),
-                "RESOLUTION" => Some(Self::Resolution),
-                "REASON_FOR_CANCELLATION" => Some(Self::ReasonForCancellation),
-                "CUSTOMER_SATISFACTION" => Some(Self::CustomerSatisfaction),
-                "ENTITIES" => Some(Self::Entities),
-                "CUSTOMER_DEFINED" => Some(Self::CustomerDefined),
-                _ => None,
-            }
-        }
-    }
-}
-/// Summarization context that customer can configure.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SummarizationContext {
-    /// Optional. List of sections. Note it contains both predefined section sand
-    /// customer defined sections.
-    #[prost(message, repeated, tag = "1")]
-    pub summarization_sections: ::prost::alloc::vec::Vec<SummarizationSection>,
-    /// Optional. List of few shot examples.
-    #[prost(message, repeated, tag = "2")]
-    pub few_shot_examples: ::prost::alloc::vec::Vec<FewShotExample>,
-    /// Optional. Version of the feature. If not set, default to latest version.
-    /// Current candidates are \["1.0"\].
-    #[prost(string, tag = "3")]
-    pub version: ::prost::alloc::string::String,
-    /// Optional. The target language of the generated summary. The language code
-    /// for conversation will be used if this field is empty. Supported 2.0 and
-    /// later versions.
-    #[prost(string, tag = "6")]
-    pub output_language_code: ::prost::alloc::string::String,
-}
-/// LLM generator.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Generator {
-    /// Output only. Identifier. The resource name of the generator. Format:
-    /// `projects/<Project ID>/locations/<Location ID>/generators/<Generator ID>`
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Optional. Human readable description of the generator.
-    #[prost(string, tag = "2")]
-    pub description: ::prost::alloc::string::String,
-    /// Optional. Inference parameters for this generator.
-    #[prost(message, optional, tag = "4")]
-    pub inference_parameter: ::core::option::Option<InferenceParameter>,
-    /// Optional. The trigger event of the generator. It defines when the generator
-    /// is triggered in a conversation.
-    #[prost(enumeration = "TriggerEvent", tag = "5")]
-    pub trigger_event: i32,
-    /// Output only. Creation time of this generator.
-    #[prost(message, optional, tag = "8")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Update time of this generator.
-    #[prost(message, optional, tag = "9")]
-    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Required. Input context of the generator.
-    #[prost(oneof = "generator::Context", tags = "13")]
-    pub context: ::core::option::Option<generator::Context>,
-}
-/// Nested message and enum types in `Generator`.
-pub mod generator {
-    /// Required. Input context of the generator.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Context {
-        /// Input of Summarization feature.
-        #[prost(message, tag = "13")]
-        SummarizationContext(super::SummarizationContext),
-    }
-}
-/// Suggested summary of the conversation.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SummarySuggestion {
-    /// Required. All the parts of generated summary.
-    #[prost(message, repeated, tag = "1")]
-    pub summary_sections: ::prost::alloc::vec::Vec<summary_suggestion::SummarySection>,
-}
-/// Nested message and enum types in `SummarySuggestion`.
-pub mod summary_suggestion {
-    /// A component of the generated summary.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct SummarySection {
-        /// Required. Name of the section.
-        #[prost(string, tag = "1")]
-        pub section: ::prost::alloc::string::String,
-        /// Required. Summary text for the section.
-        #[prost(string, tag = "2")]
-        pub summary: ::prost::alloc::string::String,
-    }
-}
-/// Suggestion generated using a Generator.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GeneratorSuggestion {
-    /// The suggestion could be one of the many types
-    #[prost(oneof = "generator_suggestion::Suggestion", tags = "2")]
-    pub suggestion: ::core::option::Option<generator_suggestion::Suggestion>,
-}
-/// Nested message and enum types in `GeneratorSuggestion`.
-pub mod generator_suggestion {
-    /// The suggestion could be one of the many types
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Suggestion {
-        /// Optional. Suggested summary.
-        #[prost(message, tag = "2")]
-        SummarySuggestion(super::SummarySuggestion),
-    }
-}
-/// The event that triggers the generator and LLM execution.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum TriggerEvent {
-    /// Default value for TriggerEvent.
-    Unspecified = 0,
-    /// Triggers when each chat message or voice utterance ends.
-    EndOfUtterance = 1,
-    /// Triggers on the conversation manually by API calls, such as
-    /// Conversations.GenerateStatelessSuggestion and
-    /// Conversations.GenerateSuggestions.
-    ManualCall = 2,
-}
-impl TriggerEvent {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            Self::Unspecified => "TRIGGER_EVENT_UNSPECIFIED",
-            Self::EndOfUtterance => "END_OF_UTTERANCE",
-            Self::ManualCall => "MANUAL_CALL",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "TRIGGER_EVENT_UNSPECIFIED" => Some(Self::Unspecified),
-            "END_OF_UTTERANCE" => Some(Self::EndOfUtterance),
-            "MANUAL_CALL" => Some(Self::ManualCall),
-            _ => None,
-        }
-    }
-}
-/// Generated client implementations.
-pub mod generators_client {
-    #![allow(
-        unused_variables,
-        dead_code,
-        missing_docs,
-        clippy::wildcard_imports,
-        clippy::let_unit_value,
-    )]
-    use tonic::codegen::*;
-    use tonic::codegen::http::Uri;
-    /// Generator Service for LLM powered Agent Assist. This service manages the
-    /// configurations of user owned Generators, such as description, context and
-    /// instruction, input/output format, etc. The generator resources will be used
-    /// inside a conversation and will be triggered by TriggerEvent to query LLM for
-    /// answers.
-    #[derive(Debug, Clone)]
-    pub struct GeneratorsClient<T> {
-        inner: tonic::client::Grpc<T>,
-    }
-    impl GeneratorsClient<tonic::transport::Channel> {
-        /// Attempt to create a new client by connecting to a given endpoint.
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
-    impl<T> GeneratorsClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
-    {
-        pub fn new(inner: T) -> Self {
-            let inner = tonic::client::Grpc::new(inner);
-            Self { inner }
-        }
-        pub fn with_origin(inner: T, origin: Uri) -> Self {
-            let inner = tonic::client::Grpc::with_origin(inner, origin);
-            Self { inner }
-        }
-        pub fn with_interceptor<F>(
-            inner: T,
-            interceptor: F,
-        ) -> GeneratorsClient<InterceptedService<T, F>>
-        where
-            F: tonic::service::Interceptor,
-            T::ResponseBody: Default,
-            T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
-                Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
-                >,
-            >,
-            <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
-        {
-            GeneratorsClient::new(InterceptedService::new(inner, interceptor))
-        }
-        /// Compress requests with the given encoding.
-        ///
-        /// This requires the server to support it otherwise it might respond with an
-        /// error.
-        #[must_use]
-        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
-            self.inner = self.inner.send_compressed(encoding);
-            self
-        }
-        /// Enable decompressing responses.
-        #[must_use]
-        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
-            self.inner = self.inner.accept_compressed(encoding);
-            self
-        }
-        /// Limits the maximum size of a decoded message.
-        ///
-        /// Default: `4MB`
-        #[must_use]
-        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
-            self.inner = self.inner.max_decoding_message_size(limit);
-            self
-        }
-        /// Limits the maximum size of an encoded message.
-        ///
-        /// Default: `usize::MAX`
-        #[must_use]
-        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
-            self.inner = self.inner.max_encoding_message_size(limit);
-            self
-        }
-        /// Creates a generator.
-        pub async fn create_generator(
-            &mut self,
-            request: impl tonic::IntoRequest<super::CreateGeneratorRequest>,
-        ) -> std::result::Result<tonic::Response<super::Generator>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dialogflow.v2beta1.Generators/CreateGenerator",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dialogflow.v2beta1.Generators",
-                        "CreateGenerator",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Retrieves a generator.
-        pub async fn get_generator(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetGeneratorRequest>,
-        ) -> std::result::Result<tonic::Response<super::Generator>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dialogflow.v2beta1.Generators/GetGenerator",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dialogflow.v2beta1.Generators",
-                        "GetGenerator",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Lists generators.
-        pub async fn list_generators(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListGeneratorsRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListGeneratorsResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dialogflow.v2beta1.Generators/ListGenerators",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dialogflow.v2beta1.Generators",
-                        "ListGenerators",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Deletes a generator.
-        pub async fn delete_generator(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DeleteGeneratorRequest>,
-        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dialogflow.v2beta1.Generators/DeleteGenerator",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dialogflow.v2beta1.Generators",
-                        "DeleteGenerator",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Updates a generator.
-        pub async fn update_generator(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateGeneratorRequest>,
-        ) -> std::result::Result<tonic::Response<super::Generator>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.dialogflow.v2beta1.Generators/UpdateGenerator",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.cloud.dialogflow.v2beta1.Generators",
-                        "UpdateGenerator",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-    }
-}
 /// Represents a conversation.
 /// A conversation is an interaction between an agent, including live agents
 /// and Dialogflow agents, and a support customer. Conversations can
@@ -11497,6 +11595,12 @@ pub struct Conversation {
     pub telephony_connection_info: ::core::option::Option<
         conversation::TelephonyConnectionInfo,
     >,
+    /// Output only. The context reference updates provided by external systems.
+    #[prost(map = "string, message", tag = "17")]
+    pub ingested_context_references: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        conversation::ContextReference,
+    >,
 }
 /// Nested message and enum types in `Conversation`.
 pub mod conversation {
@@ -11541,6 +11645,131 @@ pub mod conversation {
             /// Optional. The content payload.
             #[prost(bytes = "vec", tag = "2")]
             pub content: ::prost::alloc::vec::Vec<u8>,
+        }
+    }
+    /// Represents a piece of ingested context information.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ContextReference {
+        /// Required. The list of content updates for a context reference.
+        #[prost(message, repeated, tag = "1")]
+        pub context_contents: ::prost::alloc::vec::Vec<
+            context_reference::ContextContent,
+        >,
+        /// Required. The mode in which context reference contents are updated.
+        #[prost(enumeration = "context_reference::UpdateMode", tag = "2")]
+        pub update_mode: i32,
+        /// Optional. The language of the information ingested, defaults to "en-US"
+        /// if not set.
+        #[prost(string, tag = "3")]
+        pub language_code: ::prost::alloc::string::String,
+        /// Output only. The time the context reference was first created.
+        #[prost(message, optional, tag = "4")]
+        pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    }
+    /// Nested message and enum types in `ContextReference`.
+    pub mod context_reference {
+        /// Contents ingested.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ContextContent {
+            /// Required. The information ingested in a single request.
+            #[prost(string, tag = "1")]
+            pub content: ::prost::alloc::string::String,
+            /// Required. The format of the ingested string.
+            #[prost(enumeration = "context_content::ContentFormat", tag = "2")]
+            pub content_format: i32,
+            /// Output only. The time when this information was incorporated into the
+            /// relevant context reference.
+            #[prost(message, optional, tag = "3")]
+            pub ingestion_time: ::core::option::Option<::prost_types::Timestamp>,
+        }
+        /// Nested message and enum types in `ContextContent`.
+        pub mod context_content {
+            /// Represents the format of the ingested string.
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum ContentFormat {
+                /// Unspecified content format.
+                Unspecified = 0,
+                /// Content was provided in JSON format.
+                Json = 1,
+                /// Content was provided as plain text.
+                PlainText = 2,
+            }
+            impl ContentFormat {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        Self::Unspecified => "CONTENT_FORMAT_UNSPECIFIED",
+                        Self::Json => "JSON",
+                        Self::PlainText => "PLAIN_TEXT",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "CONTENT_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                        "JSON" => Some(Self::Json),
+                        "PLAIN_TEXT" => Some(Self::PlainText),
+                        _ => None,
+                    }
+                }
+            }
+        }
+        /// Represents the mode in which context reference contents are updated.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum UpdateMode {
+            /// Unspecified update mode.
+            Unspecified = 0,
+            /// Context content updates are applied in append mode.
+            Append = 1,
+            /// Context content updates are applied in overwrite mode.
+            Overwrite = 2,
+        }
+        impl UpdateMode {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "UPDATE_MODE_UNSPECIFIED",
+                    Self::Append => "APPEND",
+                    Self::Overwrite => "OVERWRITE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "UPDATE_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "APPEND" => Some(Self::Append),
+                    "OVERWRITE" => Some(Self::Overwrite),
+                    _ => None,
+                }
+            }
         }
     }
     /// Enumeration of the completion status of the conversation.
@@ -11807,6 +12036,34 @@ pub struct ListMessagesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// The request message for [ConversationsService.IngestContextReferences][].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IngestContextReferencesRequest {
+    /// Required. Resource identifier of the conversation to ingest context
+    /// information for. Format: `projects/<Project ID>/locations/<Location
+    /// ID>/conversations/<Conversation ID>`.
+    #[prost(string, tag = "1")]
+    pub conversation: ::prost::alloc::string::String,
+    /// Required. The context references to ingest. The key is the name of the
+    /// context reference and the value contains the contents of the context
+    /// reference. The key is used to incorporate ingested context references to
+    /// enhance the generator.
+    #[prost(map = "string, message", tag = "2")]
+    pub context_references: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        conversation::ContextReference,
+    >,
+}
+/// The response message for [ConversationsService.IngestContextReferences][].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IngestContextReferencesResponse {
+    /// All context references ingested.
+    #[prost(map = "string, message", tag = "1")]
+    pub ingested_context_references: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        conversation::ContextReference,
+    >,
+}
 /// The request message for
 /// [Conversations.SuggestConversationSummary][google.cloud.dialogflow.v2beta1.Conversations.SuggestConversationSummary].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -11976,6 +12233,15 @@ pub struct GenerateStatelessSuggestionRequest {
     /// Format: `projects/<Project ID>/locations/<Location ID>`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
+    /// Optional. A section of ingested context information. The key is the name of
+    /// the context reference and the value contains the contents of the context
+    /// reference. The key is used to incorporate ingested context references to
+    /// enhance the generator.
+    #[prost(map = "string, message", tag = "4")]
+    pub context_references: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        conversation::ContextReference,
+    >,
     /// Optional. Context of the conversation, including transcripts.
     #[prost(message, optional, tag = "5")]
     pub conversation_context: ::core::option::Option<ConversationContext>,
@@ -12497,6 +12763,28 @@ pub mod search_knowledge_answer {
         }
     }
 }
+/// The request message for
+/// [Conversations.GenerateSuggestions][google.cloud.dialogflow.v2beta1.Conversations.GenerateSuggestions].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateSuggestionsRequest {
+    /// Required. The conversation for which the suggestions are generated. Format:
+    /// `projects/<Project ID>/locations/<Location
+    /// ID>/conversations/<Conversation ID>`.
+    ///
+    /// The conversation must be created with a conversation profile which has
+    /// generators configured in it to be able to get suggestions.
+    #[prost(string, tag = "1")]
+    pub conversation: ::prost::alloc::string::String,
+    /// Optional. The name of the latest conversation message for which the request
+    /// is triggered. Format: `projects/<Project ID>/locations/<Location
+    /// ID>/conversations/<Conversation ID>/messages/<Message ID>`.
+    #[prost(string, tag = "2")]
+    pub latest_message: ::prost::alloc::string::String,
+    /// Optional. A list of trigger events. Only generators configured in the
+    /// conversation_profile whose trigger_event is listed here will be triggered.
+    #[prost(enumeration = "TriggerEvent", repeated, packed = "false", tag = "3")]
+    pub trigger_events: ::prost::alloc::vec::Vec<i32>,
+}
 /// Generated client implementations.
 pub mod conversations_client {
     #![allow(
@@ -12527,7 +12815,7 @@ pub mod conversations_client {
     }
     impl<T> ConversationsClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -12548,13 +12836,13 @@ pub mod conversations_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ConversationsClient::new(InterceptedService::new(inner, interceptor))
@@ -12718,6 +13006,37 @@ pub mod conversations_client {
                     GrpcMethod::new(
                         "google.cloud.dialogflow.v2beta1.Conversations",
                         "CompleteConversation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Data ingestion API.
+        /// Ingests context references for an existing conversation.
+        pub async fn ingest_context_references(
+            &mut self,
+            request: impl tonic::IntoRequest<super::IngestContextReferencesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::IngestContextReferencesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2beta1.Conversations/IngestContextReferences",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2beta1.Conversations",
+                        "IngestContextReferences",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -12907,6 +13226,38 @@ pub mod conversations_client {
                     GrpcMethod::new(
                         "google.cloud.dialogflow.v2beta1.Conversations",
                         "SearchKnowledge",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Generates all the suggestions using generators configured in the
+        /// conversation profile. A generator is used only if its trigger event is
+        /// matched.
+        pub async fn generate_suggestions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GenerateSuggestionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::GenerateSuggestionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2beta1.Conversations/GenerateSuggestions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.v2beta1.Conversations",
+                        "GenerateSuggestions",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -13611,7 +13962,7 @@ pub mod documents_client {
     }
     impl<T> DocumentsClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -13632,13 +13983,13 @@ pub mod documents_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             DocumentsClient::new(InterceptedService::new(inner, interceptor))
@@ -14024,7 +14375,7 @@ pub mod encryption_spec_service_client {
     }
     impl<T> EncryptionSpecServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -14045,13 +14396,13 @@ pub mod encryption_spec_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             EncryptionSpecServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -14334,7 +14685,7 @@ pub mod fulfillments_client {
     }
     impl<T> FulfillmentsClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -14355,13 +14706,13 @@ pub mod fulfillments_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             FulfillmentsClient::new(InterceptedService::new(inner, interceptor))
@@ -14760,7 +15111,7 @@ pub mod environments_client {
     }
     impl<T> EnvironmentsClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -14781,13 +15132,13 @@ pub mod environments_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             EnvironmentsClient::new(InterceptedService::new(inner, interceptor))
@@ -15192,7 +15543,7 @@ pub mod knowledge_bases_client {
     }
     impl<T> KnowledgeBasesClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -15213,13 +15564,13 @@ pub mod knowledge_bases_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             KnowledgeBasesClient::new(InterceptedService::new(inner, interceptor))
@@ -15587,7 +15938,7 @@ pub mod phone_numbers_client {
     }
     impl<T> PhoneNumbersClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -15608,13 +15959,13 @@ pub mod phone_numbers_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             PhoneNumbersClient::new(InterceptedService::new(inner, interceptor))
@@ -16050,7 +16401,7 @@ pub mod sip_trunks_client {
     }
     impl<T> SipTrunksClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -16071,13 +16422,13 @@ pub mod sip_trunks_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SipTrunksClient::new(InterceptedService::new(inner, interceptor))
@@ -16459,7 +16810,7 @@ pub mod versions_client {
     }
     impl<T> VersionsClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -16480,13 +16831,13 @@ pub mod versions_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             VersionsClient::new(InterceptedService::new(inner, interceptor))

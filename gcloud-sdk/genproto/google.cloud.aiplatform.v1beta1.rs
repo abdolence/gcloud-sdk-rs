@@ -2188,6 +2188,10 @@ pub struct MachineSpec {
     /// available from GKE. (Example: tpu_topology: "2x2x1").
     #[prost(string, tag = "4")]
     pub tpu_topology: ::prost::alloc::string::String,
+    /// Optional. Immutable. The number of nodes per replica for multihost GPU
+    /// deployments.
+    #[prost(int32, tag = "6")]
+    pub multihost_gpu_node_count: i32,
     /// Optional. Immutable. Configuration controlling how this resource pool
     /// consumes reservation.
     #[prost(message, optional, tag = "5")]
@@ -3245,6 +3249,32 @@ pub struct EnvVar {
     #[prost(string, tag = "2")]
     pub value: ::prost::alloc::string::String,
 }
+/// Reference to a secret stored in the Cloud Secret Manager that will
+/// provide the value for this environment variable.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SecretRef {
+    /// Required. The name of the secret in Cloud Secret Manager.
+    /// Format: {secret_name}.
+    #[prost(string, tag = "1")]
+    pub secret: ::prost::alloc::string::String,
+    /// The Cloud Secret Manager secret version.
+    /// Can be 'latest' for the latest version, an integer for a specific
+    /// version, or a version alias.
+    #[prost(string, tag = "2")]
+    pub version: ::prost::alloc::string::String,
+}
+/// Represents an environment variable where the value is a secret in Cloud
+/// Secret Manager.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SecretEnvVar {
+    /// Required. Name of the secret environment variable.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Reference to a secret stored in the Cloud Secret Manager that
+    /// will provide the value for this environment variable.
+    #[prost(message, optional, tag = "2")]
+    pub secret_ref: ::core::option::Option<SecretRef>,
+}
 /// A trained machine learning Model.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Model {
@@ -3730,6 +3760,12 @@ pub struct ModelGardenSource {
     /// Required. The model garden source model resource name.
     #[prost(string, tag = "1")]
     pub public_model_name: ::prost::alloc::string::String,
+    /// Optional. The model garden source model version ID.
+    #[prost(string, tag = "3")]
+    pub version_id: ::prost::alloc::string::String,
+    /// Optional. Whether to avoid pulling the model from the HF cache.
+    #[prost(bool, tag = "4")]
+    pub skip_hf_model_cache: bool,
 }
 /// Contains information about the source of the models generated from Generative
 /// AI Studio.
@@ -5024,6 +5060,10 @@ pub struct FunctionDeclaration {
 /// containing the parameters and their values.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunctionCall {
+    /// Optional. The unique id of the function call. If populated, the client to
+    /// execute the `function_call` and return the response with the matching `id`.
+    #[prost(string, tag = "3")]
+    pub id: ::prost::alloc::string::String,
     /// Required. The name of the function to call.
     /// Matches \[FunctionDeclaration.name\].
     #[prost(string, tag = "1")]
@@ -5039,6 +5079,10 @@ pub struct FunctionCall {
 /// the result of a \[FunctionCall\] made based on model prediction.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunctionResponse {
+    /// Optional. The id of the function call this response is for. Populated by
+    /// the client to match the corresponding function call `id`.
+    #[prost(string, tag = "3")]
+    pub id: ::prost::alloc::string::String,
     /// Required. The name of the function to call.
     /// Matches \[FunctionDeclaration.name\] and \[FunctionCall.name\].
     #[prost(string, tag = "1")]
@@ -5710,6 +5754,9 @@ pub struct GenerationConfig {
     /// Optional. The speech generation config.
     #[prost(message, optional, tag = "23")]
     pub speech_config: ::core::option::Option<SpeechConfig>,
+    /// Optional. Config for model selection.
+    #[prost(message, optional, tag = "27")]
+    pub model_config: ::core::option::Option<generation_config::ModelConfig>,
 }
 /// Nested message and enum types in `GenerationConfig`.
 pub mod generation_config {
@@ -5802,6 +5849,63 @@ pub mod generation_config {
             /// Manual routing.
             #[prost(message, tag = "2")]
             ManualMode(ManualRoutingMode),
+        }
+    }
+    /// Config for model selection.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct ModelConfig {
+        /// Required. Feature selection preference.
+        #[prost(enumeration = "model_config::FeatureSelectionPreference", tag = "1")]
+        pub feature_selection_preference: i32,
+    }
+    /// Nested message and enum types in `ModelConfig`.
+    pub mod model_config {
+        /// Options for feature selection preference.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum FeatureSelectionPreference {
+            /// Unspecified feature selection preference.
+            Unspecified = 0,
+            /// Prefer higher quality over lower cost.
+            PrioritizeQuality = 1,
+            /// Balanced feature selection preference.
+            Balanced = 2,
+            /// Prefer lower cost over higher quality.
+            PrioritizeCost = 3,
+        }
+        impl FeatureSelectionPreference {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "FEATURE_SELECTION_PREFERENCE_UNSPECIFIED",
+                    Self::PrioritizeQuality => "PRIORITIZE_QUALITY",
+                    Self::Balanced => "BALANCED",
+                    Self::PrioritizeCost => "PRIORITIZE_COST",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "FEATURE_SELECTION_PREFERENCE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "PRIORITIZE_QUALITY" => Some(Self::PrioritizeQuality),
+                    "BALANCED" => Some(Self::Balanced),
+                    "PRIORITIZE_COST" => Some(Self::PrioritizeCost),
+                    _ => None,
+                }
+            }
         }
     }
     /// The modalities of the response.
@@ -8303,6 +8407,334 @@ pub struct ListAnnotationsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// Request message for
+/// [DatasetService.AssessData][google.cloud.aiplatform.v1beta1.DatasetService.AssessData].
+/// Used only for MULTIMODAL datasets.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssessDataRequest {
+    /// Required. The name of the Dataset resource. Used only for MULTIMODAL
+    /// datasets. Format:
+    /// `projects/{project}/locations/{location}/datasets/{dataset}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The assessment type.
+    #[prost(oneof = "assess_data_request::AssessmentConfig", tags = "2, 3, 6, 7")]
+    pub assessment_config: ::core::option::Option<assess_data_request::AssessmentConfig>,
+    /// The read config for the dataset.
+    #[prost(oneof = "assess_data_request::ReadConfig", tags = "4, 5")]
+    pub read_config: ::core::option::Option<assess_data_request::ReadConfig>,
+}
+/// Nested message and enum types in `AssessDataRequest`.
+pub mod assess_data_request {
+    /// Configuration for the tuning validation assessment.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TuningValidationAssessmentConfig {
+        /// Required. The name of the model used for tuning.
+        #[prost(string, tag = "1")]
+        pub model_name: ::prost::alloc::string::String,
+        /// Required. The dataset usage (e.g. training/validation).
+        #[prost(
+            enumeration = "tuning_validation_assessment_config::DatasetUsage",
+            tag = "2"
+        )]
+        pub dataset_usage: i32,
+    }
+    /// Nested message and enum types in `TuningValidationAssessmentConfig`.
+    pub mod tuning_validation_assessment_config {
+        /// The dataset usage (e.g. training/validation).
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum DatasetUsage {
+            /// Default value. Should not be used.
+            Unspecified = 0,
+            /// Supervised fine-tuning training dataset.
+            SftTraining = 1,
+            /// Supervised fine-tuning validation dataset.
+            SftValidation = 2,
+        }
+        impl DatasetUsage {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "DATASET_USAGE_UNSPECIFIED",
+                    Self::SftTraining => "SFT_TRAINING",
+                    Self::SftValidation => "SFT_VALIDATION",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "DATASET_USAGE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "SFT_TRAINING" => Some(Self::SftTraining),
+                    "SFT_VALIDATION" => Some(Self::SftValidation),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Configuration for the tuning resource usage assessment.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TuningResourceUsageAssessmentConfig {
+        /// Required. The name of the model used for tuning.
+        #[prost(string, tag = "1")]
+        pub model_name: ::prost::alloc::string::String,
+    }
+    /// Configuration for the batch prediction validation assessment.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct BatchPredictionValidationAssessmentConfig {
+        /// Required. The name of the model used for batch prediction.
+        #[prost(string, tag = "1")]
+        pub model_name: ::prost::alloc::string::String,
+    }
+    /// Configuration for the batch prediction resource usage assessment.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct BatchPredictionResourceUsageAssessmentConfig {
+        /// Required. The name of the model used for batch prediction.
+        #[prost(string, tag = "1")]
+        pub model_name: ::prost::alloc::string::String,
+    }
+    /// The assessment type.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum AssessmentConfig {
+        /// Optional. Configuration for the tuning validation assessment.
+        #[prost(message, tag = "2")]
+        TuningValidationAssessmentConfig(TuningValidationAssessmentConfig),
+        /// Optional. Configuration for the tuning resource usage assessment.
+        #[prost(message, tag = "3")]
+        TuningResourceUsageAssessmentConfig(TuningResourceUsageAssessmentConfig),
+        /// Optional. Configuration for the batch prediction validation assessment.
+        #[prost(message, tag = "6")]
+        BatchPredictionValidationAssessmentConfig(
+            BatchPredictionValidationAssessmentConfig,
+        ),
+        /// Optional. Configuration for the batch prediction resource usage
+        /// assessment.
+        #[prost(message, tag = "7")]
+        BatchPredictionResourceUsageAssessmentConfig(
+            BatchPredictionResourceUsageAssessmentConfig,
+        ),
+    }
+    /// The read config for the dataset.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ReadConfig {
+        /// Optional. Config for assembling templates with a Gemini API structure to
+        /// assess assembled data.
+        #[prost(message, tag = "4")]
+        GeminiTemplateConfig(super::GeminiTemplateConfig),
+        /// Optional. The column name in the underlying table that contains already
+        /// fully assembled requests.
+        #[prost(string, tag = "5")]
+        RequestColumnName(::prost::alloc::string::String),
+    }
+}
+/// Response message for
+/// [DatasetService.AssessData][google.cloud.aiplatform.v1beta1.DatasetService.AssessData].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssessDataResponse {
+    /// The assessment result.
+    #[prost(oneof = "assess_data_response::AssessmentResult", tags = "1, 2, 3, 4")]
+    pub assessment_result: ::core::option::Option<
+        assess_data_response::AssessmentResult,
+    >,
+}
+/// Nested message and enum types in `AssessDataResponse`.
+pub mod assess_data_response {
+    /// The result of the tuning validation assessment.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TuningValidationAssessmentResult {
+        /// Optional. A list containing the first validation errors.
+        #[prost(string, repeated, tag = "1")]
+        pub errors: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// The result of the tuning resource usage assessment.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct TuningResourceUsageAssessmentResult {
+        /// Number of tokens in the tuning dataset.
+        #[prost(int64, tag = "1")]
+        pub token_count: i64,
+        /// Number of billable tokens in the tuning dataset.
+        #[prost(int64, tag = "2")]
+        pub billable_character_count: i64,
+    }
+    /// The result of the batch prediction validation assessment.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct BatchPredictionValidationAssessmentResult {}
+    /// The result of the batch prediction resource usage assessment.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct BatchPredictionResourceUsageAssessmentResult {
+        /// Number of tokens in the batch prediction dataset.
+        #[prost(int64, tag = "1")]
+        pub token_count: i64,
+        /// Number of audio tokens in the batch prediction dataset.
+        #[prost(int64, tag = "2")]
+        pub audio_token_count: i64,
+    }
+    /// The assessment result.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum AssessmentResult {
+        /// Optional. The result of the tuning validation assessment.
+        #[prost(message, tag = "1")]
+        TuningValidationAssessmentResult(TuningValidationAssessmentResult),
+        /// Optional. The result of the tuning resource usage assessment.
+        #[prost(message, tag = "2")]
+        TuningResourceUsageAssessmentResult(TuningResourceUsageAssessmentResult),
+        /// Optional. The result of the batch prediction validation assessment.
+        #[prost(message, tag = "3")]
+        BatchPredictionValidationAssessmentResult(
+            BatchPredictionValidationAssessmentResult,
+        ),
+        /// Optional. The result of the batch prediction resource usage assessment.
+        #[prost(message, tag = "4")]
+        BatchPredictionResourceUsageAssessmentResult(
+            BatchPredictionResourceUsageAssessmentResult,
+        ),
+    }
+}
+/// Runtime operation information for
+/// [DatasetService.AssessData][google.cloud.aiplatform.v1beta1.DatasetService.AssessData].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssessDataOperationMetadata {
+    /// The common part of the operation metadata.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Template configuration to create Gemini examples from a multimodal dataset.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GeminiTemplateConfig {
+    /// Required. The template that will be used for assembling the request to use
+    /// for downstream applications.
+    #[prost(message, optional, tag = "1")]
+    pub gemini_example: ::core::option::Option<GeminiExample>,
+    /// Required. Map of template params to the columns in the dataset table.
+    #[prost(map = "string, string", tag = "2")]
+    pub field_mapping: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+}
+/// Format for Gemini examples used for Vertex Multimodal datasets.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GeminiExample {
+    /// Optional. The fully qualified name of the publisher model or tuned model
+    /// endpoint to use.
+    ///
+    /// Publisher model format:
+    /// `projects/{project}/locations/{location}/publishers/*/models/*`
+    ///
+    /// Tuned model endpoint format:
+    /// `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    #[prost(string, tag = "1")]
+    pub model: ::prost::alloc::string::String,
+    /// Required. The content of the current conversation with the model.
+    ///
+    /// For single-turn queries, this is a single instance. For multi-turn
+    /// queries, this is a repeated field that contains conversation history +
+    /// latest request.
+    #[prost(message, repeated, tag = "2")]
+    pub contents: ::prost::alloc::vec::Vec<Content>,
+    /// Optional. The user provided system instructions for the model.
+    /// Note: only text should be used in parts and content in each part will be
+    /// in a separate paragraph.
+    #[prost(message, optional, tag = "8")]
+    pub system_instruction: ::core::option::Option<Content>,
+    /// Optional. The name of the cached content used as context to serve the
+    /// prediction. Note: only used in explicit caching, where users can have
+    /// control over caching (e.g. what content to cache) and enjoy guaranteed cost
+    /// savings. Format:
+    /// `projects/{project}/locations/{location}/cachedContents/{cachedContent}`
+    #[prost(string, tag = "9")]
+    pub cached_content: ::prost::alloc::string::String,
+    /// Optional. A list of `Tools` the model may use to generate the next
+    /// response.
+    ///
+    /// A `Tool` is a piece of code that enables the system to interact with
+    /// external systems to perform an action, or set of actions, outside of
+    /// knowledge and scope of the model.
+    #[prost(message, repeated, tag = "6")]
+    pub tools: ::prost::alloc::vec::Vec<Tool>,
+    /// Optional. Tool config. This config is shared for all tools provided in the
+    /// request.
+    #[prost(message, optional, tag = "7")]
+    pub tool_config: ::core::option::Option<ToolConfig>,
+    /// Optional. The labels with user-defined metadata for the request. It is used
+    /// for billing and reporting only.
+    ///
+    /// Label keys and values can be no longer than 63 characters
+    /// (Unicode codepoints) and can only contain lowercase letters, numeric
+    /// characters, underscores, and dashes. International characters are
+    /// allowed. Label values are optional. Label keys must start with a letter.
+    #[prost(map = "string, string", tag = "10")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. Per request settings for blocking unsafe content.
+    /// Enforced on GenerateContentResponse.candidates.
+    #[prost(message, repeated, tag = "3")]
+    pub safety_settings: ::prost::alloc::vec::Vec<SafetySetting>,
+    /// Optional. Generation config.
+    #[prost(message, optional, tag = "4")]
+    pub generation_config: ::core::option::Option<GenerationConfig>,
+}
+/// Request message for
+/// [DatasetService.AssembleData][google.cloud.aiplatform.v1beta1.DatasetService.AssembleData].
+/// Used only for MULTIMODAL datasets.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssembleDataRequest {
+    /// Required. The name of the Dataset resource (used only for MULTIMODAL
+    /// datasets). Format:
+    /// `projects/{project}/locations/{location}/datasets/{dataset}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The read config for the dataset.
+    #[prost(oneof = "assemble_data_request::ReadConfig", tags = "2, 5")]
+    pub read_config: ::core::option::Option<assemble_data_request::ReadConfig>,
+}
+/// Nested message and enum types in `AssembleDataRequest`.
+pub mod assemble_data_request {
+    /// The read config for the dataset.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ReadConfig {
+        /// Optional. Config for assembling templates with a Gemini API structure.
+        #[prost(message, tag = "2")]
+        GeminiTemplateConfig(super::GeminiTemplateConfig),
+        /// Optional. The column name in the underlying table that contains already
+        /// fully assembled requests. If this field is set, the original request will
+        /// be copied to the output table.
+        #[prost(string, tag = "5")]
+        RequestColumnName(::prost::alloc::string::String),
+    }
+}
+/// Response message for
+/// [DatasetService.AssembleData][google.cloud.aiplatform.v1beta1.DatasetService.AssembleData].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssembleDataResponse {
+    /// Destination BigQuery table path containing the assembled data as a single
+    /// column.
+    #[prost(string, tag = "1")]
+    pub bigquery_destination: ::prost::alloc::string::String,
+}
+/// Runtime operation information for
+/// [DatasetService.AssembleData][google.cloud.aiplatform.v1beta1.DatasetService.AssembleData].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssembleDataOperationMetadata {
+    /// The common part of the operation metadata.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
 /// Generated client implementations.
 pub mod dataset_service_client {
     #![allow(
@@ -8332,7 +8764,7 @@ pub mod dataset_service_client {
     }
     impl<T> DatasetServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -8353,13 +8785,13 @@ pub mod dataset_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             DatasetServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -8920,7 +9352,7 @@ pub mod dataset_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists Annotations belongs to a dataitem
+        /// Lists Annotations belongs to a dataitem.
         pub async fn list_annotations(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAnnotationsRequest>,
@@ -8946,6 +9378,68 @@ pub mod dataset_service_client {
                     GrpcMethod::new(
                         "google.cloud.aiplatform.v1beta1.DatasetService",
                         "ListAnnotations",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Assesses the state or validity of the dataset with respect to a given use
+        /// case.
+        pub async fn assess_data(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AssessDataRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.DatasetService/AssessData",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.DatasetService",
+                        "AssessData",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Assembles each row of a multimodal dataset and writes the result into a
+        /// BigQuery table.
+        pub async fn assemble_data(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AssembleDataRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.DatasetService/AssembleData",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.DatasetService",
+                        "AssembleData",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -9568,7 +10062,7 @@ pub mod deployment_resource_pool_service_client {
     }
     impl<T> DeploymentResourcePoolServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -9589,13 +10083,13 @@ pub mod deployment_resource_pool_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             DeploymentResourcePoolServiceClient::new(
@@ -10114,7 +10608,7 @@ pub mod endpoint_service_client {
     }
     impl<T> EndpointServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -10135,13 +10629,13 @@ pub mod endpoint_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             EndpointServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -11016,7 +11510,9 @@ pub struct EvaluateDatasetRequest {
     /// Required. Config for evaluation output.
     #[prost(message, optional, tag = "4")]
     pub output_config: ::core::option::Option<OutputConfig>,
-    /// Optional. Autorater config used for evaluation.
+    /// Optional. Autorater config used for evaluation. Currently only publisher
+    /// Gemini models are supported. Format:
+    /// `projects/{PROJECT}/locations/{LOCATION}/publishers/google/models/{MODEL}.`
     #[prost(message, optional, tag = "5")]
     pub autorater_config: ::core::option::Option<AutoraterConfig>,
 }
@@ -11161,7 +11657,8 @@ pub mod evaluation_dataset {
     /// The source of the dataset.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
-        /// Cloud storage source holds the dataset.
+        /// Cloud storage source holds the dataset. Currently only one Cloud Storage
+        /// file path is supported.
         #[prost(message, tag = "1")]
         GcsSource(super::GcsSource),
         /// BigQuery source holds the dataset.
@@ -11210,7 +11707,7 @@ pub struct EvaluateInstancesRequest {
     /// Instances and specs for evaluation
     #[prost(
         oneof = "evaluate_instances_request::MetricInputs",
-        tags = "2, 3, 4, 5, 6, 8, 9, 12, 7, 23, 14, 15, 10, 24, 16, 17, 18, 28, 29, 19, 20, 21, 22, 31, 32, 33, 34, 35, 37, 38, 39"
+        tags = "2, 3, 4, 5, 6, 8, 9, 12, 7, 23, 14, 15, 10, 24, 16, 17, 18, 28, 29, 19, 20, 21, 22, 31, 32, 33, 34, 35, 37, 38, 39, 40"
     )]
     pub metric_inputs: ::core::option::Option<evaluate_instances_request::MetricInputs>,
 }
@@ -11321,6 +11818,11 @@ pub mod evaluate_instances_request {
         /// Input for trajectory single tool use metric.
         #[prost(message, tag = "39")]
         TrajectorySingleToolUseInput(super::TrajectorySingleToolUseInput),
+        /// Rubric Based Instruction Following metric.
+        #[prost(message, tag = "40")]
+        RubricBasedInstructionFollowingInput(
+            super::RubricBasedInstructionFollowingInput,
+        ),
     }
 }
 /// Response message for EvaluationService.EvaluateInstances.
@@ -11330,7 +11832,7 @@ pub struct EvaluateInstancesResponse {
     /// EvaluationRequest.instances.
     #[prost(
         oneof = "evaluate_instances_response::EvaluationResults",
-        tags = "1, 2, 3, 4, 5, 7, 8, 11, 6, 22, 13, 14, 9, 23, 15, 16, 17, 27, 28, 18, 19, 20, 21, 29, 30, 31, 32, 33, 35, 36, 37"
+        tags = "1, 2, 3, 4, 5, 7, 8, 11, 6, 22, 13, 14, 9, 23, 15, 16, 17, 27, 28, 18, 19, 20, 21, 29, 30, 31, 32, 33, 35, 36, 37, 38"
     )]
     pub evaluation_results: ::core::option::Option<
         evaluate_instances_response::EvaluationResults,
@@ -11445,6 +11947,11 @@ pub mod evaluate_instances_response {
         /// Results for trajectory single tool use metric.
         #[prost(message, tag = "37")]
         TrajectorySingleToolUseResults(super::TrajectorySingleToolUseResults),
+        /// Result for rubric based instruction following metric.
+        #[prost(message, tag = "38")]
+        RubricBasedInstructionFollowingResult(
+            super::RubricBasedInstructionFollowingResult,
+        ),
     }
 }
 /// Input for exact match metric.
@@ -12238,7 +12745,7 @@ pub struct PointwiseMetricInput {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PointwiseMetricInstance {
     /// Instance for pointwise metric.
-    #[prost(oneof = "pointwise_metric_instance::Instance", tags = "1")]
+    #[prost(oneof = "pointwise_metric_instance::Instance", tags = "1, 2")]
     pub instance: ::core::option::Option<pointwise_metric_instance::Instance>,
 }
 /// Nested message and enum types in `PointwiseMetricInstance`.
@@ -12251,6 +12758,11 @@ pub mod pointwise_metric_instance {
         /// PointwiseMetricSpec.instance_prompt_template.
         #[prost(string, tag = "1")]
         JsonInstance(::prost::alloc::string::String),
+        /// Key-value contents for the mutlimodality input, including text, image,
+        /// video, audio, and pdf, etc. The key is placeholder in metric prompt
+        /// template, and the value is the multimodal content.
+        #[prost(message, tag = "2")]
+        ContentMapInstance(super::ContentMap),
     }
 }
 /// Spec for pointwise metric.
@@ -12262,6 +12774,34 @@ pub struct PointwiseMetricSpec {
     /// Optional. System instructions for pointwise metric.
     #[prost(string, optional, tag = "2")]
     pub system_instruction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. CustomOutputFormatConfig allows customization of metric output.
+    /// By default, metrics return a score and explanation.
+    /// When this config is set, the default output is replaced with either:
+    ///   - The raw output string.
+    ///   - A parsed output based on a user-defined schema.
+    /// If a custom format is chosen, the `score` and `explanation` fields in the
+    /// corresponding metric result will be empty.
+    #[prost(message, optional, tag = "3")]
+    pub custom_output_format_config: ::core::option::Option<CustomOutputFormatConfig>,
+}
+/// Spec for custom output format configuration.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct CustomOutputFormatConfig {
+    /// Custom output format configuration.
+    #[prost(oneof = "custom_output_format_config::CustomOutputFormatConfig", tags = "1")]
+    pub custom_output_format_config: ::core::option::Option<
+        custom_output_format_config::CustomOutputFormatConfig,
+    >,
+}
+/// Nested message and enum types in `CustomOutputFormatConfig`.
+pub mod custom_output_format_config {
+    /// Custom output format configuration.
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    pub enum CustomOutputFormatConfig {
+        /// Optional. Whether to return raw output.
+        #[prost(bool, tag = "1")]
+        ReturnRawOutput(bool),
+    }
 }
 /// Spec for pointwise metric result.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -12272,6 +12812,33 @@ pub struct PointwiseMetricResult {
     /// Output only. Explanation for pointwise metric score.
     #[prost(string, tag = "2")]
     pub explanation: ::prost::alloc::string::String,
+    /// Output only. Spec for custom output.
+    #[prost(message, optional, tag = "3")]
+    pub custom_output: ::core::option::Option<CustomOutput>,
+}
+/// Spec for custom output.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomOutput {
+    /// Custom output.
+    #[prost(oneof = "custom_output::CustomOutput", tags = "1")]
+    pub custom_output: ::core::option::Option<custom_output::CustomOutput>,
+}
+/// Nested message and enum types in `CustomOutput`.
+pub mod custom_output {
+    /// Custom output.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum CustomOutput {
+        /// Output only. List of raw output strings.
+        #[prost(message, tag = "1")]
+        RawOutputs(super::RawOutput),
+    }
+}
+/// Raw output.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RawOutput {
+    /// Output only. Raw output string.
+    #[prost(string, repeated, tag = "1")]
+    pub raw_output: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Input for pairwise metric.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -12288,7 +12855,7 @@ pub struct PairwiseMetricInput {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PairwiseMetricInstance {
     /// Instance for pairwise metric.
-    #[prost(oneof = "pairwise_metric_instance::Instance", tags = "1")]
+    #[prost(oneof = "pairwise_metric_instance::Instance", tags = "1, 2")]
     pub instance: ::core::option::Option<pairwise_metric_instance::Instance>,
 }
 /// Nested message and enum types in `PairwiseMetricInstance`.
@@ -12301,6 +12868,11 @@ pub mod pairwise_metric_instance {
         /// PairwiseMetricSpec.instance_prompt_template.
         #[prost(string, tag = "1")]
         JsonInstance(::prost::alloc::string::String),
+        /// Key-value contents for the mutlimodality input, including text, image,
+        /// video, audio, and pdf, etc. The key is placeholder in metric prompt
+        /// template, and the value is the multimodal content.
+        #[prost(message, tag = "2")]
+        ContentMapInstance(super::ContentMap),
     }
 }
 /// Spec for pairwise metric.
@@ -12318,6 +12890,13 @@ pub struct PairwiseMetricSpec {
     /// Optional. System instructions for pairwise metric.
     #[prost(string, optional, tag = "4")]
     pub system_instruction: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. CustomOutputFormatConfig allows customization of metric output.
+    /// When this config is set, the default output is replaced with
+    /// the raw output string.
+    /// If a custom format is chosen, the `pairwise_choice` and `explanation`
+    /// fields in the corresponding metric result will be empty.
+    #[prost(message, optional, tag = "5")]
+    pub custom_output_format_config: ::core::option::Option<CustomOutputFormatConfig>,
 }
 /// Spec for pairwise metric result.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -12328,6 +12907,9 @@ pub struct PairwiseMetricResult {
     /// Output only. Explanation for pairwise metric score.
     #[prost(string, tag = "2")]
     pub explanation: ::prost::alloc::string::String,
+    /// Output only. Spec for custom output.
+    #[prost(message, optional, tag = "3")]
+    pub custom_output: ::core::option::Option<CustomOutput>,
 }
 /// Input for tool call valid metric.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -12675,6 +13257,63 @@ pub struct MetricxResult {
     #[prost(float, optional, tag = "1")]
     pub score: ::core::option::Option<f32>,
 }
+/// Instance and metric spec for RubricBasedInstructionFollowing metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RubricBasedInstructionFollowingInput {
+    /// Required. Spec for RubricBasedInstructionFollowing metric.
+    #[prost(message, optional, tag = "1")]
+    pub metric_spec: ::core::option::Option<RubricBasedInstructionFollowingSpec>,
+    /// Required. Instance for RubricBasedInstructionFollowing metric.
+    #[prost(message, optional, tag = "2")]
+    pub instance: ::core::option::Option<RubricBasedInstructionFollowingInstance>,
+}
+/// Instance for RubricBasedInstructionFollowing metric - one instance
+/// corresponds to one row in an evaluation dataset.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RubricBasedInstructionFollowingInstance {
+    /// Instance for RubricBasedInstructionFollowing metric.
+    #[prost(oneof = "rubric_based_instruction_following_instance::Instance", tags = "1")]
+    pub instance: ::core::option::Option<
+        rubric_based_instruction_following_instance::Instance,
+    >,
+}
+/// Nested message and enum types in `RubricBasedInstructionFollowingInstance`.
+pub mod rubric_based_instruction_following_instance {
+    /// Instance for RubricBasedInstructionFollowing metric.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Instance {
+        /// Required. Instance specified as a json string. String key-value pairs are
+        /// expected in the json_instance to render RubricBasedInstructionFollowing
+        /// prompt templates.
+        #[prost(string, tag = "1")]
+        JsonInstance(::prost::alloc::string::String),
+    }
+}
+/// Spec for RubricBasedInstructionFollowing metric - returns rubrics
+/// and verdicts corresponding to rubrics along with overall score.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct RubricBasedInstructionFollowingSpec {}
+/// Result for RubricBasedInstructionFollowing metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RubricBasedInstructionFollowingResult {
+    /// Output only. Overall score for the instruction following.
+    #[prost(float, optional, tag = "1")]
+    pub score: ::core::option::Option<f32>,
+    /// Output only. List of per rubric critique results.
+    #[prost(message, repeated, tag = "2")]
+    pub rubric_critique_results: ::prost::alloc::vec::Vec<RubricCritiqueResult>,
+}
+/// Rubric critique result.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RubricCritiqueResult {
+    /// Output only. Rubric to be evaluated.
+    #[prost(string, tag = "1")]
+    pub rubric: ::prost::alloc::string::String,
+    /// Output only. Verdict for the rubric - true if the rubric is met, false
+    /// otherwise.
+    #[prost(bool, tag = "2")]
+    pub verdict: bool,
+}
 /// Instances and metric spec for TrajectoryExactMatch metric.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrajectoryExactMatchInput {
@@ -12935,6 +13574,26 @@ pub struct ToolCall {
     #[prost(string, optional, tag = "2")]
     pub tool_input: ::core::option::Option<::prost::alloc::string::String>,
 }
+/// Map of placeholder in metric prompt template to contents of model input.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ContentMap {
+    /// Optional. Map of placeholder to contents.
+    #[prost(map = "string, message", tag = "1")]
+    pub values: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        content_map::Contents,
+    >,
+}
+/// Nested message and enum types in `ContentMap`.
+pub mod content_map {
+    /// Repeated Content type.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Contents {
+        /// Optional. Repeated contents.
+        #[prost(message, repeated, tag = "1")]
+        pub contents: ::prost::alloc::vec::Vec<super::Content>,
+    }
+}
 /// Pairwise prediction autorater preference.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -13001,7 +13660,7 @@ pub mod evaluation_service_client {
     }
     impl<T> EvaluationServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -13022,13 +13681,13 @@ pub mod evaluation_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             EvaluationServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -13202,6 +13861,918 @@ pub mod event {
                 "OUTPUT" => Some(Self::Output),
                 _ => None,
             }
+        }
+    }
+}
+/// A single example of a conversation with the model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ContentsExample {
+    /// Required. The content of the conversation with the model that resulted in
+    /// the expected output.
+    #[prost(message, repeated, tag = "1")]
+    pub contents: ::prost::alloc::vec::Vec<Content>,
+    /// Required. The expected output for the given `contents`. To represent
+    /// multi-step reasoning, this is a repeated field that contains the iterative
+    /// steps of the expected output.
+    #[prost(message, repeated, tag = "2")]
+    pub expected_contents: ::prost::alloc::vec::Vec<contents_example::ExpectedContent>,
+}
+/// Nested message and enum types in `ContentsExample`.
+pub mod contents_example {
+    /// A single step of the expected output.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ExpectedContent {
+        /// Required. A single step's content.
+        #[prost(message, optional, tag = "1")]
+        pub content: ::core::option::Option<super::Content>,
+    }
+}
+/// A ContentsExample to be used with GenerateContent alongside information
+/// required for storage and retrieval with Example Store.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StoredContentsExample {
+    /// Optional. (Optional) the search key used for retrieval. If not provided at
+    /// upload-time, the search key will be generated from
+    /// `contents_example.contents` using the method provided by
+    /// `search_key_generation_method`. The generated search key will be included
+    /// in retrieved examples.
+    #[prost(string, tag = "1")]
+    pub search_key: ::prost::alloc::string::String,
+    /// Required. The example to be used with GenerateContent.
+    #[prost(message, optional, tag = "2")]
+    pub contents_example: ::core::option::Option<ContentsExample>,
+    /// Optional. The method used to generate the search key from
+    /// `contents_example.contents`. This is ignored when uploading an example if
+    /// `search_key` is provided.
+    #[prost(message, optional, tag = "3")]
+    pub search_key_generation_method: ::core::option::Option<
+        stored_contents_example::SearchKeyGenerationMethod,
+    >,
+}
+/// Nested message and enum types in `StoredContentsExample`.
+pub mod stored_contents_example {
+    /// Options for generating the search key from the conversation history.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct SearchKeyGenerationMethod {
+        /// The method for generating the search key.
+        #[prost(oneof = "search_key_generation_method::Method", tags = "1")]
+        pub method: ::core::option::Option<search_key_generation_method::Method>,
+    }
+    /// Nested message and enum types in `SearchKeyGenerationMethod`.
+    pub mod search_key_generation_method {
+        /// Configuration for using only the last entry of the conversation history
+        /// as the search key.
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct LastEntry {}
+        /// The method for generating the search key.
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        pub enum Method {
+            /// Use only the last entry of the conversation history
+            /// (`contents_example.contents`) as the search key.
+            #[prost(message, tag = "1")]
+            LastEntry(LastEntry),
+        }
+    }
+}
+/// Represents an executable service to manage and retrieve examples.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExampleStore {
+    /// Identifier. The resource name of the ExampleStore. This is a unique
+    /// identifier. Format:
+    /// projects/{project}/locations/{location}/exampleStores/{example_store}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Display name of the ExampleStore.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. Description of the ExampleStore.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. Timestamp when this ExampleStore was created.
+    #[prost(message, optional, tag = "4")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when this ExampleStore was most recently updated.
+    #[prost(message, optional, tag = "5")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Required. Example Store config.
+    #[prost(message, optional, tag = "6")]
+    pub example_store_config: ::core::option::Option<ExampleStoreConfig>,
+}
+/// Configuration for the Example Store.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExampleStoreConfig {
+    /// Required. The embedding model to be used for vector embedding.
+    /// Immutable.
+    /// Supported models:
+    /// * "textembedding-gecko@003"
+    /// * "text-embedding-004"
+    /// * "text-embedding-005"
+    /// * "text-multilingual-embedding-002"
+    #[prost(string, tag = "1")]
+    pub vertex_embedding_model: ::prost::alloc::string::String,
+}
+/// The metadata filters that will be used to remove or fetch
+/// StoredContentsExamples. If a field is unspecified, then no filtering for that
+/// field will be applied.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StoredContentsExampleFilter {
+    /// Optional. The search keys for filtering. Only examples with one of the
+    /// specified search keys
+    /// ([StoredContentsExample.search_key][google.cloud.aiplatform.v1beta1.StoredContentsExample.search_key])
+    /// are eligible to be returned.
+    #[prost(string, repeated, tag = "1")]
+    pub search_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The function names for filtering.
+    #[prost(message, optional, tag = "2")]
+    pub function_names: ::core::option::Option<ExamplesArrayFilter>,
+}
+/// The metadata filters that will be used to search StoredContentsExamples.
+/// If a field is unspecified, then no filtering for that field will be applied
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StoredContentsExampleParameters {
+    /// Optional. The function names for filtering.
+    #[prost(message, optional, tag = "3")]
+    pub function_names: ::core::option::Option<ExamplesArrayFilter>,
+    /// The query to use to retrieve similar StoredContentsExamples.
+    #[prost(oneof = "stored_contents_example_parameters::Query", tags = "1, 2")]
+    pub query: ::core::option::Option<stored_contents_example_parameters::Query>,
+}
+/// Nested message and enum types in `StoredContentsExampleParameters`.
+pub mod stored_contents_example_parameters {
+    /// The chat history to use to generate the search key for retrieval.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ContentSearchKey {
+        /// Required. The conversation for generating a search key.
+        #[prost(message, repeated, tag = "1")]
+        pub contents: ::prost::alloc::vec::Vec<super::Content>,
+        /// Required. The method of generating a search key.
+        #[prost(message, optional, tag = "2")]
+        pub search_key_generation_method: ::core::option::Option<
+            super::stored_contents_example::SearchKeyGenerationMethod,
+        >,
+    }
+    /// The query to use to retrieve similar StoredContentsExamples.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Query {
+        /// The exact search key to use for retrieval.
+        #[prost(string, tag = "1")]
+        SearchKey(::prost::alloc::string::String),
+        /// The chat history to use to generate the search key for retrieval.
+        #[prost(message, tag = "2")]
+        ContentSearchKey(ContentSearchKey),
+    }
+}
+/// Filters for examples' array metadata fields. An array field is example
+/// metadata where multiple values are attributed to a single example.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExamplesArrayFilter {
+    /// Required. The values by which to filter examples.
+    #[prost(string, repeated, tag = "1")]
+    pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Required. The operator logic to use for filtering.
+    #[prost(enumeration = "examples_array_filter::ArrayOperator", tag = "2")]
+    pub array_operator: i32,
+}
+/// Nested message and enum types in `ExamplesArrayFilter`.
+pub mod examples_array_filter {
+    /// The logic to use for filtering.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ArrayOperator {
+        /// Not specified. This value should not be used.
+        Unspecified = 0,
+        /// The metadata array field in the example must contain at least one of the
+        /// values.
+        ContainsAny = 1,
+        /// The metadata array field in the example must contain all of the values.
+        ContainsAll = 2,
+    }
+    impl ArrayOperator {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ARRAY_OPERATOR_UNSPECIFIED",
+                Self::ContainsAny => "CONTAINS_ANY",
+                Self::ContainsAll => "CONTAINS_ALL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ARRAY_OPERATOR_UNSPECIFIED" => Some(Self::Unspecified),
+                "CONTAINS_ANY" => Some(Self::ContainsAny),
+                "CONTAINS_ALL" => Some(Self::ContainsAll),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request message for
+/// [ExampleStoreService.CreateExampleStore][google.cloud.aiplatform.v1beta1.ExampleStoreService.CreateExampleStore].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateExampleStoreRequest {
+    /// Required. The resource name of the Location to create the ExampleStore in.
+    /// Format:
+    /// `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The Example Store to be created.
+    #[prost(message, optional, tag = "2")]
+    pub example_store: ::core::option::Option<ExampleStore>,
+}
+/// Details of
+/// [ExampleStoreService.CreateExampleStore][google.cloud.aiplatform.v1beta1.ExampleStoreService.CreateExampleStore]
+/// operation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateExampleStoreOperationMetadata {
+    /// The common part of the operation metadata.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Request message for
+/// [ExampleStoreService.GetExampleStore][google.cloud.aiplatform.v1beta1.ExampleStoreService.GetExampleStore].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetExampleStoreRequest {
+    /// Required. The resource name of the ExampleStore.
+    /// Format:
+    /// `projects/{project}/locations/{location}/exampleStores/{example_store}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [ExampleStoreService.UpdateExampleStore][google.cloud.aiplatform.v1beta1.ExampleStoreService.UpdateExampleStore].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateExampleStoreRequest {
+    /// Required. The Example Store which replaces the resource on the server.
+    #[prost(message, optional, tag = "1")]
+    pub example_store: ::core::option::Option<ExampleStore>,
+    /// Optional. Mask specifying which fields to update.
+    /// Supported fields:
+    ///
+    ///     * `display_name`
+    ///     * `description`
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Details of
+/// [ExampleStoreService.UpdateExampleStore][google.cloud.aiplatform.v1beta1.ExampleStoreService.UpdateExampleStore]
+/// operation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateExampleStoreOperationMetadata {
+    /// The common part of the operation metadata.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Request message for
+/// [ExampleStoreService.DeleteExampleStore][google.cloud.aiplatform.v1beta1.ExampleStoreService.DeleteExampleStore].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteExampleStoreRequest {
+    /// Required. The resource name of the ExampleStore to be deleted.
+    /// Format:
+    /// `projects/{project}/locations/{location}/exampleStores/{example_store}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Details of
+/// [ExampleStoreService.DeleteExampleStore][google.cloud.aiplatform.v1beta1.ExampleStoreService.DeleteExampleStore]
+/// operation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteExampleStoreOperationMetadata {
+    /// The common part of the operation metadata.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Request message for
+/// [ExampleStoreService.ListExampleStores][google.cloud.aiplatform.v1beta1.ExampleStoreService.ListExampleStores].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListExampleStoresRequest {
+    /// Required. The resource name of the Location to list the ExampleStores from.
+    /// Format:
+    /// `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The standard list filter.
+    /// More detail in [AIP-160](<https://google.aip.dev/160>).
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. The standard list page size.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Optional. The standard list page token.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [ExampleStoreService.ListExampleStores][google.cloud.aiplatform.v1beta1.ExampleStoreService.ListExampleStores].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListExampleStoresResponse {
+    /// List of ExampleStore in the requested page.
+    #[prost(message, repeated, tag = "1")]
+    pub example_stores: ::prost::alloc::vec::Vec<ExampleStore>,
+    /// A token to retrieve the next page of results.
+    /// Pass to
+    /// [ListExampleStoresRequest.page_token][google.cloud.aiplatform.v1beta1.ListExampleStoresRequest.page_token]
+    /// to obtain that page.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// A single example to upload or read from the Example Store.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Example {
+    /// Optional. The display name for Example.
+    #[prost(string, tag = "1")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. Immutable. Unique identifier of an example. If not specified when
+    /// upserting new examples, the example_id will be generated.
+    #[prost(string, tag = "4")]
+    pub example_id: ::prost::alloc::string::String,
+    /// Output only. Timestamp when this Example was created.
+    #[prost(message, optional, tag = "7")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The type of the example. Each example type has a defined format
+    #[prost(oneof = "example::ExampleType", tags = "6")]
+    pub example_type: ::core::option::Option<example::ExampleType>,
+}
+/// Nested message and enum types in `Example`.
+pub mod example {
+    /// The type of the example. Each example type has a defined format
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ExampleType {
+        /// An example of chat history and its expected outcome to be used with
+        /// GenerateContent.
+        #[prost(message, tag = "6")]
+        StoredContentsExample(super::StoredContentsExample),
+    }
+}
+/// Request message for
+/// [ExampleStoreService.UpsertExamples][google.cloud.aiplatform.v1beta1.ExampleStoreService.UpsertExamples].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpsertExamplesRequest {
+    /// Required. The name of the ExampleStore resource that examples are added to
+    /// or updated in. Format:
+    /// `projects/{project}/locations/{location}/exampleStores/{example_store}`
+    #[prost(string, tag = "1")]
+    pub example_store: ::prost::alloc::string::String,
+    /// Required. A list of examples to be created/updated.
+    #[prost(message, repeated, tag = "2")]
+    pub examples: ::prost::alloc::vec::Vec<Example>,
+    /// Optional. A flag indicating whether an example can be overwritten if it
+    /// already exists. If False (default) and the example already exists, the
+    /// example will not be updated. This does not affect behavior if the example
+    /// does not exist already.
+    #[prost(bool, tag = "4")]
+    pub overwrite: bool,
+}
+/// Response message for
+/// [ExampleStoreService.UpsertExamples][google.cloud.aiplatform.v1beta1.ExampleStoreService.UpsertExamples].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpsertExamplesResponse {
+    /// A list of results for creating/updating. It's either a successfully
+    /// created/updated example or a status with an error message.
+    #[prost(message, repeated, tag = "1")]
+    pub results: ::prost::alloc::vec::Vec<upsert_examples_response::UpsertResult>,
+}
+/// Nested message and enum types in `UpsertExamplesResponse`.
+pub mod upsert_examples_response {
+    /// The result for creating/updating a single example.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct UpsertResult {
+        /// The outcome of creating/updating a single example. It's either the
+        /// example that was successfully created/updated or a status with an error
+        /// message.
+        #[prost(oneof = "upsert_result::Result", tags = "1, 2")]
+        pub result: ::core::option::Option<upsert_result::Result>,
+    }
+    /// Nested message and enum types in `UpsertResult`.
+    pub mod upsert_result {
+        /// The outcome of creating/updating a single example. It's either the
+        /// example that was successfully created/updated or a status with an error
+        /// message.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Result {
+            /// The example created/updated successfully.
+            #[prost(message, tag = "1")]
+            Example(super::super::Example),
+            /// The error message of the example that was not created/updated
+            /// successfully.
+            #[prost(message, tag = "2")]
+            Status(super::super::super::super::super::rpc::Status),
+        }
+    }
+}
+/// Request message for
+/// [ExampleStoreService.RemoveExamples][google.cloud.aiplatform.v1beta1.ExampleStoreService.RemoveExamples].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RemoveExamplesRequest {
+    /// Required. The name of the ExampleStore resource that the examples should be
+    /// removed from. Format:
+    /// `projects/{project}/locations/{location}/exampleStores/{example_store}`
+    #[prost(string, tag = "1")]
+    pub example_store: ::prost::alloc::string::String,
+    /// Optional. Example IDs to remove. If both metadata filters and Example IDs
+    /// are specified, the metadata filters will be applied to the specified
+    /// examples in order to identify which should be removed.
+    #[prost(string, repeated, tag = "6")]
+    pub example_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The metadata filters that will be used to select which examples should be
+    /// removed.
+    #[prost(oneof = "remove_examples_request::MetadataFilter", tags = "8")]
+    pub metadata_filter: ::core::option::Option<remove_examples_request::MetadataFilter>,
+}
+/// Nested message and enum types in `RemoveExamplesRequest`.
+pub mod remove_examples_request {
+    /// The metadata filters that will be used to select which examples should be
+    /// removed.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum MetadataFilter {
+        /// The metadata filters for StoredContentsExamples.
+        #[prost(message, tag = "8")]
+        StoredContentsExampleFilter(super::StoredContentsExampleFilter),
+    }
+}
+/// Response message for
+/// [ExampleStoreService.RemoveExamples][google.cloud.aiplatform.v1beta1.ExampleStoreService.RemoveExamples].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RemoveExamplesResponse {
+    /// The IDs for the removed examples.
+    #[prost(string, repeated, tag = "1")]
+    pub example_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request message for
+/// [ExampleStoreService.SearchExamples][google.cloud.aiplatform.v1beta1.ExampleStoreService.SearchExamples].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchExamplesRequest {
+    /// Required. The name of the ExampleStore resource that examples are retrieved
+    /// from. Format:
+    /// `projects/{project}/locations/{location}/exampleStores/{example_store}`
+    #[prost(string, tag = "1")]
+    pub example_store: ::prost::alloc::string::String,
+    /// Optional. The number of similar examples to return.
+    #[prost(int64, tag = "2")]
+    pub top_k: i64,
+    /// The parameters to search for similar examples. This includes which value to
+    /// use for similarity search and the filters that should be applied to the
+    /// search. Filters limit which examples are considered as candidates for
+    /// similarity search.
+    #[prost(oneof = "search_examples_request::Parameters", tags = "6")]
+    pub parameters: ::core::option::Option<search_examples_request::Parameters>,
+}
+/// Nested message and enum types in `SearchExamplesRequest`.
+pub mod search_examples_request {
+    /// The parameters to search for similar examples. This includes which value to
+    /// use for similarity search and the filters that should be applied to the
+    /// search. Filters limit which examples are considered as candidates for
+    /// similarity search.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Parameters {
+        /// The parameters of StoredContentsExamples to be searched.
+        #[prost(message, tag = "6")]
+        StoredContentsExampleParameters(super::StoredContentsExampleParameters),
+    }
+}
+/// Response message for
+/// [ExampleStoreService.SearchExamples][google.cloud.aiplatform.v1beta1.ExampleStoreService.SearchExamples].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchExamplesResponse {
+    /// The results of searching for similar examples.
+    #[prost(message, repeated, tag = "1")]
+    pub results: ::prost::alloc::vec::Vec<search_examples_response::SimilarExample>,
+}
+/// Nested message and enum types in `SearchExamplesResponse`.
+pub mod search_examples_response {
+    /// The result of the similar example.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SimilarExample {
+        /// The example that is similar to the searched query.
+        #[prost(message, optional, tag = "1")]
+        pub example: ::core::option::Option<super::Example>,
+        /// The similarity score of this example.
+        #[prost(float, tag = "2")]
+        pub similarity_score: f32,
+    }
+}
+/// Request message for
+/// [ExampleStoreService.FetchExamples][google.cloud.aiplatform.v1beta1.ExampleStoreService.FetchExamples].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchExamplesRequest {
+    /// Required. The name of the ExampleStore resource that the examples should be
+    /// fetched from. Format:
+    /// `projects/{project}/locations/{location}/exampleStores/{example_store}`
+    #[prost(string, tag = "1")]
+    pub example_store: ::prost::alloc::string::String,
+    /// Optional. The maximum number of examples to return. The service may return
+    /// fewer than this value. If unspecified, at most 100 examples will be
+    /// returned.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The
+    /// [next_page_token][google.cloud.aiplatform.v1beta1.FetchExamplesResponse.next_page_token]
+    /// value returned from a previous list
+    /// [ExampleStoreService.FetchExamplesResponse][] call.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Example IDs to fetch. If both metadata filters and Example IDs
+    /// are specified, then both ID and metadata filtering will be applied.
+    #[prost(string, repeated, tag = "6")]
+    pub example_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The example type-specific filters to be applied to the fetch operation.
+    #[prost(oneof = "fetch_examples_request::MetadataFilter", tags = "8")]
+    pub metadata_filter: ::core::option::Option<fetch_examples_request::MetadataFilter>,
+}
+/// Nested message and enum types in `FetchExamplesRequest`.
+pub mod fetch_examples_request {
+    /// The example type-specific filters to be applied to the fetch operation.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum MetadataFilter {
+        /// The metadata filters for StoredContentsExamples.
+        #[prost(message, tag = "8")]
+        StoredContentsExampleFilter(super::StoredContentsExampleFilter),
+    }
+}
+/// Response message for
+/// [ExampleStoreService.FetchExamples][google.cloud.aiplatform.v1beta1.ExampleStoreService.FetchExamples].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchExamplesResponse {
+    /// The examples in the Example Store that satisfy the metadata filters.
+    #[prost(message, repeated, tag = "1")]
+    pub examples: ::prost::alloc::vec::Vec<Example>,
+    /// A token, which can be sent as [FetchExamplesRequest.page_token][] to
+    /// retrieve the next page. Absence of this field indicates there are no
+    /// subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Generated client implementations.
+pub mod example_store_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// A service for managing and retrieving few-shot examples.
+    #[derive(Debug, Clone)]
+    pub struct ExampleStoreServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl ExampleStoreServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> ExampleStoreServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ExampleStoreServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            ExampleStoreServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Create an ExampleStore.
+        pub async fn create_example_store(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateExampleStoreRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.ExampleStoreService/CreateExampleStore",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.ExampleStoreService",
+                        "CreateExampleStore",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get an ExampleStore.
+        pub async fn get_example_store(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetExampleStoreRequest>,
+        ) -> std::result::Result<tonic::Response<super::ExampleStore>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.ExampleStoreService/GetExampleStore",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.ExampleStoreService",
+                        "GetExampleStore",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Update an ExampleStore.
+        pub async fn update_example_store(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateExampleStoreRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.ExampleStoreService/UpdateExampleStore",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.ExampleStoreService",
+                        "UpdateExampleStore",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Delete an ExampleStore.
+        pub async fn delete_example_store(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteExampleStoreRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.ExampleStoreService/DeleteExampleStore",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.ExampleStoreService",
+                        "DeleteExampleStore",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// List ExampleStores in a Location.
+        pub async fn list_example_stores(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListExampleStoresRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListExampleStoresResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.ExampleStoreService/ListExampleStores",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.ExampleStoreService",
+                        "ListExampleStores",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Create or update Examples in the Example Store.
+        pub async fn upsert_examples(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpsertExamplesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::UpsertExamplesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.ExampleStoreService/UpsertExamples",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.ExampleStoreService",
+                        "UpsertExamples",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Remove Examples from the Example Store.
+        pub async fn remove_examples(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RemoveExamplesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::RemoveExamplesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.ExampleStoreService/RemoveExamples",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.ExampleStoreService",
+                        "RemoveExamples",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Search for similar Examples for given selection criteria.
+        pub async fn search_examples(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SearchExamplesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SearchExamplesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.ExampleStoreService/SearchExamples",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.ExampleStoreService",
+                        "SearchExamples",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get Examples from the Example Store.
+        pub async fn fetch_examples(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FetchExamplesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FetchExamplesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.ExampleStoreService/FetchExamples",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.ExampleStoreService",
+                        "FetchExamples",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -13844,7 +15415,7 @@ pub mod extension_execution_service_client {
     }
     impl<T> ExtensionExecutionServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -13865,13 +15436,13 @@ pub mod extension_execution_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ExtensionExecutionServiceClient::new(
@@ -14106,7 +15677,7 @@ pub mod extension_registry_service_client {
     }
     impl<T> ExtensionRegistryServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -14127,13 +15698,13 @@ pub mod extension_registry_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ExtensionRegistryServiceClient::new(
@@ -16098,7 +17669,7 @@ pub mod feature_online_store_admin_service_client {
     }
     impl<T> FeatureOnlineStoreAdminServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -16119,13 +17690,13 @@ pub mod feature_online_store_admin_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             FeatureOnlineStoreAdminServiceClient::new(
@@ -17003,7 +18574,7 @@ pub mod featurestore_online_serving_service_client {
     }
     impl<T> FeaturestoreOnlineServingServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -17024,13 +18595,13 @@ pub mod featurestore_online_serving_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             FeaturestoreOnlineServingServiceClient::new(
@@ -17666,7 +19237,7 @@ pub mod feature_online_store_service_client {
     }
     impl<T> FeatureOnlineStoreServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -17687,13 +19258,13 @@ pub mod feature_online_store_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             FeatureOnlineStoreServiceClient::new(
@@ -19195,7 +20766,7 @@ pub mod featurestore_service_client {
     }
     impl<T> FeaturestoreServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -19216,13 +20787,13 @@ pub mod featurestore_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             FeaturestoreServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -20330,7 +21901,7 @@ pub mod feature_registry_service_client {
     }
     impl<T> FeatureRegistryServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -20351,13 +21922,13 @@ pub mod feature_registry_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             FeatureRegistryServiceClient::new(
@@ -21057,7 +22628,7 @@ pub mod gen_ai_cache_service_client {
     }
     impl<T> GenAiCacheServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -21078,13 +22649,13 @@ pub mod gen_ai_cache_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             GenAiCacheServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -21892,7 +23463,7 @@ pub mod gen_ai_tuning_service_client {
     }
     impl<T> GenAiTuningServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -21913,13 +23484,13 @@ pub mod gen_ai_tuning_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             GenAiTuningServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -24005,7 +25576,7 @@ pub mod index_endpoint_service_client {
     }
     impl<T> IndexEndpointServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -24026,13 +25597,13 @@ pub mod index_endpoint_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             IndexEndpointServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -24660,7 +26231,7 @@ pub mod index_service_client {
     }
     impl<T> IndexServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -24681,13 +26252,13 @@ pub mod index_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             IndexServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -26152,7 +27723,7 @@ pub mod job_service_client {
     }
     impl<T> JobServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -26173,13 +27744,13 @@ pub mod job_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             JobServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -27392,7 +28963,7 @@ pub mod llm_utility_service_client {
     }
     impl<T> LlmUtilityServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -27413,13 +28984,13 @@ pub mod llm_utility_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             LlmUtilityServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -27664,7 +29235,7 @@ pub mod match_service_client {
     }
     impl<T> MatchServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -27685,13 +29256,13 @@ pub mod match_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             MatchServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -28844,7 +30415,7 @@ pub mod metadata_service_client {
     }
     impl<T> MetadataServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -28865,13 +30436,13 @@ pub mod metadata_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             MetadataServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -30247,7 +31818,7 @@ pub mod migration_service_client {
     }
     impl<T> MigrationServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -30268,13 +31839,13 @@ pub mod migration_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             MigrationServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -31403,6 +32974,9 @@ pub struct DeployOperationMetadata {
     /// Output only. The project number where the deploy model request is sent.
     #[prost(int64, tag = "4")]
     pub project_number: i64,
+    /// Output only. The model id to be used at query time.
+    #[prost(string, tag = "5")]
+    pub model_id: ::prost::alloc::string::String,
 }
 /// Runtime operation information for
 /// [ModelGardenService.DeployPublisherModel][google.cloud.aiplatform.v1beta1.ModelGardenService.DeployPublisherModel].
@@ -31424,6 +32998,45 @@ pub struct DeployPublisherModelOperationMetadata {
     /// Output only. The project number where the deploy model request is sent.
     #[prost(int64, tag = "4")]
     pub project_number: i64,
+}
+/// Response message for
+/// [ModelGardenService.ExportPublisherModel][google.cloud.aiplatform.v1beta1.ModelGardenService.ExportPublisherModel].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportPublisherModelResponse {
+    /// The name of the PublisherModel resource.
+    /// Format:
+    /// `publishers/{publisher}/models/{publisher_model}@{version_id}`
+    #[prost(string, tag = "1")]
+    pub publisher_model: ::prost::alloc::string::String,
+    /// The destination uri of the model weights.
+    #[prost(string, tag = "2")]
+    pub destination_uri: ::prost::alloc::string::String,
+}
+/// Runtime operation information for
+/// [ModelGardenService.ExportPublisherModel][google.cloud.aiplatform.v1beta1.ModelGardenService.ExportPublisherModel].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportPublisherModelOperationMetadata {
+    /// The operation generic information.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Request message for
+/// [ModelGardenService.ExportPublisherModel][google.cloud.aiplatform.v1beta1.ModelGardenService.ExportPublisherModel].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportPublisherModelRequest {
+    /// Required. The name of the PublisherModel resource.
+    /// Format:
+    /// `publishers/{publisher}/models/{publisher_model}@{version_id}`, or
+    /// `publishers/hf-{hugging-face-author}/models/{hugging-face-model-name}@001`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The target where we are exporting the model weights to
+    #[prost(message, optional, tag = "2")]
+    pub destination: ::core::option::Option<GcsDestination>,
+    /// Required. The Location to export the model weights from
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "3")]
+    pub parent: ::prost::alloc::string::String,
 }
 /// View enumeration of PublisherModel.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -31494,7 +33107,7 @@ pub mod model_garden_service_client {
     }
     impl<T> ModelGardenServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -31515,13 +33128,13 @@ pub mod model_garden_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ModelGardenServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -31671,6 +33284,36 @@ pub mod model_garden_service_client {
                     GrpcMethod::new(
                         "google.cloud.aiplatform.v1beta1.ModelGardenService",
                         "DeployPublisherModel",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Exports a publisher model to a user provided Google Cloud Storage bucket.
+        pub async fn export_publisher_model(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ExportPublisherModelRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.ModelGardenService/ExportPublisherModel",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.ModelGardenService",
+                        "ExportPublisherModel",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -32825,7 +34468,7 @@ pub mod model_monitoring_service_client {
     }
     impl<T> ModelMonitoringServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -32846,13 +34489,13 @@ pub mod model_monitoring_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ModelMonitoringServiceClient::new(
@@ -33900,7 +35543,7 @@ pub mod model_service_client {
     }
     impl<T> ModelServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -33921,13 +35564,13 @@ pub mod model_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ModelServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -35760,7 +37403,7 @@ pub mod notebook_service_client {
     }
     impl<T> NotebookServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -35781,13 +37424,13 @@ pub mod notebook_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             NotebookServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -36787,7 +38430,7 @@ pub mod persistent_resource_service_client {
     }
     impl<T> PersistentResourceServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -36808,13 +38451,13 @@ pub mod persistent_resource_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             PersistentResourceServiceClient::new(
@@ -38591,7 +40234,7 @@ pub mod pipeline_service_client {
     }
     impl<T> PipelineServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -38612,13 +40255,13 @@ pub mod pipeline_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             PipelineServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -39766,7 +41409,7 @@ pub mod prediction_service_client {
     }
     impl<T> PredictionServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -39787,13 +41430,13 @@ pub mod prediction_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             PredictionServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -40324,13 +41967,23 @@ pub mod prediction_service_client {
 /// ReasoningEngine configurations
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReasoningEngineSpec {
-    /// Required. User provided package spec of the ReasoningEngine.
+    /// Optional. User provided package spec of the ReasoningEngine.
+    /// Ignored when users directly specify a deployment image through
+    /// `deployment_spec.first_party_image_override`, but keeping the
+    /// field_behavior to avoid introducing breaking changes.
     #[prost(message, optional, tag = "2")]
     pub package_spec: ::core::option::Option<reasoning_engine_spec::PackageSpec>,
+    /// Optional. The specification of a Reasoning Engine deployment.
+    #[prost(message, optional, tag = "4")]
+    pub deployment_spec: ::core::option::Option<reasoning_engine_spec::DeploymentSpec>,
     /// Optional. Declarations for object class methods in OpenAPI specification
     /// format.
     #[prost(message, repeated, tag = "3")]
     pub class_methods: ::prost::alloc::vec::Vec<::prost_types::Struct>,
+    /// Optional. The OSS agent framework used to develop the agent.
+    /// Currently supported values: "langchain", "langgraph", "ag2", "custom".
+    #[prost(string, tag = "5")]
+    pub agent_framework: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `ReasoningEngineSpec`.
 pub mod reasoning_engine_spec {
@@ -40351,6 +42004,22 @@ pub mod reasoning_engine_spec {
         #[prost(string, tag = "4")]
         pub python_version: ::prost::alloc::string::String,
     }
+    /// The specification of a Reasoning Engine deployment.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DeploymentSpec {
+        /// Optional. Environment variables to be set with the Reasoning Engine
+        /// deployment. The environment variables can be updated through the
+        /// UpdateReasoningEngine API.
+        #[prost(message, repeated, tag = "1")]
+        pub env: ::prost::alloc::vec::Vec<super::EnvVar>,
+        /// Optional. Environment variables where the value is a secret in Cloud
+        /// Secret Manager.
+        /// To use this feature, add 'Secret Manager Secret Accessor' role
+        /// (roles/secretmanager.secretAccessor) to AI Platform Reasoning Engine
+        /// Service Agent.
+        #[prost(message, repeated, tag = "2")]
+        pub secret_env: ::prost::alloc::vec::Vec<super::SecretEnvVar>,
+    }
 }
 /// ReasoningEngine provides a customizable runtime for models to determine
 /// which actions to take and in which order.
@@ -40365,7 +42034,7 @@ pub struct ReasoningEngine {
     /// Optional. The description of the ReasoningEngine.
     #[prost(string, tag = "7")]
     pub description: ::prost::alloc::string::String,
-    /// Required. Configurations of the ReasoningEngine
+    /// Optional. Configurations of the ReasoningEngine
     #[prost(message, optional, tag = "3")]
     pub spec: ::core::option::Option<ReasoningEngineSpec>,
     /// Output only. Timestamp when this ReasoningEngine was created.
@@ -40449,7 +42118,7 @@ pub mod reasoning_engine_execution_service_client {
     }
     impl<T> ReasoningEngineExecutionServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -40470,13 +42139,13 @@ pub mod reasoning_engine_execution_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ReasoningEngineExecutionServiceClient::new(
@@ -40671,6 +42340,11 @@ pub struct DeleteReasoningEngineRequest {
     /// `projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. If set to true, child resources of this reasoning engine will
+    /// also be deleted. Otherwise, the request will fail with FAILED_PRECONDITION
+    /// error when the reasoning engine has undeleted child resources.
+    #[prost(bool, tag = "2")]
+    pub force: bool,
 }
 /// Generated client implementations.
 pub mod reasoning_engine_service_client {
@@ -40701,7 +42375,7 @@ pub mod reasoning_engine_service_client {
     }
     impl<T> ReasoningEngineServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -40722,13 +42396,13 @@ pub mod reasoning_engine_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ReasoningEngineServiceClient::new(
@@ -41295,7 +42969,7 @@ pub mod schedule_service_client {
     }
     impl<T> ScheduleServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -41316,13 +42990,13 @@ pub mod schedule_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ScheduleServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -41571,6 +43245,584 @@ pub mod schedule_service_client {
         }
     }
 }
+/// A session contains a set of actions between users and Vertex agents.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Session {
+    /// Required. Identifier. The resource name of the session.
+    /// Format:
+    /// 'projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}/sessions/{session}'.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Timestamp when the session was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when the session was updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. The display name of the session.
+    #[prost(string, tag = "5")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. Session specific memory which stores key conversation points.
+    #[prost(message, optional, tag = "10")]
+    pub session_state: ::core::option::Option<::prost_types::Struct>,
+    /// Required. Immutable. String id provided by the user
+    #[prost(string, tag = "12")]
+    pub user_id: ::prost::alloc::string::String,
+}
+/// An event represents a message from either the user or agent.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SessionEvent {
+    /// Required. Identifier. The resource name of the event.
+    /// Format:`projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}/sessions/{session}/events/{event}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The name of the agent that sent the event, or user.
+    #[prost(string, tag = "3")]
+    pub author: ::prost::alloc::string::String,
+    /// Optional. Content of the event provided by the author.
+    #[prost(message, optional, tag = "4")]
+    pub content: ::core::option::Option<Content>,
+    /// Required. The invocation id of the event, multiple events can have the same
+    /// invocation id.
+    #[prost(string, tag = "5")]
+    pub invocation_id: ::prost::alloc::string::String,
+    /// Optional. Actions executed by the agent.
+    #[prost(message, optional, tag = "6")]
+    pub actions: ::core::option::Option<EventActions>,
+    /// Required. Timestamp when the event was created on client side.
+    #[prost(message, optional, tag = "8")]
+    pub timestamp: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Error code if the response is an error. Code varies by model.
+    #[prost(string, tag = "9")]
+    pub error_code: ::prost::alloc::string::String,
+    /// Optional. Error message if the response is an error.
+    #[prost(string, tag = "10")]
+    pub error_message: ::prost::alloc::string::String,
+    /// Optional. Metadata relating to this event.
+    #[prost(message, optional, tag = "11")]
+    pub event_metadata: ::core::option::Option<EventMetadata>,
+}
+/// Metadata relating to a LLM response event.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EventMetadata {
+    /// Optional. Metadata returned to client when grounding is enabled.
+    #[prost(message, optional, tag = "1")]
+    pub grounding_metadata: ::core::option::Option<GroundingMetadata>,
+    /// Optional. Indicates whether the text content is part of a unfinished text
+    /// stream. Only used for streaming mode and when the content is plain text.
+    #[prost(bool, tag = "2")]
+    pub partial: bool,
+    /// Optional. Indicates whether the response from the model is complete.
+    /// Only used for streaming mode.
+    #[prost(bool, tag = "3")]
+    pub turn_complete: bool,
+    /// Optional. Flag indicating that LLM was interrupted when generating the
+    /// content. Usually it's due to user interruption during a bidi streaming.
+    #[prost(bool, tag = "4")]
+    pub interrupted: bool,
+    /// Optional. Set of ids of the long running function calls.
+    /// Agent client will know from this field about which function call is long
+    /// running. Only valid for function call event.
+    #[prost(string, repeated, tag = "5")]
+    pub long_running_tool_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The branch of the event.
+    /// The format is like agent_1.agent_2.agent_3, where agent_1 is the parent of
+    /// agent_2, and agent_2 is the parent of agent_3.
+    /// Branch is used when multiple child agents shouldn't see their siblings'
+    /// conversation history.
+    #[prost(string, tag = "6")]
+    pub branch: ::prost::alloc::string::String,
+}
+/// Actions are parts of events that are executed by the agent.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EventActions {
+    /// Optional. If true, it won't call model to summarize function response.
+    /// Only used for function_response event.
+    #[prost(bool, tag = "1")]
+    pub skip_summarization: bool,
+    /// Optional. Indicates that the event is updating the state with the given
+    /// delta.
+    #[prost(message, optional, tag = "2")]
+    pub state_delta: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. Indicates that the event is updating an artifact. key is the
+    /// filename, value is the version.
+    #[prost(map = "string, int32", tag = "3")]
+    pub artifact_delta: ::std::collections::HashMap<::prost::alloc::string::String, i32>,
+    /// Optional. If set, the event transfers to the specified agent.
+    #[prost(bool, tag = "5")]
+    pub transfer_to_agent: bool,
+    /// Optional. The agent is escalating to a higher level agent.
+    #[prost(bool, tag = "6")]
+    pub escalate: bool,
+    /// Optional. Will only be set by a tool response indicating tool request euc.
+    /// Struct key is the function call id since one function call response (from
+    /// model) could correspond to multiple function calls. Struct value is the
+    /// required auth config, which can be another struct.
+    #[prost(message, optional, tag = "7")]
+    pub requested_auth_configs: ::core::option::Option<::prost_types::Struct>,
+}
+/// Request message for
+/// [SessionService.CreateSession][google.cloud.aiplatform.v1beta1.SessionService.CreateSession].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateSessionRequest {
+    /// Required. The resource name of the location to create the session in.
+    /// Format: `projects/{project}/locations/{location}` or
+    /// `projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The session to create.
+    #[prost(message, optional, tag = "2")]
+    pub session: ::core::option::Option<Session>,
+}
+/// Metadata associated with the
+/// [SessionService.CreateSession][google.cloud.aiplatform.v1beta1.SessionService.CreateSession]
+/// operation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateSessionOperationMetadata {
+    /// The common part of the operation metadata.
+    #[prost(message, optional, tag = "1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+/// Request message for
+/// [SessionService.GetSession][google.cloud.aiplatform.v1beta1.SessionService.GetSession].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetSessionRequest {
+    /// Required. The resource name of the session.
+    /// Format:
+    /// `projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}/sessions/{session}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [SessionService.ListSessions][google.cloud.aiplatform.v1beta1.SessionService.ListSessions].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSessionsRequest {
+    /// Required. The resource name of the location to list sessions from.
+    /// Format:
+    /// `projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of sessions to return. The service may return
+    /// fewer than this value. If unspecified, at most 100 sessions will be
+    /// returned.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The
+    /// [next_page_token][google.cloud.aiplatform.v1beta1.ListSessionsResponse.next_page_token]
+    /// value returned from a previous list
+    /// [SessionService.ListSessions][google.cloud.aiplatform.v1beta1.SessionService.ListSessions]
+    /// call.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. The standard list filter.
+    /// Supported fields:
+    ///     * `display_name`
+    ///
+    /// Example: `display_name=abc`.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. A comma-separated list of fields to order by, sorted in ascending
+    /// order. Use "desc" after a field name for descending. Supported fields:
+    ///    * `create_time`
+    ///    * `update_time`
+    ///
+    /// Example: `create_time desc`.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [SessionService.ListSessions][google.cloud.aiplatform.v1beta1.SessionService.ListSessions].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSessionsResponse {
+    /// A list of sessions matching the request.
+    #[prost(message, repeated, tag = "1")]
+    pub sessions: ::prost::alloc::vec::Vec<Session>,
+    /// A token, which can be sent as
+    /// [ListSessionsRequest.page_token][google.cloud.aiplatform.v1beta1.ListSessionsRequest.page_token]
+    /// to retrieve the next page. Absence of this field indicates there are no
+    /// subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [SessionService.UpdateSession][google.cloud.aiplatform.v1beta1.SessionService.UpdateSession].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateSessionRequest {
+    /// Required. The session to update.
+    /// Format:
+    /// `projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}/sessions/{session}`
+    #[prost(message, optional, tag = "1")]
+    pub session: ::core::option::Option<Session>,
+    /// Optional. Field mask is used to control which fields get updated. If the
+    /// mask is not present, all fields will be updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for
+/// [SessionService.DeleteSession][google.cloud.aiplatform.v1beta1.SessionService.DeleteSession].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteSessionRequest {
+    /// Required. The resource name of the session.
+    /// Format:
+    /// `projects/{project}/locations/{location}/sessions/{session}` or
+    /// `projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}/sessions/{session}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [SessionService.ListEvents][google.cloud.aiplatform.v1beta1.SessionService.ListEvents].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListEventsRequest {
+    /// Required. The resource name of the session to list events from.
+    /// Format:
+    /// `projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}/sessions/{session}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of events to return. The service may return
+    /// fewer than this value. If unspecified, at most 100 events will be returned.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The
+    /// [next_page_token][google.cloud.aiplatform.v1beta1.ListEventsResponse.next_page_token]
+    /// value returned from a previous list
+    /// [SessionService.ListEvents][google.cloud.aiplatform.v1beta1.SessionService.ListEvents]
+    /// call.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [SessionService.ListEvents][google.cloud.aiplatform.v1beta1.SessionService.ListEvents].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListEventsResponse {
+    /// A list of events matching the request.
+    #[prost(message, repeated, tag = "1")]
+    pub session_events: ::prost::alloc::vec::Vec<SessionEvent>,
+    /// A token, which can be sent as
+    /// [ListEventsRequest.page_token][google.cloud.aiplatform.v1beta1.ListEventsRequest.page_token]
+    /// to retrieve the next page. Absence of this field indicates there are no
+    /// subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [SessionService.AppendEvent][google.cloud.aiplatform.v1beta1.SessionService.AppendEvent].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AppendEventRequest {
+    /// Required. The resource name of the session to append event to.
+    /// Format:
+    /// `projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}/sessions/{session}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The event to append to the session.
+    #[prost(message, optional, tag = "2")]
+    pub event: ::core::option::Option<SessionEvent>,
+}
+/// Response message for
+/// [SessionService.AppendEvent][google.cloud.aiplatform.v1beta1.SessionService.AppendEvent].
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct AppendEventResponse {}
+/// Generated client implementations.
+pub mod session_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// The service that manages Vertex Session related resources.
+    #[derive(Debug, Clone)]
+    pub struct SessionServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl SessionServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> SessionServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> SessionServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            SessionServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Creates a new [Session][google.cloud.aiplatform.v1beta1.Session] in a given
+        /// project and location.
+        pub async fn create_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateSessionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.SessionService/CreateSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.SessionService",
+                        "CreateSession",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of the specific
+        /// [Session][google.cloud.aiplatform.v1beta1.Session].
+        pub async fn get_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetSessionRequest>,
+        ) -> std::result::Result<tonic::Response<super::Session>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.SessionService/GetSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.SessionService",
+                        "GetSession",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists [Sessions][google.cloud.aiplatform.v1beta1.Session] in a given
+        /// project and location.
+        pub async fn list_sessions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListSessionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListSessionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.SessionService/ListSessions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.SessionService",
+                        "ListSessions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the specific [Session][google.cloud.aiplatform.v1beta1.Session].
+        pub async fn update_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateSessionRequest>,
+        ) -> std::result::Result<tonic::Response<super::Session>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.SessionService/UpdateSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.SessionService",
+                        "UpdateSession",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes details of the specific
+        /// [Session][google.cloud.aiplatform.v1beta1.Session].
+        pub async fn delete_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteSessionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.SessionService/DeleteSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.SessionService",
+                        "DeleteSession",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists [Events][google.cloud.aiplatform.v1beta1.Event] in a given session.
+        pub async fn list_events(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListEventsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListEventsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.SessionService/ListEvents",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.SessionService",
+                        "ListEvents",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Appends an event to a given session.
+        pub async fn append_event(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AppendEventRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::AppendEventResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.SessionService/AppendEvent",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1beta1.SessionService",
+                        "AppendEvent",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// SpecialistPool represents customers' own workforce to work on their data
 /// labeling jobs. It includes a group of specialist managers and workers.
 /// Managers are responsible for managing the workers in this pool as well as
@@ -41743,7 +43995,7 @@ pub mod specialist_pool_service_client {
     }
     impl<T> SpecialistPoolServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -41764,13 +44016,13 @@ pub mod specialist_pool_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SpecialistPoolServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -43046,7 +45298,7 @@ pub mod tensorboard_service_client {
     }
     impl<T> TensorboardServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -43067,13 +45319,13 @@ pub mod tensorboard_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             TensorboardServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -44648,6 +46900,12 @@ pub struct ImportRagFilesConfig {
     pub partial_failure_sink: ::core::option::Option<
         import_rag_files_config::PartialFailureSink,
     >,
+    /// Optional. If provided, all successfully imported files and all partial
+    /// failures are written to the sink.
+    #[prost(oneof = "import_rag_files_config::ImportResultSink", tags = "14, 15")]
+    pub import_result_sink: ::core::option::Option<
+        import_rag_files_config::ImportResultSink,
+    >,
 }
 /// Nested message and enum types in `ImportRagFilesConfig`.
 pub mod import_rag_files_config {
@@ -44691,6 +46949,22 @@ pub mod import_rag_files_config {
         /// Deprecated. Prefer to use `import_result_bq_sink`.
         #[prost(message, tag = "12")]
         PartialFailureBigquerySink(super::BigQueryDestination),
+    }
+    /// Optional. If provided, all successfully imported files and all partial
+    /// failures are written to the sink.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ImportResultSink {
+        /// The Cloud Storage path to write import result to.
+        #[prost(message, tag = "14")]
+        ImportResultGcsSink(super::GcsDestination),
+        /// The BigQuery destination to write import result to. It should be a
+        /// bigquery table resource name (e.g.
+        /// "bq://projectId.bqDatasetId.bqTableId"). The dataset must exist. If the
+        /// table does not exist, it will be created with the expected schema. If the
+        /// table exists, the schema will be validated and data will be added to this
+        /// existing table.
+        #[prost(message, tag = "15")]
+        ImportResultBigquerySink(super::BigQueryDestination),
     }
 }
 /// Request message for
@@ -44977,7 +47251,7 @@ pub mod vertex_rag_data_service_client {
     }
     impl<T> VertexRagDataServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -44998,13 +47272,13 @@ pub mod vertex_rag_data_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             VertexRagDataServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -45662,7 +47936,7 @@ pub mod vertex_rag_service_client {
     }
     impl<T> VertexRagServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -45683,13 +47957,13 @@ pub mod vertex_rag_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             VertexRagServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -46173,7 +48447,7 @@ pub mod vizier_service_client {
     }
     impl<T> VizierServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -46194,13 +48468,13 @@ pub mod vizier_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             VizierServiceClient::new(InterceptedService::new(inner, interceptor))

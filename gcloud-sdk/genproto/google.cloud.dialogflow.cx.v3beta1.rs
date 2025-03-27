@@ -2097,7 +2097,7 @@ pub mod pages_client {
     }
     impl<T> PagesClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -2118,13 +2118,13 @@ pub mod pages_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             PagesClient::new(InterceptedService::new(inner, interceptor))
@@ -3082,7 +3082,7 @@ pub mod flows_client {
     }
     impl<T> FlowsClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -3103,13 +3103,13 @@ pub mod flows_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             FlowsClient::new(InterceptedService::new(inner, interceptor))
@@ -3795,7 +3795,7 @@ pub mod agent {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GitIntegrationSettings {
         /// The git settings to specific systems.
-        #[prost(oneof = "git_integration_settings::GitSettings", tags = "1")]
+        #[prost(oneof = "git_integration_settings::GitSettings", tags = "1, 2")]
         pub git_settings: ::core::option::Option<git_integration_settings::GitSettings>,
     }
     /// Nested message and enum types in `GitIntegrationSettings`.
@@ -3820,12 +3820,48 @@ pub mod agent {
             #[prost(string, repeated, tag = "5")]
             pub branches: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
+        /// Integration settings for a Git service hosted on Cloud Run.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct GitConnectionSettings {
+            /// Required. Display name for the repository
+            #[prost(string, tag = "1")]
+            pub display_name: ::prost::alloc::string::String,
+            /// Required. Git server reporitory URI.
+            #[prost(string, tag = "2")]
+            pub repository_uri: ::prost::alloc::string::String,
+            /// Required. Default branch of the repository.
+            #[prost(string, tag = "3")]
+            pub tracking_branch: ::prost::alloc::string::String,
+            /// Optional. List of branches configured for the repository.
+            #[prost(string, repeated, tag = "4")]
+            pub branches: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+            /// Support auth types.
+            #[prost(oneof = "git_connection_settings::GitAuthentication", tags = "5")]
+            pub git_authentication: ::core::option::Option<
+                git_connection_settings::GitAuthentication,
+            >,
+        }
+        /// Nested message and enum types in `GitConnectionSettings`.
+        pub mod git_connection_settings {
+            /// Support auth types.
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum GitAuthentication {
+                /// The name of the SecretManager secret version resource storing the
+                /// git access token.
+                /// Format: `projects/{project}/secrets/{secret}/versions/{version}`
+                #[prost(string, tag = "5")]
+                AccessTokenSecret(::prost::alloc::string::String),
+            }
+        }
         /// The git settings to specific systems.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum GitSettings {
             /// GitHub settings.
             #[prost(message, tag = "1")]
             GithubSettings(GithubSettings),
+            /// Git connection settings.
+            #[prost(message, tag = "2")]
+            GitConnectionSettings(GitConnectionSettings),
         }
     }
     /// Settings for Gen App Builder.
@@ -4282,7 +4318,7 @@ pub mod agents_client {
     }
     impl<T> AgentsClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -4303,13 +4339,13 @@ pub mod agents_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             AgentsClient::new(InterceptedService::new(inner, interceptor))
@@ -4823,7 +4859,7 @@ pub mod changelogs_client {
     }
     impl<T> ChangelogsClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -4844,13 +4880,13 @@ pub mod changelogs_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ChangelogsClient::new(InterceptedService::new(inner, interceptor))
@@ -5562,7 +5598,7 @@ pub mod intents_client {
     }
     impl<T> IntentsClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -5583,13 +5619,13 @@ pub mod intents_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             IntentsClient::new(InterceptedService::new(inner, interceptor))
@@ -6189,7 +6225,7 @@ pub mod examples_client {
     }
     impl<T> ExamplesClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -6210,13 +6246,13 @@ pub mod examples_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ExamplesClient::new(InterceptedService::new(inner, interceptor))
@@ -7038,7 +7074,7 @@ pub mod entity_types_client {
     }
     impl<T> EntityTypesClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -7059,13 +7095,13 @@ pub mod entity_types_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             EntityTypesClient::new(InterceptedService::new(inner, interceptor))
@@ -7524,7 +7560,7 @@ pub mod session_entity_types_client {
     }
     impl<T> SessionEntityTypesClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -7545,13 +7581,13 @@ pub mod session_entity_types_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SessionEntityTypesClient::new(InterceptedService::new(inner, interceptor))
@@ -9252,7 +9288,7 @@ pub mod sessions_client {
     }
     impl<T> SessionsClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -9273,13 +9309,13 @@ pub mod sessions_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SessionsClient::new(InterceptedService::new(inner, interceptor))
@@ -9725,7 +9761,7 @@ pub mod transition_route_groups_client {
     }
     impl<T> TransitionRouteGroupsClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -9746,13 +9782,13 @@ pub mod transition_route_groups_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             TransitionRouteGroupsClient::new(InterceptedService::new(inner, interceptor))
@@ -10930,7 +10966,7 @@ pub mod test_cases_client {
     }
     impl<T> TestCasesClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -10951,13 +10987,13 @@ pub mod test_cases_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             TestCasesClient::new(InterceptedService::new(inner, interceptor))
@@ -11488,7 +11524,7 @@ pub mod webhook {
             /// Required. The client ID provided by the 3rd party platform.
             #[prost(string, tag = "1")]
             pub client_id: ::prost::alloc::string::String,
-            /// Required. The client secret provided by the 3rd party platform.
+            /// Optional. The client secret provided by the 3rd party platform.
             #[prost(string, tag = "2")]
             pub client_secret: ::prost::alloc::string::String,
             /// Required. The token endpoint provided by the 3rd party platform to
@@ -12242,7 +12278,7 @@ pub mod webhooks_client {
     }
     impl<T> WebhooksClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -12263,13 +12299,13 @@ pub mod webhooks_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             WebhooksClient::new(InterceptedService::new(inner, interceptor))
@@ -12821,7 +12857,7 @@ pub mod environments_client {
     }
     impl<T> EnvironmentsClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -12842,13 +12878,13 @@ pub mod environments_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             EnvironmentsClient::new(InterceptedService::new(inner, interceptor))
@@ -13565,7 +13601,7 @@ pub mod conversation_history_client {
     }
     impl<T> ConversationHistoryClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -13586,13 +13622,13 @@ pub mod conversation_history_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ConversationHistoryClient::new(InterceptedService::new(inner, interceptor))
@@ -13881,7 +13917,7 @@ pub mod deployments_client {
     }
     impl<T> DeploymentsClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -13902,13 +13938,13 @@ pub mod deployments_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             DeploymentsClient::new(InterceptedService::new(inner, interceptor))
@@ -14564,7 +14600,7 @@ pub mod experiments_client {
     }
     impl<T> ExperimentsClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -14585,13 +14621,13 @@ pub mod experiments_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ExperimentsClient::new(InterceptedService::new(inner, interceptor))
@@ -15039,7 +15075,7 @@ pub mod generators_client {
     }
     impl<T> GeneratorsClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -15060,13 +15096,13 @@ pub mod generators_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             GeneratorsClient::new(InterceptedService::new(inner, interceptor))
@@ -15668,7 +15704,7 @@ pub mod playbooks_client {
     }
     impl<T> PlaybooksClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -15689,13 +15725,13 @@ pub mod playbooks_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             PlaybooksClient::new(InterceptedService::new(inner, interceptor))
@@ -16467,7 +16503,7 @@ pub mod security_settings_service_client {
     }
     impl<T> SecuritySettingsServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -16488,13 +16524,13 @@ pub mod security_settings_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             SecuritySettingsServiceClient::new(
@@ -16898,7 +16934,7 @@ pub struct Tool {
     #[prost(enumeration = "tool::ToolType", tag = "12")]
     pub tool_type: i32,
     /// Specification of the Tool.
-    #[prost(oneof = "tool::Specification", tags = "4, 8, 11, 13")]
+    #[prost(oneof = "tool::Specification", tags = "4, 8, 11, 13, 15")]
     pub specification: ::core::option::Option<tool::Specification>,
 }
 /// Nested message and enum types in `Tool`.
@@ -16973,6 +17009,127 @@ pub mod tool {
         #[prost(message, optional, tag = "2")]
         pub output_schema: ::core::option::Option<::prost_types::Struct>,
     }
+    /// A ConnectorTool enabling using Integration Connectors Connections as tools.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ConnectorTool {
+        /// Required. The full resource name of the referenced Integration Connectors
+        /// Connection. Format: `projects/*/locations/*/connections/*`
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// Required. Actions for the tool to use.
+        #[prost(message, repeated, tag = "2")]
+        pub actions: ::prost::alloc::vec::Vec<connector_tool::Action>,
+        /// Optional. Integration Connectors end-user authentication configuration.
+        /// If configured, the end-user authentication fields will be passed in the
+        /// Integration Connectors API request and override the admin, default
+        /// authentication configured for the Connection.
+        /// **Note**: The Connection must have authentication override enabled in
+        /// order to specify an EUC configuration here - otherwise, the ConnectorTool
+        /// creation will fail. See:
+        /// <https://cloud.google.com/application-integration/docs/configure-connectors-task#configure-authentication-override>
+        #[prost(message, optional, tag = "3")]
+        pub end_user_auth_config: ::core::option::Option<EndUserAuthConfig>,
+    }
+    /// Nested message and enum types in `ConnectorTool`.
+    pub mod connector_tool {
+        /// Configuration of a Connection operation for the tool to use.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Action {
+            /// Optional. Entity fields to use as inputs for the operation.
+            /// If no fields are specified, all fields of the Entity will be used.
+            #[prost(string, repeated, tag = "2")]
+            pub input_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+            /// Optional. Entity fields to return from the operation.
+            /// If no fields are specified, all fields of the Entity will be returned.
+            #[prost(string, repeated, tag = "3")]
+            pub output_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+            /// Required. Specification for an action to configure for the tool to use.
+            #[prost(oneof = "action::ActionSpec", tags = "4, 5")]
+            pub action_spec: ::core::option::Option<action::ActionSpec>,
+        }
+        /// Nested message and enum types in `Action`.
+        pub mod action {
+            /// Entity CRUD operation specification.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct EntityOperation {
+                /// Required. ID of the entity.
+                #[prost(string, tag = "1")]
+                pub entity_id: ::prost::alloc::string::String,
+                /// Required. Operation to perform on the entity.
+                #[prost(enumeration = "entity_operation::OperationType", tag = "2")]
+                pub operation: i32,
+            }
+            /// Nested message and enum types in `EntityOperation`.
+            pub mod entity_operation {
+                /// The operation to perform on the entity.
+                #[derive(
+                    Clone,
+                    Copy,
+                    Debug,
+                    PartialEq,
+                    Eq,
+                    Hash,
+                    PartialOrd,
+                    Ord,
+                    ::prost::Enumeration
+                )]
+                #[repr(i32)]
+                pub enum OperationType {
+                    /// Operation type unspecified. Invalid, ConnectorTool create/update
+                    /// will fail.
+                    Unspecified = 0,
+                    /// List operation.
+                    List = 1,
+                    /// Get operation.
+                    Get = 2,
+                    /// Create operation.
+                    Create = 3,
+                    /// Update operation.
+                    Update = 4,
+                    /// Delete operation.
+                    Delete = 5,
+                }
+                impl OperationType {
+                    /// String value of the enum field names used in the ProtoBuf definition.
+                    ///
+                    /// The values are not transformed in any way and thus are considered stable
+                    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                    pub fn as_str_name(&self) -> &'static str {
+                        match self {
+                            Self::Unspecified => "OPERATION_TYPE_UNSPECIFIED",
+                            Self::List => "LIST",
+                            Self::Get => "GET",
+                            Self::Create => "CREATE",
+                            Self::Update => "UPDATE",
+                            Self::Delete => "DELETE",
+                        }
+                    }
+                    /// Creates an enum from field names used in the ProtoBuf definition.
+                    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                        match value {
+                            "OPERATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                            "LIST" => Some(Self::List),
+                            "GET" => Some(Self::Get),
+                            "CREATE" => Some(Self::Create),
+                            "UPDATE" => Some(Self::Update),
+                            "DELETE" => Some(Self::Delete),
+                            _ => None,
+                        }
+                    }
+                }
+            }
+            /// Required. Specification for an action to configure for the tool to use.
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum ActionSpec {
+                /// ID of a Connection action for the tool to use.
+                #[prost(string, tag = "4")]
+                ConnectionActionId(::prost::alloc::string::String),
+                /// Entity operation configuration for the tool to use.
+                #[prost(message, tag = "5")]
+                EntityOperation(EntityOperation),
+            }
+        }
+    }
     /// Authentication information required for API calls
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Authentication {
@@ -16990,7 +17147,8 @@ pub mod tool {
             /// KEY>", "X-Api-Key" would be the parameter name.
             #[prost(string, tag = "1")]
             pub key_name: ::prost::alloc::string::String,
-            /// Required. The API key.
+            /// Optional. The API key. If the `secret_version_for_api_key` field is
+            /// set, this field will be ignored.
             #[prost(string, tag = "2")]
             pub api_key: ::prost::alloc::string::String,
             /// Required. Key location in the request.
@@ -17006,7 +17164,9 @@ pub mod tool {
             /// Required. The client ID from the OAuth provider.
             #[prost(string, tag = "2")]
             pub client_id: ::prost::alloc::string::String,
-            /// Required. The client secret from the OAuth provider.
+            /// Optional. The client secret from the OAuth provider. If the
+            /// `secret_version_for_client_secret` field is set, this field will be
+            /// ignored.
             #[prost(string, tag = "3")]
             pub client_secret: ::prost::alloc::string::String,
             /// Required. The token endpoint in the OAuth provider to exchange for an
@@ -17134,7 +17294,7 @@ pub mod tool {
         /// Config for authentication using bearer token.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct BearerTokenConfig {
-            /// Required. The text token appended to the text `Bearer` to the request
+            /// Optional. The text token appended to the text `Bearer` to the request
             /// Authorization header.
             /// [Session parameters
             /// reference](<https://cloud.google.com/dialogflow/cx/docs/concept/parameter#session-ref>)
@@ -17227,11 +17387,14 @@ pub mod tool {
             /// is empty or unspecified, Dialogflow will use Google's default trust
             /// store to verify certificates. N.B. Make sure the HTTPS server
             /// certificates are signed with "subject alt name". For instance a
-            /// certificate can be self-signed using the following command,
+            /// certificate can be self-signed using the following command:
+            ///
+            /// ```
             ///     openssl x509 -req -days 200 -in example.com.csr \
             ///       -signkey example.com.key \
             ///       -out example.com.crt \
             ///       -extfile <(printf "\nsubjectAltName='DNS:www.example.com'")
+            /// ```
             #[prost(bytes = "vec", tag = "2")]
             pub cert: ::prost::alloc::vec::Vec<u8>,
         }
@@ -17247,6 +17410,57 @@ pub mod tool {
         /// of the agent.
         #[prost(string, tag = "1")]
         pub service: ::prost::alloc::string::String,
+    }
+    /// End-user authentication configuration used for Connection calls.
+    /// The field values can either be hardcoded authentication values or the names
+    /// of [session
+    /// parameters](<https://cloud.google.com/dialogflow/cx/docs/concept/parameter#session-ref>)
+    /// or [request
+    /// parameters](<https://cloud.google.com/dialogflow/cx/docs/concept/parameter#request-scoped>).
+    ///
+    /// If parameter names are provided, then those parameters can be used to pass
+    /// the authentication values dynamically, through `$session.params.param-id`
+    /// or `$request.payload.param-id`.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct EndUserAuthConfig {
+        /// The end-user authentication configuration.
+        #[prost(oneof = "end_user_auth_config::EndUserAuthConfig", tags = "2, 3")]
+        pub end_user_auth_config: ::core::option::Option<
+            end_user_auth_config::EndUserAuthConfig,
+        >,
+    }
+    /// Nested message and enum types in `EndUserAuthConfig`.
+    pub mod end_user_auth_config {
+        /// Oauth 2.0 Authorization Code authentication configuration.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Oauth2AuthCodeConfig {
+            /// Required. Oauth token value or parameter name to pass it through.
+            #[prost(string, tag = "1")]
+            pub oauth_token: ::prost::alloc::string::String,
+        }
+        /// JWT Profile Oauth 2.0 Authorization Grant authentication configuration.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Oauth2JwtBearerConfig {
+            /// Required. Issuer value or parameter name to pass it through.
+            #[prost(string, tag = "1")]
+            pub issuer: ::prost::alloc::string::String,
+            /// Required. Subject value or parameter name to pass it through.
+            #[prost(string, tag = "2")]
+            pub subject: ::prost::alloc::string::String,
+            /// Required. Client key value or parameter name to pass it through.
+            #[prost(string, tag = "3")]
+            pub client_key: ::prost::alloc::string::String,
+        }
+        /// The end-user authentication configuration.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum EndUserAuthConfig {
+            /// Oauth 2.0 Authorization Code authentication.
+            #[prost(message, tag = "2")]
+            Oauth2AuthCodeConfig(Oauth2AuthCodeConfig),
+            /// JWT Profile Oauth 2.0 Authorization Grant authentication.
+            #[prost(message, tag = "3")]
+            Oauth2JwtBearerConfig(Oauth2JwtBearerConfig),
+        }
     }
     /// Represents the type of the tool.
     #[derive(
@@ -17306,7 +17520,123 @@ pub mod tool {
         /// Client side executed function specification.
         #[prost(message, tag = "13")]
         FunctionSpec(FunctionTool),
+        /// Integration connectors tool specification.
+        #[prost(message, tag = "15")]
+        ConnectorSpec(ConnectorTool),
     }
+}
+/// The request message for
+/// [Tools.ListToolVersions][google.cloud.dialogflow.cx.v3beta1.Tools.ListToolVersions].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListToolVersionsRequest {
+    /// Required. The parent of the tool versions.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of items to return in a single page. By
+    /// default 100 and at most 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The next_page_token value returned from a previous list request.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The response message for
+/// [Tools.ListToolVersions][google.cloud.dialogflow.cx.v3beta1.Tools.ListToolVersions].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListToolVersionsResponse {
+    /// The list of tool versions. There will be a maximum number of items
+    /// returned based on the page_size field in the request.
+    #[prost(message, repeated, tag = "1")]
+    pub tool_versions: ::prost::alloc::vec::Vec<ToolVersion>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The request message for
+/// [Tools.CreateToolVersion][google.cloud.dialogflow.cx.v3beta1.Tools.CreateToolVersion].
+/// The request message for
+/// [Tools.CreateToolVersion][google.cloud.dialogflow.cx.v3beta1.Tools.CreateToolVersion].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateToolVersionRequest {
+    /// Required. The tool to create a version for.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The tool version to create.
+    #[prost(message, optional, tag = "2")]
+    pub tool_version: ::core::option::Option<ToolVersion>,
+}
+/// The request message for
+/// [Tools.GetToolVersion][google.cloud.dialogflow.cx.v3beta1.Tools.GetToolVersion].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetToolVersionRequest {
+    /// Required. The name of the tool version.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>/versions/<VersionID>`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request message for
+/// [Tools.DeleteToolVersion][google.cloud.dialogflow.cx.v3beta1.Tools.DeleteToolVersion].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteToolVersionRequest {
+    /// Required. The name of the tool version to delete.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>/versions/<VersionID>`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. This field has no effect for Tools not being used.
+    /// For Tools that are used:
+    ///
+    /// *  If `force` is set to false, an error will be returned with message
+    ///     indicating the referenced resources.
+    /// *  If `force` is set to true, Dialogflow will remove the tool, as well
+    ///     as any references to the tool.
+    #[prost(bool, tag = "2")]
+    pub force: bool,
+}
+/// The request message for
+/// [Tools.RestoreToolVersion][google.cloud.dialogflow.cx.v3beta1.Tools.RestoreToolVersion].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RestoreToolVersionRequest {
+    /// Required. The name of the tool version.
+    /// Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>/versions/<VersionID>`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The response message for
+/// [Tools.RestoreToolVersion][google.cloud.dialogflow.cx.v3beta1.Tools.RestoreToolVersion].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RestoreToolVersionResponse {
+    /// The updated tool.
+    #[prost(message, optional, tag = "2")]
+    pub tool: ::core::option::Option<Tool>,
+}
+/// Tool version is a snapshot of the tool at certain timestamp.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ToolVersion {
+    /// Identifier. The unique identifier of the tool version.
+    ///   Format:
+    /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/tools/<ToolID>/versions/<VersionID>`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The display name of the tool version.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Required. Snapshot of the tool to be associated with this version.
+    #[prost(message, optional, tag = "3")]
+    pub tool: ::core::option::Option<Tool>,
+    /// Output only. Last time the tool version was created or modified.
+    #[prost(message, optional, tag = "4")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Last time the tool version was created or modified.
+    #[prost(message, optional, tag = "5")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Metadata returned for the
 /// [Tools.ExportTools][google.cloud.dialogflow.cx.v3beta1.Tools.ExportTools]
@@ -17342,7 +17672,7 @@ pub mod tools_client {
     }
     impl<T> ToolsClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -17363,13 +17693,13 @@ pub mod tools_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ToolsClient::new(InterceptedService::new(inner, interceptor))
@@ -17571,6 +17901,152 @@ pub mod tools_client {
                     GrpcMethod::new(
                         "google.cloud.dialogflow.cx.v3beta1.Tools",
                         "DeleteTool",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// List versions of the specified
+        /// [Tool][google.cloud.dialogflow.cx.v3beta1.Tool].
+        pub async fn list_tool_versions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListToolVersionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListToolVersionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.cx.v3beta1.Tools/ListToolVersions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Tools",
+                        "ListToolVersions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a version for the specified
+        /// [Tool][google.cloud.dialogflow.cx.v3beta1.Tool].
+        pub async fn create_tool_version(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateToolVersionRequest>,
+        ) -> std::result::Result<tonic::Response<super::ToolVersion>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.cx.v3beta1.Tools/CreateToolVersion",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Tools",
+                        "CreateToolVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves the specified version of the
+        /// [Tool][google.cloud.dialogflow.cx.v3beta1.Tool].
+        pub async fn get_tool_version(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetToolVersionRequest>,
+        ) -> std::result::Result<tonic::Response<super::ToolVersion>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.cx.v3beta1.Tools/GetToolVersion",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Tools",
+                        "GetToolVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes the specified version of the
+        /// [Tool][google.cloud.dialogflow.cx.v3beta1.Tool].
+        pub async fn delete_tool_version(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteToolVersionRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.cx.v3beta1.Tools/DeleteToolVersion",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Tools",
+                        "DeleteToolVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Retrieves the specified version of the Tool and stores it as the
+        /// current tool draft, returning the tool with resources updated.
+        pub async fn restore_tool_version(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RestoreToolVersionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::RestoreToolVersionResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.cx.v3beta1.Tools/RestoreToolVersion",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dialogflow.cx.v3beta1.Tools",
+                        "RestoreToolVersion",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -17826,7 +18302,7 @@ pub mod versions_client {
     }
     impl<T> VersionsClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -17847,13 +18323,13 @@ pub mod versions_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             VersionsClient::new(InterceptedService::new(inner, interceptor))

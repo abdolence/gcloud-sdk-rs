@@ -154,6 +154,65 @@ pub struct AuthorizationInfo {
     pub resource_attributes: ::core::option::Option<
         super::super::rpc::context::attribute_context::Resource,
     >,
+    /// The type of the permission that was checked. For data access audit logs
+    /// this corresponds with the permission type that must be enabled in the
+    /// project/folder/organization IAM policy in order for the log to be written.
+    #[prost(enumeration = "authorization_info::PermissionType", tag = "7")]
+    pub permission_type: i32,
+}
+/// Nested message and enum types in `AuthorizationInfo`.
+pub mod authorization_info {
+    /// The list of valid permission types that can be checked.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PermissionType {
+        /// Default. Should not be used.
+        Unspecified = 0,
+        /// Permissions that gate reading resource configuration or metadata.
+        AdminRead = 1,
+        /// Permissions that gate modification of resource configuration or metadata.
+        AdminWrite = 2,
+        /// Permissions that gate reading user-provided data.
+        DataRead = 3,
+        /// Permissions that gate writing user-provided data.
+        DataWrite = 4,
+    }
+    impl PermissionType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PERMISSION_TYPE_UNSPECIFIED",
+                Self::AdminRead => "ADMIN_READ",
+                Self::AdminWrite => "ADMIN_WRITE",
+                Self::DataRead => "DATA_READ",
+                Self::DataWrite => "DATA_WRITE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PERMISSION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ADMIN_READ" => Some(Self::AdminRead),
+                "ADMIN_WRITE" => Some(Self::AdminWrite),
+                "DATA_READ" => Some(Self::DataRead),
+                "DATA_WRITE" => Some(Self::DataWrite),
+                _ => None,
+            }
+        }
+    }
 }
 /// Metadata about the request.
 #[derive(Clone, PartialEq, ::prost::Message)]
