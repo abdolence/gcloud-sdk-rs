@@ -740,7 +740,7 @@ pub mod annotation_service_v1_client {
     }
     impl<T> AnnotationServiceV1Client<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -761,13 +761,13 @@ pub mod annotation_service_v1_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             AnnotationServiceV1Client::new(InterceptedService::new(inner, interceptor))
@@ -1401,7 +1401,7 @@ pub mod dataset_service_v1_client {
     }
     impl<T> DatasetServiceV1Client<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -1422,13 +1422,13 @@ pub mod dataset_service_v1_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             DatasetServiceV1Client::new(InterceptedService::new(inner, interceptor))
@@ -2572,7 +2572,7 @@ pub mod streaming_read_service_client {
     }
     impl<T> StreamingReadServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -2593,13 +2593,13 @@ pub mod streaming_read_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             StreamingReadServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -2697,7 +2697,7 @@ pub mod read_service_v1_client {
     }
     impl<T> ReadServiceV1Client<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -2718,13 +2718,13 @@ pub mod read_service_v1_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ReadServiceV1Client::new(InterceptedService::new(inner, interceptor))
@@ -3304,7 +3304,7 @@ pub mod reference_service_v1_client {
     }
     impl<T> ReferenceServiceV1Client<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -3325,13 +3325,13 @@ pub mod reference_service_v1_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ReferenceServiceV1Client::new(InterceptedService::new(inner, interceptor))
@@ -4329,7 +4329,7 @@ pub mod streaming_variant_service_client {
     }
     impl<T> StreamingVariantServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -4350,13 +4350,13 @@ pub mod streaming_variant_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             StreamingVariantServiceClient::new(
@@ -4455,7 +4455,7 @@ pub mod variant_service_v1_client {
     }
     impl<T> VariantServiceV1Client<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -4476,13 +4476,13 @@ pub mod variant_service_v1_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             VariantServiceV1Client::new(InterceptedService::new(inner, interceptor))

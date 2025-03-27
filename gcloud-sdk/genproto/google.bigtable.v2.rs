@@ -1141,64 +1141,126 @@ pub struct ProtoRows {
     #[prost(message, repeated, tag = "2")]
     pub values: ::prost::alloc::vec::Vec<Value>,
 }
-/// Batch of serialized ProtoRows.
+/// A part of a serialized `ProtoRows` message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProtoRowsBatch {
-    /// Merge partial results by concatenating these bytes, then parsing the
-    /// overall value as a `ProtoRows` message.
+    /// Part of a serialized `ProtoRows` message.
+    /// A complete, parseable ProtoRows message is constructed by
+    /// concatenating `batch_data` from multiple `ProtoRowsBatch` messages. The
+    /// `PartialResultSet` that contains the last part has `complete_batch` set to
+    /// `true`.
     #[prost(bytes = "vec", tag = "1")]
     pub batch_data: ::prost::alloc::vec::Vec<u8>,
 }
 /// A partial result set from the streaming query API.
-/// CBT client will buffer partial_rows from result_sets until it gets a
-/// resumption_token.
+/// Cloud Bigtable clients buffer partial results received in this message until
+/// a `resume_token` is received.
+///
+/// The pseudocode below describes how to buffer and parse a stream of
+/// `PartialResultSet` messages.
+///
+/// Having:
+/// - queue of row results waiting to be returned `queue`
+/// - extensible buffer of bytes `buffer`
+/// - a place to keep track of the most recent `resume_token`
+/// for each PartialResultSet `p` received {
+///    if p.reset {
+///      ensure `queue` is empty
+///      ensure `buffer` is empty
+///    }
+///    if p.estimated_batch_size != 0 {
+///      (optional) ensure `buffer` is sized to at least `p.estimated_batch_size`
+///    }
+///    if `p.proto_rows_batch` is set {
+///      append `p.proto_rows_batch.bytes` to `buffer`
+///    }
+///    if p.batch_checksum is set and `buffer` is not empty {
+///      validate the checksum matches the contents of `buffer`
+///      (see comments on `batch_checksum`)
+///      parse `buffer` as `ProtoRows` message, clearing `buffer`
+///      add parsed rows to end of `queue`
+///    }
+///    if p.resume_token is set {
+///      release results in `queue`
+///      save `p.resume_token` in `resume_token`
+///    }
+/// }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartialResultSet {
+    /// CRC32C checksum of concatenated `partial_rows` data for the current batch.
+    ///
+    /// When present, the buffered data from `partial_rows` forms a complete
+    /// parseable message of the appropriate type.
+    ///
+    /// The client should mark the end of a parseable message and prepare to
+    /// receive a new one starting from the next `PartialResultSet` message.
+    /// Clients must verify the checksum of the serialized batch before yielding it
+    /// to the caller.
+    ///
+    /// This does NOT mean the values can be yielded to the callers since a
+    /// `resume_token` is required to safely do so.
+    ///
+    /// If `resume_token` is non-empty and any data has been received since the
+    /// last one, this field is guaranteed to be non-empty. In other words, clients
+    /// may assume that a batch will never cross a `resume_token` boundary.
+    #[prost(uint32, optional, tag = "6")]
+    pub batch_checksum: ::core::option::Option<u32>,
     /// An opaque token sent by the server to allow query resumption and signal
-    /// the client to accumulate `partial_rows` since the last non-empty
-    /// `resume_token`. On resumption, the resumed query will return the remaining
-    /// rows for this query.
+    /// that the buffered values constructed from received `partial_rows` can be
+    /// yielded to the caller. Clients can provide this token in a subsequent
+    /// request to resume the result stream from the current point.
     ///
-    /// If there is a batch in progress, a non-empty `resume_token`
-    /// means that that the batch of `partial_rows` will be complete after merging
-    /// the `partial_rows` from this response. The client must only yield
-    /// completed batches to the application, and must ensure that any future
-    /// retries send the latest token to avoid returning duplicate data.
+    /// When `resume_token` is non-empty, the buffered values received from
+    /// `partial_rows` since the last non-empty `resume_token` can be yielded to
+    /// the callers, provided that the client keeps the value of `resume_token` and
+    /// uses it on subsequent retries.
     ///
-    /// The server may set 'resume_token' without a 'partial_rows'. If there is a
-    /// batch in progress the client should yield it.
+    /// A `resume_token` may be sent without information in `partial_rows` to
+    /// checkpoint the progress of a sparse query. Any previous `partial_rows` data
+    /// should still be yielded in this case, and the new `resume_token` should be
+    /// saved for future retries as normal.
+    ///
+    /// A `resume_token` will only be sent on a boundary where there is either no
+    /// ongoing result batch, or `batch_checksum` is also populated.
     ///
     /// The server will also send a sentinel `resume_token` when last batch of
     /// `partial_rows` is sent. If the client retries the ExecuteQueryRequest with
     /// the sentinel `resume_token`, the server will emit it again without any
-    /// `partial_rows`, then return OK.
+    /// data in `partial_rows`, then return OK.
     #[prost(bytes = "vec", tag = "5")]
     pub resume_token: ::prost::alloc::vec::Vec<u8>,
-    /// Estimated size of a new batch. The server will always set this when
-    /// returning the first `partial_rows` of a batch, and will not set it at any
-    /// other time.
+    /// If `true`, any data buffered since the last non-empty `resume_token` must
+    /// be discarded before the other parts of this message, if any, are handled.
+    #[prost(bool, tag = "7")]
+    pub reset: bool,
+    /// Estimated size of the buffer required to hold the next batch of results.
     ///
-    /// The client can use this estimate to allocate an initial buffer for the
-    /// batched results. This helps minimize the number of allocations required,
-    /// though the buffer size may still need to be increased if the estimate is
-    /// too low.
+    /// This value will be sent with the first `partial_rows` of a batch. That is,
+    /// on the first `partial_rows` received in a stream, on the first message
+    /// after a `batch_checksum` message, and any time `reset` is true.
+    ///
+    /// The client can use this estimate to allocate a buffer for the next batch of
+    /// results. This helps minimize the number of allocations required, though the
+    /// buffer size may still need to be increased if the estimate is too low.
     #[prost(int32, tag = "4")]
     pub estimated_batch_size: i32,
-    /// Partial Rows in one of the supported formats. It may require many
-    /// PartialResultSets to stream a batch of rows that can decoded on the client.
-    /// The client should buffer partial_rows until it gets a `resume_token`,
-    /// at which point the batch is complete and can be decoded and yielded to the
-    /// user. Each sub-message documents the appropriate way to combine results.
+    /// Some rows of the result set in one of the supported formats.
+    ///
+    /// Multiple `PartialResultSet` messages may be sent to represent a complete
+    /// response. The client should buffer data constructed from the fields in
+    /// `partial_rows` until a non-empty `resume_token` is received. Each
+    /// sub-message documents the appropriate way to combine results.
     #[prost(oneof = "partial_result_set::PartialRows", tags = "3")]
     pub partial_rows: ::core::option::Option<partial_result_set::PartialRows>,
 }
 /// Nested message and enum types in `PartialResultSet`.
 pub mod partial_result_set {
-    /// Partial Rows in one of the supported formats. It may require many
-    /// PartialResultSets to stream a batch of rows that can decoded on the client.
-    /// The client should buffer partial_rows until it gets a `resume_token`,
-    /// at which point the batch is complete and can be decoded and yielded to the
-    /// user. Each sub-message documents the appropriate way to combine results.
+    /// Some rows of the result set in one of the supported formats.
+    ///
+    /// Multiple `PartialResultSet` messages may be sent to represent a complete
+    /// response. The client should buffer data constructed from the fields in
+    /// `partial_rows` until a non-empty `resume_token` is received. Each
+    /// sub-message documents the appropriate way to combine results.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PartialRows {
         /// Partial rows in serialized ProtoRows format.
@@ -1307,6 +1369,12 @@ pub struct ReadRowsRequest {
     /// `projects/<project>/instances/<instance>/tables/<table>/authorizedViews/<authorized_view>`.
     #[prost(string, tag = "9")]
     pub authorized_view_name: ::prost::alloc::string::String,
+    /// Optional. The unique name of the MaterializedView from which to read.
+    ///
+    /// Values are of the form
+    /// `projects/<project>/instances/<instance>/materializedViews/<materialized_view>`.
+    #[prost(string, tag = "11")]
+    pub materialized_view_name: ::prost::alloc::string::String,
     /// This value specifies routing for replication. If not specified, the
     /// "default" application profile will be used.
     #[prost(string, tag = "5")]
@@ -1520,6 +1588,12 @@ pub struct SampleRowKeysRequest {
     /// `projects/<project>/instances/<instance>/tables/<table>/authorizedViews/<authorized_view>`.
     #[prost(string, tag = "4")]
     pub authorized_view_name: ::prost::alloc::string::String,
+    /// Optional. The unique name of the MaterializedView from which to read.
+    ///
+    /// Values are of the form
+    /// `projects/<project>/instances/<instance>/materializedViews/<materialized_view>`.
+    #[prost(string, tag = "5")]
+    pub materialized_view_name: ::prost::alloc::string::String,
     /// This value specifies routing for replication. If not specified, the
     /// "default" application profile will be used.
     #[prost(string, tag = "2")]
@@ -2089,8 +2163,23 @@ pub struct ExecuteQueryRequest {
     #[prost(string, tag = "2")]
     pub app_profile_id: ::prost::alloc::string::String,
     /// Required. The query string.
+    ///
+    /// Exactly one of `query` and `prepared_query` is required. Setting both
+    /// or neither is an `INVALID_ARGUMENT`.
+    #[deprecated]
     #[prost(string, tag = "3")]
     pub query: ::prost::alloc::string::String,
+    /// A prepared query that was returned from `PrepareQueryResponse`.
+    ///
+    /// Exactly one of `query` and `prepared_query` is required. Setting both
+    /// or neither is an `INVALID_ARGUMENT`.
+    ///
+    /// Setting this field also places restrictions on several other fields:
+    /// - `data_format` must be empty.
+    /// - `validate_only` must be false.
+    /// - `params` must match the `param_types` set in the `PrepareQueryRequest`.
+    #[prost(bytes = "vec", tag = "9")]
+    pub prepared_query: ::prost::alloc::vec::Vec<u8>,
     /// Optional. If this request is resuming a previously interrupted query
     /// execution, `resume_token` should be copied from the last
     /// PartialResultSet yielded before the interruption. Doing this
@@ -2108,26 +2197,38 @@ pub struct ExecuteQueryRequest {
     ///
     /// For example, if
     /// `params\["firstName"\] = bytes_value: "foo" type {bytes_type {}}`
-    ///   then `@firstName` will be replaced with googlesql bytes value "foo" in the
-    ///   query string during query evaluation.
+    /// then `@firstName` will be replaced with googlesql bytes value "foo" in the
+    /// query string during query evaluation.
     ///
-    /// In case of Value.kind is not set, it will be set to corresponding null
-    /// value in googlesql.
-    ///   `params\["firstName"\] =  type {string_type {}}`
-    ///   then `@firstName` will be replaced with googlesql null string.
+    /// If `Value.kind` is not set, the value is treated as a NULL value of the
+    /// given type. For example, if
+    /// `params\["firstName"\] = type {string_type {}}`
+    /// then `@firstName` will be replaced with googlesql null string.
     ///
-    /// Value.type should always be set and no inference of type will be made from
-    /// Value.kind. If Value.type is not set, we will return INVALID_ARGUMENT
-    /// error.
+    /// If `query` is set, any empty `Value.type` in the map will be rejected with
+    /// `INVALID_ARGUMENT`.
+    ///
+    /// If `prepared_query` is set, any empty `Value.type` in the map will be
+    /// inferred from the `param_types` in the `PrepareQueryRequest`. Any non-empty
+    /// `Value.type` must match the corresponding `param_types` entry, or be
+    /// rejected with `INVALID_ARGUMENT`.
     #[prost(map = "string, message", tag = "7")]
     pub params: ::std::collections::HashMap<::prost::alloc::string::String, Value>,
-    /// Required. Requested data format for the response.
+    /// Requested data format for the response.
+    ///
+    /// If `prepared_query` is set, then the `data_format` is fixed by the
+    /// `PrepareQueryRequest`, and a non-empty `data_format` in the
+    /// `ExecuteQueryRequest` will be rejected with `INVALID_ARGUMENT`.
     #[prost(oneof = "execute_query_request::DataFormat", tags = "4")]
     pub data_format: ::core::option::Option<execute_query_request::DataFormat>,
 }
 /// Nested message and enum types in `ExecuteQueryRequest`.
 pub mod execute_query_request {
-    /// Required. Requested data format for the response.
+    /// Requested data format for the response.
+    ///
+    /// If `prepared_query` is set, then the `data_format` is fixed by the
+    /// `PrepareQueryRequest`, and a non-empty `data_format` in the
+    /// `ExecuteQueryRequest` will be rejected with `INVALID_ARGUMENT`.
     #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum DataFormat {
         /// Protocol buffer format as described by ProtoSchema and ProtoRows
@@ -2169,6 +2270,72 @@ pub mod execute_query_response {
         Results(super::PartialResultSet),
     }
 }
+/// Request message for Bigtable.PrepareQuery
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PrepareQueryRequest {
+    /// Required. The unique name of the instance against which the query should be
+    /// executed.
+    /// Values are of the form `projects/<project>/instances/<instance>`
+    #[prost(string, tag = "1")]
+    pub instance_name: ::prost::alloc::string::String,
+    /// Optional. This value specifies routing for preparing the query. Note that
+    /// this `app_profile_id` is only used for preparing the query. The actual
+    /// query execution will use the app profile specified in the
+    /// `ExecuteQueryRequest`. If not specified, the `default` application profile
+    /// will be used.
+    #[prost(string, tag = "2")]
+    pub app_profile_id: ::prost::alloc::string::String,
+    /// Required. The query string.
+    #[prost(string, tag = "3")]
+    pub query: ::prost::alloc::string::String,
+    /// Required. `param_types` is a map of parameter identifier strings to their
+    /// `Type`s.
+    ///
+    /// In query string, a parameter placeholder consists of the
+    /// `@` character followed by the parameter name (for example, `@firstName`) in
+    /// the query string.
+    ///
+    /// For example, if param_types\["firstName"\] = Bytes then @firstName will be a
+    /// query parameter of type Bytes. The specific `Value` to be used for the
+    /// query execution must be sent in `ExecuteQueryRequest` in the `params` map.
+    #[prost(map = "string, message", tag = "6")]
+    pub param_types: ::std::collections::HashMap<::prost::alloc::string::String, Type>,
+    /// Required. Requested data format for the response. Note that the selected
+    /// data format is binding for all `ExecuteQuery` rpcs that use the prepared
+    /// query.
+    #[prost(oneof = "prepare_query_request::DataFormat", tags = "4")]
+    pub data_format: ::core::option::Option<prepare_query_request::DataFormat>,
+}
+/// Nested message and enum types in `PrepareQueryRequest`.
+pub mod prepare_query_request {
+    /// Required. Requested data format for the response. Note that the selected
+    /// data format is binding for all `ExecuteQuery` rpcs that use the prepared
+    /// query.
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    pub enum DataFormat {
+        /// Protocol buffer format as described by ProtoSchema and ProtoRows
+        /// messages.
+        #[prost(message, tag = "4")]
+        ProtoFormat(super::ProtoFormat),
+    }
+}
+/// Response message for Bigtable.PrepareQueryResponse
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PrepareQueryResponse {
+    /// Structure of rows in the response stream of `ExecuteQueryResponse` for the
+    /// returned `prepared_query`.
+    #[prost(message, optional, tag = "1")]
+    pub metadata: ::core::option::Option<ResultSetMetadata>,
+    /// A serialized prepared query. Clients should treat this as an opaque
+    /// blob of bytes to send in `ExecuteQueryRequest`.
+    #[prost(bytes = "vec", tag = "2")]
+    pub prepared_query: ::prost::alloc::vec::Vec<u8>,
+    /// The time at which the prepared query token becomes invalid.
+    /// A token may become invalid early due to changes in the data being read, but
+    /// it provides a guideline to refresh query plans asynchronously.
+    #[prost(message, optional, tag = "3")]
+    pub valid_until: ::core::option::Option<::prost_types::Timestamp>,
+}
 /// Generated client implementations.
 pub mod bigtable_client {
     #![allow(
@@ -2198,7 +2365,7 @@ pub mod bigtable_client {
     }
     impl<T> BigtableClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -2219,13 +2386,13 @@ pub mod bigtable_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             BigtableClient::new(InterceptedService::new(inner, interceptor))
@@ -2524,7 +2691,32 @@ pub mod bigtable_client {
                 );
             self.inner.server_streaming(req, path, codec).await
         }
-        /// Executes a BTQL query against a particular Cloud Bigtable instance.
+        /// Prepares a GoogleSQL query for execution on a particular Bigtable instance.
+        pub async fn prepare_query(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PrepareQueryRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::PrepareQueryResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.v2.Bigtable/PrepareQuery",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.bigtable.v2.Bigtable", "PrepareQuery"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// Executes a SQL query against a particular Bigtable instance.
         pub async fn execute_query(
             &mut self,
             request: impl tonic::IntoRequest<super::ExecuteQueryRequest>,

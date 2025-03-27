@@ -2236,7 +2236,7 @@ pub mod change_history_change {
     pub struct ChangeHistoryResource {
         #[prost(
             oneof = "change_history_resource::Resource",
-            tags = "1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 31"
+            tags = "1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 31, 32"
         )]
         pub resource: ::core::option::Option<change_history_resource::Resource>,
     }
@@ -2326,6 +2326,9 @@ pub mod change_history_change {
             /// A snapshot of a CalculatedMetric resource in change history.
             #[prost(message, tag = "31")]
             CalculatedMetric(super::super::CalculatedMetric),
+            /// A snapshot of a KeyEvent resource in change history.
+            #[prost(message, tag = "32")]
+            KeyEvent(super::super::KeyEvent),
         }
     }
 }
@@ -4013,6 +4016,8 @@ pub enum ChangeHistoryResourceType {
     EventCreateRule = 29,
     /// CalculatedMetric resource
     CalculatedMetric = 31,
+    /// KeyEvent resource
+    KeyEvent = 32,
 }
 impl ChangeHistoryResourceType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -4051,6 +4056,7 @@ impl ChangeHistoryResourceType {
             Self::Audience => "AUDIENCE",
             Self::EventCreateRule => "EVENT_CREATE_RULE",
             Self::CalculatedMetric => "CALCULATED_METRIC",
+            Self::KeyEvent => "KEY_EVENT",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4088,6 +4094,7 @@ impl ChangeHistoryResourceType {
             "AUDIENCE" => Some(Self::Audience),
             "EVENT_CREATE_RULE" => Some(Self::EventCreateRule),
             "CALCULATED_METRIC" => Some(Self::CalculatedMetric),
+            "KEY_EVENT" => Some(Self::KeyEvent),
             _ => None,
         }
     }
@@ -7014,7 +7021,7 @@ pub mod analytics_admin_service_client {
     }
     impl<T> AnalyticsAdminServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -7035,13 +7042,13 @@ pub mod analytics_admin_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             AnalyticsAdminServiceClient::new(InterceptedService::new(inner, interceptor))

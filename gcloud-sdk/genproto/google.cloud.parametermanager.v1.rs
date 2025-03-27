@@ -27,6 +27,13 @@ pub struct Parameter {
     pub policy_member: ::core::option::Option<
         super::super::super::iam::v1::ResourcePolicyMember,
     >,
+    /// Optional. Customer managed encryption key (CMEK) to use for encrypting the
+    /// Parameter Versions. If not set, the default Google-managed encryption key
+    /// will be used. Cloud KMS CryptoKeys must reside in the same location as the
+    /// Parameter. The expected format is
+    /// `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
+    #[prost(string, optional, tag = "7")]
+    pub kms_key: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Message for requesting list of Parameters
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -177,6 +184,12 @@ pub struct ParameterVersion {
     /// for GET request).
     #[prost(message, optional, tag = "5")]
     pub payload: ::core::option::Option<ParameterVersionPayload>,
+    /// Optional. Output only. \[Output only\] The resource name of the KMS key
+    /// version used to encrypt the ParameterVersion payload. This field is
+    /// populated only if the Parameter resource has customer managed encryption
+    /// key (CMEK) configured.
+    #[prost(string, optional, tag = "6")]
+    pub kms_key_version: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Message for storing a ParameterVersion resource's payload data
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -251,7 +264,7 @@ pub struct RenderParameterVersionResponse {
     pub payload: ::core::option::Option<ParameterVersionPayload>,
     /// Output only. Server generated rendered version of the user provided payload
     /// data (ParameterVersionPayload) which has substitutions of all (if any)
-    /// references to a SecretManager SecretVersion resources. This substituion
+    /// references to a SecretManager SecretVersion resources. This substitution
     /// only works for a Parameter which is in JSON or YAML format.
     #[prost(bytes = "vec", tag = "3")]
     pub rendered_payload: ::prost::alloc::vec::Vec<u8>,
@@ -443,7 +456,7 @@ pub mod parameter_manager_client {
     }
     impl<T> ParameterManagerClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -464,13 +477,13 @@ pub mod parameter_manager_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ParameterManagerClient::new(InterceptedService::new(inner, interceptor))

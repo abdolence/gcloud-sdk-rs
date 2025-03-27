@@ -152,14 +152,14 @@ pub struct ContactInfo {
     #[prost(string, tag = "2")]
     pub email: ::prost::alloc::string::String,
 }
-/// Application defines the governance boundary for App Hub Entities that
+/// Application defines the governance boundary for App Hub entities that
 /// perform a logical end-to-end business function.
 /// App Hub supports application level IAM permission to align with governance
 /// requirements.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Application {
     /// Identifier. The resource name of an Application. Format:
-    /// "projects/{host-project-id}/locations/{location}/applications/{application-id}"
+    /// `"projects/{host-project-id}/locations/{location}/applications/{application-id}"`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. User-defined name for the Application.
@@ -268,6 +268,8 @@ pub mod scope {
         Unspecified = 0,
         /// Regional type.
         Regional = 1,
+        /// Global type.
+        Global = 2,
     }
     impl Type {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -278,6 +280,7 @@ pub mod scope {
             match self {
                 Self::Unspecified => "TYPE_UNSPECIFIED",
                 Self::Regional => "REGIONAL",
+                Self::Global => "GLOBAL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -285,18 +288,19 @@ pub mod scope {
             match value {
                 "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "REGIONAL" => Some(Self::Regional),
+                "GLOBAL" => Some(Self::Global),
                 _ => None,
             }
         }
     }
 }
 /// Service is an App Hub data model that contains a discovered service, which
-/// represents a network/api interface that exposes some functionality to clients
-/// for consumption over the network.
+/// represents a network or API interface that exposes some functionality to
+/// clients for consumption over the network.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Service {
     /// Identifier. The resource name of a Service. Format:
-    /// "projects/{host-project-id}/locations/{location}/applications/{application-id}/services/{service-id}"
+    /// `"projects/{host-project-id}/locations/{location}/applications/{application-id}/services/{service-id}"`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. User-defined name for the Service.
@@ -392,8 +396,8 @@ pub mod service {
 /// Reference to an underlying networking resource that can comprise a Service.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceReference {
-    /// Output only. The underlying resource URI (For example, URI of Forwarding
-    /// Rule, URL Map, and Backend Service).
+    /// Output only. The underlying resource URI. For example, URI of Forwarding
+    /// Rule, URL Map, and Backend Service.
     #[prost(string, tag = "1")]
     pub uri: ::prost::alloc::string::String,
 }
@@ -413,13 +417,13 @@ pub struct ServiceProperties {
     #[prost(string, tag = "3")]
     pub zone: ::prost::alloc::string::String,
 }
-/// DiscoveredService is a network/api interface that exposes some functionality
-/// to clients for consumption over the network. A discovered service can be
-/// registered to a App Hub service.
+/// DiscoveredService is a network or API interface that exposes some
+/// functionality to clients for consumption over the network. A discovered
+/// service can be registered to a App Hub service.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiscoveredService {
     /// Identifier. The resource name of the discovered service. Format:
-    /// "projects/{host-project-id}/locations/{location}/discoveredServices/{uuid}""
+    /// `"projects/{host-project-id}/locations/{location}/discoveredServices/{uuid}"`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Reference to an underlying networking resource that can
@@ -439,12 +443,12 @@ pub struct DiscoveredService {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceProjectAttachment {
     /// Identifier. The resource name of a ServiceProjectAttachment. Format:
-    /// "projects/{host-project-id}/locations/global/serviceProjectAttachments/{service-project-id}."
+    /// `"projects/{host-project-id}/locations/global/serviceProjectAttachments/{service-project-id}."`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. Immutable. Service project name in the format: "projects/abc" or
-    /// "projects/123". As input, project name with either project id or number are
-    /// accepted. As output, this field will contain project number.
+    /// Required. Immutable. Service project name in the format: `"projects/abc"`
+    /// or `"projects/123"`. As input, project name with either project id or
+    /// number are accepted. As output, this field will contain project number.
     #[prost(string, tag = "2")]
     pub service_project: ::prost::alloc::string::String,
     /// Output only. Create time.
@@ -517,7 +521,7 @@ pub mod service_project_attachment {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Workload {
     /// Identifier. The resource name of the Workload. Format:
-    /// "projects/{host-project-id}/locations/{location}/applications/{application-id}/workloads/{workload-id}"
+    /// `"projects/{host-project-id}/locations/{location}/applications/{application-id}/workloads/{workload-id}"`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. User-defined name for the Workload.
@@ -621,15 +625,15 @@ pub struct WorkloadReference {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkloadProperties {
     /// Output only. The service project identifier that the underlying cloud
-    /// resource resides in. Empty for non cloud resources.
+    /// resource resides in. Empty for non-cloud resources.
     #[prost(string, tag = "1")]
     pub gcp_project: ::prost::alloc::string::String,
     /// Output only. The location that the underlying compute resource resides in
-    /// (e.g us-west1).
+    /// (for example, us-west1).
     #[prost(string, tag = "2")]
     pub location: ::prost::alloc::string::String,
     /// Output only. The location that the underlying compute resource resides in
-    /// if it is zonal (e.g us-west1-a).
+    /// if it is zonal (for example, us-west1-a).
     #[prost(string, tag = "3")]
     pub zone: ::prost::alloc::string::String,
 }
@@ -640,7 +644,7 @@ pub struct WorkloadProperties {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiscoveredWorkload {
     /// Identifier. The resource name of the discovered workload. Format:
-    /// "projects/{host-project-id}/locations/{location}/discoveredWorkloads/{uuid}"
+    /// `"projects/{host-project-id}/locations/{location}/discoveredWorkloads/{uuid}"`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Reference of an underlying compute resource represented by the
@@ -1326,9 +1330,10 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have been cancelled successfully
-    /// have [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
-    /// `Code.CANCELLED`.
+    /// have
+    /// [google.longrunning.Operation.error][google.longrunning.Operation.error]
+    /// value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.
@@ -1364,7 +1369,7 @@ pub mod app_hub_client {
     }
     impl<T> AppHubClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -1385,13 +1390,13 @@ pub mod app_hub_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             AppHubClient::new(InterceptedService::new(inner, interceptor))

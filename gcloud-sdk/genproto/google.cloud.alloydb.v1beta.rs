@@ -1001,11 +1001,13 @@ pub struct Instance {
     /// zone with available capacity.
     #[prost(string, tag = "12")]
     pub gce_zone: ::prost::alloc::string::String,
-    /// Database flags. Set at instance level.
-    ///   * They are copied from primary instance on read instance creation.
-    ///   * Read instances can set new or override existing flags that are relevant
-    ///     for reads, e.g. for enabling columnar cache on a read instance. Flags
-    ///     set on read instance may or may not be present on primary.
+    /// Database flags. Set at the instance level.
+    /// They are copied from the primary instance on secondary instance creation.
+    /// Flags that have restrictions default to the value at primary
+    /// instance on read instances during creation. Read instances can set new
+    /// flags or override existing flags that are relevant for reads, for example,
+    /// for enabling columnar cache on a read instance. Flags set on read instance
+    /// might or might not be present on the primary instance.
     ///
     ///
     /// This is a list of "key": "value" pairs.
@@ -1114,17 +1116,18 @@ pub mod instance {
     /// update, failover, autohealing and resize operations.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Node {
-        /// The Compute Engine zone of the VM e.g. "us-central1-b".
+        /// Output only. The Compute Engine zone of the VM e.g. "us-central1-b".
         #[prost(string, tag = "1")]
         pub zone_id: ::prost::alloc::string::String,
-        /// The identifier of the VM e.g. "test-read-0601-407e52be-ms3l".
+        /// Output only. The identifier of the VM e.g.
+        /// "test-read-0601-407e52be-ms3l".
         #[prost(string, tag = "2")]
         pub id: ::prost::alloc::string::String,
-        /// The private IP address of the VM e.g. "10.57.0.34".
+        /// Output only. The private IP address of the VM e.g. "10.57.0.34".
         #[prost(string, tag = "3")]
         pub ip: ::prost::alloc::string::String,
-        /// Determined by state of the compute VM and postgres-service health.
-        /// Compute VM state can have values listed in
+        /// Output only. Determined by state of the compute VM and postgres-service
+        /// health. Compute VM state can have values listed in
         /// <https://cloud.google.com/compute/docs/instances/instance-life-cycle> and
         /// postgres-service health can have values: HEALTHY and UNHEALTHY.
         #[prost(string, tag = "4")]
@@ -2268,6 +2271,112 @@ pub struct UpdateClusterRequest {
     /// that case, a new cluster is created and `update_mask` is ignored.
     #[prost(bool, tag = "5")]
     pub allow_missing: bool,
+}
+/// Destination for Export. Export will be done to cloud storage.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GcsDestination {
+    /// Required. The path to the file in Google Cloud Storage where the export
+    /// will be stored. The URI is in the form `gs://bucketName/fileName`.
+    #[prost(string, tag = "1")]
+    pub uri: ::prost::alloc::string::String,
+}
+/// Export cluster request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportClusterRequest {
+    /// Required. The resource name of the cluster.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Name of the database where the export command will be executed.
+    /// Note - Value provided should be the same as expected from
+    /// `SELECT current_database();` and NOT as a resource reference.
+    #[prost(string, tag = "3")]
+    pub database: ::prost::alloc::string::String,
+    /// Oneof field to support other destinations in future.
+    #[prost(oneof = "export_cluster_request::Destination", tags = "2")]
+    pub destination: ::core::option::Option<export_cluster_request::Destination>,
+    /// Required field to specify export file type and options.
+    #[prost(oneof = "export_cluster_request::ExportOptions", tags = "4, 5")]
+    pub export_options: ::core::option::Option<export_cluster_request::ExportOptions>,
+}
+/// Nested message and enum types in `ExportClusterRequest`.
+pub mod export_cluster_request {
+    /// Options for exporting data in CSV format.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CsvExportOptions {
+        /// Required. The SELECT query used to extract the data.
+        #[prost(string, tag = "1")]
+        pub select_query: ::prost::alloc::string::String,
+        /// Optional. Specifies the character that separates columns within each row
+        /// (line) of the file. The default is comma. The value of this argument has
+        /// to be a character in Hex ASCII Code.
+        #[prost(string, tag = "2")]
+        pub field_delimiter: ::prost::alloc::string::String,
+        /// Optional. Specifies the quoting character to be used when a data value is
+        /// quoted. The default is double-quote. The value of this argument has to be
+        /// a character in Hex ASCII Code.
+        #[prost(string, tag = "3")]
+        pub quote_character: ::prost::alloc::string::String,
+        /// Optional. Specifies the character that should appear before a data
+        /// character that needs to be escaped. The default is the same as quote
+        /// character. The value of this argument has to be a character in Hex ASCII
+        /// Code.
+        #[prost(string, tag = "4")]
+        pub escape_character: ::prost::alloc::string::String,
+    }
+    /// Options for exporting data in SQL format.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SqlExportOptions {
+        /// Optional. Tables to export from.
+        #[prost(string, repeated, tag = "1")]
+        pub tables: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. If true, only export the schema.
+        #[prost(bool, optional, tag = "2")]
+        pub schema_only: ::core::option::Option<bool>,
+        /// Optional. If true, output commands to DROP all the dumped database
+        /// objects prior to outputting the commands for creating them.
+        #[prost(bool, optional, tag = "3")]
+        pub clean_target_objects: ::core::option::Option<bool>,
+        /// Optional. If true, use DROP ... IF EXISTS commands to check for the
+        /// object's existence before dropping it in clean_target_objects mode.
+        #[prost(bool, optional, tag = "4")]
+        pub if_exist_target_objects: ::core::option::Option<bool>,
+    }
+    /// Oneof field to support other destinations in future.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Destination {
+        /// Required. Option to export data to cloud storage.
+        #[prost(message, tag = "2")]
+        GcsDestination(super::GcsDestination),
+    }
+    /// Required field to specify export file type and options.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ExportOptions {
+        /// Options for exporting data in CSV format. Required field to be set for
+        /// CSV file type.
+        #[prost(message, tag = "4")]
+        CsvExportOptions(CsvExportOptions),
+        /// Options for exporting data in SQL format. Required field to be set for
+        /// SQL file type.
+        #[prost(message, tag = "5")]
+        SqlExportOptions(SqlExportOptions),
+    }
+}
+/// Response of export cluster rpc.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportClusterResponse {
+    /// Oneof field to support other destinations in future.
+    #[prost(oneof = "export_cluster_response::Destination", tags = "2")]
+    pub destination: ::core::option::Option<export_cluster_response::Destination>,
+}
+/// Nested message and enum types in `ExportClusterResponse`.
+pub mod export_cluster_response {
+    /// Oneof field to support other destinations in future.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Destination {
+        /// Required. Option to export data to cloud storage.
+        #[prost(message, tag = "2")]
+        GcsDestination(super::GcsDestination),
+    }
 }
 /// Upgrades a cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3542,9 +3651,10 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
-    /// `Code.CANCELLED`.
+    /// have
+    /// [google.longrunning.Operation.error][google.longrunning.Operation.error]
+    /// value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.
@@ -3919,7 +4029,7 @@ pub mod alloy_db_admin_client {
     }
     impl<T> AlloyDbAdminClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -3940,13 +4050,13 @@ pub mod alloy_db_admin_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             AlloyDbAdminClient::new(InterceptedService::new(inner, interceptor))
@@ -4095,6 +4205,37 @@ pub mod alloy_db_admin_client {
                     GrpcMethod::new(
                         "google.cloud.alloydb.v1beta.AlloyDBAdmin",
                         "UpdateCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Exports data from the cluster.
+        /// Imperative only.
+        pub async fn export_cluster(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ExportClusterRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.alloydb.v1beta.AlloyDBAdmin/ExportCluster",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1beta.AlloyDBAdmin",
+                        "ExportCluster",
                     ),
                 );
             self.inner.unary(req, path, codec).await

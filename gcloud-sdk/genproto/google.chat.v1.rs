@@ -3806,6 +3806,163 @@ pub struct ListSpaceEventsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// The notification setting of a user in a space.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SpaceNotificationSetting {
+    /// Identifier. The resource name of the space notification setting.
+    /// Format: `users/{user}/spaces/{space}/spaceNotificationSetting`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The notification setting.
+    #[prost(
+        enumeration = "space_notification_setting::NotificationSetting",
+        optional,
+        tag = "2"
+    )]
+    pub notification_setting: ::core::option::Option<i32>,
+    /// The space notification mute setting.
+    #[prost(
+        enumeration = "space_notification_setting::MuteSetting",
+        optional,
+        tag = "3"
+    )]
+    pub mute_setting: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `SpaceNotificationSetting`.
+pub mod space_notification_setting {
+    /// The notification setting types. Other types might be supported in the
+    /// future.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum NotificationSetting {
+        /// Reserved.
+        Unspecified = 0,
+        /// Notifications are triggered by @mentions, followed threads, first
+        /// message of new threads. All new threads are automatically followed,
+        /// unless manually unfollowed by the user.
+        All = 1,
+        /// The notification is triggered by @mentions, followed threads, first
+        /// message of new threads. Not available for 1:1 direct messages.
+        MainConversations = 2,
+        /// The notification is triggered by @mentions, followed threads. Not
+        /// available for 1:1 direct messages.
+        ForYou = 3,
+        /// Notification is off.
+        Off = 4,
+    }
+    impl NotificationSetting {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "NOTIFICATION_SETTING_UNSPECIFIED",
+                Self::All => "ALL",
+                Self::MainConversations => "MAIN_CONVERSATIONS",
+                Self::ForYou => "FOR_YOU",
+                Self::Off => "OFF",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "NOTIFICATION_SETTING_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALL" => Some(Self::All),
+                "MAIN_CONVERSATIONS" => Some(Self::MainConversations),
+                "FOR_YOU" => Some(Self::ForYou),
+                "OFF" => Some(Self::Off),
+                _ => None,
+            }
+        }
+    }
+    /// The space notification mute setting types.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MuteSetting {
+        /// Reserved.
+        Unspecified = 0,
+        /// The user will receive notifications for the space based on the
+        /// notification setting.
+        Unmuted = 1,
+        /// The user will not receive any notifications for the space, regardless of
+        /// the notification setting.
+        Muted = 2,
+    }
+    impl MuteSetting {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MUTE_SETTING_UNSPECIFIED",
+                Self::Unmuted => "UNMUTED",
+                Self::Muted => "MUTED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MUTE_SETTING_UNSPECIFIED" => Some(Self::Unspecified),
+                "UNMUTED" => Some(Self::Unmuted),
+                "MUTED" => Some(Self::Muted),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request message to get space notification setting.
+/// Only supports getting notification setting for the calling user.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetSpaceNotificationSettingRequest {
+    /// Required. Format: users/{user}/spaces/{space}/spaceNotificationSetting
+    ///
+    /// - `users/me/spaces/{space}/spaceNotificationSetting`, OR
+    /// - `users/user@example.com/spaces/{space}/spaceNotificationSetting`, OR
+    /// - `users/123456789/spaces/{space}/spaceNotificationSetting`.
+    /// Note: Only the caller's user id or email is allowed in the path.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request to update the space notification settings.
+/// Only supports updating notification setting for the calling user.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateSpaceNotificationSettingRequest {
+    /// Required. The resource name for the space notification settings must be
+    /// populated in the form of
+    /// `users/{user}/spaces/{space}/spaceNotificationSetting`. Only fields
+    /// specified by `update_mask` are updated.
+    #[prost(message, optional, tag = "1")]
+    pub space_notification_setting: ::core::option::Option<SpaceNotificationSetting>,
+    /// Required. Supported field paths:
+    ///
+    /// - `notification_setting`
+    ///
+    /// - `mute_setting`
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
 /// A user's read state within a space, used to identify read and unread
 /// messages.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4012,7 +4169,7 @@ pub mod chat_service_client {
     }
     impl<T> ChatServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -4033,13 +4190,13 @@ pub mod chat_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ChatServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -5185,6 +5342,78 @@ pub mod chat_service_client {
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new("google.chat.v1.ChatService", "ListSpaceEvents"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the space notification setting. For an example, see [Get the
+        /// caller's space notification
+        /// setting](https://developers.google.com/workspace/chat/get-space-notification-setting).
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+        pub async fn get_space_notification_setting(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetSpaceNotificationSettingRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SpaceNotificationSetting>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chat.v1.ChatService/GetSpaceNotificationSetting",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.chat.v1.ChatService",
+                        "GetSpaceNotificationSetting",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the space notification setting. For an example, see [Update
+        /// the caller's space notification
+        /// setting](https://developers.google.com/workspace/chat/update-space-notification-setting).
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+        pub async fn update_space_notification_setting(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::UpdateSpaceNotificationSettingRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::SpaceNotificationSetting>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chat.v1.ChatService/UpdateSpaceNotificationSetting",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.chat.v1.ChatService",
+                        "UpdateSpaceNotificationSetting",
+                    ),
                 );
             self.inner.unary(req, path, codec).await
         }

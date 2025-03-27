@@ -603,7 +603,7 @@ pub mod cloud_quotas_client {
     }
     impl<T> CloudQuotasClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -624,13 +624,13 @@ pub mod cloud_quotas_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             CloudQuotasClient::new(InterceptedService::new(inner, interceptor))
@@ -849,8 +849,8 @@ pub mod cloud_quotas_client {
 /// Request for getting QuotaAdjusterSettings
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetQuotaAdjusterSettingsRequest {
-    /// Required. Name of the config. Required to be “settings”, as only a single
-    /// setting per container will be supported initially.
+    /// Required. Name of the `quotaAdjusterSettings` configuration. Only a single
+    /// setting per project is supported.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -863,9 +863,9 @@ pub struct UpdateQuotaAdjusterSettingsRequest {
     /// Optional. The list of fields to update.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// Optional. If set to true, validate the request, but do not actually update.
-    /// Note that a request being valid does not mean that the request is
-    /// guaranteed to be fulfilled.
+    /// Optional. If set to true, checks the syntax of the request but doesn't
+    /// update the quota adjuster settings value. Note that although a request can
+    /// be valid, that doesn't guarantee that the request will be fulfilled.
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
 }
@@ -873,21 +873,22 @@ pub struct UpdateQuotaAdjusterSettingsRequest {
 /// Adjuster.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuotaAdjusterSettings {
-    /// Identifier. Name of the config would be of the format:
-    ///    projects/12345/locations/global/quotaAdjusterSettings
+    /// Identifier. Name of the configuration, in the following format:
+    ///    `projects/PROJECT_NUMBER/locations/global/quotaAdjusterSettings`.
+    /// Replace PROJECT_NUMBER with the project number for your project.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The configured value of the enablement at the given resource.
     #[prost(enumeration = "quota_adjuster_settings::Enablement", tag = "2")]
     pub enablement: i32,
-    /// Output only. The timestamp when the QuotaAdjusterSettings was last updated.
+    /// Output only. The timestamp when the QuotaAdjusterSettings resource was last
+    /// updated.
     #[prost(message, optional, tag = "5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Optional. The current etag of the QuotaAdjusterSettings. If an etag is
-    /// provided on update and does not match the current server's etag of the
-    /// QuotaAdjusterSettings, the request will be blocked and an ABORTED error
-    /// will be returned. See <https://google.aip.dev/134#etags> for more details on
-    /// etags.
+    /// Optional. The current ETag of the QuotaAdjusterSettings. If an ETag is
+    /// provided on update and does not match the current server's ETag in the
+    /// QuotaAdjusterSettings, the request is blocked and returns an ABORTED error.
+    /// See <https://google.aip.dev/134#etags> for more details on ETags.
     #[prost(string, tag = "6")]
     pub etag: ::prost::alloc::string::String,
 }
@@ -971,7 +972,7 @@ pub mod quota_adjuster_settings_manager_client {
     }
     impl<T> QuotaAdjusterSettingsManagerClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -992,13 +993,13 @@ pub mod quota_adjuster_settings_manager_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             QuotaAdjusterSettingsManagerClient::new(

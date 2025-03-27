@@ -188,18 +188,23 @@ pub mod publisher_client {
     ///
     /// A partner is a third-party event provider that is integrated with Eventarc.
     ///
-    /// A subscriber is a GCP customer interested in receiving events.
+    /// A subscriber is a Google Cloud customer interested in receiving events.
     ///
     /// Channel is a first-class Eventarc resource that is created and managed
-    /// by the subscriber in their GCP project. A Channel represents a subscriber's
-    /// intent to receive events from an event provider. A Channel is associated with
-    /// exactly one event provider.
+    /// by the subscriber in their Google Cloud project. A Channel represents a
+    /// subscriber's intent to receive events from an event provider. A Channel is
+    /// associated with exactly one event provider.
     ///
     /// ChannelConnection is a first-class Eventarc resource that
-    /// is created and managed by the partner in their GCP project. A
+    /// is created and managed by the partner in their Google Cloud project. A
     /// ChannelConnection represents a connection between a partner and a
     /// subscriber's Channel. A ChannelConnection has a one-to-one mapping with a
     /// Channel.
+    ///
+    /// Bus is a first-class Eventarc resource that is created and managed in a
+    /// Google Cloud project. A Bus provides a discoverable endpoint for events and
+    /// is a router that receives all events published by event providers and
+    /// delivers them to zero or more subscribers.
     ///
     /// Publisher allows an event provider to publish events to Eventarc.
     #[derive(Debug, Clone)]
@@ -219,7 +224,7 @@ pub mod publisher_client {
     }
     impl<T> PublisherClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -240,13 +245,13 @@ pub mod publisher_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             PublisherClient::new(InterceptedService::new(inner, interceptor))

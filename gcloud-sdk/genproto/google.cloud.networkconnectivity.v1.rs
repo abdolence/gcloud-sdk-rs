@@ -19,14 +19,1883 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have been cancelled successfully
-    /// have [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
-    /// `Code.CANCELLED`.
+    /// have
+    /// [google.longrunning.Operation.error][google.longrunning.Operation.error]
+    /// value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.
     #[prost(string, tag = "7")]
     pub api_version: ::prost::alloc::string::String,
+}
+/// The ServiceConnectionMap resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ServiceConnectionMap {
+    /// Immutable. The name of a ServiceConnectionMap.
+    /// Format:
+    /// projects/{project}/locations/{location}/serviceConnectionMaps/{service_connection_map}
+    /// See: <https://google.aip.dev/122#fields-representing-resource-names>
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Time when the ServiceConnectionMap was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Time when the ServiceConnectionMap was updated.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// User-defined labels.
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// A description of this resource.
+    #[prost(string, tag = "5")]
+    pub description: ::prost::alloc::string::String,
+    /// The service class identifier this ServiceConnectionMap is for.
+    /// The user of ServiceConnectionMap create API needs to have
+    /// networkconnecitivty.serviceclasses.use iam permission for the service
+    /// class.
+    #[prost(string, tag = "7")]
+    pub service_class: ::prost::alloc::string::String,
+    /// Output only. The service class uri this ServiceConnectionMap is for.
+    #[prost(string, tag = "12")]
+    pub service_class_uri: ::prost::alloc::string::String,
+    /// Output only. The infrastructure used for connections between
+    /// consumers/producers.
+    #[prost(enumeration = "Infrastructure", tag = "8")]
+    pub infrastructure: i32,
+    /// The PSC configurations on producer side.
+    #[prost(message, repeated, tag = "9")]
+    pub producer_psc_configs: ::prost::alloc::vec::Vec<
+        service_connection_map::ProducerPscConfig,
+    >,
+    /// The PSC configurations on consumer side.
+    #[prost(message, repeated, tag = "10")]
+    pub consumer_psc_configs: ::prost::alloc::vec::Vec<
+        service_connection_map::ConsumerPscConfig,
+    >,
+    /// Output only. PSC connection details on consumer side.
+    #[prost(message, repeated, tag = "11")]
+    pub consumer_psc_connections: ::prost::alloc::vec::Vec<
+        service_connection_map::ConsumerPscConnection,
+    >,
+    /// The token provided by the consumer. This token authenticates that the
+    /// consumer can create a connection within the specified project and network.
+    #[prost(string, tag = "13")]
+    pub token: ::prost::alloc::string::String,
+    /// Optional. The etag is computed by the server, and may be sent on update and
+    /// delete requests to ensure the client has an up-to-date value before
+    /// proceeding.
+    #[prost(string, optional, tag = "14")]
+    pub etag: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `ServiceConnectionMap`.
+pub mod service_connection_map {
+    /// The PSC configurations on producer side.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ProducerPscConfig {
+        /// The resource path of a service attachment.
+        /// Example:
+        /// projects/{projectNumOrId}/regions/{region}/serviceAttachments/{resourceId}.
+        #[prost(string, tag = "1")]
+        pub service_attachment_uri: ::prost::alloc::string::String,
+    }
+    /// Allow the producer to specify which consumers can connect to it.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ConsumerPscConfig {
+        /// The consumer project where PSC connections are allowed to be created in.
+        #[prost(string, tag = "1")]
+        pub project: ::prost::alloc::string::String,
+        /// The resource path of the consumer network where PSC connections are
+        /// allowed to be created in. Note, this network does not need be in the
+        /// ConsumerPscConfig.project in the case of SharedVPC.
+        /// Example:
+        /// projects/{projectNumOrId}/global/networks/{networkId}.
+        #[prost(string, tag = "2")]
+        pub network: ::prost::alloc::string::String,
+        /// This is used in PSC consumer ForwardingRule to control whether the PSC
+        /// endpoint can be accessed from another region.
+        #[prost(bool, tag = "3")]
+        pub disable_global_access: bool,
+        /// Output only. Overall state of PSC Connections management for this
+        /// consumer psc config.
+        #[prost(enumeration = "consumer_psc_config::State", tag = "4")]
+        pub state: i32,
+        /// Immutable. Deprecated. Use producer_instance_metadata instead.
+        /// An immutable identifier for the producer instance.
+        #[deprecated]
+        #[prost(string, tag = "5")]
+        pub producer_instance_id: ::prost::alloc::string::String,
+        /// Output only. A map to store mapping between customer vip and target
+        /// service attachment. Only service attachment with producer specified ip
+        /// addresses are stored here.
+        #[prost(map = "string, string", tag = "6")]
+        pub service_attachment_ip_address_map: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
+        /// Required. The project ID or project number of the consumer project. This
+        /// project is the one that the consumer uses to interact with the producer
+        /// instance. From the perspective of a consumer who's created a producer
+        /// instance, this is the project of the producer instance. Format:
+        /// 'projects/<project_id_or_number>' Eg. 'projects/consumer-project' or
+        /// 'projects/1234'
+        #[prost(string, tag = "7")]
+        pub consumer_instance_project: ::prost::alloc::string::String,
+        /// Immutable. An immutable map for the producer instance metadata.
+        #[prost(map = "string, string", tag = "8")]
+        pub producer_instance_metadata: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
+        /// The requested IP version for the PSC connection.
+        #[prost(enumeration = "super::IpVersion", optional, tag = "9")]
+        pub ip_version: ::core::option::Option<i32>,
+    }
+    /// Nested message and enum types in `ConsumerPscConfig`.
+    pub mod consumer_psc_config {
+        /// PSC Consumer Config State.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum State {
+            /// Default state, when Connection Map is created initially.
+            Unspecified = 0,
+            /// Set when policy and map configuration is valid,
+            /// and their matching can lead to allowing creation of PSC Connections
+            /// subject to other constraints like connections limit.
+            Valid = 1,
+            /// No Service Connection Policy found for this network and Service
+            /// Class
+            ConnectionPolicyMissing = 2,
+            /// Service Connection Policy limit reached for this network and Service
+            /// Class
+            PolicyLimitReached = 3,
+            /// The consumer instance project is not in
+            /// AllowedGoogleProducersResourceHierarchyLevels of the matching
+            /// ServiceConnectionPolicy.
+            ConsumerInstanceProjectNotAllowlisted = 4,
+        }
+        impl State {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "STATE_UNSPECIFIED",
+                    Self::Valid => "VALID",
+                    Self::ConnectionPolicyMissing => "CONNECTION_POLICY_MISSING",
+                    Self::PolicyLimitReached => "POLICY_LIMIT_REACHED",
+                    Self::ConsumerInstanceProjectNotAllowlisted => {
+                        "CONSUMER_INSTANCE_PROJECT_NOT_ALLOWLISTED"
+                    }
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "VALID" => Some(Self::Valid),
+                    "CONNECTION_POLICY_MISSING" => Some(Self::ConnectionPolicyMissing),
+                    "POLICY_LIMIT_REACHED" => Some(Self::PolicyLimitReached),
+                    "CONSUMER_INSTANCE_PROJECT_NOT_ALLOWLISTED" => {
+                        Some(Self::ConsumerInstanceProjectNotAllowlisted)
+                    }
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// PSC connection details on consumer side.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ConsumerPscConnection {
+        /// The URI of a service attachment which is the target of the PSC
+        /// connection.
+        #[prost(string, tag = "1")]
+        pub service_attachment_uri: ::prost::alloc::string::String,
+        /// The state of the PSC connection.
+        #[prost(enumeration = "consumer_psc_connection::State", tag = "2")]
+        pub state: i32,
+        /// The consumer project whose PSC forwarding rule is connected to the
+        /// service attachments in this service connection map.
+        #[prost(string, tag = "3")]
+        pub project: ::prost::alloc::string::String,
+        /// The consumer network whose PSC forwarding rule is connected to the
+        /// service attachments in this service connection map.
+        /// Note that the network could be on a different project (shared VPC).
+        #[prost(string, tag = "4")]
+        pub network: ::prost::alloc::string::String,
+        /// The PSC connection id of the PSC forwarding rule connected
+        /// to the service attachments in this service connection map.
+        #[prost(string, tag = "5")]
+        pub psc_connection_id: ::prost::alloc::string::String,
+        /// The IP literal allocated on the consumer network for the PSC forwarding
+        /// rule that is created to connect to the producer service attachment in
+        /// this service connection map.
+        #[prost(string, tag = "6")]
+        pub ip: ::prost::alloc::string::String,
+        /// The error type indicates whether the error is consumer facing, producer
+        /// facing or system internal.
+        #[deprecated]
+        #[prost(enumeration = "super::ConnectionErrorType", tag = "7")]
+        pub error_type: i32,
+        /// The most recent error during operating this connection.
+        #[deprecated]
+        #[prost(message, optional, tag = "8")]
+        pub error: ::core::option::Option<super::super::super::super::rpc::Status>,
+        /// The last Compute Engine operation to setup PSC connection.
+        #[prost(string, tag = "9")]
+        pub gce_operation: ::prost::alloc::string::String,
+        /// The URI of the consumer forwarding rule created.
+        /// Example:
+        /// projects/{projectNumOrId}/regions/us-east1/networks/{resourceId}.
+        #[prost(string, tag = "10")]
+        pub forwarding_rule: ::prost::alloc::string::String,
+        /// Output only. The error info for the latest error during operating this
+        /// connection.
+        #[prost(message, optional, tag = "11")]
+        pub error_info: ::core::option::Option<
+            super::super::super::super::rpc::ErrorInfo,
+        >,
+        /// Output only. The URI of the selected subnetwork selected to allocate IP
+        /// address for this connection.
+        #[prost(string, tag = "12")]
+        pub selected_subnetwork: ::prost::alloc::string::String,
+        /// Immutable. Deprecated. Use producer_instance_metadata instead.
+        /// An immutable identifier for the producer instance.
+        #[deprecated]
+        #[prost(string, tag = "13")]
+        pub producer_instance_id: ::prost::alloc::string::String,
+        /// Immutable. An immutable map for the producer instance metadata.
+        #[prost(map = "string, string", tag = "14")]
+        pub producer_instance_metadata: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
+        /// The requested IP version for the PSC connection.
+        #[prost(enumeration = "super::IpVersion", optional, tag = "15")]
+        pub ip_version: ::core::option::Option<i32>,
+    }
+    /// Nested message and enum types in `ConsumerPscConnection`.
+    pub mod consumer_psc_connection {
+        /// The state of the PSC connection.
+        /// We reserve the right to add more states without notice in the future.
+        /// Users should not use exhaustive switch statements on this enum.
+        /// See <https://google.aip.dev/216.>
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum State {
+            /// An invalid state as the default case.
+            Unspecified = 0,
+            /// The connection has been created successfully. However, for the
+            /// up-to-date connection status, please use the service attachment's
+            /// "ConnectedEndpoint.status" as the source of truth.
+            Active = 1,
+            /// The connection is not functional since some resources on the connection
+            /// fail to be created.
+            Failed = 2,
+            /// The connection is being created.
+            Creating = 3,
+            /// The connection is being deleted.
+            Deleting = 4,
+            /// The connection is being repaired to complete creation.
+            CreateRepairing = 5,
+            /// The connection is being repaired to complete deletion.
+            DeleteRepairing = 6,
+        }
+        impl State {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "STATE_UNSPECIFIED",
+                    Self::Active => "ACTIVE",
+                    Self::Failed => "FAILED",
+                    Self::Creating => "CREATING",
+                    Self::Deleting => "DELETING",
+                    Self::CreateRepairing => "CREATE_REPAIRING",
+                    Self::DeleteRepairing => "DELETE_REPAIRING",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ACTIVE" => Some(Self::Active),
+                    "FAILED" => Some(Self::Failed),
+                    "CREATING" => Some(Self::Creating),
+                    "DELETING" => Some(Self::Deleting),
+                    "CREATE_REPAIRING" => Some(Self::CreateRepairing),
+                    "DELETE_REPAIRING" => Some(Self::DeleteRepairing),
+                    _ => None,
+                }
+            }
+        }
+    }
+}
+/// Request for ListServiceConnectionMaps.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListServiceConnectionMapsRequest {
+    /// Required. The parent resource's name. ex. projects/123/locations/us-east1
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of results per page that should be returned.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// A filter expression that filters the results listed in the response.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Sort the results by a certain order.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response for ListServiceConnectionMaps.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListServiceConnectionMapsResponse {
+    /// ServiceConnectionMaps to be returned.
+    #[prost(message, repeated, tag = "1")]
+    pub service_connection_maps: ::prost::alloc::vec::Vec<ServiceConnectionMap>,
+    /// The next pagination token in the List response. It should be used as
+    /// page_token for the following request. An empty value means no more result.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request for GetServiceConnectionMap.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetServiceConnectionMapRequest {
+    /// Required. Name of the ServiceConnectionMap to get.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for CreateServiceConnectionMap.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateServiceConnectionMapRequest {
+    /// Required. The parent resource's name of the ServiceConnectionMap. ex.
+    /// projects/123/locations/us-east1
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Resource ID
+    /// (i.e. 'foo' in '\[...\]/projects/p/locations/l/serviceConnectionMaps/foo')
+    /// See <https://google.aip.dev/122#resource-id-segments>
+    /// Unique per location.
+    /// If one is not provided, one will be generated.
+    #[prost(string, tag = "2")]
+    pub service_connection_map_id: ::prost::alloc::string::String,
+    /// Required. Initial values for a new ServiceConnectionMaps
+    #[prost(message, optional, tag = "3")]
+    pub service_connection_map: ::core::option::Option<ServiceConnectionMap>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request for UpdateServiceConnectionMap.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateServiceConnectionMapRequest {
+    /// Optional. Field mask is used to specify the fields to be overwritten in the
+    /// ServiceConnectionMap resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then all fields will be overwritten.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. New values to be patched into the resource.
+    #[prost(message, optional, tag = "2")]
+    pub service_connection_map: ::core::option::Option<ServiceConnectionMap>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request for DeleteServiceConnectionMap.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteServiceConnectionMapRequest {
+    /// Required. The name of the ServiceConnectionMap to delete.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes after the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. The etag is computed by the server, and may be sent on update and
+    /// delete requests to ensure the client has an up-to-date value before
+    /// proceeding.
+    #[prost(string, optional, tag = "3")]
+    pub etag: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// The ServiceConnectionPolicy resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ServiceConnectionPolicy {
+    /// Immutable. The name of a ServiceConnectionPolicy.
+    /// Format:
+    /// projects/{project}/locations/{location}/serviceConnectionPolicies/{service_connection_policy}
+    /// See: <https://google.aip.dev/122#fields-representing-resource-names>
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Time when the ServiceConnectionPolicy was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Time when the ServiceConnectionPolicy was updated.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// User-defined labels.
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// A description of this resource.
+    #[prost(string, tag = "5")]
+    pub description: ::prost::alloc::string::String,
+    /// The resource path of the consumer network.
+    /// Example:
+    /// - projects/{projectNumOrId}/global/networks/{resourceId}.
+    #[prost(string, tag = "6")]
+    pub network: ::prost::alloc::string::String,
+    /// The service class identifier for which this ServiceConnectionPolicy is for.
+    /// The service class identifier is a unique, symbolic representation of a
+    /// ServiceClass. It is provided by the Service Producer. Google services have
+    /// a prefix of gcp or google-cloud. For example, gcp-memorystore-redis or
+    /// google-cloud-sql. 3rd party services do not. For example,
+    /// test-service-a3dfcx.
+    #[prost(string, tag = "7")]
+    pub service_class: ::prost::alloc::string::String,
+    /// Output only. The type of underlying resources used to create the
+    /// connection.
+    #[prost(enumeration = "Infrastructure", tag = "8")]
+    pub infrastructure: i32,
+    /// Configuration used for Private Service Connect connections. Used when
+    /// Infrastructure is PSC.
+    #[prost(message, optional, tag = "9")]
+    pub psc_config: ::core::option::Option<service_connection_policy::PscConfig>,
+    /// Output only. \[Output only\] Information about each Private Service Connect
+    /// connection.
+    #[prost(message, repeated, tag = "10")]
+    pub psc_connections: ::prost::alloc::vec::Vec<
+        service_connection_policy::PscConnection,
+    >,
+    /// Optional. The etag is computed by the server, and may be sent on update and
+    /// delete requests to ensure the client has an up-to-date value before
+    /// proceeding.
+    #[prost(string, optional, tag = "11")]
+    pub etag: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `ServiceConnectionPolicy`.
+pub mod service_connection_policy {
+    /// Configuration used for Private Service Connect connections. Used when
+    /// Infrastructure is PSC.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PscConfig {
+        /// The resource paths of subnetworks to use for IP address management.
+        /// Example:
+        /// projects/{projectNumOrId}/regions/{region}/subnetworks/{resourceId}.
+        #[prost(string, repeated, tag = "1")]
+        pub subnetworks: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. Max number of PSC connections for this policy.
+        #[prost(int64, optional, tag = "2")]
+        pub limit: ::core::option::Option<i64>,
+        /// Required. ProducerInstanceLocation is used to specify which authorization
+        /// mechanism to use to determine which projects the Producer instance can be
+        /// within.
+        #[prost(enumeration = "psc_config::ProducerInstanceLocation", tag = "3")]
+        pub producer_instance_location: i32,
+        /// Optional. List of Projects, Folders, or Organizations from where the
+        /// Producer instance can be within. For example, a network administrator can
+        /// provide both 'organizations/foo' and 'projects/bar' as
+        /// allowed_google_producers_resource_hierarchy_levels. This allowlists this
+        /// network to connect with any Producer instance within the 'foo'
+        /// organization or the 'bar' project. By default,
+        /// allowed_google_producers_resource_hierarchy_level is empty. The format
+        /// for each allowed_google_producers_resource_hierarchy_level is <resource
+        /// type>/<id> where <resource type> is one of 'projects', 'folders', or
+        /// 'organizations' and <id> is either the ID or the number of the resource
+        /// type. Format for each allowed_google_producers_resource_hierarchy_level
+        /// value: 'projects/<project_id_or_number>' or 'folders/<folder_id>' or
+        /// 'organizations/<organization_id>'
+        /// Eg. [projects/my-project-id, projects/567, folders/891,
+        /// organizations/123]
+        #[prost(string, repeated, tag = "4")]
+        pub allowed_google_producers_resource_hierarchy_level: ::prost::alloc::vec::Vec<
+            ::prost::alloc::string::String,
+        >,
+    }
+    /// Nested message and enum types in `PscConfig`.
+    pub mod psc_config {
+        /// ProducerInstanceLocation is used to specify which authorization mechanism
+        /// to use to determine which projects the Producer instance can be within.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum ProducerInstanceLocation {
+            /// Producer instance location is not specified. When this option is
+            /// chosen, then the PSC connections created by this
+            /// ServiceConnectionPolicy must be within the same project as the Producer
+            /// instance. This is the default ProducerInstanceLocation value.
+            /// To allow for PSC connections from this network to other networks, use
+            /// the CUSTOM_RESOURCE_HIERARCHY_LEVELS option.
+            Unspecified = 0,
+            /// Producer instance must be within one of the values provided in
+            /// allowed_google_producers_resource_hierarchy_level.
+            CustomResourceHierarchyLevels = 1,
+        }
+        impl ProducerInstanceLocation {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "PRODUCER_INSTANCE_LOCATION_UNSPECIFIED",
+                    Self::CustomResourceHierarchyLevels => {
+                        "CUSTOM_RESOURCE_HIERARCHY_LEVELS"
+                    }
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "PRODUCER_INSTANCE_LOCATION_UNSPECIFIED" => Some(Self::Unspecified),
+                    "CUSTOM_RESOURCE_HIERARCHY_LEVELS" => {
+                        Some(Self::CustomResourceHierarchyLevels)
+                    }
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Information about a specific Private Service Connect connection.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PscConnection {
+        /// State of the PSC Connection
+        #[prost(enumeration = "State", tag = "1")]
+        pub state: i32,
+        /// The resource reference of the PSC Forwarding Rule within the consumer
+        /// VPC.
+        #[prost(string, tag = "2")]
+        pub consumer_forwarding_rule: ::prost::alloc::string::String,
+        /// The resource reference of the consumer address.
+        #[prost(string, tag = "3")]
+        pub consumer_address: ::prost::alloc::string::String,
+        /// The error type indicates whether the error is consumer facing, producer
+        /// facing or system internal.
+        #[deprecated]
+        #[prost(enumeration = "super::ConnectionErrorType", tag = "4")]
+        pub error_type: i32,
+        /// The most recent error during operating this connection.
+        /// Deprecated, please use error_info instead.
+        #[deprecated]
+        #[prost(message, optional, tag = "5")]
+        pub error: ::core::option::Option<super::super::super::super::rpc::Status>,
+        /// The last Compute Engine operation to setup PSC connection.
+        #[prost(string, tag = "6")]
+        pub gce_operation: ::prost::alloc::string::String,
+        /// The project where the PSC connection is created.
+        #[prost(string, tag = "7")]
+        pub consumer_target_project: ::prost::alloc::string::String,
+        /// The PSC connection id of the PSC forwarding rule.
+        #[prost(string, tag = "8")]
+        pub psc_connection_id: ::prost::alloc::string::String,
+        /// Output only. The error info for the latest error during operating this
+        /// connection.
+        #[prost(message, optional, tag = "9")]
+        pub error_info: ::core::option::Option<
+            super::super::super::super::rpc::ErrorInfo,
+        >,
+        /// Output only. The URI of the subnetwork selected to allocate IP address
+        /// for this connection.
+        #[prost(string, tag = "10")]
+        pub selected_subnetwork: ::prost::alloc::string::String,
+        /// Immutable. Deprecated. Use producer_instance_metadata instead.
+        /// An immutable identifier for the producer instance.
+        #[deprecated]
+        #[prost(string, tag = "11")]
+        pub producer_instance_id: ::prost::alloc::string::String,
+        /// Immutable. An immutable map for the producer instance metadata.
+        #[prost(map = "string, string", tag = "12")]
+        pub producer_instance_metadata: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
+        /// Output only. \[Output only\] The service class associated with this PSC
+        /// Connection. The value is derived from the SCPolicy and matches the
+        /// service class name provided by the customer.
+        #[prost(string, tag = "13")]
+        pub service_class: ::prost::alloc::string::String,
+        /// The requested IP version for the PSC connection.
+        #[prost(enumeration = "super::IpVersion", optional, tag = "14")]
+        pub ip_version: ::core::option::Option<i32>,
+    }
+    /// The state of the PSC connection.
+    /// We reserve the right to add more states without notice in the future.
+    /// Users should not use exhaustive switch statements on this enum.
+    /// See <https://google.aip.dev/216.>
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// An invalid state as the default case.
+        Unspecified = 0,
+        /// The connection has been created successfully. However, for the
+        /// up-to-date connection status, please use the created forwarding rule's
+        /// "PscConnectionStatus" as the source of truth.
+        Active = 1,
+        /// The connection is not functional since some resources on the connection
+        /// fail to be created.
+        Failed = 2,
+        /// The connection is being created.
+        Creating = 3,
+        /// The connection is being deleted.
+        Deleting = 4,
+        /// The connection is being repaired to complete creation.
+        CreateRepairing = 5,
+        /// The connection is being repaired to complete deletion.
+        DeleteRepairing = 6,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Failed => "FAILED",
+                Self::Creating => "CREATING",
+                Self::Deleting => "DELETING",
+                Self::CreateRepairing => "CREATE_REPAIRING",
+                Self::DeleteRepairing => "DELETE_REPAIRING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "FAILED" => Some(Self::Failed),
+                "CREATING" => Some(Self::Creating),
+                "DELETING" => Some(Self::Deleting),
+                "CREATE_REPAIRING" => Some(Self::CreateRepairing),
+                "DELETE_REPAIRING" => Some(Self::DeleteRepairing),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request for ListServiceConnectionPolicies.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListServiceConnectionPoliciesRequest {
+    /// Required. The parent resource's name. ex. projects/123/locations/us-east1
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of results per page that should be returned.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// A filter expression that filters the results listed in the response.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Sort the results by a certain order.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response for ListServiceConnectionPolicies.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListServiceConnectionPoliciesResponse {
+    /// ServiceConnectionPolicies to be returned.
+    #[prost(message, repeated, tag = "1")]
+    pub service_connection_policies: ::prost::alloc::vec::Vec<ServiceConnectionPolicy>,
+    /// The next pagination token in the List response. It should be used as
+    /// page_token for the following request. An empty value means no more result.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request for GetServiceConnectionPolicy.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetServiceConnectionPolicyRequest {
+    /// Required. Name of the ServiceConnectionPolicy to get.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for CreateServiceConnectionPolicy.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateServiceConnectionPolicyRequest {
+    /// Required. The parent resource's name of the ServiceConnectionPolicy. ex.
+    /// projects/123/locations/us-east1
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Resource ID
+    /// (i.e. 'foo' in
+    /// '\[...\]/projects/p/locations/l/serviceConnectionPolicies/foo') See
+    /// <https://google.aip.dev/122#resource-id-segments> Unique per location.
+    #[prost(string, tag = "2")]
+    pub service_connection_policy_id: ::prost::alloc::string::String,
+    /// Required. Initial values for a new ServiceConnectionPolicies
+    #[prost(message, optional, tag = "3")]
+    pub service_connection_policy: ::core::option::Option<ServiceConnectionPolicy>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request for UpdateServiceConnectionPolicy.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateServiceConnectionPolicyRequest {
+    /// Optional. Field mask is used to specify the fields to be overwritten in the
+    /// ServiceConnectionPolicy resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then all fields will be overwritten.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. New values to be patched into the resource.
+    #[prost(message, optional, tag = "2")]
+    pub service_connection_policy: ::core::option::Option<ServiceConnectionPolicy>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request for DeleteServiceConnectionPolicy.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteServiceConnectionPolicyRequest {
+    /// Required. The name of the ServiceConnectionPolicy to delete.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes after the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. The etag is computed by the server, and may be sent on update and
+    /// delete requests to ensure the client has an up-to-date value before
+    /// proceeding.
+    #[prost(string, optional, tag = "3")]
+    pub etag: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// The ServiceClass resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ServiceClass {
+    /// Immutable. The name of a ServiceClass resource.
+    /// Format:
+    /// projects/{project}/locations/{location}/serviceClasses/{service_class}
+    /// See: <https://google.aip.dev/122#fields-representing-resource-names>
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The generated service class name. Use this name to refer to
+    /// the Service class in Service Connection Maps and Service Connection
+    /// Policies.
+    #[prost(string, tag = "7")]
+    pub service_class: ::prost::alloc::string::String,
+    /// Output only. Time when the ServiceClass was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Time when the ServiceClass was updated.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// User-defined labels.
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// A description of this resource.
+    #[prost(string, tag = "5")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. The etag is computed by the server, and may be sent on update and
+    /// delete requests to ensure the client has an up-to-date value before
+    /// proceeding.
+    #[prost(string, optional, tag = "8")]
+    pub etag: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Request for ListServiceClasses.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListServiceClassesRequest {
+    /// Required. The parent resource's name. ex. projects/123/locations/us-east1
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of results per page that should be returned.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// A filter expression that filters the results listed in the response.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Sort the results by a certain order.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response for ListServiceClasses.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListServiceClassesResponse {
+    /// ServiceClasses to be returned.
+    #[prost(message, repeated, tag = "1")]
+    pub service_classes: ::prost::alloc::vec::Vec<ServiceClass>,
+    /// The next pagination token in the List response. It should be used as
+    /// page_token for the following request. An empty value means no more result.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request for GetServiceClass.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetServiceClassRequest {
+    /// Required. Name of the ServiceClass to get.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for UpdateServiceClass.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateServiceClassRequest {
+    /// Optional. Field mask is used to specify the fields to be overwritten in the
+    /// ServiceClass resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then all fields will be overwritten.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. New values to be patched into the resource.
+    #[prost(message, optional, tag = "2")]
+    pub service_class: ::core::option::Option<ServiceClass>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request for DeleteServiceClass.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteServiceClassRequest {
+    /// Required. The name of the ServiceClass to delete.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes after the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. The etag is computed by the server, and may be sent on update and
+    /// delete requests to ensure the client has an up-to-date value before
+    /// proceeding.
+    #[prost(string, optional, tag = "3")]
+    pub etag: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// The ServiceConnectionToken resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ServiceConnectionToken {
+    /// Immutable. The name of a ServiceConnectionToken.
+    /// Format:
+    /// projects/{project}/locations/{location}/ServiceConnectionTokens/{service_connection_token}
+    /// See: <https://google.aip.dev/122#fields-representing-resource-names>
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Time when the ServiceConnectionToken was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Time when the ServiceConnectionToken was updated.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// User-defined labels.
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// A description of this resource.
+    #[prost(string, tag = "5")]
+    pub description: ::prost::alloc::string::String,
+    /// The resource path of the network associated with this token.
+    /// Example:
+    /// projects/{projectNumOrId}/global/networks/{resourceId}.
+    #[prost(string, tag = "6")]
+    pub network: ::prost::alloc::string::String,
+    /// Output only. The token generated by Automation.
+    #[prost(string, tag = "7")]
+    pub token: ::prost::alloc::string::String,
+    /// Output only. The time to which this token is valid.
+    #[prost(message, optional, tag = "8")]
+    pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. The etag is computed by the server, and may be sent on update and
+    /// delete requests to ensure the client has an up-to-date value before
+    /// proceeding.
+    #[prost(string, optional, tag = "9")]
+    pub etag: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Request for ListServiceConnectionTokens.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListServiceConnectionTokensRequest {
+    /// Required. The parent resource's name. ex. projects/123/locations/us-east1
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of results per page that should be returned.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// A filter expression that filters the results listed in the response.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Sort the results by a certain order.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response for ListServiceConnectionTokens.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListServiceConnectionTokensResponse {
+    /// ServiceConnectionTokens to be returned.
+    #[prost(message, repeated, tag = "1")]
+    pub service_connection_tokens: ::prost::alloc::vec::Vec<ServiceConnectionToken>,
+    /// The next pagination token in the List response. It should be used as
+    /// page_token for the following request. An empty value means no more result.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request for GetServiceConnectionToken.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetServiceConnectionTokenRequest {
+    /// Required. Name of the ServiceConnectionToken to get.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for CreateServiceConnectionToken.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateServiceConnectionTokenRequest {
+    /// Required. The parent resource's name of the ServiceConnectionToken. ex.
+    /// projects/123/locations/us-east1
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Resource ID
+    /// (i.e. 'foo' in '\[...\]/projects/p/locations/l/ServiceConnectionTokens/foo')
+    /// See <https://google.aip.dev/122#resource-id-segments>
+    /// Unique per location.
+    /// If one is not provided, one will be generated.
+    #[prost(string, tag = "2")]
+    pub service_connection_token_id: ::prost::alloc::string::String,
+    /// Required. Initial values for a new ServiceConnectionTokens
+    #[prost(message, optional, tag = "3")]
+    pub service_connection_token: ::core::option::Option<ServiceConnectionToken>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request for DeleteServiceConnectionToken.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteServiceConnectionTokenRequest {
+    /// Required. The name of the ServiceConnectionToken to delete.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes after the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. The etag is computed by the server, and may be sent on update and
+    /// delete requests to ensure the client has an up-to-date value before
+    /// proceeding.
+    #[prost(string, optional, tag = "3")]
+    pub etag: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// The infrastructure used for connections between consumers/producers.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum Infrastructure {
+    /// An invalid infrastructure as the default case.
+    Unspecified = 0,
+    /// Private Service Connect is used for connections.
+    Psc = 1,
+}
+impl Infrastructure {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "INFRASTRUCTURE_UNSPECIFIED",
+            Self::Psc => "PSC",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "INFRASTRUCTURE_UNSPECIFIED" => Some(Self::Unspecified),
+            "PSC" => Some(Self::Psc),
+            _ => None,
+        }
+    }
+}
+/// The error type indicates whether a connection error is consumer facing,
+/// producer facing or system internal.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ConnectionErrorType {
+    /// An invalid error type as the default case.
+    Unspecified = 0,
+    /// The error is due to Service Automation system internal.
+    ErrorInternal = 1,
+    /// The error is due to the setup on consumer side.
+    ErrorConsumerSide = 2,
+    /// The error is due to the setup on producer side.
+    ErrorProducerSide = 3,
+}
+impl ConnectionErrorType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "CONNECTION_ERROR_TYPE_UNSPECIFIED",
+            Self::ErrorInternal => "ERROR_INTERNAL",
+            Self::ErrorConsumerSide => "ERROR_CONSUMER_SIDE",
+            Self::ErrorProducerSide => "ERROR_PRODUCER_SIDE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CONNECTION_ERROR_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "ERROR_INTERNAL" => Some(Self::ErrorInternal),
+            "ERROR_CONSUMER_SIDE" => Some(Self::ErrorConsumerSide),
+            "ERROR_PRODUCER_SIDE" => Some(Self::ErrorProducerSide),
+            _ => None,
+        }
+    }
+}
+/// The requested IP version for the PSC connection.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum IpVersion {
+    /// Default value. We will use IPv4 or IPv6 depending on the IP version of
+    /// first available subnetwork.
+    Unspecified = 0,
+    /// Will use IPv4 only.
+    Ipv4 = 1,
+    /// Will use IPv6 only.
+    Ipv6 = 2,
+}
+impl IpVersion {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "IP_VERSION_UNSPECIFIED",
+            Self::Ipv4 => "IPV4",
+            Self::Ipv6 => "IPV6",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "IP_VERSION_UNSPECIFIED" => Some(Self::Unspecified),
+            "IPV4" => Some(Self::Ipv4),
+            "IPV6" => Some(Self::Ipv6),
+            _ => None,
+        }
+    }
+}
+/// Generated client implementations.
+pub mod cross_network_automation_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// The service for CrossNetworkAutomation resources.
+    #[derive(Debug, Clone)]
+    pub struct CrossNetworkAutomationServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl CrossNetworkAutomationServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> CrossNetworkAutomationServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> CrossNetworkAutomationServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            CrossNetworkAutomationServiceClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Lists ServiceConnectionMaps in a given project and location.
+        pub async fn list_service_connection_maps(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListServiceConnectionMapsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListServiceConnectionMapsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/ListServiceConnectionMaps",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.CrossNetworkAutomationService",
+                        "ListServiceConnectionMaps",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single ServiceConnectionMap.
+        pub async fn get_service_connection_map(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetServiceConnectionMapRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ServiceConnectionMap>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/GetServiceConnectionMap",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.CrossNetworkAutomationService",
+                        "GetServiceConnectionMap",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new ServiceConnectionMap in a given project and location.
+        pub async fn create_service_connection_map(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateServiceConnectionMapRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/CreateServiceConnectionMap",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.CrossNetworkAutomationService",
+                        "CreateServiceConnectionMap",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the parameters of a single ServiceConnectionMap.
+        pub async fn update_service_connection_map(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateServiceConnectionMapRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/UpdateServiceConnectionMap",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.CrossNetworkAutomationService",
+                        "UpdateServiceConnectionMap",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single ServiceConnectionMap.
+        pub async fn delete_service_connection_map(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteServiceConnectionMapRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/DeleteServiceConnectionMap",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.CrossNetworkAutomationService",
+                        "DeleteServiceConnectionMap",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists ServiceConnectionPolicies in a given project and location.
+        pub async fn list_service_connection_policies(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListServiceConnectionPoliciesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListServiceConnectionPoliciesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/ListServiceConnectionPolicies",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.CrossNetworkAutomationService",
+                        "ListServiceConnectionPolicies",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single ServiceConnectionPolicy.
+        pub async fn get_service_connection_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetServiceConnectionPolicyRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ServiceConnectionPolicy>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/GetServiceConnectionPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.CrossNetworkAutomationService",
+                        "GetServiceConnectionPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new ServiceConnectionPolicy in a given project and location.
+        pub async fn create_service_connection_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateServiceConnectionPolicyRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/CreateServiceConnectionPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.CrossNetworkAutomationService",
+                        "CreateServiceConnectionPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the parameters of a single ServiceConnectionPolicy.
+        pub async fn update_service_connection_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateServiceConnectionPolicyRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/UpdateServiceConnectionPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.CrossNetworkAutomationService",
+                        "UpdateServiceConnectionPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single ServiceConnectionPolicy.
+        pub async fn delete_service_connection_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteServiceConnectionPolicyRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/DeleteServiceConnectionPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.CrossNetworkAutomationService",
+                        "DeleteServiceConnectionPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists ServiceClasses in a given project and location.
+        pub async fn list_service_classes(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListServiceClassesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListServiceClassesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/ListServiceClasses",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.CrossNetworkAutomationService",
+                        "ListServiceClasses",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single ServiceClass.
+        pub async fn get_service_class(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetServiceClassRequest>,
+        ) -> std::result::Result<tonic::Response<super::ServiceClass>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/GetServiceClass",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.CrossNetworkAutomationService",
+                        "GetServiceClass",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the parameters of a single ServiceClass.
+        pub async fn update_service_class(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateServiceClassRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/UpdateServiceClass",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.CrossNetworkAutomationService",
+                        "UpdateServiceClass",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single ServiceClass.
+        pub async fn delete_service_class(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteServiceClassRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/DeleteServiceClass",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.CrossNetworkAutomationService",
+                        "DeleteServiceClass",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single ServiceConnectionToken.
+        pub async fn get_service_connection_token(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetServiceConnectionTokenRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ServiceConnectionToken>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/GetServiceConnectionToken",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.CrossNetworkAutomationService",
+                        "GetServiceConnectionToken",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists ServiceConnectionTokens in a given project and location.
+        pub async fn list_service_connection_tokens(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListServiceConnectionTokensRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListServiceConnectionTokensResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/ListServiceConnectionTokens",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.CrossNetworkAutomationService",
+                        "ListServiceConnectionTokens",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new ServiceConnectionToken in a given project and location.
+        pub async fn create_service_connection_token(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateServiceConnectionTokenRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/CreateServiceConnectionToken",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.CrossNetworkAutomationService",
+                        "CreateServiceConnectionToken",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single ServiceConnectionToken.
+        pub async fn delete_service_connection_token(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteServiceConnectionTokenRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/DeleteServiceConnectionToken",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.CrossNetworkAutomationService",
+                        "DeleteServiceConnectionToken",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
 }
 /// A Network Connectivity Center hub is a global management resource to which
 /// you attach spokes. A single hub can contain spokes from multiple regions.
@@ -55,7 +1924,7 @@ pub struct Hub {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// An optional description of the hub.
+    /// Optional. An optional description of the hub.
     #[prost(string, tag = "5")]
     pub description: ::prost::alloc::string::String,
     /// Output only. The Google-generated UUID for the hub. This value is unique
@@ -99,10 +1968,10 @@ pub struct Hub {
     /// the preset_topology is set to PRESET_TOPOLOGY_UNSPECIFIED.
     #[prost(enumeration = "PresetTopology", tag = "14")]
     pub preset_topology: i32,
-    /// Optional. Whether Private Service Connect transitivity is enabled for the
-    /// hub. If true, Private Service Connect endpoints in VPC spokes attached to
-    /// the hub are made accessible to other VPC spokes attached to the hub.
-    /// The default value is false.
+    /// Optional. Whether Private Service Connect connection propagation is enabled
+    /// for the hub. If true, Private Service Connect endpoints in VPC spokes
+    /// attached to the hub are made accessible to other VPC spokes attached to the
+    /// hub. The default value is false.
     #[prost(bool, optional, tag = "15")]
     pub export_psc: ::core::option::Option<bool>,
 }
@@ -152,7 +2021,7 @@ pub struct Spoke {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// An optional description of the spoke.
+    /// Optional. An optional description of the spoke.
     #[prost(string, tag = "5")]
     pub description: ::prost::alloc::string::String,
     /// Immutable. The name of the hub that this spoke is attached to.
@@ -161,15 +2030,15 @@ pub struct Spoke {
     /// Optional. The name of the group that this spoke is associated with.
     #[prost(string, tag = "23")]
     pub group: ::prost::alloc::string::String,
-    /// VPN tunnels that are associated with the spoke.
+    /// Optional. VPN tunnels that are associated with the spoke.
     #[prost(message, optional, tag = "17")]
     pub linked_vpn_tunnels: ::core::option::Option<LinkedVpnTunnels>,
-    /// VLAN attachments that are associated with the spoke.
+    /// Optional. VLAN attachments that are associated with the spoke.
     #[prost(message, optional, tag = "18")]
     pub linked_interconnect_attachments: ::core::option::Option<
         LinkedInterconnectAttachments,
     >,
-    /// Router appliance instances that are associated with the spoke.
+    /// Optional. Router appliance instances that are associated with the spoke.
     #[prost(message, optional, tag = "19")]
     pub linked_router_appliance_instances: ::core::option::Option<
         LinkedRouterApplianceInstances,
@@ -188,13 +2057,22 @@ pub struct Spoke {
     /// Output only. The current lifecycle state of this spoke.
     #[prost(enumeration = "State", tag = "15")]
     pub state: i32,
-    /// Output only. The reasons for current state of the spoke. Only present when
-    /// the spoke is in the `INACTIVE` state.
+    /// Output only. The reasons for current state of the spoke.
     #[prost(message, repeated, tag = "21")]
     pub reasons: ::prost::alloc::vec::Vec<spoke::StateReason>,
     /// Output only. The type of resource associated with the spoke.
     #[prost(enumeration = "SpokeType", tag = "22")]
     pub spoke_type: i32,
+    /// Optional. This checksum is computed by the server based on the value of
+    /// other fields, and may be sent on update and delete requests to ensure the
+    /// client has an up-to-date value before proceeding.
+    #[prost(string, tag = "27")]
+    pub etag: ::prost::alloc::string::String,
+    /// Optional. The list of fields waiting for hub administration's approval.
+    #[prost(string, repeated, tag = "28")]
+    pub field_paths_pending_update: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
 }
 /// Nested message and enum types in `Spoke`.
 pub mod spoke {
@@ -238,6 +2116,13 @@ pub mod spoke {
             /// Network Connectivity Center encountered errors while accepting
             /// the spoke.
             Failed = 4,
+            /// The proposed spoke update is pending review.
+            UpdatePendingReview = 5,
+            /// The proposed spoke update has been rejected by the hub administrator.
+            UpdateRejected = 6,
+            /// Network Connectivity Center encountered errors while accepting
+            /// the spoke update.
+            UpdateFailed = 7,
         }
         impl Code {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -251,6 +2136,9 @@ pub mod spoke {
                     Self::Rejected => "REJECTED",
                     Self::Paused => "PAUSED",
                     Self::Failed => "FAILED",
+                    Self::UpdatePendingReview => "UPDATE_PENDING_REVIEW",
+                    Self::UpdateRejected => "UPDATE_REJECTED",
+                    Self::UpdateFailed => "UPDATE_FAILED",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -261,6 +2149,9 @@ pub mod spoke {
                     "REJECTED" => Some(Self::Rejected),
                     "PAUSED" => Some(Self::Paused),
                     "FAILED" => Some(Self::Failed),
+                    "UPDATE_PENDING_REVIEW" => Some(Self::UpdatePendingReview),
+                    "UPDATE_REJECTED" => Some(Self::UpdateRejected),
+                    "UPDATE_FAILED" => Some(Self::UpdateFailed),
                     _ => None,
                 }
             }
@@ -427,7 +2318,7 @@ pub struct Group {
 /// administrator.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoAccept {
-    /// A list of project ids or project numbers for which you want
+    /// Optional. A list of project ids or project numbers for which you want
     /// to enable auto-accept. The auto-accept setting is applied to
     /// spokes being created or updated in these projects.
     #[prost(string, repeated, tag = "1")]
@@ -1060,6 +2951,85 @@ pub struct RejectHubSpokeResponse {
     pub spoke: ::core::option::Option<Spoke>,
 }
 /// The request for
+/// [HubService.AcceptSpokeUpdate][google.cloud.networkconnectivity.v1.HubService.AcceptSpokeUpdate].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AcceptSpokeUpdateRequest {
+    /// Required. The name of the hub to accept spoke update.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The URI of the spoke to accept update.
+    #[prost(string, tag = "2")]
+    pub spoke_uri: ::prost::alloc::string::String,
+    /// Required. The etag of the spoke to accept update.
+    #[prost(string, tag = "3")]
+    pub spoke_etag: ::prost::alloc::string::String,
+    /// Optional. A request ID to identify requests. Specify a unique request ID so
+    /// that if you must retry your request, the server knows to ignore the request
+    /// if it has already been completed. The server guarantees that a request
+    /// doesn't result in creation of duplicate commitments for at least 60
+    /// minutes.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check to see whether the original operation
+    /// was received. If it was, the server ignores the second request. This
+    /// behavior prevents clients from mistakenly creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID, with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// The response for
+/// [HubService.AcceptSpokeUpdate][google.cloud.networkconnectivity.v1.HubService.AcceptSpokeUpdate].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AcceptSpokeUpdateResponse {
+    /// The spoke that was operated on.
+    #[prost(message, optional, tag = "1")]
+    pub spoke: ::core::option::Option<Spoke>,
+}
+/// The request for
+/// [HubService.RejectSpokeUpdate][google.cloud.networkconnectivity.v1.HubService.RejectSpokeUpdate].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RejectSpokeUpdateRequest {
+    /// Required. The name of the hub to reject spoke update.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The URI of the spoke to reject update.
+    #[prost(string, tag = "2")]
+    pub spoke_uri: ::prost::alloc::string::String,
+    /// Required. The etag of the spoke to reject update.
+    #[prost(string, tag = "3")]
+    pub spoke_etag: ::prost::alloc::string::String,
+    /// Optional. Additional information provided by the hub administrator.
+    #[prost(string, tag = "4")]
+    pub details: ::prost::alloc::string::String,
+    /// Optional. A request ID to identify requests. Specify a unique request ID so
+    /// that if you must retry your request, the server knows to ignore the request
+    /// if it has already been completed. The server guarantees that a request
+    /// doesn't result in creation of duplicate commitments for at least 60
+    /// minutes.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check to see whether the original operation
+    /// was received. If it was, the server ignores the second request. This
+    /// behavior prevents clients from mistakenly creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID, with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "5")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// The response for
+/// [HubService.RejectSpokeUpdate][google.cloud.networkconnectivity.v1.HubService.RejectSpokeUpdate].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RejectSpokeUpdateResponse {
+    /// The spoke that was operated on.
+    #[prost(message, optional, tag = "1")]
+    pub spoke: ::core::option::Option<Spoke>,
+}
+/// The request for
 /// [HubService.GetRouteTable][google.cloud.networkconnectivity.v1.HubService.GetRouteTable].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRouteTableRequest {
@@ -1271,9 +3241,25 @@ pub struct LinkedVpcNetwork {
     /// Optional. IP ranges allowed to be included from peering.
     #[prost(string, repeated, tag = "3")]
     pub include_export_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The proposed include export IP ranges waiting for hub
+    /// administration's approval.
+    #[prost(string, repeated, tag = "5")]
+    pub proposed_include_export_ranges: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. The proposed exclude export IP ranges waiting for hub
+    /// administration's approval.
+    #[prost(string, repeated, tag = "6")]
+    pub proposed_exclude_export_ranges: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
     /// Output only. The list of Producer VPC spokes that this VPC spoke is a
     /// service consumer VPC spoke for. These producer VPCs are connected through
-    /// VPC peering to this spoke's backing VPC network.
+    /// VPC peering to this spoke's backing VPC network. Because they are directly
+    /// connected throuh VPC peering, NCC export filters do not apply between the
+    /// service consumer VPC spoke and any of its producer VPC spokes. This VPC
+    /// spoke cannot be deleted as long as any of these producer VPC spokes are
+    /// connected to the NCC Hub.
     #[prost(string, repeated, tag = "4")]
     pub producer_vpc_spokes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -1300,6 +3286,18 @@ pub struct LinkedProducerVpcNetwork {
     /// Optional. IP ranges allowed to be included from peering.
     #[prost(string, repeated, tag = "4")]
     pub include_export_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The proposed include export IP ranges waiting for hub
+    /// administration's approval.
+    #[prost(string, repeated, tag = "7")]
+    pub proposed_include_export_ranges: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. The proposed exclude export IP ranges waiting for hub
+    /// administration's approval.
+    #[prost(string, repeated, tag = "8")]
+    pub proposed_exclude_export_ranges: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
 }
 /// A router appliance instance is a Compute Engine virtual machine (VM) instance
 /// that acts as a BGP speaker. A router appliance instance is specified by the
@@ -1572,6 +3570,10 @@ pub enum State {
     /// The hub associated with this spoke resource has been deleted.
     /// This state applies to spoke resources only.
     Obsolete = 10,
+    /// The resource is in an undefined state due to resource creation or deletion
+    /// failure. You can try to delete the resource later or contact support for
+    /// help.
+    Failed = 11,
 }
 impl State {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -1589,6 +3591,7 @@ impl State {
             Self::Updating => "UPDATING",
             Self::Inactive => "INACTIVE",
             Self::Obsolete => "OBSOLETE",
+            Self::Failed => "FAILED",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1603,6 +3606,7 @@ impl State {
             "UPDATING" => Some(Self::Updating),
             "INACTIVE" => Some(Self::Inactive),
             "OBSOLETE" => Some(Self::Obsolete),
+            "FAILED" => Some(Self::Failed),
             _ => None,
         }
     }
@@ -1751,7 +3755,7 @@ pub mod hub_service_client {
     }
     impl<T> HubServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -1772,13 +3776,13 @@ pub mod hub_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             HubServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -2207,6 +4211,66 @@ pub mod hub_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Accepts a proposal to update a Network Connectivity Center spoke in a hub.
+        pub async fn accept_spoke_update(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AcceptSpokeUpdateRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.HubService/AcceptSpokeUpdate",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.HubService",
+                        "AcceptSpokeUpdate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Rejects a proposal to update a Network Connectivity Center spoke in a hub.
+        pub async fn reject_spoke_update(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RejectSpokeUpdateRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.HubService/RejectSpokeUpdate",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.HubService",
+                        "RejectSpokeUpdate",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Deletes a Network Connectivity Center spoke.
         pub async fn delete_spoke(
             &mut self,
@@ -2440,21 +4504,20 @@ pub mod hub_service_client {
         }
     }
 }
-/// Policy Based Routes (PBR) are more powerful routes that allows GCP customers
-/// to route their L4 network traffic based on not just destination IP, but also
-/// source IP, protocol and more. A PBR always take precedence when it conflicts
-/// with other types of routes.
-/// Next id: 22
+/// Policy-based routes route L4 network traffic based on not just destination IP
+/// address, but also source IP address, protocol, and more. If a policy-based
+/// route conflicts with other types of routes, the policy-based route always
+/// takes precedence.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyBasedRoute {
     /// Immutable. A unique name of the resource in the form of
     /// `projects/{project_number}/locations/global/PolicyBasedRoutes/{policy_based_route_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. Time when the PolicyBasedRoute was created.
+    /// Output only. Time when the policy-based route was created.
     #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Time when the PolicyBasedRoute was updated.
+    /// Output only. Time when the policy-based route was updated.
     #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// User-defined labels.
@@ -2467,16 +4530,16 @@ pub struct PolicyBasedRoute {
     /// you create the resource.
     #[prost(string, tag = "5")]
     pub description: ::prost::alloc::string::String,
-    /// Required. Fully-qualified URL of the network that this route applies to.
-    /// e.g. projects/my-project/global/networks/my-network.
+    /// Required. Fully-qualified URL of the network that this route applies to,
+    /// for example: projects/my-project/global/networks/my-network.
     #[prost(string, tag = "6")]
     pub network: ::prost::alloc::string::String,
     /// Required. The filter to match L4 traffic.
     #[prost(message, optional, tag = "10")]
     pub filter: ::core::option::Option<policy_based_route::Filter>,
-    /// Optional. The priority of this policy based route. Priority is used to
-    /// break ties in cases where there are more than one matching policy based
-    /// routes found. In cases where multiple policy based routes are matched, the
+    /// Optional. The priority of this policy-based route. Priority is used to
+    /// break ties in cases where there are more than one matching policy-based
+    /// routes found. In cases where multiple policy-based routes are matched, the
     /// one with the lowest-numbered priority value wins. The default value is
     /// 1000. The priority value must be from 1 to 65535, inclusive.
     #[prost(int32, tag = "11")]
@@ -2489,12 +4552,12 @@ pub struct PolicyBasedRoute {
     #[prost(string, tag = "15")]
     pub self_link: ::prost::alloc::string::String,
     /// Output only. Type of this resource. Always
-    /// networkconnectivity#policyBasedRoute for Policy Based Route resources.
+    /// networkconnectivity#policyBasedRoute for policy-based Route resources.
     #[prost(string, tag = "16")]
     pub kind: ::prost::alloc::string::String,
-    /// Target specifies network endpoints to which this policy based route applies
-    /// to. If none of the target is specified, the PBR will be installed on all
-    /// network endpoints (e.g. VMs, VPNs, and Interconnects) in the VPC.
+    /// Target specifies network endpoints that this policy-based route applies to.
+    /// If no target is specified, the PBR will be installed on all network
+    /// endpoints (e.g. VMs, VPNs, and Interconnects) in the VPC.
     #[prost(oneof = "policy_based_route::Target", tags = "18, 9")]
     pub target: ::core::option::Option<policy_based_route::Target>,
     #[prost(oneof = "policy_based_route::NextHop", tags = "12, 21")]
@@ -2502,19 +4565,18 @@ pub struct PolicyBasedRoute {
 }
 /// Nested message and enum types in `PolicyBasedRoute`.
 pub mod policy_based_route {
-    /// VM instances to which this policy based route applies to.
+    /// VM instances that this policy-based route applies to.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct VirtualMachine {
-        /// Optional. A list of VM instance tags to which this policy based route
-        /// applies to. VM instances that have ANY of tags specified here will
-        /// install this PBR.
+        /// Optional. A list of VM instance tags that this policy-based route applies
+        /// to. VM instances that have ANY of tags specified here installs this PBR.
         #[prost(string, repeated, tag = "1")]
         pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
-    /// InterconnectAttachment to which this route applies to.
+    /// InterconnectAttachment that this route applies to.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InterconnectAttachment {
-        /// Optional. Cloud region to install this policy based route on interconnect
+        /// Optional. Cloud region to install this policy-based route on interconnect
         /// attachment. Use `all` to install it on all interconnect attachments.
         #[prost(string, tag = "1")]
         pub region: ::prost::alloc::string::String,
@@ -2522,21 +4584,21 @@ pub mod policy_based_route {
     /// Filter matches L4 traffic.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Filter {
-        /// Optional. The IP protocol that this policy based route applies to. Valid
+        /// Optional. The IP protocol that this policy-based route applies to. Valid
         /// values are 'TCP', 'UDP', and 'ALL'. Default is 'ALL'.
         #[prost(string, tag = "1")]
         pub ip_protocol: ::prost::alloc::string::String,
-        /// Optional. The source IP range of outgoing packets that this policy based
+        /// Optional. The source IP range of outgoing packets that this policy-based
         /// route applies to. Default is "0.0.0.0/0" if protocol version is IPv4.
         #[prost(string, tag = "2")]
         pub src_range: ::prost::alloc::string::String,
-        /// Optional. The destination IP range of outgoing packets that this policy
-        /// based route applies to. Default is "0.0.0.0/0" if protocol version is
-        /// IPv4.
+        /// Optional. The destination IP range of outgoing packets that this
+        /// policy-based route applies to. Default is "0.0.0.0/0" if protocol version
+        /// is IPv4.
         #[prost(string, tag = "3")]
         pub dest_range: ::prost::alloc::string::String,
-        /// Required. Internet protocol versions this policy based route applies to.
-        /// For this version, only IPV4 is supported.
+        /// Required. Internet protocol versions this policy-based route applies to.
+        /// For this version, only IPV4 is supported. IPV6 is supported in preview.
         #[prost(enumeration = "filter::ProtocolVersion", tag = "6")]
         pub protocol_version: i32,
     }
@@ -2605,7 +4667,7 @@ pub mod policy_based_route {
     }
     /// Nested message and enum types in `Warnings`.
     pub mod warnings {
-        /// Warning code for Policy Based Routing. Expect to add values in the
+        /// Warning code for policy-based routing. Expect to add values in the
         /// future.
         #[derive(
             Clone,
@@ -2622,11 +4684,11 @@ pub mod policy_based_route {
         pub enum Code {
             /// Default value.
             WarningUnspecified = 0,
-            /// The policy based route is not active and functioning. Common causes are
-            /// the dependent network was deleted or the resource project was turned
-            /// off.
+            /// The policy-based route is not active and functioning. Common causes are
+            /// that the dependent network was deleted or the resource project was
+            /// turned off.
             ResourceNotActive = 1,
-            /// The policy based route is being modified (e.g. created/deleted) at this
+            /// The policy-based route is being modified (e.g. created/deleted) at this
             /// time.
             ResourceBeingModified = 2,
         }
@@ -2670,9 +4732,9 @@ pub mod policy_based_route {
         /// Default value.
         Unspecified = 0,
         /// Use the routes from the default routing tables (system-generated routes,
-        /// custom routes, peering route) to determine the next hop. This will
-        /// effectively exclude matching packets being applied on other PBRs with a
-        /// lower priority.
+        /// custom routes, peering route) to determine the next hop. This effectively
+        /// excludes matching packets being applied on other PBRs with a lower
+        /// priority.
         DefaultRouting = 1,
     }
     impl OtherRoutes {
@@ -2695,23 +4757,24 @@ pub mod policy_based_route {
             }
         }
     }
-    /// Target specifies network endpoints to which this policy based route applies
-    /// to. If none of the target is specified, the PBR will be installed on all
-    /// network endpoints (e.g. VMs, VPNs, and Interconnects) in the VPC.
+    /// Target specifies network endpoints that this policy-based route applies to.
+    /// If no target is specified, the PBR will be installed on all network
+    /// endpoints (e.g. VMs, VPNs, and Interconnects) in the VPC.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Target {
-        /// Optional. VM instances to which this policy based route applies to.
+        /// Optional. VM instances that this policy-based route applies to.
         #[prost(message, tag = "18")]
         VirtualMachine(VirtualMachine),
-        /// Optional. The interconnect attachments to which this route applies to.
+        /// Optional. The interconnect attachments that this policy-based route
+        /// applies to.
         #[prost(message, tag = "9")]
         InterconnectAttachment(InterconnectAttachment),
     }
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum NextHop {
-        /// Optional. The IP of a global access enabled L4 ILB that should be the
-        /// next hop to handle matching packets. For this version, only
-        /// next_hop_ilb_ip is supported.
+        /// Optional. The IP address of a global-access-enabled L4 ILB that is the
+        /// next hop for matching packets. For this version, only nextHopIlbIp is
+        /// supported.
         #[prost(string, tag = "12")]
         NextHopIlbIp(::prost::alloc::string::String),
         /// Optional. Other routes that will be referenced to determine the next hop
@@ -2720,7 +4783,9 @@ pub mod policy_based_route {
         NextHopOtherRoutes(i32),
     }
 }
-/// Request for [PolicyBasedRouting.ListPolicyBasedRoutes][] method.
+/// Request for
+/// [PolicyBasedRoutingService.ListPolicyBasedRoutes][google.cloud.networkconnectivity.v1.PolicyBasedRoutingService.ListPolicyBasedRoutes]
+/// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPolicyBasedRoutesRequest {
     /// Required. The parent resource's name.
@@ -2739,10 +4804,12 @@ pub struct ListPolicyBasedRoutesRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// Response for [PolicyBasedRouting.ListPolicyBasedRoutes][] method.
+/// Response for
+/// [PolicyBasedRoutingService.ListPolicyBasedRoutes][google.cloud.networkconnectivity.v1.PolicyBasedRoutingService.ListPolicyBasedRoutes]
+/// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPolicyBasedRoutesResponse {
-    /// Policy based routes to be returned.
+    /// Policy-based routes to be returned.
     #[prost(message, repeated, tag = "1")]
     pub policy_based_routes: ::prost::alloc::vec::Vec<PolicyBasedRoute>,
     /// The next pagination token in the List response. It should be used as
@@ -2753,57 +4820,70 @@ pub struct ListPolicyBasedRoutesResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Request for [PolicyBasedRouting.GetPolicyBasedRoute][] method.
+/// Request for
+/// [PolicyBasedRoutingService.GetPolicyBasedRoute][google.cloud.networkconnectivity.v1.PolicyBasedRoutingService.GetPolicyBasedRoute]
+/// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPolicyBasedRouteRequest {
     /// Required. Name of the PolicyBasedRoute resource to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for [PolicyBasedRouting.CreatePolicyBasedRoute][] method.
+/// Request for
+/// [PolicyBasedRoutingService.CreatePolicyBasedRoute][google.cloud.networkconnectivity.v1.PolicyBasedRoutingService.CreatePolicyBasedRoute]
+/// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePolicyBasedRouteRequest {
     /// Required. The parent resource's name of the PolicyBasedRoute.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. Unique id for the Policy Based Route to create.
+    /// Required. Unique id for the policy-based route to create. Provided by the
+    /// client when the resource is created. The name must comply with
+    /// <https://google.aip.dev/122#resource-id-segments.> Specifically, the name
+    /// must be 1-63 characters long and match the regular expression
+    /// [a-z](\[a-z0-9-\]*[a-z0-9])?. The first character must be a lowercase letter,
+    /// and all following characters (except for the last character) must be a
+    /// dash, lowercase letter, or digit. The last character must be a lowercase
+    /// letter or digit.
     #[prost(string, tag = "2")]
     pub policy_based_route_id: ::prost::alloc::string::String,
-    /// Required. Initial values for a new Policy Based Route.
+    /// Required. Initial values for a new policy-based route.
     #[prost(message, optional, tag = "3")]
     pub policy_based_route: ::core::option::Option<PolicyBasedRoute>,
     /// Optional. An optional request ID to identify requests. Specify a unique
-    /// request ID so that if you must retry your request, the server will know to
-    /// ignore the request if it has already been completed. The server will
-    /// guarantee that for at least 60 minutes since the first request.
+    /// request ID so that if you must retry your request, the server knows to
+    /// ignore the request if it has already been completed. The server guarantees
+    /// that for at least 60 minutes since the first request.
     ///
     /// For example, consider a situation where you make an initial request and
     /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
-    /// was received, and if so, will ignore the second request. This prevents
-    /// clients from accidentally creating duplicate commitments.
+    /// was received, and if so, ignores the second request. This prevents clients
+    /// from accidentally creating duplicate commitments.
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request for [PolicyBasedRouting.DeletePolicyBasedRoute][] method.
+/// Request for
+/// [PolicyBasedRoutingService.DeletePolicyBasedRoute][google.cloud.networkconnectivity.v1.PolicyBasedRoutingService.DeletePolicyBasedRoute]
+/// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePolicyBasedRouteRequest {
-    /// Required. Name of the PolicyBasedRoute resource to delete.
+    /// Required. Name of the policy-based route resource to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. An optional request ID to identify requests. Specify a unique
-    /// request ID so that if you must retry your request, the server will know to
-    /// ignore the request if it has already been completed. The server will
-    /// guarantee that for at least 60 minutes after the first request.
+    /// request ID so that if you must retry your request, the server knows to
+    /// ignore the request if it has already been completed. The server guarantees
+    /// that for at least 60 minutes after the first request.
     ///
     /// For example, consider a situation where you make an initial request and
     /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
-    /// was received, and if so, will ignore the second request. This prevents
-    /// clients from accidentally creating duplicate commitments.
+    /// was received, and if so, ignores the second request. This prevents clients
+    /// from accidentally creating duplicate commitments.
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
@@ -2840,7 +4920,7 @@ pub mod policy_based_routing_service_client {
     }
     impl<T> PolicyBasedRoutingServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -2861,13 +4941,13 @@ pub mod policy_based_routing_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             PolicyBasedRoutingServiceClient::new(
@@ -2905,7 +4985,7 @@ pub mod policy_based_routing_service_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Lists PolicyBasedRoutes in a given project and location.
+        /// Lists policy-based routes in a given project and location.
         pub async fn list_policy_based_routes(
             &mut self,
             request: impl tonic::IntoRequest<super::ListPolicyBasedRoutesRequest>,
@@ -2935,7 +5015,7 @@ pub mod policy_based_routing_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Gets details of a single PolicyBasedRoute.
+        /// Gets details of a single policy-based route.
         pub async fn get_policy_based_route(
             &mut self,
             request: impl tonic::IntoRequest<super::GetPolicyBasedRouteRequest>,
@@ -2965,7 +5045,7 @@ pub mod policy_based_routing_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Creates a new PolicyBasedRoute in a given project and location.
+        /// Creates a new policy-based route in a given project and location.
         pub async fn create_policy_based_route(
             &mut self,
             request: impl tonic::IntoRequest<super::CreatePolicyBasedRouteRequest>,
@@ -2995,7 +5075,7 @@ pub mod policy_based_routing_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Deletes a single PolicyBasedRoute.
+        /// Deletes a single policy-based route.
         pub async fn delete_policy_based_route(
             &mut self,
             request: impl tonic::IntoRequest<super::DeletePolicyBasedRouteRequest>,

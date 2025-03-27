@@ -1413,6 +1413,9 @@ pub mod byte_content_item {
     /// The type of data being sent for inspection. To learn more, see
     /// [Supported file
     /// types](<https://cloud.google.com/sensitive-data-protection/docs/supported-file-types>).
+    ///
+    /// Only the first frame of each multiframe image is inspected. Metadata and
+    /// other frames aren't inspected.
     #[derive(
         Clone,
         Copy,
@@ -2440,6 +2443,13 @@ pub struct InfoTypeDescription {
     /// The default sensitivity of the infoType.
     #[prost(message, optional, tag = "11")]
     pub sensitivity_score: ::core::option::Option<SensitivityScore>,
+    /// If this field is set, this infoType is a general infoType and these
+    /// specific infoTypes are contained within it.
+    /// General infoTypes are infoTypes that encompass multiple specific infoTypes.
+    /// For example, the "GEOGRAPHIC_DATA" general infoType would have set for this
+    /// field "LOCATION", "LOCATION_COORDINATES", and "STREET_ADDRESS".
+    #[prost(string, repeated, tag = "12")]
+    pub specific_info_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Classification of infoTypes to organize them according to geographic
 /// location, industry, and data type.
@@ -2495,6 +2505,8 @@ pub mod info_type_category {
         Colombia = 9,
         /// The infoType is typically used in Croatia.
         Croatia = 42,
+        /// The infoType is typically used in Czechia.
+        Czechia = 52,
         /// The infoType is typically used in Denmark.
         Denmark = 10,
         /// The infoType is typically used in France.
@@ -2591,6 +2603,7 @@ pub mod info_type_category {
                 Self::China => "CHINA",
                 Self::Colombia => "COLOMBIA",
                 Self::Croatia => "CROATIA",
+                Self::Czechia => "CZECHIA",
                 Self::Denmark => "DENMARK",
                 Self::France => "FRANCE",
                 Self::Finland => "FINLAND",
@@ -2647,6 +2660,7 @@ pub mod info_type_category {
                 "CHINA" => Some(Self::China),
                 "COLOMBIA" => Some(Self::Colombia),
                 "CROATIA" => Some(Self::Croatia),
+                "CZECHIA" => Some(Self::Czechia),
                 "DENMARK" => Some(Self::Denmark),
                 "FRANCE" => Some(Self::France),
                 "FINLAND" => Some(Self::Finland),
@@ -5814,6 +5828,15 @@ pub mod data_profile_action {
         ///     you must use a separate table for each boundary.
         #[prost(message, optional, tag = "1")]
         pub profile_table: ::core::option::Option<super::BigQueryTable>,
+        /// Store sample [data profile
+        /// findings][google.privacy.dlp.v2.DataProfileFinding] in an existing table
+        /// or a new table in an existing dataset. Each regeneration will result in
+        /// new rows in BigQuery. Data is inserted using [streaming
+        /// insert](<https://cloud.google.com/blog/products/bigquery/life-of-a-bigquery-streaming-insert>)
+        /// and so data may be in the buffer for a period of time after the profile
+        /// has finished.
+        #[prost(message, optional, tag = "2")]
+        pub sample_findings_table: ::core::option::Option<super::BigQueryTable>,
     }
     /// Send a Pub/Sub message into the given Pub/Sub topic to connect other
     /// systems to data profile generation. The message payload data will
@@ -6044,6 +6067,79 @@ pub mod data_profile_action {
         #[prost(message, tag = "8")]
         TagResources(TagResources),
     }
+}
+/// Details about a piece of potentially sensitive information that was detected
+/// when the data resource was profiled.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataProfileFinding {
+    /// The content that was found. Even if the content is not textual, it
+    /// may be converted to a textual representation here. If the finding exceeds
+    /// 4096 bytes in length, the quote may be omitted.
+    #[prost(string, tag = "1")]
+    pub quote: ::prost::alloc::string::String,
+    /// The [type of
+    /// content](<https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference>)
+    /// that might have been found.
+    #[prost(message, optional, tag = "2")]
+    pub infotype: ::core::option::Option<InfoType>,
+    /// Contains data parsed from quotes. Currently supported infoTypes: DATE,
+    /// DATE_OF_BIRTH, and TIME.
+    #[prost(message, optional, tag = "3")]
+    pub quote_info: ::core::option::Option<QuoteInfo>,
+    /// Resource name of the data profile associated with the finding.
+    #[prost(string, tag = "4")]
+    pub data_profile_resource_name: ::prost::alloc::string::String,
+    /// A unique identifier for the finding.
+    #[prost(string, tag = "5")]
+    pub finding_id: ::prost::alloc::string::String,
+    /// Timestamp when the finding was detected.
+    #[prost(message, optional, tag = "6")]
+    pub timestamp: ::core::option::Option<::prost_types::Timestamp>,
+    /// Where the content was found.
+    #[prost(message, optional, tag = "7")]
+    pub location: ::core::option::Option<DataProfileFindingLocation>,
+    /// How broadly a resource has been shared.
+    #[prost(enumeration = "ResourceVisibility", tag = "8")]
+    pub resource_visibility: i32,
+}
+/// Location of a data profile finding within a resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataProfileFindingLocation {
+    /// Name of the container where the finding is located.
+    /// The top-level name is the source file name or table name. Names of some
+    /// common storage containers are formatted as follows:
+    ///
+    /// * BigQuery tables:  `{project_id}:{dataset_id}.{table_id}`
+    /// * Cloud Storage files: `gs://{bucket}/{path}`
+    #[prost(string, tag = "1")]
+    pub container_name: ::prost::alloc::string::String,
+    /// Additional location details that may be provided for some types of
+    /// profiles. At this time, only findings for table data profiles include such
+    /// details.
+    #[prost(oneof = "data_profile_finding_location::LocationExtraDetails", tags = "2")]
+    pub location_extra_details: ::core::option::Option<
+        data_profile_finding_location::LocationExtraDetails,
+    >,
+}
+/// Nested message and enum types in `DataProfileFindingLocation`.
+pub mod data_profile_finding_location {
+    /// Additional location details that may be provided for some types of
+    /// profiles. At this time, only findings for table data profiles include such
+    /// details.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum LocationExtraDetails {
+        /// Location of a finding within a resource that produces a table data
+        /// profile.
+        #[prost(message, tag = "2")]
+        DataProfileFindingRecordLocation(super::DataProfileFindingRecordLocation),
+    }
+}
+/// Location of a finding within a resource that produces a table data profile.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataProfileFindingRecordLocation {
+    /// Field ID of the column containing the finding.
+    #[prost(message, optional, tag = "1")]
+    pub field: ::core::option::Option<FieldId>,
 }
 /// Configuration for setting up a job to scan resources for profile generation.
 /// Only one data profile configuration may exist per organization, folder,
@@ -8940,6 +9036,14 @@ pub struct TableDataProfile {
     /// The time at which the table was created.
     #[prost(message, optional, tag = "23")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The BigQuery table to which the sample findings are written.
+    #[prost(message, optional, tag = "37")]
+    pub sample_findings_table: ::core::option::Option<BigQueryTable>,
+    /// The tags attached to the table, including any tags attached during
+    /// profiling. Because tags are attached to Cloud SQL instances rather than
+    /// Cloud SQL tables, this field is empty for Cloud SQL table profiles.
+    #[prost(message, repeated, tag = "39")]
+    pub tags: ::prost::alloc::vec::Vec<Tag>,
     /// Resources related to this profile.
     #[prost(message, repeated, tag = "41")]
     pub related_resources: ::prost::alloc::vec::Vec<RelatedResource>,
@@ -9405,9 +9509,16 @@ pub struct FileStoreDataProfile {
     pub file_store_info_type_summaries: ::prost::alloc::vec::Vec<
         FileStoreInfoTypeSummary,
     >,
+    /// The BigQuery table to which the sample findings are written.
+    #[prost(message, optional, tag = "22")]
+    pub sample_findings_table: ::core::option::Option<BigQueryTable>,
     /// The file store does not have any files.
     #[prost(bool, tag = "23")]
     pub file_store_is_empty: bool,
+    /// The tags attached to the resource, including any tags attached during
+    /// profiling.
+    #[prost(message, repeated, tag = "25")]
+    pub tags: ::prost::alloc::vec::Vec<Tag>,
     /// Resources related to this profile.
     #[prost(message, repeated, tag = "26")]
     pub related_resources: ::prost::alloc::vec::Vec<RelatedResource>,
@@ -9460,6 +9571,24 @@ pub mod file_store_data_profile {
             }
         }
     }
+}
+/// A tag associated with a resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Tag {
+    /// The namespaced name for the tag value to attach to Google Cloud resources.
+    /// Must be in the format `{parent_id}/{tag_key_short_name}/{short_name}`, for
+    /// example, "123456/environment/prod". This is only set for Google Cloud
+    /// resources.
+    #[prost(string, tag = "1")]
+    pub namespaced_tag_value: ::prost::alloc::string::String,
+    /// The key of a tag key-value pair. For Google Cloud resources, this is the
+    /// resource name of the key, for example, "tagKeys/123456".
+    #[prost(string, tag = "2")]
+    pub key: ::prost::alloc::string::String,
+    /// The value of a tag key-value pair. For Google Cloud resources, this is the
+    /// resource name of the value, for example, "tagValues/123456".
+    #[prost(string, tag = "3")]
+    pub value: ::prost::alloc::string::String,
 }
 /// A related resource.
 /// Examples:
@@ -11090,7 +11219,7 @@ pub mod dlp_service_client {
     }
     impl<T> DlpServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -11111,13 +11240,13 @@ pub mod dlp_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             DlpServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -11199,6 +11328,9 @@ pub mod dlp_service_client {
         /// When no InfoTypes or CustomInfoTypes are specified in this request, the
         /// system will automatically choose what detectors to run. By default this may
         /// be all types, but may change over time as detectors are updated.
+        ///
+        /// Only the first frame of each multiframe image is redacted. Metadata and
+        /// other frames are omitted in the response.
         pub async fn redact_image(
             &mut self,
             request: impl tonic::IntoRequest<super::RedactImageRequest>,

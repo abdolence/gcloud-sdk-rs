@@ -280,6 +280,8 @@ pub enum ReportCauseCode {
     GkeNodeServiceAccountServiceAccountDisabled = 243,
     GkeNodeServiceAccountDefaultServiceAccountUsed = 244,
     GkeNodeServiceAccountBadOauthScopes = 245,
+    GkeIpMasqAgentConfigMapNotCoveringPodCidr = 251,
+    GkeIpMasqAgentCustomConfigNotCoveringPodCidr = 252,
     /// Managed Services
     CloudSqlPrivateIpBlockedByEgressFirewall = 601,
     CloudSqlPrivateIpBlockedByRoutingIssue = 602,
@@ -361,6 +363,12 @@ impl ReportCauseCode {
             }
             Self::GkeNodeServiceAccountBadOauthScopes => {
                 "GKE_NODE_SERVICE_ACCOUNT_BAD_OAUTH_SCOPES"
+            }
+            Self::GkeIpMasqAgentConfigMapNotCoveringPodCidr => {
+                "GKE_IP_MASQ_AGENT_CONFIG_MAP_NOT_COVERING_POD_CIDR"
+            }
+            Self::GkeIpMasqAgentCustomConfigNotCoveringPodCidr => {
+                "GKE_IP_MASQ_AGENT_CUSTOM_CONFIG_NOT_COVERING_POD_CIDR"
             }
             Self::CloudSqlPrivateIpBlockedByEgressFirewall => {
                 "CLOUD_SQL_PRIVATE_IP_BLOCKED_BY_EGRESS_FIREWALL"
@@ -475,6 +483,12 @@ impl ReportCauseCode {
             }
             "GKE_NODE_SERVICE_ACCOUNT_BAD_OAUTH_SCOPES" => {
                 Some(Self::GkeNodeServiceAccountBadOauthScopes)
+            }
+            "GKE_IP_MASQ_AGENT_CONFIG_MAP_NOT_COVERING_POD_CIDR" => {
+                Some(Self::GkeIpMasqAgentConfigMapNotCoveringPodCidr)
+            }
+            "GKE_IP_MASQ_AGENT_CUSTOM_CONFIG_NOT_COVERING_POD_CIDR" => {
+                Some(Self::GkeIpMasqAgentCustomConfigNotCoveringPodCidr)
             }
             "CLOUD_SQL_PRIVATE_IP_BLOCKED_BY_EGRESS_FIREWALL" => {
                 Some(Self::CloudSqlPrivateIpBlockedByEgressFirewall)

@@ -286,7 +286,7 @@ pub mod annotate_assessment_request {
     )]
     #[repr(i32)]
     pub enum Reason {
-        /// Default unspecified reason.
+        /// Unspecified reason. Do not use.
         Unspecified = 0,
         /// Indicates that the transaction had a chargeback issued with no other
         /// details. When possible, specify the type by using CHARGEBACK_FRAUD or
@@ -644,9 +644,14 @@ pub struct Event {
     /// WAF-enabled key.
     #[prost(bool, tag = "9")]
     pub waf_token_assessment: bool,
-    /// Optional. JA3 fingerprint for SSL clients.
+    /// Optional. JA3 fingerprint for SSL clients. To learn how to compute this
+    /// fingerprint, please refer to <https://github.com/salesforce/ja3.>
     #[prost(string, tag = "10")]
     pub ja3: ::prost::alloc::string::String,
+    /// Optional. JA4 fingerprint for SSL clients. To learn how to compute this
+    /// fingerprint, please refer to <https://github.com/FoxIO-LLC/ja4.>
+    #[prost(string, tag = "18")]
+    pub ja4: ::prost::alloc::string::String,
     /// Optional. HTTP header information about the request.
     #[prost(string, repeated, tag = "11")]
     pub headers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -693,8 +698,8 @@ pub mod event {
         /// Enable Fraud Prevention for this assessment, if Fraud Prevention is
         /// enabled in the Google Cloud console.
         Enabled = 1,
-        /// Disable Fraud Prevention for this assessment, regardless of Google Cloud
-        /// console settings.
+        /// Disable Fraud Prevention for this assessment, regardless of the Google
+        /// Cloud console settings.
         Disabled = 2,
     }
     impl FraudPrevention {
@@ -1619,7 +1624,8 @@ pub struct Metrics {
     /// `projects/{project}/keys/{key}/metrics`.
     #[prost(string, tag = "4")]
     pub name: ::prost::alloc::string::String,
-    /// Inclusive start time aligned to a day (UTC).
+    /// Inclusive start time aligned to a day in the America/Los_Angeles (Pacific)
+    /// timezone.
     #[prost(message, optional, tag = "1")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Metrics are continuous and in order by dates, and in the granularity
@@ -2538,7 +2544,7 @@ pub mod recaptcha_enterprise_service_client {
     }
     impl<T> RecaptchaEnterpriseServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -2559,13 +2565,13 @@ pub mod recaptcha_enterprise_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             RecaptchaEnterpriseServiceClient::new(

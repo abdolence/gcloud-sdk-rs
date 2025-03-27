@@ -63,8 +63,7 @@ pub struct Instance {
     /// to avoid confusion.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// (`OutputOnly`)
-    /// The current state of the instance.
+    /// Output only. The current state of the instance.
     #[prost(enumeration = "instance::State", tag = "3")]
     pub state: i32,
     /// The type of the instance. Defaults to `PRODUCTION`.
@@ -86,14 +85,17 @@ pub struct Instance {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Output only. A server-assigned timestamp representing when this Instance
-    /// was created. For instances created before this field was added (August
-    /// 2021), this value is `seconds: 0, nanos: 1`.
+    /// Output only. A commit timestamp representing when this Instance was
+    /// created. For instances created before this field was added (August 2021),
+    /// this value is `seconds: 0, nanos: 1`.
     #[prost(message, optional, tag = "7")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Reserved for future use.
     #[prost(bool, optional, tag = "8")]
     pub satisfies_pzs: ::core::option::Option<bool>,
+    /// Output only. Reserved for future use.
+    #[prost(bool, optional, tag = "11")]
+    pub satisfies_pzi: ::core::option::Option<bool>,
 }
 /// Nested message and enum types in `Instance`.
 pub mod instance {
@@ -236,8 +238,9 @@ pub struct Cluster {
     /// Output only. The current state of the cluster.
     #[prost(enumeration = "cluster::State", tag = "3")]
     pub state: i32,
-    /// The number of nodes allocated to this cluster. More nodes enable higher
-    /// throughput and more consistent performance.
+    /// The number of nodes in the cluster. If no value is set,
+    /// Cloud Bigtable automatically allocates nodes based on your data footprint
+    /// and optimized for 50% storage utilization.
     #[prost(int32, tag = "4")]
     pub serve_nodes: i32,
     /// Immutable. The node scaling factor of this cluster.
@@ -283,7 +286,6 @@ pub mod cluster {
         ///   `cloudkms.cryptoKeyEncrypterDecrypter` role on the CMEK key.
         ///   2) Only regional keys can be used and the region of the CMEK key must
         ///   match the region of the cluster.
-        ///   3) All clusters within an instance must use the same CMEK key.
         /// Values are of the form
         /// `projects/{project}/locations/{location}/keyRings/{keyring}/cryptoKeys/{key}`
         #[prost(string, tag = "1")]
@@ -505,17 +507,10 @@ pub mod app_profile {
         pub priority: i32,
     }
     /// Data Boost is a serverless compute capability that lets you run
-    /// high-throughput read jobs on your Bigtable data, without impacting the
-    /// performance of the clusters that handle your application traffic.
-    /// Currently, Data Boost exclusively supports read-only use-cases with
-    /// single-cluster routing.
-    ///
-    /// Data Boost reads are only guaranteed to see the results of writes that
-    /// were written at least 30 minutes ago. This means newly written values may
-    /// not become visible for up to 30m, and also means that old values may
-    /// remain visible for up to 30m after being deleted or overwritten. To
-    /// mitigate the staleness of the data, users may either wait 30m, or use
-    /// CheckConsistency.
+    /// high-throughput read jobs and queries on your Bigtable data, without
+    /// impacting the performance of the clusters that handle your application
+    /// traffic. Data Boost supports read-only use cases with single-cluster
+    /// routing.
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct DataBoostIsolationReadOnly {
         /// The Compute Billing Owner for this Data Boost App Profile.
@@ -681,6 +676,45 @@ pub struct HotTablet {
     #[prost(float, tag = "7")]
     pub node_cpu_usage_percent: f32,
 }
+/// A SQL logical view object that can be referenced in SQL queries.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LogicalView {
+    /// Identifier. The unique name of the logical view.
+    /// Format:
+    /// `projects/{project}/instances/{instance}/logicalViews/{logical_view}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The logical view's select query.
+    #[prost(string, tag = "2")]
+    pub query: ::prost::alloc::string::String,
+    /// Optional. The etag for this logical view.
+    /// This may be sent on update requests to ensure that the client has an
+    /// up-to-date value before proceeding. The server returns an ABORTED error on
+    /// a mismatched etag.
+    #[prost(string, tag = "3")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// A materialized view object that can be referenced in SQL queries.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MaterializedView {
+    /// Identifier. The unique name of the materialized view.
+    /// Format:
+    /// `projects/{project}/instances/{instance}/materializedViews/{materialized_view}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Immutable. The materialized view's select query.
+    #[prost(string, tag = "2")]
+    pub query: ::prost::alloc::string::String,
+    /// Optional. The etag for this materialized view.
+    /// This may be sent on update requests to ensure that the client has an
+    /// up-to-date value before proceeding. The server returns an ABORTED error on
+    /// a mismatched etag.
+    #[prost(string, tag = "3")]
+    pub etag: ::prost::alloc::string::String,
+    /// Set to true to make the MaterializedView protected against deletion.
+    #[prost(bool, tag = "6")]
+    pub deletion_protection: bool,
+}
 /// Request message for BigtableInstanceAdmin.CreateInstance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstanceRequest {
@@ -701,7 +735,6 @@ pub struct CreateInstanceRequest {
     /// cluster ID, e.g., just `mycluster` rather than
     /// `projects/myproject/instances/myinstance/clusters/mycluster`.
     /// Fields marked `OutputOnly` must be left blank.
-    /// Currently, at most four clusters can be specified.
     #[prost(map = "string, message", tag = "4")]
     pub clusters: ::std::collections::HashMap<::prost::alloc::string::String, Cluster>,
 }
@@ -1135,6 +1168,229 @@ pub struct ListHotTabletsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// Request message for BigtableInstanceAdmin.CreateLogicalView.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateLogicalViewRequest {
+    /// Required. The parent instance where this logical view will be created.
+    /// Format: `projects/{project}/instances/{instance}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ID to use for the logical view, which will become the final
+    /// component of the logical view's resource name.
+    #[prost(string, tag = "2")]
+    pub logical_view_id: ::prost::alloc::string::String,
+    /// Required. The logical view to create.
+    #[prost(message, optional, tag = "3")]
+    pub logical_view: ::core::option::Option<LogicalView>,
+}
+/// The metadata for the Operation returned by CreateLogicalView.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateLogicalViewMetadata {
+    /// The request that prompted the initiation of this CreateLogicalView
+    /// operation.
+    #[prost(message, optional, tag = "1")]
+    pub original_request: ::core::option::Option<CreateLogicalViewRequest>,
+    /// The time at which this operation started.
+    #[prost(message, optional, tag = "2")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// If set, the time at which this operation finished or was canceled.
+    #[prost(message, optional, tag = "3")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for BigtableInstanceAdmin.GetLogicalView.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetLogicalViewRequest {
+    /// Required. The unique name of the requested logical view. Values are of the
+    /// form `projects/{project}/instances/{instance}/logicalViews/{logical_view}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for BigtableInstanceAdmin.ListLogicalViews.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListLogicalViewsRequest {
+    /// Required. The unique name of the instance for which the list of logical
+    /// views is requested. Values are of the form
+    /// `projects/{project}/instances/{instance}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of logical views to return. The service may
+    /// return fewer than this value
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListLogicalViews` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListLogicalViews` must
+    /// match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for BigtableInstanceAdmin.ListLogicalViews.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListLogicalViewsResponse {
+    /// The list of requested logical views.
+    #[prost(message, repeated, tag = "1")]
+    pub logical_views: ::prost::alloc::vec::Vec<LogicalView>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for BigtableInstanceAdmin.UpdateLogicalView.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateLogicalViewRequest {
+    /// Required. The logical view to update.
+    ///
+    /// The logical view's `name` field is used to identify the view to update.
+    /// Format:
+    /// `projects/{project}/instances/{instance}/logicalViews/{logical_view}`.
+    #[prost(message, optional, tag = "1")]
+    pub logical_view: ::core::option::Option<LogicalView>,
+    /// Optional. The list of fields to update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// The metadata for the Operation returned by UpdateLogicalView.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateLogicalViewMetadata {
+    /// The request that prompted the initiation of this UpdateLogicalView
+    /// operation.
+    #[prost(message, optional, tag = "1")]
+    pub original_request: ::core::option::Option<UpdateLogicalViewRequest>,
+    /// The time at which this operation was started.
+    #[prost(message, optional, tag = "2")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// If set, the time at which this operation finished or was canceled.
+    #[prost(message, optional, tag = "3")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for BigtableInstanceAdmin.DeleteLogicalView.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteLogicalViewRequest {
+    /// Required. The unique name of the logical view to be deleted.
+    /// Format:
+    /// `projects/{project}/instances/{instance}/logicalViews/{logical_view}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The current etag of the logical view.
+    /// If an etag is provided and does not match the current etag of the
+    /// logical view, deletion will be blocked and an ABORTED error will be
+    /// returned.
+    #[prost(string, tag = "2")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// Request message for BigtableInstanceAdmin.CreateMaterializedView.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateMaterializedViewRequest {
+    /// Required. The parent instance where this materialized view will be created.
+    /// Format: `projects/{project}/instances/{instance}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ID to use for the materialized view, which will become the
+    /// final component of the materialized view's resource name.
+    #[prost(string, tag = "2")]
+    pub materialized_view_id: ::prost::alloc::string::String,
+    /// Required. The materialized view to create.
+    #[prost(message, optional, tag = "3")]
+    pub materialized_view: ::core::option::Option<MaterializedView>,
+}
+/// The metadata for the Operation returned by CreateMaterializedView.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateMaterializedViewMetadata {
+    /// The request that prompted the initiation of this CreateMaterializedView
+    /// operation.
+    #[prost(message, optional, tag = "1")]
+    pub original_request: ::core::option::Option<CreateMaterializedViewRequest>,
+    /// The time at which this operation started.
+    #[prost(message, optional, tag = "2")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// If set, the time at which this operation finished or was canceled.
+    #[prost(message, optional, tag = "3")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for BigtableInstanceAdmin.GetMaterializedView.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetMaterializedViewRequest {
+    /// Required. The unique name of the requested materialized view. Values are of
+    /// the form
+    /// `projects/{project}/instances/{instance}/materializedViews/{materialized_view}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for BigtableInstanceAdmin.ListMaterializedViews.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListMaterializedViewsRequest {
+    /// Required. The unique name of the instance for which the list of
+    /// materialized views is requested. Values are of the form
+    /// `projects/{project}/instances/{instance}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of materialized views to return. The service
+    /// may return fewer than this value
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListMaterializedViews`
+    /// call. Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListMaterializedViews`
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for BigtableInstanceAdmin.ListMaterializedViews.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListMaterializedViewsResponse {
+    /// The list of requested materialized views.
+    #[prost(message, repeated, tag = "1")]
+    pub materialized_views: ::prost::alloc::vec::Vec<MaterializedView>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for BigtableInstanceAdmin.UpdateMaterializedView.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateMaterializedViewRequest {
+    /// Required. The materialized view to update.
+    ///
+    /// The materialized view's `name` field is used to identify the view to
+    /// update. Format:
+    /// `projects/{project}/instances/{instance}/materializedViews/{materialized_view}`.
+    #[prost(message, optional, tag = "1")]
+    pub materialized_view: ::core::option::Option<MaterializedView>,
+    /// Optional. The list of fields to update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// The metadata for the Operation returned by UpdateMaterializedView.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateMaterializedViewMetadata {
+    /// The request that prompted the initiation of this UpdateMaterializedView
+    /// operation.
+    #[prost(message, optional, tag = "1")]
+    pub original_request: ::core::option::Option<UpdateMaterializedViewRequest>,
+    /// The time at which this operation was started.
+    #[prost(message, optional, tag = "2")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// If set, the time at which this operation finished or was canceled.
+    #[prost(message, optional, tag = "3")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for BigtableInstanceAdmin.DeleteMaterializedView.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteMaterializedViewRequest {
+    /// Required. The unique name of the materialized view to be deleted.
+    /// Format:
+    /// `projects/{project}/instances/{instance}/materializedViews/{materialized_view}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The current etag of the materialized view.
+    /// If an etag is provided and does not match the current etag of the
+    /// materialized view, deletion will be blocked and an ABORTED error will be
+    /// returned.
+    #[prost(string, tag = "2")]
+    pub etag: ::prost::alloc::string::String,
+}
 /// Generated client implementations.
 pub mod bigtable_instance_admin_client {
     #![allow(
@@ -1166,7 +1422,7 @@ pub mod bigtable_instance_admin_client {
     }
     impl<T> BigtableInstanceAdminClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -1187,13 +1443,13 @@ pub mod bigtable_instance_admin_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             BigtableInstanceAdminClient::new(InterceptedService::new(inner, interceptor))
@@ -1872,6 +2128,297 @@ pub mod bigtable_instance_admin_client {
                     GrpcMethod::new(
                         "google.bigtable.admin.v2.BigtableInstanceAdmin",
                         "ListHotTablets",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a logical view within an instance.
+        pub async fn create_logical_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateLogicalViewRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableInstanceAdmin/CreateLogicalView",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.admin.v2.BigtableInstanceAdmin",
+                        "CreateLogicalView",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets information about a logical view.
+        pub async fn get_logical_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetLogicalViewRequest>,
+        ) -> std::result::Result<tonic::Response<super::LogicalView>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableInstanceAdmin/GetLogicalView",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.admin.v2.BigtableInstanceAdmin",
+                        "GetLogicalView",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists information about logical views in an instance.
+        pub async fn list_logical_views(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListLogicalViewsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListLogicalViewsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableInstanceAdmin/ListLogicalViews",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.admin.v2.BigtableInstanceAdmin",
+                        "ListLogicalViews",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a logical view within an instance.
+        pub async fn update_logical_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateLogicalViewRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateLogicalView",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.admin.v2.BigtableInstanceAdmin",
+                        "UpdateLogicalView",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a logical view from an instance.
+        pub async fn delete_logical_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteLogicalViewRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableInstanceAdmin/DeleteLogicalView",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.admin.v2.BigtableInstanceAdmin",
+                        "DeleteLogicalView",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a materialized view within an instance.
+        pub async fn create_materialized_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateMaterializedViewRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableInstanceAdmin/CreateMaterializedView",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.admin.v2.BigtableInstanceAdmin",
+                        "CreateMaterializedView",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets information about a materialized view.
+        pub async fn get_materialized_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetMaterializedViewRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::MaterializedView>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableInstanceAdmin/GetMaterializedView",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.admin.v2.BigtableInstanceAdmin",
+                        "GetMaterializedView",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists information about materialized views in an instance.
+        pub async fn list_materialized_views(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListMaterializedViewsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListMaterializedViewsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableInstanceAdmin/ListMaterializedViews",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.admin.v2.BigtableInstanceAdmin",
+                        "ListMaterializedViews",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a materialized view within an instance.
+        pub async fn update_materialized_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateMaterializedViewRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateMaterializedView",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.admin.v2.BigtableInstanceAdmin",
+                        "UpdateMaterializedView",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a materialized view from an instance.
+        pub async fn delete_materialized_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteMaterializedViewRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableInstanceAdmin/DeleteMaterializedView",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.admin.v2.BigtableInstanceAdmin",
+                        "DeleteMaterializedView",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -4226,7 +4773,7 @@ pub mod bigtable_table_admin_client {
     }
     impl<T> BigtableTableAdminClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -4247,13 +4794,13 @@ pub mod bigtable_table_admin_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             BigtableTableAdminClient::new(InterceptedService::new(inner, interceptor))

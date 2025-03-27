@@ -33,7 +33,7 @@ fn main() {
     tonic_build::configure()
         .build_server(false)
         .out_dir(out_dir)
-        .compile_with_config(config, &gen::proto_path(&protos), &includes)
+        .compile_protos_with_config(config, &gen::proto_path(&protos), &includes)
         .unwrap();
 
     let mut out_path = PathBuf::from("gcloud-sdk/src/google_apis.rs");

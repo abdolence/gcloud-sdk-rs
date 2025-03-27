@@ -2974,6 +2974,16 @@ pub mod process_options {
         /// Optional. Config for chunking in layout parser processor.
         #[prost(message, optional, tag = "1")]
         pub chunking_config: ::core::option::Option<layout_config::ChunkingConfig>,
+        /// Optional. Whether to include images in layout parser processor response.
+        #[prost(bool, tag = "2")]
+        pub return_images: bool,
+        /// Optional. Whether to include bounding boxes in layout parser processor
+        /// response.
+        #[prost(bool, tag = "3")]
+        pub return_bounding_boxes: bool,
+        /// Optional. Whether to refine PDF layout using LLM.
+        #[prost(bool, tag = "5")]
+        pub enable_llm_layout_parsing: bool,
     }
     /// Nested message and enum types in `LayoutConfig`.
     pub mod layout_config {
@@ -4279,7 +4289,7 @@ pub mod document_processor_service_client {
     }
     impl<T> DocumentProcessorServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -4300,13 +4310,13 @@ pub mod document_processor_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             DocumentProcessorServiceClient::new(
@@ -5462,7 +5472,7 @@ pub mod document_service_client {
     }
     impl<T> DocumentServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -5483,13 +5493,13 @@ pub mod document_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             DocumentServiceClient::new(InterceptedService::new(inner, interceptor))

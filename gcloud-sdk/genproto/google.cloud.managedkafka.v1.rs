@@ -173,9 +173,6 @@ pub struct NetworkConfig {
     /// The subnet must be located in the same region as the Kafka cluster. The
     /// project may differ. Multiple subnets from the same parent network must not
     /// be specified.
-    ///
-    /// The CIDR range of the subnet must be within the IPv4 address ranges for
-    /// private networks, as specified in RFC 1918.
     #[prost(string, tag = "2")]
     pub subnet: ::prost::alloc::string::String,
 }
@@ -294,6 +291,276 @@ pub struct OperationMetadata {
     /// Output only. API version used to start the operation.
     #[prost(string, tag = "7")]
     pub api_version: ::prost::alloc::string::String,
+}
+/// An Apache Kafka Connect cluster deployed in a location.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConnectCluster {
+    /// Identifier. The name of the Kafka Connect cluster. Structured like:
+    /// projects/{project_number}/locations/{location}/connectClusters/{connect_cluster_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Immutable. The name of the Kafka cluster this Kafka Connect
+    /// cluster is attached to. Structured like:
+    /// projects/{project}/locations/{location}/clusters/{cluster}
+    #[prost(string, tag = "2")]
+    pub kafka_cluster: ::prost::alloc::string::String,
+    /// Output only. The time when the cluster was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the cluster was last updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Labels as key value pairs.
+    #[prost(map = "string, string", tag = "5")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Required. Capacity configuration for the Kafka Connect cluster.
+    #[prost(message, optional, tag = "6")]
+    pub capacity_config: ::core::option::Option<CapacityConfig>,
+    /// Output only. The current state of the cluster.
+    #[prost(enumeration = "connect_cluster::State", tag = "8")]
+    pub state: i32,
+    /// Optional. Configurations for the worker that are overridden from the
+    /// defaults. The key of the map is a Kafka Connect worker property name, for
+    /// example: `exactly.once.source.support`.
+    #[prost(map = "string, string", tag = "9")]
+    pub config: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Platform specific configuration properties for a Kafka Connect cluster.
+    #[prost(oneof = "connect_cluster::PlatformConfig", tags = "7")]
+    pub platform_config: ::core::option::Option<connect_cluster::PlatformConfig>,
+}
+/// Nested message and enum types in `ConnectCluster`.
+pub mod connect_cluster {
+    /// The state of the cluster.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// A state was not specified.
+        Unspecified = 0,
+        /// The cluster is being created.
+        Creating = 1,
+        /// The cluster is active.
+        Active = 2,
+        /// The cluster is being deleted.
+        Deleting = 3,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Active => "ACTIVE",
+                Self::Deleting => "DELETING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "ACTIVE" => Some(Self::Active),
+                "DELETING" => Some(Self::Deleting),
+                _ => None,
+            }
+        }
+    }
+    /// Platform specific configuration properties for a Kafka Connect cluster.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum PlatformConfig {
+        /// Required. Configuration properties for a Kafka Connect cluster deployed
+        /// to Google Cloud Platform.
+        #[prost(message, tag = "7")]
+        GcpConfig(super::ConnectGcpConfig),
+    }
+}
+/// The configuration of a Virtual Private Cloud (VPC) network that can access
+/// the Kafka Connect cluster.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConnectNetworkConfig {
+    /// Required. VPC subnet to make available to the Kafka Connect cluster.
+    /// Structured like:
+    /// projects/{project}/regions/{region}/subnetworks/{subnet_id}
+    ///
+    /// It is used to create a Private Service Connect (PSC) interface for the
+    /// Kafka Connect workers. It must be located in the same region as the
+    /// Kafka Connect cluster.
+    ///
+    /// The CIDR range of the subnet must be within the IPv4 address ranges for
+    /// private networks, as specified in RFC 1918. The primary subnet CIDR range
+    /// must have a minimum size of /22 (1024 addresses).
+    #[prost(string, tag = "3")]
+    pub primary_subnet: ::prost::alloc::string::String,
+    /// Optional. Additional subnets may be specified. They may be in another
+    /// region, but must be in the same VPC network. The Connect workers can
+    /// communicate with network endpoints in either the primary or additional
+    /// subnets.
+    #[prost(string, repeated, tag = "4")]
+    pub additional_subnets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Additional DNS domain names from the subnet's network to be made
+    /// visible to the Connect Cluster. When using MirrorMaker2, it's necessary to
+    /// add the bootstrap address's dns domain name of the target cluster to make
+    /// it visible to the connector. For example:
+    /// my-kafka-cluster.us-central1.managedkafka.my-project.cloud.goog
+    #[prost(string, repeated, tag = "2")]
+    pub dns_domain_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// The configuration of access to the Kafka Connect cluster.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConnectAccessConfig {
+    /// Required.
+    /// Virtual Private Cloud (VPC) networks that must be granted direct access to
+    /// the Kafka Connect cluster. Minimum of 1 network is required. Maximum 10
+    /// networks can be specified.
+    #[prost(message, repeated, tag = "1")]
+    pub network_configs: ::prost::alloc::vec::Vec<ConnectNetworkConfig>,
+}
+/// Configuration properties for a Kafka Connect cluster deployed to Google Cloud
+/// Platform.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConnectGcpConfig {
+    /// Required. Access configuration for the Kafka Connect cluster.
+    #[prost(message, optional, tag = "1")]
+    pub access_config: ::core::option::Option<ConnectAccessConfig>,
+    /// Optional. Secrets to load into workers. Exact SecretVersions from Secret
+    /// Manager must be provided -- aliases are not supported. Up to 32 secrets may
+    /// be loaded into one cluster. Format:
+    /// projects/<project-id>/secrets/<secret-name>/versions/<version-id>
+    #[prost(string, repeated, tag = "2")]
+    pub secret_paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// A Kafka Connect connector in a given ConnectCluster.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Connector {
+    /// Identifier. The name of the connector.
+    /// Structured like:
+    /// projects/{project}/locations/{location}/connectClusters/{connect_cluster}/connectors/{connector}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Connector config as keys/values.
+    /// The keys of the map are connector property names, for example:
+    /// `connector.class`, `tasks.max`, `key.converter`.
+    #[prost(map = "string, string", tag = "2")]
+    pub configs: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. The current state of the connector.
+    #[prost(enumeration = "connector::State", tag = "3")]
+    pub state: i32,
+    /// A policy that specifies how to restart the failed connectors/tasks in a
+    /// Cluster resource. If not set, the failed connectors/tasks won't be
+    /// restarted.
+    #[prost(oneof = "connector::RestartPolicy", tags = "4")]
+    pub restart_policy: ::core::option::Option<connector::RestartPolicy>,
+}
+/// Nested message and enum types in `Connector`.
+pub mod connector {
+    /// The state of the connector.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// A state was not specified.
+        Unspecified = 0,
+        /// The connector is not assigned to any tasks, usually transient.
+        Unassigned = 1,
+        /// The connector is running.
+        Running = 2,
+        /// The connector has been paused.
+        Paused = 3,
+        /// The connector has failed. See logs for why.
+        Failed = 4,
+        /// The connector is restarting.
+        Restarting = 5,
+        /// The connector has been stopped.
+        Stopped = 6,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Unassigned => "UNASSIGNED",
+                Self::Running => "RUNNING",
+                Self::Paused => "PAUSED",
+                Self::Failed => "FAILED",
+                Self::Restarting => "RESTARTING",
+                Self::Stopped => "STOPPED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "UNASSIGNED" => Some(Self::Unassigned),
+                "RUNNING" => Some(Self::Running),
+                "PAUSED" => Some(Self::Paused),
+                "FAILED" => Some(Self::Failed),
+                "RESTARTING" => Some(Self::Restarting),
+                "STOPPED" => Some(Self::Stopped),
+                _ => None,
+            }
+        }
+    }
+    /// A policy that specifies how to restart the failed connectors/tasks in a
+    /// Cluster resource. If not set, the failed connectors/tasks won't be
+    /// restarted.
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    pub enum RestartPolicy {
+        /// Optional. Restarts the individual tasks of a Connector.
+        #[prost(message, tag = "4")]
+        TaskRestartPolicy(super::TaskRetryPolicy),
+    }
+}
+/// Task Retry Policy is implemented on a best-effort
+/// basis.
+/// Retry delay will be exponential based on provided minimum and maximum
+/// backoffs. <https://en.wikipedia.org/wiki/Exponential_backoff.>
+/// Note that the delay between consecutive task restarts may not always
+/// precisely match the configured settings. This can happen when the
+/// ConnectCluster is in rebalancing state or if the ConnectCluster is
+/// unresponsive etc.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct TaskRetryPolicy {
+    /// Optional. The minimum amount of time to wait before retrying a failed task.
+    /// This sets a lower bound for the backoff delay.
+    #[prost(message, optional, tag = "1")]
+    pub minimum_backoff: ::core::option::Option<::prost_types::Duration>,
+    /// Optional. The maximum amount of time to wait before retrying a failed task.
+    /// This sets an upper bound for the backoff delay.
+    #[prost(message, optional, tag = "2")]
+    pub maximum_backoff: ::core::option::Option<::prost_types::Duration>,
 }
 /// Request for ListClusters.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -606,7 +873,7 @@ pub mod managed_kafka_client {
     }
     impl<T> ManagedKafkaClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -627,13 +894,13 @@ pub mod managed_kafka_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ManagedKafkaClient::new(InterceptedService::new(inner, interceptor))
@@ -1061,6 +1328,780 @@ pub mod managed_kafka_client {
                     GrpcMethod::new(
                         "google.cloud.managedkafka.v1.ManagedKafka",
                         "DeleteConsumerGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Request for GetConnectCluster.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetConnectClusterRequest {
+    /// Required. The name of the Kafka Connect cluster whose configuration to
+    /// return. Structured like
+    /// `projects/{project}/locations/{location}/connectClusters/{connect_cluster_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for CreateConnectCluster.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateConnectClusterRequest {
+    /// Required. The parent project/location in which to create the Kafka Connect
+    /// cluster. Structured like
+    /// `projects/{project}/locations/{location}/`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ID to use for the Connect cluster, which will become the
+    /// final component of the cluster's name. The ID must be 1-63 characters long,
+    /// and match the regular expression `[a-z](\[-a-z0-9\]*[a-z0-9])?` to comply
+    /// with RFC 1035.
+    ///
+    /// This value is structured like: `my-cluster-id`.
+    #[prost(string, tag = "2")]
+    pub connect_cluster_id: ::prost::alloc::string::String,
+    /// Required. Configuration of the Kafka Connect cluster to create. Its `name`
+    /// field is ignored.
+    #[prost(message, optional, tag = "3")]
+    pub connect_cluster: ::core::option::Option<ConnectCluster>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID to avoid duplication of requests. If a request times out or
+    /// fails, retrying with the same ID allows the server to recognize the
+    /// previous attempt. For at least 60 minutes, the server ignores duplicate
+    /// requests bearing the same ID.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request ID
+    /// within 60 minutes of the last request, the server checks if an original
+    /// operation with the same request ID was received. If so, the server ignores
+    /// the second request.
+    ///
+    /// The request ID must be a valid UUID. A zero UUID is not supported
+    /// (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request for UpdateConnectCluster.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateConnectClusterRequest {
+    /// Required. Field mask is used to specify the fields to be overwritten in the
+    /// cluster resource by the update. The fields specified in the update_mask are
+    /// relative to the resource, not the full request. A field will be overwritten
+    /// if it is in the mask. The mask is required and a value of * will update all
+    /// fields.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. The Kafka Connect cluster to update. Its `name` field must be
+    /// populated.
+    #[prost(message, optional, tag = "2")]
+    pub connect_cluster: ::core::option::Option<ConnectCluster>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID to avoid duplication of requests. If a request times out or
+    /// fails, retrying with the same ID allows the server to recognize the
+    /// previous attempt. For at least 60 minutes, the server ignores duplicate
+    /// requests bearing the same ID.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request ID
+    /// within 60 minutes of the last request, the server checks if an original
+    /// operation with the same request ID was received. If so, the server ignores
+    /// the second request.
+    ///
+    /// The request ID must be a valid UUID. A zero UUID is not supported
+    /// (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request for DeleteConnectCluster.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteConnectClusterRequest {
+    /// Required. The name of the Kafka Connect cluster to delete.
+    /// Structured like
+    /// `projects/{project}/locations/{location}/connectClusters/{connect_cluster_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID to avoid duplication of requests. If a request times out or
+    /// fails, retrying with the same ID allows the server to recognize the
+    /// previous attempt. For at least 60 minutes, the server ignores duplicate
+    /// requests bearing the same ID.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request ID
+    /// within 60 minutes of the last request, the server checks if an original
+    /// operation with the same request ID was received. If so, the server ignores
+    /// the second request.
+    ///
+    /// The request ID must be a valid UUID. A zero UUID is not supported
+    /// (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request for ListConnectClusters.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListConnectClustersRequest {
+    /// Required. The parent project/location whose Connect clusters are to be
+    /// listed. Structured like `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of Connect clusters to return. The service may
+    /// return fewer than this value. If unspecified, server will pick an
+    /// appropriate default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListConnectClusters`
+    /// call. Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListConnectClusters`
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter expression for the result.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Order by fields for the result.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response for ListConnectClusters.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListConnectClustersResponse {
+    /// The list of Connect clusters in the requested parent.
+    #[prost(message, repeated, tag = "1")]
+    pub connect_clusters: ::prost::alloc::vec::Vec<ConnectCluster>,
+    /// A token that can be sent as `page_token` to retrieve the next page of
+    /// results. If this field is omitted, there are no more results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request for GetConnector.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetConnectorRequest {
+    /// Required. The name of the connector whose configuration to return.
+    /// Structured like:
+    /// projects/{project}/locations/{location}/connectClusters/{connectCluster}/connectors/{connector}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for CreateConnector.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateConnectorRequest {
+    /// Required. The parent Connect cluster in which to create the connector.
+    /// Structured like
+    /// `projects/{project}/locations/{location}/connectClusters/{connect_cluster_id}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ID to use for the connector, which will become the final
+    /// component of the connector's name. The ID must be 1-63 characters long, and
+    /// match the regular expression `[a-z](\[-a-z0-9\]*[a-z0-9])?` to comply with
+    /// RFC 1035.
+    ///
+    /// This value is structured like: `my-connector-id`.
+    #[prost(string, tag = "2")]
+    pub connector_id: ::prost::alloc::string::String,
+    /// Required. The connector to create.
+    #[prost(message, optional, tag = "3")]
+    pub connector: ::core::option::Option<Connector>,
+}
+/// Request for UpdateConnector.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateConnectorRequest {
+    /// Required. Field mask is used to specify the fields to be overwritten in the
+    /// cluster resource by the update. The fields specified in the update_mask are
+    /// relative to the resource, not the full request. A field will be overwritten
+    /// if it is in the mask. The mask is required and a value of * will update all
+    /// fields.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. The connector to update. Its `name` field must be populated.
+    #[prost(message, optional, tag = "2")]
+    pub connector: ::core::option::Option<Connector>,
+}
+/// Request for DeleteConnector.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteConnectorRequest {
+    /// Required. The name of the connector to delete.
+    /// Structured like:
+    /// projects/{project}/locations/{location}/connectClusters/{connectCluster}/connectors/{connector}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for ListConnectors.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListConnectorsRequest {
+    /// Required. The parent Connect cluster whose connectors are to be listed.
+    /// Structured like
+    /// `projects/{project}/locations/{location}/connectClusters/{connect_cluster_id}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of connectors to return. The service may
+    /// return fewer than this value. If unspecified, server will pick an
+    /// appropriate default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListConnectors` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListConnectors`
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response for ListConnectors.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListConnectorsResponse {
+    /// The list of connectors in the requested parent.
+    #[prost(message, repeated, tag = "1")]
+    pub connectors: ::prost::alloc::vec::Vec<Connector>,
+    /// A token that can be sent as `page_token` to retrieve the next page of
+    /// results. If this field is omitted, there are no more results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request for PauseConnector.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PauseConnectorRequest {
+    /// Required. The name of the connector to pause.
+    /// Structured like:
+    /// projects/{project}/locations/{location}/connectClusters/{connectCluster}/connectors/{connector}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Response for PauseConnector.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct PauseConnectorResponse {}
+/// Request for ResumeConnector.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResumeConnectorRequest {
+    /// Required. The name of the connector to pause.
+    /// Structured like:
+    /// projects/{project}/locations/{location}/connectClusters/{connectCluster}/connectors/{connector}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Response for ResumeConnector.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ResumeConnectorResponse {}
+/// Request for RestartConnector.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RestartConnectorRequest {
+    /// Required. The name of the connector to restart.
+    /// Structured like:
+    /// projects/{project}/locations/{location}/connectClusters/{connectCluster}/connectors/{connector}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Response for RestartConnector.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct RestartConnectorResponse {}
+/// Request for StopConnector.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StopConnectorRequest {
+    /// Required. The name of the connector to stop.
+    /// Structured like:
+    /// projects/{project}/locations/{location}/connectClusters/{connectCluster}/connectors/{connector}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Response for StopConnector.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct StopConnectorResponse {}
+/// Generated client implementations.
+pub mod managed_kafka_connect_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// The service that a client application uses to manage Apache Kafka Connect
+    /// clusters and connectors.
+    #[derive(Debug, Clone)]
+    pub struct ManagedKafkaConnectClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl ManagedKafkaConnectClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> ManagedKafkaConnectClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ManagedKafkaConnectClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            ManagedKafkaConnectClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Lists the Kafka Connect clusters in a given project and location.
+        pub async fn list_connect_clusters(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListConnectClustersRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListConnectClustersResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.managedkafka.v1.ManagedKafkaConnect/ListConnectClusters",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedkafka.v1.ManagedKafkaConnect",
+                        "ListConnectClusters",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns the properties of a single Kafka Connect cluster.
+        pub async fn get_connect_cluster(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetConnectClusterRequest>,
+        ) -> std::result::Result<tonic::Response<super::ConnectCluster>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.managedkafka.v1.ManagedKafkaConnect/GetConnectCluster",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedkafka.v1.ManagedKafkaConnect",
+                        "GetConnectCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new Kafka Connect cluster in a given project and location.
+        pub async fn create_connect_cluster(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateConnectClusterRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.managedkafka.v1.ManagedKafkaConnect/CreateConnectCluster",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedkafka.v1.ManagedKafkaConnect",
+                        "CreateConnectCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the properties of a single Kafka Connect cluster.
+        pub async fn update_connect_cluster(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateConnectClusterRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.managedkafka.v1.ManagedKafkaConnect/UpdateConnectCluster",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedkafka.v1.ManagedKafkaConnect",
+                        "UpdateConnectCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single Connect cluster.
+        pub async fn delete_connect_cluster(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteConnectClusterRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.managedkafka.v1.ManagedKafkaConnect/DeleteConnectCluster",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedkafka.v1.ManagedKafkaConnect",
+                        "DeleteConnectCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists the connectors in a given Connect cluster.
+        pub async fn list_connectors(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListConnectorsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListConnectorsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.managedkafka.v1.ManagedKafkaConnect/ListConnectors",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedkafka.v1.ManagedKafkaConnect",
+                        "ListConnectors",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns the properties of a single connector.
+        pub async fn get_connector(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetConnectorRequest>,
+        ) -> std::result::Result<tonic::Response<super::Connector>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.managedkafka.v1.ManagedKafkaConnect/GetConnector",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedkafka.v1.ManagedKafkaConnect",
+                        "GetConnector",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new connector in a given Connect cluster.
+        pub async fn create_connector(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateConnectorRequest>,
+        ) -> std::result::Result<tonic::Response<super::Connector>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.managedkafka.v1.ManagedKafkaConnect/CreateConnector",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedkafka.v1.ManagedKafkaConnect",
+                        "CreateConnector",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the properties of a connector.
+        pub async fn update_connector(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateConnectorRequest>,
+        ) -> std::result::Result<tonic::Response<super::Connector>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.managedkafka.v1.ManagedKafkaConnect/UpdateConnector",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedkafka.v1.ManagedKafkaConnect",
+                        "UpdateConnector",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a connector.
+        pub async fn delete_connector(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteConnectorRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.managedkafka.v1.ManagedKafkaConnect/DeleteConnector",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedkafka.v1.ManagedKafkaConnect",
+                        "DeleteConnector",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Pauses the connector and its tasks.
+        pub async fn pause_connector(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PauseConnectorRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::PauseConnectorResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.managedkafka.v1.ManagedKafkaConnect/PauseConnector",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedkafka.v1.ManagedKafkaConnect",
+                        "PauseConnector",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Resumes the connector and its tasks.
+        pub async fn resume_connector(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ResumeConnectorRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ResumeConnectorResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.managedkafka.v1.ManagedKafkaConnect/ResumeConnector",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedkafka.v1.ManagedKafkaConnect",
+                        "ResumeConnector",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Restarts the connector.
+        pub async fn restart_connector(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RestartConnectorRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::RestartConnectorResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.managedkafka.v1.ManagedKafkaConnect/RestartConnector",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedkafka.v1.ManagedKafkaConnect",
+                        "RestartConnector",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Stops the connector.
+        pub async fn stop_connector(
+            &mut self,
+            request: impl tonic::IntoRequest<super::StopConnectorRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::StopConnectorResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.managedkafka.v1.ManagedKafkaConnect/StopConnector",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedkafka.v1.ManagedKafkaConnect",
+                        "StopConnector",
                     ),
                 );
             self.inner.unary(req, path, codec).await

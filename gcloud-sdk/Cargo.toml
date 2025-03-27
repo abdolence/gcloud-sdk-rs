@@ -17,7 +17,7 @@ doctest = false
 
 [features]
 default = ["tls-roots"]
-tls-roots = ["tonic/tls-roots", "reqwest/rustls-tls-native-roots"]
+tls-roots = ["reqwest/rustls-tls-native-roots", "tonic/tls-native-roots"]
 tls-webpki-roots = ["tonic/tls-webpki-roots", "reqwest/rustls-tls-webpki-roots"]
 rest = ["serde_with"]
 external-account-aws = ["aws-config", "aws-sigv4", "aws-credential-types", "percent-encoding"]
@@ -433,7 +433,7 @@ google-rest-sqladmin-v1 = ["rest"]
 google-rest-storage-v1 = ["rest"]
 
 [dependencies]
-tonic = { version = "0.12", features = ["tls"] }
+tonic = { version = "0.13.0" }
 tower = "0.5"
 tower-layer = "0.3"
 tower-util = "0.3"

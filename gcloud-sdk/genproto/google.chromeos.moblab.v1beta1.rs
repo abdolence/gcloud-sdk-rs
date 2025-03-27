@@ -185,6 +185,105 @@ pub struct BuildArtifact {
     #[prost(uint32, tag = "5")]
     pub object_count: u32,
 }
+/// Cloud build message for staging a build artifact.
+/// This message is partially copied from the source proto
+/// devtools/cloudbuild/v1/cloudbuild.proto
+/// -- NEXT_TAG: 6 --
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloudBuild {
+    /// Output only. Unique identifier of the cloud build.
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    /// Output only. State of the cloud build.
+    #[prost(enumeration = "cloud_build::State", tag = "2")]
+    pub status: i32,
+    /// Output only. Time at which the request to create the build was received.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Time at which execution of the build was started.
+    #[prost(message, optional, tag = "4")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Time at which execution of the build was finished.
+    ///
+    /// The difference between finish_time and start_time is the duration of the
+    /// build's execution.
+    #[prost(message, optional, tag = "5")]
+    pub finish_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `CloudBuild`.
+pub mod cloud_build {
+    /// The CloudBuild states.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// No cloud build state is specified.
+        Unspecified = 0,
+        /// The cloud build is queued.
+        Queued = 1,
+        /// The cloud build is pending.
+        Pending = 2,
+        /// The cloud build is working.
+        Working = 3,
+        /// The cloud build is successful.
+        Succeeded = 4,
+        /// The cloud build is failed.
+        Failed = 5,
+        /// The cloud build is failed due to internal error.
+        InternalError = 6,
+        /// The cloud build is failed due to timeout.
+        Timeout = 7,
+        /// The cloud build is cancelled.
+        Cancelled = 8,
+        /// The cloud build is expired.
+        Expired = 9,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Queued => "QUEUED",
+                Self::Pending => "PENDING",
+                Self::Working => "WORKING",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Failed => "FAILED",
+                Self::InternalError => "INTERNAL_ERROR",
+                Self::Timeout => "TIMEOUT",
+                Self::Cancelled => "CANCELLED",
+                Self::Expired => "EXPIRED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "QUEUED" => Some(Self::Queued),
+                "PENDING" => Some(Self::Pending),
+                "WORKING" => Some(Self::Working),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "INTERNAL_ERROR" => Some(Self::InternalError),
+                "TIMEOUT" => Some(Self::Timeout),
+                "CANCELLED" => Some(Self::Cancelled),
+                "EXPIRED" => Some(Self::Expired),
+                _ => None,
+            }
+        }
+    }
+}
 /// Request message for finding the most stable build.
 /// -- NEXT_TAG: 2 --
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -326,7 +425,7 @@ pub struct CheckBuildStageStatusRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for checking the stage status of a build artifact.
-/// -- NEXT_TAG: 4 --
+/// -- NEXT_TAG: 5 --
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckBuildStageStatusResponse {
     /// The status to represent if the build is staged or not.
@@ -338,6 +437,9 @@ pub struct CheckBuildStageStatusResponse {
     /// The source build artifact in the source bucket.
     #[prost(message, optional, tag = "3")]
     pub source_build_artifact: ::core::option::Option<BuildArtifact>,
+    /// Optional. The cloud build if the build id is provided.
+    #[prost(message, optional, tag = "4")]
+    pub cloud_build: ::core::option::Option<CloudBuild>,
 }
 /// Request message for staging a build artifact.
 /// -- NEXT_TAG: 3 --
@@ -355,12 +457,15 @@ pub struct StageBuildRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for staging a build artifact.
-/// -- NEXT_TAG: 2 --
+/// -- NEXT_TAG: 3 --
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StageBuildResponse {
     /// The staged build in the destination bucket.
     #[prost(message, optional, tag = "1")]
     pub staged_build_artifact: ::core::option::Option<BuildArtifact>,
+    /// The cloud build id of the build artifacts.
+    #[prost(message, optional, tag = "2")]
+    pub cloud_build: ::core::option::Option<CloudBuild>,
 }
 /// Metadata message for staging a build artifact.
 /// -- NEXT_TAG: 4 --
@@ -405,7 +510,7 @@ pub mod build_service_client {
     }
     impl<T> BuildServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -426,13 +531,13 @@ pub mod build_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             BuildServiceClient::new(InterceptedService::new(inner, interceptor))

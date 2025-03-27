@@ -2775,7 +2775,7 @@ pub mod dataplex_service_client {
     }
     impl<T> DataplexServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -2796,13 +2796,13 @@ pub mod dataplex_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             DataplexServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -4840,8 +4840,11 @@ pub struct ImportItem {
     /// listed in the update mask, and regardless of whether a field is present
     /// in the `entry` object.
     ///
-    ///
     /// The `update_mask` field is ignored when an entry is created or re-created.
+    ///
+    /// In an aspect-only metadata job (when entry sync mode is `NONE`), set this
+    /// value to `aspects`.
+    ///
     ///
     /// Dataplex also determines which entries and aspects to modify by comparing
     /// the values and timestamps that you provide in the metadata import file with
@@ -4856,18 +4859,18 @@ pub struct ImportItem {
     /// aspect type and are attached directly to the entry.
     /// * `{aspect_type_reference}@{path}`: matches aspects that belong to the
     /// specified aspect type and path.
-    /// * `<aspect_type_reference>@*` : matches aspects of the given type for all
+    /// * `{aspect_type_reference}@*` : matches aspects of the given type for all
     /// paths.
     /// * `*@path` : matches aspects of all types on the given path.
+    ///
     /// Replace `{aspect_type_reference}` with a reference to the aspect type, in
     /// the format
     /// `{project_id_or_number}.{location_id}.{aspect_type_id}`.
     ///
-    /// If you leave this field empty, it is treated as specifying exactly those
-    /// aspects that are present within the specified entry.
-    ///
-    /// In `FULL` entry sync mode, Dataplex implicitly adds the keys for all of the
-    /// required aspects of an entry.
+    /// In `FULL` entry sync mode, if you leave this field empty, it is treated as
+    /// specifying exactly those aspects that are present within the specified
+    /// entry. Dataplex implicitly adds the keys for all of the required aspects of
+    /// an entry.
     #[prost(string, repeated, tag = "3")]
     pub aspect_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -5014,7 +5017,16 @@ pub mod metadata_job {
         #[prost(message, optional, tag = "5")]
         pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     }
-    /// Job specification for a metadata import job
+    /// Job specification for a metadata import job.
+    ///
+    /// You can run the following kinds of metadata import jobs:
+    ///
+    /// * Full sync of entries with incremental import of their aspects.
+    /// Supported for custom entries.
+    /// * Incremental import of aspects only. Supported for aspects that belong
+    /// to custom entries and system entries. For custom entries, you can modify
+    /// both optional aspects and required aspects. For system entries, you can
+    /// modify optional aspects.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ImportJobSpec {
         /// Optional. The URI of a Cloud Storage bucket or folder (beginning with
@@ -5046,15 +5058,9 @@ pub mod metadata_job {
         #[prost(message, optional, tag = "2")]
         pub scope: ::core::option::Option<import_job_spec::ImportJobScope>,
         /// Required. The sync mode for entries.
-        /// Only `FULL` mode is supported for entries. All entries in the job's scope
-        /// are modified. If an entry exists in Dataplex but isn't included in the
-        /// metadata import file, the entry is deleted when you run the metadata job.
         #[prost(enumeration = "import_job_spec::SyncMode", tag = "3")]
         pub entry_sync_mode: i32,
         /// Required. The sync mode for aspects.
-        /// Only `INCREMENTAL` mode is supported for aspects. An aspect is modified
-        /// only if the metadata import file includes a reference to the aspect in
-        /// the `update_mask` field and the `aspect_keys` field.
         #[prost(enumeration = "import_job_spec::SyncMode", tag = "4")]
         pub aspect_sync_mode: i32,
         /// Optional. The level of logs to write to Cloud Logging for this job.
@@ -5076,8 +5082,8 @@ pub mod metadata_job {
             /// Required. The entry group that is in scope for the import job,
             /// specified as a relative resource name in the format
             /// `projects/{project_number_or_id}/locations/{location_id}/entryGroups/{entry_group_id}`.
-            /// Only entries that belong to the specified entry group are affected by
-            /// the job.
+            /// Only entries and aspects that belong to the specified entry group are
+            /// affected by the job.
             ///
             /// Must contain exactly one element. The entry group and the job
             /// must be in the same location.
@@ -5086,7 +5092,8 @@ pub mod metadata_job {
             /// Required. The entry types that are in scope for the import job,
             /// specified as relative resource names in the format
             /// `projects/{project_number_or_id}/locations/{location_id}/entryTypes/{entry_type_id}`.
-            /// The job modifies only the entries that belong to these entry types.
+            /// The job modifies only the entries and aspects that belong to these
+            /// entry types.
             ///
             /// If the metadata import file attempts to modify an entry whose type
             /// isn't included in this list, the import job is halted before modifying
@@ -5101,6 +5108,8 @@ pub mod metadata_job {
             /// `projects/{project_number_or_id}/locations/{location_id}/aspectTypes/{aspect_type_id}`.
             /// The job modifies only the aspects that belong to these aspect types.
             ///
+            /// This field is required when creating an aspect-only import job.
+            ///
             /// If the metadata import file attempts to modify an aspect whose type
             /// isn't included in this list, the import job is halted before modifying
             /// any entries or aspects.
@@ -5110,7 +5119,9 @@ pub mod metadata_job {
             #[prost(string, repeated, tag = "3")]
             pub aspect_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
-        /// Specifies how the entries and aspects in a metadata job are updated.
+        /// Specifies how the entries and aspects in a metadata job are updated. For
+        /// more information, see [Sync
+        /// mode](<https://cloud.google.com/dataplex/docs/import-metadata#sync-mode>).
         #[derive(
             Clone,
             Copy,
@@ -5130,14 +5141,20 @@ pub mod metadata_job {
             /// Dataplex but isn't included in the metadata import file, the resource
             /// is deleted when you run the metadata job. Use this mode to perform a
             /// full sync of the set of entries in the job scope.
+            ///
+            /// This sync mode is supported for entries.
             Full = 1,
-            /// Only the entries and aspects that are explicitly included in the
+            /// Only the resources that are explicitly included in the
             /// metadata import file are modified. Use this mode to modify a subset of
             /// resources while leaving unreferenced resources unchanged.
+            ///
+            /// This sync mode is supported for aspects.
             Incremental = 2,
-            /// If entry sync mode is NONE, then the entry-specific fields (apart from
-            /// aspects) are not modified and the aspects are modified according to the
-            /// aspect_sync_mode
+            /// If entry sync mode is `NONE`, then aspects are modified according
+            /// to the aspect sync mode. Other metadata that belongs to entries in the
+            /// job's scope isn't modified.
+            ///
+            /// This sync mode is supported for entries.
             None = 3,
         }
         impl SyncMode {
@@ -5468,7 +5485,7 @@ pub mod catalog_service_client {
     }
     impl<T> CatalogServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -5489,13 +5506,13 @@ pub mod catalog_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             CatalogServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -6084,11 +6101,6 @@ pub mod catalog_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Gets an Entry.
-        ///
-        /// **Caution**: The BigQuery metadata that is stored in Dataplex Catalog is
-        /// changing. For more information, see [Changes to BigQuery metadata stored in
-        /// Dataplex
-        /// Catalog](https://cloud.google.com/dataplex/docs/biqquery-metadata-changes).
         pub async fn get_entry(
             &mut self,
             request: impl tonic::IntoRequest<super::GetEntryRequest>,
@@ -6115,12 +6127,7 @@ pub mod catalog_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Looks up a single Entry by name using the permission on the source system.
-        ///
-        /// **Caution**: The BigQuery metadata that is stored in Dataplex Catalog is
-        /// changing. For more information, see [Changes to BigQuery metadata stored in
-        /// Dataplex
-        /// Catalog](https://cloud.google.com/dataplex/docs/biqquery-metadata-changes).
+        /// Looks up an entry by name using the permission on the source system.
         pub async fn lookup_entry(
             &mut self,
             request: impl tonic::IntoRequest<super::LookupEntryRequest>,
@@ -6466,7 +6473,7 @@ pub mod content_service_client {
     }
     impl<T> ContentServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -6487,13 +6494,13 @@ pub mod content_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ContentServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -6811,6 +6818,29 @@ pub mod data_discovery_spec {
         /// `projects/{project_id}/locations/{location_id}/connections/{connection_id}`
         #[prost(string, tag = "3")]
         pub connection: ::prost::alloc::string::String,
+        /// Optional. The location of the BigQuery dataset to publish BigLake
+        /// external or non-BigLake external tables to.
+        /// 1. If the Cloud Storage bucket is located in a multi-region bucket, then
+        /// BigQuery dataset can be in the same multi-region bucket or any single
+        /// region that is included in the same multi-region bucket. The datascan can
+        /// be created in any single region that is included in the same multi-region
+        /// bucket
+        /// 2. If the Cloud Storage bucket is located in a dual-region bucket, then
+        /// BigQuery dataset can be located in regions that are included in the
+        /// dual-region bucket, or in a multi-region that includes the dual-region.
+        /// The datascan can be created in any single region that is included in the
+        /// same dual-region bucket.
+        /// 3. If the Cloud Storage bucket is located in a single region, then
+        /// BigQuery dataset can be in the same single region or any multi-region
+        /// bucket that includes the same single region. The datascan will be created
+        /// in the same single region as the bucket.
+        /// 4. If the BigQuery dataset is in single region, it must be in the same
+        /// single region as the datascan.
+        ///
+        /// For supported values, refer to
+        /// <https://cloud.google.com/bigquery/docs/locations#supported_locations.>
+        #[prost(string, tag = "4")]
+        pub location: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `BigQueryPublishingConfig`.
     pub mod big_query_publishing_config {
@@ -7071,8 +7101,10 @@ pub struct DataProfileSpec {
     #[prost(float, tag = "2")]
     pub sampling_percent: f32,
     /// Optional. A filter applied to all rows in a single DataScan job.
-    /// The filter needs to be a valid SQL expression for a WHERE clause in
-    /// BigQuery standard SQL syntax.
+    /// The filter needs to be a valid SQL expression for a [WHERE clause in
+    /// GoogleSQL
+    /// syntax](<https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#where_clause>).
+    ///
     /// Example: col1 >= 0 AND col2 < 10
     #[prost(string, tag = "3")]
     pub row_filter: ::prost::alloc::string::String,
@@ -7411,8 +7443,10 @@ pub struct DataQualitySpec {
     #[prost(float, tag = "4")]
     pub sampling_percent: f32,
     /// Optional. A filter applied to all rows in a single DataScan job.
-    /// The filter needs to be a valid SQL expression for a WHERE clause in
-    /// BigQuery standard SQL syntax.
+    /// The filter needs to be a valid SQL expression for a [WHERE clause in
+    /// GoogleSQL
+    /// syntax](<https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#where_clause>).
+    ///
     /// Example: col1 >= 0 AND col2 < 10
     #[prost(string, tag = "5")]
     pub row_filter: ::prost::alloc::string::String,
@@ -7867,8 +7901,9 @@ pub mod data_quality_rule {
     }
     /// Evaluates whether each row passes the specified condition.
     ///
-    /// The SQL expression needs to use BigQuery standard SQL syntax and should
-    /// produce a boolean value per row as the result.
+    /// The SQL expression needs to use [GoogleSQL
+    /// syntax](<https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax>)
+    /// and should produce a boolean value per row as the result.
     ///
     /// Example: col1 >= 0 AND col2 < 10
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -7879,8 +7914,9 @@ pub mod data_quality_rule {
     }
     /// Evaluates whether the provided expression is true.
     ///
-    /// The SQL expression needs to use BigQuery standard SQL syntax and should
-    /// produce a scalar boolean result.
+    /// The SQL expression needs to use [GoogleSQL
+    /// syntax](<https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax>)
+    /// and should produce a scalar boolean result.
     ///
     /// Example: MIN(col1) >= 0
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -7892,8 +7928,9 @@ pub mod data_quality_rule {
     /// A SQL statement that is evaluated to return rows that match an invalid
     /// state. If any rows are are returned, this rule fails.
     ///
-    /// The SQL statement must use BigQuery standard SQL syntax, and must not
-    /// contain any semicolons.
+    /// The SQL statement must use [GoogleSQL
+    /// syntax](<https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax>),
+    /// and must not contain any semicolons.
     ///
     /// You can use the data reference parameter `${data()}` to reference the
     /// source table with all of its precondition filters applied. Examples of
@@ -8188,9 +8225,6 @@ pub mod data_attribute_binding {
 /// Create DataTaxonomy request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDataTaxonomyRequest {
-    /// Required. The resource name of the data taxonomy location, of the form:
-    /// projects/{project_number}/locations/{location_id}
-    /// where `location_id` refers to a GCP region.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. DataTaxonomy identifier.
@@ -8226,8 +8260,6 @@ pub struct UpdateDataTaxonomyRequest {
 /// Get DataTaxonomy request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDataTaxonomyRequest {
-    /// Required. The resource name of the DataTaxonomy:
-    /// projects/{project_number}/locations/{location_id}/dataTaxonomies/{data_taxonomy_id}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -8514,7 +8546,7 @@ pub mod data_taxonomy_service_client {
     }
     impl<T> DataTaxonomyServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -8535,13 +8567,13 @@ pub mod data_taxonomy_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             DataTaxonomyServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -8578,6 +8610,7 @@ pub mod data_taxonomy_service_client {
             self
         }
         /// Create a DataTaxonomy resource.
+        #[deprecated]
         pub async fn create_data_taxonomy(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDataTaxonomyRequest>,
@@ -8608,6 +8641,7 @@ pub mod data_taxonomy_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Updates a DataTaxonomy resource.
+        #[deprecated]
         pub async fn update_data_taxonomy(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDataTaxonomyRequest>,
@@ -8639,6 +8673,7 @@ pub mod data_taxonomy_service_client {
         }
         /// Deletes a DataTaxonomy resource. All attributes within the DataTaxonomy
         /// must be deleted before the DataTaxonomy can be deleted.
+        #[deprecated]
         pub async fn delete_data_taxonomy(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDataTaxonomyRequest>,
@@ -8669,6 +8704,7 @@ pub mod data_taxonomy_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Lists DataTaxonomy resources in a project and location.
+        #[deprecated]
         pub async fn list_data_taxonomies(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDataTaxonomiesRequest>,
@@ -8699,6 +8735,7 @@ pub mod data_taxonomy_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Retrieves a DataTaxonomy resource.
+        #[deprecated]
         pub async fn get_data_taxonomy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDataTaxonomyRequest>,
@@ -8726,6 +8763,7 @@ pub mod data_taxonomy_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Create a DataAttributeBinding resource.
+        #[deprecated]
         pub async fn create_data_attribute_binding(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDataAttributeBindingRequest>,
@@ -8756,6 +8794,7 @@ pub mod data_taxonomy_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Updates a DataAttributeBinding resource.
+        #[deprecated]
         pub async fn update_data_attribute_binding(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDataAttributeBindingRequest>,
@@ -8788,6 +8827,7 @@ pub mod data_taxonomy_service_client {
         /// Deletes a DataAttributeBinding resource. All attributes within the
         /// DataAttributeBinding must be deleted before the DataAttributeBinding can be
         /// deleted.
+        #[deprecated]
         pub async fn delete_data_attribute_binding(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDataAttributeBindingRequest>,
@@ -8818,6 +8858,7 @@ pub mod data_taxonomy_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Lists DataAttributeBinding resources in a project and location.
+        #[deprecated]
         pub async fn list_data_attribute_bindings(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDataAttributeBindingsRequest>,
@@ -8848,6 +8889,7 @@ pub mod data_taxonomy_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Retrieves a DataAttributeBinding resource.
+        #[deprecated]
         pub async fn get_data_attribute_binding(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDataAttributeBindingRequest>,
@@ -8878,6 +8920,7 @@ pub mod data_taxonomy_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Create a DataAttribute resource.
+        #[deprecated]
         pub async fn create_data_attribute(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDataAttributeRequest>,
@@ -8908,6 +8951,7 @@ pub mod data_taxonomy_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Updates a DataAttribute resource.
+        #[deprecated]
         pub async fn update_data_attribute(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDataAttributeRequest>,
@@ -8938,6 +8982,7 @@ pub mod data_taxonomy_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Deletes a Data Attribute resource.
+        #[deprecated]
         pub async fn delete_data_attribute(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDataAttributeRequest>,
@@ -8968,6 +9013,7 @@ pub mod data_taxonomy_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Lists Data Attribute resources in a DataTaxonomy.
+        #[deprecated]
         pub async fn list_data_attributes(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDataAttributesRequest>,
@@ -8998,6 +9044,7 @@ pub mod data_taxonomy_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Retrieves a Data Attribute resource.
+        #[deprecated]
         pub async fn get_data_attribute(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDataAttributeRequest>,
@@ -9684,7 +9731,7 @@ pub mod data_scan_service_client {
     }
     impl<T> DataScanServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -9705,13 +9752,13 @@ pub mod data_scan_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             DataScanServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -11496,6 +11543,93 @@ pub mod data_quality_scan_rule_result {
         }
     }
 }
+/// Payload associated with Business Glossary related log events.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BusinessGlossaryEvent {
+    /// The log message.
+    #[prost(string, tag = "1")]
+    pub message: ::prost::alloc::string::String,
+    /// The type of the event.
+    #[prost(enumeration = "business_glossary_event::EventType", tag = "2")]
+    pub event_type: i32,
+    /// Name of the resource.
+    #[prost(string, tag = "3")]
+    pub resource: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `BusinessGlossaryEvent`.
+pub mod business_glossary_event {
+    /// Type of glossary log event.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum EventType {
+        /// An unspecified event type.
+        Unspecified = 0,
+        /// Glossary create event.
+        GlossaryCreate = 1,
+        /// Glossary update event.
+        GlossaryUpdate = 2,
+        /// Glossary delete event.
+        GlossaryDelete = 3,
+        /// Glossary category create event.
+        GlossaryCategoryCreate = 4,
+        /// Glossary category update event.
+        GlossaryCategoryUpdate = 5,
+        /// Glossary category delete event.
+        GlossaryCategoryDelete = 6,
+        /// Glossary term create event.
+        GlossaryTermCreate = 7,
+        /// Glossary term update event.
+        GlossaryTermUpdate = 8,
+        /// Glossary term delete event.
+        GlossaryTermDelete = 9,
+    }
+    impl EventType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "EVENT_TYPE_UNSPECIFIED",
+                Self::GlossaryCreate => "GLOSSARY_CREATE",
+                Self::GlossaryUpdate => "GLOSSARY_UPDATE",
+                Self::GlossaryDelete => "GLOSSARY_DELETE",
+                Self::GlossaryCategoryCreate => "GLOSSARY_CATEGORY_CREATE",
+                Self::GlossaryCategoryUpdate => "GLOSSARY_CATEGORY_UPDATE",
+                Self::GlossaryCategoryDelete => "GLOSSARY_CATEGORY_DELETE",
+                Self::GlossaryTermCreate => "GLOSSARY_TERM_CREATE",
+                Self::GlossaryTermUpdate => "GLOSSARY_TERM_UPDATE",
+                Self::GlossaryTermDelete => "GLOSSARY_TERM_DELETE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GLOSSARY_CREATE" => Some(Self::GlossaryCreate),
+                "GLOSSARY_UPDATE" => Some(Self::GlossaryUpdate),
+                "GLOSSARY_DELETE" => Some(Self::GlossaryDelete),
+                "GLOSSARY_CATEGORY_CREATE" => Some(Self::GlossaryCategoryCreate),
+                "GLOSSARY_CATEGORY_UPDATE" => Some(Self::GlossaryCategoryUpdate),
+                "GLOSSARY_CATEGORY_DELETE" => Some(Self::GlossaryCategoryDelete),
+                "GLOSSARY_TERM_CREATE" => Some(Self::GlossaryTermCreate),
+                "GLOSSARY_TERM_UPDATE" => Some(Self::GlossaryTermUpdate),
+                "GLOSSARY_TERM_DELETE" => Some(Self::GlossaryTermDelete),
+                _ => None,
+            }
+        }
+    }
+}
 /// Create a metadata entity request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEntityRequest {
@@ -12539,7 +12673,7 @@ pub mod metadata_service_client {
     }
     impl<T> MetadataServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -12560,13 +12694,13 @@ pub mod metadata_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             MetadataServiceClient::new(InterceptedService::new(inner, interceptor))

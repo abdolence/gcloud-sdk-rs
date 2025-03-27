@@ -209,7 +209,7 @@ pub mod account_tax_service_client {
     }
     impl<T> AccountTaxServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -230,13 +230,13 @@ pub mod account_tax_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             AccountTaxServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -538,7 +538,7 @@ pub mod account_issue_service_client {
     }
     impl<T> AccountIssueServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -559,13 +559,13 @@ pub mod account_issue_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             AccountIssueServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -813,7 +813,7 @@ pub mod user_service_client {
     }
     impl<T> UserServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -834,13 +834,13 @@ pub mod user_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             UserServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -1246,7 +1246,7 @@ pub mod accounts_service_client {
     }
     impl<T> AccountsServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -1267,13 +1267,13 @@ pub mod accounts_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             AccountsServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -1568,7 +1568,7 @@ pub mod autofeed_settings_service_client {
     }
     impl<T> AutofeedSettingsServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -1589,13 +1589,13 @@ pub mod autofeed_settings_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             AutofeedSettingsServiceClient::new(
@@ -1689,6 +1689,365 @@ pub mod autofeed_settings_service_client {
                     GrpcMethod::new(
                         "google.shopping.merchant.accounts.v1beta.AutofeedSettingsService",
                         "UpdateAutofeedSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Collection of information related to the [automatic
+/// improvements](<https://developers.google.com/shopping-content/guides/automatic-improvements>)
+/// of an account.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AutomaticImprovements {
+    /// Identifier. The resource name of the automatic improvements.
+    /// Format: `accounts/{account}/automaticImprovements`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Turning on [item
+    /// updates](<https://support.google.com/merchants/answer/3246284>) allows
+    /// Google to automatically update items for you. When item updates are on,
+    /// Google uses the structured data markup on the website and advanced data
+    /// extractors to update the price and availability of the items. When the item
+    /// updates are off, items with mismatched data aren't shown.
+    /// This field is only updated (cleared) if provided in the update mask.
+    #[prost(message, optional, tag = "2")]
+    pub item_updates: ::core::option::Option<AutomaticItemUpdates>,
+    /// This improvement will attempt to automatically correct submitted images if
+    /// they don't meet the [image
+    /// requirements](<https://support.google.com/merchants/answer/6324350>), for
+    /// example, removing overlays. If successful, the image will be replaced and
+    /// approved. This improvement is only applied to images of disapproved offers.
+    /// For more information see: [Automatic image
+    /// improvements](<https://support.google.com/merchants/answer/9242973>)
+    /// This field is only updated (cleared) if provided in the update mask.
+    #[prost(message, optional, tag = "3")]
+    pub image_improvements: ::core::option::Option<AutomaticImageImprovements>,
+    /// Not available for MCAs
+    /// [accounts](<https://support.google.com/merchants/answer/188487>). By turning
+    /// on [automatic shipping
+    /// improvements](<https://support.google.com/merchants/answer/10027038>),
+    /// you are allowing Google to improve the accuracy of your delivery times
+    /// shown to shoppers using Google. More accurate delivery times, especially
+    /// when faster, typically lead to better conversion rates. Google will improve
+    /// your estimated delivery times based on various factors:
+    /// * Delivery address of an order
+    /// * Current handling time and shipping time settings
+    /// * Estimated weekdays or business days
+    /// * Parcel tracking data
+    /// This field is only updated (cleared) if provided in the update mask.
+    #[prost(message, optional, tag = "4")]
+    pub shipping_improvements: ::core::option::Option<AutomaticShippingImprovements>,
+}
+/// Turning on [item
+/// updates](<https://support.google.com/merchants/answer/3246284>) allows
+/// Google to automatically update items for you. When item updates are on,
+/// Google uses the structured data markup on the website and advanced data
+/// extractors to update the price and availability of the items. When the item
+/// updates are off, items with mismatched data aren't shown.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct AutomaticItemUpdates {
+    /// Optional. Determines which attributes of the items should be automatically
+    /// updated. If this field is not present and provided in the update mask, then
+    /// the settings will be deleted. If there are no settings for subaccount, they
+    /// are inherited from aggregator.
+    #[prost(message, optional, tag = "1")]
+    pub account_item_updates_settings: ::core::option::Option<
+        automatic_item_updates::ItemUpdatesAccountLevelSettings,
+    >,
+    /// Output only. The effective value of allow_price_updates.
+    /// If account_item_updates_settings is present, then this value is the same.
+    /// Otherwise, it represents the inherited value of the parent account.
+    /// The default value is true if no settings are present.
+    /// Read-only.
+    #[prost(bool, tag = "2")]
+    pub effective_allow_price_updates: bool,
+    /// Output only. The effective value of allow_availability_updates.
+    /// If account_item_updates_settings is present, then this value is the same.
+    /// Otherwise, it represents the inherited value of the parent account.
+    /// The default value is true if no settings are present.
+    /// Read-only.
+    #[prost(bool, tag = "3")]
+    pub effective_allow_availability_updates: bool,
+    /// Output only. The effective value of
+    /// allow_strict_availability_updates.
+    /// If account_item_updates_settings is present, then this value is the same.
+    /// Otherwise, it represents the inherited value of the parent account.
+    /// The default value is true if no settings are present.
+    /// Read-only.
+    #[prost(bool, tag = "4")]
+    pub effective_allow_strict_availability_updates: bool,
+    /// Output only. The effective value of allow_condition_updates.
+    /// If account_item_updates_settings is present, then this value is the same.
+    /// Otherwise, it represents the inherited value of the parent account.
+    /// The default value is true if no settings are present.
+    /// Read-only.
+    #[prost(bool, tag = "5")]
+    pub effective_allow_condition_updates: bool,
+}
+/// Nested message and enum types in `AutomaticItemUpdates`.
+pub mod automatic_item_updates {
+    /// Settings for the Automatic Item Updates.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct ItemUpdatesAccountLevelSettings {
+        /// If price updates are enabled, Google always updates the active price with
+        /// the crawled information.
+        #[prost(bool, optional, tag = "1")]
+        pub allow_price_updates: ::core::option::Option<bool>,
+        /// If availability updates are enabled, any previous availability values
+        /// get overwritten if Google finds an out-of-stock annotation on the offer's
+        /// page.
+        /// If additionally `allow_strict_availability_updates` field is set to
+        /// true, values get overwritten if Google finds an in-stock annotation on
+        /// the offer’s page.
+        #[prost(bool, optional, tag = "2")]
+        pub allow_availability_updates: ::core::option::Option<bool>,
+        /// If `allow_availability_updates` is enabled, items are automatically
+        /// updated in all your Shopping target countries. By default, availability
+        /// updates will only be applied to items that are 'out of stock' on your
+        /// website but 'in stock' on Shopping. Set this to true to also update items
+        /// that are 'in stock' on your website, but 'out of stock' on Google
+        /// Shopping. In order for this field to have an effect, you must also set
+        /// `allow_availability_updates`.
+        #[prost(bool, optional, tag = "3")]
+        pub allow_strict_availability_updates: ::core::option::Option<bool>,
+        /// If condition updates are enabled, Google always updates item condition
+        /// with the condition detected from the details of your product.
+        #[prost(bool, optional, tag = "4")]
+        pub allow_condition_updates: ::core::option::Option<bool>,
+    }
+}
+/// This improvement will attempt to automatically correct submitted images if
+/// they don't meet the [image
+/// requirements](<https://support.google.com/merchants/answer/6324350>), for
+/// example, removing overlays. If successful, the image will be replaced and
+/// approved. This improvement is only applied to images of disapproved offers.
+/// For more information see: [Automatic image
+/// improvements](<https://support.google.com/merchants/answer/9242973>)
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct AutomaticImageImprovements {
+    /// Optional. Determines how the images should be automatically updated.
+    /// If this field is not present and provided in the update mask, then the
+    /// settings will be deleted. If there are no settings for subaccount, they are
+    /// inherited from aggregator.
+    #[prost(message, optional, tag = "1")]
+    pub account_image_improvements_settings: ::core::option::Option<
+        automatic_image_improvements::ImageImprovementsAccountLevelSettings,
+    >,
+    /// Output only. The effective value of allow_automatic_image_improvements.
+    /// If account_image_improvements_settings is present, then this value is the
+    /// same. Otherwise, it represents the inherited value of the parent account.
+    /// Read-only.
+    #[prost(bool, tag = "2")]
+    pub effective_allow_automatic_image_improvements: bool,
+}
+/// Nested message and enum types in `AutomaticImageImprovements`.
+pub mod automatic_image_improvements {
+    /// Settings for the Automatic Image Improvements.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct ImageImprovementsAccountLevelSettings {
+        /// Enables automatic image improvements.
+        #[prost(bool, optional, tag = "1")]
+        pub allow_automatic_image_improvements: ::core::option::Option<bool>,
+    }
+}
+/// Not available for MCAs
+/// [accounts](<https://support.google.com/merchants/answer/188487>). By turning on
+/// [automatic shipping
+/// improvements](<https://support.google.com/merchants/answer/10027038>),
+/// you are allowing Google to improve the accuracy of your delivery times shown
+/// to shoppers using Google. More accurate delivery times, especially when
+/// faster, typically lead to better conversion rates. Google will improve your
+/// estimated delivery times based on various factors:
+/// * Delivery address of an order
+/// * Current handling time and shipping time settings
+/// * Estimated weekdays or business days
+/// * Parcel tracking data
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct AutomaticShippingImprovements {
+    /// Enables automatic shipping improvements.
+    #[prost(bool, optional, tag = "1")]
+    pub allow_shipping_improvements: ::core::option::Option<bool>,
+}
+/// Request message for the `GetAutomaticImprovements` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAutomaticImprovementsRequest {
+    /// Required. The resource name of the automatic improvements.
+    /// Format: `accounts/{account}/automaticImprovements`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for the `UpdateAutomaticImprovements` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateAutomaticImprovementsRequest {
+    /// Required. The new version of the automatic imrovements.
+    #[prost(message, optional, tag = "1")]
+    pub automatic_improvements: ::core::option::Option<AutomaticImprovements>,
+    /// Required. List of fields being updated.
+    /// The following fields are supported (in both `snake_case` and
+    /// `lowerCamelCase`):
+    ///
+    /// - `item_updates`
+    /// - `item_updates.account_level_settings`
+    /// - `image_improvements`
+    /// - `image_improvements.account_level_settings`
+    /// - `shipping_improvements`
+    /// - `shipping_improvements.allow_shipping_improvements`
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Generated client implementations.
+pub mod automatic_improvements_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service to manage the automatic improvements of an account. The automatic
+    /// improvements of the account can be used to automatically update products,
+    /// improve images and shipping.
+    #[derive(Debug, Clone)]
+    pub struct AutomaticImprovementsServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl AutomaticImprovementsServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> AutomaticImprovementsServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> AutomaticImprovementsServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            AutomaticImprovementsServiceClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Retrieves the automatic improvements of an account.
+        pub async fn get_automatic_improvements(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAutomaticImprovementsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::AutomaticImprovements>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.shopping.merchant.accounts.v1beta.AutomaticImprovementsService/GetAutomaticImprovements",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.shopping.merchant.accounts.v1beta.AutomaticImprovementsService",
+                        "GetAutomaticImprovements",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the automatic improvements of an account.
+        pub async fn update_automatic_improvements(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateAutomaticImprovementsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::AutomaticImprovements>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.shopping.merchant.accounts.v1beta.AutomaticImprovementsService/UpdateAutomaticImprovements",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.shopping.merchant.accounts.v1beta.AutomaticImprovementsService",
+                        "UpdateAutomaticImprovements",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -1886,7 +2245,7 @@ pub mod business_identity_service_client {
     }
     impl<T> BusinessIdentityServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -1907,13 +2266,13 @@ pub mod business_identity_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             BusinessIdentityServiceClient::new(
@@ -2136,7 +2495,7 @@ pub mod business_info_service_client {
     }
     impl<T> BusinessInfoServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -2157,13 +2516,13 @@ pub mod business_info_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             BusinessInfoServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -2371,7 +2730,7 @@ pub mod email_preferences_service_client {
     }
     impl<T> EmailPreferencesServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -2392,13 +2751,13 @@ pub mod email_preferences_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             EmailPreferencesServiceClient::new(
@@ -2589,7 +2948,7 @@ pub mod homepage_service_client {
     }
     impl<T> HomepageServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -2610,13 +2969,13 @@ pub mod homepage_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             HomepageServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -2786,7 +3145,7 @@ pub struct GetOnlineReturnPolicyRequest {
 /// Request message for the `ListOnlineReturnPolicies` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOnlineReturnPoliciesRequest {
-    /// Required. The merchant account for which to list return policies.
+    /// Required. The business account for which to list return policies.
     /// Format: `accounts/{account}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -2831,23 +3190,29 @@ pub struct OnlineReturnPolicy {
     /// Output only. Return policy ID generated by Google.
     #[prost(string, tag = "2")]
     pub return_policy_id: ::prost::alloc::string::String,
-    /// This field represents the unique user-defined label of the return policy.
-    /// It is important to note that the same label cannot be used in different
-    /// return policies for the same country. Unless a product specifies a specific
-    /// label attribute, policies will be automatically labeled as 'default'.
-    /// To assign a custom return policy to certain product groups, follow the
-    /// instructions provided in the \[Return policy label\]
+    /// Required. Immutable. This field represents the unique user-defined label of
+    /// the return policy. It is important to note that the same label cannot be
+    /// used in different return policies for the same country. Unless a product
+    /// specifies a specific label attribute, policies will be automatically
+    /// labeled as 'default'. To assign a custom return policy to certain product
+    /// groups, follow the instructions provided in the \[Return policy label\]
     /// (<https://support.google.com/merchants/answer/9445425>).
     /// The label can contain up to 50 characters.
     #[prost(string, tag = "3")]
     pub label: ::prost::alloc::string::String,
-    /// The countries of sale where the return policy applies. The values
-    /// must be a valid 2 letter ISO 3166 code.
+    /// Required. Immutable. The countries of sale where the return policy applies.
+    /// The values must be a valid 2 letter ISO 3166 code.
     #[prost(string, repeated, tag = "4")]
     pub countries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The return policy.
     #[prost(message, optional, tag = "5")]
     pub policy: ::core::option::Option<online_return_policy::Policy>,
+    /// Optional. Overrides to the general policy for orders placed during a
+    /// specific set of time intervals.
+    #[prost(message, repeated, tag = "14")]
+    pub seasonal_overrides: ::prost::alloc::vec::Vec<
+        online_return_policy::SeasonalOverride,
+    >,
     /// The restocking fee that applies to all return reason categories. This would
     /// be treated as a free restocking fee if the value is not set.
     #[prost(message, optional, tag = "6")]
@@ -2866,8 +3231,8 @@ pub struct OnlineReturnPolicy {
     pub return_shipping_fee: ::core::option::Option<
         online_return_policy::ReturnShippingFee,
     >,
-    /// The return policy uri. This can used by Google to do a sanity check for the
-    /// policy. It must be a valid URL.
+    /// Required. The return policy uri. This can used by Google to do a sanity
+    /// check for the policy. It must be a valid URL.
     #[prost(string, tag = "10")]
     pub return_policy_uri: ::prost::alloc::string::String,
     /// This field specifies if merchant only accepts defective products for
@@ -2889,7 +3254,7 @@ pub mod online_return_policy {
     /// indicate that the customer pays the actual shipping cost.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ReturnShippingFee {
-        /// Type of return shipping fee.
+        /// Required. Type of return shipping fee.
         #[prost(enumeration = "return_shipping_fee::Type", tag = "1")]
         pub r#type: i32,
         /// Fixed return shipping fee amount. This value is only applicable when type
@@ -3027,6 +3392,45 @@ pub mod online_return_policy {
             }
         }
     }
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SeasonalOverride {
+        /// Required. Display name of this seasonal override in Merchant Center.
+        #[prost(string, tag = "1")]
+        pub label: ::prost::alloc::string::String,
+        /// Required. Defines the date range when this seasonal override applies.
+        /// Both start_date and end_date are inclusive.
+        /// The dates of the seasonal overrides should not overlap.
+        #[prost(message, optional, tag = "2")]
+        pub start_date: ::core::option::Option<
+            super::super::super::super::super::r#type::Date,
+        >,
+        /// Required. seasonal override end date (inclusive).
+        #[prost(message, optional, tag = "3")]
+        pub end_date: ::core::option::Option<
+            super::super::super::super::super::r#type::Date,
+        >,
+        /// ReturnWindow: Specifies either a fixed return date or the number of
+        /// days (from the delivery date) until which a product can be returned.
+        /// [Merchant Return Days](<https://schema.org/merchantReturnDays>)
+        #[prost(oneof = "seasonal_override::ReturnWindow", tags = "5, 6")]
+        pub return_window: ::core::option::Option<seasonal_override::ReturnWindow>,
+    }
+    /// Nested message and enum types in `SeasonalOverride`.
+    pub mod seasonal_override {
+        /// ReturnWindow: Specifies either a fixed return date or the number of
+        /// days (from the delivery date) until which a product can be returned.
+        /// [Merchant Return Days](<https://schema.org/merchantReturnDays>)
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        pub enum ReturnWindow {
+            /// Number of days (from the delivery date) that the product can be
+            /// returned.
+            #[prost(int32, tag = "5")]
+            ReturnDays(i32),
+            /// Fixed end date until which the product can be returned.
+            #[prost(message, tag = "6")]
+            ReturnUntilDate(super::super::super::super::super::super::r#type::Date),
+        }
+    }
     /// The available return methods.
     #[derive(
         Clone,
@@ -3151,7 +3555,7 @@ pub mod online_return_policy_service_client {
     }
     impl<T> OnlineReturnPolicyServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -3172,13 +3576,13 @@ pub mod online_return_policy_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             OnlineReturnPolicyServiceClient::new(
@@ -3216,7 +3620,7 @@ pub mod online_return_policy_service_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Gets an existing return policy.
+        /// Gets an existing return policy for a given business.
         pub async fn get_online_return_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetOnlineReturnPolicyRequest>,
@@ -3246,7 +3650,7 @@ pub mod online_return_policy_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists all existing return policies.
+        /// Lists all existing return policies for a given business.
         pub async fn list_online_return_policies(
             &mut self,
             request: impl tonic::IntoRequest<super::ListOnlineReturnPoliciesRequest>,
@@ -3472,7 +3876,7 @@ pub mod programs_service_client {
     }
     impl<T> ProgramsServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -3493,13 +3897,13 @@ pub mod programs_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ProgramsServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -3836,7 +4240,7 @@ pub mod regions_service_client {
     }
     impl<T> RegionsServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -3857,13 +4261,13 @@ pub mod regions_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             RegionsServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -4909,7 +5313,7 @@ pub mod shipping_settings_service_client {
     }
     impl<T> ShippingSettingsServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -4930,13 +5334,13 @@ pub mod shipping_settings_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ShippingSettingsServiceClient::new(
@@ -5158,7 +5562,7 @@ pub mod terms_of_service_service_client {
     }
     impl<T> TermsOfServiceServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -5179,13 +5583,13 @@ pub mod terms_of_service_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             TermsOfServiceServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -5431,7 +5835,7 @@ pub mod terms_of_service_agreement_state_service_client {
     }
     impl<T> TermsOfServiceAgreementStateServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -5452,13 +5856,13 @@ pub mod terms_of_service_agreement_state_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             TermsOfServiceAgreementStateServiceClient::new(

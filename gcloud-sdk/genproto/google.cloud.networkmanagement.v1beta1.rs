@@ -2949,46 +2949,22 @@ pub struct ConnectivityTest {
     pub description: ::prost::alloc::string::String,
     /// Required. Source specification of the Connectivity Test.
     ///
-    /// You can use a combination of source IP address, virtual machine
-    /// (VM) instance, or Compute Engine network to uniquely identify
-    /// the source location.
+    /// You can use a combination of source IP address, URI of a supported
+    /// endpoint, project ID, or VPC network to identify the source location.
     ///
-    /// Examples:
-    /// If the source IP address is an internal IP address within a Google Cloud
-    /// Virtual Private Cloud (VPC) network, then you must also specify the VPC
-    /// network. Otherwise, specify the VM instance, which already contains its
-    /// internal IP address and VPC network information.
-    ///
-    /// If the source of the test is within an on-premises network, then you must
-    /// provide the destination VPC network.
-    ///
-    /// If the source endpoint is a Compute Engine VM instance with multiple
-    /// network interfaces, the instance itself is not sufficient to identify the
-    /// endpoint. So, you must also specify the source IP address or VPC network.
-    ///
-    /// A reachability analysis proceeds even if the source location is
-    /// ambiguous. However, the test result may include endpoints that you don't
-    /// intend to test.
+    /// Reachability analysis might proceed even if the source location is
+    /// ambiguous. However, the test result might include endpoints or use a source
+    /// that you don't intend to test.
     #[prost(message, optional, tag = "3")]
     pub source: ::core::option::Option<Endpoint>,
     /// Required. Destination specification of the Connectivity Test.
     ///
-    /// You can use a combination of destination IP address, Compute Engine
-    /// VM instance, or VPC network to uniquely identify the destination
-    /// location.
+    /// You can use a combination of destination IP address, URI of a supported
+    /// endpoint, project ID, or VPC network to identify the destination location.
     ///
-    /// Even if the destination IP address is not unique, the source IP
-    /// location is unique. Usually, the analysis can infer the destination
-    /// endpoint from route information.
-    ///
-    /// If the destination you specify is a VM instance and the instance has
-    /// multiple network interfaces, then you must also specify either
-    /// a destination IP address  or VPC network to identify the destination
-    /// interface.
-    ///
-    /// A reachability analysis proceeds even if the destination location is
-    /// ambiguous. However, the result can include endpoints that you don't
-    /// intend to test.
+    /// Reachability analysis proceeds even if the destination location is
+    /// ambiguous. However, the test result might include endpoints or use a
+    /// destination that you don't intend to test.
     #[prost(message, optional, tag = "4")]
     pub destination: ::core::option::Option<Endpoint>,
     /// IP Protocol of the test. When not provided, "TCP" is assumed.
@@ -3034,8 +3010,7 @@ pub struct ConnectivityTest {
     /// test.
     #[prost(message, optional, tag = "16")]
     pub return_reachability_details: ::core::option::Option<ReachabilityDetails>,
-    /// Whether the test should skip firewall checking.
-    /// If not provided, we assume false.
+    /// Whether the analysis should skip firewall checking. Default value is false.
     #[prost(bool, tag = "17")]
     pub bypass_firewall_checks: bool,
 }
@@ -3055,7 +3030,8 @@ pub struct Endpoint {
     /// A forwarding rule and its corresponding IP address represent the frontend
     /// configuration of a Google Cloud load balancer. Forwarding rules are also
     /// used for protocol forwarding, Private Service Connect and other network
-    /// services to provide forwarding information in the control plane. Format:
+    /// services to provide forwarding information in the control plane. Applicable
+    /// only to destination endpoint. Format:
     ///   projects/{project}/global/forwardingRules/{id} or
     ///   projects/{project}/regions/{region}/forwardingRules/{id}
     #[prost(string, tag = "13")]
@@ -3083,26 +3059,29 @@ pub struct Endpoint {
     /// A [Cloud SQL](<https://cloud.google.com/sql>) instance URI.
     #[prost(string, tag = "8")]
     pub cloud_sql_instance: ::prost::alloc::string::String,
-    /// A [Redis Instance](<https://cloud.google.com/memorystore/docs/redis>)
-    /// URI.
+    /// A [Redis Instance](<https://cloud.google.com/memorystore/docs/redis>) URI.
+    /// Applicable only to destination endpoint.
     #[prost(string, tag = "17")]
     pub redis_instance: ::prost::alloc::string::String,
-    /// A [Redis Cluster](<https://cloud.google.com/memorystore/docs/cluster>)
-    /// URI.
+    /// A [Redis Cluster](<https://cloud.google.com/memorystore/docs/cluster>) URI.
+    /// Applicable only to destination endpoint.
     #[prost(string, tag = "18")]
     pub redis_cluster: ::prost::alloc::string::String,
-    /// A [Cloud Function](<https://cloud.google.com/functions>).
+    /// A [Cloud Function](<https://cloud.google.com/functions>). Applicable only to
+    /// source endpoint.
     #[prost(message, optional, tag = "10")]
     pub cloud_function: ::core::option::Option<endpoint::CloudFunctionEndpoint>,
     /// An [App Engine](<https://cloud.google.com/appengine>) [service
     /// version](<https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions>).
+    /// Applicable only to source endpoint.
     #[prost(message, optional, tag = "11")]
     pub app_engine_version: ::core::option::Option<endpoint::AppEngineVersionEndpoint>,
     /// A [Cloud Run](<https://cloud.google.com/run>)
     /// [revision](<https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get>)
+    /// Applicable only to source endpoint.
     #[prost(message, optional, tag = "12")]
     pub cloud_run_revision: ::core::option::Option<endpoint::CloudRunRevisionEndpoint>,
-    /// A Compute Engine network URI.
+    /// A VPC network URI.
     #[prost(string, tag = "4")]
     pub network: ::prost::alloc::string::String,
     /// Type of the network where the endpoint is located.
@@ -3111,9 +3090,9 @@ pub struct Endpoint {
     #[prost(enumeration = "endpoint::NetworkType", tag = "5")]
     pub network_type: i32,
     /// Project ID where the endpoint is located.
-    /// The Project ID can be derived from the URI if you provide a VM instance or
+    /// The project ID can be derived from the URI if you provide a endpoint or
     /// network URI.
-    /// The following are two cases where you must provide the project ID:
+    /// The following are two cases where you may need to provide the project ID:
     /// 1. Only the IP address is specified, and the IP address is within a Google
     /// Cloud project.
     /// 2. When you are using Shared VPC and the IP address that you provide is
@@ -3172,8 +3151,8 @@ pub mod endpoint {
         /// destination network.
         GcpNetwork = 1,
         /// A network hosted outside of Google Cloud.
-        /// This can be an on-premises network, or a network hosted by another cloud
-        /// provider.
+        /// This can be an on-premises network, an internet resource or a network
+        /// hosted by another cloud provider.
         NonGcpNetwork = 2,
     }
     impl NetworkType {
@@ -3678,7 +3657,7 @@ pub mod reachability_service_client {
     }
     impl<T> ReachabilityServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -3699,13 +3678,13 @@ pub mod reachability_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             ReachabilityServiceClient::new(InterceptedService::new(inner, interceptor))
@@ -4295,7 +4274,7 @@ pub mod vpc_flow_logs_service_client {
     }
     impl<T> VpcFlowLogsServiceClient<T>
     where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T: tonic::client::GrpcService<tonic::body::Body>,
         T::Error: Into<StdError>,
         T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
@@ -4316,13 +4295,13 @@ pub mod vpc_flow_logs_service_client {
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
             T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
                 Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
                 >,
             >,
             <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
+                http::Request<tonic::body::Body>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
             VpcFlowLogsServiceClient::new(InterceptedService::new(inner, interceptor))
