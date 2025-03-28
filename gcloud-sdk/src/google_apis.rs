@@ -75,102 +75,6 @@ pub mod google {
             }
         }
         pub mod googleads {
-            pub mod v17 {
-                pub mod common {
-                    #[cfg(
-                        any(
-                            feature = "google-ads-googleads-v17-common",
-                            feature = "google-ads-googleads-v17-errors",
-                            feature = "google-ads-googleads-v17-resources",
-                            feature = "google-ads-googleads-v17-services",
-                        )
-                    )]
-                    include_proto!("google.ads.googleads.v17.common");
-                }
-                pub mod enums {
-                    #[cfg(
-                        any(
-                            feature = "google-ads-googleads-v17-common",
-                            feature = "google-ads-googleads-v17-enums",
-                            feature = "google-ads-googleads-v17-errors",
-                            feature = "google-ads-googleads-v17-resources",
-                            feature = "google-ads-googleads-v17-services",
-                        )
-                    )]
-                    include_proto!("google.ads.googleads.v17.enums");
-                }
-                pub mod errors {
-                    #[cfg(
-                        any(
-                            feature = "google-ads-googleads-v17-errors",
-                            feature = "google-ads-googleads-v17-resources",
-                            feature = "google-ads-googleads-v17-services",
-                        )
-                    )]
-                    include_proto!("google.ads.googleads.v17.errors");
-                }
-                pub mod resources {
-                    #[cfg(
-                        any(
-                            feature = "google-ads-googleads-v17-resources",
-                            feature = "google-ads-googleads-v17-services",
-                        )
-                    )]
-                    include_proto!("google.ads.googleads.v17.resources");
-                }
-                pub mod services {
-                    #[cfg(any(feature = "google-ads-googleads-v17-services"))]
-                    include_proto!("google.ads.googleads.v17.services");
-                }
-            }
-            pub mod v18 {
-                pub mod common {
-                    #[cfg(
-                        any(
-                            feature = "google-ads-googleads-v18-common",
-                            feature = "google-ads-googleads-v18-errors",
-                            feature = "google-ads-googleads-v18-resources",
-                            feature = "google-ads-googleads-v18-services",
-                        )
-                    )]
-                    include_proto!("google.ads.googleads.v18.common");
-                }
-                pub mod enums {
-                    #[cfg(
-                        any(
-                            feature = "google-ads-googleads-v18-common",
-                            feature = "google-ads-googleads-v18-enums",
-                            feature = "google-ads-googleads-v18-errors",
-                            feature = "google-ads-googleads-v18-resources",
-                            feature = "google-ads-googleads-v18-services",
-                        )
-                    )]
-                    include_proto!("google.ads.googleads.v18.enums");
-                }
-                pub mod errors {
-                    #[cfg(
-                        any(
-                            feature = "google-ads-googleads-v18-errors",
-                            feature = "google-ads-googleads-v18-resources",
-                            feature = "google-ads-googleads-v18-services",
-                        )
-                    )]
-                    include_proto!("google.ads.googleads.v18.errors");
-                }
-                pub mod resources {
-                    #[cfg(
-                        any(
-                            feature = "google-ads-googleads-v18-resources",
-                            feature = "google-ads-googleads-v18-services",
-                        )
-                    )]
-                    include_proto!("google.ads.googleads.v18.resources");
-                }
-                pub mod services {
-                    #[cfg(any(feature = "google-ads-googleads-v18-services"))]
-                    include_proto!("google.ads.googleads.v18.services");
-                }
-            }
             pub mod v19 {
                 pub mod common {
                     #[cfg(
@@ -323,12 +227,6 @@ pub mod google {
                 feature = "google-actions-sdk-v2-interactionmodel-type",
                 feature = "google-ads-admanager-v1",
                 feature = "google-ads-admob-v1",
-                feature = "google-ads-googleads-v17-common",
-                feature = "google-ads-googleads-v17-resources",
-                feature = "google-ads-googleads-v17-services",
-                feature = "google-ads-googleads-v18-common",
-                feature = "google-ads-googleads-v18-resources",
-                feature = "google-ads-googleads-v18-services",
                 feature = "google-ads-googleads-v19-common",
                 feature = "google-ads-googleads-v19-resources",
                 feature = "google-ads-googleads-v19-services",
@@ -3476,8 +3374,6 @@ pub mod google {
         #[cfg(
             any(
                 feature = "google-ads-admanager-v1",
-                feature = "google-ads-googleads-v17-services",
-                feature = "google-ads-googleads-v18-services",
                 feature = "google-ads-googleads-v19-services",
                 feature = "google-ai-generativelanguage-v1alpha",
                 feature = "google-ai-generativelanguage-v1beta",
@@ -4082,8 +3978,6 @@ pub mod google {
             any(
                 feature = "google-actions-sdk-v2",
                 feature = "google-ads-admanager-v1",
-                feature = "google-ads-googleads-v17-services",
-                feature = "google-ads-googleads-v18-services",
                 feature = "google-ads-googleads-v19-services",
                 feature = "google-ai-generativelanguage-v1alpha",
                 feature = "google-ai-generativelanguage-v1beta",
