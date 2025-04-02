@@ -1480,6 +1480,93 @@ pub struct WeeklyRecurrence {
     #[prost(enumeration = "super::super::super::r#type::DayOfWeek", tag = "2")]
     pub day: i32,
 }
+/// A Cloud Firestore User Creds.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UserCreds {
+    /// Identifier. The resource name of the UserCreds.
+    /// Format:
+    /// `projects/{project}/databases/{database}/userCreds/{user_creds}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The time the user creds were created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the user creds were last updated.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Whether the user creds are enabled or disabled. Defaults to
+    /// ENABLED on creation.
+    #[prost(enumeration = "user_creds::State", tag = "4")]
+    pub state: i32,
+    /// Output only. The plaintext server-generated password for the user creds.
+    /// Only populated in responses for CreateUserCreds and ResetUserPassword.
+    #[prost(string, tag = "5")]
+    pub secure_password: ::prost::alloc::string::String,
+    /// Identity associated with this User Creds.
+    #[prost(oneof = "user_creds::UserCredsIdentity", tags = "6")]
+    pub user_creds_identity: ::core::option::Option<user_creds::UserCredsIdentity>,
+}
+/// Nested message and enum types in `UserCreds`.
+pub mod user_creds {
+    /// Describes a Resource Identity principal.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ResourceIdentity {
+        /// Output only. Principal identifier string.
+        /// See: <https://cloud.google.com/iam/docs/principal-identifiers>
+        #[prost(string, tag = "1")]
+        pub principal: ::prost::alloc::string::String,
+    }
+    /// The state of the user creds (ENABLED or DISABLED).
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The default value. Should not be used.
+        Unspecified = 0,
+        /// The user creds are enabled.
+        Enabled = 1,
+        /// The user creds are disabled.
+        Disabled = 2,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Enabled => "ENABLED",
+                Self::Disabled => "DISABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENABLED" => Some(Self::Enabled),
+                "DISABLED" => Some(Self::Disabled),
+                _ => None,
+            }
+        }
+    }
+    /// Identity associated with this User Creds.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum UserCredsIdentity {
+        /// Resource Identity descriptor.
+        #[prost(message, tag = "6")]
+        ResourceIdentity(ResourceIdentity),
+    }
+}
 /// A request to list the Firestore Databases in all locations for a project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatabasesRequest {
@@ -1574,6 +1661,88 @@ pub struct DeleteDatabaseRequest {
 /// Metadata related to the delete database operation.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeleteDatabaseMetadata {}
+/// The request for
+/// [FirestoreAdmin.CreateUserCreds][google.firestore.admin.v1.FirestoreAdmin.CreateUserCreds].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateUserCredsRequest {
+    /// Required. A parent name of the form
+    /// `projects/{project_id}/databases/{database_id}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The user creds to create.
+    #[prost(message, optional, tag = "2")]
+    pub user_creds: ::core::option::Option<UserCreds>,
+    /// Required. The ID to use for the user creds, which will become the final
+    /// component of the user creds's resource name.
+    ///
+    /// This value should be 4-63 characters. Valid characters are /[a-z][0-9]-/
+    /// with first character a letter and the last a letter or a number. Must not
+    /// be UUID-like /\[0-9a-f\]{8}(-\[0-9a-f\]{4}){3}-\[0-9a-f\]{12}/.
+    #[prost(string, tag = "3")]
+    pub user_creds_id: ::prost::alloc::string::String,
+}
+/// The request for
+/// [FirestoreAdmin.GetUserCreds][google.firestore.admin.v1.FirestoreAdmin.GetUserCreds].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetUserCredsRequest {
+    /// Required. A name of the form
+    /// `projects/{project_id}/databases/{database_id}/userCreds/{user_creds_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for
+/// [FirestoreAdmin.ListUserCreds][google.firestore.admin.v1.FirestoreAdmin.ListUserCreds].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListUserCredsRequest {
+    /// Required. A parent database name of the form
+    /// `projects/{project_id}/databases/{database_id}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+}
+/// The response for
+/// [FirestoreAdmin.ListUserCreds][google.firestore.admin.v1.FirestoreAdmin.ListUserCreds].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListUserCredsResponse {
+    /// The user creds for the database.
+    #[prost(message, repeated, tag = "1")]
+    pub user_creds: ::prost::alloc::vec::Vec<UserCreds>,
+}
+/// The request for
+/// [FirestoreAdmin.EnableUserCreds][google.firestore.admin.v1.FirestoreAdmin.EnableUserCreds].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EnableUserCredsRequest {
+    /// Required. A name of the form
+    /// `projects/{project_id}/databases/{database_id}/userCreds/{user_creds_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for
+/// [FirestoreAdmin.DisableUserCreds][google.firestore.admin.v1.FirestoreAdmin.DisableUserCreds].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DisableUserCredsRequest {
+    /// Required. A name of the form
+    /// `projects/{project_id}/databases/{database_id}/userCreds/{user_creds_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for
+/// [FirestoreAdmin.ResetUserPassword][google.firestore.admin.v1.FirestoreAdmin.ResetUserPassword].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResetUserPasswordRequest {
+    /// Required. A name of the form
+    /// `projects/{project_id}/databases/{database_id}/userCreds/{user_creds_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for
+/// [FirestoreAdmin.DeleteUserCreds][google.firestore.admin.v1.FirestoreAdmin.DeleteUserCreds].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteUserCredsRequest {
+    /// Required. A name of the form
+    /// `projects/{project_id}/databases/{database_id}/userCreds/{user_creds_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
 /// The request for
 /// [FirestoreAdmin.CreateBackupSchedule][google.firestore.admin.v1.FirestoreAdmin.CreateBackupSchedule].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2565,6 +2734,200 @@ pub mod firestore_admin_client {
                     GrpcMethod::new(
                         "google.firestore.admin.v1.FirestoreAdmin",
                         "DeleteDatabase",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Create a user creds.
+        pub async fn create_user_creds(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateUserCredsRequest>,
+        ) -> std::result::Result<tonic::Response<super::UserCreds>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.admin.v1.FirestoreAdmin/CreateUserCreds",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.firestore.admin.v1.FirestoreAdmin",
+                        "CreateUserCreds",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a user creds resource. Note that the returned resource does not
+        /// contain the secret value itself.
+        pub async fn get_user_creds(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetUserCredsRequest>,
+        ) -> std::result::Result<tonic::Response<super::UserCreds>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.admin.v1.FirestoreAdmin/GetUserCreds",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.firestore.admin.v1.FirestoreAdmin",
+                        "GetUserCreds",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// List all user creds in the database. Note that the returned resource
+        /// does not contain the secret value itself.
+        pub async fn list_user_creds(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListUserCredsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListUserCredsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.admin.v1.FirestoreAdmin/ListUserCreds",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.firestore.admin.v1.FirestoreAdmin",
+                        "ListUserCreds",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Enables a user creds. No-op if the user creds are already enabled.
+        pub async fn enable_user_creds(
+            &mut self,
+            request: impl tonic::IntoRequest<super::EnableUserCredsRequest>,
+        ) -> std::result::Result<tonic::Response<super::UserCreds>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.admin.v1.FirestoreAdmin/EnableUserCreds",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.firestore.admin.v1.FirestoreAdmin",
+                        "EnableUserCreds",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Disables a user creds. No-op if the user creds are already disabled.
+        pub async fn disable_user_creds(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DisableUserCredsRequest>,
+        ) -> std::result::Result<tonic::Response<super::UserCreds>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.admin.v1.FirestoreAdmin/DisableUserCreds",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.firestore.admin.v1.FirestoreAdmin",
+                        "DisableUserCreds",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Resets the password of a user creds.
+        pub async fn reset_user_password(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ResetUserPasswordRequest>,
+        ) -> std::result::Result<tonic::Response<super::UserCreds>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.admin.v1.FirestoreAdmin/ResetUserPassword",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.firestore.admin.v1.FirestoreAdmin",
+                        "ResetUserPassword",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a user creds.
+        pub async fn delete_user_creds(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteUserCredsRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.admin.v1.FirestoreAdmin/DeleteUserCreds",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.firestore.admin.v1.FirestoreAdmin",
+                        "DeleteUserCreds",
                     ),
                 );
             self.inner.unary(req, path, codec).await

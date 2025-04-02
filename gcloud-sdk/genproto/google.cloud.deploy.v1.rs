@@ -2180,8 +2180,8 @@ pub mod release {
             /// configuration.
             VerificationConfigNotFound = 4,
             /// The render operation did not complete successfully because the custom
-            /// action required for predeploy or postdeploy was not found in the
-            /// Skaffold configuration. See failure_message for additional details.
+            /// action(s) required for Rollout jobs were not found in the Skaffold
+            /// configuration. See failure_message for additional details.
             CustomActionNotFound = 5,
             /// Release failed during rendering because the release configuration is
             /// not supported with the specified deployment strategy.
@@ -2493,11 +2493,12 @@ pub struct BuildArtifact {
 /// The artifacts produced by a target render operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetArtifact {
-    /// Output only. File path of the resolved Skaffold configuration relative to
-    /// the URI.
+    /// Output only. File path of the resolved Skaffold configuration for the
+    /// stable phase, relative to the URI.
     #[prost(string, tag = "2")]
     pub skaffold_config_path: ::prost::alloc::string::String,
-    /// Output only. File path of the rendered manifest relative to the URI.
+    /// Output only. File path of the rendered manifest relative to the URI for the
+    /// stable phase.
     #[prost(string, tag = "3")]
     pub manifest_path: ::prost::alloc::string::String,
     /// Output only. Map from the phase ID to the phase artifacts for the `Target`.

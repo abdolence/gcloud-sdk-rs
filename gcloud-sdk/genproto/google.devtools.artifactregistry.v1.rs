@@ -736,6 +736,37 @@ pub struct GenericArtifact {
     #[prost(message, optional, tag = "4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// GoModule represents a Go module.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GoModule {
+    /// The resource name of a Go module.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The version of the Go module. Must be a valid canonical version as defined
+    /// in <https://go.dev/ref/mod#glos-canonical-version.>
+    #[prost(string, tag = "2")]
+    pub version: ::prost::alloc::string::String,
+    /// Output only. The time when the Go module is created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the Go module is updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// A detailed representation of a KFP artifact.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct KfpArtifact {
+    /// Output only. Resource name of the KFP artifact. Since users don't directly
+    /// interact with this resource, the name will be derived from the associated
+    /// version. For example, when version = ".../versions/sha256:abcdef...", the
+    /// name will be ".../kfpArtifacts/sha256:abcdef...".
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The version associated with the KFP artifact. Must follow the Semantic
+    /// Versioning standard.
+    #[prost(string, tag = "2")]
+    pub version: ::prost::alloc::string::String,
+}
 /// Packages are named collections of versions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Package {
@@ -1660,6 +1691,10 @@ pub struct Repository {
     /// Output only. If set, the repository satisfies physical zone isolation.
     #[prost(bool, tag = "22")]
     pub satisfies_pzi: bool,
+    /// Output only. The repository endpoint, for example:
+    /// `us-docker.pkg.dev/my-proj/my-repo`.
+    #[prost(string, tag = "26")]
+    pub registry_uri: ::prost::alloc::string::String,
     /// Repository-specific configurations.
     #[prost(oneof = "repository::FormatConfig", tags = "9, 17")]
     pub format_config: ::core::option::Option<repository::FormatConfig>,
@@ -2633,7 +2668,8 @@ pub struct BatchDeleteVersionsRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The names of the versions to delete.
-    /// A maximum of 10000 versions can be deleted in a batch.
+    /// The maximum number of versions deleted per batch is determined by the
+    /// service and is dependent on the available resources in the region.
     #[prost(string, repeated, tag = "2")]
     pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// If true, the request is performed without deleting data, following AIP-163.
