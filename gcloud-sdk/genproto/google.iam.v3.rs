@@ -28,13 +28,13 @@ pub struct OperationMetadata {
     #[prost(string, tag = "7")]
     pub api_version: ::prost::alloc::string::String,
 }
-/// IAM policy binding
+/// IAM policy binding resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyBinding {
     /// Identifier. The name of the policy binding, in the format
     /// `{binding_parent/locations/{location}/policyBindings/{policy_binding_id}`.
-    /// The binding parent is the closest Resource Manager resource (i.e., Project,
-    /// Folder or Organization) to the binding target.
+    /// The binding parent is the closest Resource Manager resource (project,
+    /// folder, or organization) to the binding target.
     ///
     /// Format:
     ///
@@ -56,7 +56,7 @@ pub struct PolicyBinding {
     /// to 63 characters.
     #[prost(string, tag = "4")]
     pub display_name: ::prost::alloc::string::String,
-    /// Optional. User defined annotations. See
+    /// Optional. User-defined annotations. See
     /// <https://google.aip.dev/148#annotations> for more details such as format and
     /// size limitations
     #[prost(map = "string, string", tag = "5")]
@@ -76,21 +76,28 @@ pub struct PolicyBinding {
     #[prost(enumeration = "policy_binding::PolicyKind", tag = "11")]
     pub policy_kind: i32,
     /// Required. Immutable. The resource name of the policy to be bound. The
-    /// binding parent and policy must belong to the same Organization (or
-    /// Project).
+    /// binding parent and policy must belong to the same organization.
     #[prost(string, tag = "7")]
     pub policy: ::prost::alloc::string::String,
     /// Output only. The globally unique ID of the policy to be bound.
     #[prost(string, tag = "12")]
     pub policy_uid: ::prost::alloc::string::String,
-    /// Optional. Condition can either be a principal condition or a resource
-    /// condition. It depends on the type of target, the policy it is attached to,
-    /// and/or the expression itself. When set, the `expression` field in the
-    /// `Expr` must include from 1 to 10 subexpressions, joined by the "||"(Logical
-    /// OR),
-    /// "&&"(Logical AND) or "!"(Logical NOT) operators and cannot contain more
-    /// than 250 characters.
-    /// Allowed operations for principal.subject:
+    /// Optional. The condition to apply to the policy binding. When set, the
+    /// `expression` field in the `Expr` must include from 1 to 10 subexpressions,
+    /// joined by the
+    /// "||"(Logical OR), "&&"(Logical AND) or "!"(Logical NOT) operators and
+    /// cannot contain more than 250 characters.
+    ///
+    /// The condition is currently only supported when bound to policies of kind
+    /// principal access boundary.
+    ///
+    /// When the bound policy is a principal access boundary policy, the only
+    /// supported attributes in any subexpression are `principal.type` and
+    /// `principal.subject`. An example expression is: "principal.type ==
+    /// 'iam.googleapis.com/ServiceAccount'" or "principal.subject ==
+    /// 'bob@example.com'".
+    ///
+    /// Allowed operations for `principal.subject`:
     ///
     /// - `principal.subject == <principal subject string>`
     /// - `principal.subject != <principal subject string>`
@@ -98,7 +105,7 @@ pub struct PolicyBinding {
     /// - `principal.subject.startsWith(<string>)`
     /// - `principal.subject.endsWith(<string>)`
     ///
-    /// Allowed operations for principal.type:
+    /// Allowed operations for `principal.type`:
     ///
     /// - `principal.type == <principal type string>`
     /// - `principal.type != <principal type string>`
@@ -111,12 +118,6 @@ pub struct PolicyBinding {
     /// - iam.googleapis.com/WorkforcePoolIdentity
     /// - iam.googleapis.com/WorkloadPoolIdentity
     /// - iam.googleapis.com/ServiceAccount
-    ///
-    /// When the bound policy is a principal access boundary policy, the only
-    /// supported attributes in any subexpression are `principal.type` and
-    /// `principal.subject`. An example expression is: "principal.type ==
-    /// 'iam.googleapis.com/ServiceAccount'" or "principal.subject ==
-    /// 'bob@example.com'".
     #[prost(message, optional, tag = "8")]
     pub condition: ::core::option::Option<super::super::r#type::Expr>,
     /// Output only. The time when the policy binding was created.
@@ -132,28 +133,37 @@ pub mod policy_binding {
     /// be bound. Immutable once set.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Target {
+        /// The different types of targets that can be bound to a policy.
         #[prost(oneof = "target::Target", tags = "1")]
         pub target: ::core::option::Option<target::Target>,
     }
     /// Nested message and enum types in `Target`.
     pub mod target {
+        /// The different types of targets that can be bound to a policy.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Target {
             /// Immutable. Full Resource Name used for principal access boundary policy
-            /// bindings Examples:
+            /// bindings. The principal set must be directly parented by the policy
+            /// binding's parent or same as the parent if the target is a
+            /// project/folder/organization.
             ///
-            /// * Organization:
-            /// `//cloudresourcemanager.googleapis.com/organizations/ORGANIZATION_ID`
-            /// * Folder: `//cloudresourcemanager.googleapis.com/folders/FOLDER_ID`
-            /// * Project:
+            /// Examples:
+            /// * For binding's parented by an organization:
+            ///    * Organization:
+            ///    `//cloudresourcemanager.googleapis.com/organizations/ORGANIZATION_ID`
+            ///    * Workforce Identity:
+            ///    `//iam.googleapis.com/locations/global/workforcePools/WORKFORCE_POOL_ID`
+            ///    * Workspace Identity:
+            ///    `//iam.googleapis.com/locations/global/workspace/WORKSPACE_ID`
+            /// * For binding's parented by a folder:
+            ///    * Folder:
+            ///    `//cloudresourcemanager.googleapis.com/folders/FOLDER_ID`
+            /// * For binding's parented by a project:
+            ///    * Project:
             ///      * `//cloudresourcemanager.googleapis.com/projects/PROJECT_NUMBER`
             ///      * `//cloudresourcemanager.googleapis.com/projects/PROJECT_ID`
-            /// * Workload Identity Pool:
-            /// `//iam.googleapis.com/projects/PROJECT_NUMBER/locations/LOCATION/workloadIdentityPools/WORKLOAD_POOL_ID`
-            /// * Workforce Identity:
-            /// `//iam.googleapis.com/locations/global/workforcePools/WORKFORCE_POOL_ID`
-            /// * Workspace Identity:
-            /// `//iam.googleapis.com/locations/global/workspace/WORKSPACE_ID`
+            ///    * Workload Identity Pool:
+            ///    `//iam.googleapis.com/projects/PROJECT_NUMBER/locations/LOCATION/workloadIdentityPools/WORKLOAD_POOL_ID`
             #[prost(string, tag = "1")]
             PrincipalSet(::prost::alloc::string::String),
         }
@@ -202,8 +212,8 @@ pub mod policy_binding {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePolicyBindingRequest {
     /// Required. The parent resource where this policy binding will be created.
-    /// The binding parent is the closest Resource Manager resource (Project,
-    /// Folder or Organization) to the binding target.
+    /// The binding parent is the closest Resource Manager resource (project,
+    /// folder or organization) to the binding target.
     ///
     /// Format:
     ///
@@ -716,10 +726,10 @@ pub struct PrincipalAccessBoundaryPolicyDetails {
     #[prost(message, repeated, tag = "1")]
     pub rules: ::prost::alloc::vec::Vec<PrincipalAccessBoundaryPolicyRule>,
     /// Optional.
-    /// The version number that indicates which Google Cloud
-    /// services are included in the enforcement (e.g. "latest", "1", ...). If
-    /// empty, the PAB policy version will be set to the current latest version,
-    /// and this version won't get updated when new versions are released.
+    /// The version number (for example, `1` or `latest`) that indicates which
+    /// permissions are able to be blocked by the policy. If empty, the PAB policy
+    /// version will be set to the most recent version number at the time of the
+    /// policy's creation.
     #[prost(string, tag = "4")]
     pub enforcement_version: ::prost::alloc::string::String,
 }
@@ -730,9 +740,10 @@ pub struct PrincipalAccessBoundaryPolicyRule {
     /// Must be less than or equal to 256 characters.
     #[prost(string, tag = "1")]
     pub description: ::prost::alloc::string::String,
-    /// Required. A list of Cloud Resource Manager resources. The resource and all
-    /// the descendants are included. The number of resources in a policy is
-    /// limited to 500 across all rules.
+    /// Required. A list of Resource Manager resources. If a resource is listed in
+    /// the rule, then the rule applies for that resource and its descendants. The
+    /// number of resources in a policy is limited to 500 across all rules in the
+    /// policy.
     ///
     /// The following resource types are supported:
     ///
@@ -794,7 +805,7 @@ pub mod principal_access_boundary_policy_rule {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePrincipalAccessBoundaryPolicyRequest {
     /// Required. The parent resource where this principal access boundary policy
-    /// will be created. Only organization is supported now.
+    /// will be created. Only organizations are supported.
     ///
     /// Format:
     ///    `organizations/{organization_id}/locations/{location}`
@@ -865,8 +876,8 @@ pub struct DeletePrincipalAccessBoundaryPolicyRequest {
     /// actually post it.
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
-    /// Optional. If set to true, the request will force the deletion of the Policy
-    /// even if the Policy references PolicyBindings.
+    /// Optional. If set to true, the request will force the deletion of the policy
+    /// even if the policy is referenced in policy bindings.
     #[prost(bool, tag = "4")]
     pub force: bool,
 }
@@ -898,6 +909,7 @@ pub struct ListPrincipalAccessBoundaryPoliciesRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
+/// Response message for ListPrincipalAccessBoundaryPolicies method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPrincipalAccessBoundaryPoliciesResponse {
     /// The principal access boundary policies from the specified parent.

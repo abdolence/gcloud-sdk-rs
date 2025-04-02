@@ -41,8 +41,8 @@ pub struct Voice {
 /// Used for advanced voice options.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AdvancedVoiceOptions {
-    /// Only for Journey voices. If false, the synthesis will be context aware
-    /// and have higher latency.
+    /// Only for Journey voices. If false, the synthesis is context aware
+    /// and has a higher latency.
     #[prost(bool, optional, tag = "1")]
     pub low_latency_journey_synthesis: ::core::option::Option<bool>,
 }
@@ -65,9 +65,9 @@ pub struct SynthesizeSpeechRequest {
 /// Pronunciation customization for a phrase.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomPronunciationParams {
-    /// The phrase to which the customization will be applied.
-    /// The phrase can be multiple words (in the case of proper nouns etc), but
-    /// should not span to a whole sentence.
+    /// The phrase to which the customization is applied.
+    /// The phrase can be multiple words, such as proper nouns, but shouldn't span
+    /// the length of the sentence.
     #[prost(string, optional, tag = "1")]
     pub phrase: ::core::option::Option<::prost::alloc::string::String>,
     /// The phonetic encoding of the phrase.
@@ -100,10 +100,10 @@ pub mod custom_pronunciation_params {
     pub enum PhoneticEncoding {
         /// Not specified.
         Unspecified = 0,
-        /// IPA. (e.g. apple -> ˈæpəl )
+        /// IPA, such as apple -> ˈæpəl.
         /// <https://en.wikipedia.org/wiki/International_Phonetic_Alphabet>
         Ipa = 1,
-        /// X-SAMPA (e.g. apple -> "{p@l" )
+        /// X-SAMPA, such as apple -> "{p@l".
         /// <https://en.wikipedia.org/wiki/X-SAMPA>
         XSampa = 2,
     }
@@ -133,7 +133,7 @@ pub mod custom_pronunciation_params {
 /// A collection of pronunciation customizations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomPronunciations {
-    /// The pronunciation customizations to be applied.
+    /// The pronunciation customizations are applied.
     #[prost(message, repeated, tag = "1")]
     pub pronunciations: ::prost::alloc::vec::Vec<CustomPronunciationParams>,
 }
@@ -146,7 +146,7 @@ pub struct MultiSpeakerMarkup {
 }
 /// Nested message and enum types in `MultiSpeakerMarkup`.
 pub mod multi_speaker_markup {
-    /// A Multi-speaker turn.
+    /// A multi-speaker turn.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Turn {
         /// Required. The speaker of the turn, for example, 'O' or 'Q'. Please refer
@@ -164,18 +164,16 @@ pub mod multi_speaker_markup {
 /// input size is limited to 5000 bytes.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SynthesisInput {
-    /// Optional. The pronunciation customizations to be applied to the input. If
-    /// this is set, the input will be synthesized using the given pronunciation
+    /// Optional. The pronunciation customizations are applied to the input. If
+    /// this is set, the input is synthesized using the given pronunciation
     /// customizations.
     ///
-    /// The initial support will be for EFIGS (English, French,
-    /// Italian, German, Spanish) languages, as provided in
-    /// VoiceSelectionParams. Journey and Instant Clone voices are
-    /// not supported yet.
+    /// The initial support is for en-us, with plans to expand to other locales in
+    /// the future. Instant Clone voices aren't supported.
     ///
     /// In order to customize the pronunciation of a phrase, there must be an exact
     /// match of the phrase in the input types. If using SSML, the phrase must not
-    /// be inside a phoneme tag (entirely or partially).
+    /// be inside a phoneme tag.
     #[prost(message, optional, tag = "3")]
     pub custom_pronunciations: ::core::option::Option<CustomPronunciations>,
     /// The input source, which is either plain text or SSML.
@@ -237,8 +235,8 @@ pub struct VoiceSelectionParams {
     #[prost(message, optional, tag = "4")]
     pub custom_voice: ::core::option::Option<CustomVoiceParams>,
     /// Optional. The configuration for a voice clone. If
-    /// \[VoiceCloneParams.voice_clone_key\] is set, the service will choose the
-    /// voice clone matching the specified configuration.
+    /// \[VoiceCloneParams.voice_clone_key\] is set, the service chooses the voice
+    /// clone matching the specified configuration.
     #[prost(message, optional, tag = "5")]
     pub voice_clone: ::core::option::Option<VoiceCloneParams>,
 }
@@ -248,10 +246,10 @@ pub struct AudioConfig {
     /// Required. The format of the audio byte stream.
     #[prost(enumeration = "AudioEncoding", tag = "1")]
     pub audio_encoding: i32,
-    /// Optional. Input only. Speaking rate/speed, in the range \[0.25, 4.0\]. 1.0 is
+    /// Optional. Input only. Speaking rate/speed, in the range \[0.25, 2.0\]. 1.0 is
     /// the normal native speed supported by the specific voice. 2.0 is twice as
     /// fast, and 0.5 is half as fast. If unset(0.0), defaults to the native 1.0
-    /// speed. Any other values < 0.25 or > 4.0 will return an error.
+    /// speed. Any other values < 0.25 or > 2.0 will return an error.
     #[prost(double, tag = "2")]
     pub speaking_rate: f64,
     /// Optional. Input only. Speaking pitch, in the range \[-20.0, 20.0\]. 20 means
@@ -370,13 +368,19 @@ pub struct SynthesizeSpeechResponse {
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StreamingAudioConfig {
     /// Required. The format of the audio byte stream.
-    /// For now, streaming only supports PCM and OGG_OPUS. All other encodings
-    /// will return an error.
+    /// Streaming supports PCM, ALAW, MULAW and OGG_OPUS. All other encodings
+    /// return an error.
     #[prost(enumeration = "AudioEncoding", tag = "1")]
     pub audio_encoding: i32,
     /// Optional. The synthesis sample rate (in hertz) for this audio.
     #[prost(int32, tag = "2")]
     pub sample_rate_hertz: i32,
+    /// Optional. Input only. Speaking rate/speed, in the range \[0.25, 2.0\]. 1.0 is
+    /// the normal native speed supported by the specific voice. 2.0 is twice as
+    /// fast, and 0.5 is half as fast. If unset(0.0), defaults to the native 1.0
+    /// speed. Any other values < 0.25 or > 2.0 will return an error.
+    #[prost(double, tag = "3")]
+    pub speaking_rate: f64,
 }
 /// Provides configuration information for the StreamingSynthesize request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -387,6 +391,18 @@ pub struct StreamingSynthesizeConfig {
     /// Optional. The configuration of the synthesized audio.
     #[prost(message, optional, tag = "4")]
     pub streaming_audio_config: ::core::option::Option<StreamingAudioConfig>,
+    /// Optional. The pronunciation customizations are applied to the input. If
+    /// this is set, the input is synthesized using the given pronunciation
+    /// customizations.
+    ///
+    /// The initial support is for en-us, with plans to expand to other locales in
+    /// the future. Instant Clone voices aren't supported.
+    ///
+    /// In order to customize the pronunciation of a phrase, there must be an exact
+    /// match of the phrase in the input types. If using SSML, the phrase must not
+    /// be inside a phoneme tag.
+    #[prost(message, optional, tag = "5")]
+    pub custom_pronunciations: ::core::option::Option<CustomPronunciations>,
 }
 /// Input to be synthesized.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -399,9 +415,8 @@ pub mod streaming_synthesis_input {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum InputSource {
         /// The raw text to be synthesized. It is recommended that each input
-        /// contains complete, terminating sentences, as this will likely result in
-        /// better prosody in the output audio. That being said, users are free to
-        /// input text however they please.
+        /// contains complete, terminating sentences, which results in better prosody
+        /// in the output audio.
         #[prost(string, tag = "1")]
         Text(::prost::alloc::string::String),
     }
@@ -501,7 +516,7 @@ pub enum AudioEncoding {
     Linear16 = 1,
     /// MP3 audio at 32kbps.
     Mp3 = 2,
-    /// Opus encoded audio wrapped in an ogg container. The result will be a
+    /// Opus encoded audio wrapped in an ogg container. The result is a
     /// file which can be played natively on Android, and in browsers (at least
     /// Chrome and Firefox). The quality of the encoding is considerably higher
     /// than MP3 while using approximately the same bitrate.
@@ -513,7 +528,7 @@ pub enum AudioEncoding {
     /// Audio content returned as ALAW also contains a WAV header.
     Alaw = 6,
     /// Uncompressed 16-bit signed little-endian samples (Linear PCM).
-    /// Note that as opposed to LINEAR16, audio will not be wrapped in a WAV (or
+    /// Note that as opposed to LINEAR16, audio won't be wrapped in a WAV (or
     /// any other) header.
     Pcm = 7,
 }
@@ -700,7 +715,7 @@ pub mod text_to_speech_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Performs bidirectional streaming speech synthesis: receive audio while
+        /// Performs bidirectional streaming speech synthesis: receives audio while
         /// sending text.
         pub async fn streaming_synthesize(
             &mut self,

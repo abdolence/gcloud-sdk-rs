@@ -768,6 +768,57 @@ pub mod execution_info {
         /// reason for replay
         #[prost(string, tag = "3")]
         pub replay_reason: ::prost::alloc::string::String,
+        /// Optional. The mode of the replay.
+        #[prost(enumeration = "replay_info::ReplayMode", tag = "4")]
+        pub replay_mode: i32,
+    }
+    /// Nested message and enum types in `ReplayInfo`.
+    pub mod replay_info {
+        /// Replay mode for the execution. The default behavoir is replay from
+        /// beginning. If the replay mode is set to point of failure, the execution
+        /// will be replayed from the first failed task.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum ReplayMode {
+            /// Default value.
+            Unspecified = 0,
+            /// Replay the original execution.
+            FromBeginning = 1,
+            /// Replay the execution with the modified parameters.
+            PointOfFailure = 2,
+        }
+        impl ReplayMode {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "REPLAY_MODE_UNSPECIFIED",
+                    Self::FromBeginning => "REPLAY_MODE_FROM_BEGINNING",
+                    Self::PointOfFailure => "REPLAY_MODE_POINT_OF_FAILURE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REPLAY_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "REPLAY_MODE_FROM_BEGINNING" => Some(Self::FromBeginning),
+                    "REPLAY_MODE_POINT_OF_FAILURE" => Some(Self::PointOfFailure),
+                    _ => None,
+                }
+            }
+        }
     }
     /// ExecutionMethod Enum
     #[derive(
