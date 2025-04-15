@@ -1,3 +1,4 @@
+
 #[cfg(any(feature = "google-rest-bigquery-v2"))]
 pub mod bigquery_v2;
 
@@ -9,6 +10,9 @@ pub mod dns_v1;
 
 #[cfg(any(feature = "google-rest-identitytoolkit-v3"))]
 pub mod identitytoolkit_v3;
+
+#[cfg(any(feature = "google-rest-lustre-v1"))]
+pub mod lustre_v1;
 
 #[cfg(any(feature = "google-rest-servicecontrol-v1"))]
 pub mod servicecontrol_v1;
