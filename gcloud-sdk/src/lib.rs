@@ -46,6 +46,7 @@
 //! Complete examples available on [github](https://github.com/abdolence/gcloud-sdk-rs/tree/master/src/examples).
 //!
 
+#![allow(unexpected_cfgs)]
 mod apis;
 pub use apis::*;
 
