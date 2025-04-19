@@ -159,6 +159,7 @@ pub struct ComputePeriodZoneOperationsPeriodWaitParams {
     pub upload_type: Option<String>,
     /// Legacy name for parameter that has been superseded by `quotaUser`.
     pub user_ip: Option<String>,
+    pub body: Option<serde_json::Value>,
 }
 
 /// struct for typed errors of method [`compute_zone_operations_delete`]
@@ -574,6 +575,7 @@ pub async fn compute_zone_operations_wait(
     let upload_protocol = params.upload_protocol;
     let upload_type = params.upload_type;
     let user_ip = params.user_ip;
+    let body = params.body;
 
     let local_var_client = &local_var_configuration.client;
 
@@ -643,6 +645,7 @@ pub async fn compute_zone_operations_wait(
     if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };
+    local_var_req_builder = local_var_req_builder.json(&body);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;

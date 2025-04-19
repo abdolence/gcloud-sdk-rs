@@ -1,0 +1,17 @@
+diff --git a/gcloud-protos-generator/openapi/google/compute-v1/openapi.yaml b/gcloud-protos-generator/openapi/google/compute-v1/openapi.yaml
+index 9d9dc3aab..682b4bde3 100644
+--- a/gcloud-protos-generator/openapi/google/compute-v1/openapi.yaml
++++ b/gcloud-protos-generator/openapi/google/compute-v1/openapi.yaml
+@@ -43770,6 +43770,12 @@ paths:
+           required: true
+           schema:
+             type: string
++      requestBody:
++        content:
++          application/json:
++            schema:
++              type: object
++              nullable: false
+       responses:
+         "200":
+           content:
