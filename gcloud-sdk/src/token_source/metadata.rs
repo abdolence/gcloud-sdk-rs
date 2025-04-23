@@ -78,6 +78,30 @@ impl Metadata {
         let resp = self.client.get(url).await?;
         Ok(SecretValue::from(resp))
     }
+
+    pub async fn email(&self) -> Option<String> {
+        match PathAndQuery::from_str(
+            format!(
+                "/computeMetadata/v1/instance/service-accounts/{}/email",
+                self.account
+            )
+            .as_str(),
+        ) {
+            Ok(url) if self.client.is_available() => {
+                trace!("Receiving SA email from Metadata Server using '{}'", url);
+                self.client
+                    .get(url)
+                    .await
+                    .ok()
+                    .map(|email| email.trim().to_string())
+            }
+            Ok(_) => None,
+            Err(e) => {
+                error!("Internal URL format error: '{}'", e);
+                None
+            }
+        }
+    }
 }
 
 impl From<Metadata> for BoxSource {

@@ -204,6 +204,15 @@ impl GoogleEnvironment {
             debug!("Creating credentials based on standard config files such as application_default_credentials.json");
             return Ok(Some(src));
         }
+        let mut metadata_server =
+            crate::token_source::metadata::Metadata::new(token_scopes.clone());
+        if metadata_server.init().await {
+            let metadata_result_email = metadata_server.email().await;
+            if metadata_result_email.is_some() {
+                debug!("Detected SA email using GKE metadata server");
+                todo!()
+            }
+        }
         Ok(None)
     }
 

@@ -40,9 +40,9 @@ impl Credentials {
 #[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct ServiceAccount {
     pub client_email: String,
-    private_key_id: String,
-    private_key: SecretValue,
-    token_uri: String,
+    pub private_key_id: String,
+    pub private_key: SecretValue,
+    pub token_uri: String,
     #[serde(skip)]
     pub scopes: Vec<String>,
     pub quota_project_id: Option<String>,
@@ -50,9 +50,9 @@ pub struct ServiceAccount {
 
 #[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct User {
-    client_secret: SecretValue,
+    pub client_secret: SecretValue,
     pub client_id: String,
-    refresh_token: SecretValue,
+    pub refresh_token: SecretValue,
     pub quota_project_id: Option<String>,
 }
 
