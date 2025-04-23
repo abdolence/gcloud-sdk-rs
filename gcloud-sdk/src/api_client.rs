@@ -10,6 +10,7 @@ use tracing::*;
 
 use crate::middleware::{GoogleAuthMiddlewareLayer, GoogleAuthMiddlewareService};
 use crate::token_source::*;
+use crate::token_source::credentials::Credentials;
 
 #[async_trait]
 pub trait GoogleApiClientBuilder<C>
@@ -188,6 +189,20 @@ impl GoogleEnvironment {
                 }
             }
         }
+    }
+
+    pub async fn find_default_creds(token_scopes: &[String]) -> crate::error::Result<Option<Credentials>> {
+        debug!("Finding default credentials for scopes: {:?}", token_scopes);
+
+        if let Some(src) = from_env_var(token_scopes)? {
+            debug!("Creating credentials based on environment variable: GOOGLE_APPLICATION_CREDENTIALS");
+            return Ok(Some(src));
+        }
+        if let Some(src) = from_well_known_file(token_scopes)? {
+            debug!("Creating credentials based on standard config files such as application_default_credentials.json");
+            return Ok(Some(src));
+        }
+        Ok(None)
     }
 
     pub async fn init_google_services_channel<S: AsRef<str>>(
