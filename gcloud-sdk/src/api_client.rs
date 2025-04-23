@@ -9,8 +9,8 @@ use tower::ServiceBuilder;
 use tracing::*;
 
 use crate::middleware::{GoogleAuthMiddlewareLayer, GoogleAuthMiddlewareService};
-use crate::token_source::*;
 use crate::token_source::credentials::Credentials;
+use crate::token_source::*;
 
 #[async_trait]
 pub trait GoogleApiClientBuilder<C>
@@ -191,7 +191,9 @@ impl GoogleEnvironment {
         }
     }
 
-    pub async fn find_default_creds(token_scopes: &[String]) -> crate::error::Result<Option<Credentials>> {
+    pub async fn find_default_creds(
+        token_scopes: &[String],
+    ) -> crate::error::Result<Option<Credentials>> {
         debug!("Finding default credentials for scopes: {:?}", token_scopes);
 
         if let Some(src) = from_env_var(token_scopes)? {
