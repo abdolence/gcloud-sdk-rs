@@ -1,7 +1,6 @@
 #![allow(dead_code)]
 
-use tracing::{debug, warn};
-use gcloud_sdk::{GoogleEnvironment, GoogleRestApi};
+use gcloud_sdk::GoogleRestApi;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -51,13 +50,6 @@ async fn test_upload(
     filename: &str,
     google_rest_client: &GoogleRestApi,
 ) -> Result<(), Box<dyn std::error::Error>> {
-
-    let creds = GoogleEnvironment::find_default_creds(&gcloud_sdk::GCP_DEFAULT_SCOPES).await?;
-    if let Some(creds) = creds {
-        debug!("Using credentials from environment variable: GOOGLE_APPLICATION_CREDENTIALS");
-    } else {
-        warn!("No credentials found. Please set the GOOGLE_APPLICATION_CREDENTIALS environment variable.");
-    }
 
     let response = gcloud_sdk::google_rest_apis::storage_v1::objects_api::storage_objects_insert_ext_bytes(
         &google_rest_client.create_google_storage_v1_config().await?,

@@ -10,6 +10,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .finish();
     tracing::subscriber::set_global_default(subscriber)?;
 
+    let creds = GoogleEnvironment::find_default_creds(&gcloud_sdk::GCP_DEFAULT_SCOPES).await?;
+    if let Some(creds) = creds {
+        println!("Using credentials from environment variable: GOOGLE_APPLICATION_CREDENTIALS");
+    } else {
+        println!("No credentials found. Please set the GOOGLE_APPLICATION_CREDENTIALS environment variable.");
+    }
+
     let client: GoogleApi<IamCredentialsClient<GoogleAuthMiddleware>> = GoogleApi::from_function(
         IamCredentialsClient::new,
         "https://iamcredentials.googleapis.com",
