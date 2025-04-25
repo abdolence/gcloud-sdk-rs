@@ -3174,6 +3174,9 @@ pub async fn compute_instances_detach_disk(
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };
 
+    // Add an empty JSON object as body to ensure Content-Length is set
+    local_var_req_builder = local_var_req_builder.json(&serde_json::json!({}));
+
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
 
