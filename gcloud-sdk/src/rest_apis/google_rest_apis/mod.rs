@@ -1,3 +1,4 @@
+
 #[cfg(any(feature = "google-rest-bigquery-v2"))]
 pub mod bigquery_v2;
 
@@ -18,6 +19,9 @@ pub mod lustre_v1;
 
 #[cfg(any(feature = "google-rest-servicecontrol-v1"))]
 pub mod servicecontrol_v1;
+
+#[cfg(any(feature = "google-rest-servicecontrol-v2"))]
+pub mod servicecontrol_v2;
 
 #[cfg(any(feature = "google-rest-sqladmin-v1"))]
 pub mod sqladmin_v1;
