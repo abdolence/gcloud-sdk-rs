@@ -1907,7 +1907,7 @@ pub struct ScheduledSnapshotsConfig {
 /// Google Compute Engine Public IPs and Google Prod IPs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MasterAuthorizedNetworksConfig {
-    /// Whether or not master authorized networks feature is enabled.
+    /// Optional. Whether or not master authorized networks feature is enabled.
     #[prost(bool, tag = "1")]
     pub enabled: bool,
     /// Up to 50 external networks that could access Kubernetes master through

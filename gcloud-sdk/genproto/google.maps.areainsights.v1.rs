@@ -23,8 +23,8 @@ pub struct ComputeInsightsResponse {
 /// Holds information about a place
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlaceInsight {
-    /// The resource name of a place. This resource name can be used to retrieve
-    /// details about the place using the [Places
+    /// The unique identifier of the place. This resource name can be used to
+    /// retrieve details about the place using the [Places
     /// API](<https://developers.google.com/maps/documentation/places/web-service/reference/rest/v1/places/get>).
     #[prost(string, tag = "1")]
     pub place: ::prost::alloc::string::String,
@@ -45,7 +45,7 @@ pub struct Filter {
     #[prost(enumeration = "OperatingStatus", repeated, packed = "false", tag = "3")]
     pub operating_status: ::prost::alloc::vec::Vec<i32>,
     /// Optional. Restricts results to places whose price level is included on this
-    /// list. If price_level is not set, all price levels are included in the
+    /// list. If `price_levels` is not set, all price levels are included in the
     /// results.
     #[prost(enumeration = "PriceLevel", repeated, packed = "false", tag = "4")]
     pub price_levels: ::prost::alloc::vec::Vec<i32>,
@@ -84,8 +84,9 @@ pub mod location_filter {
             /// The latitude and longitude of the center of the circle.
             #[prost(message, tag = "1")]
             LatLng(super::super::super::super::super::r#type::LatLng),
-            /// The Place resource name of the center of the circle. Only point places
-            /// are supported.
+            /// **Format:**  Must be in the format `places/PLACE_ID`, where `PLACE_ID`
+            /// is the unique identifier of a place. For example:
+            /// `places/ChIJgUbEo8cfqokR5lP9_Wh_DaM`.
             #[prost(string, tag = "2")]
             Place(::prost::alloc::string::String),
         }
@@ -94,16 +95,18 @@ pub mod location_filter {
     /// states, etc.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Region {
-        /// The resource name of a region.
+        /// Defines a geographic region. Only one type of region (e.g. place) can
+        /// specified at a time.
         #[prost(oneof = "region::Region", tags = "1")]
         pub region: ::core::option::Option<region::Region>,
     }
     /// Nested message and enum types in `Region`.
     pub mod region {
-        /// The resource name of a region.
+        /// Defines a geographic region. Only one type of region (e.g. place) can
+        /// specified at a time.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Region {
-            /// The Place resource name of a region.
+            /// The unique identifier of a specific geographic region.
             #[prost(string, tag = "1")]
             Place(::prost::alloc::string::String),
         }
@@ -212,57 +215,77 @@ pub enum Insight {
     ///
     /// When this insight is specified ComputeInsights returns the number of
     /// places that match the specified filter criteria.
+    ///
+    /// Example request:
     /// ```
-    /// For example if the request is:
-    /// ComputeInsightsRequest {
-    ///    insights: INSIGHT_COUNT
-    ///    filter {
-    ///      location_filter {region: <PlaceId of state of CA>}
-    ///      type_filter {included_types: "restaurant"}
-    ///      operating_status: OPERATING_STATUS_OPERATIONAL
-    ///      price_levels: PRICE_LEVEL_FREE
-    ///      price_levels: PRICE_LEVEL_INEXPENSIVE
-    ///      min_rating: 4.0
+    /// {
+    ///    "insights": \["INSIGHT_COUNT"\],
+    ///    "filter": {
+    ///      "locationFilter": {
+    ///        "region": {
+    ///          "place": "places/ChIJPV4oX_65j4ARVW8IJ6IJUYs"
+    ///        }
+    ///      },
+    ///      "typeFilter": {
+    ///        "includedTypes": \["restaurant"\]
+    ///      },
+    ///      "operatingStatus": \["OPERATING_STATUS_OPERATIONAL"\],
+    ///      "priceLevels": [
+    ///        "PRICE_LEVEL_FREE",
+    ///        "PRICE_LEVEL_INEXPENSIVE"
+    ///      ],
+    ///      "ratingFilter": {
+    ///        "minRating": 4.0
+    ///      }
     ///    }
     /// }
-    ///
-    /// The method will return the count of restaurants in California that are
-    /// operational, with price level free or inexpensive and have an average
-    /// rating of at least 4 starts.
+    /// ```
     ///
     /// Example response:
-    /// ComputeInsightsResponse {
-    ///    count: <number of places>
+    /// ```
+    /// {
+    ///    "count": 1234
     /// }
     /// ```
     Count = 1,
     /// Return Places
     ///
-    /// When this insight is specified ComputeInsights returns Places
+    /// When this insight is specified ComputeInsights returns places IDs
     /// that match the specified filter criteria.
+    ///
+    /// Example request:
     /// ```
-    /// For example if the request is:
-    /// ComputeInsightsRequest {
-    ///    insights: INSIGHT_PLACES
-    ///    filter {
-    ///      location_filter {region: <PlaceId of state of CA>}
-    ///      type_filter {included_types: "restaurant"}
-    ///      operating_status: OPERATING_STATUS_OPERATIONAL
-    ///      price_levels: PRICE_LEVEL_FREE
-    ///      price_levels: PRICE_LEVEL_INEXPENSIVE
-    ///      min_rating: 4.0
+    /// {
+    ///    "insights": \["INSIGHT_PLACES"\],
+    ///    "filter": {
+    ///      "locationFilter": {
+    ///        "region": {
+    ///          "place": "places/ChIJPV4oX_65j4ARVW8IJ6IJUYs"
+    ///        }
+    ///      },
+    ///      "typeFilter": {
+    ///        "includedTypes": \["restaurant"\]
+    ///      },
+    ///      "operatingStatus": \["OPERATING_STATUS_OPERATIONAL"\],
+    ///      "priceLevels": [
+    ///        "PRICE_LEVEL_FREE",
+    ///        "PRICE_LEVEL_INEXPENSIVE"
+    ///      ],
+    ///      "ratingFilter": {
+    ///        "minRating": 4.0
+    ///      }
     ///    }
     /// }
-    ///
-    /// The method will return list of places of restaurants in
-    /// California that are operational, with price level free or inexpensive and
-    /// have an average rating of at least 4 stars.
+    /// ```
     ///
     /// Example response:
-    /// ComputeInsightsResponse {
-    ///    place_insights { place: "places/ABC" }
-    ///    place_insights { place: "places/PQR" }
-    ///    place_insights { place: "places/XYZ" }
+    /// ```
+    /// {
+    ///    "placeInsights": [
+    ///      {"place": "places/ABC"},
+    ///      {"place": "places/PQR"},
+    ///      {"place": "places/XYZ"}
+    ///    ]
     /// }
     /// ```
     Places = 2,
@@ -293,13 +316,13 @@ impl Insight {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum OperatingStatus {
-    /// Not Specified.
+    /// Not specified. This value should not be used.
     Unspecified = 0,
     /// The place is operational and its open during its defined hours.
     Operational = 1,
     /// The Place is no longer in business.
     PermanentlyClosed = 3,
-    /// The Place is temporarily closed and expected to reopen in the future.
+    /// The place is temporarily closed and expected to reopen in the future.
     TemporarilyClosed = 4,
 }
 impl OperatingStatus {
@@ -330,7 +353,7 @@ impl OperatingStatus {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum PriceLevel {
-    /// Place price level is unspecified or unknown.
+    /// Not specified. This value should not be used.
     Unspecified = 0,
     /// Place provides free services.
     Free = 1,
@@ -382,7 +405,7 @@ pub mod area_insights_client {
     )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// Service definition for the Places Insights API.
+    /// Service definition for the Places Aggregate RPC.
     #[derive(Debug, Clone)]
     pub struct AreaInsightsClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -463,9 +486,7 @@ pub mod area_insights_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Compute Insights RPC
-        ///
-        /// This method lets you retrieve insights about areas using a variaty of
+        /// This method lets you retrieve insights about areas using a variety of
         /// filter such as: area, place type, operating status, price level
         /// and ratings. Currently "count" and "places" insights are supported. With
         /// "count" insights you can answer questions such as "How many restaurant are

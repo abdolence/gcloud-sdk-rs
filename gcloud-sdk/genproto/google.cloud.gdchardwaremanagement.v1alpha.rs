@@ -59,13 +59,26 @@ pub struct Order {
     /// current time when an order is submitted.
     #[prost(message, optional, tag = "14")]
     pub submit_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Required. The Google Cloud Billing ID to be charged for this order.
+    /// Output only. The Google Cloud Billing ID to be charged for this order.
     #[prost(string, tag = "15")]
     pub billing_id: ::prost::alloc::string::String,
     /// Optional. Existing hardware to be removed as part of this order.
     /// Note: any hardware removed will be recycled unless otherwise agreed.
     #[prost(message, repeated, tag = "16")]
     pub existing_hardware: ::prost::alloc::vec::Vec<HardwareLocation>,
+    /// Output only. The deployment type of this order.
+    #[prost(enumeration = "order::DeploymentType", tag = "18")]
+    pub deployment_type: i32,
+    /// Output only. Actual installation date for this order.
+    #[prost(message, optional, tag = "19")]
+    pub actual_installation_date: ::core::option::Option<
+        super::super::super::r#type::Date,
+    >,
+    /// Output only. Estimated installation date for this order.
+    #[prost(message, optional, tag = "20")]
+    pub estimated_installation_date: ::core::option::Option<
+        super::super::super::r#type::Date,
+    >,
 }
 /// Nested message and enum types in `Order`.
 pub mod order {
@@ -194,6 +207,57 @@ pub mod order {
                 "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "PAID" => Some(Self::Paid),
                 "POC" => Some(Self::Poc),
+                _ => None,
+            }
+        }
+    }
+    /// Valid types of a deployment.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DeploymentType {
+        /// Deployment type is unspecified.
+        Unspecified = 0,
+        /// Prod deployment with SLOs.
+        FullProduction = 1,
+        /// Deployment with best-effort support and no SLOs.
+        ProofOfConcept = 2,
+        /// Internal deployment with best-effort support and no SLOs.
+        Internal = 3,
+        /// Customer lab deployment that we support as though it's prod.
+        CustomerLab = 4,
+    }
+    impl DeploymentType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DEPLOYMENT_TYPE_UNSPECIFIED",
+                Self::FullProduction => "FULL_PRODUCTION",
+                Self::ProofOfConcept => "PROOF_OF_CONCEPT",
+                Self::Internal => "INTERNAL",
+                Self::CustomerLab => "CUSTOMER_LAB",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DEPLOYMENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "FULL_PRODUCTION" => Some(Self::FullProduction),
+                "PROOF_OF_CONCEPT" => Some(Self::ProofOfConcept),
+                "INTERNAL" => Some(Self::Internal),
+                "CUSTOMER_LAB" => Some(Self::CustomerLab),
                 _ => None,
             }
         }
@@ -712,9 +776,23 @@ pub struct Sku {
     /// Output only. The vCPU count associated with this SKU.
     #[prost(int32, tag = "12")]
     pub vcpu_count: i32,
+    /// Output only. The inclusive ranges of hardware counts that are allowed in a
+    /// zone using this SKU.
+    #[prost(message, repeated, tag = "13")]
+    pub hardware_count_ranges: ::prost::alloc::vec::Vec<sku::Range>,
 }
 /// Nested message and enum types in `Sku`.
 pub mod sku {
+    /// Inclusive range.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct Range {
+        /// The minimum value of the range.
+        #[prost(int32, tag = "1")]
+        pub min: i32,
+        /// The maximum value of the range.
+        #[prost(int32, tag = "2")]
+        pub max: i32,
+    }
     /// Valid types of a SKU.
     #[derive(
         Clone,
@@ -830,6 +908,8 @@ pub mod zone {
         Preparing = 2,
         /// Factory turnup has succeeded.
         ReadyForCustomerFactoryTurnupChecks = 5,
+        /// The Zone is running factory turnup checks.
+        CustomerFactoryTurnupChecksStarted = 8,
         /// The Zone is ready for site turnup.
         ReadyForSiteTurnup = 6,
         /// The Zone failed in factory turnup checks.
@@ -852,6 +932,9 @@ pub mod zone {
                 Self::ReadyForCustomerFactoryTurnupChecks => {
                     "READY_FOR_CUSTOMER_FACTORY_TURNUP_CHECKS"
                 }
+                Self::CustomerFactoryTurnupChecksStarted => {
+                    "CUSTOMER_FACTORY_TURNUP_CHECKS_STARTED"
+                }
                 Self::ReadyForSiteTurnup => "READY_FOR_SITE_TURNUP",
                 Self::CustomerFactoryTurnupChecksFailed => {
                     "CUSTOMER_FACTORY_TURNUP_CHECKS_FAILED"
@@ -868,6 +951,9 @@ pub mod zone {
                 "PREPARING" => Some(Self::Preparing),
                 "READY_FOR_CUSTOMER_FACTORY_TURNUP_CHECKS" => {
                     Some(Self::ReadyForCustomerFactoryTurnupChecks)
+                }
+                "CUSTOMER_FACTORY_TURNUP_CHECKS_STARTED" => {
+                    Some(Self::CustomerFactoryTurnupChecksStarted)
                 }
                 "READY_FOR_SITE_TURNUP" => Some(Self::ReadyForSiteTurnup),
                 "CUSTOMER_FACTORY_TURNUP_CHECKS_FAILED" => {
@@ -2351,6 +2437,15 @@ pub struct SignalZoneStateRequest {
         tag = "4"
     )]
     pub provisioning_state_signal: i32,
+    /// Optional. The step being executed. Provides a finer grained status when the
+    /// state_signal is FACTORY_TURNUP_CHECKS_STARTED or
+    /// FACTORY_TURNUP_CHECKS_FAILED.
+    #[prost(string, tag = "5")]
+    pub step: ::prost::alloc::string::String,
+    /// Optional. Additional details, such as an error message when state_signal is
+    /// FACTORY_TURNUP_CHECKS_FAILED.
+    #[prost(string, tag = "6")]
+    pub details: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `SignalZoneStateRequest`.
 pub mod signal_zone_state_request {
@@ -2370,6 +2465,8 @@ pub mod signal_zone_state_request {
     pub enum StateSignal {
         /// State signal of the zone is unspecified.
         Unspecified = 0,
+        /// Factory turnup checks have started.
+        FactoryTurnupChecksStarted = 3,
         /// The Zone is ready for site turnup.
         FactoryTurnupChecksPassed = 1,
         /// The Zone failed in factory turnup checks.
@@ -2383,6 +2480,7 @@ pub mod signal_zone_state_request {
         pub fn as_str_name(&self) -> &'static str {
             match self {
                 Self::Unspecified => "STATE_SIGNAL_UNSPECIFIED",
+                Self::FactoryTurnupChecksStarted => "FACTORY_TURNUP_CHECKS_STARTED",
                 Self::FactoryTurnupChecksPassed => "FACTORY_TURNUP_CHECKS_PASSED",
                 Self::FactoryTurnupChecksFailed => "FACTORY_TURNUP_CHECKS_FAILED",
             }
@@ -2391,6 +2489,7 @@ pub mod signal_zone_state_request {
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
                 "STATE_SIGNAL_UNSPECIFIED" => Some(Self::Unspecified),
+                "FACTORY_TURNUP_CHECKS_STARTED" => Some(Self::FactoryTurnupChecksStarted),
                 "FACTORY_TURNUP_CHECKS_PASSED" => Some(Self::FactoryTurnupChecksPassed),
                 "FACTORY_TURNUP_CHECKS_FAILED" => Some(Self::FactoryTurnupChecksFailed),
                 _ => None,

@@ -89,6 +89,26 @@ pub mod logged_backup {
         }
     }
 }
+/// A BackupChannel imposes constraints on where clusters can be backed up.
+/// The BackupChannel should be in the same project and region
+/// as the cluster being backed up.
+/// The backup can be created only in destination_project.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LoggedBackupChannel {
+    /// The project where Backups are allowed to be stored.
+    /// The format is `projects/{project}`.
+    #[prost(string, tag = "1")]
+    pub destination_project: ::prost::alloc::string::String,
+    /// A set of custom labels supplied by user.
+    #[prost(map = "string, string", tag = "2")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// User specified descriptive string for this BackupChannel.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+}
 /// Namespaces, list of namespaces
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Namespaces {
@@ -153,6 +173,8 @@ pub struct LoggedBackupPlan {
     pub backup_config: ::core::option::Option<logged_backup_plan::BackupConfig>,
     /// A number that represents the current risk level of this BackupPlan from RPO
     /// perspective with 1 being no risk and 5 being highest risk.
+    /// Deprecated: Use LoggedBackupPlanMetadata.rpo_risk_level instead.
+    #[deprecated]
     #[prost(int32, tag = "8")]
     pub rpo_risk_level: i32,
 }
@@ -224,6 +246,23 @@ pub mod logged_backup_plan {
         }
     }
 }
+/// LoggedBackupPlanMetadata as stored in Platform log. It's used to log the
+/// details of a BackupPlan, which are not provided by users, but are filled
+/// by the service.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LoggedBackupPlanMetadata {
+    /// The name of the backup channel if any.
+    #[prost(string, tag = "1")]
+    pub backup_channel: ::prost::alloc::string::String,
+    /// A number that represents the current risk level of this BackupPlan from RPO
+    /// perspective with 1 being no risk and 5 being highest risk.
+    #[prost(int32, tag = "2")]
+    pub rpo_risk_level: i32,
+    /// The reason for the current risk level of this BackupPlan from RPO
+    /// perspective.
+    #[prost(string, tag = "3")]
+    pub rpo_risk_reason: ::prost::alloc::string::String,
+}
 /// Restore as stored in Platform log. It's used to log the update details of a
 /// updateRestore request, so only mutable and non-output_only fields are
 /// included here..
@@ -280,6 +319,9 @@ pub mod logged_restore {
         Failed = 4,
         /// This Restore resource is in the process of being deleted.
         Deleting = 5,
+        /// The Kubernetes resources created by this Restore are being
+        /// validated.
+        Validating = 6,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -294,6 +336,7 @@ pub mod logged_restore {
                 Self::Succeeded => "SUCCEEDED",
                 Self::Failed => "FAILED",
                 Self::Deleting => "DELETING",
+                Self::Validating => "VALIDATING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -305,10 +348,31 @@ pub mod logged_restore {
                 "SUCCEEDED" => Some(Self::Succeeded),
                 "FAILED" => Some(Self::Failed),
                 "DELETING" => Some(Self::Deleting),
+                "VALIDATING" => Some(Self::Validating),
                 _ => None,
             }
         }
     }
+}
+/// A RestoreChannel imposes constraints on where backups can be restored.
+/// The RestoreChannel should be in the same project and region
+/// as the backups being created.
+/// The restore can be created only in destination_project.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LoggedRestoreChannel {
+    /// The project where Restores are allowed to be stored.
+    /// The format is `projects/{project}`.
+    #[prost(string, tag = "1")]
+    pub destination_project: ::prost::alloc::string::String,
+    /// A set of custom labels supplied by user.
+    #[prost(map = "string, string", tag = "2")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// User specified descriptive string for this RestoreChannel.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
 }
 /// RestorePlan as stored in Platform log. It's used to log the details of
 /// a createRestorePlan/updateRestorePlan request, so only fields that can be
@@ -375,10 +439,22 @@ pub struct RestoreConfig {
     /// substitution will occur.
     #[prost(message, repeated, tag = "8")]
     pub substitution_rules: ::prost::alloc::vec::Vec<restore_config::SubstitutionRule>,
+    /// A list of transformation rules to be applied against Kubernetes resources
+    /// as they are selected for restoration from a Backup. Rules are executed in
+    /// order defined - this order matters, as changes made by a rule may impact
+    /// the filtering logic of subsequent rules. An empty list means no
+    /// transformation will occur.
+    #[prost(message, repeated, tag = "11")]
+    pub transformation_rules: ::prost::alloc::vec::Vec<
+        restore_config::TransformationRule,
+    >,
     /// Specifies the namespaced resources to restore from the Backup.
     /// Only one of the entries may be specified. If not specified, NO namespaced
     /// resources will be restored.
-    #[prost(oneof = "restore_config::NamespacedResourceRestoreScope", tags = "5, 6, 7")]
+    #[prost(
+        oneof = "restore_config::NamespacedResourceRestoreScope",
+        tags = "5, 6, 7, 9, 10"
+    )]
     pub namespaced_resource_restore_scope: ::core::option::Option<
         restore_config::NamespacedResourceRestoreScope,
     >,
@@ -392,7 +468,7 @@ pub mod restore_config {
     pub struct GroupKind {
         /// API group string of a Kubernetes resource, e.g.
         /// "apiextensions.k8s.io", "storage.k8s.io", etc.
-        /// Note: use empty string for core API group
+        /// Note: use empty string for core API group.
         #[prost(string, tag = "1")]
         pub resource_group: ::prost::alloc::string::String,
         /// Kind of a Kubernetes resource, e.g.
@@ -400,15 +476,47 @@ pub mod restore_config {
         #[prost(string, tag = "2")]
         pub resource_kind: ::prost::alloc::string::String,
     }
-    /// Identifies the cluster-scoped resources to restore from the Backup.
+    /// ClusterResourceRestoreScope defines the scope of cluster-scoped resources
+    /// to restore.
+    ///
+    /// Some group kinds are not reasonable choices for a restore, and will cause
+    /// an error if selected here. Any scope selection that would restore
+    /// "all valid" resources automatically excludes these group kinds.
+    /// - gkebackup.gke.io/BackupJob
+    /// - gkebackup.gke.io/RestoreJob
+    /// - metrics.k8s.io/NodeMetrics
+    /// - migration.k8s.io/StorageState
+    /// - migration.k8s.io/StorageVersionMigration
+    /// - Node
+    /// - snapshot.storage.k8s.io/VolumeSnapshotContent
+    /// - storage.k8s.io/CSINode
+    ///
+    /// Some group kinds are driven by restore configuration elsewhere,
+    /// and will cause an error if selected here.
+    /// - Namespace
+    /// - PersistentVolume
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ClusterResourceRestoreScope {
-        /// A list of "types" of cluster-scoped resources to be restored from the
-        /// Backup.  An empty list means that NO cluster-scoped resources will be
-        /// restored. Note that Namespaces and PersistentVolume restoration is
-        /// handled separately and is not governed by this field.
+        /// A list of cluster-scoped resource group kinds to restore from the
+        /// backup. If specified, only the selected resources will be restored.
+        /// Mutually exclusive to any other field in the message.
         #[prost(message, repeated, tag = "1")]
         pub selected_group_kinds: ::prost::alloc::vec::Vec<GroupKind>,
+        /// A list of cluster-scoped resource group kinds to NOT restore from the
+        /// backup. If specified, all valid cluster-scoped resources will be
+        /// restored except for those specified in the list.
+        /// Mutually exclusive to any other field in the message.
+        #[prost(message, repeated, tag = "2")]
+        pub excluded_group_kinds: ::prost::alloc::vec::Vec<GroupKind>,
+        /// If True, all valid cluster-scoped resources will be restored.
+        /// Mutually exclusive to any other field in the message.
+        #[prost(bool, tag = "3")]
+        pub all_group_kinds: bool,
+        /// If True, no cluster-scoped resources will be restored.
+        /// This has the same restore scope as if the message is not defined.
+        /// Mutually exclusive to any other field in the message.
+        #[prost(bool, tag = "4")]
+        pub no_group_kinds: bool,
     }
     /// A transformation rule to be applied against Kubernetes resources as they
     /// are selected for restoration from a Backup. A rule contains both filtering
@@ -432,7 +540,7 @@ pub mod restore_config {
         #[prost(message, repeated, tag = "2")]
         pub target_group_kinds: ::prost::alloc::vec::Vec<GroupKind>,
         /// This is a \[JSONPath\]
-        /// ([<https://kubernetes.io/docs/reference/kubectl/jsonpath/>)
+        /// (<https://kubernetes.io/docs/reference/kubectl/jsonpath/>)
         /// expression that matches specific fields of candidate
         /// resources and it operates as both a filtering parameter (resources that
         /// are not matched with this expression will not be candidates for
@@ -448,7 +556,7 @@ pub mod restore_config {
         /// value does not match this expression. If this field is NOT specified,
         /// then ALL fields matched by the target_json_path expression will undergo
         /// substitution. Note that an empty (e.g., "", rather than unspecified)
-        /// value for for this field will only match empty fields.
+        /// value for this field will only match empty fields.
         #[prost(string, tag = "4")]
         pub original_value_pattern: ::prost::alloc::string::String,
         /// This is the new value to set for any fields that pass the filtering and
@@ -456,6 +564,149 @@ pub mod restore_config {
         /// leave this field unspecified, or set it to the empty string ("").
         #[prost(string, tag = "5")]
         pub new_value: ::prost::alloc::string::String,
+    }
+    /// TransformationRuleAction defines a TransformationRule action based on the
+    /// JSON Patch RFC (<https://www.rfc-editor.org/rfc/rfc6902>)
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TransformationRuleAction {
+        /// op specifies the operation to perform.
+        #[prost(enumeration = "transformation_rule_action::Op", tag = "1")]
+        pub op: i32,
+        /// A string containing a JSON Pointer value that references the location in
+        /// the target document to move the value from.
+        #[prost(string, tag = "2")]
+        pub from_path: ::prost::alloc::string::String,
+        /// A string containing a JSON-Pointer value that references a location
+        /// within the target document where the operation is performed.
+        #[prost(string, tag = "3")]
+        pub path: ::prost::alloc::string::String,
+        /// A string that specifies the desired value in string format to
+        /// use for transformation.
+        #[prost(string, tag = "4")]
+        pub value: ::prost::alloc::string::String,
+    }
+    /// Nested message and enum types in `TransformationRuleAction`.
+    pub mod transformation_rule_action {
+        /// Possible values for operations of a transformation rule action.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Op {
+            /// Unspecified operation
+            Unspecified = 0,
+            /// The "remove" operation removes the value at the target location.
+            Remove = 1,
+            /// The "move" operation removes the value at a specified location and
+            /// adds it to the target location.
+            Move = 2,
+            /// The "copy" operation copies the value at a specified location to the
+            /// target location.
+            Copy = 3,
+            /// The "add" operation performs one of the following functions,
+            /// depending upon what the target location references:
+            /// 1. If the target location specifies an array index, a new value is
+            /// inserted into the array at the specified index.
+            /// 2. If the target location specifies an object member that does not
+            /// already exist, a new member is added to the object.
+            /// 3. If the target location specifies an object member that does exist,
+            /// that member's value is replaced.
+            Add = 4,
+            /// The "test" operation tests that a value at the target location is
+            /// equal to a specified value.
+            Test = 5,
+            /// The "replace" operation replaces the value at the target location
+            /// with a new value.  The operation object MUST contain a "value" member
+            /// whose content specifies the replacement value.
+            Replace = 6,
+        }
+        impl Op {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "OP_UNSPECIFIED",
+                    Self::Remove => "REMOVE",
+                    Self::Move => "MOVE",
+                    Self::Copy => "COPY",
+                    Self::Add => "ADD",
+                    Self::Test => "TEST",
+                    Self::Replace => "REPLACE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "OP_UNSPECIFIED" => Some(Self::Unspecified),
+                    "REMOVE" => Some(Self::Remove),
+                    "MOVE" => Some(Self::Move),
+                    "COPY" => Some(Self::Copy),
+                    "ADD" => Some(Self::Add),
+                    "TEST" => Some(Self::Test),
+                    "REPLACE" => Some(Self::Replace),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// ResourceFilter specifies matching criteria to limit the scope of a
+    /// change to a specific set of kubernetes resources that are selected for
+    /// restoration from a backup.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ResourceFilter {
+        /// (Filtering parameter) Any resource subject to transformation must be
+        /// contained within one of the listed Kubernetes Namespace in the Backup.
+        /// If this field is not provided, no namespace filtering will be performed
+        /// (all resources in all Namespaces, including all cluster-scoped resources,
+        /// will be candidates for transformation).
+        #[prost(string, repeated, tag = "1")]
+        pub namespaces: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// (Filtering parameter) Any resource subject to transformation must belong
+        /// to one of the listed "types". If this field is not provided, no type
+        /// filtering will be performed (all resources of all types matching previous
+        /// filtering parameters will be candidates for transformation).
+        #[prost(message, repeated, tag = "2")]
+        pub group_kinds: ::prost::alloc::vec::Vec<GroupKind>,
+        /// This is a \[JSONPath\]
+        /// (<https://github.com/json-path/JsonPath/blob/master/README.md>)
+        /// expression that matches specific fields of candidate
+        /// resources and it operates as a filtering parameter (resources that
+        /// are not matched with this expression will not be candidates for
+        /// transformation).
+        #[prost(string, tag = "3")]
+        pub json_path: ::prost::alloc::string::String,
+    }
+    /// A transformation rule to be applied against Kubernetes resources as they
+    /// are selected for restoration from a Backup. A rule contains both filtering
+    /// logic (which resources are subject to transform) and transformation logic.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TransformationRule {
+        /// A list of transformation rule actions to take against candidate
+        /// resources. Actions are executed in order defined - this order matters, as
+        /// they could potentially interfere with each other and the first operation
+        /// could affect the outcome of the second operation.
+        #[prost(message, repeated, tag = "1")]
+        pub field_actions: ::prost::alloc::vec::Vec<TransformationRuleAction>,
+        /// This field is used to specify a set of fields that should be used to
+        /// determine which resources in backup should be acted upon by the supplied
+        /// transformation rule actions, and this will ensure that only specific
+        /// resources are affected by transformation rule actions.
+        #[prost(message, optional, tag = "2")]
+        pub resource_filter: ::core::option::Option<ResourceFilter>,
+        /// The description is a user specified string description of the
+        /// transformation rule.
+        #[prost(string, tag = "3")]
+        pub description: ::prost::alloc::string::String,
     }
     /// Defines how volume data should be restored
     #[derive(
@@ -593,6 +844,36 @@ pub mod restore_config {
         /// occurs during the restore process itself (e.g., because an out of band
         /// process creates conflicting resources), a conflict will be reported.
         FailOnConflict = 2,
+        /// This mode merges the backup and the target cluster and skips the
+        /// conflicting resources. If a single resource to restore exists in the
+        /// cluster before restoration, the resource will be skipped, otherwise it
+        /// will be restored.
+        MergeSkipOnConflict = 3,
+        /// This mode merges the backup and the target cluster and skips the
+        /// conflicting resources except volume data. If a PVC to restore already
+        /// exists, this mode will restore/reconnect the volume without overwriting
+        /// the PVC. It is similar to MERGE_SKIP_ON_CONFLICT except that it will
+        /// apply the volume data policy for the conflicting PVCs:
+        /// - RESTORE_VOLUME_DATA_FROM_BACKUP: restore data only and respect the
+        ///    reclaim policy of the original PV;
+        /// - REUSE_VOLUME_HANDLE_FROM_BACKUP: reconnect and respect the reclaim
+        ///    policy of the original PV;
+        /// - NO_VOLUME_DATA_RESTORATION: new provision and respect the reclaim
+        ///    policy of the original PV.
+        /// Note that this mode could cause data loss as the original PV can be
+        /// retained or deleted depending on its reclaim policy.
+        MergeReplaceVolumeOnConflict = 4,
+        /// This mode merges the backup and the target cluster and replaces the
+        /// conflicting resources with the ones in the backup. If a single resource
+        /// to restore exists in the cluster before restoration, the resource will be
+        /// replaced with the one from the backup. To replace an existing resource,
+        /// the first attempt is to update the resource to match the one from the
+        /// backup; if the update fails, the second attempt is to delete the resource
+        /// and restore it from the backup.
+        /// Note that this mode could cause data loss as it replaces the existing
+        /// resources in the target cluster, and the original PV can be retained or
+        /// deleted depending on its reclaim policy.
+        MergeReplaceOnConflict = 5,
     }
     impl NamespacedResourceRestoreMode {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -604,6 +885,9 @@ pub mod restore_config {
                 Self::Unspecified => "NAMESPACED_RESOURCE_RESTORE_MODE_UNSPECIFIED",
                 Self::DeleteAndRestore => "DELETE_AND_RESTORE",
                 Self::FailOnConflict => "FAIL_ON_CONFLICT",
+                Self::MergeSkipOnConflict => "MERGE_SKIP_ON_CONFLICT",
+                Self::MergeReplaceVolumeOnConflict => "MERGE_REPLACE_VOLUME_ON_CONFLICT",
+                Self::MergeReplaceOnConflict => "MERGE_REPLACE_ON_CONFLICT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -612,6 +896,11 @@ pub mod restore_config {
                 "NAMESPACED_RESOURCE_RESTORE_MODE_UNSPECIFIED" => Some(Self::Unspecified),
                 "DELETE_AND_RESTORE" => Some(Self::DeleteAndRestore),
                 "FAIL_ON_CONFLICT" => Some(Self::FailOnConflict),
+                "MERGE_SKIP_ON_CONFLICT" => Some(Self::MergeSkipOnConflict),
+                "MERGE_REPLACE_VOLUME_ON_CONFLICT" => {
+                    Some(Self::MergeReplaceVolumeOnConflict)
+                }
+                "MERGE_REPLACE_ON_CONFLICT" => Some(Self::MergeReplaceOnConflict),
                 _ => None,
             }
         }
@@ -634,7 +923,24 @@ pub mod restore_config {
         /// restored.
         #[prost(message, tag = "7")]
         SelectedApplications(super::NamespacedNames),
+        /// Do not restore any namespaced resources if set to "True".
+        /// Specifying this field to "False" is not allowed.
+        #[prost(bool, tag = "9")]
+        NoNamespaces(bool),
+        /// A list of selected namespaces excluded from restoration. All
+        /// namespaces except those in this list will be restored.
+        #[prost(message, tag = "10")]
+        ExcludedNamespaces(super::Namespaces),
     }
+}
+/// LoggedRestorePlanMetadata as stored in Platform log. It's used to log the
+/// details of a RestorePlan, which are not provided by users, but are filled
+/// by the service.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LoggedRestorePlanMetadata {
+    /// The name of the restore channel if any.
+    #[prost(string, tag = "1")]
+    pub restore_channel: ::prost::alloc::string::String,
 }
 /// use case 1
 /// A log entry when modification(creation, update, deletion) is made to a
@@ -659,6 +965,9 @@ pub struct BackupPlanChange {
     /// The error code and message.
     #[prost(message, optional, tag = "5")]
     pub error: ::core::option::Option<super::super::super::super::rpc::Status>,
+    /// The metadata of the BackupPlan.
+    #[prost(message, optional, tag = "6")]
+    pub backup_plan_metadata: ::core::option::Option<LoggedBackupPlanMetadata>,
 }
 /// use case 2
 /// A log entry when modification(creation, update, deletion) is made to a
@@ -711,6 +1020,9 @@ pub struct RestorePlanChange {
     /// The error code and message.
     #[prost(message, optional, tag = "5")]
     pub error: ::core::option::Option<super::super::super::super::rpc::Status>,
+    /// The metadata of the RestorePlan.
+    #[prost(message, optional, tag = "6")]
+    pub restore_plan_metadata: ::core::option::Option<LoggedRestorePlanMetadata>,
 }
 /// use case 4
 /// A log entry when modification(creation, update, deletion) is made to a
@@ -732,6 +1044,56 @@ pub struct RestoreChange {
     /// the source Restore to.
     #[prost(message, optional, tag = "4")]
     pub input_restore: ::core::option::Option<LoggedRestore>,
+    /// The error code and message.
+    #[prost(message, optional, tag = "5")]
+    pub error: ::core::option::Option<super::super::super::super::rpc::Status>,
+}
+/// use case 5
+/// A log entry when modification(creation, update, deletion) is made to a
+/// backupChannel.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BackupChannelChange {
+    /// The full name of the BackupChannel resource that is being modified.
+    /// Empty for creation.
+    /// Format:
+    /// projects/{project}/locations/{location}/backupChannels/{backup_channel}
+    #[prost(string, tag = "1")]
+    pub backup_channel: ::prost::alloc::string::String,
+    /// The type of change is being made.
+    #[prost(enumeration = "ChangeType", tag = "2")]
+    pub change_type: i32,
+    /// Modification details.
+    #[prost(message, optional, tag = "3")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// The input BackupChannel resource with the updated fields populated to
+    /// update the source BackupChannel to.
+    #[prost(message, optional, tag = "4")]
+    pub input_backup_channel: ::core::option::Option<LoggedBackupChannel>,
+    /// The error code and message.
+    #[prost(message, optional, tag = "5")]
+    pub error: ::core::option::Option<super::super::super::super::rpc::Status>,
+}
+/// use case 6
+/// A log entry when modification(creation, update, deletion) is made to a
+/// restoreChannel.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RestoreChannelChange {
+    /// The full name of the RestoreChannel resource that is being modified.
+    /// Empty for creation.
+    /// Format:
+    /// projects/{project}/locations/{location}/restoreChannels/{restore_channel}
+    #[prost(string, tag = "1")]
+    pub restore_channel: ::prost::alloc::string::String,
+    /// The type of change is being made.
+    #[prost(enumeration = "ChangeType", tag = "2")]
+    pub change_type: i32,
+    /// Modification details.
+    #[prost(message, optional, tag = "3")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// The input RestoreChannel resource with the updated fields populated to
+    /// update the source RestoreChannel to.
+    #[prost(message, optional, tag = "4")]
+    pub input_restore_channel: ::core::option::Option<LoggedRestoreChannel>,
     /// The error code and message.
     #[prost(message, optional, tag = "5")]
     pub error: ::core::option::Option<super::super::super::super::rpc::Status>,

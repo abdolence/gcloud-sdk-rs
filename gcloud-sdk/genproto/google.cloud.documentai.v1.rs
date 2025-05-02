@@ -83,6 +83,9 @@ pub struct BoundingPoly {
 /// quality.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Document {
+    /// Optional. An internal identifier for document. Should be loggable (no PII).
+    #[prost(string, tag = "15")]
+    pub docid: ::prost::alloc::string::String,
     /// An IANA published [media type (MIME
     /// type)](<https://www.iana.org/assignments/media-types/media-types.xhtml>).
     #[prost(string, tag = "3")]
@@ -1262,6 +1265,9 @@ pub mod document {
             /// Page span of the block.
             #[prost(message, optional, tag = "5")]
             pub page_span: ::core::option::Option<document_layout_block::LayoutPageSpan>,
+            /// Identifies the bounding box for the block.
+            #[prost(message, optional, tag = "6")]
+            pub bounding_box: ::core::option::Option<super::super::BoundingPoly>,
             #[prost(oneof = "document_layout_block::Block", tags = "2, 3, 4")]
             pub block: ::core::option::Option<document_layout_block::Block>,
         }
@@ -2541,6 +2547,13 @@ pub mod process_options {
         /// Optional. Config for chunking in layout parser processor.
         #[prost(message, optional, tag = "1")]
         pub chunking_config: ::core::option::Option<layout_config::ChunkingConfig>,
+        /// Optional. Whether to include images in layout parser processor response.
+        #[prost(bool, tag = "2")]
+        pub return_images: bool,
+        /// Optional. Whether to include bounding boxes in layout parser processor
+        /// response.
+        #[prost(bool, tag = "3")]
+        pub return_bounding_boxes: bool,
     }
     /// Nested message and enum types in `LayoutConfig`.
     pub mod layout_config {

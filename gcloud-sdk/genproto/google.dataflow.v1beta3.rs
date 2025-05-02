@@ -28,13 +28,14 @@ pub struct Environment {
     /// field for service related experiments is service_options.
     #[prost(string, repeated, tag = "3")]
     pub experiments: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// The list of service options to enable. This field should be used for
-    /// service related experiments only. These experiments, when graduating to GA,
-    /// should be replaced by dedicated fields or become default (i.e. always on).
+    /// Optional. The list of service options to enable. This field should be used
+    /// for service related experiments only. These experiments, when graduating to
+    /// GA, should be replaced by dedicated fields or become default (i.e. always
+    /// on).
     #[prost(string, repeated, tag = "16")]
     pub service_options: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// If set, contains the Cloud KMS key identifier used to encrypt data
-    /// at rest, AKA a Customer Managed Encryption Key (CMEK).
+    /// Optional. If set, contains the Cloud KMS key identifier used to encrypt
+    /// data at rest, AKA a Customer Managed Encryption Key (CMEK).
     ///
     /// Format:
     ///    projects/PROJECT_ID/locations/LOCATION/keyRings/KEY_RING/cryptoKeys/KEY
@@ -51,7 +52,7 @@ pub struct Environment {
     /// are required in order to run the job.
     #[prost(message, optional, tag = "6")]
     pub version: ::core::option::Option<::prost_types::Struct>,
-    /// The dataset for the current project where various workflow
+    /// Optional. The dataset for the current project where various workflow
     /// related tables are stored.
     ///
     /// The supported resource type is:
@@ -69,20 +70,21 @@ pub struct Environment {
     /// Experimental settings.
     #[prost(message, optional, tag = "9")]
     pub internal_experiments: ::core::option::Option<::prost_types::Any>,
-    /// Identity to run virtual machines as. Defaults to the default account.
+    /// Optional. Identity to run virtual machines as. Defaults to the default
+    /// account.
     #[prost(string, tag = "10")]
     pub service_account_email: ::prost::alloc::string::String,
-    /// Which Flexible Resource Scheduling mode to run in.
+    /// Optional. Which Flexible Resource Scheduling mode to run in.
     #[prost(enumeration = "FlexResourceSchedulingGoal", tag = "11")]
     pub flex_resource_scheduling_goal: i32,
-    /// The Compute Engine region
+    /// Optional. The Compute Engine region
     /// (<https://cloud.google.com/compute/docs/regions-zones/regions-zones>) in
     /// which worker processing should occur, e.g. "us-west1". Mutually exclusive
     /// with worker_zone. If neither worker_region nor worker_zone is specified,
     /// default to the control plane's region.
     #[prost(string, tag = "13")]
     pub worker_region: ::prost::alloc::string::String,
-    /// The Compute Engine zone
+    /// Optional. The Compute Engine zone
     /// (<https://cloud.google.com/compute/docs/regions-zones/regions-zones>) in
     /// which worker processing should occur, e.g. "us-west1-a". Mutually exclusive
     /// with worker_region. If neither worker_region nor worker_zone is specified,
@@ -92,9 +94,22 @@ pub struct Environment {
     /// Output only. The shuffle mode used for the job.
     #[prost(enumeration = "ShuffleMode", tag = "15")]
     pub shuffle_mode: i32,
-    /// Any debugging options to be supplied to the job.
+    /// Optional. Any debugging options to be supplied to the job.
     #[prost(message, optional, tag = "17")]
     pub debug_options: ::core::option::Option<DebugOptions>,
+    /// Output only. Whether the job uses the Streaming Engine resource-based
+    /// billing model.
+    #[prost(bool, tag = "18")]
+    pub use_streaming_engine_resource_based_billing: bool,
+    /// Optional. Specifies the Streaming Engine message processing guarantees.
+    /// Reduces cost and latency but might result in duplicate messages committed
+    /// to storage. Designed to run simple mapping streaming ETL jobs at the lowest
+    /// cost. For example, Change Data Capture (CDC) to BigQuery is a canonical use
+    /// case. For more information, see
+    /// [Set the pipeline streaming
+    /// mode](<https://cloud.google.com/dataflow/docs/guides/streaming-modes>).
+    #[prost(enumeration = "StreamingMode", tag = "19")]
+    pub streaming_mode: i32,
 }
 /// The packages that must be installed in order for a worker to run the
 /// steps of the Cloud Dataflow job that will be assigned to its worker
@@ -287,7 +302,7 @@ pub struct AutoscalingSettings {
     #[prost(int32, tag = "2")]
     pub max_num_workers: i32,
 }
-/// Defines a SDK harness container for executing Dataflow pipelines.
+/// Defines an SDK harness container for executing Dataflow pipelines.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SdkHarnessContainerImage {
     /// A docker container image that resides in Google Container Registry.
@@ -305,7 +320,7 @@ pub struct SdkHarnessContainerImage {
     #[prost(string, tag = "3")]
     pub environment_id: ::prost::alloc::string::String,
     /// The set of capabilities enumerated in the above Environment proto. See also
-    /// <https://github.com/apache/beam/blob/master/model/pipeline/src/main/proto/beam_runner_api.proto>
+    /// [beam_runner_api.proto](<https://github.com/apache/beam/blob/master/model/pipeline/src/main/proto/org/apache/beam/model/pipeline/v1/beam_runner_api.proto>)
     #[prost(string, repeated, tag = "4")]
     pub capabilities: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -423,13 +438,89 @@ pub struct WorkerPool {
     #[prost(message, repeated, tag = "22")]
     pub sdk_harness_container_images: ::prost::alloc::vec::Vec<SdkHarnessContainerImage>,
 }
+/// Configuration options for sampling elements.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataSamplingConfig {
+    /// List of given sampling behaviors to enable. For example, specifying
+    /// behaviors = \[ALWAYS_ON\] samples in-flight elements but does not sample
+    /// exceptions. Can be used to specify multiple behaviors like,
+    /// behaviors = \[ALWAYS_ON, EXCEPTIONS\] for specifying periodic sampling and
+    /// exception sampling.
+    ///
+    /// If DISABLED is in the list, then sampling will be disabled and ignore the
+    /// other given behaviors.
+    ///
+    /// Ordering does not matter.
+    #[prost(
+        enumeration = "data_sampling_config::DataSamplingBehavior",
+        repeated,
+        tag = "1"
+    )]
+    pub behaviors: ::prost::alloc::vec::Vec<i32>,
+}
+/// Nested message and enum types in `DataSamplingConfig`.
+pub mod data_sampling_config {
+    /// The following enum defines what to sample for a running job.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DataSamplingBehavior {
+        /// If given, has no effect on sampling behavior. Used as an unknown or unset
+        /// sentinel value.
+        Unspecified = 0,
+        /// When given, disables element sampling. Has same behavior as not setting
+        /// the behavior.
+        Disabled = 1,
+        /// When given, enables sampling in-flight from all PCollections.
+        AlwaysOn = 2,
+        /// When given, enables sampling input elements when a user-defined DoFn
+        /// causes an exception.
+        Exceptions = 3,
+    }
+    impl DataSamplingBehavior {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DATA_SAMPLING_BEHAVIOR_UNSPECIFIED",
+                Self::Disabled => "DISABLED",
+                Self::AlwaysOn => "ALWAYS_ON",
+                Self::Exceptions => "EXCEPTIONS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATA_SAMPLING_BEHAVIOR_UNSPECIFIED" => Some(Self::Unspecified),
+                "DISABLED" => Some(Self::Disabled),
+                "ALWAYS_ON" => Some(Self::AlwaysOn),
+                "EXCEPTIONS" => Some(Self::Exceptions),
+                _ => None,
+            }
+        }
+    }
+}
 /// Describes any options that have an effect on the debugging of pipelines.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DebugOptions {
-    /// When true, enables the logging of the literal hot key to the user's Cloud
-    /// Logging.
+    /// Optional. When true, enables the logging of the literal hot key to the
+    /// user's Cloud Logging.
     #[prost(bool, tag = "1")]
     pub enable_hot_key_logging: bool,
+    /// Configuration options for sampling elements from a running pipeline.
+    #[prost(message, optional, tag = "2")]
+    pub data_sampling: ::core::option::Option<DataSamplingConfig>,
 }
 /// Specifies the processing model used by a
 /// \[google.dataflow.v1beta3.Job\], which determines the way the Job is
@@ -616,7 +707,10 @@ impl AutoscalingAlgorithm {
         }
     }
 }
-/// Specifies how IP addresses should be allocated to the worker machines.
+/// Specifies how to allocate IP addresses to worker machines. You can also use
+/// [pipeline
+/// options](<https://cloud.google.com/dataflow/docs/reference/pipeline-options#security_and_networking>)
+/// to specify whether Dataflow workers use external IP addresses.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum WorkerIpAddressConfiguration {
@@ -681,6 +775,50 @@ impl ShuffleMode {
             "SHUFFLE_MODE_UNSPECIFIED" => Some(Self::Unspecified),
             "VM_BASED" => Some(Self::VmBased),
             "SERVICE_BASED" => Some(Self::ServiceBased),
+            _ => None,
+        }
+    }
+}
+/// Specifies the Streaming Engine message processing guarantees. Reduces cost
+/// and latency but might result in duplicate messages written to storage.
+/// Designed to run simple mapping streaming ETL jobs at the lowest cost.
+/// For example, Change Data Capture (CDC) to BigQuery is a canonical use
+/// case. For more information, see
+/// [Set the pipeline streaming
+/// mode](<https://cloud.google.com/dataflow/docs/guides/streaming-modes>).
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum StreamingMode {
+    /// Run in the default mode.
+    Unspecified = 0,
+    /// In this mode, message deduplication is performed against persistent state
+    /// to make sure each message is processed and committed to storage exactly
+    /// once.
+    ExactlyOnce = 1,
+    /// Message deduplication is not performed. Messages might be processed
+    /// multiple times, and the results are applied multiple times.
+    /// Note: Setting this value also enables Streaming Engine and
+    /// Streaming Engine resource-based billing.
+    AtLeastOnce = 2,
+}
+impl StreamingMode {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "STREAMING_MODE_UNSPECIFIED",
+            Self::ExactlyOnce => "STREAMING_MODE_EXACTLY_ONCE",
+            Self::AtLeastOnce => "STREAMING_MODE_AT_LEAST_ONCE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "STREAMING_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+            "STREAMING_MODE_EXACTLY_ONCE" => Some(Self::ExactlyOnce),
+            "STREAMING_MODE_AT_LEAST_ONCE" => Some(Self::AtLeastOnce),
             _ => None,
         }
     }
@@ -1009,33 +1147,36 @@ pub mod snapshots_v1_beta3_client {
         }
     }
 }
-/// Defines a job to be run by the Cloud Dataflow service.
+/// Defines a job to be run by the Cloud Dataflow service. Do not enter
+/// confidential information when you supply string values using the API.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Job {
     /// The unique ID of this job.
     ///
-    /// This field is set by the Cloud Dataflow service when the Job is
+    /// This field is set by the Dataflow service when the job is
     /// created, and is immutable for the life of the job.
     #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
-    /// The ID of the Cloud Platform project that the job belongs to.
+    /// The ID of the Google Cloud project that the job belongs to.
     #[prost(string, tag = "2")]
     pub project_id: ::prost::alloc::string::String,
-    /// The user-specified Cloud Dataflow job name.
+    /// Optional. The user-specified Dataflow job name.
     ///
-    /// Only one Job with a given name may exist in a project at any
-    /// given time. If a caller attempts to create a Job with the same
-    /// name as an already-existing Job, the attempt returns the
-    /// existing Job.
+    /// Only one active job with a given name can exist in a project within one
+    /// region at
+    /// any given time. Jobs in different regions can have the same name.
+    /// If a caller attempts to create a job with the same
+    /// name as an active job that already exists, the attempt returns the
+    /// existing job.
     ///
     /// The name must match the regular expression
     /// `[a-z](\[-a-z0-9\]{0,1022}\[a-z0-9\])?`
     #[prost(string, tag = "3")]
     pub name: ::prost::alloc::string::String,
-    /// The type of Cloud Dataflow job.
+    /// Optional. The type of Dataflow job.
     #[prost(enumeration = "JobType", tag = "4")]
     pub r#type: i32,
-    /// The environment for the job.
+    /// Optional. The environment for the job.
     #[prost(message, optional, tag = "5")]
     pub environment: ::core::option::Option<Environment>,
     /// Exactly one of step or steps_location should be specified.
@@ -1056,20 +1197,23 @@ pub struct Job {
     /// terminal state. After a job has reached a terminal state, no
     /// further state updates may be made.
     ///
-    /// This field may be mutated by the Cloud Dataflow service;
+    /// This field might be mutated by the Dataflow service;
     /// callers cannot mutate it.
     #[prost(enumeration = "JobState", tag = "7")]
     pub current_state: i32,
     /// The timestamp associated with the current state.
     #[prost(message, optional, tag = "8")]
     pub current_state_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The job's requested state.
+    /// The job's requested state. Applies to `UpdateJob` requests.
     ///
-    /// `UpdateJob` may be used to switch between the `JOB_STATE_STOPPED` and
-    /// `JOB_STATE_RUNNING` states, by setting requested_state.  `UpdateJob` may
-    /// also be used to directly set a job's requested state to
-    /// `JOB_STATE_CANCELLED` or `JOB_STATE_DONE`, irrevocably terminating the
-    /// job if it has not already reached a terminal state.
+    /// Set `requested_state` with `UpdateJob` requests to switch between the
+    /// states `JOB_STATE_STOPPED` and `JOB_STATE_RUNNING`. You can also use
+    /// `UpdateJob` requests to change a job's
+    /// state from `JOB_STATE_RUNNING` to `JOB_STATE_CANCELLED`,
+    /// `JOB_STATE_DONE`,  or `JOB_STATE_DRAINED`. These states irrevocably
+    /// terminate the job if it hasn't already reached a terminal state.
+    ///
+    /// This field has no effect on `CreateJob` requests.
     #[prost(enumeration = "JobState", tag = "9")]
     pub requested_state: i32,
     /// Deprecated.
@@ -1087,8 +1231,8 @@ pub struct Job {
     /// transferred to this job.
     #[prost(string, tag = "12")]
     pub replace_job_id: ::prost::alloc::string::String,
-    /// The map of transform name prefixes of the job to be replaced to the
-    /// corresponding name prefixes of the new job.
+    /// Optional. The map of transform name prefixes of the job to be replaced to
+    /// the corresponding name prefixes of the new job.
     #[prost(map = "string, string", tag = "13")]
     pub transform_name_mapping: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -1135,7 +1279,7 @@ pub struct Job {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// The \[regional endpoint\]
+    /// Optional. The \[regional endpoint\]
     /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) that
     /// contains this job.
     #[prost(string, tag = "18")]
@@ -1171,6 +1315,48 @@ pub struct Job {
     /// server; it is ignored if it is set in any requests.
     #[prost(bool, tag = "25")]
     pub satisfies_pzs: bool,
+    /// This field may ONLY be modified at runtime using the projects.jobs.update
+    /// method to adjust job behavior. This field has no effect when specified at
+    /// job creation.
+    #[prost(message, optional, tag = "26")]
+    pub runtime_updatable_params: ::core::option::Option<RuntimeUpdatableParams>,
+    /// Output only. Reserved for future use. This field is set only in responses
+    /// from the server; it is ignored if it is set in any requests.
+    #[prost(bool, optional, tag = "27")]
+    pub satisfies_pzi: ::core::option::Option<bool>,
+    /// Output only. Resources used by the Dataflow Service to run the job.
+    #[prost(message, optional, tag = "28")]
+    pub service_resources: ::core::option::Option<ServiceResources>,
+}
+/// Resources used by the Dataflow Service to run the job.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ServiceResources {
+    /// Output only. List of Cloud Zones being used by the Dataflow Service for
+    /// this job. Example: us-central1-c
+    #[prost(string, repeated, tag = "1")]
+    pub zones: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Additional job parameters that can only be updated during runtime using the
+/// projects.jobs.update method. These fields have no effect when specified
+/// during job creation.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct RuntimeUpdatableParams {
+    /// The maximum number of workers to cap autoscaling at. This field is
+    /// currently only supported for Streaming Engine jobs.
+    #[prost(int32, optional, tag = "1")]
+    pub max_num_workers: ::core::option::Option<i32>,
+    /// The minimum number of workers to scale down to. This field is currently
+    /// only supported for Streaming Engine jobs.
+    #[prost(int32, optional, tag = "2")]
+    pub min_num_workers: ::core::option::Option<i32>,
+    /// Target worker utilization, compared against the aggregate utilization of
+    /// the worker pool by autoscaler, to determine upscaling and downscaling when
+    /// absent other constraints such as backlog.
+    /// For more information, see
+    /// [Update an existing
+    /// pipeline](<https://cloud.google.com/dataflow/docs/guides/updating-a-pipeline>).
+    #[prost(double, optional, tag = "3")]
+    pub worker_utilization_hint: ::core::option::Option<f64>,
 }
 /// Metadata for a Datastore connector used by the job.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1253,6 +1439,9 @@ pub struct SdkVersion {
     /// The support status for this SDK version.
     #[prost(enumeration = "sdk_version::SdkSupportStatus", tag = "3")]
     pub sdk_support_status: i32,
+    /// Output only. Known bugs found in this SDK version.
+    #[prost(message, repeated, tag = "4")]
+    pub bugs: ::prost::alloc::vec::Vec<SdkBug>,
 }
 /// Nested message and enum types in `SdkVersion`.
 pub mod sdk_version {
@@ -1309,6 +1498,121 @@ pub mod sdk_version {
         }
     }
 }
+/// A bug found in the Dataflow SDK.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SdkBug {
+    /// Output only. Describes the impact of this SDK bug.
+    #[prost(enumeration = "sdk_bug::Type", tag = "1")]
+    pub r#type: i32,
+    /// Output only. How severe the SDK bug is.
+    #[prost(enumeration = "sdk_bug::Severity", tag = "2")]
+    pub severity: i32,
+    /// Output only. Link to more information on the bug.
+    #[prost(string, tag = "3")]
+    pub uri: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `SdkBug`.
+pub mod sdk_bug {
+    /// Nature of the issue, ordered from least severe to most. Other bug types may
+    /// be added to this list in the future.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// Unknown issue with this SDK.
+        Unspecified = 0,
+        /// Catch-all for SDK bugs that don't fit in the below categories.
+        General = 1,
+        /// Using this version of the SDK may result in degraded performance.
+        Performance = 2,
+        /// Using this version of the SDK may cause data loss.
+        Dataloss = 3,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::General => "GENERAL",
+                Self::Performance => "PERFORMANCE",
+                Self::Dataloss => "DATALOSS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GENERAL" => Some(Self::General),
+                "PERFORMANCE" => Some(Self::Performance),
+                "DATALOSS" => Some(Self::Dataloss),
+                _ => None,
+            }
+        }
+    }
+    /// Indicates the severity of the bug. Other severities may be added to this
+    /// list in the future.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Severity {
+        /// A bug of unknown severity.
+        Unspecified = 0,
+        /// A minor bug that that may reduce reliability or performance for some
+        /// jobs. Impact will be minimal or non-existent for most jobs.
+        Notice = 1,
+        /// A bug that has some likelihood of causing performance degradation, data
+        /// loss, or job failures.
+        Warning = 2,
+        /// A bug with extremely significant impact. Jobs may fail erroneously,
+        /// performance may be severely degraded, and data loss may be very likely.
+        Severe = 3,
+    }
+    impl Severity {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SEVERITY_UNSPECIFIED",
+                Self::Notice => "NOTICE",
+                Self::Warning => "WARNING",
+                Self::Severe => "SEVERE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SEVERITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "NOTICE" => Some(Self::Notice),
+                "WARNING" => Some(Self::Warning),
+                "SEVERE" => Some(Self::Severe),
+                _ => None,
+            }
+        }
+    }
+}
 /// Metadata available primarily for filtering jobs. Will be included in the
 /// ListJob response and Job SUMMARY view.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1334,6 +1638,12 @@ pub struct JobMetadata {
     /// Identification of a Datastore source used in the Dataflow job.
     #[prost(message, repeated, tag = "7")]
     pub datastore_details: ::prost::alloc::vec::Vec<DatastoreIoDetails>,
+    /// List of display properties to help UI filter jobs.
+    #[prost(map = "string, string", tag = "8")]
+    pub user_display_properties: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// A message describing the state of a particular execution stage.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1362,6 +1672,9 @@ pub struct PipelineDescription {
     /// Pipeline level display data.
     #[prost(message, repeated, tag = "3")]
     pub display_data: ::prost::alloc::vec::Vec<DisplayData>,
+    /// A hash value of the submitted pipeline portable graph step names if exists.
+    #[prost(string, tag = "4")]
+    pub step_names_hash: ::prost::alloc::string::String,
 }
 /// Description of the type, names/ids, and input/outputs for a transform.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1536,6 +1849,8 @@ pub mod display_data {
 /// specific operation as part of the overall job.  Data is typically
 /// passed from one step to another as part of the job.
 ///
+/// **Note:** The properties of this object are not stable and might change.
+///
 /// Here's an example of a sequence of steps which together implement a
 /// Map-Reduce job:
 ///
@@ -1582,7 +1897,8 @@ pub struct JobExecutionInfo {
     >,
 }
 /// Contains information about how a particular
-/// [google.dataflow.v1beta3.Step][google.dataflow.v1beta3.Step] will be executed.
+/// [google.dataflow.v1beta3.Step][google.dataflow.v1beta3.Step] will be
+/// executed.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobExecutionStageInfo {
     /// The steps associated with the execution stage.
@@ -1648,6 +1964,14 @@ pub struct UpdateJobRequest {
     /// contains this job.
     #[prost(string, tag = "4")]
     pub location: ::prost::alloc::string::String,
+    /// The list of fields to update relative to Job. If empty, only
+    /// RequestedJobState will be considered for update. If the FieldMask is not
+    /// empty and RequestedJobState is none/empty, The fields specified in the
+    /// update mask will be the only ones considered for update. If both
+    /// RequestedJobState and update_mask are specified, an error will be returned
+    /// as we cannot update both state and mask.
+    #[prost(message, optional, tag = "5")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request to list Cloud Dataflow jobs.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1677,6 +2001,9 @@ pub struct ListJobsRequest {
     /// contains this job.
     #[prost(string, tag = "17")]
     pub location: ::prost::alloc::string::String,
+    /// Optional. The job name.
+    #[prost(string, optional, tag = "11")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `ListJobsRequest`.
 pub mod list_jobs_request {
@@ -1857,7 +2184,8 @@ impl KindType {
         }
     }
 }
-/// Describes the overall state of a [google.dataflow.v1beta3.Job][google.dataflow.v1beta3.Job].
+/// Describes the overall state of a
+/// [google.dataflow.v1beta3.Job][google.dataflow.v1beta3.Job].
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum JobState {
@@ -1974,7 +2302,12 @@ pub enum JobView {
     /// Project ID, Job ID, job name, job type, job status, start/end time,
     /// and Cloud SDK version details.
     Summary = 1,
-    /// Request all information available for this job.
+    /// Request all information available for this job. When the job is in
+    /// `JOB_STATE_PENDING`, the job has been created but is not yet running, and
+    /// not all job information is available. For complete
+    /// job information, wait until the job in is `JOB_STATE_RUNNING`. For more
+    /// information, see
+    /// [JobState](<https://cloud.google.com/dataflow/docs/reference/rest/v1b3/projects.jobs#jobstate>).
     All = 2,
     /// Request summary info and limited job description data for steps, labels and
     /// environment.
@@ -2104,6 +2437,9 @@ pub mod jobs_v1_beta3_client {
         /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). Using
         /// `projects.jobs.create` is not recommended, as your job will always start
         /// in `us-central1`.
+        ///
+        /// Do not enter confidential information when you supply string values using
+        /// the API.
         pub async fn create_job(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateJobRequest>,
@@ -2193,8 +2529,12 @@ pub mod jobs_v1_beta3_client {
         /// `projects.locations.jobs.list` with a [regional endpoint]
         /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). To
         /// list the all jobs across all regions, use `projects.jobs.aggregated`. Using
-        /// `projects.jobs.list` is not recommended, as you can only get the list of
-        /// jobs that are running in `us-central1`.
+        /// `projects.jobs.list` is not recommended, because you can only get the list
+        /// of jobs that are running in `us-central1`.
+        ///
+        /// `projects.locations.jobs.list` and `projects.jobs.list` support filtering
+        /// the list of jobs by name. Filtering by name isn't supported by
+        /// `projects.jobs.aggregated`.
         pub async fn list_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListJobsRequest>,
@@ -2222,6 +2562,9 @@ pub mod jobs_v1_beta3_client {
             self.inner.unary(req, path, codec).await
         }
         /// List the jobs of a project across all regions.
+        ///
+        /// **Note:** This method doesn't support filtering the list of
+        /// jobs by name.
         pub async fn aggregated_list_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListJobsRequest>,
@@ -2712,6 +3055,7 @@ pub struct MetricStructuredName {
     >,
 }
 /// Describes the state of a metric.
+/// Next ID: 14
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetricUpdate {
     /// Name of the metric.
@@ -2749,10 +3093,14 @@ pub struct MetricUpdate {
     pub mean_count: ::core::option::Option<::prost_types::Value>,
     /// Worker-computed aggregate value for the "Set" aggregation kind.  The only
     /// possible value type is a list of Values whose type can be Long, Double,
-    /// or String, according to the metric's type.  All Values in the list must
-    /// be of the same type.
+    /// String, or BoundedTrie according to the metric's type.  All Values in the
+    /// list must be of the same type.
     #[prost(message, optional, tag = "7")]
     pub set: ::core::option::Option<::prost_types::Value>,
+    /// Worker-computed aggregate value for the "Trie" aggregation kind.  The only
+    /// possible value type is a BoundedTrieNode.
+    #[prost(message, optional, tag = "13")]
+    pub trie: ::core::option::Option<::prost_types::Value>,
     /// A struct value describing properties of a distribution of numeric values.
     #[prost(message, optional, tag = "11")]
     pub distribution: ::core::option::Option<::prost_types::Value>,
@@ -2792,7 +3140,8 @@ pub struct GetJobMetricsRequest {
 }
 /// JobMetrics contains a collection of metrics describing the detailed progress
 /// of a Dataflow job. Metrics correspond to user-defined and system-defined
-/// metrics in the job.
+/// metrics in the job. For more information, see \[Dataflow job metrics\]
+/// (<https://cloud.google.com/dataflow/docs/guides/using-monitoring-intf>).
 ///
 /// This resource captures only the most recent values of each metric;
 /// time-series data can be queried for them (under the same metric names)
@@ -2856,6 +3205,132 @@ pub mod progress_timeseries {
         pub value: f64,
     }
 }
+/// Information useful for straggler identification and debugging.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StragglerInfo {
+    /// The time when the work item attempt became a straggler.
+    #[prost(message, optional, tag = "1")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The straggler causes, keyed by the string representation of the
+    /// StragglerCause enum and contains specialized debugging information for each
+    /// straggler cause.
+    #[prost(map = "string, message", tag = "2")]
+    pub causes: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        straggler_info::StragglerDebuggingInfo,
+    >,
+}
+/// Nested message and enum types in `StragglerInfo`.
+pub mod straggler_info {
+    /// Information useful for debugging a straggler. Each type will provide
+    /// specialized debugging information relevant for a particular cause.
+    /// The StragglerDebuggingInfo will be 1:1 mapping to the StragglerCause enum.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct StragglerDebuggingInfo {
+        #[prost(
+            oneof = "straggler_debugging_info::StragglerDebuggingInfoValue",
+            tags = "1"
+        )]
+        pub straggler_debugging_info_value: ::core::option::Option<
+            straggler_debugging_info::StragglerDebuggingInfoValue,
+        >,
+    }
+    /// Nested message and enum types in `StragglerDebuggingInfo`.
+    pub mod straggler_debugging_info {
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum StragglerDebuggingInfoValue {
+            /// Hot key debugging details.
+            #[prost(message, tag = "1")]
+            HotKey(super::super::HotKeyDebuggingInfo),
+        }
+    }
+}
+/// Information useful for streaming straggler identification and debugging.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingStragglerInfo {
+    /// Start time of this straggler.
+    #[prost(message, optional, tag = "1")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// End time of this straggler.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Name of the worker where the straggler was detected.
+    #[prost(string, tag = "3")]
+    pub worker_name: ::prost::alloc::string::String,
+    /// The event-time watermark lag at the time of the straggler detection.
+    #[prost(message, optional, tag = "4")]
+    pub data_watermark_lag: ::core::option::Option<::prost_types::Duration>,
+    /// The system watermark lag at the time of the straggler detection.
+    #[prost(message, optional, tag = "5")]
+    pub system_watermark_lag: ::core::option::Option<::prost_types::Duration>,
+}
+/// Information for a straggler.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Straggler {
+    /// Information useful for straggler identification and debugging.
+    #[prost(oneof = "straggler::StragglerInfo", tags = "1, 2")]
+    pub straggler_info: ::core::option::Option<straggler::StragglerInfo>,
+}
+/// Nested message and enum types in `Straggler`.
+pub mod straggler {
+    /// Information useful for straggler identification and debugging.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum StragglerInfo {
+        /// Batch straggler identification and debugging information.
+        #[prost(message, tag = "1")]
+        BatchStraggler(super::StragglerInfo),
+        /// Streaming straggler identification and debugging information.
+        #[prost(message, tag = "2")]
+        StreamingStraggler(super::StreamingStragglerInfo),
+    }
+}
+/// Information useful for debugging a hot key detection.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HotKeyDebuggingInfo {
+    /// Debugging information for each detected hot key. Keyed by a hash of the
+    /// key.
+    #[prost(map = "uint64, message", tag = "1")]
+    pub detected_hot_keys: ::std::collections::HashMap<
+        u64,
+        hot_key_debugging_info::HotKeyInfo,
+    >,
+}
+/// Nested message and enum types in `HotKeyDebuggingInfo`.
+pub mod hot_key_debugging_info {
+    /// Information about a hot key.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct HotKeyInfo {
+        /// The age of the hot key measured from when it was first detected.
+        #[prost(message, optional, tag = "1")]
+        pub hot_key_age: ::core::option::Option<::prost_types::Duration>,
+        /// A detected hot key that is causing limited parallelism. This field will
+        /// be populated only if the following flag is set to true:
+        /// "--enable_hot_key_logging".
+        #[prost(string, tag = "2")]
+        pub key: ::prost::alloc::string::String,
+        /// If true, then the above key is truncated and cannot be deserialized. This
+        /// occurs if the key above is populated and the key size is >5MB.
+        #[prost(bool, tag = "3")]
+        pub key_truncated: bool,
+    }
+}
+/// Summarized straggler identification details.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StragglerSummary {
+    /// The total count of stragglers.
+    #[prost(int64, tag = "1")]
+    pub total_straggler_count: i64,
+    /// Aggregated counts of straggler causes, keyed by the string representation
+    /// of the StragglerCause enum.
+    #[prost(map = "string, int64", tag = "2")]
+    pub straggler_cause_count: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        i64,
+    >,
+    /// The most recent stragglers.
+    #[prost(message, repeated, tag = "3")]
+    pub recent_stragglers: ::prost::alloc::vec::Vec<Straggler>,
+}
 /// Information about a particular execution stage of a job.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StageSummary {
@@ -2881,6 +3356,9 @@ pub struct StageSummary {
     /// Metrics for this stage.
     #[prost(message, repeated, tag = "6")]
     pub metrics: ::prost::alloc::vec::Vec<MetricUpdate>,
+    /// Straggler summary for this stage.
+    #[prost(message, optional, tag = "7")]
+    pub straggler_summary: ::core::option::Option<StragglerSummary>,
 }
 /// Information about the execution of a job.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2956,6 +3434,9 @@ pub struct WorkItemDetails {
     /// Metrics for this work item.
     #[prost(message, repeated, tag = "7")]
     pub metrics: ::prost::alloc::vec::Vec<MetricUpdate>,
+    /// Information about straggler detections for this work item.
+    #[prost(message, optional, tag = "8")]
+    pub straggler_info: ::core::option::Option<StragglerInfo>,
 }
 /// Information about a worker
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3270,6 +3751,9 @@ pub struct PubsubLocation {
     /// If true, then the client has requested to get pubsub attributes.
     #[prost(bool, tag = "7")]
     pub with_attributes: bool,
+    /// If true, then this location represents dynamic topics.
+    #[prost(bool, tag = "8")]
+    pub dynamic_destinations: bool,
 }
 /// Identifies the location of a streaming computation stage, for
 /// stage-to-stage communication.
@@ -3471,6 +3955,15 @@ pub struct ContainerSpec {
     /// Default runtime environment for the job.
     #[prost(message, optional, tag = "4")]
     pub default_environment: ::core::option::Option<FlexTemplateRuntimeEnvironment>,
+    /// Secret Manager secret id for username to authenticate to private registry.
+    #[prost(string, tag = "5")]
+    pub image_repository_username_secret_id: ::prost::alloc::string::String,
+    /// Secret Manager secret id for password to authenticate to private registry.
+    #[prost(string, tag = "6")]
+    pub image_repository_password_secret_id: ::prost::alloc::string::String,
+    /// Cloud Storage path to self-signed certificate of private registry.
+    #[prost(string, tag = "7")]
+    pub image_repository_cert_path: ::prost::alloc::string::String,
 }
 /// Launch FlexTemplate Parameter.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3625,21 +4118,35 @@ pub struct FlexTemplateRuntimeEnvironment {
     /// The algorithm to use for autoscaling
     #[prost(enumeration = "AutoscalingAlgorithm", tag = "21")]
     pub autoscaling_algorithm: i32,
-    /// If true, save a heap dump before killing a thread or process which is GC
-    /// thrashing or out of memory. The location of the heap file will either be
-    /// echoed back to the user, or the user will be given the opportunity to
+    /// If true, when processing time is spent almost entirely
+    /// on garbage collection (GC), saves a heap dump before ending the thread
+    /// or process. If false, ends the thread or process without saving a heap
+    /// dump. Does not save a heap dump when the Java Virtual Machine (JVM) has an
+    /// out of memory error during processing. The location of the heap file is
+    /// either echoed back to the user, or the user is given the opportunity to
     /// download the heap file.
     #[prost(bool, tag = "22")]
     pub dump_heap_on_oom: bool,
-    /// Cloud Storage bucket (directory) to upload heap dumps to the given
-    /// location. Enabling this implies that heap dumps should be generated on OOM
-    /// (dump_heap_on_oom is set to true).
+    /// Cloud Storage bucket (directory) to upload heap dumps to.
+    /// Enabling this field implies that `dump_heap_on_oom` is set to true.
     #[prost(string, tag = "23")]
     pub save_heap_dumps_to_gcs_path: ::prost::alloc::string::String,
     /// The machine type to use for launching the job. The default is
     /// n1-standard-1.
     #[prost(string, tag = "24")]
     pub launcher_machine_type: ::prost::alloc::string::String,
+    /// If true serial port logging will be enabled for the launcher VM.
+    #[prost(bool, tag = "25")]
+    pub enable_launcher_vm_serial_port_logging: bool,
+    /// Optional. Specifies the Streaming Engine message processing guarantees.
+    /// Reduces cost and latency but might result in duplicate messages committed
+    /// to storage. Designed to run simple mapping streaming ETL jobs at the lowest
+    /// cost. For example, Change Data Capture (CDC) to BigQuery is a canonical use
+    /// case. For more information, see
+    /// [Set the pipeline streaming
+    /// mode](<https://cloud.google.com/dataflow/docs/guides/streaming-modes>).
+    #[prost(enumeration = "StreamingMode", optional, tag = "26")]
+    pub streaming_mode: ::core::option::Option<i32>,
 }
 /// A request to launch a Cloud Dataflow job from a FlexTemplate.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3663,51 +4170,53 @@ pub struct LaunchFlexTemplateRequest {
 /// The environment values to set at runtime.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuntimeEnvironment {
-    /// The initial number of Google Compute Engine instnaces for the job.
+    /// Optional. The initial number of Google Compute Engine instances for the
+    /// job. The default value is 11.
     #[prost(int32, tag = "11")]
     pub num_workers: i32,
-    /// The maximum number of Google Compute Engine instances to be made
-    /// available to your pipeline during execution, from 1 to 1000.
+    /// Optional. The maximum number of Google Compute Engine instances to be made
+    /// available to your pipeline during execution, from 1 to 1000. The default
+    /// value is 1.
     #[prost(int32, tag = "1")]
     pub max_workers: i32,
-    /// The Compute Engine [availability
+    /// Optional. The Compute Engine [availability
     /// zone](<https://cloud.google.com/compute/docs/regions-zones/regions-zones>)
     /// for launching worker instances to run your pipeline.
     /// In the future, worker_zone will take precedence.
     #[prost(string, tag = "2")]
     pub zone: ::prost::alloc::string::String,
-    /// The email address of the service account to run the job as.
+    /// Optional. The email address of the service account to run the job as.
     #[prost(string, tag = "3")]
     pub service_account_email: ::prost::alloc::string::String,
-    /// The Cloud Storage path to use for temporary files.
+    /// Required. The Cloud Storage path to use for temporary files.
     /// Must be a valid Cloud Storage URL, beginning with `gs://`.
     #[prost(string, tag = "4")]
     pub temp_location: ::prost::alloc::string::String,
-    /// Whether to bypass the safety checks for the job's temporary directory.
-    /// Use with caution.
+    /// Optional. Whether to bypass the safety checks for the job's temporary
+    /// directory. Use with caution.
     #[prost(bool, tag = "5")]
     pub bypass_temp_dir_validation: bool,
-    /// The machine type to use for the job. Defaults to the value from the
-    /// template if not specified.
+    /// Optional. The machine type to use for the job. Defaults to the value from
+    /// the template if not specified.
     #[prost(string, tag = "6")]
     pub machine_type: ::prost::alloc::string::String,
-    /// Additional experiment flags for the job, specified with the
+    /// Optional. Additional experiment flags for the job, specified with the
     /// `--experiments` option.
     #[prost(string, repeated, tag = "7")]
     pub additional_experiments: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Network to which VMs will be assigned.  If empty or unspecified,
+    /// Optional. Network to which VMs will be assigned.  If empty or unspecified,
     /// the service will use the network "default".
     #[prost(string, tag = "8")]
     pub network: ::prost::alloc::string::String,
-    /// Subnetwork to which VMs will be assigned, if desired. You can specify a
-    /// subnetwork using either a complete URL or an abbreviated path. Expected to
-    /// be of the form
+    /// Optional. Subnetwork to which VMs will be assigned, if desired. You can
+    /// specify a subnetwork using either a complete URL or an abbreviated path.
+    ///   Expected to be of the form
     /// "<https://www.googleapis.com/compute/v1/projects/HOST_PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK">
     /// or "regions/REGION/subnetworks/SUBNETWORK". If the subnetwork is located in
     /// a Shared VPC network, you must use the complete URL.
     #[prost(string, tag = "9")]
     pub subnetwork: ::prost::alloc::string::String,
-    /// Additional user labels to be specified for the job.
+    /// Optional. Additional user labels to be specified for the job.
     /// Keys and values should follow the restrictions specified in the [labeling
     /// restrictions](<https://cloud.google.com/compute/docs/labeling-resources#restrictions>)
     /// page.
@@ -3718,22 +4227,22 @@ pub struct RuntimeEnvironment {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Name for the Cloud KMS key for the job.
+    /// Optional. Name for the Cloud KMS key for the job.
     /// Key format is:
     /// projects/<project>/locations/<location>/keyRings/<keyring>/cryptoKeys/<key>
     #[prost(string, tag = "12")]
     pub kms_key_name: ::prost::alloc::string::String,
-    /// Configuration for VM IPs.
+    /// Optional. Configuration for VM IPs.
     #[prost(enumeration = "WorkerIpAddressConfiguration", tag = "14")]
     pub ip_configuration: i32,
-    /// The Compute Engine region
+    /// Required. The Compute Engine region
     /// (<https://cloud.google.com/compute/docs/regions-zones/regions-zones>) in
     /// which worker processing should occur, e.g. "us-west1". Mutually exclusive
     /// with worker_zone. If neither worker_region nor worker_zone is specified,
     /// default to the control plane's region.
     #[prost(string, tag = "15")]
     pub worker_region: ::prost::alloc::string::String,
-    /// The Compute Engine zone
+    /// Optional. The Compute Engine zone
     /// (<https://cloud.google.com/compute/docs/regions-zones/regions-zones>) in
     /// which worker processing should occur, e.g. "us-west1-a". Mutually exclusive
     /// with worker_region. If neither worker_region nor worker_zone is specified,
@@ -3741,9 +4250,35 @@ pub struct RuntimeEnvironment {
     /// If both `worker_zone` and `zone` are set, `worker_zone` takes precedence.
     #[prost(string, tag = "16")]
     pub worker_zone: ::prost::alloc::string::String,
-    /// Whether to enable Streaming Engine for the job.
+    /// Optional. Whether to enable Streaming Engine for the job.
     #[prost(bool, tag = "17")]
     pub enable_streaming_engine: bool,
+    /// Optional. The disk size, in gigabytes, to use on each remote Compute Engine
+    /// worker instance.
+    #[prost(int32, tag = "18")]
+    pub disk_size_gb: i32,
+    /// Optional. Specifies the Streaming Engine message processing guarantees.
+    /// Reduces cost and latency but might result in duplicate messages committed
+    /// to storage. Designed to run simple mapping streaming ETL jobs at the lowest
+    /// cost. For example, Change Data Capture (CDC) to BigQuery is a canonical use
+    /// case. For more information, see
+    /// [Set the pipeline streaming
+    /// mode](<https://cloud.google.com/dataflow/docs/guides/streaming-modes>).
+    #[prost(enumeration = "StreamingMode", optional, tag = "19")]
+    pub streaming_mode: ::core::option::Option<i32>,
+}
+/// ParameterMetadataEnumOption specifies the option shown in the enum form.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ParameterMetadataEnumOption {
+    /// Required. The value of the enum option.
+    #[prost(string, tag = "1")]
+    pub value: ::prost::alloc::string::String,
+    /// Optional. The label to display for the enum option.
+    #[prost(string, tag = "2")]
+    pub label: ::prost::alloc::string::String,
+    /// Optional. The description to display for the enum option.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
 }
 /// Metadata for a specific parameter.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3773,6 +4308,35 @@ pub struct ParameterMetadata {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. Specifies a group name for this parameter to be rendered under.
+    /// Group header text will be rendered exactly as specified in this field. Only
+    /// considered when parent_name is NOT provided.
+    #[prost(string, tag = "8")]
+    pub group_name: ::prost::alloc::string::String,
+    /// Optional. Specifies the name of the parent parameter. Used in conjunction
+    /// with 'parent_trigger_values' to make this parameter conditional (will only
+    /// be rendered conditionally). Should be mappable to a ParameterMetadata.name
+    /// field.
+    #[prost(string, tag = "9")]
+    pub parent_name: ::prost::alloc::string::String,
+    /// Optional. The value(s) of the 'parent_name' parameter which will trigger
+    /// this parameter to be shown. If left empty, ANY non-empty value in
+    /// parent_name will trigger this parameter to be shown. Only considered when
+    /// this parameter is conditional (when 'parent_name' has been provided).
+    #[prost(string, repeated, tag = "10")]
+    pub parent_trigger_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The options shown when ENUM ParameterType is specified.
+    #[prost(message, repeated, tag = "11")]
+    pub enum_options: ::prost::alloc::vec::Vec<ParameterMetadataEnumOption>,
+    /// Optional. The default values will pre-populate the parameter with the
+    /// given value from the proto. If default_value is left empty, the parameter
+    /// will be populated with a default of the relevant type, e.g. false for a
+    /// boolean.
+    #[prost(string, tag = "12")]
+    pub default_value: ::prost::alloc::string::String,
+    /// Optional. Whether the parameter should be hidden in the UI.
+    #[prost(bool, tag = "13")]
+    pub hidden_ui: bool,
 }
 /// Metadata describing a template.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3786,6 +4350,20 @@ pub struct TemplateMetadata {
     /// The parameters for the template.
     #[prost(message, repeated, tag = "3")]
     pub parameters: ::prost::alloc::vec::Vec<ParameterMetadata>,
+    /// Optional. Indicates if the template is streaming or not.
+    #[prost(bool, tag = "5")]
+    pub streaming: bool,
+    /// Optional. Indicates if the streaming template supports at least once mode.
+    #[prost(bool, tag = "6")]
+    pub supports_at_least_once: bool,
+    /// Optional. Indicates if the streaming template supports exactly once mode.
+    #[prost(bool, tag = "7")]
+    pub supports_exactly_once: bool,
+    /// Optional. Indicates the default streaming mode for a streaming template.
+    /// Only valid if both supports_at_least_once and supports_exactly_once are
+    /// true. Possible values: UNSPECIFIED, EXACTLY_ONCE and AT_LEAST_ONCE
+    #[prost(string, tag = "8")]
+    pub default_streaming_mode: ::prost::alloc::string::String,
 }
 /// SDK Information.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3819,6 +4397,8 @@ pub mod sdk_info {
         Java = 1,
         /// Python.
         Python = 2,
+        /// Go.
+        Go = 3,
     }
     impl Language {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3830,6 +4410,7 @@ pub mod sdk_info {
                 Self::Unknown => "UNKNOWN",
                 Self::Java => "JAVA",
                 Self::Python => "PYTHON",
+                Self::Go => "GO",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3838,6 +4419,7 @@ pub mod sdk_info {
                 "UNKNOWN" => Some(Self::Unknown),
                 "JAVA" => Some(Self::Java),
                 "PYTHON" => Some(Self::Python),
+                "GO" => Some(Self::Go),
                 _ => None,
             }
         }
@@ -4022,10 +4604,16 @@ pub mod get_template_response {
         }
     }
 }
-/// Parameters to provide to the template being launched.
+/// Parameters to provide to the template being launched. Note that the
+/// \[metadata in the pipeline code\]
+/// (<https://cloud.google.com/dataflow/docs/guides/templates/creating-templates#metadata>)
+/// determines which runtime parameters are valid.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LaunchTemplateParameters {
     /// Required. The job name to use for the created job.
+    ///
+    /// The name must match the regular expression
+    /// `[a-z](\[-a-z0-9\]{0,1022}\[a-z0-9\])?`
     #[prost(string, tag = "1")]
     pub job_name: ::prost::alloc::string::String,
     /// The runtime parameters to pass to the job.
@@ -4059,7 +4647,7 @@ pub struct LaunchTemplateRequest {
     /// Defaults to false.
     #[prost(bool, tag = "2")]
     pub validate_only: bool,
-    /// The parameters of the template to launch. This should be part of the
+    /// The parameters of the template to launch. Part of the
     /// body of the POST request.
     #[prost(message, optional, tag = "4")]
     pub launch_parameters: ::core::option::Option<LaunchTemplateParameters>,
@@ -4068,21 +4656,21 @@ pub struct LaunchTemplateRequest {
     /// which to direct the request.
     #[prost(string, tag = "5")]
     pub location: ::prost::alloc::string::String,
-    /// The template from which to create the job.
+    /// The template to use to create the job.
     #[prost(oneof = "launch_template_request::Template", tags = "3, 6")]
     pub template: ::core::option::Option<launch_template_request::Template>,
 }
 /// Nested message and enum types in `LaunchTemplateRequest`.
 pub mod launch_template_request {
-    /// The template from which to create the job.
+    /// The template to use to create the job.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Template {
-        /// A Cloud Storage path to the template from which to create
+        /// A Cloud Storage path to the template to use to create
         /// the job.
-        /// Must be valid Cloud Storage URL, beginning with 'gs://'.
+        /// Must be valid Cloud Storage URL, beginning with `gs://`.
         #[prost(string, tag = "3")]
         GcsPath(::prost::alloc::string::String),
-        /// Params for launching a dynamic template.
+        /// Parameters for launching a dynamic template.
         #[prost(message, tag = "6")]
         DynamicTemplate(super::DynamicTemplateLaunchParams),
     }
@@ -4118,11 +4706,11 @@ pub mod invalid_template_parameters {
         pub description: ::prost::alloc::string::String,
     }
 }
-/// Params which should be passed when launching a dynamic template.
+/// Parameters to pass when launching a dynamic template.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DynamicTemplateLaunchParams {
-    /// Path to dynamic template spec file on Cloud Storage.
-    /// The file must be a Json serialized DynamicTemplateFieSpec object.
+    /// Path to the dynamic template specification file on Cloud Storage.
+    /// The file must be a JSON serialized `DynamicTemplateFileSpec` object.
     #[prost(string, tag = "1")]
     pub gcs_path: ::prost::alloc::string::String,
     /// Cloud Storage path for staging dependencies.
@@ -4154,6 +4742,36 @@ pub enum ParameterType {
     PubsubTopic = 8,
     /// The parameter specifies a Pub/Sub Subscription.
     PubsubSubscription = 9,
+    /// The parameter specifies a BigQuery table.
+    BigqueryTable = 10,
+    /// The parameter specifies a JavaScript UDF in Cloud Storage.
+    JavascriptUdfFile = 11,
+    /// The parameter specifies a Service Account email.
+    ServiceAccount = 12,
+    /// The parameter specifies a Machine Type.
+    MachineType = 13,
+    /// The parameter specifies a KMS Key name.
+    KmsKeyName = 14,
+    /// The parameter specifies a Worker Region.
+    WorkerRegion = 15,
+    /// The parameter specifies a Worker Zone.
+    WorkerZone = 16,
+    /// The parameter specifies a boolean input.
+    Boolean = 17,
+    /// The parameter specifies an enum input.
+    Enum = 18,
+    /// The parameter specifies a number input.
+    Number = 19,
+    /// Deprecated. Please use KAFKA_READ_TOPIC instead.
+    KafkaTopic = 20,
+    /// The parameter specifies the fully-qualified name of an Apache Kafka topic.
+    /// This can be either a Google Managed Kafka topic or a non-managed Kafka
+    /// topic.
+    KafkaReadTopic = 21,
+    /// The parameter specifies the fully-qualified name of an Apache Kafka topic.
+    /// This can be an existing Google Managed Kafka topic, the name for a new
+    /// Google Managed Kafka topic, or an existing non-managed Kafka topic.
+    KafkaWriteTopic = 22,
 }
 impl ParameterType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -4172,6 +4790,19 @@ impl ParameterType {
             Self::GcsWriteFolder => "GCS_WRITE_FOLDER",
             Self::PubsubTopic => "PUBSUB_TOPIC",
             Self::PubsubSubscription => "PUBSUB_SUBSCRIPTION",
+            Self::BigqueryTable => "BIGQUERY_TABLE",
+            Self::JavascriptUdfFile => "JAVASCRIPT_UDF_FILE",
+            Self::ServiceAccount => "SERVICE_ACCOUNT",
+            Self::MachineType => "MACHINE_TYPE",
+            Self::KmsKeyName => "KMS_KEY_NAME",
+            Self::WorkerRegion => "WORKER_REGION",
+            Self::WorkerZone => "WORKER_ZONE",
+            Self::Boolean => "BOOLEAN",
+            Self::Enum => "ENUM",
+            Self::Number => "NUMBER",
+            Self::KafkaTopic => "KAFKA_TOPIC",
+            Self::KafkaReadTopic => "KAFKA_READ_TOPIC",
+            Self::KafkaWriteTopic => "KAFKA_WRITE_TOPIC",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4187,6 +4818,19 @@ impl ParameterType {
             "GCS_WRITE_FOLDER" => Some(Self::GcsWriteFolder),
             "PUBSUB_TOPIC" => Some(Self::PubsubTopic),
             "PUBSUB_SUBSCRIPTION" => Some(Self::PubsubSubscription),
+            "BIGQUERY_TABLE" => Some(Self::BigqueryTable),
+            "JAVASCRIPT_UDF_FILE" => Some(Self::JavascriptUdfFile),
+            "SERVICE_ACCOUNT" => Some(Self::ServiceAccount),
+            "MACHINE_TYPE" => Some(Self::MachineType),
+            "KMS_KEY_NAME" => Some(Self::KmsKeyName),
+            "WORKER_REGION" => Some(Self::WorkerRegion),
+            "WORKER_ZONE" => Some(Self::WorkerZone),
+            "BOOLEAN" => Some(Self::Boolean),
+            "ENUM" => Some(Self::Enum),
+            "NUMBER" => Some(Self::Number),
+            "KAFKA_TOPIC" => Some(Self::KafkaTopic),
+            "KAFKA_READ_TOPIC" => Some(Self::KafkaReadTopic),
+            "KAFKA_WRITE_TOPIC" => Some(Self::KafkaWriteTopic),
             _ => None,
         }
     }
@@ -4283,7 +4927,14 @@ pub mod templates_service_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Creates a Cloud Dataflow job from a template.
+        /// Creates a Cloud Dataflow job from a template. Do not enter confidential
+        /// information when you supply string values using the API.
+        ///
+        /// To create a job, we recommend using `projects.locations.templates.create`
+        /// with a [regional endpoint]
+        /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). Using
+        /// `projects.templates.create` is not recommended, because your job will
+        /// always start in `us-central1`.
         pub async fn create_job_from_template(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateJobFromTemplateRequest>,
@@ -4310,7 +4961,13 @@ pub mod templates_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Launch a template.
+        /// Launches a template.
+        ///
+        /// To launch a template, we recommend using
+        /// `projects.locations.templates.launch` with a [regional endpoint]
+        /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). Using
+        /// `projects.templates.launch` is not recommended, because jobs launched
+        /// from the template will always start in `us-central1`.
         pub async fn launch_template(
             &mut self,
             request: impl tonic::IntoRequest<super::LaunchTemplateRequest>,
@@ -4341,6 +4998,12 @@ pub mod templates_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Get the template associated with a template.
+        ///
+        /// To get the template, we recommend using `projects.locations.templates.get`
+        /// with a [regional endpoint]
+        /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). Using
+        /// `projects.templates.get` is not recommended, because only
+        /// templates that are running in `us-central1` are retrieved.
         pub async fn get_template(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTemplateRequest>,
@@ -4383,7 +5046,7 @@ pub mod flex_templates_service_client {
     )]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// Provides a service for Flex templates. This feature is not ready yet.
+    /// Provides a service for Flex templates.
     #[derive(Debug, Clone)]
     pub struct FlexTemplatesServiceClient<T> {
         inner: tonic::client::Grpc<T>,

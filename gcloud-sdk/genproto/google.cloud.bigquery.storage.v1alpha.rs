@@ -141,9 +141,16 @@ pub struct BatchCreateMetastorePartitionsRequest {
     /// add_partitions(..). If the flag is set to false, the server will return
     /// ALREADY_EXISTS if any partition already exists. If the flag is set to true,
     /// the server will skip existing partitions and insert only the non-existing
-    /// partitions.
+    /// partitions. A maximum of 900 partitions can be inserted in a batch.
     #[prost(bool, tag = "3")]
     pub skip_existing_partitions: bool,
+    /// Optional. Optional trace id to be used for debugging. It is expected that
+    /// the client sets the same `trace_id` for all the batches in the same
+    /// operation, so that it is possible to tie together the logs to all the
+    /// batches in the same operation. Limited to 256 characters. This is expected,
+    /// but not required, to be globally unique.
+    #[prost(string, tag = "4")]
+    pub trace_id: ::prost::alloc::string::String,
 }
 /// Response message for BatchCreateMetastorePartitions.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -163,9 +170,16 @@ pub struct BatchDeleteMetastorePartitionsRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The list of metastore partitions (identified by its values) to be
-    /// deleted. A maximum of 100 partitions can be deleted in a batch.
+    /// deleted. A maximum of 900 partitions can be deleted in a batch.
     #[prost(message, repeated, tag = "2")]
     pub partition_values: ::prost::alloc::vec::Vec<MetastorePartitionValues>,
+    /// Optional. Optional trace id to be used for debugging. It is expected that
+    /// the client sets the same `trace_id` for all the batches in the same
+    /// operation, so that it is possible to tie together the logs to all the
+    /// batches in the same operation. This is expected, but not required, to be
+    /// globally unique.
+    #[prost(string, tag = "4")]
+    pub trace_id: ::prost::alloc::string::String,
 }
 /// Request message for UpdateMetastorePartition.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -188,11 +202,19 @@ pub struct BatchUpdateMetastorePartitionsRequest {
     /// Required. Requests to update metastore partitions in the table.
     #[prost(message, repeated, tag = "2")]
     pub requests: ::prost::alloc::vec::Vec<UpdateMetastorePartitionRequest>,
+    /// Optional. Optional trace id to be used for debugging. It is expected that
+    /// the client sets the same `trace_id` for all the batches in the same
+    /// operation, so that it is possible to tie together the logs to all the
+    /// batches in the same operation. This is expected, but not required, to be
+    /// globally unique.
+    #[prost(string, tag = "4")]
+    pub trace_id: ::prost::alloc::string::String,
 }
 /// Response message for BatchUpdateMetastorePartitions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUpdateMetastorePartitionsResponse {
     /// The list of metastore partitions that have been updated.
+    /// A maximum of 900 partitions can be updated in a batch.
     #[prost(message, repeated, tag = "1")]
     pub partitions: ::prost::alloc::vec::Vec<MetastorePartition>,
 }
@@ -216,6 +238,13 @@ pub struct ListMetastorePartitionsRequest {
     /// Restricted to a maximum length for 1 MB.
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
+    /// Optional. Optional trace id to be used for debugging. It is expected that
+    /// the client sets the same `trace_id` for all the batches in the same
+    /// operation, so that it is possible to tie together the logs to all the
+    /// batches in the same operation. Limited to 256 characters. This is expected,
+    /// but not required, to be globally unique.
+    #[prost(string, tag = "3")]
+    pub trace_id: ::prost::alloc::string::String,
 }
 /// Response message for ListMetastorePartitions.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -315,8 +344,8 @@ pub mod metastore_partition_service_client {
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// BigQuery Metastore Partition Service API.
-    /// This service is used for managing metastore partitions in BigQuery metastore.
-    /// The service supports only batch operations for write.
+    ///  This service is used for managing metastore partitions in BigQuery
+    ///  metastore. The service supports only batch operations for write.
     #[derive(Debug, Clone)]
     pub struct MetastorePartitionServiceClient<T> {
         inner: tonic::client::Grpc<T>,

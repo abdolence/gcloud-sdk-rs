@@ -984,7 +984,7 @@ pub struct CsvSource {
 pub struct GcsSource {
     /// Required. Google Cloud Storage URI(-s) to the input file(s). May contain
     /// wildcards. For more information on wildcards, see
-    /// <https://cloud.google.com/storage/docs/gsutil/addlhelp/WildcardNames.>
+    /// <https://cloud.google.com/storage/docs/wildcards.>
     #[prost(string, repeated, tag = "1")]
     pub uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -2751,6 +2751,9 @@ pub struct Model {
     /// Output only. Reserved for future use.
     #[prost(bool, tag = "52")]
     pub satisfies_pzi: bool,
+    /// Optional. Output only. The checkpoints of the model.
+    #[prost(message, repeated, tag = "57")]
+    pub checkpoints: ::prost::alloc::vec::Vec<Checkpoint>,
 }
 /// Nested message and enum types in `Model`.
 pub mod model {
@@ -3503,6 +3506,19 @@ pub mod probe {
         TcpSocket(TcpSocketAction),
     }
 }
+/// Describes the machine learning model version checkpoint.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Checkpoint {
+    /// The ID of the checkpoint.
+    #[prost(string, tag = "1")]
+    pub checkpoint_id: ::prost::alloc::string::String,
+    /// The epoch of the checkpoint.
+    #[prost(int64, tag = "2")]
+    pub epoch: i64,
+    /// The step of the checkpoint.
+    #[prost(int64, tag = "3")]
+    pub step: i64,
+}
 /// Contains model information necessary to perform batch prediction without
 /// requiring a full model import.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4052,6 +4068,33 @@ pub struct Schema {
     /// subschemas in the list.
     #[prost(message, repeated, tag = "11")]
     pub any_of: ::prost::alloc::vec::Vec<Schema>,
+    /// Optional. Allows indirect references between schema nodes. The value should
+    /// be a valid reference to a child of the root `defs`.
+    ///
+    /// For example, the following schema defines a reference to a schema node
+    /// named "Pet":
+    ///
+    /// type: object
+    /// properties:
+    ///    pet:
+    ///      ref: #/defs/Pet
+    /// defs:
+    ///    Pet:
+    ///      type: object
+    ///      properties:
+    ///        name:
+    ///          type: string
+    ///
+    /// The value of the "pet" property is a reference to the schema node
+    /// named "Pet".
+    /// See details in
+    /// <https://json-schema.org/understanding-json-schema/structuring>
+    #[prost(string, tag = "27")]
+    pub r#ref: ::prost::alloc::string::String,
+    /// Optional. A map of definitions for use by `ref`
+    /// Only allowed at the root of the schema.
+    #[prost(map = "string, message", tag = "28")]
+    pub defs: ::std::collections::HashMap<::prost::alloc::string::String, Schema>,
 }
 /// Type contains the list of OpenAPI data types as defined by
 /// <https://swagger.io/docs/specification/data-models/data-types/>
@@ -5048,7 +5091,7 @@ pub struct RagFileTransformationConfig {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RagFileParsingConfig {
     /// The parser to use for RagFiles.
-    #[prost(oneof = "rag_file_parsing_config::Parser", tags = "4")]
+    #[prost(oneof = "rag_file_parsing_config::Parser", tags = "4, 5")]
     pub parser: ::core::option::Option<rag_file_parsing_config::Parser>,
 }
 /// Nested message and enum types in `RagFileParsingConfig`.
@@ -5072,12 +5115,35 @@ pub mod rag_file_parsing_config {
         #[prost(int32, tag = "2")]
         pub max_parsing_requests_per_min: i32,
     }
+    /// Specifies the advanced parsing for RagFiles.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct LlmParser {
+        /// The name of a LLM model used for parsing.
+        /// Format:
+        /// * `projects/{project_id}/locations/{location}/publishers/{publisher}/models/{model}`
+        #[prost(string, tag = "1")]
+        pub model_name: ::prost::alloc::string::String,
+        /// The maximum number of requests the job is allowed to make to the
+        /// LLM model per minute. Consult
+        /// <https://cloud.google.com/vertex-ai/generative-ai/docs/quotas>
+        /// and your document size to set an appropriate value here. If unspecified,
+        /// a default value of 5000 QPM would be used.
+        #[prost(int32, tag = "2")]
+        pub max_parsing_requests_per_min: i32,
+        /// The prompt to use for parsing. If not specified, a default prompt will
+        /// be used.
+        #[prost(string, tag = "3")]
+        pub custom_parsing_prompt: ::prost::alloc::string::String,
+    }
     /// The parser to use for RagFiles.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Parser {
         /// The Layout Parser to use for RagFiles.
         #[prost(message, tag = "4")]
         LayoutParser(LayoutParser),
+        /// The LLM Parser to use for RagFiles.
+        #[prost(message, tag = "5")]
+        LlmParser(LlmParser),
     }
 }
 /// Config for uploading RagFile.
@@ -5345,6 +5411,11 @@ pub struct GenerationConfig {
     /// Optional. Routing configuration.
     #[prost(message, optional, tag = "17")]
     pub routing_config: ::core::option::Option<generation_config::RoutingConfig>,
+    /// Optional. Config for thinking features.
+    /// An error will be returned if this field is set for models that don't
+    /// support thinking.
+    #[prost(message, optional, tag = "25")]
+    pub thinking_config: ::core::option::Option<generation_config::ThinkingConfig>,
 }
 /// Nested message and enum types in `GenerationConfig`.
 pub mod generation_config {
@@ -5438,6 +5509,14 @@ pub mod generation_config {
             #[prost(message, tag = "2")]
             ManualMode(ManualRoutingMode),
         }
+    }
+    /// Config for thinking features.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct ThinkingConfig {
+        /// Optional. Indicates the thinking budget in tokens.
+        /// This is only applied when enable_thinking is true.
+        #[prost(int32, optional, tag = "3")]
+        pub thinking_budget: ::core::option::Option<i32>,
     }
 }
 /// Safety settings.
@@ -6024,6 +6103,7 @@ pub enum HarmCategory {
     Harassment = 3,
     /// The harm category is sexually explicit content.
     SexuallyExplicit = 4,
+    /// Deprecated: Election filter is not longer supported.
     /// The harm category is civic integrity.
     CivicIntegrity = 5,
 }
@@ -6113,9 +6193,9 @@ pub struct CachedContent {
     /// cached content.
     #[prost(string, tag = "11")]
     pub display_name: ::prost::alloc::string::String,
-    /// Immutable. The name of the publisher model to use for cached content.
-    /// Format:
-    /// projects/{project}/locations/{location}/publishers/{publisher}/models/{model}
+    /// Immutable. The name of the `Model` to use for cached content. Currently,
+    /// only the published Gemini base models are supported, in form of
+    /// projects/{PROJECT}/locations/{LOCATION}/publishers/google/models/{MODEL}
     #[prost(string, tag = "2")]
     pub model: ::prost::alloc::string::String,
     /// Optional. Input only. Immutable. Developer set system instruction.
@@ -6133,7 +6213,7 @@ pub struct CachedContent {
     /// tools
     #[prost(message, optional, tag = "6")]
     pub tool_config: ::core::option::Option<ToolConfig>,
-    /// Output only. Creatation time of the cache entry.
+    /// Output only. Creation time of the cache entry.
     #[prost(message, optional, tag = "7")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. When the cache entry was last updated in UTC time.
@@ -6142,6 +6222,11 @@ pub struct CachedContent {
     /// Output only. Metadata on the usage of the cached content.
     #[prost(message, optional, tag = "12")]
     pub usage_metadata: ::core::option::Option<cached_content::UsageMetadata>,
+    /// Input only. Immutable. Customer-managed encryption key spec for a
+    /// `CachedContent`. If set, this `CachedContent` and all its sub-resources
+    /// will be secured by this key.
+    #[prost(message, optional, tag = "13")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
     /// Expiration time of the cached content.
     #[prost(oneof = "cached_content::Expiration", tags = "9, 10")]
     pub expiration: ::core::option::Option<cached_content::Expiration>,

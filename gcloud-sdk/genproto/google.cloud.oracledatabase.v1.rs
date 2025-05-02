@@ -3251,6 +3251,30 @@ pub struct RestoreAutonomousDatabaseRequest {
     #[prost(message, optional, tag = "2")]
     pub restore_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// The request for `AutonomousDatabase.Stop`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StopAutonomousDatabaseRequest {
+    /// Required. The name of the Autonomous Database in the following format:
+    /// projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for `AutonomousDatabase.Start`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StartAutonomousDatabaseRequest {
+    /// Required. The name of the Autonomous Database in the following format:
+    /// projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for `AutonomousDatabase.Restart`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RestartAutonomousDatabaseRequest {
+    /// Required. The name of the Autonomous Database in the following format:
+    /// projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
 /// The request for `AutonomousDatabase.GenerateWallet`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateAutonomousDatabaseWalletRequest {
@@ -4130,6 +4154,96 @@ pub mod oracle_database_client {
                     GrpcMethod::new(
                         "google.cloud.oracledatabase.v1.OracleDatabase",
                         "ListAutonomousDatabaseBackups",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Stops an Autonomous Database.
+        pub async fn stop_autonomous_database(
+            &mut self,
+            request: impl tonic::IntoRequest<super::StopAutonomousDatabaseRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/StopAutonomousDatabase",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "StopAutonomousDatabase",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Starts an Autonomous Database.
+        pub async fn start_autonomous_database(
+            &mut self,
+            request: impl tonic::IntoRequest<super::StartAutonomousDatabaseRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/StartAutonomousDatabase",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "StartAutonomousDatabase",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Restarts an Autonomous Database.
+        pub async fn restart_autonomous_database(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RestartAutonomousDatabaseRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.oracledatabase.v1.OracleDatabase/RestartAutonomousDatabase",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.oracledatabase.v1.OracleDatabase",
+                        "RestartAutonomousDatabase",
                     ),
                 );
             self.inner.unary(req, path, codec).await

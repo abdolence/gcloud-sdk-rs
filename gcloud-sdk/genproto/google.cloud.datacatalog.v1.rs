@@ -487,7 +487,7 @@ pub struct GcsFilesetSpec {
     /// Required. Patterns to identify a set of files in Google Cloud Storage.
     ///
     /// For more information, see \[Wildcard Names\]
-    /// (<https://cloud.google.com/storage/docs/gsutil/addlhelp/WildcardNames>).
+    /// (<https://cloud.google.com/storage/docs/wildcards>).
     ///
     /// Note: Currently, bucket wildcards are not supported.
     ///
@@ -1756,7 +1756,7 @@ pub mod lookup_entry_request {
         /// * `datacatalog.entry.{PROJECT_ID}.{LOCATION_ID}.{ENTRY_GROUP_ID}.{ENTRY_ID}`
         ///
         /// Identifiers (`*_ID`) should comply with the
-        /// \[Lexical structure in Standard SQL\]
+        /// \[Lexical structure in GoogleSQL\]
         /// (<https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical>).
         #[prost(string, tag = "3")]
         SqlResource(::prost::alloc::string::String),
@@ -3380,6 +3380,12 @@ pub struct MigrationConfig {
     /// Opt-in status for the UI switch to Dataplex.
     #[prost(enumeration = "CatalogUiExperience", tag = "2")]
     pub catalog_ui_experience: i32,
+    /// The time when the Tag Template migration was enabled.
+    /// If the Tag Template migration is not enabled, this field is not set.
+    #[prost(message, optional, tag = "3")]
+    pub template_migration_enabled_time: ::core::option::Option<
+        ::prost_types::Timestamp,
+    >,
 }
 /// Metadata automatically ingested from Google Cloud resources like BigQuery
 /// tables or Pub/Sub topics always uses enum values from `EntryType` as the type

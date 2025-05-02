@@ -1252,7 +1252,7 @@ impl RaiFilterType {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum DetectionConfidenceLevel {
-    /// Same as LOW_AND_ABOVE.
+    /// Same as MEDIUM_AND_ABOVE.
     Unspecified = 0,
     /// Highest chance of a false positive.
     LowAndAbove = 1,

@@ -1976,23 +1976,43 @@ pub struct DataSharingSettings {
     /// Example: "accounts/1000/dataSharingSettings"
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Allows Google support to access the data in order to help troubleshoot
-    /// issues.
+    /// Allows Google technical support representatives access to your Google
+    /// Analytics data and account when necessary to provide service and find
+    /// solutions to technical issues.
+    ///
+    /// This field maps to the "Technical support" field in the Google Analytics
+    /// Admin UI.
     #[prost(bool, tag = "2")]
     pub sharing_with_google_support_enabled: bool,
-    /// Allows Google sales teams that are assigned to the customer to access the
-    /// data in order to suggest configuration changes to improve results.
-    /// Sales team restrictions still apply when enabled.
+    /// Allows Google access to your Google Analytics account data, including
+    /// account usage and configuration data, product spending, and users
+    /// associated with your Google Analytics account, so that Google can help you
+    /// make the most of Google products, providing you with insights, offers,
+    /// recommendations, and optimization tips across Google Analytics and other
+    /// Google products for business.
+    ///
+    /// This field maps to the "Recommendations for your business" field in the
+    /// Google Analytics Admin UI.
     #[prost(bool, tag = "3")]
     pub sharing_with_google_assigned_sales_enabled: bool,
-    /// Allows any of Google sales to access the data in order to suggest
-    /// configuration changes to improve results.
+    /// Deprecated. This field is no longer used and always returns false.
+    #[deprecated]
     #[prost(bool, tag = "4")]
     pub sharing_with_google_any_sales_enabled: bool,
     /// Allows Google to use the data to improve other Google products or services.
+    ///
+    /// This fields maps to the "Google products & services" field in the Google
+    /// Analytics Admin UI.
     #[prost(bool, tag = "5")]
     pub sharing_with_google_products_enabled: bool,
-    /// Allows Google to share the data anonymously in aggregate form with others.
+    /// Enable features like predictions, modeled data, and benchmarking that can
+    /// provide you with richer business insights when you contribute aggregated
+    /// measurement data. The data you share (including information about the
+    /// property from which it is shared) is aggregated and de-identified before
+    /// being used to generate business insights.
+    ///
+    /// This field maps to the "Modeling contributions & business insights" field
+    /// in the Google Analytics Admin UI.
     #[prost(bool, tag = "6")]
     pub sharing_with_others_enabled: bool,
 }
@@ -2236,7 +2256,7 @@ pub mod change_history_change {
     pub struct ChangeHistoryResource {
         #[prost(
             oneof = "change_history_resource::Resource",
-            tags = "1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 31, 32"
+            tags = "1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32"
         )]
         pub resource: ::core::option::Option<change_history_resource::Resource>,
     }
@@ -2323,12 +2343,15 @@ pub mod change_history_change {
             /// A snapshot of an EventCreateRule resource in change history.
             #[prost(message, tag = "29")]
             EventCreateRule(super::super::EventCreateRule),
+            /// A snapshot of a KeyEvent resource in change history.
+            #[prost(message, tag = "30")]
+            KeyEvent(super::super::KeyEvent),
             /// A snapshot of a CalculatedMetric resource in change history.
             #[prost(message, tag = "31")]
             CalculatedMetric(super::super::CalculatedMetric),
-            /// A snapshot of a KeyEvent resource in change history.
+            /// A snapshot of a ReportingDataAnnotation resource in change history.
             #[prost(message, tag = "32")]
-            KeyEvent(super::super::KeyEvent),
+            ReportingDataAnnotation(super::super::ReportingDataAnnotation),
         }
     }
 }
@@ -3723,6 +3746,127 @@ pub struct RollupPropertySourceLink {
     #[prost(string, tag = "2")]
     pub source_property: ::prost::alloc::string::String,
 }
+/// A Reporting Data Annotation is a comment connected to certain dates for
+/// reporting data.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReportingDataAnnotation {
+    /// Required. Identifier. Resource name of this Reporting Data Annotation.
+    /// Format:
+    /// 'properties/{property_id}/reportingDataAnnotations/{reporting_data_annotation}'
+    /// Format: 'properties/123/reportingDataAnnotations/456'
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Human-readable title for this Reporting Data Annotation.
+    #[prost(string, tag = "2")]
+    pub title: ::prost::alloc::string::String,
+    /// Optional. Description for this Reporting Data Annotation.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// Required. The color used for display of this Reporting Data Annotation.
+    #[prost(enumeration = "reporting_data_annotation::Color", tag = "6")]
+    pub color: i32,
+    /// Output only. If true, this annotation was generated by the Google Analytics
+    /// system. System-generated annotations cannot be updated or deleted.
+    #[prost(bool, tag = "7")]
+    pub system_generated: bool,
+    /// Target for this Reporting Data Annotation
+    #[prost(oneof = "reporting_data_annotation::Target", tags = "4, 5")]
+    pub target: ::core::option::Option<reporting_data_annotation::Target>,
+}
+/// Nested message and enum types in `ReportingDataAnnotation`.
+pub mod reporting_data_annotation {
+    /// Represents a Reporting Data Annotation's date range, both start and end
+    /// dates are inclusive. Time zones are based on the parent property.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct DateRange {
+        /// Required. The start date for this range. Must be a valid date with
+        /// year, month, and day set. The date may be in the past, present, or
+        /// future.
+        #[prost(message, optional, tag = "1")]
+        pub start_date: ::core::option::Option<super::super::super::super::r#type::Date>,
+        /// Required. The end date for this range. Must be a valid date with
+        /// year, month, and day set. This date must be greater than or equal to
+        /// the start date.
+        #[prost(message, optional, tag = "2")]
+        pub end_date: ::core::option::Option<super::super::super::super::r#type::Date>,
+    }
+    /// Colors that may be used for this Reporting Data Annotation
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Color {
+        /// Color unknown or not specified.
+        Unspecified = 0,
+        /// Purple color.
+        Purple = 1,
+        /// Brown color.
+        Brown = 2,
+        /// Blue color.
+        Blue = 3,
+        /// Green color.
+        Green = 4,
+        /// Red color.
+        Red = 5,
+        /// Cyan color.
+        Cyan = 6,
+        /// Orange color. (Only used for system-generated annotations)
+        Orange = 7,
+    }
+    impl Color {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "COLOR_UNSPECIFIED",
+                Self::Purple => "PURPLE",
+                Self::Brown => "BROWN",
+                Self::Blue => "BLUE",
+                Self::Green => "GREEN",
+                Self::Red => "RED",
+                Self::Cyan => "CYAN",
+                Self::Orange => "ORANGE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COLOR_UNSPECIFIED" => Some(Self::Unspecified),
+                "PURPLE" => Some(Self::Purple),
+                "BROWN" => Some(Self::Brown),
+                "BLUE" => Some(Self::Blue),
+                "GREEN" => Some(Self::Green),
+                "RED" => Some(Self::Red),
+                "CYAN" => Some(Self::Cyan),
+                "ORANGE" => Some(Self::Orange),
+                _ => None,
+            }
+        }
+    }
+    /// Target for this Reporting Data Annotation
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    pub enum Target {
+        /// If set, the Reporting Data Annotation is for a specific date represented
+        /// by this field. The date must be a valid date with year, month and day
+        /// set. The date may be in the past, present, or future.
+        #[prost(message, tag = "4")]
+        AnnotationDate(super::super::super::super::r#type::Date),
+        /// If set, the Reporting Data Annotation is for a range of dates represented
+        /// by this field.
+        #[prost(message, tag = "5")]
+        AnnotationDateRange(DateRange),
+    }
+}
 /// The category selected for this property, used for industry benchmarking.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -4014,10 +4158,12 @@ pub enum ChangeHistoryResourceType {
     Audience = 28,
     /// EventCreateRule resource
     EventCreateRule = 29,
+    /// KeyEvent resource
+    KeyEvent = 30,
     /// CalculatedMetric resource
     CalculatedMetric = 31,
-    /// KeyEvent resource
-    KeyEvent = 32,
+    /// ReportingDataAnnotation resource
+    ReportingDataAnnotation = 32,
 }
 impl ChangeHistoryResourceType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -4055,8 +4201,9 @@ impl ChangeHistoryResourceType {
             Self::AdsenseLink => "ADSENSE_LINK",
             Self::Audience => "AUDIENCE",
             Self::EventCreateRule => "EVENT_CREATE_RULE",
-            Self::CalculatedMetric => "CALCULATED_METRIC",
             Self::KeyEvent => "KEY_EVENT",
+            Self::CalculatedMetric => "CALCULATED_METRIC",
+            Self::ReportingDataAnnotation => "REPORTING_DATA_ANNOTATION",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4093,8 +4240,9 @@ impl ChangeHistoryResourceType {
             "ADSENSE_LINK" => Some(Self::AdsenseLink),
             "AUDIENCE" => Some(Self::Audience),
             "EVENT_CREATE_RULE" => Some(Self::EventCreateRule),
-            "CALCULATED_METRIC" => Some(Self::CalculatedMetric),
             "KEY_EVENT" => Some(Self::KeyEvent),
+            "CALCULATED_METRIC" => Some(Self::CalculatedMetric),
+            "REPORTING_DATA_ANNOTATION" => Some(Self::ReportingDataAnnotation),
             _ => None,
         }
     }
@@ -6991,6 +7139,172 @@ pub struct DeleteSubpropertyEventFilterRequest {
     /// Example: properties/123/subpropertyEventFilters/456
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+}
+/// Request message for CreateReportingDataAnnotation RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateReportingDataAnnotationRequest {
+    /// Required. The property for which to create a Reporting Data Annotation.
+    /// Format: properties/property_id
+    /// Example: properties/123
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The Reporting Data Annotation to create.
+    #[prost(message, optional, tag = "2")]
+    pub reporting_data_annotation: ::core::option::Option<ReportingDataAnnotation>,
+}
+/// Request message for GetReportingDataAnnotation RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetReportingDataAnnotationRequest {
+    /// Required. Resource name of the Reporting Data Annotation to lookup.
+    /// Format:
+    /// properties/property_id/reportingDataAnnotations/reportingDataAnnotation
+    /// Example: properties/123/reportingDataAnnotations/456
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for ListReportingDataAnnotation RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListReportingDataAnnotationsRequest {
+    /// Required. Resource name of the property.
+    /// Format: properties/property_id
+    /// Example: properties/123
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Filter that restricts which reporting data annotations under the
+    /// parent property are listed.
+    ///
+    /// Supported fields are:
+    ///
+    ///    * 'name'
+    ///    * `title`
+    ///    * `description`
+    ///    * `annotation_date`
+    ///    * `annotation_date_range`
+    ///    * `color`
+    ///
+    /// Additionally, this API provides the following helper functions:
+    ///
+    ///    * annotation_duration() : the duration that this annotation marks,
+    ///    [durations](<https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/duration.proto>).
+    ///    expect a numeric representation of seconds followed by an `s` suffix.
+    ///    * is_annotation_in_range(start_date, end_date)  : if the annotation is in
+    ///    the range specified by the `start_date` and `end_date`. The dates are in
+    ///    ISO-8601 format, for example `2031-06-28`.
+    ///
+    /// Supported operations:
+    ///
+    /// * `=` : equals
+    /// * `!=` : not equals
+    /// * `<` : less than
+    /// * `>` : greater than
+    /// * `<=` :  less than or equals
+    /// * `>=` : greater than or equals
+    /// * `:` : has operator
+    /// * `=~` : [regular expression](<https://github.com/google/re2/wiki/Syntax>)
+    /// match
+    /// * `!~` : [regular expression](<https://github.com/google/re2/wiki/Syntax>)
+    /// does not match
+    /// * `NOT` : Logical not
+    /// * `AND` : Logical and
+    /// * `OR` : Logical or
+    ///
+    /// Examples:
+    ///
+    ///    1. `title="Holiday Sale"`
+    ///    2. `description=~"\[Bb\]ig \[Gg\]ame.*\[Ss\]ale"`
+    ///    3. `is_annotation_in_range("2025-12-25", "2026-01-16") = true`
+    ///    4. `annotation_duration() >= 172800s AND title:BOGO`
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. The maximum number of resources to return. The service may return
+    /// fewer than this value, even if there are additional pages. If unspecified,
+    /// at most 50 resources will be returned. The maximum value is 200; (higher
+    /// values will be coerced to the maximum)
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous
+    /// `ListReportingDataAnnotations` call. Provide this to retrieve the
+    /// subsequent page. When paginating, all other parameters provided to
+    /// `ListReportingDataAnnotations` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListReportingDataAnnotation RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListReportingDataAnnotationsResponse {
+    /// List of Reporting Data Annotations.
+    #[prost(message, repeated, tag = "1")]
+    pub reporting_data_annotations: ::prost::alloc::vec::Vec<ReportingDataAnnotation>,
+    /// A token, which can be sent as `page_token` to retrieve the next page. If
+    /// this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for UpdateReportingDataAnnotation RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateReportingDataAnnotationRequest {
+    /// Required. The Reporting Data Annotation to update.
+    #[prost(message, optional, tag = "1")]
+    pub reporting_data_annotation: ::core::option::Option<ReportingDataAnnotation>,
+    /// Optional. The list of fields to update. Field names must be in snake case
+    /// (for example, "field_to_update"). Omitted fields will not be updated. To
+    /// replace the entire entity, use one path with the string "*" to match all
+    /// fields.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for DeleteReportingDataAnnotation RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteReportingDataAnnotationRequest {
+    /// Required. Resource name of the Reporting Data Annotation to delete.
+    /// Format:
+    /// properties/property_id/reportingDataAnnotations/reporting_data_annotation
+    /// Example: properties/123/reportingDataAnnotations/456
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for SubmitUserDeletion RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SubmitUserDeletionRequest {
+    /// Required. The name of the property to submit user deletion for.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The user to submit a deletion request for
+    #[prost(oneof = "submit_user_deletion_request::User", tags = "2, 3, 4, 5")]
+    pub user: ::core::option::Option<submit_user_deletion_request::User>,
+}
+/// Nested message and enum types in `SubmitUserDeletionRequest`.
+pub mod submit_user_deletion_request {
+    /// The user to submit a deletion request for
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum User {
+        /// Google Analytics [user
+        /// ID](<https://firebase.google.com/docs/analytics/userid>).
+        #[prost(string, tag = "2")]
+        UserId(::prost::alloc::string::String),
+        /// Google Analytics [client
+        /// ID](<https://support.google.com/analytics/answer/11593727>).
+        #[prost(string, tag = "3")]
+        ClientId(::prost::alloc::string::String),
+        /// Firebase [application instance
+        /// ID](<https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.html#getAppInstanceId>).
+        #[prost(string, tag = "4")]
+        AppInstanceId(::prost::alloc::string::String),
+        /// The un-hashed, unencrypted, [user-provided
+        /// data](<https://support.google.com/analytics/answer/14077171>).
+        #[prost(string, tag = "5")]
+        UserProvidedData(::prost::alloc::string::String),
+    }
+}
+/// Response message for SubmitUserDeletion RPC.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct SubmitUserDeletionResponse {
+    /// Marks the moment for which all visitor data before this point should be
+    /// deleted. This is set to the time at which the deletion request was
+    /// received.
+    #[prost(message, optional, tag = "1")]
+    pub deletion_request_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Generated client implementations.
 pub mod analytics_admin_service_client {
@@ -11562,6 +11876,183 @@ pub mod analytics_admin_service_client {
                     GrpcMethod::new(
                         "google.analytics.admin.v1alpha.AnalyticsAdminService",
                         "DeleteSubpropertyEventFilter",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a Reporting Data Annotation.
+        pub async fn create_reporting_data_annotation(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateReportingDataAnnotationRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ReportingDataAnnotation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateReportingDataAnnotation",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "CreateReportingDataAnnotation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lookup a single Reporting Data Annotation.
+        pub async fn get_reporting_data_annotation(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetReportingDataAnnotationRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ReportingDataAnnotation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetReportingDataAnnotation",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "GetReportingDataAnnotation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// List all Reporting Data Annotations on a property.
+        pub async fn list_reporting_data_annotations(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListReportingDataAnnotationsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListReportingDataAnnotationsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListReportingDataAnnotations",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "ListReportingDataAnnotations",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a Reporting Data Annotation.
+        pub async fn update_reporting_data_annotation(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateReportingDataAnnotationRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ReportingDataAnnotation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateReportingDataAnnotation",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "UpdateReportingDataAnnotation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a Reporting Data Annotation.
+        pub async fn delete_reporting_data_annotation(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteReportingDataAnnotationRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteReportingDataAnnotation",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "DeleteReportingDataAnnotation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Submits a request for user deletion for a property.
+        pub async fn submit_user_deletion(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SubmitUserDeletionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SubmitUserDeletionResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/SubmitUserDeletion",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "SubmitUserDeletion",
                     ),
                 );
             self.inner.unary(req, path, codec).await
