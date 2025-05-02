@@ -55,7 +55,7 @@ pub struct Step {
     /// final state the configuration is cleared.
     #[prost(
         oneof = "step::StepInfo",
-        tags = "5, 6, 7, 8, 24, 9, 10, 11, 21, 12, 13, 14, 15, 16, 17, 18, 19, 30, 31, 20, 22, 23, 25, 26, 27, 28, 29"
+        tags = "5, 6, 7, 8, 24, 9, 10, 11, 21, 33, 34, 12, 13, 14, 15, 16, 17, 18, 19, 30, 31, 20, 22, 23, 25, 26, 27, 28, 29"
     )]
     pub step_info: ::core::option::Option<step::StepInfo>,
 }
@@ -140,8 +140,12 @@ pub mod step {
         /// Forwarding state: arriving at a Compute Engine instance.
         ArriveAtInstance = 9,
         /// Forwarding state: arriving at a Compute Engine internal load balancer.
+        /// Deprecated in favor of the `ANALYZE_LOAD_BALANCER_BACKEND` state, not
+        /// used in new tests.
         ArriveAtInternalLoadBalancer = 10,
         /// Forwarding state: arriving at a Compute Engine external load balancer.
+        /// Deprecated in favor of the `ANALYZE_LOAD_BALANCER_BACKEND` state, not
+        /// used in new tests.
         ArriveAtExternalLoadBalancer = 11,
         /// Forwarding state: arriving at a Cloud VPN gateway.
         ArriveAtVpnGateway = 12,
@@ -149,6 +153,12 @@ pub mod step {
         ArriveAtVpnTunnel = 13,
         /// Forwarding state: arriving at a VPC connector.
         ArriveAtVpcConnector = 24,
+        /// Forwarding state: for packets originating from a serverless endpoint
+        /// forwarded through Direct VPC egress.
+        DirectVpcEgressConnection = 35,
+        /// Forwarding state: for packets originating from a serverless endpoint
+        /// forwarded through public (external) connectivity.
+        ServerlessExternalConnection = 36,
         /// Transition state: packet header translated.
         Nat = 14,
         /// Transition state: original connection is terminated and a new proxied
@@ -201,6 +211,8 @@ pub mod step {
                 Self::ArriveAtVpnGateway => "ARRIVE_AT_VPN_GATEWAY",
                 Self::ArriveAtVpnTunnel => "ARRIVE_AT_VPN_TUNNEL",
                 Self::ArriveAtVpcConnector => "ARRIVE_AT_VPC_CONNECTOR",
+                Self::DirectVpcEgressConnection => "DIRECT_VPC_EGRESS_CONNECTION",
+                Self::ServerlessExternalConnection => "SERVERLESS_EXTERNAL_CONNECTION",
                 Self::Nat => "NAT",
                 Self::ProxyConnection => "PROXY_CONNECTION",
                 Self::Deliver => "DELIVER",
@@ -246,6 +258,10 @@ pub mod step {
                 "ARRIVE_AT_VPN_GATEWAY" => Some(Self::ArriveAtVpnGateway),
                 "ARRIVE_AT_VPN_TUNNEL" => Some(Self::ArriveAtVpnTunnel),
                 "ARRIVE_AT_VPC_CONNECTOR" => Some(Self::ArriveAtVpcConnector),
+                "DIRECT_VPC_EGRESS_CONNECTION" => Some(Self::DirectVpcEgressConnection),
+                "SERVERLESS_EXTERNAL_CONNECTION" => {
+                    Some(Self::ServerlessExternalConnection)
+                }
                 "NAT" => Some(Self::Nat),
                 "PROXY_CONNECTION" => Some(Self::ProxyConnection),
                 "DELIVER" => Some(Self::Deliver),
@@ -294,6 +310,12 @@ pub mod step {
         /// Display information of a VPC connector.
         #[prost(message, tag = "21")]
         VpcConnector(super::VpcConnectorInfo),
+        /// Display information of a serverless direct VPC egress connection.
+        #[prost(message, tag = "33")]
+        DirectVpcEgressConnection(super::DirectVpcEgressConnectionInfo),
+        /// Display information of a serverless public (external) connection.
+        #[prost(message, tag = "34")]
+        ServerlessExternalConnection(super::ServerlessExternalConnectionInfo),
         /// Display information of the final state "deliver" and reason.
         #[prost(message, tag = "12")]
         Deliver(super::DeliverInfo),
@@ -505,6 +527,9 @@ pub mod firewall_info {
         /// For details, see [firewall rules
         /// specifications](<https://cloud.google.com/firewall/docs/firewalls#specifications>)
         TrackingState = 101,
+        /// Firewall analysis was skipped due to executing Connectivity Test in the
+        /// BypassFirewallChecks mode
+        AnalysisSkipped = 102,
     }
     impl FirewallRuleType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -528,6 +553,7 @@ pub mod firewall_info {
                 }
                 Self::UnsupportedFirewallPolicyRule => "UNSUPPORTED_FIREWALL_POLICY_RULE",
                 Self::TrackingState => "TRACKING_STATE",
+                Self::AnalysisSkipped => "ANALYSIS_SKIPPED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -550,6 +576,7 @@ pub mod firewall_info {
                     Some(Self::UnsupportedFirewallPolicyRule)
                 }
                 "TRACKING_STATE" => Some(Self::TrackingState),
+                "ANALYSIS_SKIPPED" => Some(Self::AnalysisSkipped),
                 _ => None,
             }
         }
@@ -564,25 +591,33 @@ pub struct RouteInfo {
     /// Type of next hop.
     #[prost(enumeration = "route_info::NextHopType", tag = "9")]
     pub next_hop_type: i32,
-    /// Indicates where route is applicable.
+    /// Indicates where route is applicable. Deprecated, routes with NCC_HUB scope
+    /// are not included in the trace in new tests.
+    #[deprecated]
     #[prost(enumeration = "route_info::RouteScope", tag = "14")]
     pub route_scope: i32,
     /// Name of a route.
     #[prost(string, tag = "1")]
     pub display_name: ::prost::alloc::string::String,
-    /// URI of a route (if applicable).
+    /// URI of a route. SUBNET, STATIC, PEERING_SUBNET (only for peering network)
+    /// and POLICY_BASED routes only.
     #[prost(string, tag = "2")]
     pub uri: ::prost::alloc::string::String,
-    /// Region of the route (if applicable).
+    /// Region of the route. DYNAMIC, PEERING_DYNAMIC, POLICY_BASED and ADVERTISED
+    /// routes only. If set for POLICY_BASED route, this is a region of VLAN
+    /// attachments for Cloud Interconnect the route applies to.
     #[prost(string, tag = "19")]
     pub region: ::prost::alloc::string::String,
     /// Destination IP range of the route.
     #[prost(string, tag = "3")]
     pub dest_ip_range: ::prost::alloc::string::String,
-    /// Next hop of the route.
+    /// String type of the next hop of the route (for example, "VPN tunnel").
+    /// Deprecated in favor of the next_hop_type and next_hop_uri fields, not used
+    /// in new tests.
+    #[deprecated]
     #[prost(string, tag = "4")]
     pub next_hop: ::prost::alloc::string::String,
-    /// URI of a Compute Engine network. NETWORK routes only.
+    /// URI of a VPC network where route is located.
     #[prost(string, tag = "5")]
     pub network_uri: ::prost::alloc::string::String,
     /// Priority of the route.
@@ -591,38 +626,60 @@ pub struct RouteInfo {
     /// Instance tags of the route.
     #[prost(string, repeated, tag = "7")]
     pub instance_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Source IP address range of the route. Policy based routes only.
+    /// Source IP address range of the route. POLICY_BASED routes only.
     #[prost(string, tag = "10")]
     pub src_ip_range: ::prost::alloc::string::String,
-    /// Destination port ranges of the route. Policy based routes only.
+    /// Destination port ranges of the route. POLICY_BASED routes only.
     #[prost(string, repeated, tag = "11")]
     pub dest_port_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Source port ranges of the route. Policy based routes only.
+    /// Source port ranges of the route. POLICY_BASED routes only.
     #[prost(string, repeated, tag = "12")]
     pub src_port_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Protocols of the route. Policy based routes only.
+    /// Protocols of the route. POLICY_BASED routes only.
     #[prost(string, repeated, tag = "13")]
     pub protocols: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// URI of a NCC Hub. NCC_HUB routes only.
+    /// URI of the NCC Hub the route is advertised by. PEERING_SUBNET and
+    /// PEERING_DYNAMIC routes that are advertised by NCC Hub only.
     #[prost(string, optional, tag = "15")]
     pub ncc_hub_uri: ::core::option::Option<::prost::alloc::string::String>,
-    /// URI of a NCC Spoke. NCC_HUB routes only.
+    /// URI of the destination NCC Spoke. PEERING_SUBNET and PEERING_DYNAMIC routes
+    /// that are advertised by NCC Hub only.
     #[prost(string, optional, tag = "16")]
     pub ncc_spoke_uri: ::core::option::Option<::prost::alloc::string::String>,
-    /// For advertised dynamic routes, the URI of the Cloud Router that advertised
+    /// For ADVERTISED dynamic routes, the URI of the Cloud Router that advertised
     /// the corresponding IP prefix.
     #[prost(string, optional, tag = "17")]
     pub advertised_route_source_router_uri: ::core::option::Option<
         ::prost::alloc::string::String,
     >,
-    /// For advertised routes, the URI of their next hop, i.e. the URI of the
+    /// For ADVERTISED routes, the URI of their next hop, i.e. the URI of the
     /// hybrid endpoint (VPN tunnel, Interconnect attachment, NCC router appliance)
     /// the advertised prefix is advertised through, or URI of the source peered
-    /// network.
+    /// network. Deprecated in favor of the next_hop_uri field, not used in new
+    /// tests.
+    #[deprecated]
     #[prost(string, optional, tag = "18")]
     pub advertised_route_next_hop_uri: ::core::option::Option<
         ::prost::alloc::string::String,
     >,
+    /// URI of the next hop resource.
+    #[prost(string, tag = "20")]
+    pub next_hop_uri: ::prost::alloc::string::String,
+    /// URI of a VPC network where the next hop resource is located.
+    #[prost(string, tag = "21")]
+    pub next_hop_network_uri: ::prost::alloc::string::String,
+    /// For PEERING_SUBNET and PEERING_STATIC routes, the URI of the originating
+    /// SUBNET/STATIC route.
+    #[prost(string, tag = "22")]
+    pub originating_route_uri: ::prost::alloc::string::String,
+    /// For PEERING_SUBNET, PEERING_STATIC and PEERING_DYNAMIC routes, the name of
+    /// the originating SUBNET/STATIC/DYNAMIC route.
+    #[prost(string, tag = "23")]
+    pub originating_route_display_name: ::prost::alloc::string::String,
+    /// For PEERING_SUBNET and PEERING_DYNAMIC routes that are advertised by NCC
+    /// Hub, the URI of the corresponding route in NCC Hub's routing table.
+    #[prost(string, tag = "24")]
+    pub ncc_hub_route_uri: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `RouteInfo`.
 pub mod route_info {
@@ -649,11 +706,11 @@ pub mod route_info {
         Static = 2,
         /// Dynamic route exchanged between BGP peers.
         Dynamic = 3,
-        /// A subnet route received from peering network.
+        /// A subnet route received from peering network or NCC Hub.
         PeeringSubnet = 4,
         /// A static route received from peering network.
         PeeringStatic = 5,
-        /// A dynamic route received from peering network.
+        /// A dynamic route received from peering network or NCC Hub.
         PeeringDynamic = 6,
         /// Policy based route.
         PolicyBased = 7,
@@ -717,7 +774,9 @@ pub mod route_info {
         NextHopInstance = 2,
         /// Next hop is a VPC network gateway.
         NextHopNetwork = 3,
-        /// Next hop is a peering VPC.
+        /// Next hop is a peering VPC. This scenario only happens when the user
+        /// doesn't have permissions to the project where the next hop resource is
+        /// located.
         NextHopPeering = 4,
         /// Next hop is an interconnect.
         NextHopInterconnect = 5,
@@ -731,7 +790,7 @@ pub mod route_info {
         /// Next hop is an internet gateway.
         NextHopInternetGateway = 8,
         /// Next hop is blackhole; that is, the next hop either does not exist or is
-        /// not running.
+        /// unusable.
         NextHopBlackhole = 9,
         /// Next hop is the forwarding rule of an Internal Load Balancer.
         NextHopIlb = 10,
@@ -739,7 +798,8 @@ pub mod route_info {
         /// [router appliance
         /// instance](<https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/ra-overview>).
         NextHopRouterAppliance = 11,
-        /// Next hop is an NCC hub.
+        /// Next hop is an NCC hub. This scenario only happens when the user doesn't
+        /// have permissions to the project where the next hop resource is located.
         NextHopNccHub = 12,
     }
     impl NextHopType {
@@ -881,6 +941,9 @@ pub mod google_service_info {
         /// Google API via VPC Service Controls.
         /// <https://cloud.google.com/vpc/docs/configure-private-service-connect-apis>
         GoogleApiVpcSc = 6,
+        /// Google API via Serverless VPC Access.
+        /// <https://cloud.google.com/vpc/docs/serverless-vpc-access>
+        ServerlessVpcAccess = 7,
     }
     impl GoogleServiceType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -896,6 +959,7 @@ pub mod google_service_info {
                 Self::GoogleApi => "GOOGLE_API",
                 Self::GoogleApiPsc => "GOOGLE_API_PSC",
                 Self::GoogleApiVpcSc => "GOOGLE_API_VPC_SC",
+                Self::ServerlessVpcAccess => "SERVERLESS_VPC_ACCESS",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -910,6 +974,7 @@ pub mod google_service_info {
                 "GOOGLE_API" => Some(Self::GoogleApi),
                 "GOOGLE_API_PSC" => Some(Self::GoogleApiPsc),
                 "GOOGLE_API_VPC_SC" => Some(Self::GoogleApiVpcSc),
+                "SERVERLESS_VPC_ACCESS" => Some(Self::ServerlessVpcAccess),
                 _ => None,
             }
         }
@@ -1648,6 +1713,9 @@ pub mod abort_info {
         /// Aborted due to an unsupported configuration of the Google-managed
         /// project.
         UnsupportedGoogleManagedProjectConfig = 31,
+        /// Aborted because the source endpoint is a Cloud Run revision with direct
+        /// VPC access enabled, but there are no reserved serverless IP ranges.
+        NoServerlessIpRanges = 37,
     }
     impl Cause {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1714,6 +1782,7 @@ pub mod abort_info {
                 Self::UnsupportedGoogleManagedProjectConfig => {
                     "UNSUPPORTED_GOOGLE_MANAGED_PROJECT_CONFIG"
                 }
+                Self::NoServerlessIpRanges => "NO_SERVERLESS_IP_RANGES",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1785,6 +1854,7 @@ pub mod abort_info {
                 "UNSUPPORTED_GOOGLE_MANAGED_PROJECT_CONFIG" => {
                     Some(Self::UnsupportedGoogleManagedProjectConfig)
                 }
+                "NO_SERVERLESS_IP_RANGES" => Some(Self::NoServerlessIpRanges),
                 _ => None,
             }
         }
@@ -1894,6 +1964,10 @@ pub mod drop_info {
         /// For more details, see [Health check firewall
         /// rules](<https://cloud.google.com/load-balancing/docs/health-checks#firewall_rules>).
         FirewallBlockingLoadBalancerBackendHealthCheck = 13,
+        /// Matching ingress firewall rules by network tags for packets sent via
+        /// serverless VPC direct egress is unsupported. Behavior is undefined.
+        /// <https://cloud.google.com/run/docs/configuring/vpc-direct-vpc#limitations>
+        IngressFirewallTagsUnsupportedByDirectVpcEgress = 85,
         /// Packet is sent from or to a Compute Engine instance that is not in a
         /// running state.
         InstanceNotRunning = 14,
@@ -2073,6 +2147,15 @@ pub mod drop_info {
         /// Sending packets processed by the Private NAT Gateways to the Private
         /// Service Connect endpoints is not supported.
         PrivateNatToPscEndpointUnsupported = 83,
+        /// Packet is sent to the PSC port mapping service, but its destination port
+        /// does not match any port mapping rules.
+        PscPortMappingPortMismatch = 86,
+        /// Sending packets directly to the PSC port mapping service without going
+        /// through the PSC connection is not supported.
+        PscPortMappingWithoutPscConnectionUnsupported = 87,
+        /// Packet with destination IP address within the reserved NAT64 range is
+        /// dropped due to matching a route of an unsupported type.
+        UnsupportedRouteMatchedForNat64Destination = 88,
     }
     impl Cause {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2127,6 +2210,9 @@ pub mod drop_info {
                 Self::ForwardingRuleNoInstances => "FORWARDING_RULE_NO_INSTANCES",
                 Self::FirewallBlockingLoadBalancerBackendHealthCheck => {
                     "FIREWALL_BLOCKING_LOAD_BALANCER_BACKEND_HEALTH_CHECK"
+                }
+                Self::IngressFirewallTagsUnsupportedByDirectVpcEgress => {
+                    "INGRESS_FIREWALL_TAGS_UNSUPPORTED_BY_DIRECT_VPC_EGRESS"
                 }
                 Self::InstanceNotRunning => "INSTANCE_NOT_RUNNING",
                 Self::GkeClusterNotRunning => "GKE_CLUSTER_NOT_RUNNING",
@@ -2247,6 +2333,13 @@ pub mod drop_info {
                 Self::PrivateNatToPscEndpointUnsupported => {
                     "PRIVATE_NAT_TO_PSC_ENDPOINT_UNSUPPORTED"
                 }
+                Self::PscPortMappingPortMismatch => "PSC_PORT_MAPPING_PORT_MISMATCH",
+                Self::PscPortMappingWithoutPscConnectionUnsupported => {
+                    "PSC_PORT_MAPPING_WITHOUT_PSC_CONNECTION_UNSUPPORTED"
+                }
+                Self::UnsupportedRouteMatchedForNat64Destination => {
+                    "UNSUPPORTED_ROUTE_MATCHED_FOR_NAT64_DESTINATION"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2302,6 +2395,9 @@ pub mod drop_info {
                 "FORWARDING_RULE_NO_INSTANCES" => Some(Self::ForwardingRuleNoInstances),
                 "FIREWALL_BLOCKING_LOAD_BALANCER_BACKEND_HEALTH_CHECK" => {
                     Some(Self::FirewallBlockingLoadBalancerBackendHealthCheck)
+                }
+                "INGRESS_FIREWALL_TAGS_UNSUPPORTED_BY_DIRECT_VPC_EGRESS" => {
+                    Some(Self::IngressFirewallTagsUnsupportedByDirectVpcEgress)
                 }
                 "INSTANCE_NOT_RUNNING" => Some(Self::InstanceNotRunning),
                 "GKE_CLUSTER_NOT_RUNNING" => Some(Self::GkeClusterNotRunning),
@@ -2440,6 +2536,15 @@ pub mod drop_info {
                 "PRIVATE_NAT_TO_PSC_ENDPOINT_UNSUPPORTED" => {
                     Some(Self::PrivateNatToPscEndpointUnsupported)
                 }
+                "PSC_PORT_MAPPING_PORT_MISMATCH" => {
+                    Some(Self::PscPortMappingPortMismatch)
+                }
+                "PSC_PORT_MAPPING_WITHOUT_PSC_CONNECTION_UNSUPPORTED" => {
+                    Some(Self::PscPortMappingWithoutPscConnectionUnsupported)
+                }
+                "UNSUPPORTED_ROUTE_MATCHED_FOR_NAT64_DESTINATION" => {
+                    Some(Self::UnsupportedRouteMatchedForNat64Destination)
+                }
                 _ => None,
             }
         }
@@ -2520,7 +2625,7 @@ pub struct RedisClusterInfo {
     /// "projects/{project_id}/locations/{location}/clusters/{cluster_id}"
     #[prost(string, tag = "2")]
     pub uri: ::prost::alloc::string::String,
-    /// URI of a Redis Cluster network in format
+    /// URI of the network containing the Redis Cluster endpoints in format
     /// "projects/{project_id}/global/networks/{network_id}".
     #[prost(string, tag = "3")]
     pub network_uri: ::prost::alloc::string::String,
@@ -2595,6 +2700,33 @@ pub struct VpcConnectorInfo {
     /// Location in which the VPC connector is deployed.
     #[prost(string, tag = "3")]
     pub location: ::prost::alloc::string::String,
+}
+/// For display only. Metadata associated with a serverless direct VPC egress
+/// connection.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DirectVpcEgressConnectionInfo {
+    /// URI of direct access network.
+    #[prost(string, tag = "1")]
+    pub network_uri: ::prost::alloc::string::String,
+    /// URI of direct access subnetwork.
+    #[prost(string, tag = "2")]
+    pub subnetwork_uri: ::prost::alloc::string::String,
+    /// Selected IP range.
+    #[prost(string, tag = "3")]
+    pub selected_ip_range: ::prost::alloc::string::String,
+    /// Selected starting IP address, from the selected IP range.
+    #[prost(string, tag = "4")]
+    pub selected_ip_address: ::prost::alloc::string::String,
+    /// Region in which the Direct VPC egress is deployed.
+    #[prost(string, tag = "5")]
+    pub region: ::prost::alloc::string::String,
+}
+/// For display only. Metadata associated with a serverless public connection.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ServerlessExternalConnectionInfo {
+    /// Selected starting IP address, from the Google dynamic address pool.
+    #[prost(string, tag = "1")]
+    pub selected_ip_address: ::prost::alloc::string::String,
 }
 /// For display only. Metadata associated with NAT.
 #[derive(Clone, PartialEq, ::prost::Message)]

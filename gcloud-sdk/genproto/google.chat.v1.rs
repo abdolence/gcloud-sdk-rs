@@ -271,12 +271,58 @@ pub mod emoji {
         CustomEmoji(super::CustomEmoji),
     }
 }
-/// Represents a custom emoji.
+/// Represents a [custom emoji](<https://support.google.com/chat/answer/12800149>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomEmoji {
+    /// Identifier. The resource name of the custom emoji, assigned by the server.
+    ///
+    /// Format: `customEmojis/{customEmoji}`
+    #[prost(string, tag = "2")]
+    pub name: ::prost::alloc::string::String,
     /// Output only. Unique key for the custom emoji resource.
     #[prost(string, tag = "1")]
     pub uid: ::prost::alloc::string::String,
+    /// Optional. Immutable. User-provided name for the custom emoji, which is
+    /// unique within the organization.
+    ///
+    /// Required when the custom emoji is created, output only otherwise.
+    ///
+    /// Emoji names must start and end with colons, must be lowercase and can only
+    /// contain alphanumeric characters, hyphens, and underscores.
+    /// Hyphens and underscores should be used to separate words and cannot be used
+    /// consecutively.
+    ///
+    /// Example: `:valid-emoji-name:`
+    #[prost(string, tag = "3")]
+    pub emoji_name: ::prost::alloc::string::String,
+    /// Output only. A temporary image URL for the custom emoji, valid for at least
+    /// 10 minutes. Note that this is not populated in the response when the custom
+    /// emoji is created.
+    #[prost(string, tag = "4")]
+    pub temporary_image_uri: ::prost::alloc::string::String,
+    /// Optional. Input only. Payload data.
+    /// Required when the custom emoji is created.
+    #[prost(message, optional, tag = "5")]
+    pub payload: ::core::option::Option<custom_emoji::CustomEmojiPayload>,
+}
+/// Nested message and enum types in `CustomEmoji`.
+pub mod custom_emoji {
+    /// Payload data for the custom emoji.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CustomEmojiPayload {
+        /// Required. Input only. The image used for the custom emoji.
+        ///
+        /// The payload must be under 256 KB and the dimension of
+        /// the image must be square and between 64 and 500 pixels. The
+        /// restrictions are subject to change.
+        #[prost(bytes = "vec", tag = "1")]
+        pub file_content: ::prost::alloc::vec::Vec<u8>,
+        /// Required. Input only. The image file name.
+        ///
+        /// Supported file extensions: `.png`, `.jpg`, `.gif`.
+        #[prost(string, tag = "2")]
+        pub filename: ::prost::alloc::string::String,
+    }
 }
 /// The number of people who reacted to a message with a specific emoji.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -364,8 +410,7 @@ pub struct ListReactionsRequest {
     /// AND user.name = "users/{user}"
     /// ```
     ///
-    /// Invalid queries are rejected by the server with an `INVALID_ARGUMENT`
-    /// error.
+    /// Invalid queries are rejected with an `INVALID_ARGUMENT` error.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }
@@ -386,6 +431,85 @@ pub struct DeleteReactionRequest {
     /// Required. Name of the reaction to delete.
     ///
     /// Format: `spaces/{space}/messages/{message}/reactions/{reaction}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// A request to create a custom emoji.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateCustomEmojiRequest {
+    /// Required. The custom emoji to create.
+    #[prost(message, optional, tag = "1")]
+    pub custom_emoji: ::core::option::Option<CustomEmoji>,
+}
+/// A request to return a single custom emoji.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetCustomEmojiRequest {
+    /// Required. Resource name of the custom emoji.
+    ///
+    /// Format: `customEmojis/{customEmoji}`
+    ///
+    /// You can use the emoji name as an alias for `{customEmoji}`. For example,
+    /// `customEmojis/:example-emoji:` where `:example-emoji:` is the emoji name
+    /// for a custom emoji.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// A request to return a list of custom emojis.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListCustomEmojisRequest {
+    /// Optional. The maximum number of custom emojis returned. The service can
+    /// return fewer custom emojis than this value. If unspecified, the default
+    /// value is 25. The maximum value is 200; values above 200 are changed to 200.
+    #[prost(int32, tag = "1")]
+    pub page_size: i32,
+    /// Optional. (If resuming from a previous query.)
+    ///
+    /// A page token received from a previous list custom emoji call. Provide this
+    /// to retrieve the subsequent page.
+    ///
+    /// When paginating, the filter value should match the call that provided the
+    /// page token. Passing a different value might lead to unexpected results.
+    #[prost(string, tag = "2")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. A query filter.
+    ///
+    /// Supports filtering by creator.
+    ///
+    /// To filter by creator, you must specify a valid value. Currently only
+    /// `creator("users/me")` and `NOT creator("users/me")` are accepted to filter
+    /// custom emojis by whether they were created by the calling user or not.
+    ///
+    /// For example, the following query returns custom emojis created by the
+    /// caller:
+    /// ```
+    /// creator("users/me")
+    /// ```
+    ///
+    /// Invalid queries are rejected with an `INVALID_ARGUMENT` error.
+    #[prost(string, tag = "3")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// A response to list custom emojis.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListCustomEmojisResponse {
+    /// Unordered list. List of custom emojis.
+    #[prost(message, repeated, tag = "1")]
+    pub custom_emojis: ::prost::alloc::vec::Vec<CustomEmoji>,
+    /// A token that you can send as `pageToken` to retrieve the next page of
+    /// results. If empty, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request for deleting a custom emoji.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteCustomEmojiRequest {
+    /// Required. Resource name of the custom emoji to delete.
+    ///
+    /// Format: `customEmojis/{customEmoji}`
+    ///
+    /// You can use the emoji name as an alias for `{customEmoji}`. For example,
+    /// `customEmojis/:example-emoji:` where `:example-emoji:` is the emoji name
+    /// for a custom emoji.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -5173,6 +5297,147 @@ pub mod chat_service_client {
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(GrpcMethod::new("google.chat.v1.ChatService", "DeleteReaction"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a custom emoji.
+        ///
+        /// Custom emojis are only available for Google Workspace accounts, and the
+        /// administrator must turn custom emojis on for the organization. For more
+        /// information, see [Learn about custom emojis in Google
+        /// Chat](https://support.google.com/chat/answer/12800149) and
+        /// [Manage custom emoji
+        /// permissions](https://support.google.com/a/answer/12850085).
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+        pub async fn create_custom_emoji(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateCustomEmojiRequest>,
+        ) -> std::result::Result<tonic::Response<super::CustomEmoji>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chat.v1.ChatService/CreateCustomEmoji",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.chat.v1.ChatService", "CreateCustomEmoji"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns details about a custom emoji.
+        ///
+        /// Custom emojis are only available for Google Workspace accounts, and the
+        /// administrator must turn custom emojis on for the organization. For more
+        /// information, see [Learn about custom emojis in Google
+        /// Chat](https://support.google.com/chat/answer/12800149) and
+        /// [Manage custom emoji
+        /// permissions](https://support.google.com/a/answer/12850085).
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+        pub async fn get_custom_emoji(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetCustomEmojiRequest>,
+        ) -> std::result::Result<tonic::Response<super::CustomEmoji>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chat.v1.ChatService/GetCustomEmoji",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("google.chat.v1.ChatService", "GetCustomEmoji"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists custom emojis visible to the authenticated user.
+        ///
+        /// Custom emojis are only available for Google Workspace accounts, and the
+        /// administrator must turn custom emojis on for the organization. For more
+        /// information, see [Learn about custom emojis in Google
+        /// Chat](https://support.google.com/chat/answer/12800149) and
+        /// [Manage custom emoji
+        /// permissions](https://support.google.com/a/answer/12850085).
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+        pub async fn list_custom_emojis(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListCustomEmojisRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListCustomEmojisResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chat.v1.ChatService/ListCustomEmojis",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.chat.v1.ChatService", "ListCustomEmojis"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a custom emoji. By default, users can only delete custom emoji they
+        /// created. [Emoji managers](https://support.google.com/a/answer/12850085)
+        /// assigned by the administrator can delete any custom emoji in the
+        /// organization. See [Learn about custom emojis in Google
+        /// Chat](https://support.google.com/chat/answer/12800149).
+        ///
+        /// Custom emojis are only available for Google Workspace accounts, and the
+        /// administrator must turn custom emojis on for the organization. For more
+        /// information, see [Learn about custom emojis in Google
+        /// Chat](https://support.google.com/chat/answer/12800149) and
+        /// [Manage custom emoji
+        /// permissions](https://support.google.com/a/answer/12850085).
+        ///
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+        pub async fn delete_custom_emoji(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteCustomEmojiRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chat.v1.ChatService/DeleteCustomEmoji",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.chat.v1.ChatService", "DeleteCustomEmoji"),
+                );
             self.inner.unary(req, path, codec).await
         }
         /// Returns details about a user's read state within a space, used to identify

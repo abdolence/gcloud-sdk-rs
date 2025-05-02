@@ -86,15 +86,14 @@ pub struct UpdateTunnelDestGroupRequest {
 /// A TunnelDestGroup.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TunnelDestGroup {
-    /// Required. Immutable. Identifier for the TunnelDestGroup. Must be unique
-    /// within the project and contain only lower case letters (a-z) and dashes
-    /// (-).
+    /// Identifier. Identifier for the TunnelDestGroup. Must be unique within the
+    /// project and contain only lower case letters (a-z) and dashes (-).
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Unordered list. List of CIDRs that this group applies to.
+    /// Optional. Unordered list. List of CIDRs that this group applies to.
     #[prost(string, repeated, tag = "2")]
     pub cidrs: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Unordered list. List of FQDNs that this group applies to.
+    /// Optional. Unordered list. List of FQDNs that this group applies to.
     #[prost(string, repeated, tag = "3")]
     pub fqdns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -130,36 +129,99 @@ pub struct IapSettings {
     /// Required. The resource name of the IAP protected resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Top level wrapper for all access related setting in IAP
+    /// Optional. Top level wrapper for all access related setting in IAP
     #[prost(message, optional, tag = "5")]
     pub access_settings: ::core::option::Option<AccessSettings>,
-    /// Top level wrapper for all application related settings in IAP
+    /// Optional. Top level wrapper for all application related settings in IAP
     #[prost(message, optional, tag = "6")]
     pub application_settings: ::core::option::Option<ApplicationSettings>,
 }
 /// Access related settings for IAP protected apps.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessSettings {
-    /// GCIP claims and endpoint configurations for 3p identity providers.
+    /// Optional. GCIP claims and endpoint configurations for 3p identity
+    /// providers.
     #[prost(message, optional, tag = "1")]
     pub gcip_settings: ::core::option::Option<GcipSettings>,
-    /// Configuration to allow cross-origin requests via IAP.
+    /// Optional. Configuration to allow cross-origin requests via IAP.
     #[prost(message, optional, tag = "2")]
     pub cors_settings: ::core::option::Option<CorsSettings>,
-    /// Settings to configure IAP's OAuth behavior.
+    /// Optional. Settings to configure IAP's OAuth behavior.
     #[prost(message, optional, tag = "3")]
     pub oauth_settings: ::core::option::Option<OAuthSettings>,
-    /// Settings to configure reauthentication policies in IAP.
+    /// Optional. Settings to configure reauthentication policies in IAP.
     #[prost(message, optional, tag = "6")]
     pub reauth_settings: ::core::option::Option<ReauthSettings>,
-    /// Settings to configure and enable allowed domains.
+    /// Optional. Settings to configure and enable allowed domains.
     #[prost(message, optional, tag = "7")]
     pub allowed_domains_settings: ::core::option::Option<AllowedDomainsSettings>,
+    /// Optional. Settings to configure the workforce identity federation,
+    /// including workforce pools and OAuth 2.0 settings.
+    #[prost(message, optional, tag = "9")]
+    pub workforce_identity_settings: ::core::option::Option<WorkforceIdentitySettings>,
+    /// Optional. Identity sources that IAP can use to authenticate the end user.
+    /// Only one identity source can be configured.
+    #[prost(
+        enumeration = "access_settings::IdentitySource",
+        repeated,
+        packed = "false",
+        tag = "10"
+    )]
+    pub identity_sources: ::prost::alloc::vec::Vec<i32>,
+}
+/// Nested message and enum types in `AccessSettings`.
+pub mod access_settings {
+    /// Types of identity source supported by IAP.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum IdentitySource {
+        /// IdentitySource Unspecified.
+        /// When selected, IAP relies on which identity settings are fully configured
+        /// to redirect the traffic to. The precedence order is
+        /// WorkforceIdentitySettings > GcipSettings. If none is set, default to use
+        /// Google identity.
+        Unspecified = 0,
+        /// Use external identities set up on Google Cloud Workforce Identity
+        /// Federation.
+        WorkforceIdentityFederation = 3,
+    }
+    impl IdentitySource {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "IDENTITY_SOURCE_UNSPECIFIED",
+                Self::WorkforceIdentityFederation => "WORKFORCE_IDENTITY_FEDERATION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "IDENTITY_SOURCE_UNSPECIFIED" => Some(Self::Unspecified),
+                "WORKFORCE_IDENTITY_FEDERATION" => {
+                    Some(Self::WorkforceIdentityFederation)
+                }
+                _ => None,
+            }
+        }
+    }
 }
 /// Allows customers to configure tenant_id for GCIP instance per-app.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcipSettings {
-    /// GCIP tenant ids that are linked to the IAP resource.
+    /// Optional. GCIP tenant ids that are linked to the IAP resource.
     /// tenant_ids could be a string beginning with a number character to indicate
     /// authenticating with GCIP tenant flow, or in the format of _<ProjectNumber>
     /// to indicate authenticating with GCIP agent flow.
@@ -193,22 +255,52 @@ pub struct OAuthSettings {
     /// since access behavior is managed by IAM policies.
     #[prost(message, optional, tag = "2")]
     pub login_hint: ::core::option::Option<::prost::alloc::string::String>,
-    /// List of OAuth client IDs allowed to programmatically authenticate with IAP.
+    /// Optional. List of client ids allowed to use IAP programmatically.
     #[prost(string, repeated, tag = "5")]
     pub programmatic_clients: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// WorkforceIdentitySettings allows customers to configure workforce pools and
+/// OAuth 2.0 settings to gate their applications using a third-party IdP with
+/// access control.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WorkforceIdentitySettings {
+    /// The workforce pool resources. Only one workforce pool is accepted.
+    #[prost(string, repeated, tag = "1")]
+    pub workforce_pools: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// OAuth 2.0 settings for IAP to perform OIDC flow with workforce identity
+    /// federation services.
+    #[prost(message, optional, tag = "2")]
+    pub oauth2: ::core::option::Option<OAuth2>,
+}
+/// The OAuth 2.0 Settings
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OAuth2 {
+    /// The OAuth 2.0 client ID registered in the workforce identity federation
+    /// OAuth 2.0 Server.
+    #[prost(string, tag = "1")]
+    pub client_id: ::prost::alloc::string::String,
+    /// Input only. The OAuth 2.0 client secret created while registering the
+    /// client ID.
+    #[prost(string, tag = "2")]
+    pub client_secret: ::prost::alloc::string::String,
+    /// Output only. SHA256 hash value for the client secret. This field is
+    /// returned by IAP when the settings are retrieved.
+    #[prost(string, tag = "3")]
+    pub client_secret_sha256: ::prost::alloc::string::String,
 }
 /// Configuration for IAP reauthentication policies.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReauthSettings {
-    /// Reauth method requested.
+    /// Optional. Reauth method requested.
     #[prost(enumeration = "reauth_settings::Method", tag = "1")]
     pub method: i32,
-    /// Reauth session lifetime, how long before a user has to reauthenticate
-    /// again.
+    /// Optional. Reauth session lifetime, how long before a user has to
+    /// reauthenticate again.
     #[prost(message, optional, tag = "2")]
     pub max_age: ::core::option::Option<::prost_types::Duration>,
-    /// How IAP determines the effective policy in cases of hierarchial policies.
-    /// Policies are merged from higher in the hierarchy to lower in the hierarchy.
+    /// Optional. How IAP determines the effective policy in cases of hierarchical
+    /// policies. Policies are merged from higher in the hierarchy to lower in the
+    /// hierarchy.
     #[prost(enumeration = "reauth_settings::PolicyType", tag = "3")]
     pub policy_type: i32,
 }
@@ -264,7 +356,7 @@ pub mod reauth_settings {
             }
         }
     }
-    /// Type of policy in the case of hierarchial policies.
+    /// Type of policy in the case of hierarchical policies.
     #[derive(
         Clone,
         Copy,
@@ -313,27 +405,27 @@ pub mod reauth_settings {
 /// and allow access to only the domains that you list.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AllowedDomainsSettings {
-    /// Configuration for customers to opt in for the feature.
+    /// Optional. Configuration for customers to opt in for the feature.
     #[prost(bool, optional, tag = "1")]
     pub enable: ::core::option::Option<bool>,
-    /// List of trusted domains.
+    /// Optional. List of trusted domains.
     #[prost(string, repeated, tag = "2")]
     pub domains: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Wrapper over application specific settings for IAP.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApplicationSettings {
-    /// Settings to configure IAP's behavior for a service mesh.
+    /// Optional. Settings to configure IAP's behavior for a service mesh.
     #[prost(message, optional, tag = "1")]
     pub csm_settings: ::core::option::Option<CsmSettings>,
-    /// Customization for Access Denied page.
+    /// Optional. Customization for Access Denied page.
     #[prost(message, optional, tag = "2")]
     pub access_denied_page_settings: ::core::option::Option<AccessDeniedPageSettings>,
     /// The Domain value to set for cookies generated by IAP. This value is not
     /// validated by the API, but will be ignored at runtime if invalid.
     #[prost(message, optional, tag = "3")]
     pub cookie_domain: ::core::option::Option<::prost::alloc::string::String>,
-    /// Settings to configure attribute propagation.
+    /// Optional. Settings to configure attribute propagation.
     #[prost(message, optional, tag = "4")]
     pub attribute_propagation_settings: ::core::option::Option<
         AttributePropagationSettings,
@@ -372,9 +464,9 @@ pub struct AccessDeniedPageSettings {
 /// by IAP.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttributePropagationSettings {
-    /// Raw string CEL expression. Must return a list of attributes. A maximum of
-    /// 45 attributes can be selected. Expressions can select different attribute
-    /// types from `attributes`: `attributes.saml_attributes`,
+    /// Optional. Raw string CEL expression. Must return a list of attributes. A
+    /// maximum of 45 attributes can be selected. Expressions can select different
+    /// attribute types from `attributes`: `attributes.saml_attributes`,
     /// `attributes.iap_attributes`. The following functions are supported:
     ///
     ///   - filter `<list>.filter(<iter_var>, <predicate>)`: Returns a subset of
@@ -402,18 +494,19 @@ pub struct AttributePropagationSettings {
     /// \['test'\]).append(attributes.iap_attributes.selectByName('exact').emitAs('custom').strict())`
     #[prost(string, optional, tag = "1")]
     pub expression: ::core::option::Option<::prost::alloc::string::String>,
-    /// Which output credentials attributes selected by the CEL expression should
-    /// be propagated in. All attributes will be fully duplicated in each selected
-    /// output credential.
+    /// Optional. Which output credentials attributes selected by the CEL
+    /// expression should be propagated in. All attributes will be fully duplicated
+    /// in each selected output credential.
     #[prost(
         enumeration = "attribute_propagation_settings::OutputCredentials",
         repeated,
+        packed = "false",
         tag = "2"
     )]
     pub output_credentials: ::prost::alloc::vec::Vec<i32>,
-    /// Whether the provided attribute propagation settings should be evaluated on
-    /// user requests. If set to true, attributes returned from the expression will
-    /// be propagated in the set output credentials.
+    /// Optional. Whether the provided attribute propagation settings should be
+    /// evaluated on user requests. If set to true, attributes returned from the
+    /// expression will be propagated in the set output credentials.
     #[prost(bool, optional, tag = "3")]
     pub enable: ::core::option::Option<bool>,
 }
@@ -471,6 +564,21 @@ pub mod attribute_propagation_settings {
         }
     }
 }
+/// Request sent to IAP Expression Linter endpoint.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ValidateIapAttributeExpressionRequest {
+    /// Required. The resource name of the IAP protected resource.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. User input string expression. Should be of the form
+    /// `attributes.saml_attributes.filter(attribute, attribute.name in
+    /// \['{attribute_name}', '{attribute_name}'\])`
+    #[prost(string, tag = "2")]
+    pub expression: ::prost::alloc::string::String,
+}
+/// IAP Expression Linter endpoint returns empty response body.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ValidateIapAttributeExpressionResponse {}
 /// The request sent to ListBrands.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBrandsRequest {
@@ -863,6 +971,38 @@ pub mod identity_aware_proxy_admin_service_client {
                     GrpcMethod::new(
                         "google.cloud.iap.v1.IdentityAwareProxyAdminService",
                         "UpdateIapSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Validates that a given CEL expression conforms to IAP restrictions.
+        pub async fn validate_iap_attribute_expression(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::ValidateIapAttributeExpressionRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::ValidateIapAttributeExpressionResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.iap.v1.IdentityAwareProxyAdminService/ValidateIapAttributeExpression",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.iap.v1.IdentityAwareProxyAdminService",
+                        "ValidateIapAttributeExpression",
                     ),
                 );
             self.inner.unary(req, path, codec).await

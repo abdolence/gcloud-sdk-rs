@@ -255,10 +255,15 @@ pub struct CloudFunction {
     #[prost(string, tag = "34")]
     pub docker_repository: ::prost::alloc::string::String,
     /// Docker Registry to use for this deployment.
+    /// As of March 2025, `CONTAINER_REGISTRY` option is no longer
+    /// available in response to Container Registry's deprecation:
+    /// <https://cloud.google.com/artifact-registry/docs/transition/transition-from-gcr>
+    /// Please use Artifact Registry instead, which is the default choice.
     ///
     /// If unspecified, it defaults to `ARTIFACT_REGISTRY`.
     /// If `docker_repository` field is specified, this field should either be left
     /// unspecified or set to `ARTIFACT_REGISTRY`.
+    #[deprecated]
     #[prost(enumeration = "cloud_function::DockerRegistry", tag = "35")]
     pub docker_registry: i32,
     /// A service account the user provides for use with Cloud Build. The format of
@@ -653,7 +658,7 @@ pub struct SecretEnvVar {
     /// Name of the environment variable.
     #[prost(string, tag = "1")]
     pub key: ::prost::alloc::string::String,
-    /// Project identifier (preferrably project number but can also be the project
+    /// Project identifier (preferably project number but can also be the project
     /// ID) of the project that contains the secret. If not set, it will be
     /// populated with the function's project assuming that the secret exists in
     /// the same project as of the function.

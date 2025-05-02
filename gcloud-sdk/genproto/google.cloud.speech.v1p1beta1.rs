@@ -14,6 +14,57 @@ pub struct CustomClass {
     /// A collection of class items.
     #[prost(message, repeated, tag = "3")]
     pub items: ::prost::alloc::vec::Vec<custom_class::ClassItem>,
+    /// Output only. The [KMS key
+    /// name](<https://cloud.google.com/kms/docs/resource-hierarchy#keys>) with which
+    /// the content of the ClassItem is encrypted. The expected format is
+    /// `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`.
+    #[prost(string, tag = "6")]
+    pub kms_key_name: ::prost::alloc::string::String,
+    /// Output only. The [KMS key version
+    /// name](<https://cloud.google.com/kms/docs/resource-hierarchy#key_versions>)
+    /// with which content of the ClassItem is encrypted. The expected format is
+    /// `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}`.
+    #[prost(string, tag = "7")]
+    pub kms_key_version_name: ::prost::alloc::string::String,
+    /// Output only. System-assigned unique identifier for the CustomClass.
+    /// This field is not used.
+    #[prost(string, tag = "8")]
+    pub uid: ::prost::alloc::string::String,
+    /// Output only. User-settable, human-readable name for the CustomClass. Must
+    /// be 63 characters or less. This field is not used.
+    #[prost(string, tag = "9")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Output only. The CustomClass lifecycle state.
+    /// This field is not used.
+    #[prost(enumeration = "custom_class::State", tag = "10")]
+    pub state: i32,
+    /// Output only. The time at which this resource was requested for deletion.
+    /// This field is not used.
+    #[prost(message, optional, tag = "11")]
+    pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time at which this resource will be purged.
+    /// This field is not used.
+    #[prost(message, optional, tag = "12")]
+    pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Allows users to store small amounts of arbitrary data.
+    /// Both the key and the value must be 63 characters or less each.
+    /// At most 100 annotations.
+    /// This field is not used.
+    #[prost(map = "string, string", tag = "13")]
+    pub annotations: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. This checksum is computed by the server based on the value of
+    /// other fields. This may be sent on update, undelete, and delete requests to
+    /// ensure the client has an up-to-date value before proceeding. This field is
+    /// not used.
+    #[prost(string, tag = "14")]
+    pub etag: ::prost::alloc::string::String,
+    /// Output only. Whether or not this CustomClass is in the process of being
+    /// updated. This field is not used.
+    #[prost(bool, tag = "15")]
+    pub reconciling: bool,
 }
 /// Nested message and enum types in `CustomClass`.
 pub mod custom_class {
@@ -23,6 +74,50 @@ pub mod custom_class {
         /// The class item's value.
         #[prost(string, tag = "1")]
         pub value: ::prost::alloc::string::String,
+    }
+    /// Set of states that define the lifecycle of a CustomClass.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Unspecified state.  This is only used/useful for distinguishing
+        /// unset values.
+        Unspecified = 0,
+        /// The normal and active state.
+        Active = 2,
+        /// This CustomClass has been deleted.
+        Deleted = 4,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Deleted => "DELETED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "DELETED" => Some(Self::Deleted),
+                _ => None,
+            }
+        }
     }
 }
 /// Provides "hints" to the speech recognizer to favor specific words and phrases
@@ -46,6 +141,57 @@ pub struct PhraseSet {
     /// phrases both with and without boost to your requests.
     #[prost(float, tag = "4")]
     pub boost: f32,
+    /// Output only. The [KMS key
+    /// name](<https://cloud.google.com/kms/docs/resource-hierarchy#keys>) with which
+    /// the content of the PhraseSet is encrypted. The expected format is
+    /// `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`.
+    #[prost(string, tag = "7")]
+    pub kms_key_name: ::prost::alloc::string::String,
+    /// Output only. The [KMS key version
+    /// name](<https://cloud.google.com/kms/docs/resource-hierarchy#key_versions>)
+    /// with which content of the PhraseSet is encrypted. The expected format is
+    /// `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}`.
+    #[prost(string, tag = "8")]
+    pub kms_key_version_name: ::prost::alloc::string::String,
+    /// Output only. System-assigned unique identifier for the PhraseSet.
+    /// This field is not used.
+    #[prost(string, tag = "9")]
+    pub uid: ::prost::alloc::string::String,
+    /// Output only. User-settable, human-readable name for the PhraseSet. Must be
+    /// 63 characters or less. This field is not used.
+    #[prost(string, tag = "10")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Output only. The CustomClass lifecycle state.
+    /// This field is not used.
+    #[prost(enumeration = "phrase_set::State", tag = "11")]
+    pub state: i32,
+    /// Output only. The time at which this resource was requested for deletion.
+    /// This field is not used.
+    #[prost(message, optional, tag = "12")]
+    pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time at which this resource will be purged.
+    /// This field is not used.
+    #[prost(message, optional, tag = "13")]
+    pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Allows users to store small amounts of arbitrary data.
+    /// Both the key and the value must be 63 characters or less each.
+    /// At most 100 annotations.
+    /// This field is not used.
+    #[prost(map = "string, string", tag = "14")]
+    pub annotations: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. This checksum is computed by the server based on the value of
+    /// other fields. This may be sent on update, undelete, and delete requests to
+    /// ensure the client has an up-to-date value before proceeding. This field is
+    /// not used.
+    #[prost(string, tag = "15")]
+    pub etag: ::prost::alloc::string::String,
+    /// Output only. Whether or not this PhraseSet is in the process of being
+    /// updated. This field is not used.
+    #[prost(bool, tag = "16")]
+    pub reconciling: bool,
 }
 /// Nested message and enum types in `PhraseSet`.
 pub mod phrase_set {
@@ -90,6 +236,50 @@ pub mod phrase_set {
         /// phrases both with and without boost to your requests.
         #[prost(float, tag = "2")]
         pub boost: f32,
+    }
+    /// Set of states that define the lifecycle of a CustomClass.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Unspecified state.  This is only used/useful for distinguishing
+        /// unset values.
+        Unspecified = 0,
+        /// The normal and active state.
+        Active = 2,
+        /// This CustomClass has been deleted.
+        Deleted = 4,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Active => "ACTIVE",
+                Self::Deleted => "DELETED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "DELETED" => Some(Self::Deleted),
+                _ => None,
+            }
+        }
     }
 }
 /// Speech adaptation configuration.
@@ -253,8 +443,9 @@ pub struct StreamingRecognitionConfig {
     /// `true`.
     ///
     /// The `single_utterance` field can only be used with specified models,
-    /// otherwise an error is thrown. The `model` field in [`RecognitionConfig`][]
-    /// must be set to:
+    /// otherwise an error is thrown. The `model` field in
+    /// [RecognitionConfig][google.cloud.speech.v1p1beta1.RecognitionConfig] must
+    /// be set to:
     ///
     /// * `command_and_search`
     /// * `phone_call` AND additional field `useEnhanced`=`true`
@@ -377,8 +568,8 @@ pub struct RecognitionConfig {
     /// When speech adaptation is set it supersedes the `speech_contexts` field.
     #[prost(message, optional, tag = "20")]
     pub adaptation: ::core::option::Option<SpeechAdaptation>,
-    /// Use transcription normalization to automatically replace parts of the
-    /// transcript with phrases of your choosing. For StreamingRecognize, this
+    /// Optional. Use transcription normalization to automatically replace parts of
+    /// the transcript with phrases of your choosing. For StreamingRecognize, this
     /// normalization only applies to stable partial transcripts (stability > 0.8)
     /// and final transcripts.
     #[prost(message, optional, tag = "24")]
@@ -424,8 +615,8 @@ pub struct RecognitionConfig {
     #[prost(message, optional, tag = "23")]
     pub enable_spoken_emojis: ::core::option::Option<bool>,
     /// If 'true', enables speaker detection for each recognized word in
-    /// the top alternative of the recognition result using a speaker_tag provided
-    /// in the WordInfo.
+    /// the top alternative of the recognition result using a speaker_label
+    /// provided in the WordInfo.
     /// Note: Use diarization_config instead.
     #[deprecated]
     #[prost(bool, tag = "16")]
@@ -593,9 +784,11 @@ pub mod recognition_config {
         /// sample rate of the file being used.
         Mp3 = 8,
         /// Opus encoded audio frames in WebM container
-        /// ([OggOpus](<https://wiki.xiph.org/OggOpus>)). `sample_rate_hertz` must be
-        /// one of 8000, 12000, 16000, 24000, or 48000.
+        /// ([WebM](<https://www.webmproject.org/docs/container/>)).
+        /// `sample_rate_hertz` must be one of 8000, 12000, 16000, 24000, or 48000.
         WebmOpus = 9,
+        /// 8-bit samples that compand 13-bit audio samples using G.711 PCMU/a-law.
+        Alaw = 10,
     }
     impl AudioEncoding {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -614,6 +807,7 @@ pub mod recognition_config {
                 Self::SpeexWithHeaderByte => "SPEEX_WITH_HEADER_BYTE",
                 Self::Mp3 => "MP3",
                 Self::WebmOpus => "WEBM_OPUS",
+                Self::Alaw => "ALAW",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -629,6 +823,7 @@ pub mod recognition_config {
                 "SPEEX_WITH_HEADER_BYTE" => Some(Self::SpeexWithHeaderByte),
                 "MP3" => Some(Self::Mp3),
                 "WEBM_OPUS" => Some(Self::WebmOpus),
+                "ALAW" => Some(Self::Alaw),
                 _ => None,
             }
         }
@@ -638,8 +833,8 @@ pub mod recognition_config {
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SpeakerDiarizationConfig {
     /// If 'true', enables speaker detection for each recognized word in
-    /// the top alternative of the recognition result using a speaker_tag provided
-    /// in the WordInfo.
+    /// the top alternative of the recognition result using a speaker_label
+    /// provided in the WordInfo.
     #[prost(bool, tag = "1")]
     pub enable_speaker_diarization: bool,
     /// Minimum number of speakers in the conversation. This range gives you more
@@ -1010,6 +1205,10 @@ pub struct RecognizeResponse {
     /// the given request.
     #[prost(int64, tag = "8")]
     pub request_id: i64,
+    /// Whether request used legacy asr models (was not automatically migrated to
+    /// use conformer models).
+    #[prost(bool, tag = "9")]
+    pub using_legacy_models: bool,
 }
 /// The only message returned to the client by the `LongRunningRecognize` method.
 /// It contains the result as zero or more sequential `SpeechRecognitionResult`
@@ -1331,10 +1530,20 @@ pub struct WordInfo {
     /// Output only. A distinct integer value is assigned for every speaker within
     /// the audio. This field specifies which one of those speakers was detected to
     /// have spoken this word. Value ranges from '1' to diarization_speaker_count.
-    /// speaker_tag is set if enable_speaker_diarization = 'true' and only in the
+    /// speaker_tag is set if enable_speaker_diarization = 'true' and only for the
     /// top alternative.
+    /// Note: Use speaker_label instead.
+    #[deprecated]
     #[prost(int32, tag = "5")]
     pub speaker_tag: i32,
+    /// Output only. A label value assigned for every unique speaker within the
+    /// audio. This field specifies which speaker was detected to have spoken this
+    /// word. For some models, like medical_conversation this can be actual speaker
+    /// role, for example "patient" or "provider", but generally this would be a
+    /// number identifying a speaker. This field is only set if
+    /// enable_speaker_diarization = 'true' and only for the top alternative.
+    #[prost(string, tag = "6")]
+    pub speaker_label: ::prost::alloc::string::String,
 }
 /// Information on speech adaptation use in results
 #[derive(Clone, PartialEq, ::prost::Message)]

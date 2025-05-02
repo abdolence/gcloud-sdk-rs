@@ -285,14 +285,19 @@ pub mod cloud_build {
     }
 }
 /// Request message for finding the most stable build.
-/// -- NEXT_TAG: 2 --
+/// -- NEXT_TAG: 3 --
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FindMostStableBuildRequest {
-    /// Required. The full resource name of the build target.
+    /// Optional. The full resource name of the build target.
     /// For example,
     /// 'buildTargets/octopus'.
     #[prost(string, tag = "1")]
     pub build_target: ::prost::alloc::string::String,
+    /// Optional. The full resource name of the build target or model.
+    /// For example,
+    /// 'buildTargets/octopus/models/bobba'.
+    #[prost(string, tag = "2")]
+    pub model: ::prost::alloc::string::String,
 }
 /// Response message for finding the most stable build.
 /// -- NEXT_TAG: 2 --
@@ -464,12 +469,13 @@ pub struct StageBuildResponse {
     #[prost(message, optional, tag = "1")]
     pub staged_build_artifact: ::core::option::Option<BuildArtifact>,
     /// The cloud build id of the build artifacts.
+    #[deprecated]
     #[prost(message, optional, tag = "2")]
     pub cloud_build: ::core::option::Option<CloudBuild>,
 }
 /// Metadata message for staging a build artifact.
-/// -- NEXT_TAG: 4 --
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+/// -- NEXT_TAG: 5 --
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StageBuildMetadata {
     /// Approximate percentage of progress, e.g. "50" means 50%.
     #[prost(float, tag = "1")]
@@ -480,6 +486,9 @@ pub struct StageBuildMetadata {
     /// Build stage end time.
     #[prost(message, optional, tag = "3")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The cloud build of the build artifacts.
+    #[prost(message, optional, tag = "4")]
+    pub cloud_build: ::core::option::Option<CloudBuild>,
 }
 /// Generated client implementations.
 pub mod build_service_client {

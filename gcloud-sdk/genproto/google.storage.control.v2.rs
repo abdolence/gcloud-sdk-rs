@@ -252,7 +252,7 @@ pub struct StorageLayout {
 pub mod storage_layout {
     /// Configuration for Custom Dual Regions.  It should specify precisely two
     /// eligible regions within the same Multiregion. More information on regions
-    /// may be found [<https://cloud.google.com/storage/docs/locations][here].>
+    /// may be found [here](<https://cloud.google.com/storage/docs/locations>).
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CustomPlacementConfig {
         /// List of locations to use for data placement.
@@ -403,6 +403,219 @@ pub struct ListManagedFoldersResponse {
     pub managed_folders: ::prost::alloc::vec::Vec<ManagedFolder>,
     /// The continuation token, used to page through large result sets. Provide
     /// this value in a subsequent request to return the next page of results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Message returned in the metadata field of the Operation resource for
+/// CreateAnywhereCache operations.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateAnywhereCacheMetadata {
+    /// Generic metadata for the long running operation.
+    #[prost(message, optional, tag = "1")]
+    pub common_metadata: ::core::option::Option<CommonLongRunningOperationMetadata>,
+    /// Anywhere Cache ID.
+    #[prost(string, optional, tag = "2")]
+    pub anywhere_cache_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// The zone in which the cache instance is running. For example,
+    /// us-central1-a.
+    #[prost(string, optional, tag = "6")]
+    pub zone: ::core::option::Option<::prost::alloc::string::String>,
+    /// Anywhere Cache entry's TTL. A cache-level config that is applied to all new
+    /// cache entries on admission. Default ttl value (24hrs) is applied if not
+    /// specified in the create request.
+    #[prost(message, optional, tag = "3")]
+    pub ttl: ::core::option::Option<::prost_types::Duration>,
+    /// Anywhere Cache entry Admission Policy in kebab-case (e.g.,
+    /// "admit-on-first-miss"). Default admission policy (admit-on-first-miss) is
+    /// applied if not specified in the create request.
+    #[prost(string, optional, tag = "5")]
+    pub admission_policy: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Message returned in the metadata field of the Operation resource for
+/// UpdateAnywhereCache operation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateAnywhereCacheMetadata {
+    /// Generic metadata for the long running operation.
+    #[prost(message, optional, tag = "1")]
+    pub common_metadata: ::core::option::Option<CommonLongRunningOperationMetadata>,
+    /// Anywhere Cache ID.
+    #[prost(string, optional, tag = "2")]
+    pub anywhere_cache_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// The zone in which the cache instance is running. For example,
+    /// us-central1-a.
+    #[prost(string, optional, tag = "5")]
+    pub zone: ::core::option::Option<::prost::alloc::string::String>,
+    /// Anywhere Cache entry's TTL between 1h and 7days. A cache-level config that
+    /// is applied to all new cache entries on admission. If `ttl` is pending
+    /// update, this field equals to the new value specified in the Update request.
+    #[prost(message, optional, tag = "3")]
+    pub ttl: ::core::option::Option<::prost_types::Duration>,
+    /// L4 Cache entry Admission Policy in kebab-case (e.g.,
+    /// "admit-on-first-miss"). If `admission_policy` is pending
+    /// update, this field equals to the new value specified in the Update request.
+    #[prost(string, optional, tag = "4")]
+    pub admission_policy: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// An Anywhere Cache Instance.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AnywhereCache {
+    /// Immutable. The resource name of this AnywhereCache.
+    /// Format:
+    /// `projects/{project}/buckets/{bucket}/anywhereCaches/{anywhere_cache}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Immutable. The zone in which the cache instance is running. For example,
+    /// us-central1-a.
+    #[prost(string, tag = "10")]
+    pub zone: ::prost::alloc::string::String,
+    /// Cache entry TTL (ranges between 1h to 7d). This is a cache-level config
+    /// that defines how long a cache entry can live. Default ttl value (24hrs)
+    /// is applied if not specified in the create request. TTL must be in whole
+    /// seconds.
+    #[prost(message, optional, tag = "3")]
+    pub ttl: ::core::option::Option<::prost_types::Duration>,
+    /// Cache admission policy. Valid policies includes:
+    /// `admit-on-first-miss` and `admit-on-second-miss`. Defaults to
+    /// `admit-on-first-miss`. Default value is applied if not specified in the
+    /// create request.
+    #[prost(string, tag = "9")]
+    pub admission_policy: ::prost::alloc::string::String,
+    /// Output only. Cache state including RUNNING, CREATING, DISABLED and PAUSED.
+    #[prost(string, tag = "5")]
+    pub state: ::prost::alloc::string::String,
+    /// Output only. Time when Anywhere cache instance is allocated.
+    #[prost(message, optional, tag = "6")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Time when Anywhere cache instance is last updated, including
+    /// creation.
+    #[prost(message, optional, tag = "7")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. True if there is an active update operation against this cache
+    /// instance. Subsequential update requests will be rejected if this field is
+    /// true. Output only.
+    #[prost(bool, tag = "8")]
+    pub pending_update: bool,
+}
+/// Request message for CreateAnywhereCache.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateAnywhereCacheRequest {
+    /// Required. The bucket to which this cache belongs.
+    /// Format: `projects/{project}/buckets/{bucket}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Properties of the Anywhere Cache instance being created.
+    /// The parent bucket name is specified in the `parent` field. Server uses the
+    /// default value of `ttl` or `admission_policy` if not specified in
+    /// request.
+    #[prost(message, optional, tag = "3")]
+    pub anywhere_cache: ::core::option::Option<AnywhereCache>,
+    /// Optional. A unique identifier for this request. UUID is the recommended
+    /// format, but other formats are still accepted. This request is only
+    /// idempotent if a `request_id` is provided.
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for UpdateAnywhereCache.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateAnywhereCacheRequest {
+    /// Required. The Anywhere Cache instance to be updated.
+    #[prost(message, optional, tag = "1")]
+    pub anywhere_cache: ::core::option::Option<AnywhereCache>,
+    /// Required. List of fields to be updated. Mutable fields of AnywhereCache
+    /// include `ttl` and `admission_policy`.
+    ///
+    /// To specify ALL fields, specify a single field with the value `*`. Note: We
+    /// recommend against doing this. If a new field is introduced at a later time,
+    /// an older client updating with the `*` may accidentally reset the new
+    /// field's value.
+    ///
+    /// Not specifying any fields is an error.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. A unique identifier for this request. UUID is the recommended
+    /// format, but other formats are still accepted. This request is only
+    /// idempotent if a `request_id` is provided.
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for DisableAnywhereCache.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DisableAnywhereCacheRequest {
+    /// Required. The name field in the request should be:
+    /// `projects/{project}/buckets/{bucket}/anywhereCaches/{anywhere_cache}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A unique identifier for this request. UUID is the recommended
+    /// format, but other formats are still accepted. This request is only
+    /// idempotent if a `request_id` is provided.
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for PauseAnywhereCache.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PauseAnywhereCacheRequest {
+    /// Required. The name field in the request should be:
+    /// `projects/{project}/buckets/{bucket}/anywhereCaches/{anywhere_cache}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A unique identifier for this request. UUID is the recommended
+    /// format, but other formats are still accepted. This request is only
+    /// idempotent if a `request_id` is provided.
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for ResumeAnywhereCache.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResumeAnywhereCacheRequest {
+    /// Required. The name field in the request should be:
+    /// `projects/{project}/buckets/{bucket}/anywhereCaches/{anywhere_cache}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A unique identifier for this request. UUID is the recommended
+    /// format, but other formats are still accepted. This request is only
+    /// idempotent if a `request_id` is provided.
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for GetAnywhereCache.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAnywhereCacheRequest {
+    /// Required. The name field in the request should be:
+    /// `projects/{project}/buckets/{bucket}/anywhereCaches/{anywhere_cache}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A unique identifier for this request. UUID is the recommended
+    /// format, but other formats are still accepted.
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for ListAnywhereCaches.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAnywhereCachesRequest {
+    /// Required. The bucket to which this cache belongs.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Maximum number of caches to return in a single response.
+    /// The service will use this parameter or 1,000 items, whichever is smaller.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A previously-returned page token representing part of the larger set of
+    /// results to view.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. A unique identifier for this request. UUID is the recommended
+    /// format, but other formats are still accepted.
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Response message for ListAnywhereCaches.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAnywhereCachesResponse {
+    /// The list of items.
+    #[prost(message, repeated, tag = "1")]
+    pub anywhere_caches: ::prost::alloc::vec::Vec<AnywhereCache>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
@@ -780,6 +993,208 @@ pub mod storage_control_client {
                     GrpcMethod::new(
                         "google.storage.control.v2.StorageControl",
                         "ListManagedFolders",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates an Anywhere Cache instance.
+        pub async fn create_anywhere_cache(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateAnywhereCacheRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/CreateAnywhereCache",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "CreateAnywhereCache",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates an Anywhere Cache instance. Mutable fields include `ttl` and
+        /// `admission_policy`.
+        pub async fn update_anywhere_cache(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateAnywhereCacheRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/UpdateAnywhereCache",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "UpdateAnywhereCache",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Disables an Anywhere Cache instance. A disabled instance is read-only. The
+        /// disablement could be revoked by calling ResumeAnywhereCache. The cache
+        /// instance will be deleted automatically if it remains in the disabled state
+        /// for at least one hour.
+        pub async fn disable_anywhere_cache(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DisableAnywhereCacheRequest>,
+        ) -> std::result::Result<tonic::Response<super::AnywhereCache>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/DisableAnywhereCache",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "DisableAnywhereCache",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Pauses an Anywhere Cache instance.
+        pub async fn pause_anywhere_cache(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PauseAnywhereCacheRequest>,
+        ) -> std::result::Result<tonic::Response<super::AnywhereCache>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/PauseAnywhereCache",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "PauseAnywhereCache",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Resumes a disabled or paused Anywhere Cache instance.
+        pub async fn resume_anywhere_cache(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ResumeAnywhereCacheRequest>,
+        ) -> std::result::Result<tonic::Response<super::AnywhereCache>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/ResumeAnywhereCache",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "ResumeAnywhereCache",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets an Anywhere Cache instance.
+        pub async fn get_anywhere_cache(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAnywhereCacheRequest>,
+        ) -> std::result::Result<tonic::Response<super::AnywhereCache>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/GetAnywhereCache",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "GetAnywhereCache",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists Anywhere Cache instances for a given bucket.
+        pub async fn list_anywhere_caches(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListAnywhereCachesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListAnywhereCachesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/ListAnywhereCaches",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "ListAnywhereCaches",
                     ),
                 );
             self.inner.unary(req, path, codec).await
