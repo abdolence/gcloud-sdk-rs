@@ -39182,6 +39182,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/Operation"
           description: Successful response
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              nullable: false
       security:
         - Oauth2:
             - https://www.googleapis.com/auth/cloud-platform
