@@ -186,11 +186,27 @@ pub struct Database {
     /// Output only. Information about the provenance of this database.
     #[prost(message, optional, tag = "26")]
     pub source_info: ::core::option::Option<database::SourceInfo>,
+    /// Output only. Background: Free tier is the ability of a Firestore database
+    /// to use a small amount of resources every day without being charged. Once
+    /// usage exceeds the free tier limit further usage is charged.
+    ///
+    /// Whether this database can make use of the free tier. Only one database
+    /// per project can be eligible for the free tier.
+    ///
+    /// The first (or next) database that is created in a project without a free
+    /// tier database will be marked as eligible for the free tier. Databases that
+    /// are created while there is a free tier database will not be eligible for
+    /// the free tier.
+    #[prost(bool, optional, tag = "30")]
+    pub free_tier: ::core::option::Option<bool>,
     /// This checksum is computed by the server based on the value of other
     /// fields, and may be sent on update and delete requests to ensure the
     /// client has an up-to-date value before proceeding.
     #[prost(string, tag = "99")]
     pub etag: ::prost::alloc::string::String,
+    /// Immutable. The edition of the database.
+    #[prost(enumeration = "database::DatabaseEdition", tag = "28")]
+    pub database_edition: i32,
 }
 /// Nested message and enum types in `Database`.
 pub mod database {
@@ -555,6 +571,51 @@ pub mod database {
             }
         }
     }
+    /// The edition of the database.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DatabaseEdition {
+        /// Not used.
+        Unspecified = 0,
+        /// Standard edition.
+        ///
+        /// This is the default setting if not specified.
+        Standard = 1,
+        /// Enterprise edition.
+        Enterprise = 2,
+    }
+    impl DatabaseEdition {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DATABASE_EDITION_UNSPECIFIED",
+                Self::Standard => "STANDARD",
+                Self::Enterprise => "ENTERPRISE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATABASE_EDITION_UNSPECIFIED" => Some(Self::Unspecified),
+                "STANDARD" => Some(Self::Standard),
+                "ENTERPRISE" => Some(Self::Enterprise),
+                _ => None,
+            }
+        }
+    }
 }
 /// Cloud Firestore indexes enable simple and complex queries against
 /// documents in a database.
@@ -594,6 +655,22 @@ pub struct Index {
     /// Output only. The serving state of the index.
     #[prost(enumeration = "index::State", tag = "4")]
     pub state: i32,
+    /// Immutable. The density configuration of the index.
+    #[prost(enumeration = "index::Density", tag = "6")]
+    pub density: i32,
+    /// Optional. Whether the index is multikey. By default, the index is not
+    /// multikey. For non-multikey indexes, none of the paths in the index
+    /// definition reach or traverse an array, except via an explicit array index.
+    /// For multikey indexes, at most one of the paths in the index definition
+    /// reach or traverse an array, except via an explicit array index. Violations
+    /// will result in errors.
+    ///
+    /// Note this field only applies to index with MONGODB_COMPATIBLE_API ApiScope.
+    #[prost(bool, tag = "7")]
+    pub multikey: bool,
+    /// Optional. The number of shards for the index.
+    #[prost(int32, tag = "8")]
+    pub shard_count: i32,
 }
 /// Nested message and enum types in `Index`.
 pub mod index {
@@ -811,6 +888,8 @@ pub mod index {
         AnyApi = 0,
         /// The index can only be used by the Firestore in Datastore Mode query API.
         DatastoreModeApi = 1,
+        /// The index can only be used by the MONGODB_COMPATIBLE_API.
+        MongodbCompatibleApi = 2,
     }
     impl ApiScope {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -821,6 +900,7 @@ pub mod index {
             match self {
                 Self::AnyApi => "ANY_API",
                 Self::DatastoreModeApi => "DATASTORE_MODE_API",
+                Self::MongodbCompatibleApi => "MONGODB_COMPATIBLE_API",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -828,6 +908,7 @@ pub mod index {
             match value {
                 "ANY_API" => Some(Self::AnyApi),
                 "DATASTORE_MODE_API" => Some(Self::DatastoreModeApi),
+                "MONGODB_COMPATIBLE_API" => Some(Self::MongodbCompatibleApi),
                 _ => None,
             }
         }
@@ -890,6 +971,64 @@ pub mod index {
                 "CREATING" => Some(Self::Creating),
                 "READY" => Some(Self::Ready),
                 "NEEDS_REPAIR" => Some(Self::NeedsRepair),
+                _ => None,
+            }
+        }
+    }
+    /// The density configuration for the index.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Density {
+        /// Unspecified. It will use database default setting. This value is input
+        /// only.
+        Unspecified = 0,
+        /// In order for an index entry to be added, the document must
+        /// contain all fields specified in the index.
+        ///
+        /// This is the only allowed value for indexes having ApiScope `ANY_API` and
+        /// `DATASTORE_MODE_API`.
+        SparseAll = 1,
+        /// In order for an index entry to be added, the document must
+        /// contain at least one of the fields specified in the index.
+        /// Non-existent fields are treated as having a NULL value when generating
+        /// index entries.
+        SparseAny = 2,
+        /// An index entry will be added regardless of whether the
+        /// document contains any of the fields specified in the index.
+        /// Non-existent fields are treated as having a NULL value when generating
+        /// index entries.
+        Dense = 3,
+    }
+    impl Density {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DENSITY_UNSPECIFIED",
+                Self::SparseAll => "SPARSE_ALL",
+                Self::SparseAny => "SPARSE_ANY",
+                Self::Dense => "DENSE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DENSITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "SPARSE_ALL" => Some(Self::SparseAll),
+                "SPARSE_ANY" => Some(Self::SparseAny),
+                "DENSE" => Some(Self::Dense),
                 _ => None,
             }
         }

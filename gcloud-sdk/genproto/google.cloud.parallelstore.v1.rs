@@ -32,7 +32,7 @@ pub struct Instance {
     /// 12000, 16000, 20000, ...
     #[prost(int64, tag = "8")]
     pub capacity_gib: i64,
-    /// Deprecated 'daos_version' field.
+    /// Output only. Deprecated 'daos_version' field.
     /// Output only. The version of DAOS software running in the instance.
     #[deprecated]
     #[prost(string, tag = "9")]
@@ -621,10 +621,10 @@ pub struct TransferCounters {
     /// Bytes that are copied to the data destination.
     #[prost(int64, tag = "6")]
     pub bytes_copied: i64,
-    /// Objects that failed to write to the data destination.
+    /// Objects that are failed to write to the data destination.
     #[prost(int64, tag = "7")]
     pub objects_failed: i64,
-    /// Number of Bytes that failed to be written to the data destination.
+    /// Bytes that are failed to write to the data destination.
     #[prost(int64, tag = "8")]
     pub bytes_failed: i64,
 }

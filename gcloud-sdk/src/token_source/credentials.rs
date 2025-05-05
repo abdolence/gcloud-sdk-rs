@@ -35,6 +35,38 @@ impl Credentials {
             },
         }
     }
+
+    pub fn to_credentials_info(&self) -> Option<CredentialsInfo> {
+        match self {
+            Credentials::ServiceAccount(sa) => Some(CredentialsInfo {
+                client_email: sa.client_email.clone(),
+                project_id: sa.quota_project_id.clone(),
+            }),
+            Credentials::User(user) => Some(CredentialsInfo {
+                client_email: user.client_id.clone(),
+                project_id: user.quota_project_id.clone(),
+            }),
+            Credentials::ExternalAccount(_external_account) => None,
+            Credentials::ServiceAccountImpersonation(sa) => match &sa.source_credentials {
+                ServiceAccountImpersonationSourceCredentials::ServiceAccount(sa) => {
+                    Some(CredentialsInfo {
+                        client_email: sa.client_email.clone(),
+                        project_id: sa.quota_project_id.clone(),
+                    })
+                }
+                ServiceAccountImpersonationSourceCredentials::User(user) => Some(CredentialsInfo {
+                    client_email: user.client_id.clone(),
+                    project_id: user.quota_project_id.clone(),
+                }),
+            },
+        }
+    }
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub struct CredentialsInfo {
+    pub client_email: String,
+    pub project_id: Option<String>,
 }
 
 #[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]

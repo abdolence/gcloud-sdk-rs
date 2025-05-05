@@ -2876,6 +2876,10 @@ pub struct GetTestEnvironmentCatalogRequest {
     /// For authorization, the cloud project requesting the TestEnvironmentCatalog.
     #[prost(string, tag = "2")]
     pub project_id: ::prost::alloc::string::String,
+    /// Optional. Whether to include viewable only models in the response. This is
+    /// only applicable for Android models.
+    #[prost(bool, tag = "4")]
+    pub include_viewable_models: bool,
 }
 /// Nested message and enum types in `GetTestEnvironmentCatalogRequest`.
 pub mod get_test_environment_catalog_request {
@@ -3067,6 +3071,53 @@ pub struct AndroidModel {
     /// Output only. Lab info of this device.
     #[prost(message, optional, tag = "26")]
     pub lab_info: ::core::option::Option<LabInfo>,
+    /// Reasons for access denial. This model is accessible if this list is empty,
+    /// otherwise the model is viewable only.
+    #[prost(enumeration = "android_model::AccessDeniedReason", repeated, tag = "33")]
+    pub access_denied_reasons: ::prost::alloc::vec::Vec<i32>,
+}
+/// Nested message and enum types in `AndroidModel`.
+pub mod android_model {
+    /// Reason for access denial.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AccessDeniedReason {
+        /// Do not use. For proto versioning only.
+        Unspecified = 0,
+        /// The model is for viewing purposes only. Access and utilization require
+        /// acceptance of an End User License Agreement (EULA).
+        EulaNotAccepted = 1,
+    }
+    impl AccessDeniedReason {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ACCESS_DENIED_REASON_UNSPECIFIED",
+                Self::EulaNotAccepted => "EULA_NOT_ACCEPTED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ACCESS_DENIED_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "EULA_NOT_ACCEPTED" => Some(Self::EulaNotAccepted),
+                _ => None,
+            }
+        }
+    }
 }
 /// A version of the Android OS.
 #[derive(Clone, PartialEq, ::prost::Message)]

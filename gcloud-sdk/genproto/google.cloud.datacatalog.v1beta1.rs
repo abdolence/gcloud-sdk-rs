@@ -86,7 +86,7 @@ pub struct SystemTimestamps {
 pub struct GcsFilesetSpec {
     /// Required. Patterns to identify a set of files in Google Cloud Storage.
     /// See [Cloud Storage
-    /// documentation](<https://cloud.google.com/storage/docs/gsutil/addlhelp/WildcardNames>)
+    /// documentation](<https://cloud.google.com/storage/docs/wildcards>)
     /// for more information. Note that bucket wildcards are currently not
     /// supported.
     ///
@@ -1008,7 +1008,7 @@ pub mod lookup_entry_request {
         ///    * `bigquery.dataset.project_id.dataset_id`
         ///    * `datacatalog.entry.project_id.location_id.entry_group_id.entry_id`
         ///
-        /// `*_id`s should satisfy the standard SQL rules for identifiers.
+        /// `*_id`s should satisfy the GoogleSQL rules for identifiers.
         /// <https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical.>
         #[prost(string, tag = "3")]
         SqlResource(::prost::alloc::string::String),

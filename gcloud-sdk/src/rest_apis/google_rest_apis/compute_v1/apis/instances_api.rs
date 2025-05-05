@@ -328,6 +328,7 @@ pub struct ComputePeriodInstancesPeriodDetachDiskParams {
     pub user_ip: Option<String>,
     /// An optional request ID to identify requests. Specify a unique request ID so that if you must retry your request, the server will know to ignore the request if it has already been completed. For example, consider a situation where you make an initial request and the request times out. If you make the request again with the same request ID, the server can check if original operation with the same request ID was received, and if so, will ignore the second request. This prevents clients from accidentally creating duplicate commitments. The request ID must be a valid UUID with the exception that zero UUID is not supported ( 00000000-0000-0000-0000-000000000000).
     pub request_id: Option<String>,
+    pub body: Option<serde_json::Value>,
 }
 
 /// struct for passing parameters to the method [`compute_instances_get`]
@@ -3098,6 +3099,7 @@ pub async fn compute_instances_detach_disk(
     let upload_type = params.upload_type;
     let user_ip = params.user_ip;
     let request_id = params.request_id;
+    let body = params.body;
 
     let local_var_client = &local_var_configuration.client;
 
@@ -3173,6 +3175,7 @@ pub async fn compute_instances_detach_disk(
     if let Some(ref local_var_token) = local_var_configuration.oauth_access_token {
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };
+    local_var_req_builder = local_var_req_builder.json(&body);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;

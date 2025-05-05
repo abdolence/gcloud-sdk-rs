@@ -5164,6 +5164,8 @@ pub mod target_frequency_time_unit_enum {
         Unknown = 1,
         /// Optimize bidding to reach Target Frequency in a week.
         Weekly = 2,
+        /// Optimize bidding to reach Target Frequency in a month.
+        Monthly = 3,
     }
     impl TargetFrequencyTimeUnit {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -5175,6 +5177,7 @@ pub mod target_frequency_time_unit_enum {
                 Self::Unspecified => "UNSPECIFIED",
                 Self::Unknown => "UNKNOWN",
                 Self::Weekly => "WEEKLY",
+                Self::Monthly => "MONTHLY",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5183,6 +5186,7 @@ pub mod target_frequency_time_unit_enum {
                 "UNSPECIFIED" => Some(Self::Unspecified),
                 "UNKNOWN" => Some(Self::Unknown),
                 "WEEKLY" => Some(Self::Weekly),
+                "MONTHLY" => Some(Self::Monthly),
                 _ => None,
             }
         }
@@ -5367,6 +5371,8 @@ pub mod advertising_channel_sub_type_enum {
         VideoReachTargetFrequency = 19,
         /// Travel Activities campaigns.
         TravelActivities = 20,
+        /// YouTube Audio campaigns.
+        YoutubeAudio = 22,
     }
     impl AdvertisingChannelSubType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -5397,6 +5403,7 @@ pub mod advertising_channel_sub_type_enum {
                 }
                 Self::VideoReachTargetFrequency => "VIDEO_REACH_TARGET_FREQUENCY",
                 Self::TravelActivities => "TRAVEL_ACTIVITIES",
+                Self::YoutubeAudio => "YOUTUBE_AUDIO",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5426,6 +5433,7 @@ pub mod advertising_channel_sub_type_enum {
                 }
                 "VIDEO_REACH_TARGET_FREQUENCY" => Some(Self::VideoReachTargetFrequency),
                 "TRAVEL_ACTIVITIES" => Some(Self::TravelActivities),
+                "YOUTUBE_AUDIO" => Some(Self::YoutubeAudio),
                 _ => None,
             }
         }
@@ -11357,6 +11365,8 @@ pub mod ad_group_type_enum {
         SmartCampaignAds = 18,
         /// Ad group type for Travel campaigns.
         TravelAds = 19,
+        /// Ad group type for YouTube Audio campaigns.
+        YoutubeAudio = 20,
     }
     impl AdGroupType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -11383,6 +11393,7 @@ pub mod ad_group_type_enum {
                 Self::VideoEfficientReach => "VIDEO_EFFICIENT_REACH",
                 Self::SmartCampaignAds => "SMART_CAMPAIGN_ADS",
                 Self::TravelAds => "TRAVEL_ADS",
+                Self::YoutubeAudio => "YOUTUBE_AUDIO",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -11408,6 +11419,7 @@ pub mod ad_group_type_enum {
                 "VIDEO_EFFICIENT_REACH" => Some(Self::VideoEfficientReach),
                 "SMART_CAMPAIGN_ADS" => Some(Self::SmartCampaignAds),
                 "TRAVEL_ADS" => Some(Self::TravelAds),
+                "YOUTUBE_AUDIO" => Some(Self::YoutubeAudio),
                 _ => None,
             }
         }
@@ -11552,6 +11564,55 @@ pub mod ad_strength_enum {
         }
     }
 }
+/// Container for enumeration of ad strength action item types.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct AdStrengthActionItemTypeEnum {}
+/// Nested message and enum types in `AdStrengthActionItemTypeEnum`.
+pub mod ad_strength_action_item_type_enum {
+    /// Enumerates ad strength action item types.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AdStrengthActionItemType {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// This action item suggests adding an asset to the asset group.
+        AddAsset = 2,
+    }
+    impl AdStrengthActionItemType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::AddAsset => "ADD_ASSET",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ADD_ASSET" => Some(Self::AddAsset),
+                _ => None,
+            }
+        }
+    }
+}
 /// Container for enum describing possible types of an ad.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AdTypeEnum {}
@@ -11640,6 +11701,8 @@ pub mod ad_type_enum {
         DemandGenVideoResponsiveAd = 42,
         /// Demand Gen product ad.
         DemandGenProductAd = 39,
+        /// YouTube Audio ad.
+        YoutubeAudioAd = 44,
     }
     impl AdType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -11681,6 +11744,7 @@ pub mod ad_type_enum {
                 Self::TravelAd => "TRAVEL_AD",
                 Self::DemandGenVideoResponsiveAd => "DEMAND_GEN_VIDEO_RESPONSIVE_AD",
                 Self::DemandGenProductAd => "DEMAND_GEN_PRODUCT_AD",
+                Self::YoutubeAudioAd => "YOUTUBE_AUDIO_AD",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -11725,6 +11789,7 @@ pub mod ad_type_enum {
                     Some(Self::DemandGenVideoResponsiveAd)
                 }
                 "DEMAND_GEN_PRODUCT_AD" => Some(Self::DemandGenProductAd),
+                "YOUTUBE_AUDIO_AD" => Some(Self::YoutubeAudioAd),
                 _ => None,
             }
         }
@@ -12249,6 +12314,64 @@ pub mod asset_automation_type_enum {
         }
     }
 }
+/// Container for enum describing possible ad strength video aspect ratio
+/// requirements.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct AssetCoverageVideoAspectRatioRequirementEnum {}
+/// Nested message and enum types in `AssetCoverageVideoAspectRatioRequirementEnum`.
+pub mod asset_coverage_video_aspect_ratio_requirement_enum {
+    /// Enum describing possible ad strength video aspect ratio requirements.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AssetCoverageVideoAspectRatioRequirement {
+        /// Not specified.
+        Unspecified = 0,
+        /// The received value is not known in this version.
+        Unknown = 1,
+        /// The video requires a horizontal aspect ratio.
+        Horizontal = 2,
+        /// The video requires a square aspect ratio.
+        Square = 3,
+        /// The video requires a vertical aspect ratio.
+        Vertical = 4,
+    }
+    impl AssetCoverageVideoAspectRatioRequirement {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::Horizontal => "HORIZONTAL",
+                Self::Square => "SQUARE",
+                Self::Vertical => "VERTICAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "HORIZONTAL" => Some(Self::Horizontal),
+                "SQUARE" => Some(Self::Square),
+                "VERTICAL" => Some(Self::Vertical),
+                _ => None,
+            }
+        }
+    }
+}
 /// Container for enum describing the possible placements of an asset.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AssetFieldTypeEnum {}
@@ -12332,6 +12455,8 @@ pub mod asset_field_type_enum {
         DemandGenCarouselCard = 30,
         /// The asset is linked for use as a Business Message.
         BusinessMessage = 31,
+        /// The asset is linked for use as a tall portrait marketing image.
+        TallPortraitMarketingImage = 32,
     }
     impl AssetFieldType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -12371,6 +12496,7 @@ pub mod asset_field_type_enum {
                 Self::HotelProperty => "HOTEL_PROPERTY",
                 Self::DemandGenCarouselCard => "DEMAND_GEN_CAROUSEL_CARD",
                 Self::BusinessMessage => "BUSINESS_MESSAGE",
+                Self::TallPortraitMarketingImage => "TALL_PORTRAIT_MARKETING_IMAGE",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -12407,6 +12533,7 @@ pub mod asset_field_type_enum {
                 "HOTEL_PROPERTY" => Some(Self::HotelProperty),
                 "DEMAND_GEN_CAROUSEL_CARD" => Some(Self::DemandGenCarouselCard),
                 "BUSINESS_MESSAGE" => Some(Self::BusinessMessage),
+                "TALL_PORTRAIT_MARKETING_IMAGE" => Some(Self::TallPortraitMarketingImage),
                 _ => None,
             }
         }
@@ -15727,6 +15854,8 @@ pub mod change_status_resource_type_enum {
         Campaign = 6,
         /// A CampaignCriterion resource change.
         CampaignCriterion = 7,
+        /// A CampaignBudget resource change.
+        CampaignBudget = 8,
         /// A Feed resource change.
         Feed = 9,
         /// A FeedItem resource change.
@@ -15753,6 +15882,10 @@ pub mod change_status_resource_type_enum {
         CombinedAudience = 20,
         /// An AssetGroup resource change.
         AssetGroup = 21,
+        /// An AssetSet resource change.
+        AssetSet = 22,
+        /// A CampaignAssetSet resource change.
+        CampaignAssetSet = 23,
     }
     impl ChangeStatusResourceType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -15768,6 +15901,7 @@ pub mod change_status_resource_type_enum {
                 Self::AdGroupCriterion => "AD_GROUP_CRITERION",
                 Self::Campaign => "CAMPAIGN",
                 Self::CampaignCriterion => "CAMPAIGN_CRITERION",
+                Self::CampaignBudget => "CAMPAIGN_BUDGET",
                 Self::Feed => "FEED",
                 Self::FeedItem => "FEED_ITEM",
                 Self::AdGroupFeed => "AD_GROUP_FEED",
@@ -15781,6 +15915,8 @@ pub mod change_status_resource_type_enum {
                 Self::AdGroupAsset => "AD_GROUP_ASSET",
                 Self::CombinedAudience => "COMBINED_AUDIENCE",
                 Self::AssetGroup => "ASSET_GROUP",
+                Self::AssetSet => "ASSET_SET",
+                Self::CampaignAssetSet => "CAMPAIGN_ASSET_SET",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -15793,6 +15929,7 @@ pub mod change_status_resource_type_enum {
                 "AD_GROUP_CRITERION" => Some(Self::AdGroupCriterion),
                 "CAMPAIGN" => Some(Self::Campaign),
                 "CAMPAIGN_CRITERION" => Some(Self::CampaignCriterion),
+                "CAMPAIGN_BUDGET" => Some(Self::CampaignBudget),
                 "FEED" => Some(Self::Feed),
                 "FEED_ITEM" => Some(Self::FeedItem),
                 "AD_GROUP_FEED" => Some(Self::AdGroupFeed),
@@ -15806,6 +15943,8 @@ pub mod change_status_resource_type_enum {
                 "AD_GROUP_ASSET" => Some(Self::AdGroupAsset),
                 "COMBINED_AUDIENCE" => Some(Self::CombinedAudience),
                 "ASSET_GROUP" => Some(Self::AssetGroup),
+                "ASSET_SET" => Some(Self::AssetSet),
+                "CAMPAIGN_ASSET_SET" => Some(Self::CampaignAssetSet),
                 _ => None,
             }
         }
@@ -16365,6 +16504,61 @@ pub mod conversion_custom_variable_status_enum {
                 "ACTIVATION_NEEDED" => Some(Self::ActivationNeeded),
                 "ENABLED" => Some(Self::Enabled),
                 "PAUSED" => Some(Self::Paused),
+                _ => None,
+            }
+        }
+    }
+}
+/// Container for enumeration of conversion customer types.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ConversionCustomerTypeEnum {}
+/// Nested message and enum types in `ConversionCustomerTypeEnum`.
+pub mod conversion_customer_type_enum {
+    /// Enumerates conversion customer types.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ConversionCustomerType {
+        /// Not specified.
+        Unspecified = 0,
+        /// The value is unknown in this version.
+        Unknown = 1,
+        /// Converting user is new to the advertiser.
+        New = 2,
+        /// Converting user is returning to the advertiser. Definition of returning
+        /// differs among conversion types, such as a second store visit versus a
+        /// second online purchase.
+        Returning = 3,
+    }
+    impl ConversionCustomerType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::New => "NEW",
+                Self::Returning => "RETURNING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "NEW" => Some(Self::New),
+                "RETURNING" => Some(Self::Returning),
                 _ => None,
             }
         }
@@ -17831,6 +18025,120 @@ pub mod data_link_type_enum {
                 "UNSPECIFIED" => Some(Self::Unspecified),
                 "UNKNOWN" => Some(Self::Unknown),
                 "VIDEO" => Some(Self::Video),
+                _ => None,
+            }
+        }
+    }
+}
+/// Container for the channel config enum.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct DemandGenChannelConfigEnum {}
+/// Nested message and enum types in `DemandGenChannelConfigEnum`.
+pub mod demand_gen_channel_config_enum {
+    /// This value indicates which field within the 'oneof' group (where only one
+    /// option can be active) is used in the channel controls for a Demand Gen ad
+    /// group.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DemandGenChannelConfig {
+        /// Not specified.
+        Unspecified = 0,
+        /// The value is unknown in this version.
+        Unknown = 1,
+        /// The channel controls configuration uses a general channel strategy;
+        /// individual channels are not configured separately.
+        ChannelStrategy = 2,
+        /// The channel controls configuration explicitly defines the selected
+        /// channels.
+        SelectedChannels = 3,
+    }
+    impl DemandGenChannelConfig {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::ChannelStrategy => "CHANNEL_STRATEGY",
+                Self::SelectedChannels => "SELECTED_CHANNELS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CHANNEL_STRATEGY" => Some(Self::ChannelStrategy),
+                "SELECTED_CHANNELS" => Some(Self::SelectedChannels),
+                _ => None,
+            }
+        }
+    }
+}
+/// Container for the channel strategy enum.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct DemandGenChannelStrategyEnum {}
+/// Nested message and enum types in `DemandGenChannelStrategyEnum`.
+pub mod demand_gen_channel_strategy_enum {
+    /// The channel strategy defines a general grouping of channels to enable in
+    /// the Demand Gen channel controls.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DemandGenChannelStrategy {
+        /// Not specified.
+        Unspecified = 0,
+        /// The value is unknown in this version.
+        Unknown = 1,
+        /// All channels are enabled.
+        AllChannels = 2,
+        /// All Google-owned and operated channels are enabled; third-party channels
+        /// (e.g., Display) are disabled.
+        AllOwnedAndOperatedChannels = 3,
+    }
+    impl DemandGenChannelStrategy {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::AllChannels => "ALL_CHANNELS",
+                Self::AllOwnedAndOperatedChannels => "ALL_OWNED_AND_OPERATED_CHANNELS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "ALL_CHANNELS" => Some(Self::AllChannels),
+                "ALL_OWNED_AND_OPERATED_CHANNELS" => {
+                    Some(Self::AllOwnedAndOperatedChannels)
+                }
                 _ => None,
             }
         }
@@ -20139,6 +20447,71 @@ pub mod local_services_insurance_rejection_reason_enum {
         }
     }
 }
+/// Container for enum describing possible credit issuance decisions for a lead.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct LocalServicesLeadCreditIssuanceDecisionEnum {}
+/// Nested message and enum types in `LocalServicesLeadCreditIssuanceDecisionEnum`.
+pub mod local_services_lead_credit_issuance_decision_enum {
+    /// Decision of bonus credit issued or rejected.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CreditIssuanceDecision {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Bonus credit is issued successfully and bonus credit cap has not reached
+        /// the threshold after issuing this bonus credit.
+        SuccessNotReachedThreshold = 2,
+        /// Bonus credit is issued successfully and bonus credit cap has reached the
+        /// threshold after issuing this bonus credit.
+        SuccessReachedThreshold = 3,
+        /// Bonus credit is not issued because the provider has reached the bonus
+        /// credit cap.
+        FailOverThreshold = 4,
+        /// Bonus credit is not issued because this lead is not eligible for bonus
+        /// credit.
+        FailNotEligible = 5,
+    }
+    impl CreditIssuanceDecision {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::SuccessNotReachedThreshold => "SUCCESS_NOT_REACHED_THRESHOLD",
+                Self::SuccessReachedThreshold => "SUCCESS_REACHED_THRESHOLD",
+                Self::FailOverThreshold => "FAIL_OVER_THRESHOLD",
+                Self::FailNotEligible => "FAIL_NOT_ELIGIBLE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "SUCCESS_NOT_REACHED_THRESHOLD" => Some(Self::SuccessNotReachedThreshold),
+                "SUCCESS_REACHED_THRESHOLD" => Some(Self::SuccessReachedThreshold),
+                "FAIL_OVER_THRESHOLD" => Some(Self::FailOverThreshold),
+                "FAIL_NOT_ELIGIBLE" => Some(Self::FailNotEligible),
+                _ => None,
+            }
+        }
+    }
+}
 /// Container for enum describing possible credit states of a lead.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct LocalServicesCreditStateEnum {}
@@ -20265,6 +20638,212 @@ pub mod local_services_lead_status_enum {
                 "DISABLED" => Some(Self::Disabled),
                 "CONSUMER_DECLINED" => Some(Self::ConsumerDeclined),
                 "WIPED_OUT" => Some(Self::WipedOut),
+                _ => None,
+            }
+        }
+    }
+}
+/// Container for enum describing possible survey answers for a lead.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct LocalServicesLeadSurveyAnswerEnum {}
+/// Nested message and enum types in `LocalServicesLeadSurveyAnswerEnum`.
+pub mod local_services_lead_survey_answer_enum {
+    /// Survey answer for Local Services Ads Lead.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SurveyAnswer {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Very satisfied with the lead.
+        VerySatisfied = 2,
+        /// Satisfied with the lead.
+        Satisfied = 3,
+        /// Neutral with the lead.
+        Neutral = 4,
+        /// Dissatisfied with the lead.
+        Dissatisfied = 5,
+        /// Very dissatisfied with the lead.
+        VeryDissatisfied = 6,
+    }
+    impl SurveyAnswer {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::VerySatisfied => "VERY_SATISFIED",
+                Self::Satisfied => "SATISFIED",
+                Self::Neutral => "NEUTRAL",
+                Self::Dissatisfied => "DISSATISFIED",
+                Self::VeryDissatisfied => "VERY_DISSATISFIED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "VERY_SATISFIED" => Some(Self::VerySatisfied),
+                "SATISFIED" => Some(Self::Satisfied),
+                "NEUTRAL" => Some(Self::Neutral),
+                "DISSATISFIED" => Some(Self::Dissatisfied),
+                "VERY_DISSATISFIED" => Some(Self::VeryDissatisfied),
+                _ => None,
+            }
+        }
+    }
+}
+/// Container for enum describing possible survey dissatisfied reasons for a
+/// lead.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct LocalServicesLeadSurveyDissatisfiedReasonEnum {}
+/// Nested message and enum types in `LocalServicesLeadSurveyDissatisfiedReasonEnum`.
+pub mod local_services_lead_survey_dissatisfied_reason_enum {
+    /// Provider's reason for not being satisfied with the lead.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SurveyDissatisfiedReason {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Other reasons.
+        OtherDissatisfiedReason = 2,
+        /// Lead was for a service that does not match the business' service area.
+        GeoMismatch = 3,
+        /// Lead was for a service that is not offered by the business.
+        JobTypeMismatch = 4,
+        /// Lead was by a customer that was not ready to book.
+        NotReadyToBook = 5,
+        /// Lead was a spam. Example: lead was from a bot, silent called, scam, etc.
+        Spam = 6,
+        /// Lead was a duplicate of another lead that is, customer contacted the
+        /// business more than once.
+        Duplicate = 7,
+        /// Lead due to solicitation. Example: a person trying to get a job or
+        /// selling a product, etc.
+        Solicitation = 8,
+    }
+    impl SurveyDissatisfiedReason {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::OtherDissatisfiedReason => "OTHER_DISSATISFIED_REASON",
+                Self::GeoMismatch => "GEO_MISMATCH",
+                Self::JobTypeMismatch => "JOB_TYPE_MISMATCH",
+                Self::NotReadyToBook => "NOT_READY_TO_BOOK",
+                Self::Spam => "SPAM",
+                Self::Duplicate => "DUPLICATE",
+                Self::Solicitation => "SOLICITATION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "OTHER_DISSATISFIED_REASON" => Some(Self::OtherDissatisfiedReason),
+                "GEO_MISMATCH" => Some(Self::GeoMismatch),
+                "JOB_TYPE_MISMATCH" => Some(Self::JobTypeMismatch),
+                "NOT_READY_TO_BOOK" => Some(Self::NotReadyToBook),
+                "SPAM" => Some(Self::Spam),
+                "DUPLICATE" => Some(Self::Duplicate),
+                "SOLICITATION" => Some(Self::Solicitation),
+                _ => None,
+            }
+        }
+    }
+}
+/// Container for enum describing possible survey satisfied reasons for a lead.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct LocalServicesLeadSurveySatisfiedReasonEnum {}
+/// Nested message and enum types in `LocalServicesLeadSurveySatisfiedReasonEnum`.
+pub mod local_services_lead_survey_satisfied_reason_enum {
+    /// Provider's reason for being satisfied with the lead.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SurveySatisfiedReason {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Other reasons.
+        OtherSatisfiedReason = 2,
+        /// Lead converted into a booked customer or client.
+        BookedCustomer = 3,
+        /// Lead could convert into a booked customer or client soon.
+        LikelyBookedCustomer = 4,
+        /// Lead was related to the services the business offers.
+        ServiceRelated = 5,
+        /// Lead was for a service that generates high value for the business.
+        HighValueService = 6,
+    }
+    impl SurveySatisfiedReason {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::OtherSatisfiedReason => "OTHER_SATISFIED_REASON",
+                Self::BookedCustomer => "BOOKED_CUSTOMER",
+                Self::LikelyBookedCustomer => "LIKELY_BOOKED_CUSTOMER",
+                Self::ServiceRelated => "SERVICE_RELATED",
+                Self::HighValueService => "HIGH_VALUE_SERVICE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "OTHER_SATISFIED_REASON" => Some(Self::OtherSatisfiedReason),
+                "BOOKED_CUSTOMER" => Some(Self::BookedCustomer),
+                "LIKELY_BOOKED_CUSTOMER" => Some(Self::LikelyBookedCustomer),
+                "SERVICE_RELATED" => Some(Self::ServiceRelated),
+                "HIGH_VALUE_SERVICE" => Some(Self::HighValueService),
                 _ => None,
             }
         }
@@ -22191,6 +22770,72 @@ pub mod reach_plan_age_range_enum {
         }
     }
 }
+/// Container for enum describing the type of model used to create a conversion
+/// rate suggestion for a supported ad product.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ReachPlanConversionRateModelEnum {}
+/// Nested message and enum types in `ReachPlanConversionRateModelEnum`.
+pub mod reach_plan_conversion_rate_model_enum {
+    /// Types of models used to create conversion rate suggestions.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ReachPlanConversionRateModel {
+        /// Not specified.
+        Unspecified = 0,
+        /// The value is unknown in this version.
+        Unknown = 1,
+        /// Suggested conversion rate for the authenticated customer based on the
+        /// previous 70 days.
+        CustomerHistory = 2,
+        /// Suggested conversion rate based on an aggressive rate for the entire
+        /// inventory.
+        InventoryAggressive = 3,
+        /// Suggested conversion rate based on a conservative rate for the entire
+        /// inventory.
+        InventoryConservative = 4,
+        /// Suggested conversion rate based on the median rate for the entire
+        /// inventory.
+        InventoryMedian = 5,
+    }
+    impl ReachPlanConversionRateModel {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::CustomerHistory => "CUSTOMER_HISTORY",
+                Self::InventoryAggressive => "INVENTORY_AGGRESSIVE",
+                Self::InventoryConservative => "INVENTORY_CONSERVATIVE",
+                Self::InventoryMedian => "INVENTORY_MEDIAN",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CUSTOMER_HISTORY" => Some(Self::CustomerHistory),
+                "INVENTORY_AGGRESSIVE" => Some(Self::InventoryAggressive),
+                "INVENTORY_CONSERVATIVE" => Some(Self::InventoryConservative),
+                "INVENTORY_MEDIAN" => Some(Self::InventoryMedian),
+                _ => None,
+            }
+        }
+    }
+}
 /// Container for enum describing plannable networks.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ReachPlanNetworkEnum {}
@@ -22278,6 +22923,10 @@ pub mod reach_plan_surface_enum {
         Unspecified = 0,
         /// The value is unknown in this version.
         Unknown = 1,
+        /// Discover feed ad surface.
+        DiscoverFeed = 7,
+        /// Gmail ad surface.
+        Gmail = 8,
         /// In-Feed ad surface.
         InFeed = 2,
         /// In-Stream bumper ad surface.
@@ -22298,6 +22947,8 @@ pub mod reach_plan_surface_enum {
             match self {
                 Self::Unspecified => "UNSPECIFIED",
                 Self::Unknown => "UNKNOWN",
+                Self::DiscoverFeed => "DISCOVER_FEED",
+                Self::Gmail => "GMAIL",
                 Self::InFeed => "IN_FEED",
                 Self::InStreamBumper => "IN_STREAM_BUMPER",
                 Self::InStreamNonSkippable => "IN_STREAM_NON_SKIPPABLE",
@@ -22310,6 +22961,8 @@ pub mod reach_plan_surface_enum {
             match value {
                 "UNSPECIFIED" => Some(Self::Unspecified),
                 "UNKNOWN" => Some(Self::Unknown),
+                "DISCOVER_FEED" => Some(Self::DiscoverFeed),
+                "GMAIL" => Some(Self::Gmail),
                 "IN_FEED" => Some(Self::InFeed),
                 "IN_STREAM_BUMPER" => Some(Self::InStreamBumper),
                 "IN_STREAM_NON_SKIPPABLE" => Some(Self::InStreamNonSkippable),

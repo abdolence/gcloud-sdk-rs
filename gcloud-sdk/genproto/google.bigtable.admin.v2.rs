@@ -693,6 +693,9 @@ pub struct LogicalView {
     /// a mismatched etag.
     #[prost(string, tag = "3")]
     pub etag: ::prost::alloc::string::String,
+    /// Optional. Set to true to make the LogicalView protected against deletion.
+    #[prost(bool, tag = "6")]
+    pub deletion_protection: bool,
 }
 /// A materialized view object that can be referenced in SQL queries.
 #[derive(Clone, PartialEq, ::prost::Message)]

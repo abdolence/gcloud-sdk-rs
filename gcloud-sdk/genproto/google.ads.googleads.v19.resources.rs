@@ -1049,6 +1049,11 @@ pub struct AdGroup {
         tag = "63"
     )]
     pub primary_status_reasons: ::prost::alloc::vec::Vec<i32>,
+    /// Settings for Demand Gen ad groups.
+    #[prost(message, optional, tag = "91")]
+    pub demand_gen_ad_group_settings: ::core::option::Option<
+        ad_group::DemandGenAdGroupSettings,
+    >,
 }
 /// Nested message and enum types in `AdGroup`.
 pub mod ad_group {
@@ -1060,6 +1065,77 @@ pub mod ad_group {
         /// instead.
         #[prost(bool, tag = "1")]
         pub use_audience_grouped: bool,
+    }
+    /// Settings for Demand Gen ad groups.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct DemandGenAdGroupSettings {
+        /// Channel controls for Demand Gen ad groups.
+        #[prost(message, optional, tag = "1")]
+        pub channel_controls: ::core::option::Option<
+            demand_gen_ad_group_settings::DemandGenChannelControls,
+        >,
+    }
+    /// Nested message and enum types in `DemandGenAdGroupSettings`.
+    pub mod demand_gen_ad_group_settings {
+        /// Channel controls for Demand Gen ad groups.
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct DemandGenChannelControls {
+            /// Output only. Channel configuration reflecting which field in the oneof
+            /// is populated.
+            #[prost(
+                enumeration = "super::super::super::enums::demand_gen_channel_config_enum::DemandGenChannelConfig",
+                tag = "1"
+            )]
+            pub channel_config: i32,
+            /// Oneof between the different channel control configuration options.
+            #[prost(
+                oneof = "demand_gen_channel_controls::ChannelConfiguration",
+                tags = "2, 3"
+            )]
+            pub channel_configuration: ::core::option::Option<
+                demand_gen_channel_controls::ChannelConfiguration,
+            >,
+        }
+        /// Nested message and enum types in `DemandGenChannelControls`.
+        pub mod demand_gen_channel_controls {
+            /// Explicitly selected channels for channel controls in Demand Gen ad
+            /// groups.
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+            pub struct DemandGenSelectedChannels {
+                /// Whether to enable ads on the YouTube In-Stream channel.
+                #[prost(bool, tag = "1")]
+                pub youtube_in_stream: bool,
+                /// Whether to enable ads on the YouTube In-Feed channel.
+                #[prost(bool, tag = "2")]
+                pub youtube_in_feed: bool,
+                /// Whether to enable ads on the YouTube Shorts channel.
+                #[prost(bool, tag = "3")]
+                pub youtube_shorts: bool,
+                /// Whether to enable ads on the Discover channel.
+                #[prost(bool, tag = "4")]
+                pub discover: bool,
+                /// Whether to enable ads on the Gmail channel.
+                #[prost(bool, tag = "5")]
+                pub gmail: bool,
+                /// Whether to enable ads on the Display channel.
+                #[prost(bool, tag = "6")]
+                pub display: bool,
+            }
+            /// Oneof between the different channel control configuration options.
+            #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+            pub enum ChannelConfiguration {
+                /// High level channel strategy.
+                #[prost(
+                    enumeration = "super::super::super::super::enums::demand_gen_channel_strategy_enum::DemandGenChannelStrategy",
+                    tag = "2"
+                )]
+                ChannelStrategy(i32),
+                /// Explicitly selected channels. This field should be set with at
+                /// least one true value when present.
+                #[prost(message, tag = "3")]
+                SelectedChannels(DemandGenSelectedChannels),
+            }
+        }
     }
 }
 /// An ad group ad.
@@ -2387,6 +2463,63 @@ pub struct AssetGroup {
     /// Output only. Overall ad strength of this asset group.
     #[prost(enumeration = "super::enums::ad_strength_enum::AdStrength", tag = "10")]
     pub ad_strength: i32,
+    /// Output only. The asset coverage of this asset group.
+    #[prost(message, optional, tag = "13")]
+    pub asset_coverage: ::core::option::Option<AssetCoverage>,
+}
+/// Information about the asset coverage of an asset group.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssetCoverage {
+    /// Output only. A list of action items to improve the ad strength of an asset
+    /// group.
+    #[prost(message, repeated, tag = "1")]
+    pub ad_strength_action_items: ::prost::alloc::vec::Vec<AdStrengthActionItem>,
+}
+/// An action item to improve the ad strength of an asset group.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct AdStrengthActionItem {
+    /// Output only. The action item type.
+    #[prost(
+        enumeration = "super::enums::ad_strength_action_item_type_enum::AdStrengthActionItemType",
+        tag = "1"
+    )]
+    pub action_item_type: i32,
+    /// The details of this action item.
+    #[prost(oneof = "ad_strength_action_item::ActionDetails", tags = "2")]
+    pub action_details: ::core::option::Option<ad_strength_action_item::ActionDetails>,
+}
+/// Nested message and enum types in `AdStrengthActionItem`.
+pub mod ad_strength_action_item {
+    /// The details of the asset to add.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct AddAssetDetails {
+        /// Output only. The asset field type of the asset(s) to add.
+        #[prost(
+            enumeration = "super::super::enums::asset_field_type_enum::AssetFieldType",
+            tag = "1"
+        )]
+        pub asset_field_type: i32,
+        /// Output only. The number of assets to add.
+        #[prost(int32, optional, tag = "2")]
+        pub asset_count: ::core::option::Option<i32>,
+        /// Output only. For video field types, the required aspect ratio of the
+        /// video. When unset and asset_field_type is YOUTUBE_VIDEO, the system
+        /// recommends the advertiser upload any YouTube video, regardless of aspect
+        /// ratio.
+        #[prost(
+            enumeration = "super::super::enums::asset_coverage_video_aspect_ratio_requirement_enum::AssetCoverageVideoAspectRatioRequirement",
+            optional,
+            tag = "3"
+        )]
+        pub video_aspect_ratio_requirement: ::core::option::Option<i32>,
+    }
+    /// The details of this action item.
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    pub enum ActionDetails {
+        /// Output only. The action item details for action item type ADD_ASSET.
+        #[prost(message, tag = "2")]
+        AddAssetDetails(AddAssetDetails),
+    }
 }
 /// AssetGroupAsset is the link between an asset and an asset group.
 /// Adding an AssetGroupAsset links an asset with an asset group.
@@ -2740,7 +2873,7 @@ pub mod asset_group_signal {
         SearchTheme(super::super::common::SearchThemeInfo),
     }
 }
-/// A view on the usage of ad group ad asset combination.
+/// A view on the usage of asset group asset top combinations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetGroupTopCombinationView {
     /// Output only. The resource name of the asset group top combination view.
@@ -3008,7 +3141,8 @@ pub mod batch_job {
         pub execution_limit_seconds: ::core::option::Option<i32>,
     }
 }
-/// Represents a bidding data exclusion. Cannot be used in manager accounts.
+/// Represents a bidding data exclusion. Bidding data exclusions can be set in
+/// client accounts only, and cannot be used in manager accounts.
 ///
 /// See "About data exclusions" at
 /// <https://support.google.com/google-ads/answer/10370710.>
@@ -3625,6 +3759,9 @@ pub struct Campaign {
     /// Settings for Video campaign.
     #[prost(message, optional, tag = "94")]
     pub video_campaign_settings: ::core::option::Option<campaign::VideoCampaignSettings>,
+    /// Settings for Performance Max campaign.
+    #[prost(message, optional, tag = "97")]
+    pub pmax_campaign_settings: ::core::option::Option<campaign::PmaxCampaignSettings>,
     /// Settings for Real-Time Bidding, a feature only available for campaigns
     /// targeting the Ad Exchange network.
     #[prost(message, optional, tag = "39")]
@@ -4146,6 +4283,25 @@ pub mod campaign {
             /// Determine if VideoResponsiveAds can be used as shorts format.
             #[prost(bool, optional, tag = "3")]
             pub allow_shorts: ::core::option::Option<bool>,
+        }
+    }
+    /// Settings for Performance Max campaigns.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct PmaxCampaignSettings {
+        /// Overrides of brand targeting for various ad types.
+        #[prost(message, optional, tag = "1")]
+        pub brand_targeting_overrides: ::core::option::Option<
+            pmax_campaign_settings::BrandTargetingOverrides,
+        >,
+    }
+    /// Nested message and enum types in `PmaxCampaignSettings`.
+    pub mod pmax_campaign_settings {
+        /// Overrides of brand targeting for various ad types.
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct BrandTargetingOverrides {
+            /// If true, brand exclusions are ignored for Shopping ads.
+            #[prost(bool, optional, tag = "1")]
+            pub ignore_exclusions_for_shopping_ads: ::core::option::Option<bool>,
         }
     }
     /// Asset automation setting contains pair of AssetAutomationType and the
@@ -4956,7 +5112,7 @@ pub struct CampaignSharedSet {
 /// * SHOPPING - TARGET_ROAS - UNIFORM
 /// * MULTI_CHANNEL - TARGET_CPA - UNIFORM
 /// * MULTI_CHANNEL - TARGET_ROAS - UNIFORM
-/// * DISCOVERY - TARGET_CPA - DEFAULT
+/// * DEMAND_GEN - TARGET_CPA - DEFAULT
 /// * DISPLAY - TARGET_CPA - UNIFORM
 /// * PERFORMANCE_MAX - TARGET_CPA - UNIFORM
 /// * PERFORMANCE_MAX - TARGET_ROAS - UNIFORM
@@ -5279,6 +5435,9 @@ pub struct ChangeStatus {
     /// Output only. The AssetGroup affected by this change.
     #[prost(string, tag = "41")]
     pub asset_group: ::prost::alloc::string::String,
+    /// Output only. The CampaignBudget affected by this change.
+    #[prost(string, tag = "42")]
+    pub campaign_budget: ::prost::alloc::string::String,
 }
 /// A channel-level aggregate asset view that shows where the asset is linked,
 /// performamce of the asset and stats.
@@ -6134,7 +6293,7 @@ pub struct Customer {
     /// operation.
     #[prost(message, optional, tag = "10")]
     pub call_reporting_setting: ::core::option::Option<CallReportingSetting>,
-    /// Output only. Conversion tracking setting for a customer.
+    /// Immutable. Conversion tracking setting for a customer.
     #[prost(message, optional, tag = "14")]
     pub conversion_tracking_setting: ::core::option::Option<ConversionTrackingSetting>,
     /// Output only. Remarketing setting for a customer.
@@ -6268,8 +6427,8 @@ pub struct ConversionTrackingSetting {
     /// inherited from the manager. This field is read-only.
     #[prost(bool, tag = "7")]
     pub enhanced_conversions_for_leads_enabled: bool,
-    /// Output only. The resource name of the customer where conversions are
-    /// created and managed. This field is read-only.
+    /// Immutable. The resource name of the customer where conversions are created
+    /// and managed. This field is read-only.
     #[prost(string, tag = "8")]
     pub google_ads_conversion_customer: ::prost::alloc::string::String,
 }
@@ -8448,6 +8607,9 @@ pub struct LocalServicesLead {
     /// Output only. Credit details of the lead.
     #[prost(message, optional, tag = "12")]
     pub credit_details: ::core::option::Option<CreditDetails>,
+    /// Output only. True if the advertiser submitted feedback for the lead.
+    #[prost(bool, tag = "13")]
+    pub lead_feedback_submitted: bool,
 }
 /// Fields containing consumer contact details.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -10175,6 +10337,12 @@ pub mod recommendation {
         /// Output only. The asset group resource name.
         #[prost(string, tag = "1")]
         pub asset_group: ::prost::alloc::string::String,
+        /// Output only. The current ad strength score of the asset group.
+        #[prost(
+            enumeration = "super::super::enums::ad_strength_enum::AdStrength",
+            tag = "2"
+        )]
+        pub ad_strength: i32,
     }
     /// The Dynamic Search Ads to Performance Max migration recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -11131,7 +11299,8 @@ pub struct UserList {
     /// Number of days a user's cookie stays on your list since its most recent
     /// addition to the list. This field must be between 0 and 540 inclusive.
     /// However, for CRM based userlists, this field can be set to 10000 which
-    /// means no expiration.
+    /// means no expiration. Beginning on April 7, 2025, using a value of 10000 to
+    /// indicate no expiration will no longer be supported.
     ///
     /// This field is ignored for logical_user_list and rule_based_user_list types.
     /// Membership to lists of these types depends on the rules defined by the

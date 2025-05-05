@@ -605,6 +605,9 @@ pub struct InFeedVideoAdInfo {
     )]
     pub thumbnail: i32,
 }
+/// Representation of YouTube Audio ad format.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct YouTubeAudioAdInfo {}
 /// A video ad.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoAdInfo {
@@ -612,7 +615,7 @@ pub struct VideoAdInfo {
     #[prost(message, optional, tag = "8")]
     pub video: ::core::option::Option<AdVideoAsset>,
     /// Format-specific schema for the different video formats.
-    #[prost(oneof = "video_ad_info::Format", tags = "2, 3, 4, 5, 9")]
+    #[prost(oneof = "video_ad_info::Format", tags = "2, 3, 4, 5, 9, 10")]
     pub format: ::core::option::Option<video_ad_info::Format>,
 }
 /// Nested message and enum types in `VideoAdInfo`.
@@ -635,6 +638,9 @@ pub mod video_ad_info {
         /// In-feed video ad format.
         #[prost(message, tag = "9")]
         InFeed(super::InFeedVideoAdInfo),
+        /// YouTube Audio ad format.
+        #[prost(message, tag = "10")]
+        Audio(super::YouTubeAudioAdInfo),
     }
 }
 /// A video responsive ad.
@@ -4869,6 +4875,10 @@ pub struct Metrics {
     /// Number of in-app actions.
     #[prost(double, optional, tag = "255")]
     pub biddable_app_post_install_conversions: ::core::option::Option<f64>,
+    /// Participated in-app actions. The number of in app actions that come
+    /// directly or indirectly from the campaign.
+    #[prost(double, optional, tag = "378")]
+    pub biddable_cohort_app_post_install_conversions: ::core::option::Option<f64>,
     /// An indication on how other advertisers' Shopping ads for similar products
     /// are performing based on how often people who see their ad click on it.
     #[prost(double, optional, tag = "211")]
@@ -5899,6 +5909,20 @@ pub struct Metrics {
     /// potentially lead to video views for in shorts formats.
     #[prost(double, optional, tag = "369")]
     pub video_view_rate_shorts: ::core::option::Option<f64>,
+    /// All co-viewed impressions represent the total number of people who saw your
+    /// ad. This includes people who are signed into their Google Account, as well
+    /// as other people who are watching the same ad on a connected TV. This metric
+    /// is only available for the Campaign resource with adjusted_age_range and
+    /// adjusted_gender segments. These segmentations are mandatory to get the
+    /// all coviewed impressions.
+    #[prost(int64, optional, tag = "380")]
+    pub coviewed_impressions: ::core::option::Option<i64>,
+    /// Primary impression is counted each time your ad is served. This metric is
+    /// only available for the Campaign resource with adjusted_age_range and
+    /// adjusted_gender segments. These segmentations are mandatory to get the
+    /// primary impressions.
+    #[prost(int64, optional, tag = "381")]
+    pub primary_impressions: ::core::option::Option<i64>,
 }
 /// Search volume range.
 /// Actual search volume falls within this range.
@@ -6762,6 +6786,23 @@ pub struct Segments {
         tag = "160"
     )]
     pub new_versus_returning_customers: i32,
+    /// Adjusted age range. This is the age range of the user after applying
+    /// modeling to get more accurate age and gender information. Currently, both
+    /// adjusted_age_range and adjusted_gender need to be selected together to get
+    /// valid reach stats. These segmentations are only available for allowlisted
+    /// customers.
+    #[prost(
+        enumeration = "super::enums::age_range_type_enum::AgeRangeType",
+        tag = "196"
+    )]
+    pub adjusted_age_range: i32,
+    /// Adjusted gender. This is the gender of the user after applying modeling to
+    /// get more accurate age and gender information. Currently, both
+    /// adjusted_age_range and adjusted_gender need to be selected together to get
+    /// valid reach stats. These segmentations are only available for allowlisted
+    /// customers.
+    #[prost(enumeration = "super::enums::gender_type_enum::GenderType", tag = "197")]
+    pub adjusted_gender: i32,
 }
 /// A Keyword criterion segment.
 #[derive(Clone, PartialEq, ::prost::Message)]

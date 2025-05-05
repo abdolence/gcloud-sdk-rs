@@ -486,7 +486,7 @@ pub struct Rule {
     #[prost(message, optional, tag = "1")]
     pub condition: ::core::option::Option<Condition>,
     /// An action must be provided.
-    #[prost(oneof = "rule::Action", tags = "2, 3, 6, 7, 8, 9, 10, 11, 12, 13")]
+    #[prost(oneof = "rule::Action", tags = "2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14")]
     pub action: ::core::option::Option<rule::Action>,
 }
 /// Nested message and enum types in `Rule`.
@@ -738,6 +738,49 @@ pub mod rule {
         #[prost(string, repeated, tag = "1")]
         pub attribute_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
+    /// Pins one or more specified products to a specific position in the
+    /// results.
+    ///
+    /// * Rule Condition:
+    ///    Must specify non-empty
+    ///    [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms]
+    ///    (for search only) or
+    ///    [Condition.page_categories][google.cloud.retail.v2beta.Condition.page_categories]
+    ///    (for browse only), but can't specify both.
+    ///
+    /// * Action Input: mapping of `\[pin_position, product_id\]` pairs (pin position
+    /// uses 1-based indexing).
+    ///
+    /// * Action Result: Will pin products with matching ids to the position
+    /// specified in the final result order.
+    ///
+    /// Example: Suppose the query is `shoes`, the
+    /// [Condition.query_terms][google.cloud.retail.v2beta.Condition.query_terms]
+    /// is `shoes` and the pin_map has `{1, "pid1"}`, then product with `pid1` will
+    /// be pinned to the top position in the final results.
+    ///
+    /// If multiple PinActions are matched to a single request the actions will
+    /// be processed from most to least recently updated.
+    ///
+    /// Pins to positions larger than the max allowed page size of 120 are not
+    /// allowed.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PinAction {
+        /// Required. A map of positions to product_ids.
+        ///
+        /// Partial matches per action are allowed, if a certain position in the map
+        /// is already filled that `\[position, product_id\]` pair will be ignored
+        /// but the rest may still be applied. This case will only occur if multiple
+        /// pin actions are matched to a single request, as the map guarantees that
+        /// pin positions are unique within the same action.
+        ///
+        /// Duplicate product_ids are not permitted within a single pin map.
+        ///
+        /// The max size of this map is 120, equivalent to the max [request page
+        /// size](<https://cloud.google.com/retail/docs/reference/rest/v2/projects.locations.catalogs.placements/search#request-body>).
+        #[prost(map = "int64, string", tag = "1")]
+        pub pin_map: ::std::collections::HashMap<i64, ::prost::alloc::string::String>,
+    }
     /// An action must be provided.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Action {
@@ -772,6 +815,10 @@ pub mod rule {
         /// Remove an attribute as a facet in the request (if present).
         #[prost(message, tag = "13")]
         RemoveFacetAction(RemoveFacetAction),
+        /// Pins one or more specified products to a specific position in the
+        /// results.
+        #[prost(message, tag = "14")]
+        PinAction(PinAction),
     }
 }
 /// An intended audience of the [Product][google.cloud.retail.v2beta.Product] for
@@ -813,9 +860,9 @@ pub struct Audience {
 pub struct ColorInfo {
     /// The standard color families. Strongly recommended to use the following
     /// standard color groups: "Red", "Pink", "Orange", "Yellow", "Purple",
-    /// "Green", "Cyan", "Blue", "Brown", "White", "Gray", "Black" and
-    /// "Mixed". Normally it is expected to have only 1 color family. May consider
-    /// using single "Mixed" instead of multiple values.
+    /// "Green", "Cyan", "Blue", "Brown", "White", "Gray", "Black" and "Mixed".
+    /// Normally it is expected to have only 1 color family. May consider using
+    /// single "Mixed" instead of multiple values.
     ///
     /// A maximum of 5 values are allowed. Each value must be a UTF-8 encoded
     /// string with a length limit of 128 characters. Otherwise, an
@@ -824,6 +871,10 @@ pub struct ColorInfo {
     /// Google Merchant Center property
     /// [color](<https://support.google.com/merchants/answer/6324487>). Schema.org
     /// property [Product.color](<https://schema.org/color>).
+    ///
+    /// The colorFamilies field as a system attribute is not a required field but
+    /// strongly recommended to be specified. Google Search models treat this field
+    /// as more important than a custom product attribute when specified.
     #[prost(string, repeated, tag = "1")]
     pub color_families: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The color display names, which may be different from standard color family
@@ -942,9 +993,10 @@ pub struct FulfillmentInfo {
     pub place_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// [Product][google.cloud.retail.v2beta.Product] image. Recommendations AI and
-/// Retail Search do not use product images to improve prediction and search
-/// results. However, product images can be returned in results, and are shown in
-/// prediction or search previews in the console.
+/// Retail Search use product images to improve prediction and search results.
+/// Product images can be returned in results, and are shown in prediction or
+/// search previews in the console. Please try to provide correct product images
+/// and avoid using images with size too small.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Image {
     /// Required. URI of the image.
@@ -1193,9 +1245,7 @@ pub struct UserInfo {
     /// is set.
     #[prost(string, tag = "2")]
     pub ip_address: ::prost::alloc::string::String,
-    /// User agent as included in the HTTP header. Required for getting
-    /// [SearchResponse.sponsored_results][google.cloud.retail.v2beta.SearchResponse.sponsored_results].
-    ///
+    /// User agent as included in the HTTP header.
     /// The field must be a UTF-8 encoded string with a length limit of 1,000
     /// characters. Otherwise, an INVALID_ARGUMENT error is returned.
     ///
@@ -1223,17 +1273,17 @@ pub struct UserInfo {
 /// by a place ID.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocalInventory {
-    /// The place ID for the current set of inventory information.
+    /// Optional. The place ID for the current set of inventory information.
     #[prost(string, tag = "1")]
     pub place_id: ::prost::alloc::string::String,
-    /// Product price and cost information.
+    /// Optional. Product price and cost information.
     ///
     /// Google Merchant Center property
     /// [price](<https://support.google.com/merchants/answer/6324371>).
     #[prost(message, optional, tag = "2")]
     pub price_info: ::core::option::Option<PriceInfo>,
-    /// Additional local inventory attributes, for example, store name, promotion
-    /// tags, etc.
+    /// Optional. Additional local inventory attributes, for example, store name,
+    /// promotion tags, etc.
     ///
     /// This field needs to pass all below criteria, otherwise an INVALID_ARGUMENT
     /// error is returned:
@@ -1255,7 +1305,7 @@ pub struct LocalInventory {
         ::prost::alloc::string::String,
         CustomAttribute,
     >,
-    /// Input only. Supported fulfillment types. Valid fulfillment type values
+    /// Optional. Supported fulfillment types. Valid fulfillment type values
     /// include commonly used types (such as pickup in store and same day
     /// delivery), and custom types. Customers have to map custom types to their
     /// display names before rendering UI.
@@ -1280,6 +1330,34 @@ pub struct LocalInventory {
     #[prost(string, repeated, tag = "4")]
     pub fulfillment_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Metadata for pinning to be returned in the response.
+/// This is used for distinguishing between applied vs dropped pins.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PinControlMetadata {
+    /// Map of all matched pins, keyed by pin position.
+    #[prost(map = "int64, message", tag = "1")]
+    pub all_matched_pins: ::std::collections::HashMap<
+        i64,
+        pin_control_metadata::ProductPins,
+    >,
+    /// Map of pins that were dropped due to overlap with other matching pins,
+    /// keyed by pin position.
+    #[prost(map = "int64, message", tag = "2")]
+    pub dropped_pins: ::std::collections::HashMap<
+        i64,
+        pin_control_metadata::ProductPins,
+    >,
+}
+/// Nested message and enum types in `PinControlMetadata`.
+pub mod pin_control_metadata {
+    /// List of product ids which have associated pins.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ProductPins {
+        /// List of product ids which have associated pins.
+        #[prost(string, repeated, tag = "1")]
+        pub product_id: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+}
 /// At which level we offer configuration for attributes.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -1291,7 +1369,7 @@ pub enum AttributeConfigLevel {
     /// [Product.attributes][google.cloud.retail.v2beta.Product.attributes].
     ProductLevelAttributeConfig = 1,
     /// At this level, we honor the attribute configurations set in
-    /// [CatalogConfig.attribute_configs][].
+    /// `CatalogConfig.attribute_configs`.
     CatalogLevelAttributeConfig = 2,
 }
 impl AttributeConfigLevel {
@@ -1861,7 +1939,6 @@ pub struct Product {
     /// * [name][google.cloud.retail.v2beta.Product.name]
     /// * [color_info][google.cloud.retail.v2beta.Product.color_info]
     ///
-    ///
     /// Note: Returning more fields in
     /// [SearchResponse][google.cloud.retail.v2beta.SearchResponse] can increase
     /// response payload size and serving latency.
@@ -2087,8 +2164,6 @@ pub struct UserEvent {
     ///    viewed.
     /// * `detail-page-view`: Products detail page viewed.
     /// * `home-page-view`: Homepage viewed.
-    /// * `promotion-offered`: Promotion is offered to a user.
-    /// * `promotion-not-offered`: Promotion is not offered to a user.
     /// * `purchase-complete`: User finishing a purchase.
     /// * `search`: Product search.
     /// * `shopping-cart-page-view`: User viewing a shopping cart.
@@ -2506,9 +2581,6 @@ pub mod big_query_source {
     #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Partition {
         /// BigQuery time partitioned table's _PARTITIONDATE in YYYY-MM-DD format.
-        ///
-        /// Only supported in
-        /// [ImportProductsRequest][google.cloud.retail.v2beta.ImportProductsRequest].
         #[prost(message, tag = "6")]
         PartitionDate(super::super::super::super::r#type::Date),
     }
@@ -2922,8 +2994,8 @@ pub struct CatalogAttribute {
     ///
     /// [CatalogAttribute][google.cloud.retail.v2beta.CatalogAttribute] can be
     /// pre-loaded by using
-    /// [CatalogService.AddCatalogAttribute][google.cloud.retail.v2beta.CatalogService.AddCatalogAttribute],
-    /// [CatalogService.ImportCatalogAttributes][], or
+    /// [CatalogService.AddCatalogAttribute][google.cloud.retail.v2beta.CatalogService.AddCatalogAttribute]
+    /// or
     /// [CatalogService.UpdateAttributesConfig][google.cloud.retail.v2beta.CatalogService.UpdateAttributesConfig]
     /// APIs. This field is `False` for pre-loaded
     /// [CatalogAttribute][google.cloud.retail.v2beta.CatalogAttribute]s.
@@ -4042,14 +4114,15 @@ pub mod catalog_service_client {
         ///
         /// Using multiple branches can be useful when developers would like
         /// to have a staging branch to test and verify for future usage. When it
-        /// becomes ready, developers switch on the staging branch using this API while
-        /// keeping using `projects/*/locations/*/catalogs/*/branches/default_branch`
-        /// as [SearchRequest.branch][google.cloud.retail.v2beta.SearchRequest.branch]
-        /// to route the traffic to this staging branch.
+        /// becomes ready, developers switch on the staging branch using this API
+        /// while keeping using
+        /// `projects/*/locations/*/catalogs/*/branches/default_branch` as
+        /// [SearchRequest.branch][google.cloud.retail.v2beta.SearchRequest.branch] to
+        /// route the traffic to this staging branch.
         ///
         /// CAUTION: If you have live predict/search traffic, switching the default
-        /// branch could potentially cause outages if the ID space of the new branch is
-        /// very different from the old one.
+        /// branch could potentially cause outages if the ID space of the new branch
+        /// is very different from the old one.
         ///
         /// More specifically:
         ///
@@ -4400,7 +4473,7 @@ pub struct CompleteQueryRequest {
     /// The maximum number of allowed characters is 255.
     #[prost(string, tag = "2")]
     pub query: ::prost::alloc::string::String,
-    /// Required field. A unique identifier for tracking visitors. For example,
+    /// Recommended field. A unique identifier for tracking visitors. For example,
     /// this could be implemented with an HTTP cookie, which should be able to
     /// uniquely identify a visitor on a single device. This unique identifier
     /// should not change if the visitor logs in or out of the website.
@@ -4439,10 +4512,11 @@ pub struct CompleteQueryRequest {
     #[prost(string, tag = "4")]
     pub device_type: ::prost::alloc::string::String,
     /// Determines which dataset to use for fetching completion. "user-data" will
-    /// use the imported dataset through
+    /// use the dataset imported through
     /// [CompletionService.ImportCompletionData][google.cloud.retail.v2beta.CompletionService.ImportCompletionData].
-    /// "cloud-retail" will use the dataset generated by cloud retail based on user
-    /// events. If leave empty, it will use the "user-data".
+    /// `cloud-retail` will use the dataset generated by Cloud Retail based on user
+    /// events. If left empty, completions will be fetched from the `user-data`
+    /// dataset.
     ///
     /// Current supported values:
     ///
@@ -4463,7 +4537,7 @@ pub struct CompleteQueryRequest {
     pub max_suggestions: i32,
     /// If true, attribute suggestions are enabled and provided in the response.
     ///
-    /// This field is only available for the "cloud-retail" dataset.
+    /// This field is only available for the `cloud-retail` dataset.
     #[prost(bool, tag = "9")]
     pub enable_attribute_suggestions: bool,
     /// The entity for customers who run multiple entities, domains, sites, or
@@ -4471,7 +4545,12 @@ pub struct CompleteQueryRequest {
     /// `google.com`, `youtube.com`, etc.
     /// If this is set, it must be an exact match with
     /// [UserEvent.entity][google.cloud.retail.v2beta.UserEvent.entity] to get
-    /// per-entity autocomplete results.
+    /// per-entity autocomplete results. This field will be applied to
+    /// `completion_results` only. It has no effect on the `attribute_results`.
+    /// Also, this entity should be limited to 256 characters, if too long, it will
+    /// be truncated to 256 characters in both generation and serving time, and may
+    /// lead to mis-match. To ensure it works, please set the entity with string
+    /// within 256 characters.
     #[prost(string, tag = "10")]
     pub entity: ::prost::alloc::string::String,
 }
@@ -4517,7 +4596,7 @@ pub struct CompleteQueryResponse {
         complete_query_response::RecentSearchResult,
     >,
     /// A map of matched attribute suggestions. This field is only available for
-    /// "cloud-retail" dataset.
+    /// `cloud-retail` dataset.
     ///
     /// Current supported keys:
     ///
@@ -4540,10 +4619,10 @@ pub mod complete_query_response {
         pub suggestion: ::prost::alloc::string::String,
         /// Custom attributes for the suggestion term.
         ///
-        /// * For "user-data", the attributes are additional custom attributes
+        /// * For `user-data`, the attributes are additional custom attributes
         /// ingested through BigQuery.
         ///
-        /// * For "cloud-retail", the attributes are product attributes generated
+        /// * For `cloud-retail`, the attributes are product attributes generated
         /// by Cloud Retail. It requires
         /// [UserEvent.product_details][google.cloud.retail.v2beta.UserEvent.product_details]
         /// is imported properly.
@@ -4561,9 +4640,9 @@ pub mod complete_query_response {
         pub recent_search: ::prost::alloc::string::String,
     }
     /// Resource that represents attribute results.
-    /// The list of suggestions for the attribute.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AttributeResult {
+        /// The list of suggestions for the attribute.
         #[prost(string, repeated, tag = "1")]
         pub suggestions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
@@ -5065,6 +5144,27 @@ pub struct SearchRequest {
     /// Optional. This field specifies tile navigation related parameters.
     #[prost(message, optional, tag = "41")]
     pub tile_navigation_spec: ::core::option::Option<search_request::TileNavigationSpec>,
+    /// Optional. The BCP-47 language code, such as "en-US" or "sr-Latn"
+    /// [list](<https://www.unicode.org/cldr/charts/46/summary/root.html>). For more
+    /// information, see [Standardized codes](<https://google.aip.dev/143>). This
+    /// field helps to better interpret the query. If a value isn't specified, the
+    /// query language code is automatically detected, which may not be accurate.
+    #[prost(string, tag = "43")]
+    pub language_code: ::prost::alloc::string::String,
+    /// Optional. The Unicode country/region code (CLDR) of a location, such as
+    /// "US" and "419"
+    /// [list](<https://www.unicode.org/cldr/charts/46/supplemental/territory_information.html>).
+    /// For more information, see [Standardized codes](<https://google.aip.dev/143>).
+    /// If set, then results will be boosted based on the region_code provided.
+    #[prost(string, tag = "44")]
+    pub region_code: ::prost::alloc::string::String,
+    /// Optional. An id corresponding to a place, such as a store id or region id.
+    /// When specified, we use the price from the local inventory with the matching
+    /// product's
+    /// [LocalInventory.place_id][google.cloud.retail.v2beta.LocalInventory.place_id]
+    /// for revenue optimization.
+    #[prost(string, tag = "46")]
+    pub place_id: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `SearchRequest`.
 pub mod search_request {
@@ -5082,7 +5182,6 @@ pub mod search_request {
         #[prost(int32, tag = "2")]
         pub limit: i32,
         /// List of keys to exclude when faceting.
-        ///
         ///
         /// By default,
         /// [FacetKey.key][google.cloud.retail.v2beta.SearchRequest.FacetSpec.FacetKey.key]
@@ -5368,7 +5467,7 @@ pub mod search_request {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BoostSpec {
         /// Condition boost specifications. If a product matches multiple conditions
-        /// in the specifictions, boost scores from these specifications are all
+        /// in the specifications, boost scores from these specifications are all
         /// applied and combined in a non-linear way. Maximum number of
         /// specifications is 20.
         #[prost(message, repeated, tag = "1")]
@@ -5679,9 +5778,14 @@ pub mod search_request {
         /// navigation.
         #[prost(bool, tag = "1")]
         pub tile_navigation_requested: bool,
-        /// This field specifies the tiles which are already clicked in client side.
-        /// NOTE: This field is not being used for filtering search products. Client
-        /// side should also put all the applied tiles in
+        /// This optional field specifies the tiles which are already clicked in
+        /// client side. While the feature works without this field set, particularly
+        /// for an initial query, it is highly recommended to set this field because
+        /// it can improve the quality of the search response and removes possible
+        /// duplicate tiles.
+        ///
+        /// NOTE: This field is not being used for filtering search
+        /// products. Client side should also put all the applied tiles in
         /// [SearchRequest.filter][google.cloud.retail.v2beta.SearchRequest.filter].
         #[prost(message, repeated, tag = "2")]
         pub applied_tiles: ::prost::alloc::vec::Vec<super::Tile>,
@@ -5807,6 +5911,14 @@ pub struct SearchResponse {
     /// [controls](<https://cloud.google.com/retail/docs/serving-control-rules>).
     #[prost(string, repeated, tag = "12")]
     pub applied_controls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Metadata for pin controls which were applicable to the request.
+    /// This contains two map fields, one for all matched pins and one for pins
+    /// which were matched but not applied.
+    ///
+    /// The two maps are keyed by pin position, and the values are the product ids
+    /// which were matched to that pin.
+    #[prost(message, optional, tag = "22")]
+    pub pin_control_metadata: ::core::option::Option<PinControlMetadata>,
     /// The invalid
     /// [SearchRequest.BoostSpec.condition_boost_specs][google.cloud.retail.v2beta.SearchRequest.BoostSpec.condition_boost_specs]
     /// that are not applied during serving.
@@ -5814,7 +5926,7 @@ pub struct SearchResponse {
     pub invalid_condition_boost_specs: ::prost::alloc::vec::Vec<
         search_request::boost_spec::ConditionBoostSpec,
     >,
-    /// Metadata related to A/B testing [Experiment][] associated with this
+    /// Metadata related to A/B testing experiment associated with this
     /// response. Only exists when an experiment is triggered.
     #[prost(message, repeated, tag = "17")]
     pub experiment_info: ::prost::alloc::vec::Vec<ExperimentInfo>,
@@ -6078,7 +6190,7 @@ pub mod search_response {
         pub tiles: ::prost::alloc::vec::Vec<super::Tile>,
     }
 }
-/// Metadata for active A/B testing [Experiment][].
+/// Metadata for active A/B testing experiment.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExperimentInfo {
     /// The fully qualified resource name of the experiment that provides the
@@ -6102,7 +6214,7 @@ pub mod experiment_info {
         #[prost(string, tag = "1")]
         pub original_serving_config: ::prost::alloc::string::String,
         /// The fully qualified resource name of the serving config
-        /// [Experiment.VariantArm.serving_config_id][] responsible for generating
+        /// `Experiment.VariantArm.serving_config_id` responsible for generating
         /// the search response. For example:
         /// `projects/*/locations/*/catalogs/*/servingConfigs/*`.
         #[prost(string, tag = "2")]
@@ -7063,7 +7175,6 @@ pub struct Model {
     /// Currently supported values: `recommended-for-you`, `others-you-may-like`,
     /// `frequently-bought-together`, `page-optimization`, `similar-items`,
     /// `buy-it-again`, `on-sale-items`, and `recently-viewed`(readonly value).
-    ///
     ///
     /// This field together with
     /// [optimization_objective][google.cloud.retail.v2beta.Model.optimization_objective]
@@ -9855,7 +9966,7 @@ pub struct ServingConfig {
     /// Required when
     /// [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
     /// is
-    /// [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+    /// [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
     #[prost(string, tag = "3")]
     pub model_id: ::prost::alloc::string::String,
     /// How much price ranking we want in serving results.
@@ -9876,7 +9987,7 @@ pub struct ServingConfig {
     /// Can only be set if
     /// [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
     /// is
-    /// [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+    /// [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
     #[prost(string, tag = "4")]
     pub price_reranking_level: ::prost::alloc::string::String,
     /// Facet specifications for faceted search. If empty, no facets are returned.
@@ -9890,7 +10001,7 @@ pub struct ServingConfig {
     /// Can only be set if
     /// [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
     /// is
-    /// [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
+    /// [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH].
     #[prost(string, repeated, tag = "5")]
     pub facet_control_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The specification for dynamically generated facets. Notice that only
@@ -9899,7 +10010,7 @@ pub struct ServingConfig {
     /// Can only be set if
     /// [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
     /// is
-    /// [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
+    /// [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH].
     #[prost(message, optional, tag = "6")]
     pub dynamic_facet_spec: ::core::option::Option<search_request::DynamicFacetSpec>,
     /// Condition boost specifications. If a product matches multiple conditions
@@ -9918,7 +10029,7 @@ pub struct ServingConfig {
     /// Can only be set if
     /// [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
     /// is
-    /// [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
+    /// [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH].
     #[prost(string, repeated, tag = "7")]
     pub boost_control_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Condition filter specifications. If a product matches multiple conditions
@@ -9929,7 +10040,7 @@ pub struct ServingConfig {
     /// Can only be set if
     /// [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
     /// is
-    /// [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
+    /// [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH].
     #[prost(string, repeated, tag = "9")]
     pub filter_control_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Condition redirect specifications. Only the first triggered redirect action
@@ -9939,7 +10050,7 @@ pub struct ServingConfig {
     /// Can only be set if
     /// [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
     /// is
-    /// [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
+    /// [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH].
     #[prost(string, repeated, tag = "10")]
     pub redirect_control_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Condition synonyms specifications. If multiple syonyms conditions match,
@@ -9950,7 +10061,7 @@ pub struct ServingConfig {
     /// Can only be set if
     /// [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
     /// is
-    /// [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
+    /// [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH].
     #[prost(string, repeated, tag = "18")]
     pub twoway_synonyms_control_ids: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
@@ -9963,7 +10074,7 @@ pub struct ServingConfig {
     /// Can only be set if
     /// [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
     /// is
-    /// [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
+    /// [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH].
     #[prost(string, repeated, tag = "12")]
     pub oneway_synonyms_control_ids: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
@@ -9977,7 +10088,7 @@ pub struct ServingConfig {
     /// Can only be set if
     /// [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
     /// is
-    /// [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
+    /// [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH].
     #[prost(string, repeated, tag = "13")]
     pub do_not_associate_control_ids: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
@@ -9990,7 +10101,7 @@ pub struct ServingConfig {
     /// Can only be set if
     /// [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
     /// is
-    /// [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
+    /// [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH].
     #[prost(string, repeated, tag = "14")]
     pub replacement_control_ids: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
@@ -10004,7 +10115,7 @@ pub struct ServingConfig {
     /// Can only be set if
     /// [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
     /// is
-    /// [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
+    /// [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH].
     #[prost(string, repeated, tag = "15")]
     pub ignore_control_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// How much diversity to use in recommendation model results e.g.
@@ -10022,7 +10133,7 @@ pub struct ServingConfig {
     /// Can only be set if
     /// [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
     /// is
-    /// [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+    /// [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
     #[prost(string, tag = "8")]
     pub diversity_level: ::prost::alloc::string::String,
     /// What kind of diversity to use - data driven or rule based. If unset, the
@@ -10044,7 +10155,7 @@ pub struct ServingConfig {
     /// Can only be set if
     /// [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
     /// is
-    /// [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+    /// [SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
     #[prost(string, tag = "16")]
     pub enable_category_filter_level: ::prost::alloc::string::String,
     /// When the flag is enabled, the products in the denylist will not be filtered
@@ -10056,7 +10167,7 @@ pub struct ServingConfig {
     /// Can only be set if
     /// [solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types]
     /// is
-    /// [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH].
+    /// [SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH].
     ///
     /// Notice that if both
     /// [ServingConfig.personalization_spec][google.cloud.retail.v2beta.ServingConfig.personalization_spec]
@@ -10785,8 +10896,10 @@ pub mod user_event_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Writes a single user event from the browser. This uses a GET request to
-        /// due to browser restriction of POST-ing to a 3rd party domain.
+        /// Writes a single user event from the browser.
+        ///
+        /// For larger user event payload over 16 KB, the POST method should be used
+        /// instead, otherwise a 400 Bad Request error is returned.
         ///
         /// This method is used only by the Retail API JavaScript pixel and Google Tag
         /// Manager. Users should not call this method directly.

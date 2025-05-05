@@ -40,17 +40,18 @@ pub struct Instance {
     /// Optional. Number of shards for the instance.
     #[prost(int32, tag = "11")]
     pub shard_count: i32,
-    /// Output only. Endpoints clients can connect to the instance through.
-    /// Currently only one discovery endpoint is supported.
+    /// Output only. Deprecated: Use the endpoints.connections.psc_auto_connection
+    /// or endpoints.connections.psc_connection values instead.
+    #[deprecated]
     #[prost(message, repeated, tag = "12")]
     pub discovery_endpoints: ::prost::alloc::vec::Vec<DiscoveryEndpoint>,
-    /// Optional. Immutable. Machine type for individual nodes of the instance.
+    /// Optional. Machine type for individual nodes of the instance.
     #[prost(enumeration = "instance::NodeType", tag = "13")]
     pub node_type: i32,
     /// Optional. Persistence configuration of the instance.
     #[prost(message, optional, tag = "14")]
     pub persistence_config: ::core::option::Option<PersistenceConfig>,
-    /// Optional. Immutable. Engine version of the instance.
+    /// Optional. Engine version of the instance.
     #[prost(string, tag = "15")]
     pub engine_version: ::prost::alloc::string::String,
     /// Optional. User-provided engine configurations for the instance.
@@ -69,21 +70,57 @@ pub struct Instance {
     /// Optional. If set to true deletion of the instance will fail.
     #[prost(bool, optional, tag = "19")]
     pub deletion_protection_enabled: ::core::option::Option<bool>,
-    /// Required. Immutable. User inputs and resource details of the auto-created
-    /// PSC connections.
+    /// Optional. Immutable. Deprecated: Use the
+    /// endpoints.connections.psc_auto_connection value instead.
+    #[deprecated]
     #[prost(message, repeated, tag = "20")]
     pub psc_auto_connections: ::prost::alloc::vec::Vec<PscAutoConnection>,
+    /// Output only. Service attachment details to configure PSC connections.
+    #[prost(message, repeated, tag = "21")]
+    pub psc_attachment_details: ::prost::alloc::vec::Vec<PscAttachmentDetail>,
     /// Optional. Endpoints for the instance.
     #[prost(message, repeated, tag = "25")]
     pub endpoints: ::prost::alloc::vec::Vec<instance::InstanceEndpoint>,
     /// Optional. The mode config for the instance.
     #[prost(enumeration = "instance::Mode", tag = "26")]
     pub mode: i32,
+    /// Optional. Input only. Ondemand maintenance for the instance.
+    #[prost(bool, optional, tag = "28")]
+    pub ondemand_maintenance: ::core::option::Option<bool>,
+    /// Optional. The maintenance policy for the instance. If not provided,
+    /// the maintenance event will be performed based on Memorystore
+    /// internal rollout schedule.
+    #[prost(message, optional, tag = "31")]
+    pub maintenance_policy: ::core::option::Option<MaintenancePolicy>,
+    /// Output only. Published maintenance schedule.
+    #[prost(message, optional, tag = "32")]
+    pub maintenance_schedule: ::core::option::Option<MaintenanceSchedule>,
+    /// Optional. The config for cross instance replication.
+    #[prost(message, optional, tag = "33")]
+    pub cross_instance_replication_config: ::core::option::Option<
+        CrossInstanceReplicationConfig,
+    >,
+    /// Optional. If true, instance endpoints that are created and registered by
+    /// customers can be deleted asynchronously. That is, such an instance endpoint
+    /// can be de-registered before the forwarding rules in the instance endpoint
+    /// are deleted.
+    #[prost(bool, optional, tag = "44")]
+    pub async_instance_endpoints_deletion_enabled: ::core::option::Option<bool>,
+    /// Output only. The backup collection full resource name. Example:
+    /// projects/{project}/locations/{location}/backupCollections/{collection}
+    #[prost(string, optional, tag = "47")]
+    pub backup_collection: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. The automated backup config for the instance.
+    #[prost(message, optional, tag = "48")]
+    pub automated_backup_config: ::core::option::Option<AutomatedBackupConfig>,
+    /// The source to import from.
+    #[prost(oneof = "instance::ImportSources", tags = "23, 24")]
+    pub import_sources: ::core::option::Option<instance::ImportSources>,
 }
 /// Nested message and enum types in `Instance`.
 pub mod instance {
     /// Additional information about the state of the instance.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct StateInfo {
         #[prost(oneof = "state_info::Info", tags = "1")]
         pub info: ::core::option::Option<state_info::Info>,
@@ -91,7 +128,7 @@ pub mod instance {
     /// Nested message and enum types in `StateInfo`.
     pub mod state_info {
         /// Represents information about instance with state UPDATING.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct UpdateInfo {
             /// Output only. Target number of shards for the instance.
             #[prost(int32, optional, tag = "1")]
@@ -99,13 +136,41 @@ pub mod instance {
             /// Output only. Target number of replica nodes per shard for the instance.
             #[prost(int32, optional, tag = "2")]
             pub target_replica_count: ::core::option::Option<i32>,
+            /// Output only. Target engine version for the instance.
+            #[prost(string, optional, tag = "3")]
+            pub target_engine_version: ::core::option::Option<
+                ::prost::alloc::string::String,
+            >,
+            /// Output only. Target node type for the instance.
+            #[prost(enumeration = "super::NodeType", optional, tag = "4")]
+            pub target_node_type: ::core::option::Option<i32>,
         }
-        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Info {
             /// Output only. Describes ongoing update when instance state is UPDATING.
             #[prost(message, tag = "1")]
             UpdateInfo(UpdateInfo),
         }
+    }
+    /// Backups that stored in Cloud Storage buckets.
+    /// The Cloud Storage buckets need to be the same region as the instances.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GcsBackupSource {
+        /// Optional. Example: gs://bucket1/object1, gs://bucket2/folder2/object2
+        #[prost(string, repeated, tag = "1")]
+        pub uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// Backups that generated and managed by memorystore.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ManagedBackupSource {
+        /// Optional. Example:
+        /// //memorystore.googleapis.com/projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup}
+        /// A shorter version (without the prefix) of the backup name is also
+        /// supported, like
+        /// projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup_id}
+        /// In this case, it assumes the backup is under memorystore.googleapis.com.
+        #[prost(string, tag = "1")]
+        pub backup: ::prost::alloc::string::String,
     }
     /// InstanceEndpoint consists of PSC connections that are created
     /// as a group in each VPC network for accessing the instance. In each group,
@@ -133,8 +198,8 @@ pub mod instance {
         /// or it could be created by customer themeslves (user-created connection).
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Connection {
-            /// Detailed information of a PSC connection that is created through
-            /// service connectivity automation.
+            /// Immutable. Detailed information of a PSC connection that is created
+            /// through service connectivity automation.
             #[prost(message, tag = "1")]
             PscAutoConnection(super::super::PscAutoConnection),
             /// Detailed information of a PSC connection that is created by the user.
@@ -379,6 +444,455 @@ pub mod instance {
             }
         }
     }
+    /// The source to import from.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ImportSources {
+        /// Optional. Immutable. Backups that stored in Cloud Storage buckets.
+        /// The Cloud Storage buckets need to be the same region as the instances.
+        /// Read permission is required to import from the provided Cloud Storage
+        /// Objects.
+        #[prost(message, tag = "23")]
+        GcsSource(GcsBackupSource),
+        /// Optional. Immutable. Backups that generated and managed by memorystore
+        /// service.
+        #[prost(message, tag = "24")]
+        ManagedBackupSource(ManagedBackupSource),
+    }
+}
+/// The automated backup config for an instance.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct AutomatedBackupConfig {
+    /// Optional. The automated backup mode. If the mode is disabled, the other
+    /// fields will be ignored.
+    #[prost(enumeration = "automated_backup_config::AutomatedBackupMode", tag = "1")]
+    pub automated_backup_mode: i32,
+    /// Optional. How long to keep automated backups before the backups are
+    /// deleted. The value should be between 1 day and 365 days. If not specified,
+    /// the default value is 35 days.
+    #[prost(message, optional, tag = "3")]
+    pub retention: ::core::option::Option<::prost_types::Duration>,
+    /// The schedule of automated backups.
+    #[prost(oneof = "automated_backup_config::Schedule", tags = "2")]
+    pub schedule: ::core::option::Option<automated_backup_config::Schedule>,
+}
+/// Nested message and enum types in `AutomatedBackupConfig`.
+pub mod automated_backup_config {
+    /// This schedule allows the backup to be triggered at a fixed frequency
+    /// (currently only daily is supported).
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct FixedFrequencySchedule {
+        /// Required. The start time of every automated backup in UTC. It must be set
+        /// to the start of an hour. This field is required.
+        #[prost(message, optional, tag = "2")]
+        pub start_time: ::core::option::Option<
+            super::super::super::super::r#type::TimeOfDay,
+        >,
+    }
+    /// The automated backup mode.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AutomatedBackupMode {
+        /// Default value. Automated backup config is not specified.
+        Unspecified = 0,
+        /// Automated backup config disabled.
+        Disabled = 1,
+        /// Automated backup config enabled.
+        Enabled = 2,
+    }
+    impl AutomatedBackupMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "AUTOMATED_BACKUP_MODE_UNSPECIFIED",
+                Self::Disabled => "DISABLED",
+                Self::Enabled => "ENABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "AUTOMATED_BACKUP_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DISABLED" => Some(Self::Disabled),
+                "ENABLED" => Some(Self::Enabled),
+                _ => None,
+            }
+        }
+    }
+    /// The schedule of automated backups.
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    pub enum Schedule {
+        /// Optional. Trigger automated backups at a fixed frequency.
+        #[prost(message, tag = "2")]
+        FixedFrequencySchedule(FixedFrequencySchedule),
+    }
+}
+/// BackupCollection of an instance.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BackupCollection {
+    /// Identifier. Full resource path of the backup collection.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The instance uid of the backup collection.
+    #[prost(string, tag = "3")]
+    pub instance_uid: ::prost::alloc::string::String,
+    /// Output only. The full resource path of the instance the backup collection
+    /// belongs to. Example:
+    /// projects/{project}/locations/{location}/instances/{instance}
+    #[prost(string, tag = "4")]
+    pub instance: ::prost::alloc::string::String,
+    /// Output only. The KMS key used to encrypt the backups under this backup
+    /// collection.
+    #[prost(string, tag = "5")]
+    pub kms_key: ::prost::alloc::string::String,
+    /// Output only. System assigned unique identifier of the backup collection.
+    #[prost(string, tag = "6")]
+    pub uid: ::prost::alloc::string::String,
+    /// Output only. The time when the backup collection was created.
+    #[prost(message, optional, tag = "7")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Backup of an instance.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Backup {
+    /// Identifier. Full resource path of the backup. the last part of the name is
+    /// the backup id with the following format: \[YYYYMMDDHHMMSS\]_[Shorted Instance
+    /// UID] OR customer specified while backup instance. Example:
+    /// 20240515123000_1234
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The time when the backup was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Instance resource path of this backup.
+    #[prost(string, tag = "3")]
+    pub instance: ::prost::alloc::string::String,
+    /// Output only. Instance uid of this backup.
+    #[prost(string, tag = "4")]
+    pub instance_uid: ::prost::alloc::string::String,
+    /// Output only. Total size of the backup in bytes.
+    #[prost(int64, tag = "5")]
+    pub total_size_bytes: i64,
+    /// Output only. The time when the backup will expire.
+    #[prost(message, optional, tag = "6")]
+    pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. valkey-7.5/valkey-8.0, etc.
+    #[prost(string, tag = "7")]
+    pub engine_version: ::prost::alloc::string::String,
+    /// Output only. List of backup files of the backup.
+    #[prost(message, repeated, tag = "8")]
+    pub backup_files: ::prost::alloc::vec::Vec<BackupFile>,
+    /// Output only. Node type of the instance.
+    #[prost(enumeration = "instance::NodeType", tag = "9")]
+    pub node_type: i32,
+    /// Output only. Number of replicas for the instance.
+    #[prost(int32, tag = "10")]
+    pub replica_count: i32,
+    /// Output only. Number of shards for the instance.
+    #[prost(int32, tag = "11")]
+    pub shard_count: i32,
+    /// Output only. Type of the backup.
+    #[prost(enumeration = "backup::BackupType", tag = "12")]
+    pub backup_type: i32,
+    /// Output only. State of the backup.
+    #[prost(enumeration = "backup::State", tag = "13")]
+    pub state: i32,
+    /// Output only. System assigned unique identifier of the backup.
+    #[prost(string, tag = "15")]
+    pub uid: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `Backup`.
+pub mod backup {
+    /// Type of the backup.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum BackupType {
+        /// The default value, not set.
+        Unspecified = 0,
+        /// On-demand backup.
+        OnDemand = 1,
+        /// Automated backup.
+        Automated = 2,
+    }
+    impl BackupType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "BACKUP_TYPE_UNSPECIFIED",
+                Self::OnDemand => "ON_DEMAND",
+                Self::Automated => "AUTOMATED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BACKUP_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ON_DEMAND" => Some(Self::OnDemand),
+                "AUTOMATED" => Some(Self::Automated),
+                _ => None,
+            }
+        }
+    }
+    /// State of the backup.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The default value, not set.
+        Unspecified = 0,
+        /// The backup is being created.
+        Creating = 1,
+        /// The backup is active to be used.
+        Active = 2,
+        /// The backup is being deleted.
+        Deleting = 3,
+        /// The backup is currently suspended due to reasons like project deletion,
+        /// billing account closure, etc.
+        Suspended = 4,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Active => "ACTIVE",
+                Self::Deleting => "DELETING",
+                Self::Suspended => "SUSPENDED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "ACTIVE" => Some(Self::Active),
+                "DELETING" => Some(Self::Deleting),
+                "SUSPENDED" => Some(Self::Suspended),
+                _ => None,
+            }
+        }
+    }
+}
+/// Backup is consisted of multiple backup files.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BackupFile {
+    /// Output only. e.g: <shard-id>.rdb
+    #[prost(string, tag = "1")]
+    pub file_name: ::prost::alloc::string::String,
+    /// Output only. Size of the backup file in bytes.
+    #[prost(int64, tag = "2")]
+    pub size_bytes: i64,
+    /// Output only. The time when the backup file was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Cross instance replication config.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CrossInstanceReplicationConfig {
+    /// Required. The role of the instance in cross instance replication.
+    #[prost(enumeration = "cross_instance_replication_config::InstanceRole", tag = "1")]
+    pub instance_role: i32,
+    /// Optional. Details of the primary instance that is used as the replication
+    /// source for this secondary instance.
+    ///
+    /// This field is only set for a secondary instance.
+    #[prost(message, optional, tag = "2")]
+    pub primary_instance: ::core::option::Option<
+        cross_instance_replication_config::RemoteInstance,
+    >,
+    /// Optional. List of secondary instances that are replicating from this
+    /// primary instance.
+    ///
+    /// This field is only set for a primary instance.
+    #[prost(message, repeated, tag = "3")]
+    pub secondary_instances: ::prost::alloc::vec::Vec<
+        cross_instance_replication_config::RemoteInstance,
+    >,
+    /// Output only. The last time cross instance replication config was updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. An output only view of all the member instances participating
+    /// in the cross instance replication. This view will be provided by every
+    /// member instance irrespective of its instance role(primary or secondary).
+    ///
+    /// A primary instance can provide information about all the secondary
+    /// instances replicating from it. However, a secondary instance only knows
+    /// about the primary instance from which it is replicating. However, for
+    /// scenarios, where the primary instance is unavailable(e.g. regional outage),
+    /// a Getinstance request can be sent to any other member instance and this
+    /// field will list all the member instances participating in cross instance
+    /// replication.
+    #[prost(message, optional, tag = "5")]
+    pub membership: ::core::option::Option<
+        cross_instance_replication_config::Membership,
+    >,
+}
+/// Nested message and enum types in `CrossInstanceReplicationConfig`.
+pub mod cross_instance_replication_config {
+    /// Details of the remote instance associated with this instance in a cross
+    /// instance replication setup.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RemoteInstance {
+        /// Optional. The full resource path of the remote instance in
+        /// the format: projects/<project>/locations/<region>/instances/<instance-id>
+        #[prost(string, tag = "1")]
+        pub instance: ::prost::alloc::string::String,
+        /// Output only. The unique identifier of the remote instance.
+        #[prost(string, tag = "2")]
+        pub uid: ::prost::alloc::string::String,
+    }
+    /// An output only view of all the member instances participating in the cross
+    /// instance replication.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Membership {
+        /// Output only. The primary instance that acts as the source of replication
+        /// for the secondary instances.
+        #[prost(message, optional, tag = "1")]
+        pub primary_instance: ::core::option::Option<RemoteInstance>,
+        /// Output only. The list of secondary instances replicating from the primary
+        /// instance.
+        #[prost(message, repeated, tag = "2")]
+        pub secondary_instances: ::prost::alloc::vec::Vec<RemoteInstance>,
+    }
+    /// The role of the instance in cross instance replication.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum InstanceRole {
+        /// instance role is not set.
+        /// The behavior is equivalent to NONE.
+        Unspecified = 0,
+        /// This instance does not participate in cross instance replication. It is
+        /// an independent instance and does not replicate to or from any other
+        /// instances.
+        None = 1,
+        /// A instance that allows both reads and writes. Any data written to this
+        /// instance is also replicated to the attached secondary instances.
+        Primary = 2,
+        /// A instance that allows only reads and replicates data from a primary
+        /// instance.
+        Secondary = 3,
+    }
+    impl InstanceRole {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "INSTANCE_ROLE_UNSPECIFIED",
+                Self::None => "NONE",
+                Self::Primary => "PRIMARY",
+                Self::Secondary => "SECONDARY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INSTANCE_ROLE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "PRIMARY" => Some(Self::Primary),
+                "SECONDARY" => Some(Self::Secondary),
+                _ => None,
+            }
+        }
+    }
+}
+/// Maintenance policy per instance.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MaintenancePolicy {
+    /// Output only. The time when the policy was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the policy was updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Maintenance window that is applied to resources covered by this
+    /// policy. Minimum 1. For the current version, the maximum number of
+    /// weekly_window is expected to be one.
+    #[prost(message, repeated, tag = "3")]
+    pub weekly_maintenance_window: ::prost::alloc::vec::Vec<WeeklyMaintenanceWindow>,
+}
+/// Time window specified for weekly operations.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct WeeklyMaintenanceWindow {
+    /// Optional. Allows to define schedule that runs specified day of the week.
+    #[prost(enumeration = "super::super::super::r#type::DayOfWeek", tag = "1")]
+    pub day: i32,
+    /// Optional. Start time of the window in UTC.
+    #[prost(message, optional, tag = "2")]
+    pub start_time: ::core::option::Option<super::super::super::r#type::TimeOfDay>,
+}
+/// Upcoming maintenance schedule.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct MaintenanceSchedule {
+    /// Output only. The start time of any upcoming scheduled maintenance for this
+    /// instance.
+    #[prost(message, optional, tag = "1")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The end time of any upcoming scheduled maintenance for this
+    /// instance.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Configuration of a service attachment of the cluster, for creating PSC
+/// connections.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PscAttachmentDetail {
+    /// Output only. Service attachment URI which your self-created PscConnection
+    /// should use as target.
+    #[prost(string, tag = "1")]
+    pub service_attachment: ::prost::alloc::string::String,
+    /// Output only. Type of Psc endpoint.
+    #[prost(enumeration = "ConnectionType", tag = "4")]
+    pub connection_type: i32,
 }
 /// Details of consumer resources in a PSC connection.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -427,8 +941,7 @@ pub mod psc_auto_connection {
     /// Ports of the exposed endpoint.
     #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum Ports {
-        /// Optional. Output only. port will only be set for Primary/Reader or
-        /// Discovery endpoint.
+        /// Optional. port will only be set for Primary/Reader or Discovery endpoint.
         #[prost(int32, tag = "9")]
         Port(i32),
     }
@@ -436,7 +949,7 @@ pub mod psc_auto_connection {
 /// User created Psc connection configuration.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PscConnection {
-    /// Output only. The PSC connection id of the forwarding rule connected to the
+    /// Required. The PSC connection id of the forwarding rule connected to the
     /// service attachment.
     #[prost(string, tag = "1")]
     pub psc_connection_id: ::prost::alloc::string::String,
@@ -471,6 +984,19 @@ pub struct PscConnection {
     /// Output only. Type of the PSC connection.
     #[prost(enumeration = "ConnectionType", tag = "8")]
     pub connection_type: i32,
+    /// Ports of the exposed endpoint.
+    #[prost(oneof = "psc_connection::Ports", tags = "9")]
+    pub ports: ::core::option::Option<psc_connection::Ports>,
+}
+/// Nested message and enum types in `PscConnection`.
+pub mod psc_connection {
+    /// Ports of the exposed endpoint.
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    pub enum Ports {
+        /// Optional. port will only be set for Primary/Reader or Discovery endpoint.
+        #[prost(int32, tag = "9")]
+        Port(i32),
+    }
 }
 /// Represents an endpoint for clients to connect to the instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -741,6 +1267,68 @@ pub mod zone_distribution_config {
         }
     }
 }
+/// Request for rescheduling instance maintenance.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RescheduleMaintenanceRequest {
+    /// Required. Name of the instance to reschedule maintenance for:
+    /// `projects/{project}/locations/{location_id}/instances/{instance}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. If reschedule type is SPECIFIC_TIME, schedule_time must be set.
+    #[prost(enumeration = "reschedule_maintenance_request::RescheduleType", tag = "2")]
+    pub reschedule_type: i32,
+    /// Optional. Timestamp when the maintenance shall be rescheduled to if
+    /// reschedule_type=SPECIFIC_TIME, in RFC 3339 format.
+    /// Example: `2012-11-15T16:19:00.094Z`.
+    #[prost(message, optional, tag = "3")]
+    pub schedule_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `RescheduleMaintenanceRequest`.
+pub mod reschedule_maintenance_request {
+    /// Reschedule options.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RescheduleType {
+        /// Not set.
+        Unspecified = 0,
+        /// If the user wants to schedule the maintenance to happen now.
+        Immediate = 1,
+        /// If the user wants to reschedule the maintenance to a specific time.
+        SpecificTime = 3,
+    }
+    impl RescheduleType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "RESCHEDULE_TYPE_UNSPECIFIED",
+                Self::Immediate => "IMMEDIATE",
+                Self::SpecificTime => "SPECIFIC_TIME",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RESCHEDULE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IMMEDIATE" => Some(Self::Immediate),
+                "SPECIFIC_TIME" => Some(Self::SpecificTime),
+                _ => None,
+            }
+        }
+    }
+}
 /// Request message for [ListInstances][].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesRequest {
@@ -873,6 +1461,153 @@ pub struct DeleteInstanceRequest {
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
+}
+/// Request for \[ListBackupCollections\]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListBackupCollectionsRequest {
+    /// Required. The resource name of the backupCollection location using the
+    /// form:
+    ///      `projects/{project_id}/locations/{location_id}`
+    /// where `location_id` refers to a Google Cloud region.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of items to return.
+    ///
+    /// If not specified, a default value of 1000 will be used by the service.
+    /// Regardless of the page_size value, the response may include a partial list
+    /// and a caller should only rely on response's
+    /// [`next_page_token`][google.cloud.memorystore.v1.ListBackupCollectionsResponse.next_page_token]
+    /// to determine if there are more clusters left to be queried.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The `next_page_token` value returned from a previous
+    /// \[ListBackupCollections\] request, if any.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response for \[ListBackupCollections\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListBackupCollectionsResponse {
+    /// A list of backupCollections in the project.
+    ///
+    /// If the `location_id` in the parent field of the request is "-", all regions
+    /// available to the project are queried, and the results aggregated.
+    /// If in such an aggregated query a location is unavailable, a placeholder
+    /// backupCollection entry is included in the response with the `name` field
+    /// set to a value of the form
+    /// `projects/{project_id}/locations/{location_id}/backupCollections/`- and the
+    /// `status` field set to ERROR and `status_message` field set to "location not
+    /// available for ListBackupCollections".
+    #[prost(message, repeated, tag = "1")]
+    pub backup_collections: ::prost::alloc::vec::Vec<BackupCollection>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request for \[GetBackupCollection\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetBackupCollectionRequest {
+    /// Required. Instance backupCollection resource name using the form:
+    ///      `projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}`
+    /// where `location_id` refers to a Google Cloud region.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for \[ListBackups\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListBackupsRequest {
+    /// Required. The resource name of the backupCollection using the form:
+    /// `projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of items to return.
+    ///
+    /// If not specified, a default value of 1000 will be used by the service.
+    /// Regardless of the page_size value, the response may include a partial list
+    /// and a caller should only rely on response's
+    /// [`next_page_token`][google.cloud.memorystore.v1.ListBackupsResponse.next_page_token]
+    /// to determine if there are more clusters left to be queried.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. The `next_page_token` value returned from a previous
+    /// \[ListBackupCollections\] request, if any.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response for \[ListBackups\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListBackupsResponse {
+    /// A list of backups in the project.
+    #[prost(message, repeated, tag = "1")]
+    pub backups: ::prost::alloc::vec::Vec<Backup>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Backups that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request for \[GetBackup\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetBackupRequest {
+    /// Required. Instance backup resource name using the form:
+    /// `projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}/backups/{backup_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for \[DeleteBackup\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteBackupRequest {
+    /// Required. Instance backup resource name using the form:
+    /// `projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}/backups/{backup_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Idempotent request UUID.
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request for \[ExportBackup\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportBackupRequest {
+    /// Required. Instance backup resource name using the form:
+    /// `projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}/backups/{backup_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Specify destination to export a backup.
+    #[prost(oneof = "export_backup_request::Destination", tags = "2")]
+    pub destination: ::core::option::Option<export_backup_request::Destination>,
+}
+/// Nested message and enum types in `ExportBackupRequest`.
+pub mod export_backup_request {
+    /// Required. Specify destination to export a backup.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Destination {
+        /// Google Cloud Storage bucket, like "my-bucket".
+        #[prost(string, tag = "2")]
+        GcsBucket(::prost::alloc::string::String),
+    }
+}
+/// Request for \[BackupInstance\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BackupInstanceRequest {
+    /// Required. Instance resource name using the form:
+    ///   `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+    /// where `location_id` refers to a Google Cloud region.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. TTL for the backup to expire. Value range is 1 day to 100 years.
+    /// If not specified, the default value is 100 years.
+    #[prost(message, optional, tag = "2")]
+    pub ttl: ::core::option::Option<::prost_types::Duration>,
+    /// Optional. The id of the backup to be created. If not specified, the
+    /// default value (\[YYYYMMDDHHMMSS\]_[Shortened Instance UID] is used.
+    #[prost(string, optional, tag = "3")]
+    pub backup_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Request message for [GetCertificateAuthority][].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1286,6 +2021,258 @@ pub mod memorystore_client {
                     GrpcMethod::new(
                         "google.cloud.memorystore.v1.Memorystore",
                         "GetCertificateAuthority",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Reschedules upcoming maintenance event.
+        pub async fn reschedule_maintenance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RescheduleMaintenanceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.memorystore.v1.Memorystore/RescheduleMaintenance",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memorystore.v1.Memorystore",
+                        "RescheduleMaintenance",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all backup collections owned by a consumer project in either the
+        /// specified location (region) or all locations.
+        ///
+        /// If `location_id` is specified as `-` (wildcard), then all regions
+        /// available to the project are queried, and the results are aggregated.
+        pub async fn list_backup_collections(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListBackupCollectionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListBackupCollectionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.memorystore.v1.Memorystore/ListBackupCollections",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memorystore.v1.Memorystore",
+                        "ListBackupCollections",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get a backup collection.
+        pub async fn get_backup_collection(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetBackupCollectionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::BackupCollection>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.memorystore.v1.Memorystore/GetBackupCollection",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memorystore.v1.Memorystore",
+                        "GetBackupCollection",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all backups owned by a backup collection.
+        pub async fn list_backups(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListBackupsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListBackupsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.memorystore.v1.Memorystore/ListBackups",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memorystore.v1.Memorystore",
+                        "ListBackups",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the details of a specific backup.
+        pub async fn get_backup(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetBackupRequest>,
+        ) -> std::result::Result<tonic::Response<super::Backup>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.memorystore.v1.Memorystore/GetBackup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memorystore.v1.Memorystore",
+                        "GetBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a specific backup.
+        pub async fn delete_backup(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteBackupRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.memorystore.v1.Memorystore/DeleteBackup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memorystore.v1.Memorystore",
+                        "DeleteBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Exports a specific backup to a customer target Cloud Storage URI.
+        pub async fn export_backup(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ExportBackupRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.memorystore.v1.Memorystore/ExportBackup",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memorystore.v1.Memorystore",
+                        "ExportBackup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Backup Instance.
+        /// If this is the first time a backup is being created, a backup collection
+        /// will be created at the backend, and this backup belongs to this collection.
+        /// Both collection and backup will have a resource name. Backup will be
+        /// executed for each shard. A replica (primary if nonHA) will be selected to
+        /// perform the execution. Backup call will be rejected if there is an ongoing
+        /// backup or update operation. Be aware that during preview, if the instance's
+        /// internal software version is too old, critical update will be performed
+        /// before actual backup. Once the internal software version is updated to the
+        /// minimum version required by the backup feature, subsequent backups will not
+        /// require critical update. After preview, there will be no critical update
+        /// needed for backup.
+        pub async fn backup_instance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BackupInstanceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.memorystore.v1.Memorystore/BackupInstance",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.memorystore.v1.Memorystore",
+                        "BackupInstance",
                     ),
                 );
             self.inner.unary(req, path, codec).await

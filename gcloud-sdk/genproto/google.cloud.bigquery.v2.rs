@@ -1050,13 +1050,13 @@ pub mod get_dataset_request {
         /// The default value.
         /// Default to the FULL view.
         Unspecified = 0,
-        /// Includes metadata information for the dataset, such as location,
-        /// etag, lastModifiedTime, etc.
+        /// Updates metadata information for the dataset, such as friendlyName,
+        /// description, labels, etc.
         Metadata = 1,
-        /// Includes ACL information for the dataset, which defines dataset access
+        /// Updates ACL information for the dataset, which defines dataset access
         /// for one or more entities.
         Acl = 2,
-        /// Includes both dataset metadata and ACL information.
+        /// Updates both dataset metadata and ACL information.
         Full = 3,
     }
     impl DatasetView {
@@ -1128,6 +1128,10 @@ pub struct UpdateOrPatchDatasetRequest {
     /// dataset.
     #[prost(message, optional, tag = "3")]
     pub dataset: ::core::option::Option<Dataset>,
+    /// Optional. Specifies the fields of dataset that update/patch operation is
+    /// targeting By default, both metadata and ACL fields are updated.
+    #[prost(enumeration = "update_or_patch_dataset_request::UpdateMode", tag = "4")]
+    pub update_mode: i32,
     /// Optional. The version of the provided access policy schema.
     /// Valid values are 0, 1, and 3. Requests specifying an invalid value will be
     /// rejected.
@@ -1152,6 +1156,59 @@ pub struct UpdateOrPatchDatasetRequest {
     /// set policy in IAM.
     #[prost(int32, tag = "5")]
     pub access_policy_version: i32,
+}
+/// Nested message and enum types in `UpdateOrPatchDatasetRequest`.
+pub mod update_or_patch_dataset_request {
+    /// UpdateMode specifies which dataset fields is updated.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum UpdateMode {
+        /// The default value.
+        /// Default to the UPDATE_FULL.
+        Unspecified = 0,
+        /// Includes metadata information for the dataset, such as friendlyName,
+        /// description, labels, etc.
+        UpdateMetadata = 1,
+        /// Includes ACL information for the dataset, which defines dataset access
+        /// for one or more entities.
+        UpdateAcl = 2,
+        /// Includes both dataset metadata and ACL information.
+        UpdateFull = 3,
+    }
+    impl UpdateMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "UPDATE_MODE_UNSPECIFIED",
+                Self::UpdateMetadata => "UPDATE_METADATA",
+                Self::UpdateAcl => "UPDATE_ACL",
+                Self::UpdateFull => "UPDATE_FULL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UPDATE_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "UPDATE_METADATA" => Some(Self::UpdateMetadata),
+                "UPDATE_ACL" => Some(Self::UpdateAcl),
+                "UPDATE_FULL" => Some(Self::UpdateFull),
+                _ => None,
+            }
+        }
+    }
 }
 /// Request format for deleting a dataset.
 #[derive(Clone, PartialEq, ::prost::Message)]

@@ -1366,7 +1366,7 @@ pub struct DiagnoseInterconnectResponse {
     #[prost(message, optional, tag = "2")]
     pub result: ::core::option::Option<InterconnectDiagnostics>,
 }
-/// Message for requesting diagnositcs of a router within a specific zone.
+/// Message for requesting diagnostics of a router within a specific zone.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiagnoseRouterRequest {
     /// Required. The name of the router resource.

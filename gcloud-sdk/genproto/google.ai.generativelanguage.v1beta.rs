@@ -26,6 +26,9 @@ pub struct Content {
 /// of the media if the `inline_data` field is filled with raw bytes.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Part {
+    /// Optional. Indicates if the part is thought from the model.
+    #[prost(bool, tag = "11")]
+    pub thought: bool,
     #[prost(oneof = "part::Data", tags = "2, 3, 4, 5, 6, 9, 10")]
     pub data: ::core::option::Option<part::Data>,
 }
@@ -373,6 +376,10 @@ pub mod function_calling_config {
         /// Model will not predict any function call. Model behavior is same as when
         /// not passing any function declarations.
         None = 3,
+        /// Model decides to predict either a function call
+        /// or a natural language response, but will validate function calls with
+        /// constrained decoding.
+        Validated = 4,
     }
     impl Mode {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -385,6 +392,7 @@ pub mod function_calling_config {
                 Self::Auto => "AUTO",
                 Self::Any => "ANY",
                 Self::None => "NONE",
+                Self::Validated => "VALIDATED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -394,6 +402,7 @@ pub mod function_calling_config {
                 "AUTO" => Some(Self::Auto),
                 "ANY" => Some(Self::Any),
                 "NONE" => Some(Self::None),
+                "VALIDATED" => Some(Self::Validated),
                 _ => None,
             }
         }
@@ -477,9 +486,12 @@ pub struct Schema {
     /// datatypes. Supported formats:
     ///   for NUMBER type: float, double
     ///   for INTEGER type: int32, int64
-    ///   for STRING type: enum
+    ///   for STRING type: enum, date-time
     #[prost(string, tag = "2")]
     pub format: ::prost::alloc::string::String,
+    /// Optional. The title of the schema.
+    #[prost(string, tag = "24")]
+    pub title: ::prost::alloc::string::String,
     /// Optional. A brief description of the parameter. This could contain examples
     /// of use. Parameter description may be formatted as Markdown.
     #[prost(string, tag = "3")]
@@ -507,6 +519,28 @@ pub struct Schema {
     /// Optional. Required properties of Type.OBJECT.
     #[prost(string, repeated, tag = "8")]
     pub required: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. SCHEMA FIELDS FOR TYPE INTEGER and NUMBER
+    /// Minimum value of the Type.INTEGER and Type.NUMBER
+    #[prost(double, optional, tag = "11")]
+    pub minimum: ::core::option::Option<f64>,
+    /// Optional. Maximum value of the Type.INTEGER and Type.NUMBER
+    #[prost(double, optional, tag = "12")]
+    pub maximum: ::core::option::Option<f64>,
+    /// Optional. The value should be validated against any (one or more) of the
+    /// subschemas in the list.
+    #[prost(message, repeated, tag = "18")]
+    pub any_of: ::prost::alloc::vec::Vec<Schema>,
+    /// Optional. The order of the properties.
+    /// Not a standard field in open api spec. Used to determine the order of the
+    /// properties in the response.
+    #[prost(string, repeated, tag = "23")]
+    pub property_ordering: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Default value of the field. Per JSON Schema, this field is
+    /// intended for documentation generators and doesn't affect validation. Thus
+    /// it's included here and ignored so that developers who send schemas with a
+    /// `default` field don't get unknown-field errors.
+    #[prost(message, optional, tag = "25")]
+    pub default: ::core::option::Option<::prost_types::Value>,
 }
 /// Passage included inline with a grounding configuration.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -525,6 +559,16 @@ pub struct GroundingPassages {
     /// List of passages.
     #[prost(message, repeated, tag = "1")]
     pub passages: ::prost::alloc::vec::Vec<GroundingPassage>,
+}
+/// Represents token counting info for a single modality.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ModalityTokenCount {
+    /// The modality associated with this token count.
+    #[prost(enumeration = "Modality", tag = "1")]
+    pub modality: i32,
+    /// Number of tokens.
+    #[prost(int32, tag = "2")]
+    pub token_count: i32,
 }
 /// Type contains the list of OpenAPI data types as defined by
 /// <https://spec.openapis.org/oas/v3.0.3#data-types>
@@ -545,6 +589,10 @@ pub enum Type {
     Array = 5,
     /// Object type.
     Object = 6,
+    /// Null type.
+    /// HACK: We use this to handle optional parameters, which users are specifying
+    /// optional things by using a OneOf with a second type of NULL.
+    Null = 7,
 }
 impl Type {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -560,6 +608,7 @@ impl Type {
             Self::Boolean => "BOOLEAN",
             Self::Array => "ARRAY",
             Self::Object => "OBJECT",
+            Self::Null => "NULL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -572,6 +621,52 @@ impl Type {
             "BOOLEAN" => Some(Self::Boolean),
             "ARRAY" => Some(Self::Array),
             "OBJECT" => Some(Self::Object),
+            "NULL" => Some(Self::Null),
+            _ => None,
+        }
+    }
+}
+/// Content Part modality
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum Modality {
+    /// Unspecified modality.
+    Unspecified = 0,
+    /// Plain text.
+    Text = 1,
+    /// Image.
+    Image = 2,
+    /// Video.
+    Video = 3,
+    /// Audio.
+    Audio = 4,
+    /// Document, e.g. PDF.
+    Document = 5,
+}
+impl Modality {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "MODALITY_UNSPECIFIED",
+            Self::Text => "TEXT",
+            Self::Image => "IMAGE",
+            Self::Video => "VIDEO",
+            Self::Audio => "AUDIO",
+            Self::Document => "DOCUMENT",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "MODALITY_UNSPECIFIED" => Some(Self::Unspecified),
+            "TEXT" => Some(Self::Text),
+            "IMAGE" => Some(Self::Image),
+            "VIDEO" => Some(Self::Video),
+            "AUDIO" => Some(Self::Audio),
+            "DOCUMENT" => Some(Self::Document),
             _ => None,
         }
     }
@@ -1645,9 +1740,15 @@ pub struct File {
     /// Output only. The uri of the `File`.
     #[prost(string, tag = "9")]
     pub uri: ::prost::alloc::string::String,
+    /// Output only. The download uri of the `File`.
+    #[prost(string, tag = "14")]
+    pub download_uri: ::prost::alloc::string::String,
     /// Output only. Processing state of the File.
     #[prost(enumeration = "file::State", tag = "10")]
     pub state: i32,
+    /// Source of the File.
+    #[prost(enumeration = "file::Source", tag = "13")]
+    pub source: i32,
     /// Output only. Error status if File processing failed.
     #[prost(message, optional, tag = "11")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
@@ -1700,6 +1801,48 @@ pub mod file {
                 "PROCESSING" => Some(Self::Processing),
                 "ACTIVE" => Some(Self::Active),
                 "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Source {
+        /// Used if source is not specified.
+        Unspecified = 0,
+        /// Indicates the file is uploaded by the user.
+        Uploaded = 1,
+        /// Indicates the file is generated by Google.
+        Generated = 2,
+    }
+    impl Source {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SOURCE_UNSPECIFIED",
+                Self::Uploaded => "UPLOADED",
+                Self::Generated => "GENERATED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SOURCE_UNSPECIFIED" => Some(Self::Unspecified),
+                "UPLOADED" => Some(Self::Uploaded),
+                "GENERATED" => Some(Self::Generated),
                 _ => None,
             }
         }
@@ -1771,6 +1914,17 @@ pub struct DeleteFileRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// Request for `DownloadFile`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DownloadFileRequest {
+    /// Required. The name of the `File` to download.
+    /// Example: `files/abc-123`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Response for `DownloadFile`.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct DownloadFileResponse {}
 /// Generated client implementations.
 pub mod file_service_client {
     #![allow(
@@ -1973,6 +2127,36 @@ pub mod file_service_client {
                     GrpcMethod::new(
                         "google.ai.generativelanguage.v1beta.FileService",
                         "DeleteFile",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Download the `File`.
+        pub async fn download_file(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DownloadFileRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::DownloadFileResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ai.generativelanguage.v1beta.FileService/DownloadFile",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ai.generativelanguage.v1beta.FileService",
+                        "DownloadFile",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -2373,18 +2557,37 @@ pub mod voice_config {
 /// The speech generation config.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeechConfig {
-    /// The configuration for the speaker to use.
+    /// The configuration in case of single-voice output.
     #[prost(message, optional, tag = "1")]
     pub voice_config: ::core::option::Option<VoiceConfig>,
+    /// Optional. Language code (in BCP 47 format, e.g. "en-US") for speech
+    /// synthesis.
+    ///
+    /// Valid values are: de-DE, en-AU, en-GB, en-IN, en-US, es-US, fr-FR, hi-IN,
+    /// pt-BR, ar-XA, es-ES, fr-CA, id-ID, it-IT, ja-JP, tr-TR, vi-VN, bn-IN,
+    /// gu-IN, kn-IN, ml-IN, mr-IN, ta-IN, te-IN, nl-NL, ko-KR, cmn-CN, pl-PL,
+    /// ru-RU, and th-TH.
+    #[prost(string, tag = "2")]
+    pub language_code: ::prost::alloc::string::String,
+}
+/// Config for thinking features.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ThinkingConfig {
+    /// Indicates whether to include thoughts in the response.
+    /// If true, thoughts are returned only when available.
+    #[prost(bool, optional, tag = "1")]
+    pub include_thoughts: ::core::option::Option<bool>,
+    /// The number of thoughts tokens that the model should generate.
+    #[prost(int32, optional, tag = "2")]
+    pub thinking_budget: ::core::option::Option<i32>,
 }
 /// Configuration options for model generation and outputs. Not all parameters
 /// are configurable for every model.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerationConfig {
-    /// Optional. Number of generated responses to return.
-    ///
-    /// Currently, this value can only be set to 1. If unset, this will default
-    /// to 1.
+    /// Optional. Number of generated responses to return. If unset, this will
+    /// default to 1. Please note that this doesn't work for previous generation
+    /// models (Gemini 1.0 family)
     #[prost(int32, optional, tag = "1")]
     pub candidate_count: ::core::option::Option<i32>,
     /// Optional. The set of character sequences (up to 5) that will stop output
@@ -2435,6 +2638,10 @@ pub struct GenerationConfig {
     /// and doesn't allow setting `top_k` on requests.
     #[prost(int32, optional, tag = "7")]
     pub top_k: ::core::option::Option<i32>,
+    /// Optional. Seed used in decoding. If not set, the request uses a randomly
+    /// generated seed.
+    #[prost(int32, optional, tag = "8")]
+    pub seed: ::core::option::Option<i32>,
     /// Optional. MIME type of the generated candidate text.
     /// Supported MIME types are:
     /// `text/plain`: (default) Text output.
@@ -2477,7 +2684,7 @@ pub struct GenerationConfig {
     ///
     /// A positive penalty will discourage the use of tokens that have already
     /// been used, proportional to the number of times the token has been used:
-    /// The more a token is used, the more dificult it is for the model to use
+    /// The more a token is used, the more difficult it is for the model to use
     /// that token again increasing the vocabulary of responses.
     ///
     /// Caution: A _negative_ penalty will encourage the model to reuse tokens
@@ -2521,6 +2728,14 @@ pub struct GenerationConfig {
     /// Optional. The speech generation config.
     #[prost(message, optional, tag = "21")]
     pub speech_config: ::core::option::Option<SpeechConfig>,
+    /// Optional. Config for thinking features.
+    /// An error will be returned if this field is set for models that don't
+    /// support thinking.
+    #[prost(message, optional, tag = "22")]
+    pub thinking_config: ::core::option::Option<ThinkingConfig>,
+    /// Optional. If specified, the media resolution specified will be used.
+    #[prost(enumeration = "generation_config::MediaResolution", optional, tag = "23")]
+    pub media_resolution: ::core::option::Option<i32>,
 }
 /// Nested message and enum types in `GenerationConfig`.
 pub mod generation_config {
@@ -2567,6 +2782,53 @@ pub mod generation_config {
                 "TEXT" => Some(Self::Text),
                 "IMAGE" => Some(Self::Image),
                 "AUDIO" => Some(Self::Audio),
+                _ => None,
+            }
+        }
+    }
+    /// Media resolution for the input media.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MediaResolution {
+        /// Media resolution has not been set.
+        Unspecified = 0,
+        /// Media resolution set to low (64 tokens).
+        Low = 1,
+        /// Media resolution set to medium (256 tokens).
+        Medium = 2,
+        /// Media resolution set to high (zoomed reframing with 256 tokens).
+        High = 3,
+    }
+    impl MediaResolution {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MEDIA_RESOLUTION_UNSPECIFIED",
+                Self::Low => "MEDIA_RESOLUTION_LOW",
+                Self::Medium => "MEDIA_RESOLUTION_MEDIUM",
+                Self::High => "MEDIA_RESOLUTION_HIGH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MEDIA_RESOLUTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "MEDIA_RESOLUTION_LOW" => Some(Self::Low),
+                "MEDIA_RESOLUTION_MEDIUM" => Some(Self::Medium),
+                "MEDIA_RESOLUTION_HIGH" => Some(Self::High),
                 _ => None,
             }
         }
@@ -2698,7 +2960,7 @@ pub mod generate_content_response {
         }
     }
     /// Metadata on the generation request's token usage.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct UsageMetadata {
         /// Number of tokens in the prompt. When `cached_content` is set, this is
         /// still the total effective prompt size meaning this includes the number of
@@ -2711,10 +2973,34 @@ pub mod generate_content_response {
         /// Total number of tokens across all the generated response candidates.
         #[prost(int32, tag = "2")]
         pub candidates_token_count: i32,
+        /// Output only. Number of tokens present in tool-use prompt(s).
+        #[prost(int32, tag = "8")]
+        pub tool_use_prompt_token_count: i32,
+        /// Output only. Number of tokens of thoughts for thinking models.
+        #[prost(int32, tag = "10")]
+        pub thoughts_token_count: i32,
         /// Total token count for the generation request (prompt + response
         /// candidates).
         #[prost(int32, tag = "3")]
         pub total_token_count: i32,
+        /// Output only. List of modalities that were processed in the request input.
+        #[prost(message, repeated, tag = "5")]
+        pub prompt_tokens_details: ::prost::alloc::vec::Vec<super::ModalityTokenCount>,
+        /// Output only. List of modalities of the cached content in the request
+        /// input.
+        #[prost(message, repeated, tag = "6")]
+        pub cache_tokens_details: ::prost::alloc::vec::Vec<super::ModalityTokenCount>,
+        /// Output only. List of modalities that were returned in the response.
+        #[prost(message, repeated, tag = "7")]
+        pub candidates_tokens_details: ::prost::alloc::vec::Vec<
+            super::ModalityTokenCount,
+        >,
+        /// Output only. List of modalities that were processed for tool-use request
+        /// inputs.
+        #[prost(message, repeated, tag = "9")]
+        pub tool_use_prompt_tokens_details: ::prost::alloc::vec::Vec<
+            super::ModalityTokenCount,
+        >,
     }
 }
 /// A response candidate generated from the model.
@@ -3276,8 +3562,8 @@ pub struct EmbedContentRequest {
     /// counted.
     #[prost(message, optional, tag = "2")]
     pub content: ::core::option::Option<Content>,
-    /// Optional. Optional task type for which the embeddings will be used. Can
-    /// only be set for `models/embedding-001`.
+    /// Optional. Optional task type for which the embeddings will be used. Not
+    /// supported on earlier models (`models/embedding-001`).
     #[prost(enumeration = "TaskType", optional, tag = "3")]
     pub task_type: ::core::option::Option<i32>,
     /// Optional. An optional title for the text. Only applicable when TaskType is
@@ -3364,7 +3650,7 @@ pub struct CountTokensRequest {
 /// A response from `CountTokens`.
 ///
 /// It returns the model's `token_count` for the `prompt`.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CountTokensResponse {
     /// The number of tokens that the `Model` tokenizes the `prompt` into. Always
     /// non-negative.
@@ -3373,6 +3659,699 @@ pub struct CountTokensResponse {
     /// Number of tokens in the cached part of the prompt (the cached content).
     #[prost(int32, tag = "5")]
     pub cached_content_token_count: i32,
+    /// Output only. List of modalities that were processed in the request input.
+    #[prost(message, repeated, tag = "6")]
+    pub prompt_tokens_details: ::prost::alloc::vec::Vec<ModalityTokenCount>,
+    /// Output only. List of modalities that were processed in the cached content.
+    #[prost(message, repeated, tag = "7")]
+    pub cache_tokens_details: ::prost::alloc::vec::Vec<ModalityTokenCount>,
+}
+/// Configures the realtime input behavior in `BidiGenerateContent`.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct RealtimeInputConfig {
+    /// Optional. If not set, automatic activity detection is enabled by default.
+    /// If automatic voice detection is disabled, the client must send activity
+    /// signals.
+    #[prost(message, optional, tag = "1")]
+    pub automatic_activity_detection: ::core::option::Option<
+        realtime_input_config::AutomaticActivityDetection,
+    >,
+    /// Optional. Defines what effect activity has.
+    #[prost(
+        enumeration = "realtime_input_config::ActivityHandling",
+        optional,
+        tag = "3"
+    )]
+    pub activity_handling: ::core::option::Option<i32>,
+    /// Optional. Defines which input is included in the user's turn.
+    #[prost(enumeration = "realtime_input_config::TurnCoverage", optional, tag = "4")]
+    pub turn_coverage: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `RealtimeInputConfig`.
+pub mod realtime_input_config {
+    /// Configures automatic detection of activity.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct AutomaticActivityDetection {
+        /// Optional. If enabled (the default), detected voice and text input count
+        /// as activity. If disabled, the client must send activity signals.
+        #[prost(bool, optional, tag = "2")]
+        pub disabled: ::core::option::Option<bool>,
+        /// Optional. Determines how likely speech is to be detected.
+        #[prost(
+            enumeration = "automatic_activity_detection::StartSensitivity",
+            optional,
+            tag = "3"
+        )]
+        pub start_of_speech_sensitivity: ::core::option::Option<i32>,
+        /// Optional. The required duration of detected speech before start-of-speech
+        /// is committed. The lower this value, the more sensitive the
+        /// start-of-speech detection is and shorter speech can be recognized.
+        /// However, this also increases the probability of false positives.
+        #[prost(int32, optional, tag = "4")]
+        pub prefix_padding_ms: ::core::option::Option<i32>,
+        /// Optional. Determines how likely detected speech is ended.
+        #[prost(
+            enumeration = "automatic_activity_detection::EndSensitivity",
+            optional,
+            tag = "5"
+        )]
+        pub end_of_speech_sensitivity: ::core::option::Option<i32>,
+        /// Optional. The required duration of detected non-speech (e.g. silence)
+        /// before end-of-speech is committed. The larger this value, the longer
+        /// speech gaps can be without interrupting the user's activity but this will
+        /// increase the model's latency.
+        #[prost(int32, optional, tag = "6")]
+        pub silence_duration_ms: ::core::option::Option<i32>,
+    }
+    /// Nested message and enum types in `AutomaticActivityDetection`.
+    pub mod automatic_activity_detection {
+        /// Determines how start of speech is detected.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum StartSensitivity {
+            /// The default is START_SENSITIVITY_HIGH.
+            Unspecified = 0,
+            /// Automatic detection will detect the start of speech more often.
+            High = 1,
+            /// Automatic detection will detect the start of speech less often.
+            Low = 2,
+        }
+        impl StartSensitivity {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "START_SENSITIVITY_UNSPECIFIED",
+                    Self::High => "START_SENSITIVITY_HIGH",
+                    Self::Low => "START_SENSITIVITY_LOW",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "START_SENSITIVITY_UNSPECIFIED" => Some(Self::Unspecified),
+                    "START_SENSITIVITY_HIGH" => Some(Self::High),
+                    "START_SENSITIVITY_LOW" => Some(Self::Low),
+                    _ => None,
+                }
+            }
+        }
+        /// Determines how end of speech is detected.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum EndSensitivity {
+            /// The default is END_SENSITIVITY_HIGH.
+            Unspecified = 0,
+            /// Automatic detection ends speech more often.
+            High = 1,
+            /// Automatic detection ends speech less often.
+            Low = 2,
+        }
+        impl EndSensitivity {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "END_SENSITIVITY_UNSPECIFIED",
+                    Self::High => "END_SENSITIVITY_HIGH",
+                    Self::Low => "END_SENSITIVITY_LOW",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "END_SENSITIVITY_UNSPECIFIED" => Some(Self::Unspecified),
+                    "END_SENSITIVITY_HIGH" => Some(Self::High),
+                    "END_SENSITIVITY_LOW" => Some(Self::Low),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// The different ways of handling user activity.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ActivityHandling {
+        /// If unspecified, the default behavior is `START_OF_ACTIVITY_INTERRUPTS`.
+        Unspecified = 0,
+        /// If true, start of activity will interrupt the model's response (also
+        /// called "barge in"). The model's current response will be cut-off in the
+        /// moment of the interruption. This is the default behavior.
+        StartOfActivityInterrupts = 1,
+        /// The model's response will not be interrupted.
+        NoInterruption = 2,
+    }
+    impl ActivityHandling {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ACTIVITY_HANDLING_UNSPECIFIED",
+                Self::StartOfActivityInterrupts => "START_OF_ACTIVITY_INTERRUPTS",
+                Self::NoInterruption => "NO_INTERRUPTION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ACTIVITY_HANDLING_UNSPECIFIED" => Some(Self::Unspecified),
+                "START_OF_ACTIVITY_INTERRUPTS" => Some(Self::StartOfActivityInterrupts),
+                "NO_INTERRUPTION" => Some(Self::NoInterruption),
+                _ => None,
+            }
+        }
+    }
+    /// Options about which input is included in the user's turn.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum TurnCoverage {
+        /// If unspecified, the default behavior is `TURN_INCLUDES_ONLY_ACTIVITY`.
+        Unspecified = 0,
+        /// The users turn only includes activity since the last turn, excluding
+        /// inactivity (e.g. silence on the audio stream). This is the default
+        /// behavior.
+        TurnIncludesOnlyActivity = 1,
+        /// The users turn includes all realtime input since the last turn, including
+        /// inactivity (e.g. silence on the audio stream).
+        TurnIncludesAllInput = 2,
+    }
+    impl TurnCoverage {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "TURN_COVERAGE_UNSPECIFIED",
+                Self::TurnIncludesOnlyActivity => "TURN_INCLUDES_ONLY_ACTIVITY",
+                Self::TurnIncludesAllInput => "TURN_INCLUDES_ALL_INPUT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TURN_COVERAGE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TURN_INCLUDES_ONLY_ACTIVITY" => Some(Self::TurnIncludesOnlyActivity),
+                "TURN_INCLUDES_ALL_INPUT" => Some(Self::TurnIncludesAllInput),
+                _ => None,
+            }
+        }
+    }
+}
+/// Session resumption configuration.
+///
+/// This message is included in the session configuration as
+/// `BidiGenerateContentSetup.session_resumption`. If configured, the server
+/// will send `SessionResumptionUpdate` messages.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SessionResumptionConfig {
+    /// The handle of a previous session. If not present then a new session is
+    /// created.
+    ///
+    /// Session handles come from `SessionResumptionUpdate.token` values in
+    /// previous connections.
+    #[prost(string, optional, tag = "1")]
+    pub handle: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Enables context window compression — a mechanism for managing the model's
+/// context window so that it does not exceed a given length.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ContextWindowCompressionConfig {
+    /// The number of tokens (before running a turn) required to trigger a context
+    /// window compression.
+    ///
+    /// This can be used to balance quality against latency as shorter context
+    /// windows may result in faster model responses. However, any compression
+    /// operation will cause a temporary latency increase, so they should not be
+    /// triggered frequently.
+    ///
+    /// If not set, the default is 80% of the model's context window limit. This
+    /// leaves 20% for the next user request/model response.
+    #[prost(int64, optional, tag = "1")]
+    pub trigger_tokens: ::core::option::Option<i64>,
+    /// The context window compression mechanism used.
+    #[prost(
+        oneof = "context_window_compression_config::CompressionMechanism",
+        tags = "2"
+    )]
+    pub compression_mechanism: ::core::option::Option<
+        context_window_compression_config::CompressionMechanism,
+    >,
+}
+/// Nested message and enum types in `ContextWindowCompressionConfig`.
+pub mod context_window_compression_config {
+    /// The SlidingWindow method operates by discarding content at the beginning of
+    /// the context window. The resulting context will always begin at the start of
+    /// a USER role turn. System instructions and any
+    /// `BidiGenerateContentSetup.prefix_turns` will always remain at the beginning
+    /// of the result.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct SlidingWindow {
+        /// The target number of tokens to keep. The default value is
+        /// trigger_tokens/2.
+        ///
+        /// Discarding parts of the context window causes a temporary latency
+        /// increase so this value should be calibrated to avoid frequent compression
+        /// operations.
+        #[prost(int64, optional, tag = "1")]
+        pub target_tokens: ::core::option::Option<i64>,
+    }
+    /// The context window compression mechanism used.
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    pub enum CompressionMechanism {
+        /// A sliding-window mechanism.
+        #[prost(message, tag = "2")]
+        SlidingWindow(SlidingWindow),
+    }
+}
+/// The audio transcription configuration.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct AudioTranscriptionConfig {}
+/// Message to be sent in the first (and only in the first)
+/// `BidiGenerateContentClientMessage`. Contains configuration that will apply
+/// for the duration of the streaming RPC.
+///
+/// Clients should wait for a `BidiGenerateContentSetupComplete` message before
+/// sending any additional messages.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BidiGenerateContentSetup {
+    /// Required. The model's resource name. This serves as an ID for the Model to
+    /// use.
+    ///
+    /// Format: `models/{model}`
+    #[prost(string, tag = "1")]
+    pub model: ::prost::alloc::string::String,
+    /// Optional. Generation config.
+    ///
+    /// The following fields are not supported:
+    ///
+    ///   - `response_logprobs`
+    ///   - `response_mime_type`
+    ///   - `logprobs`
+    ///   - `response_schema`
+    ///   - `stop_sequence`
+    ///   - `routing_config`
+    ///   - `audio_timestamp`
+    #[prost(message, optional, tag = "2")]
+    pub generation_config: ::core::option::Option<GenerationConfig>,
+    /// Optional. The user provided system instructions for the model.
+    ///
+    /// Note: Only text should be used in parts and content in each part will be
+    /// in a separate paragraph.
+    #[prost(message, optional, tag = "3")]
+    pub system_instruction: ::core::option::Option<Content>,
+    /// Optional. A list of `Tools` the model may use to generate the next
+    /// response.
+    ///
+    /// A `Tool` is a piece of code that enables the system to interact with
+    /// external systems to perform an action, or set of actions, outside of
+    /// knowledge and scope of the model.
+    #[prost(message, repeated, tag = "4")]
+    pub tools: ::prost::alloc::vec::Vec<Tool>,
+    /// Optional. Configures the handling of realtime input.
+    #[prost(message, optional, tag = "6")]
+    pub realtime_input_config: ::core::option::Option<RealtimeInputConfig>,
+    /// Optional. Configures session resumption mechanism.
+    ///
+    /// If included, the server will send `SessionResumptionUpdate` messages.
+    #[prost(message, optional, tag = "7")]
+    pub session_resumption: ::core::option::Option<SessionResumptionConfig>,
+    /// Optional. Configures a context window compression mechanism.
+    ///
+    /// If included, the server will automatically reduce the size of the context
+    /// when it exceeds the configured length.
+    #[prost(message, optional, tag = "8")]
+    pub context_window_compression: ::core::option::Option<
+        ContextWindowCompressionConfig,
+    >,
+    /// Optional. If set, enables transcription of the model's audio output. The
+    /// transcription aligns with the language code specified for the output
+    /// audio, if configured.
+    #[prost(message, optional, tag = "11")]
+    pub output_audio_transcription: ::core::option::Option<AudioTranscriptionConfig>,
+}
+/// Incremental update of the current conversation delivered from the client.
+/// All of the content here is unconditionally appended to the conversation
+/// history and used as part of the prompt to the model to generate content.
+///
+/// A message here will interrupt any current model generation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BidiGenerateContentClientContent {
+    /// Optional. The content appended to the current conversation with the model.
+    ///
+    /// For single-turn queries, this is a single instance. For multi-turn
+    /// queries, this is a repeated field that contains conversation history and
+    /// the latest request.
+    #[prost(message, repeated, tag = "1")]
+    pub turns: ::prost::alloc::vec::Vec<Content>,
+    /// Optional. If true, indicates that the server content generation should
+    /// start with the currently accumulated prompt. Otherwise, the server awaits
+    /// additional messages before starting generation.
+    #[prost(bool, tag = "2")]
+    pub turn_complete: bool,
+}
+/// User input that is sent in real time.
+///
+/// The different modalities (audio, video and text) are handled as concurrent
+/// streams. The ordering across these streams is not guaranteed.
+///
+/// This is different from
+/// [BidiGenerateContentClientContent][google.ai.generativelanguage.v1beta.BidiGenerateContentClientContent]
+/// in a few ways:
+///
+/// * Can be sent continuously without interruption to model generation.
+/// * If there is a need to mix data interleaved across the
+///    [BidiGenerateContentClientContent][google.ai.generativelanguage.v1beta.BidiGenerateContentClientContent]
+///    and the
+///    [BidiGenerateContentRealtimeInput][google.ai.generativelanguage.v1beta.BidiGenerateContentRealtimeInput],
+///    the server attempts to optimize for best response, but there are no
+///    guarantees.
+/// * End of turn is not explicitly specified, but is rather derived from user
+///    activity (for example, end of speech).
+/// * Even before the end of turn, the data is processed incrementally
+///    to optimize for a fast start of the response from the model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BidiGenerateContentRealtimeInput {
+    /// Optional. Inlined bytes data for media input. Multiple `media_chunks` are
+    /// not supported, all but the first will be ignored.
+    ///
+    /// DEPRECATED: Use one of `audio`, `video`, or `text` instead.
+    #[prost(message, repeated, tag = "1")]
+    pub media_chunks: ::prost::alloc::vec::Vec<Blob>,
+    /// Optional. These form the realtime audio input stream.
+    #[prost(message, optional, tag = "2")]
+    pub audio: ::core::option::Option<Blob>,
+    /// Optional. Indicates that the audio stream has ended, e.g. because the
+    /// microphone was turned off.
+    ///
+    /// This should only be sent when automatic activity detection is enabled
+    /// (which is the default).
+    ///
+    /// The client can reopen the stream by sending an audio message.
+    #[prost(bool, optional, tag = "3")]
+    pub audio_stream_end: ::core::option::Option<bool>,
+    /// Optional. These form the realtime video input stream.
+    #[prost(message, optional, tag = "4")]
+    pub video: ::core::option::Option<Blob>,
+    /// Optional. These form the realtime text input stream.
+    #[prost(string, optional, tag = "5")]
+    pub text: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. Marks the start of user activity. This can only be sent if
+    /// automatic (i.e. server-side) activity detection is disabled.
+    #[prost(message, optional, tag = "6")]
+    pub activity_start: ::core::option::Option<
+        bidi_generate_content_realtime_input::ActivityStart,
+    >,
+    /// Optional. Marks the end of user activity. This can only be sent if
+    /// automatic (i.e. server-side) activity detection is disabled.
+    #[prost(message, optional, tag = "7")]
+    pub activity_end: ::core::option::Option<
+        bidi_generate_content_realtime_input::ActivityEnd,
+    >,
+}
+/// Nested message and enum types in `BidiGenerateContentRealtimeInput`.
+pub mod bidi_generate_content_realtime_input {
+    /// Marks the start of user activity.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct ActivityStart {}
+    /// Marks the end of user activity.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct ActivityEnd {}
+}
+/// Client generated response to a `ToolCall` received from the server.
+/// Individual `FunctionResponse` objects are matched to the respective
+/// `FunctionCall` objects by the `id` field.
+///
+/// Note that in the unary and server-streaming GenerateContent APIs function
+/// calling happens by exchanging the `Content` parts, while in the bidi
+/// GenerateContent APIs function calling happens over these dedicated set of
+/// messages.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BidiGenerateContentToolResponse {
+    /// Optional. The response to the function calls.
+    #[prost(message, repeated, tag = "1")]
+    pub function_responses: ::prost::alloc::vec::Vec<FunctionResponse>,
+}
+/// Messages sent by the client in the BidiGenerateContent call.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BidiGenerateContentClientMessage {
+    /// The type of the message.
+    #[prost(
+        oneof = "bidi_generate_content_client_message::MessageType",
+        tags = "1, 2, 3, 4"
+    )]
+    pub message_type: ::core::option::Option<
+        bidi_generate_content_client_message::MessageType,
+    >,
+}
+/// Nested message and enum types in `BidiGenerateContentClientMessage`.
+pub mod bidi_generate_content_client_message {
+    /// The type of the message.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum MessageType {
+        /// Optional. Session configuration sent in the first and only first client
+        /// message.
+        #[prost(message, tag = "1")]
+        Setup(super::BidiGenerateContentSetup),
+        /// Optional. Incremental update of the current conversation delivered from
+        /// the client.
+        #[prost(message, tag = "2")]
+        ClientContent(super::BidiGenerateContentClientContent),
+        /// Optional. User input that is sent in real time.
+        #[prost(message, tag = "3")]
+        RealtimeInput(super::BidiGenerateContentRealtimeInput),
+        /// Optional. Response to a `ToolCallMessage` received from the server.
+        #[prost(message, tag = "4")]
+        ToolResponse(super::BidiGenerateContentToolResponse),
+    }
+}
+/// Sent in response to a `BidiGenerateContentSetup` message from the client.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct BidiGenerateContentSetupComplete {}
+/// Incremental server update generated by the model in response to client
+/// messages.
+///
+/// Content is generated as quickly as possible, and not in real time. Clients
+/// may choose to buffer and play it out in real time.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BidiGenerateContentServerContent {
+    /// Output only. The content that the model has generated as part of the
+    /// current conversation with the user.
+    #[prost(message, optional, tag = "1")]
+    pub model_turn: ::core::option::Option<Content>,
+    /// Output only. If true, indicates that the model is done generating.
+    ///
+    /// When model is interrupted while generating there will be no
+    /// 'generation_complete' message in interrupted turn, it will go through
+    /// 'interrupted > turn_complete'.
+    ///
+    /// When model assumes realtime playback there will be delay between
+    /// generation_complete and turn_complete that is caused by model waiting for
+    /// playback to finish.
+    #[prost(bool, tag = "5")]
+    pub generation_complete: bool,
+    /// Output only. If true, indicates that the model has completed its turn.
+    /// Generation will only start in response to additional client messages.
+    #[prost(bool, tag = "2")]
+    pub turn_complete: bool,
+    /// Output only. If true, indicates that a client message has interrupted
+    /// current model generation. If the client is playing out the content in real
+    /// time, this is a good signal to stop and empty the current playback queue.
+    #[prost(bool, tag = "3")]
+    pub interrupted: bool,
+    /// Output only. Grounding metadata for the generated content.
+    #[prost(message, optional, tag = "4")]
+    pub grounding_metadata: ::core::option::Option<GroundingMetadata>,
+    /// Output only. Output audio transcription. The transcription is sent
+    /// independently of the other server messages and there is no guaranteed
+    /// ordering, in particular not between `server_content` and this
+    /// `output_transcription`.
+    #[prost(message, optional, tag = "7")]
+    pub output_transcription: ::core::option::Option<BidiGenerateContentTranscription>,
+}
+/// Request for the client to execute the `function_calls` and return the
+/// responses with the matching `id`s.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BidiGenerateContentToolCall {
+    /// Output only. The function call to be executed.
+    #[prost(message, repeated, tag = "2")]
+    pub function_calls: ::prost::alloc::vec::Vec<FunctionCall>,
+}
+/// Notification for the client that a previously issued `ToolCallMessage`
+/// with the specified `id`s should not have been executed and should be
+/// cancelled. If there were side-effects to those tool calls, clients may
+/// attempt to undo the tool calls. This message occurs only in cases where the
+/// clients interrupt server turns.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BidiGenerateContentToolCallCancellation {
+    /// Output only. The ids of the tool calls to be cancelled.
+    #[prost(string, repeated, tag = "1")]
+    pub ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// A notice that the server will soon disconnect.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct GoAway {
+    /// The remaining time before the connection will be terminated as ABORTED.
+    ///
+    /// This duration will never be less than a model-specific minimum, which will
+    /// be specified together with the rate limits for the model.
+    #[prost(message, optional, tag = "1")]
+    pub time_left: ::core::option::Option<::prost_types::Duration>,
+}
+/// Update of the session resumption state.
+///
+/// Only sent if `BidiGenerateContentSetup.session_resumption` was set.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SessionResumptionUpdate {
+    /// New handle that represents a state that can be resumed. Empty if
+    /// `resumable`=false.
+    #[prost(string, tag = "1")]
+    pub new_handle: ::prost::alloc::string::String,
+    /// True if the current session can be resumed at this point.
+    ///
+    /// Resumption is not possible at some points in the session. For example, when
+    /// the model is executing function calls or generating. Resuming the session
+    /// (using a previous session token) in such a state will result in some data
+    /// loss. In these cases, `new_handle` will be empty and `resumable` will be
+    /// false.
+    #[prost(bool, tag = "2")]
+    pub resumable: bool,
+}
+/// Transcription of audio (input or output).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BidiGenerateContentTranscription {
+    /// Transcription text.
+    #[prost(string, tag = "1")]
+    pub text: ::prost::alloc::string::String,
+}
+/// Response message for the BidiGenerateContent call.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BidiGenerateContentServerMessage {
+    /// Output only. Usage metadata about the response(s).
+    #[prost(message, optional, tag = "10")]
+    pub usage_metadata: ::core::option::Option<UsageMetadata>,
+    /// The type of the message.
+    #[prost(
+        oneof = "bidi_generate_content_server_message::MessageType",
+        tags = "2, 3, 4, 5, 6, 7"
+    )]
+    pub message_type: ::core::option::Option<
+        bidi_generate_content_server_message::MessageType,
+    >,
+}
+/// Nested message and enum types in `BidiGenerateContentServerMessage`.
+pub mod bidi_generate_content_server_message {
+    /// The type of the message.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum MessageType {
+        /// Output only. Sent in response to a `BidiGenerateContentSetup` message
+        /// from the client when setup is complete.
+        #[prost(message, tag = "2")]
+        SetupComplete(super::BidiGenerateContentSetupComplete),
+        /// Output only. Content generated by the model in response to client
+        /// messages.
+        #[prost(message, tag = "3")]
+        ServerContent(super::BidiGenerateContentServerContent),
+        /// Output only. Request for the client to execute the `function_calls` and
+        /// return the responses with the matching `id`s.
+        #[prost(message, tag = "4")]
+        ToolCall(super::BidiGenerateContentToolCall),
+        /// Output only. Notification for the client that a previously issued
+        /// `ToolCallMessage` with the specified `id`s should be cancelled.
+        #[prost(message, tag = "5")]
+        ToolCallCancellation(super::BidiGenerateContentToolCallCancellation),
+        /// Output only. A notice that the server will soon disconnect.
+        #[prost(message, tag = "6")]
+        GoAway(super::GoAway),
+        /// Output only. Update of the session resumption state.
+        #[prost(message, tag = "7")]
+        SessionResumptionUpdate(super::SessionResumptionUpdate),
+    }
+}
+/// Usage metadata about response(s).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UsageMetadata {
+    /// Output only. Number of tokens in the prompt. When `cached_content` is set,
+    /// this is still the total effective prompt size meaning this includes the
+    /// number of tokens in the cached content.
+    #[prost(int32, tag = "1")]
+    pub prompt_token_count: i32,
+    /// Number of tokens in the cached part of the prompt (the cached content)
+    #[prost(int32, tag = "4")]
+    pub cached_content_token_count: i32,
+    /// Output only. Total number of tokens across all the generated response
+    /// candidates.
+    #[prost(int32, tag = "2")]
+    pub response_token_count: i32,
+    /// Output only. Number of tokens present in tool-use prompt(s).
+    #[prost(int32, tag = "8")]
+    pub tool_use_prompt_token_count: i32,
+    /// Output only. Number of tokens of thoughts for thinking models.
+    #[prost(int32, tag = "10")]
+    pub thoughts_token_count: i32,
+    /// Output only. Total token count for the generation request (prompt +
+    /// response candidates).
+    #[prost(int32, tag = "3")]
+    pub total_token_count: i32,
+    /// Output only. List of modalities that were processed in the request input.
+    #[prost(message, repeated, tag = "5")]
+    pub prompt_tokens_details: ::prost::alloc::vec::Vec<ModalityTokenCount>,
+    /// Output only. List of modalities of the cached content in the request input.
+    #[prost(message, repeated, tag = "6")]
+    pub cache_tokens_details: ::prost::alloc::vec::Vec<ModalityTokenCount>,
+    /// Output only. List of modalities that were returned in the response.
+    #[prost(message, repeated, tag = "7")]
+    pub response_tokens_details: ::prost::alloc::vec::Vec<ModalityTokenCount>,
+    /// Output only. List of modalities that were processed for tool-use request
+    /// inputs.
+    #[prost(message, repeated, tag = "9")]
+    pub tool_use_prompt_tokens_details: ::prost::alloc::vec::Vec<ModalityTokenCount>,
 }
 /// Type of task for which the embedding will be used.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -3394,6 +4373,8 @@ pub enum TaskType {
     QuestionAnswering = 6,
     /// Specifies that the given text will be used for fact verification.
     FactVerification = 7,
+    /// Specifies that the given text will be used for code retrieval.
+    CodeRetrievalQuery = 8,
 }
 impl TaskType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -3410,6 +4391,7 @@ impl TaskType {
             Self::Clustering => "CLUSTERING",
             Self::QuestionAnswering => "QUESTION_ANSWERING",
             Self::FactVerification => "FACT_VERIFICATION",
+            Self::CodeRetrievalQuery => "CODE_RETRIEVAL_QUERY",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3423,6 +4405,7 @@ impl TaskType {
             "CLUSTERING" => Some(Self::Clustering),
             "QUESTION_ANSWERING" => Some(Self::QuestionAnswering),
             "FACT_VERIFICATION" => Some(Self::FactVerification),
+            "CODE_RETRIEVAL_QUERY" => Some(Self::CodeRetrievalQuery),
             _ => None,
         }
     }
@@ -3714,6 +4697,41 @@ pub mod generative_service_client {
                     ),
                 );
             self.inner.unary(req, path, codec).await
+        }
+        /// Low-Latency bidirectional streaming API that supports audio and video
+        /// streaming inputs can produce multimodal output streams (audio and text).
+        pub async fn bidi_generate_content(
+            &mut self,
+            request: impl tonic::IntoStreamingRequest<
+                Message = super::BidiGenerateContentClientMessage,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<
+                tonic::codec::Streaming<super::BidiGenerateContentServerMessage>,
+            >,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ai.generativelanguage.v1beta.GenerativeService/BidiGenerateContent",
+            );
+            let mut req = request.into_streaming_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ai.generativelanguage.v1beta.GenerativeService",
+                        "BidiGenerateContent",
+                    ),
+                );
+            self.inner.streaming(req, path, codec).await
         }
     }
 }
@@ -5034,12 +6052,98 @@ pub struct PredictRequest {
     #[prost(message, optional, tag = "3")]
     pub parameters: ::core::option::Option<::prost_types::Value>,
 }
+/// Request message for \[PredictionService.PredictLongRunning\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PredictLongRunningRequest {
+    /// Required. The name of the model for prediction.
+    /// Format: `name=models/{model}`.
+    #[prost(string, tag = "1")]
+    pub model: ::prost::alloc::string::String,
+    /// Required. The instances that are the input to the prediction call.
+    #[prost(message, repeated, tag = "2")]
+    pub instances: ::prost::alloc::vec::Vec<::prost_types::Value>,
+    /// Optional. The parameters that govern the prediction call.
+    #[prost(message, optional, tag = "3")]
+    pub parameters: ::core::option::Option<::prost_types::Value>,
+}
 /// Response message for \[PredictionService.Predict\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PredictResponse {
     /// The outputs of the prediction call.
     #[prost(message, repeated, tag = "1")]
     pub predictions: ::prost::alloc::vec::Vec<::prost_types::Value>,
+}
+/// Response message for \[PredictionService.PredictLongRunning\]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PredictLongRunningResponse {
+    /// The response of the long running operation.
+    #[prost(oneof = "predict_long_running_response::Response", tags = "1")]
+    pub response: ::core::option::Option<predict_long_running_response::Response>,
+}
+/// Nested message and enum types in `PredictLongRunningResponse`.
+pub mod predict_long_running_response {
+    /// The response of the long running operation.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Response {
+        /// The response of the video generation prediction.
+        #[prost(message, tag = "1")]
+        GenerateVideoResponse(super::GenerateVideoResponse),
+    }
+}
+/// Metadata for PredictLongRunning long running operations.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct PredictLongRunningMetadata {}
+/// A proto encapsulate various type of media.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Media {
+    /// Type of media.
+    #[prost(oneof = "media::Type", tags = "1")]
+    pub r#type: ::core::option::Option<media::Type>,
+}
+/// Nested message and enum types in `Media`.
+pub mod media {
+    /// Type of media.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Type {
+        /// Video as the only one for now.  This is mimicking Vertex proto.
+        #[prost(message, tag = "1")]
+        Video(super::Video),
+    }
+}
+/// Representation of a video.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Video {
+    /// Where the video content is.
+    #[prost(oneof = "video::Content", tags = "1, 2")]
+    pub content: ::core::option::Option<video::Content>,
+}
+/// Nested message and enum types in `Video`.
+pub mod video {
+    /// Where the video content is.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Content {
+        /// Raw bytes.
+        #[prost(bytes, tag = "1")]
+        Video(::prost::alloc::vec::Vec<u8>),
+        /// Path to another storage.
+        #[prost(string, tag = "2")]
+        Uri(::prost::alloc::string::String),
+    }
+}
+/// Veo response.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateVideoResponse {
+    /// The generated samples.
+    #[prost(message, repeated, tag = "1")]
+    pub generated_samples: ::prost::alloc::vec::Vec<Media>,
+    /// Returns if any videos were filtered due to RAI policies.
+    #[prost(int32, tag = "2")]
+    pub rai_media_filtered_count: i32,
+    /// Returns rai failure reasons if any.
+    #[prost(string, repeated, tag = "3")]
+    pub rai_media_filtered_reasons: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
 }
 /// Generated client implementations.
 pub mod prediction_service_client {
@@ -5159,6 +6263,36 @@ pub mod prediction_service_client {
                     GrpcMethod::new(
                         "google.ai.generativelanguage.v1beta.PredictionService",
                         "Predict",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Same as Predict but returns an LRO.
+        pub async fn predict_long_running(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PredictLongRunningRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.ai.generativelanguage.v1beta.PredictionService/PredictLongRunning",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.ai.generativelanguage.v1beta.PredictionService",
+                        "PredictLongRunning",
                     ),
                 );
             self.inner.unary(req, path, codec).await

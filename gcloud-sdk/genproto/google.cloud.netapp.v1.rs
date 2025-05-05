@@ -278,6 +278,14 @@ pub struct Backup {
     /// Output only. Reserved for future use
     #[prost(bool, tag = "12")]
     pub satisfies_pzi: bool,
+    /// Output only. Region of the volume from which the backup was created.
+    /// Format: `projects/{project_id}/locations/{location}`
+    #[prost(string, tag = "13")]
+    pub volume_region: ::prost::alloc::string::String,
+    /// Output only. Region in which backup is stored.
+    /// Format: `projects/{project_id}/locations/{location}`
+    #[prost(string, tag = "14")]
+    pub backup_region: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Backup`.
 pub mod backup {
@@ -688,6 +696,28 @@ pub struct BackupVault {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. Type of backup vault to be created.
+    /// Default is IN_REGION.
+    #[prost(enumeration = "backup_vault::BackupVaultType", tag = "6")]
+    pub backup_vault_type: i32,
+    /// Output only. Region in which the backup vault is created.
+    /// Format: `projects/{project_id}/locations/{location}`
+    #[prost(string, tag = "7")]
+    pub source_region: ::prost::alloc::string::String,
+    /// Optional. Region where the backups are stored.
+    /// Format: `projects/{project_id}/locations/{location}`
+    #[prost(string, tag = "8")]
+    pub backup_region: ::prost::alloc::string::String,
+    /// Output only. Name of the Backup vault created in source region.
+    /// Format:
+    /// `projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}`
+    #[prost(string, tag = "9")]
+    pub source_backup_vault: ::prost::alloc::string::String,
+    /// Output only. Name of the Backup vault created in backup region.
+    /// Format:
+    /// `projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}`
+    #[prost(string, tag = "10")]
+    pub destination_backup_vault: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `BackupVault`.
 pub mod backup_vault {
@@ -742,6 +772,49 @@ pub mod backup_vault {
                 "DELETING" => Some(Self::Deleting),
                 "ERROR" => Some(Self::Error),
                 "UPDATING" => Some(Self::Updating),
+                _ => None,
+            }
+        }
+    }
+    /// Backup Vault Type.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum BackupVaultType {
+        /// BackupVault type not set.
+        Unspecified = 0,
+        /// BackupVault type is IN_REGION.
+        InRegion = 1,
+        /// BackupVault type is CROSS_REGION.
+        CrossRegion = 2,
+    }
+    impl BackupVaultType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "BACKUP_VAULT_TYPE_UNSPECIFIED",
+                Self::InRegion => "IN_REGION",
+                Self::CrossRegion => "CROSS_REGION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BACKUP_VAULT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IN_REGION" => Some(Self::InRegion),
+                "CROSS_REGION" => Some(Self::CrossRegion),
                 _ => None,
             }
         }
@@ -1949,7 +2022,7 @@ pub struct TieringPolicy {
     #[prost(enumeration = "tiering_policy::TierAction", optional, tag = "1")]
     pub tier_action: ::core::option::Option<i32>,
     /// Optional. Time in days to mark the volume's data block as cold and make it
-    /// eligible for tiering, can be range from 7-183. Default is 31.
+    /// eligible for tiering, can be range from 2-183. Default is 31.
     #[prost(int32, optional, tag = "2")]
     pub cooling_threshold_days: ::core::option::Option<i32>,
 }
