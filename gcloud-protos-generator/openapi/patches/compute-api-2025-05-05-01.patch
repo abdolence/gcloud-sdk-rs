@@ -1,0 +1,17 @@
+diff --git a/gcloud-protos-generator/openapi/google/compute-v1/openapi.yaml b/gcloud-protos-generator/openapi/google/compute-v1/openapi.yaml
+index 682b4bde3..d51219ab4 100644
+--- a/gcloud-protos-generator/openapi/google/compute-v1/openapi.yaml
++++ b/gcloud-protos-generator/openapi/google/compute-v1/openapi.yaml
+@@ -39182,6 +39182,12 @@ paths:
+               schema:
+                 $ref: "#/components/schemas/Operation"
+           description: Successful response
++      requestBody:
++        content:
++          application/json:
++            schema:
++              type: object
++              nullable: false
+       security:
+         - Oauth2:
+             - https://www.googleapis.com/auth/cloud-platform
