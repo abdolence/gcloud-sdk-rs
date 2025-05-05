@@ -17,8 +17,8 @@ doctest = false
 
 [features]
 default = ["tls-roots"]
-tls-roots = ["reqwest/rustls-tls-native-roots", "tonic/tls-native-roots"]
-tls-webpki-roots = ["tonic/tls-webpki-roots", "reqwest/rustls-tls-webpki-roots"]
+tls-roots = ["reqwest/rustls-tls-native-roots-no-provider", "tonic/tls-native-roots"]
+tls-webpki-roots = ["tonic/tls-webpki-roots", "reqwest/rustls-tls-webpki-roots-no-provider"]
 rest = ["serde_with"]
 external-account-aws = ["aws-config", "aws-sigv4", "aws-credential-types", "percent-encoding"]
 
