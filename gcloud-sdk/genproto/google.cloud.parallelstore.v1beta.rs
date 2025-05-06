@@ -32,7 +32,9 @@ pub struct Instance {
     /// 12000, 16000, 20000, ...
     #[prost(int64, tag = "8")]
     pub capacity_gib: i64,
+    /// Output only. Deprecated 'daos_version' field.
     /// Output only. The version of DAOS software running in the instance.
+    #[deprecated]
     #[prost(string, tag = "9")]
     pub daos_version: ::prost::alloc::string::String,
     /// Output only. A list of IPv4 addresses used for client side configuration.
@@ -54,7 +56,7 @@ pub struct Instance {
     /// the value currently used by the service.
     #[prost(string, tag = "14")]
     pub effective_reserved_ip_range: ::prost::alloc::string::String,
-    /// Optional. Stripe level for files. Allowed values are:
+    /// Optional. Immutable. Stripe level for files. Allowed values are:
     ///
     /// * `FILE_STRIPE_LEVEL_MIN`: offers the best performance for small size
     ///    files.
@@ -63,7 +65,7 @@ pub struct Instance {
     /// * `FILE_STRIPE_LEVEL_MAX`: higher throughput performance for larger files.
     #[prost(enumeration = "FileStripeLevel", tag = "15")]
     pub file_stripe_level: i32,
-    /// Optional. Stripe level for directories. Allowed values are:
+    /// Optional. Immutable. Stripe level for directories. Allowed values are:
     ///
     /// * `DIRECTORY_STRIPE_LEVEL_MIN`: recommended when directories contain a
     ///    small number of files.
@@ -73,7 +75,8 @@ pub struct Instance {
     ///    number of files.
     #[prost(enumeration = "DirectoryStripeLevel", tag = "16")]
     pub directory_stripe_level: i32,
-    /// Optional. The deployment type of the instance. Allowed values are:
+    /// Optional. Immutable. The deployment type of the instance. Allowed values
+    /// are:
     ///
     /// * `SCRATCH`: the instance is a scratch instance.
     /// * `PERSISTENT`: the instance is a persistent instance.
@@ -108,6 +111,9 @@ pub mod instance {
         Failed = 4,
         /// The instance is being upgraded.
         Upgrading = 5,
+        /// The instance is being repaired. This should only be used by instances
+        /// using the `PERSISTENT` deployment type.
+        Repairing = 6,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -122,6 +128,7 @@ pub mod instance {
                 Self::Deleting => "DELETING",
                 Self::Failed => "FAILED",
                 Self::Upgrading => "UPGRADING",
+                Self::Repairing => "REPAIRING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -133,6 +140,152 @@ pub mod instance {
                 "DELETING" => Some(Self::Deleting),
                 "FAILED" => Some(Self::Failed),
                 "UPGRADING" => Some(Self::Upgrading),
+                "REPAIRING" => Some(Self::Repairing),
+                _ => None,
+            }
+        }
+    }
+}
+/// Transfer metadata options for the instance.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct TransferMetadataOptions {
+    /// Optional. The UID preservation behavior.
+    #[prost(enumeration = "transfer_metadata_options::Uid", tag = "1")]
+    pub uid: i32,
+    /// Optional. The GID preservation behavior.
+    #[prost(enumeration = "transfer_metadata_options::Gid", tag = "2")]
+    pub gid: i32,
+    /// Optional. The mode preservation behavior.
+    #[prost(enumeration = "transfer_metadata_options::Mode", tag = "3")]
+    pub mode: i32,
+}
+/// Nested message and enum types in `TransferMetadataOptions`.
+pub mod transfer_metadata_options {
+    /// The UID perservation behavior.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Uid {
+        /// default is UID_NUMBER_PRESERVE.
+        Unspecified = 0,
+        /// Do not preserve UID during a transfer job.
+        Skip = 1,
+        /// Preserve UID that is in number format during a transfer job.
+        NumberPreserve = 2,
+    }
+    impl Uid {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "UID_UNSPECIFIED",
+                Self::Skip => "UID_SKIP",
+                Self::NumberPreserve => "UID_NUMBER_PRESERVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UID_UNSPECIFIED" => Some(Self::Unspecified),
+                "UID_SKIP" => Some(Self::Skip),
+                "UID_NUMBER_PRESERVE" => Some(Self::NumberPreserve),
+                _ => None,
+            }
+        }
+    }
+    /// The GID preservation behavior.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Gid {
+        /// default is GID_NUMBER_PRESERVE.
+        Unspecified = 0,
+        /// Do not preserve GID during a transfer job.
+        Skip = 1,
+        /// Preserve GID that is in number format during a transfer job.
+        NumberPreserve = 2,
+    }
+    impl Gid {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "GID_UNSPECIFIED",
+                Self::Skip => "GID_SKIP",
+                Self::NumberPreserve => "GID_NUMBER_PRESERVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "GID_UNSPECIFIED" => Some(Self::Unspecified),
+                "GID_SKIP" => Some(Self::Skip),
+                "GID_NUMBER_PRESERVE" => Some(Self::NumberPreserve),
+                _ => None,
+            }
+        }
+    }
+    /// The mode preservation behavior.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Mode {
+        /// default is MODE_PRESERVE.
+        Unspecified = 0,
+        /// Do not preserve mode during a transfer job.
+        Skip = 1,
+        /// Preserve mode during a transfer job.
+        Preserve = 2,
+    }
+    impl Mode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "MODE_UNSPECIFIED",
+                Self::Skip => "MODE_SKIP",
+                Self::Preserve => "MODE_PRESERVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MODE_SKIP" => Some(Self::Skip),
+                "MODE_PRESERVE" => Some(Self::Preserve),
                 _ => None,
             }
         }
@@ -367,6 +520,9 @@ pub struct ImportDataRequest {
     /// `service-<PROJECT_NUMBER>@gcp-sa-parallelstore.iam.gserviceaccount.com`
     #[prost(string, tag = "5")]
     pub service_account: ::prost::alloc::string::String,
+    /// Optional. The transfer metadata options for the import data.
+    #[prost(message, optional, tag = "6")]
+    pub metadata_options: ::core::option::Option<TransferMetadataOptions>,
     /// The source of the data being imported into the Parallelstore instance.
     #[prost(oneof = "import_data_request::Source", tags = "2")]
     pub source: ::core::option::Option<import_data_request::Source>,
@@ -424,6 +580,9 @@ pub struct ExportDataRequest {
     /// `service-<PROJECT_NUMBER>@gcp-sa-parallelstore.iam.gserviceaccount.com`
     #[prost(string, tag = "5")]
     pub service_account: ::prost::alloc::string::String,
+    /// Optional. The metadata options for the export data.
+    #[prost(message, optional, tag = "6")]
+    pub metadata_options: ::core::option::Option<TransferMetadataOptions>,
     /// The Parallelstore instance to export from.
     #[prost(oneof = "export_data_request::Source", tags = "2")]
     pub source: ::core::option::Option<export_data_request::Source>,
@@ -451,6 +610,31 @@ pub mod export_data_request {
 /// The response to a request to import data to Parallelstore.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ImportDataResponse {}
+/// An entry describing an error that has occurred.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TransferErrorLogEntry {
+    /// A URL that refers to the target (a data source, a data sink,
+    /// or an object) with which the error is associated.
+    #[prost(string, tag = "1")]
+    pub uri: ::prost::alloc::string::String,
+    /// A list of messages that carry the error details.
+    #[prost(string, repeated, tag = "2")]
+    pub error_details: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// A summary of errors by error code, plus a count and sample error log
+/// entries.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TransferErrorSummary {
+    /// One of the error codes that caused the transfer failure.
+    #[prost(enumeration = "super::super::super::rpc::Code", tag = "1")]
+    pub error_code: i32,
+    /// Count of this type of error.
+    #[prost(int64, tag = "2")]
+    pub error_count: i64,
+    /// A list of messages that carry the error details.
+    #[prost(message, repeated, tag = "4")]
+    pub error_log_entries: ::prost::alloc::vec::Vec<TransferErrorLogEntry>,
+}
 /// Metadata related to the data import operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDataMetadata {
@@ -527,6 +711,10 @@ pub struct TransferOperationMetadata {
     /// Output only. The type of transfer occurring.
     #[prost(enumeration = "TransferType", tag = "6")]
     pub transfer_type: i32,
+    /// Output only. List of files that failed to be transferred. This list will
+    /// have a maximum size of 5 elements.
+    #[prost(message, repeated, tag = "13")]
+    pub error_summary: ::prost::alloc::vec::Vec<TransferErrorSummary>,
     /// The source of transfer operation.
     #[prost(oneof = "transfer_operation_metadata::Source", tags = "7, 8")]
     pub source: ::core::option::Option<transfer_operation_metadata::Source>,
@@ -584,6 +772,12 @@ pub struct TransferCounters {
     /// Bytes that are copied to the data destination.
     #[prost(int64, tag = "6")]
     pub bytes_copied: i64,
+    /// Objects that are failed to write to the data destination.
+    #[prost(int64, tag = "7")]
+    pub objects_failed: i64,
+    /// Bytes that are failed to write to the data destination.
+    #[prost(int64, tag = "8")]
+    pub bytes_failed: i64,
 }
 /// Type of transfer that occurred.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

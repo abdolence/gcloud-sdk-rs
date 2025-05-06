@@ -205,6 +205,381 @@ pub mod lfp_inventory_service_client {
         }
     }
 }
+/// The LFP state of a merchant.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LfpMerchantState {
+    /// Identifier. The name of the `LfpMerchantState` resource. Format:
+    /// `accounts/{account}/lfpMerchantStates/{target_merchant}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Number of [GBPs](<https://www.google.com/business/>) this merchant has access
+    /// to.
+    #[prost(int64, tag = "2")]
+    pub linked_gbps: i64,
+    /// Output only. The state per store from the specified merchant. The field
+    /// will be absent if the merchant has no stores submitted through LFP.
+    #[prost(message, repeated, tag = "3")]
+    pub store_states: ::prost::alloc::vec::Vec<lfp_merchant_state::LfpStoreState>,
+    /// The inventory statistics for the merchant. The field will be absent if the
+    /// merchant has no inventory submitted through LFP.
+    #[prost(message, optional, tag = "4")]
+    pub inventory_stats: ::core::option::Option<lfp_merchant_state::InventoryStats>,
+    /// Country-specific settings for the merchant.
+    #[prost(message, repeated, tag = "5")]
+    pub country_settings: ::prost::alloc::vec::Vec<lfp_merchant_state::CountrySettings>,
+}
+/// Nested message and enum types in `LfpMerchantState`.
+pub mod lfp_merchant_state {
+    /// The state of a specific merchant's store.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct LfpStoreState {
+        /// Required. Immutable. The identifier of this store.
+        #[prost(string, tag = "1")]
+        pub store_code: ::prost::alloc::string::String,
+        /// Output only. The store matching state.
+        #[prost(enumeration = "lfp_store_state::StoreMatchingState", tag = "2")]
+        pub matching_state: i32,
+        /// The hint of why the matching has failed (only set if matching_state is
+        /// FAILED).
+        #[prost(string, tag = "3")]
+        pub matching_state_hint: ::prost::alloc::string::String,
+    }
+    /// Nested message and enum types in `LfpStoreState`.
+    pub mod lfp_store_state {
+        /// The state of matching `LfpStore` to a Google Business Profile listing.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum StoreMatchingState {
+            /// Store matching state unspecified.
+            Unspecified = 0,
+            /// The `LfpStore` is successfully matched with a Google Business Profile
+            /// store.
+            Matched = 1,
+            /// The `LfpStore` is not matched with a Google Business Profile store.
+            Failed = 2,
+        }
+        impl StoreMatchingState {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "STORE_MATCHING_STATE_UNSPECIFIED",
+                    Self::Matched => "STORE_MATCHING_STATE_MATCHED",
+                    Self::Failed => "STORE_MATCHING_STATE_FAILED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STORE_MATCHING_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "STORE_MATCHING_STATE_MATCHED" => Some(Self::Matched),
+                    "STORE_MATCHING_STATE_FAILED" => Some(Self::Failed),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// The inventory statistics for a merchant.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct InventoryStats {
+        /// Number of entries (understanding entry as a pair of product and store)
+        /// that were built based on provided inventories/sales and submitted to
+        /// Google.
+        #[prost(int64, tag = "1")]
+        pub submitted_entries: i64,
+        /// Number of submitted in stock entries.
+        #[prost(int64, tag = "2")]
+        pub submitted_in_stock_entries: i64,
+        /// Number of entries that were built based on provided
+        /// inventories/sales and couldn't be submitted to Google due to errors like
+        /// missing product.
+        #[prost(int64, tag = "3")]
+        pub unsubmitted_entries: i64,
+        /// Number of products from provided inventories/sales that were created from
+        /// matches to existing online products provided by the merchant or to the
+        /// Google catalog.
+        #[prost(int64, tag = "4")]
+        pub submitted_products: i64,
+    }
+    /// Country-specific settings for the merchant.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CountrySettings {
+        /// Required. The [CLDR territory
+        /// code](<https://github.com/unicode-org/cldr/blob/latest/common/main/en.xml>)
+        /// for the country for which these settings are defined.
+        #[prost(string, tag = "1")]
+        pub region_code: ::prost::alloc::string::String,
+        /// True if this merchant has enabled free local listings in MC.
+        #[prost(bool, tag = "2")]
+        pub free_local_listings_enabled: bool,
+        /// True if this merchant has enabled local inventory ads in MC.
+        #[prost(bool, tag = "3")]
+        pub local_inventory_ads_enabled: bool,
+        /// Output only. The verification state of this merchant's inventory check.
+        #[prost(enumeration = "country_settings::VerificationState", tag = "4")]
+        pub inventory_verification_state: i32,
+        /// Output only. The product page type selected by this merchant.
+        #[prost(enumeration = "country_settings::ProductPageType", tag = "5")]
+        pub product_page_type: i32,
+        /// Output only. The verification state of this merchant's instock serving
+        /// feature.
+        #[prost(enumeration = "country_settings::VerificationState", tag = "6")]
+        pub instock_serving_verification_state: i32,
+        /// Output only. The verification state of this merchant's pickup serving
+        /// feature.
+        #[prost(enumeration = "country_settings::VerificationState", tag = "7")]
+        pub pickup_serving_verification_state: i32,
+    }
+    /// Nested message and enum types in `CountrySettings`.
+    pub mod country_settings {
+        /// The possible verification states for different merchant programs.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum VerificationState {
+            /// Verification state unspecified.
+            Unspecified = 0,
+            /// Verification state not approved.
+            NotApproved = 1,
+            /// Verification state in progress.
+            InProgress = 2,
+            /// Verification state approved.
+            Approved = 3,
+        }
+        impl VerificationState {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "VERIFICATION_STATE_UNSPECIFIED",
+                    Self::NotApproved => "VERIFICATION_STATE_NOT_APPROVED",
+                    Self::InProgress => "VERIFICATION_STATE_IN_PROGRESS",
+                    Self::Approved => "VERIFICATION_STATE_APPROVED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "VERIFICATION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "VERIFICATION_STATE_NOT_APPROVED" => Some(Self::NotApproved),
+                    "VERIFICATION_STATE_IN_PROGRESS" => Some(Self::InProgress),
+                    "VERIFICATION_STATE_APPROVED" => Some(Self::Approved),
+                    _ => None,
+                }
+            }
+        }
+        /// The possible [product page
+        /// types](<https://support.google.com/merchants/topic/15148370>) for a
+        /// merchant.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum ProductPageType {
+            /// Product page type unspecified.
+            Unspecified = 0,
+            /// Google hosted product page.
+            GoogleHosted = 1,
+            /// Merchant hosted product page.
+            MerchantHosted = 2,
+            /// Merchant hosted store specific product page.
+            MerchantHostedStoreSpecific = 3,
+        }
+        impl ProductPageType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "PRODUCT_PAGE_TYPE_UNSPECIFIED",
+                    Self::GoogleHosted => "GOOGLE_HOSTED",
+                    Self::MerchantHosted => "MERCHANT_HOSTED",
+                    Self::MerchantHostedStoreSpecific => "MERCHANT_HOSTED_STORE_SPECIFIC",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "PRODUCT_PAGE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "GOOGLE_HOSTED" => Some(Self::GoogleHosted),
+                    "MERCHANT_HOSTED" => Some(Self::MerchantHosted),
+                    "MERCHANT_HOSTED_STORE_SPECIFIC" => {
+                        Some(Self::MerchantHostedStoreSpecific)
+                    }
+                    _ => None,
+                }
+            }
+        }
+    }
+}
+/// Request message for the GetLfpMerchantState method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetLfpMerchantStateRequest {
+    /// Required. The name of the state to retrieve.
+    /// Format: `accounts/{account}/lfpMerchantStates/{target_merchant}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Generated client implementations.
+pub mod lfp_merchant_state_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service for a [LFP
+    /// partner](https://support.google.com/merchants/answer/7676652) to get the
+    /// state of a merchant.
+    #[derive(Debug, Clone)]
+    pub struct LfpMerchantStateServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl LfpMerchantStateServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> LfpMerchantStateServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> LfpMerchantStateServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            LfpMerchantStateServiceClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Gets the LFP state of a merchant
+        pub async fn get_lfp_merchant_state(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetLfpMerchantStateRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::LfpMerchantState>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.shopping.merchant.lfp.v1beta.LfpMerchantStateService/GetLfpMerchantState",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.shopping.merchant.lfp.v1beta.LfpMerchantStateService",
+                        "GetLfpMerchantState",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// A sale for the merchant.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LfpSale {

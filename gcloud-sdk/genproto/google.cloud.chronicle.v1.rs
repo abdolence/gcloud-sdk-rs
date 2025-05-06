@@ -181,7 +181,7 @@ pub struct DeleteDataAccessScopeRequest {
 /// A DataAccessLabel is a label on events to define user access to data.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataAccessLabel {
-    /// Required. The unique resource name of the data access label.
+    /// The unique resource name of the data access label.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The short name displayed for the label as it appears on event
@@ -741,7 +741,7 @@ pub struct Watchlist {
     /// Optional. Description of the watchlist.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
-    /// Optional. Weight applied to the risk_score for entities
+    /// Optional. Weight applied to the risk score for entities
     /// in this watchlist.
     /// The default is 1.0 if it is not specified.
     #[prost(float, tag = "5")]
@@ -1138,7 +1138,7 @@ pub mod entity_service_client {
 /// A Instance represents an instantiation of the Instance product.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Instance {
-    /// Output only. The resource name of this instance.
+    /// Identifier. The resource name of this instance.
     /// Format: `projects/{project}/locations/{location}/instances/{instance}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -1381,7 +1381,7 @@ pub struct UpdateReferenceListRequest {
 /// use in multiple Rules.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReferenceList {
-    /// Output only. The resource name of the reference list.
+    /// Identifier. The resource name of the reference list.
     /// Format:
     /// `projects/{project}/locations/{location}/instances/{instance}/referenceLists/{reference_list}`
     #[prost(string, tag = "1")]
@@ -1413,7 +1413,7 @@ pub struct ReferenceList {
     /// Output only. The count of self-authored rules using the reference list.
     #[prost(int32, tag = "9")]
     pub rule_associations_count: i32,
-    /// Output only. The scope info of the reference list.
+    /// The scope info of the reference list.
     /// During reference list creation, if this field is not set, the reference
     /// list without scopes (an unscoped list) will be created for an unscoped
     /// user. For a scoped user, this field must be set. During reference list
@@ -1713,7 +1713,7 @@ pub mod reference_list_service_client {
 /// NEXT TAG: 21
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Rule {
-    /// Full resource name for the rule.
+    /// Identifier. Full resource name for the rule.
     /// Format:
     /// `projects/{project}/locations/{location}/instances/{instance}/rules/{rule}`
     #[prost(string, tag = "1")]

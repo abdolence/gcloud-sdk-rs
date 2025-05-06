@@ -7,8 +7,8 @@
 /// organization by setting a policy that includes constraints at different
 /// locations in the organization's resource hierarchy. Policies are inherited
 /// down the resource hierarchy from higher levels, but can also be overridden.
-/// For details about the inheritance rules please read about
-/// [`policies`][google.cloud.OrgPolicy.v2.Policy].
+/// For details about the inheritance rules, see
+/// [`Policy`][google.cloud.orgpolicy.v2.Policy].
 ///
 /// Constraints have a default behavior determined by the `constraint_default`
 /// field, which is the enforcement behavior that is used in the absence of a
@@ -42,6 +42,13 @@ pub struct Constraint {
     /// Shows if dry run is supported for this constraint or not.
     #[prost(bool, tag = "7")]
     pub supports_dry_run: bool,
+    /// Managed constraint and canned constraint sometimes can have
+    /// equivalents. This field is used to store the equivalent constraint name.
+    #[prost(string, tag = "8")]
+    pub equivalent_constraint: ::prost::alloc::string::String,
+    /// Shows if simulation is supported for this constraint or not.
+    #[prost(bool, tag = "9")]
+    pub supports_simulation: bool,
     /// The type of restrictions for this `Constraint`.
     ///
     /// Immutable after creation.
@@ -50,8 +57,9 @@ pub struct Constraint {
 }
 /// Nested message and enum types in `Constraint`.
 pub mod constraint {
-    /// A constraint that allows or disallows a list of string values, which are
-    /// configured by an Organization Policy administrator with a policy.
+    /// A constraint type that allows or disallows a list of string values, which
+    /// are configured in the
+    /// [`PolicyRule`][google.cloud.orgpolicy.v2.PolicySpec.PolicyRule].
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ListConstraint {
         /// Indicates whether values grouped into categories can be used in
@@ -66,13 +74,248 @@ pub mod constraint {
         #[prost(bool, tag = "2")]
         pub supports_under: bool,
     }
-    /// A constraint that is either enforced or not.
+    /// Custom constraint definition. Defines this as a managed constraint.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CustomConstraintDefinition {
+        /// The resource instance type on which this policy applies. Format will be
+        /// of the form : `<service name>/<type>` Example:
+        ///
+        ///   * `compute.googleapis.com/Instance`.
+        #[prost(string, repeated, tag = "1")]
+        pub resource_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// All the operations being applied for this constraint.
+        #[prost(
+            enumeration = "custom_constraint_definition::MethodType",
+            repeated,
+            tag = "2"
+        )]
+        pub method_types: ::prost::alloc::vec::Vec<i32>,
+        /// Org policy condition/expression. For example:
+        /// `resource.instanceName.matches("\[production|test\]_.*_(\d)+")` or,
+        /// `resource.management.auto_upgrade == true`
+        ///
+        /// The max length of the condition is 1000 characters.
+        #[prost(string, tag = "3")]
+        pub condition: ::prost::alloc::string::String,
+        /// Allow or deny type.
+        #[prost(enumeration = "custom_constraint_definition::ActionType", tag = "4")]
+        pub action_type: i32,
+        /// Stores the structure of
+        /// [`Parameters`][google.cloud.orgpolicy.v2.Constraint.CustomConstraintDefinition.Parameter]
+        /// used by the constraint condition. The key of `map` represents the name of
+        /// the parameter.
+        #[prost(map = "string, message", tag = "5")]
+        pub parameters: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            custom_constraint_definition::Parameter,
+        >,
+    }
+    /// Nested message and enum types in `CustomConstraintDefinition`.
+    pub mod custom_constraint_definition {
+        /// Defines a parameter structure.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Parameter {
+            /// Type of the parameter.
+            #[prost(enumeration = "parameter::Type", tag = "1")]
+            pub r#type: i32,
+            /// Sets the value of the parameter in an assignment if no value is given.
+            #[prost(message, optional, tag = "2")]
+            pub default_value: ::core::option::Option<::prost_types::Value>,
+            /// Provides a CEL expression to specify the acceptable parameter values
+            /// during assignment.
+            /// For example, parameterName in ("parameterValue1", "parameterValue2")
+            #[prost(string, tag = "3")]
+            pub valid_values_expr: ::prost::alloc::string::String,
+            /// Defines subproperties primarily used by the UI to display user-friendly
+            /// information.
+            #[prost(message, optional, tag = "4")]
+            pub metadata: ::core::option::Option<parameter::Metadata>,
+            /// Determines the parameter's value structure.
+            /// For example, `LIST<STRING>` can be specified by defining `type: LIST`,
+            /// and `item: STRING`.
+            #[prost(enumeration = "parameter::Type", tag = "5")]
+            pub item: i32,
+        }
+        /// Nested message and enum types in `Parameter`.
+        pub mod parameter {
+            /// Defines Metadata structure.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct Metadata {
+                /// Detailed description of what this `parameter` is and use of it.
+                /// Mutable.
+                #[prost(string, tag = "1")]
+                pub description: ::prost::alloc::string::String,
+            }
+            /// All valid types of parameter.
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum Type {
+                /// This is only used for distinguishing unset values and should never be
+                /// used. Results in an error.
+                Unspecified = 0,
+                /// List parameter type.
+                List = 1,
+                /// String parameter type.
+                String = 2,
+                /// Boolean parameter type.
+                Boolean = 3,
+            }
+            impl Type {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        Self::Unspecified => "TYPE_UNSPECIFIED",
+                        Self::List => "LIST",
+                        Self::String => "STRING",
+                        Self::Boolean => "BOOLEAN",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "LIST" => Some(Self::List),
+                        "STRING" => Some(Self::String),
+                        "BOOLEAN" => Some(Self::Boolean),
+                        _ => None,
+                    }
+                }
+            }
+        }
+        /// The operation for which this constraint will be applied. To apply this
+        /// constraint only when creating new resources, the `method_types` should be
+        /// `CREATE` only. To apply this constraint when creating or deleting
+        /// resources, the `method_types` should be `CREATE` and `DELETE`.
+        ///
+        /// `UPDATE`-only custom constraints are not supported. Use `CREATE` or
+        /// `CREATE, UPDATE`.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum MethodType {
+            /// This is only used for distinguishing unset values and should never be
+            /// used. Results in an error.
+            Unspecified = 0,
+            /// Constraint applied when creating the resource.
+            Create = 1,
+            /// Constraint applied when updating the resource.
+            Update = 2,
+            /// Constraint applied when deleting the resource.
+            /// Not currently supported.
+            Delete = 3,
+            /// Constraint applied when removing an IAM grant.
+            RemoveGrant = 4,
+            /// Constraint applied when enforcing forced tagging.
+            GovernTags = 5,
+        }
+        impl MethodType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "METHOD_TYPE_UNSPECIFIED",
+                    Self::Create => "CREATE",
+                    Self::Update => "UPDATE",
+                    Self::Delete => "DELETE",
+                    Self::RemoveGrant => "REMOVE_GRANT",
+                    Self::GovernTags => "GOVERN_TAGS",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "METHOD_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "CREATE" => Some(Self::Create),
+                    "UPDATE" => Some(Self::Update),
+                    "DELETE" => Some(Self::Delete),
+                    "REMOVE_GRANT" => Some(Self::RemoveGrant),
+                    "GOVERN_TAGS" => Some(Self::GovernTags),
+                    _ => None,
+                }
+            }
+        }
+        /// Allow or deny type.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum ActionType {
+            /// This is only used for distinguishing unset values and should never be
+            /// used. Results in an error.
+            Unspecified = 0,
+            /// Allowed action type.
+            Allow = 1,
+            /// Deny action type.
+            Deny = 2,
+        }
+        impl ActionType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "ACTION_TYPE_UNSPECIFIED",
+                    Self::Allow => "ALLOW",
+                    Self::Deny => "DENY",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "ACTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ALLOW" => Some(Self::Allow),
+                    "DENY" => Some(Self::Deny),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// A constraint type is enforced or not enforced, which is configured in the
+    /// [`PolicyRule`][google.cloud.orgpolicy.v2.PolicySpec.PolicyRule].
     ///
-    /// For example, a constraint `constraints/compute.disableSerialPortAccess`.
-    /// If it is enforced on a VM instance, serial port connections will not be
-    /// opened to that instance.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
-    pub struct BooleanConstraint {}
+    /// If `customConstraintDefinition` is defined, this constraint is a managed
+    /// constraint.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct BooleanConstraint {
+        /// Custom constraint definition. Defines this as a managed constraint.
+        #[prost(message, optional, tag = "1")]
+        pub custom_constraint_definition: ::core::option::Option<
+            CustomConstraintDefinition,
+        >,
+    }
     /// Specifies the default behavior in the absence of any policy for the
     /// constraint. This must not be `CONSTRAINT_DEFAULT_UNSPECIFIED`.
     ///
@@ -91,7 +334,7 @@ pub mod constraint {
     #[repr(i32)]
     pub enum ConstraintDefault {
         /// This is only used for distinguishing unset values and should never be
-        /// used.
+        /// used. Results in an error.
         Unspecified = 0,
         /// Indicate that all values are allowed for list constraints.
         /// Indicate that enforcement is off for boolean constraints.
@@ -125,12 +368,12 @@ pub mod constraint {
     /// The type of restrictions for this `Constraint`.
     ///
     /// Immutable after creation.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConstraintType {
-        /// Defines this constraint as being a ListConstraint.
+        /// Defines this constraint as being a list constraint.
         #[prost(message, tag = "5")]
         ListConstraint(ListConstraint),
-        /// Defines this constraint as being a BooleanConstraint.
+        /// Defines this constraint as being a boolean constraint.
         #[prost(message, tag = "6")]
         BooleanConstraint(BooleanConstraint),
     }
@@ -155,7 +398,7 @@ pub struct CustomConstraint {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Immutable. The resource instance type on which this policy applies. Format
-    /// will be of the form : `<canonical service name>/<type>` Example:
+    /// will be of the form : `<service name>/<type>` Example:
     ///
     ///   * `compute.googleapis.com/Instance`.
     #[prost(string, repeated, tag = "2")]
@@ -163,7 +406,8 @@ pub struct CustomConstraint {
     /// All the operations being applied for this constraint.
     #[prost(enumeration = "custom_constraint::MethodType", repeated, tag = "3")]
     pub method_types: ::prost::alloc::vec::Vec<i32>,
-    /// Org policy condition/expression. For example:
+    /// A Common Expression Language (CEL) condition which is used in the
+    /// evaluation of the constraint. For example:
     /// `resource.instanceName.matches("\[production|test\]_.*_(\d)+")` or,
     /// `resource.management.auto_upgrade == true`
     ///
@@ -183,16 +427,16 @@ pub struct CustomConstraint {
     pub description: ::prost::alloc::string::String,
     /// Output only. The last time this custom constraint was updated. This
     /// represents the last time that the `CreateCustomConstraint` or
-    /// `UpdateCustomConstraint` RPC was called
+    /// `UpdateCustomConstraint` methods were called.
     #[prost(message, optional, tag = "8")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `CustomConstraint`.
 pub mod custom_constraint {
     /// The operation for which this constraint will be applied. To apply this
-    /// constraint only when creating new VMs, the `method_types` should be
+    /// constraint only when creating new resources, the `method_types` should be
     /// `CREATE` only. To apply this constraint when creating or deleting
-    /// VMs, the `method_types` should be `CREATE` and `DELETE`.
+    /// resources, the `method_types` should be `CREATE` and `DELETE`.
     ///
     /// `UPDATE` only custom constraints are not supported. Use `CREATE` or
     /// `CREATE, UPDATE`.
@@ -209,14 +453,15 @@ pub mod custom_constraint {
     )]
     #[repr(i32)]
     pub enum MethodType {
-        /// Unspecified. Results in an error.
+        /// This is only used for distinguishing unset values and should never be
+        /// used. Results in an error.
         Unspecified = 0,
         /// Constraint applied when creating the resource.
         Create = 1,
         /// Constraint applied when updating the resource.
         Update = 2,
         /// Constraint applied when deleting the resource.
-        /// Not supported yet.
+        /// Not currently supported.
         Delete = 3,
         /// Constraint applied when removing an IAM grant.
         RemoveGrant = 4,
@@ -265,7 +510,8 @@ pub mod custom_constraint {
     )]
     #[repr(i32)]
     pub enum ActionType {
-        /// Unspecified. Results in an error.
+        /// This is only used for distinguishing unset values and should never be
+        /// used. Results in an error.
         Unspecified = 0,
         /// Allowed action type.
         Allow = 1,
@@ -314,7 +560,7 @@ pub struct Policy {
     /// the equivalent project number.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Basic information about the Organization Policy.
+    /// Basic information about the organization policy.
     #[prost(message, optional, tag = "2")]
     pub spec: ::core::option::Option<PolicySpec>,
     /// Deprecated.
@@ -334,7 +580,7 @@ pub struct Policy {
     pub etag: ::prost::alloc::string::String,
 }
 /// Similar to PolicySpec but with an extra 'launch' field for launch reference.
-/// The PolicySpec here is specific for dry-run/darklaunch.
+/// The PolicySpec here is specific for dry-run.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AlternatePolicySpec {
     /// Reference to the launch that will be used while audit logging and to
@@ -414,6 +660,16 @@ pub mod policy_spec {
         /// 'tagValues/456')".
         #[prost(message, optional, tag = "5")]
         pub condition: ::core::option::Option<super::super::super::super::r#type::Expr>,
+        /// Optional. Required for managed constraints if parameters are defined.
+        /// Passes parameter values when policy enforcement is enabled. Ensure that
+        /// parameter value types match those defined in the constraint definition.
+        /// For example:
+        /// {
+        ///    "allowedLocations" : \["us-east1", "us-west1"\],
+        ///    "allowAll" : true
+        /// }
+        #[prost(message, optional, tag = "6")]
+        pub parameters: ::core::option::Option<::prost_types::Struct>,
         #[prost(oneof = "policy_rule::Kind", tags = "1, 2, 3, 4")]
         pub kind: ::core::option::Option<policy_rule::Kind>,
     }
@@ -618,8 +874,8 @@ pub struct CreateCustomConstraintRequest {
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.GetCustomConstraint\] method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomConstraintRequest {
-    /// Required. Resource name of the custom constraint. See the custom constraint
-    /// entry for naming requirements.
+    /// Required. Resource name of the custom or managed constraint. See the custom
+    /// constraint entry for naming requirements.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -646,11 +902,12 @@ pub struct ListCustomConstraintsRequest {
 }
 /// The response returned from the \[ListCustomConstraints\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.ListCustomConstraints\] method. It will
-/// be empty if no custom constraints are set on the organization resource.
+/// be empty if no custom or managed constraints are set on the organization
+/// resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomConstraintsResponse {
-    /// All custom constraints that exist on the organization resource. It will be
-    /// empty if no custom constraints are set.
+    /// All custom and managed constraints that exist on the organization resource.
+    /// It will be empty if no custom constraints are set.
     #[prost(message, repeated, tag = "1")]
     pub custom_constraints: ::prost::alloc::vec::Vec<CustomConstraint>,
     /// Page token used to retrieve the next page. This is currently not used, but
@@ -1074,10 +1331,10 @@ pub mod org_policy_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Gets a custom constraint.
+        /// Gets a custom or managed constraint.
         ///
         /// Returns a `google.rpc.Status` with `google.rpc.Code.NOT_FOUND` if the
-        /// custom constraint does not exist.
+        /// custom or managed constraint does not exist.
         pub async fn get_custom_constraint(
             &mut self,
             request: impl tonic::IntoRequest<super::GetCustomConstraintRequest>,

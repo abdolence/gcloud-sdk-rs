@@ -294,7 +294,6 @@ pub struct Submission {
 }
 /// Context about the submission including the type of abuse found on the URI and
 /// supporting details.
-/// option (google.api.message_visibility).restriction = "TRUSTED_TESTER";
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ThreatInfo {
     /// The type of abuse.
@@ -582,7 +581,6 @@ pub struct SubmitUriRequest {
     pub threat_discovery: ::core::option::Option<ThreatDiscovery>,
 }
 /// Metadata for the Submit URI long-running operation.
-/// option (google.api.message_visibility).restriction = "TRUSTED_TESTER";
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SubmitUriMetadata {
     /// The state of the operation.

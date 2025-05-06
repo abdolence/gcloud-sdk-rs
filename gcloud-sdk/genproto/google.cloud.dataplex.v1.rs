@@ -325,11 +325,13 @@ pub mod zone {
             /// Optional. Cron schedule (<https://en.wikipedia.org/wiki/Cron>) for
             /// running discovery periodically. Successive discovery runs must be
             /// scheduled at least 60 minutes apart. The default value is to run
-            /// discovery every 60 minutes. To explicitly set a timezone to the cron
-            /// tab, apply a prefix in the cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or
-            /// TZ=${IANA_TIME_ZONE}". The ${IANA_TIME_ZONE} may only be a valid string
-            /// from IANA time zone database. For example, `CRON_TZ=America/New_York 1
-            /// * * * *`, or `TZ=America/New_York 1 * * * *`.
+            /// discovery every 60 minutes.
+            ///
+            /// To explicitly set a timezone to the cron tab, apply a prefix in the
+            /// cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or TZ=${IANA_TIME_ZONE}".
+            /// The ${IANA_TIME_ZONE} may only be a valid string from IANA time zone
+            /// database. For example, `CRON_TZ=America/New_York 1 * * * *`, or
+            /// `TZ=America/New_York 1 * * * *`.
             #[prost(string, tag = "10")]
             Schedule(::prost::alloc::string::String),
         }
@@ -859,11 +861,13 @@ pub mod asset {
             /// Optional. Cron schedule (<https://en.wikipedia.org/wiki/Cron>) for
             /// running discovery periodically. Successive discovery runs must be
             /// scheduled at least 60 minutes apart. The default value is to run
-            /// discovery every 60 minutes. To explicitly set a timezone to the cron
-            /// tab, apply a prefix in the cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or
-            /// TZ=${IANA_TIME_ZONE}". The ${IANA_TIME_ZONE} may only be a valid string
-            /// from IANA time zone database. For example, `CRON_TZ=America/New_York 1
-            /// * * * *`, or `TZ=America/New_York 1 * * * *`.
+            /// discovery every 60 minutes.
+            ///
+            /// To explicitly set a timezone to the cron tab, apply a prefix in the
+            /// cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or TZ=${IANA_TIME_ZONE}".
+            /// The ${IANA_TIME_ZONE} may only be a valid string from IANA time zone
+            /// database. For example, `CRON_TZ=America/New_York 1 * * * *`, or
+            /// `TZ=America/New_York 1 * * * *`.
             #[prost(string, tag = "10")]
             Schedule(::prost::alloc::string::String),
         }
@@ -4988,9 +4992,9 @@ pub struct MetadataJob {
     /// Output only. Metadata job status.
     #[prost(message, optional, tag = "7")]
     pub status: ::core::option::Option<metadata_job::Status>,
-    #[prost(oneof = "metadata_job::Spec", tags = "100")]
+    #[prost(oneof = "metadata_job::Spec", tags = "100, 101")]
     pub spec: ::core::option::Option<metadata_job::Spec>,
-    #[prost(oneof = "metadata_job::Result", tags = "200")]
+    #[prost(oneof = "metadata_job::Result", tags = "200, 201")]
     pub result: ::core::option::Option<metadata_job::Result>,
 }
 /// Nested message and enum types in `MetadataJob`.
@@ -5016,6 +5020,17 @@ pub mod metadata_job {
         /// Output only. The time when the status was updated.
         #[prost(message, optional, tag = "5")]
         pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    }
+    /// Export Job Results. The result is based on the snapshot at the time when
+    /// the job is created.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ExportJobResult {
+        /// Output only. The number of entries that have been exported.
+        #[prost(int64, tag = "1")]
+        pub exported_entries: i64,
+        /// Output only. The error message if the export job failed.
+        #[prost(string, tag = "2")]
+        pub error_message: ::prost::alloc::string::String,
     }
     /// Job specification for a metadata import job.
     ///
@@ -5236,6 +5251,69 @@ pub mod metadata_job {
             }
         }
     }
+    /// Export job specification.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ExportJobSpec {
+        /// Required. Selects the entries to be exported by this job.
+        #[prost(message, optional, tag = "2")]
+        pub scope: ::core::option::Option<export_job_spec::ExportJobScope>,
+        /// Required. The root path of the exported metadata.
+        /// Must be in the format: "gs://<bucket_id>"
+        /// Or specify a customized prefix after the bucket:
+        /// "gs://<bucket_id>/<folder1>/<folder2>/.../".
+        /// The length limit of the customized prefix is 128 characters.
+        /// The bucket must be in the same VPC-SC perimeter with the job.
+        #[prost(string, tag = "3")]
+        pub output_path: ::prost::alloc::string::String,
+    }
+    /// Nested message and enum types in `ExportJobSpec`.
+    pub mod export_job_spec {
+        /// Scope of the export job.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ExportJobScope {
+            /// Indicating if it is an organization level export job.
+            /// - When set to true, exports all entries from entry groups and projects
+            /// sharing the same organization id of the Metadata Job. Only projects and
+            /// entry groups in the VPC-SC perimeter will be exported. The projects and
+            /// entry groups are ignored.
+            /// - When set to false, one of the projects or entry groups must be
+            /// specified.
+            /// - Default to false.
+            #[prost(bool, tag = "1")]
+            pub organization_level: bool,
+            /// The projects that are in the scope of the export job. Can either be
+            /// project numbers or project IDs. If specified, only the entries from the
+            /// specified projects will be exported. The projects must be in the same
+            /// organization and in the VPC-SC perimeter. Either projects or
+            /// entry_groups can be specified when organization_level_export is set to
+            /// false.
+            /// Must follow the format: "projects/<project_id_or_number>"
+            #[prost(string, repeated, tag = "2")]
+            pub projects: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+            /// The entry groups that are in scope for the export job. Optional. If
+            /// specified, only entries in the specified entry groups will be exported
+            /// by the job. Must be in the VPC-SC perimeter of the job. The location of
+            /// the entry groups must be the same as the job. Either projects or
+            /// entry_groups can be specified when organization_level_export is set to
+            /// false. Must follow the format:
+            /// "projects/<project_id_or_number>/locations/<location>/entryGroups/<entry_group_id>"
+            #[prost(string, repeated, tag = "3")]
+            pub entry_groups: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+            /// If specified, only entries of the specified types will be
+            /// affected by the job.
+            /// Must follow the format:
+            /// "projects/<project_id_or_number>/locations/<location>/entryTypes/<entry_type_id>"
+            #[prost(string, repeated, tag = "4")]
+            pub entry_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+            /// The aspect types that are in scope for the export job.
+            /// Optional. If specified, only aspects of the specified types will be
+            /// affected by the job.
+            /// Must follow the format:
+            /// "projects/<project_id_or_number>/locations/<location>/aspectTypes/<aspect_type_id>"
+            #[prost(string, repeated, tag = "5")]
+            pub aspect_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        }
+    }
     /// Metadata job status.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Status {
@@ -5336,6 +5414,8 @@ pub mod metadata_job {
         Unspecified = 0,
         /// Import job.
         Import = 1,
+        /// Export job type.
+        Export = 2,
     }
     impl Type {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -5346,6 +5426,7 @@ pub mod metadata_job {
             match self {
                 Self::Unspecified => "TYPE_UNSPECIFIED",
                 Self::Import => "IMPORT",
+                Self::Export => "EXPORT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5353,6 +5434,7 @@ pub mod metadata_job {
             match value {
                 "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "IMPORT" => Some(Self::Import),
+                "EXPORT" => Some(Self::Export),
                 _ => None,
             }
         }
@@ -5362,12 +5444,18 @@ pub mod metadata_job {
         /// Import job specification.
         #[prost(message, tag = "100")]
         ImportSpec(ImportJobSpec),
+        /// Export job specification.
+        #[prost(message, tag = "101")]
+        ExportSpec(ExportJobSpec),
     }
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Result {
         /// Output only. Import job result.
         #[prost(message, tag = "200")]
         ImportResult(ImportJobResult),
+        /// Output only. Export job result.
+        #[prost(message, tag = "201")]
+        ExportResult(ExportJobResult),
     }
 }
 /// View for controlling which parts of an entry are to be returned.
@@ -6306,6 +6394,493 @@ pub mod catalog_service_client {
         }
     }
 }
+/// A Resource designed to manage encryption configurations for customers to
+/// support Customer Managed Encryption Keys (CMEK).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EncryptionConfig {
+    /// Identifier. The resource name of the EncryptionConfig.
+    /// Format:
+    /// organizations/{organization}/locations/{location}/encryptionConfigs/{encryption_config}
+    /// Global location is not supported.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. If a key is chosen, it means that the customer is using CMEK.
+    /// If a key is not chosen, it means that the customer is using Google managed
+    /// encryption.
+    #[prost(string, tag = "2")]
+    pub key: ::prost::alloc::string::String,
+    /// Output only. The time when the Encryption configuration was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the Encryption configuration was last updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The state of encryption of the databases.
+    #[prost(enumeration = "encryption_config::EncryptionState", tag = "5")]
+    pub encryption_state: i32,
+    /// Etag of the EncryptionConfig. This is a strong etag.
+    #[prost(string, tag = "6")]
+    pub etag: ::prost::alloc::string::String,
+    /// Output only. Details of the failure if anything related to Cmek db fails.
+    #[prost(message, optional, tag = "7")]
+    pub failure_details: ::core::option::Option<encryption_config::FailureDetails>,
+}
+/// Nested message and enum types in `EncryptionConfig`.
+pub mod encryption_config {
+    /// Details of the failure if anything related to Cmek db fails.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct FailureDetails {
+        /// Output only. The error code for the failure.
+        #[prost(enumeration = "failure_details::ErrorCode", tag = "1")]
+        pub error_code: i32,
+        /// Output only. The error message will be shown to the user. Set only if the
+        /// error code is REQUIRE_USER_ACTION.
+        #[prost(string, tag = "2")]
+        pub error_message: ::prost::alloc::string::String,
+    }
+    /// Nested message and enum types in `FailureDetails`.
+    pub mod failure_details {
+        /// Error code for the failure if anything related to Cmek db fails.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum ErrorCode {
+            /// The error code is not specified
+            Unknown = 0,
+            /// Error because of internal server error, will be retried automatically..
+            InternalError = 1,
+            /// User action is required to resolve the error.
+            RequireUserAction = 2,
+        }
+        impl ErrorCode {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unknown => "UNKNOWN",
+                    Self::InternalError => "INTERNAL_ERROR",
+                    Self::RequireUserAction => "REQUIRE_USER_ACTION",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "UNKNOWN" => Some(Self::Unknown),
+                    "INTERNAL_ERROR" => Some(Self::InternalError),
+                    "REQUIRE_USER_ACTION" => Some(Self::RequireUserAction),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// State of encryption of the databases when EncryptionConfig is created or
+    /// updated.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum EncryptionState {
+        /// State is not specified.
+        Unspecified = 0,
+        /// The encryption state of the database when the EncryptionConfig is created
+        /// or updated. If the encryption fails, it is retried indefinitely and the
+        /// state is shown as ENCRYPTING.
+        Encrypting = 1,
+        /// The encryption of data has completed successfully.
+        Completed = 2,
+        /// The encryption of data has failed.
+        /// The state is set to FAILED when the encryption fails due to reasons like
+        /// permission issues, invalid key etc.
+        Failed = 3,
+    }
+    impl EncryptionState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ENCRYPTION_STATE_UNSPECIFIED",
+                Self::Encrypting => "ENCRYPTING",
+                Self::Completed => "COMPLETED",
+                Self::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENCRYPTION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENCRYPTING" => Some(Self::Encrypting),
+                "COMPLETED" => Some(Self::Completed),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+}
+/// Create EncryptionConfig Request
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateEncryptionConfigRequest {
+    /// Required. The location at which the EncryptionConfig is to be created.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ID of the EncryptionConfig to create.
+    /// The ID must contain only letters (a-z, A-Z), numbers (0-9),
+    /// and hyphens (-).
+    /// The maximum size is 63 characters.
+    /// The first character must be a letter.
+    /// The last character must be a letter or a number.
+    #[prost(string, tag = "2")]
+    pub encryption_config_id: ::prost::alloc::string::String,
+    /// Required. The EncryptionConfig to create.
+    #[prost(message, optional, tag = "3")]
+    pub encryption_config: ::core::option::Option<EncryptionConfig>,
+}
+/// Get EncryptionConfig Request
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetEncryptionConfigRequest {
+    /// Required. The name of the EncryptionConfig to fetch.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Update EncryptionConfig Request
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateEncryptionConfigRequest {
+    /// Required. The EncryptionConfig to update.
+    #[prost(message, optional, tag = "1")]
+    pub encryption_config: ::core::option::Option<EncryptionConfig>,
+    /// Optional. Mask of fields to update.
+    /// The service treats an omitted field mask as an implied field mask
+    /// equivalent to all fields that are populated (have a non-empty value).
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Delete EncryptionConfig Request
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteEncryptionConfigRequest {
+    /// Required. The name of the EncryptionConfig to delete.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Etag of the EncryptionConfig. This is a strong etag.
+    #[prost(string, tag = "2")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// List EncryptionConfigs Request
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListEncryptionConfigsRequest {
+    /// Required. The location for which the EncryptionConfig is to be listed.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of EncryptionConfigs to return. The service may
+    /// return fewer than this value. If unspecified, at most 10 EncryptionConfigs
+    /// will be returned. The maximum value is 1000; values above 1000 will be
+    /// coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token received from a previous `ListEncryptionConfigs` call.
+    /// Provide this to retrieve the subsequent page. When paginating, the
+    /// parameters - filter and order_by provided to `ListEncryptionConfigs` must
+    /// match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter the EncryptionConfigs to be returned.
+    /// Using bare literals: (These values will be matched anywhere it may appear
+    /// in the object's field values)
+    /// * filter=some_value
+    /// Using fields: (These values will be matched only in the specified field)
+    /// * filter=some_field=some_value
+    /// Supported fields:
+    /// * name, key, create_time, update_time, encryption_state
+    /// Example:
+    /// * filter=name=organizations/123/locations/us-central1/encryptionConfigs/test-config
+    /// conjunctions: (AND, OR, NOT)
+    /// * filter=name=organizations/123/locations/us-central1/encryptionConfigs/test-config
+    /// AND mode=CMEK
+    /// logical operators: (>, <, >=, <=, !=, =, :),
+    /// * filter=create_time>2024-05-01T00:00:00.000Z
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Order by fields for the result.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// List EncryptionConfigs Response
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListEncryptionConfigsResponse {
+    /// The list of EncryptionConfigs under the given parent location.
+    #[prost(message, repeated, tag = "1")]
+    pub encryption_configs: ::prost::alloc::vec::Vec<EncryptionConfig>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Generated client implementations.
+pub mod cmek_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Dataplex Cmek Service
+    #[derive(Debug, Clone)]
+    pub struct CmekServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl CmekServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> CmekServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> CmekServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            CmekServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Create an EncryptionConfig.
+        pub async fn create_encryption_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateEncryptionConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CmekService/CreateEncryptionConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CmekService",
+                        "CreateEncryptionConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Update an EncryptionConfig.
+        pub async fn update_encryption_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateEncryptionConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CmekService/UpdateEncryptionConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CmekService",
+                        "UpdateEncryptionConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Delete an EncryptionConfig.
+        pub async fn delete_encryption_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteEncryptionConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CmekService/DeleteEncryptionConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CmekService",
+                        "DeleteEncryptionConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// List EncryptionConfigs.
+        pub async fn list_encryption_configs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListEncryptionConfigsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListEncryptionConfigsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CmekService/ListEncryptionConfigs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CmekService",
+                        "ListEncryptionConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get an EncryptionConfig.
+        pub async fn get_encryption_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetEncryptionConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::EncryptionConfig>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.CmekService/GetEncryptionConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.dataplex.v1.CmekService",
+                        "GetEncryptionConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// Create content request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateContentRequest {
@@ -6972,17 +7547,52 @@ pub struct DataDiscoveryResult {
     pub bigquery_publishing: ::core::option::Option<
         data_discovery_result::BigQueryPublishing,
     >,
+    /// Output only. Statistics of the DataDiscoveryScan.
+    #[prost(message, optional, tag = "2")]
+    pub scan_statistics: ::core::option::Option<data_discovery_result::ScanStatistics>,
 }
 /// Nested message and enum types in `DataDiscoveryResult`.
 pub mod data_discovery_result {
     /// Describes BigQuery publishing configurations.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BigQueryPublishing {
-        /// Output only. The BigQuery dataset to publish to. It takes the form
-        /// `projects/{project_id}/datasets/{dataset_id}`.
-        /// If not set, the service creates a default publishing dataset.
+        /// Output only. The BigQuery dataset the discovered tables are published to.
         #[prost(string, tag = "1")]
         pub dataset: ::prost::alloc::string::String,
+        /// Output only. The location of the BigQuery publishing dataset.
+        #[prost(string, tag = "2")]
+        pub location: ::prost::alloc::string::String,
+    }
+    /// Statistics of the DataDiscoveryScan.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct ScanStatistics {
+        /// The number of files scanned.
+        #[prost(int32, tag = "1")]
+        pub scanned_file_count: i32,
+        /// The data processed in bytes.
+        #[prost(int64, tag = "2")]
+        pub data_processed_bytes: i64,
+        /// The number of files excluded.
+        #[prost(int32, tag = "3")]
+        pub files_excluded: i32,
+        /// The number of tables created.
+        #[prost(int32, tag = "4")]
+        pub tables_created: i32,
+        /// The number of tables deleted.
+        #[prost(int32, tag = "5")]
+        pub tables_deleted: i32,
+        /// The number of tables updated.
+        #[prost(int32, tag = "6")]
+        pub tables_updated: i32,
+        /// The number of filesets created.
+        #[prost(int32, tag = "7")]
+        pub filesets_created: i32,
+        /// The number of filesets deleted.
+        #[prost(int32, tag = "8")]
+        pub filesets_deleted: i32,
+        /// The number of filesets updated.
+        #[prost(int32, tag = "9")]
+        pub filesets_updated: i32,
     }
 }
 /// DataScan scheduling and trigger settings.
@@ -7142,6 +7752,8 @@ pub mod data_profile_spec {
             /// Optional. The BigQuery table to export DataProfileScan results to.
             /// Format:
             /// //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
+            /// or
+            /// projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
             #[prost(string, tag = "1")]
             pub results_table: ::prost::alloc::string::String,
         }
@@ -7478,6 +8090,8 @@ pub mod data_quality_spec {
             /// Optional. The BigQuery table to export DataQualityScan results to.
             /// Format:
             /// //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
+            /// or
+            /// projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
             #[prost(string, tag = "1")]
             pub results_table: ::prost::alloc::string::String,
         }
@@ -7527,7 +8141,7 @@ pub mod data_quality_spec {
 /// The output of a DataQualityScan.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataQualityResult {
-    /// Overall data quality result -- `true` if all rules passed.
+    /// Output only. Overall data quality result -- `true` if all rules passed.
     #[prost(bool, tag = "5")]
     pub passed: bool,
     /// Output only. The overall data quality score.
@@ -7535,7 +8149,7 @@ pub struct DataQualityResult {
     /// The score ranges between \[0, 100\] (up to two decimal points).
     #[prost(float, optional, tag = "9")]
     pub score: ::core::option::Option<f32>,
-    /// A list of results at the dimension level.
+    /// Output only. A list of results at the dimension level.
     ///
     /// A dimension will have a corresponding `DataQualityDimensionResult` if and
     /// only if there is at least one rule with the 'dimension' field set to it.
@@ -7547,13 +8161,13 @@ pub struct DataQualityResult {
     /// there is at least one rule with the 'column' field set to it.
     #[prost(message, repeated, tag = "10")]
     pub columns: ::prost::alloc::vec::Vec<DataQualityColumnResult>,
-    /// A list of all the rules in a job, and their results.
+    /// Output only. A list of all the rules in a job, and their results.
     #[prost(message, repeated, tag = "3")]
     pub rules: ::prost::alloc::vec::Vec<DataQualityRuleResult>,
-    /// The count of rows processed.
+    /// Output only. The count of rows processed.
     #[prost(int64, tag = "4")]
     pub row_count: i64,
-    /// The data scanned for this result.
+    /// Output only. The data scanned for this result.
     #[prost(message, optional, tag = "7")]
     pub scanned_data: ::core::option::Option<ScannedData>,
     /// Output only. The result of post scan actions.
@@ -7641,13 +8255,13 @@ pub mod data_quality_result {
 /// DataQualityRuleResult provides a more detailed, per-rule view of the results.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataQualityRuleResult {
-    /// The rule specified in the DataQualitySpec, as is.
+    /// Output only. The rule specified in the DataQualitySpec, as is.
     #[prost(message, optional, tag = "1")]
     pub rule: ::core::option::Option<DataQualityRule>,
-    /// Whether the rule passed or failed.
+    /// Output only. Whether the rule passed or failed.
     #[prost(bool, tag = "7")]
     pub passed: bool,
-    /// The number of rows a rule was evaluated against.
+    /// Output only. The number of rows a rule was evaluated against.
     ///
     /// This field is only valid for row-level type rules.
     ///
@@ -7661,18 +8275,22 @@ pub struct DataQualityRuleResult {
     /// This field is not set for rule SqlAssertion.
     #[prost(int64, tag = "9")]
     pub evaluated_count: i64,
+    /// Output only. The number of rows which passed a rule evaluation.
+    ///
+    /// This field is only valid for row-level type rules.
+    ///
     /// This field is not set for rule SqlAssertion.
     #[prost(int64, tag = "8")]
     pub passed_count: i64,
-    /// The number of rows with null values in the specified column.
+    /// Output only. The number of rows with null values in the specified column.
     #[prost(int64, tag = "5")]
     pub null_count: i64,
-    /// The ratio of **passed_count / evaluated_count**.
+    /// Output only. The ratio of **passed_count / evaluated_count**.
     ///
     /// This field is only valid for row-level type rules.
     #[prost(double, tag = "6")]
     pub pass_ratio: f64,
-    /// The query to find rows that did not pass this rule.
+    /// Output only. The query to find rows that did not pass this rule.
     ///
     /// This field is only valid for row-level type rules.
     #[prost(string, tag = "10")]
@@ -7691,7 +8309,7 @@ pub struct DataQualityDimensionResult {
     /// Output only. The dimension config specified in the DataQualitySpec, as is.
     #[prost(message, optional, tag = "1")]
     pub dimension: ::core::option::Option<DataQualityDimension>,
-    /// Whether the dimension passed or failed.
+    /// Output only. Whether the dimension passed or failed.
     #[prost(bool, tag = "3")]
     pub passed: bool,
     /// Output only. The dimension-level data quality score for this data scan job
@@ -7706,9 +8324,8 @@ pub struct DataQualityDimensionResult {
 /// specified.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataQualityDimension {
-    /// The dimension name a rule belongs to. Supported dimensions are
-    /// ["COMPLETENESS", "ACCURACY", "CONSISTENCY", "VALIDITY", "UNIQUENESS",
-    /// "FRESHNESS", "VOLUME"]
+    /// Optional. The dimension name a rule belongs to. Custom dimension name is
+    /// supported with all uppercase letters and maximum length of 30 characters.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -11625,6 +12242,65 @@ pub mod business_glossary_event {
                 "GLOSSARY_TERM_CREATE" => Some(Self::GlossaryTermCreate),
                 "GLOSSARY_TERM_UPDATE" => Some(Self::GlossaryTermUpdate),
                 "GLOSSARY_TERM_DELETE" => Some(Self::GlossaryTermDelete),
+                _ => None,
+            }
+        }
+    }
+}
+/// Payload associated with Entry related log events.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EntryLinkEvent {
+    /// The log message.
+    #[prost(string, tag = "1")]
+    pub message: ::prost::alloc::string::String,
+    /// The type of the event.
+    #[prost(enumeration = "entry_link_event::EventType", tag = "2")]
+    pub event_type: i32,
+    /// Name of the resource.
+    #[prost(string, tag = "3")]
+    pub resource: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `EntryLinkEvent`.
+pub mod entry_link_event {
+    /// Type of entry link log event.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum EventType {
+        /// An unspecified event type.
+        Unspecified = 0,
+        /// EntryLink create event.
+        EntryLinkCreate = 1,
+        /// EntryLink delete event.
+        EntryLinkDelete = 2,
+    }
+    impl EventType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "EVENT_TYPE_UNSPECIFIED",
+                Self::EntryLinkCreate => "ENTRY_LINK_CREATE",
+                Self::EntryLinkDelete => "ENTRY_LINK_DELETE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENTRY_LINK_CREATE" => Some(Self::EntryLinkCreate),
+                "ENTRY_LINK_DELETE" => Some(Self::EntryLinkDelete),
                 _ => None,
             }
         }

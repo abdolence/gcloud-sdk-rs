@@ -88,6 +88,61 @@ pub struct Blob {
     #[prost(bytes = "vec", tag = "2")]
     pub data: ::prost::alloc::vec::Vec<u8>,
 }
+/// Represents token counting info for a single modality.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ModalityTokenCount {
+    /// The modality associated with this token count.
+    #[prost(enumeration = "Modality", tag = "1")]
+    pub modality: i32,
+    /// Number of tokens.
+    #[prost(int32, tag = "2")]
+    pub token_count: i32,
+}
+/// Content Part modality
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum Modality {
+    /// Unspecified modality.
+    Unspecified = 0,
+    /// Plain text.
+    Text = 1,
+    /// Image.
+    Image = 2,
+    /// Video.
+    Video = 3,
+    /// Audio.
+    Audio = 4,
+    /// Document, e.g. PDF.
+    Document = 5,
+}
+impl Modality {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "MODALITY_UNSPECIFIED",
+            Self::Text => "TEXT",
+            Self::Image => "IMAGE",
+            Self::Video => "VIDEO",
+            Self::Audio => "AUDIO",
+            Self::Document => "DOCUMENT",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "MODALITY_UNSPECIFIED" => Some(Self::Unspecified),
+            "TEXT" => Some(Self::Text),
+            "IMAGE" => Some(Self::Image),
+            "VIDEO" => Some(Self::Video),
+            "AUDIO" => Some(Self::Audio),
+            "DOCUMENT" => Some(Self::Document),
+            _ => None,
+        }
+    }
+}
 /// Safety rating for a piece of content.
 ///
 /// The safety rating contains the category of harm and the
@@ -353,10 +408,9 @@ pub struct GenerateContentRequest {
 /// are configurable for every model.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerationConfig {
-    /// Optional. Number of generated responses to return.
-    ///
-    /// Currently, this value can only be set to 1. If unset, this will default
-    /// to 1.
+    /// Optional. Number of generated responses to return. If unset, this will
+    /// default to 1. Please note that this doesn't work for previous generation
+    /// models (Gemini 1.0 family)
     #[prost(int32, optional, tag = "1")]
     pub candidate_count: ::core::option::Option<i32>,
     /// Optional. The set of character sequences (up to 5) that will stop output
@@ -407,6 +461,10 @@ pub struct GenerationConfig {
     /// and doesn't allow setting `top_k` on requests.
     #[prost(int32, optional, tag = "7")]
     pub top_k: ::core::option::Option<i32>,
+    /// Optional. Seed used in decoding. If not set, the request uses a randomly
+    /// generated seed.
+    #[prost(int32, optional, tag = "8")]
+    pub seed: ::core::option::Option<i32>,
     /// Optional. Presence penalty applied to the next token's logprobs if the
     /// token has already been seen in the response.
     ///
@@ -428,7 +486,7 @@ pub struct GenerationConfig {
     ///
     /// A positive penalty will discourage the use of tokens that have already
     /// been used, proportional to the number of times the token has been used:
-    /// The more a token is used, the more dificult it is for the model to use
+    /// The more a token is used, the more difficult it is for the model to use
     /// that token again increasing the vocabulary of responses.
     ///
     /// Caution: A _negative_ penalty will encourage the model to reuse tokens
@@ -557,7 +615,7 @@ pub mod generate_content_response {
         }
     }
     /// Metadata on the generation request's token usage.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct UsageMetadata {
         /// Number of tokens in the prompt. When `cached_content` is set, this is
         /// still the total effective prompt size meaning this includes the number of
@@ -567,10 +625,34 @@ pub mod generate_content_response {
         /// Total number of tokens across all the generated response candidates.
         #[prost(int32, tag = "2")]
         pub candidates_token_count: i32,
+        /// Output only. Number of tokens present in tool-use prompt(s).
+        #[prost(int32, tag = "8")]
+        pub tool_use_prompt_token_count: i32,
+        /// Output only. Number of tokens of thoughts for thinking models.
+        #[prost(int32, tag = "10")]
+        pub thoughts_token_count: i32,
         /// Total token count for the generation request (prompt + response
         /// candidates).
         #[prost(int32, tag = "3")]
         pub total_token_count: i32,
+        /// Output only. List of modalities that were processed in the request input.
+        #[prost(message, repeated, tag = "5")]
+        pub prompt_tokens_details: ::prost::alloc::vec::Vec<super::ModalityTokenCount>,
+        /// Output only. List of modalities of the cached content in the request
+        /// input.
+        #[prost(message, repeated, tag = "6")]
+        pub cache_tokens_details: ::prost::alloc::vec::Vec<super::ModalityTokenCount>,
+        /// Output only. List of modalities that were returned in the response.
+        #[prost(message, repeated, tag = "7")]
+        pub candidates_tokens_details: ::prost::alloc::vec::Vec<
+            super::ModalityTokenCount,
+        >,
+        /// Output only. List of modalities that were processed for tool-use request
+        /// inputs.
+        #[prost(message, repeated, tag = "9")]
+        pub tool_use_prompt_tokens_details: ::prost::alloc::vec::Vec<
+            super::ModalityTokenCount,
+        >,
     }
 }
 /// A response candidate generated from the model.
@@ -853,8 +935,8 @@ pub struct EmbedContentRequest {
     /// counted.
     #[prost(message, optional, tag = "2")]
     pub content: ::core::option::Option<Content>,
-    /// Optional. Optional task type for which the embeddings will be used. Can
-    /// only be set for `models/embedding-001`.
+    /// Optional. Optional task type for which the embeddings will be used. Not
+    /// supported on earlier models (`models/embedding-001`).
     #[prost(enumeration = "TaskType", optional, tag = "3")]
     pub task_type: ::core::option::Option<i32>,
     /// Optional. An optional title for the text. Only applicable when TaskType is
@@ -941,12 +1023,18 @@ pub struct CountTokensRequest {
 /// A response from `CountTokens`.
 ///
 /// It returns the model's `token_count` for the `prompt`.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CountTokensResponse {
     /// The number of tokens that the `Model` tokenizes the `prompt` into. Always
     /// non-negative.
     #[prost(int32, tag = "1")]
     pub total_tokens: i32,
+    /// Output only. List of modalities that were processed in the request input.
+    #[prost(message, repeated, tag = "6")]
+    pub prompt_tokens_details: ::prost::alloc::vec::Vec<ModalityTokenCount>,
+    /// Output only. List of modalities that were processed in the cached content.
+    #[prost(message, repeated, tag = "7")]
+    pub cache_tokens_details: ::prost::alloc::vec::Vec<ModalityTokenCount>,
 }
 /// Type of task for which the embedding will be used.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -968,6 +1056,8 @@ pub enum TaskType {
     QuestionAnswering = 6,
     /// Specifies that the given text will be used for fact verification.
     FactVerification = 7,
+    /// Specifies that the given text will be used for code retrieval.
+    CodeRetrievalQuery = 8,
 }
 impl TaskType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -984,6 +1074,7 @@ impl TaskType {
             Self::Clustering => "CLUSTERING",
             Self::QuestionAnswering => "QUESTION_ANSWERING",
             Self::FactVerification => "FACT_VERIFICATION",
+            Self::CodeRetrievalQuery => "CODE_RETRIEVAL_QUERY",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -997,6 +1088,7 @@ impl TaskType {
             "CLUSTERING" => Some(Self::Clustering),
             "QUESTION_ANSWERING" => Some(Self::QuestionAnswering),
             "FACT_VERIFICATION" => Some(Self::FactVerification),
+            "CODE_RETRIEVAL_QUERY" => Some(Self::CodeRetrievalQuery),
             _ => None,
         }
     }

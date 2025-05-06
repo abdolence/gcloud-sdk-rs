@@ -83,6 +83,9 @@ pub struct BoundingPoly {
 /// quality.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Document {
+    /// Optional. An internal identifier for document. Should be loggable (no PII).
+    #[prost(string, tag = "15")]
+    pub docid: ::prost::alloc::string::String,
     /// An IANA published [media type (MIME
     /// type)](<https://www.iana.org/assignments/media-types/media-types.xhtml>).
     #[prost(string, tag = "3")]
@@ -130,6 +133,11 @@ pub struct Document {
     /// Document chunked based on chunking config.
     #[prost(message, optional, tag = "18")]
     pub chunked_document: ::core::option::Option<document::ChunkedDocument>,
+    /// Optional. The blob assets in this document. This is used to store the
+    /// content of the inline blobs in this document, e.g. image bytes, such that
+    /// it can be referenced by other fields in the document via asset id.
+    #[prost(message, repeated, tag = "19")]
+    pub blob_assets: ::prost::alloc::vec::Vec<document::BlobAsset>,
     /// Original source document from the user.
     #[prost(oneof = "document::Source", tags = "1, 2")]
     pub source: ::core::option::Option<document::Source>,
@@ -1248,6 +1256,13 @@ pub mod document {
         #[prost(message, repeated, tag = "3")]
         pub provenance: ::prost::alloc::vec::Vec<Provenance>,
     }
+    /// Represents the annotation of a block or a chunk.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Annotations {
+        /// The description of the content with this annotation.
+        #[prost(string, tag = "1")]
+        pub description: ::prost::alloc::string::String,
+    }
     /// Represents the parsed layout of a document as a collection of blocks that
     /// the document is divided into.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1268,7 +1283,10 @@ pub mod document {
             /// Page span of the block.
             #[prost(message, optional, tag = "5")]
             pub page_span: ::core::option::Option<document_layout_block::LayoutPageSpan>,
-            #[prost(oneof = "document_layout_block::Block", tags = "2, 3, 4")]
+            /// Identifies the bounding box for the block.
+            #[prost(message, optional, tag = "6")]
+            pub bounding_box: ::core::option::Option<super::super::BoundingPoly>,
+            #[prost(oneof = "document_layout_block::Block", tags = "2, 3, 4, 7")]
             pub block: ::core::option::Option<document_layout_block::Block>,
         }
         /// Nested message and enum types in `DocumentLayoutBlock`.
@@ -1352,6 +1370,47 @@ pub mod document {
                 #[prost(message, repeated, tag = "1")]
                 pub blocks: ::prost::alloc::vec::Vec<super::DocumentLayoutBlock>,
             }
+            /// Represents an image type block.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct LayoutImageBlock {
+                /// Mime type of the image. An IANA published \[media type (MIME type)\]
+                /// (<https://www.iana.org/assignments/media-types/media-types.xhtml>).
+                #[prost(string, tag = "1")]
+                pub mime_type: ::prost::alloc::string::String,
+                /// Text extracted from the image using OCR or alt text describing the
+                /// image.
+                #[prost(string, tag = "2")]
+                pub image_text: ::prost::alloc::string::String,
+                /// Annotation of the image block.
+                #[prost(message, optional, tag = "3")]
+                pub annotations: ::core::option::Option<super::super::Annotations>,
+                /// Source of the image.
+                #[prost(oneof = "layout_image_block::ImageSource", tags = "4, 5, 6")]
+                pub image_source: ::core::option::Option<
+                    layout_image_block::ImageSource,
+                >,
+            }
+            /// Nested message and enum types in `LayoutImageBlock`.
+            pub mod layout_image_block {
+                /// Source of the image.
+                #[derive(Clone, PartialEq, ::prost::Oneof)]
+                pub enum ImageSource {
+                    /// Optional. Asset id of the inline image. If set, find the image
+                    /// content in the blob_assets field.
+                    #[prost(string, tag = "4")]
+                    BlobAssetId(::prost::alloc::string::String),
+                    /// Optional. Google Cloud Storage uri of the image.
+                    #[prost(string, tag = "5")]
+                    GcsUri(::prost::alloc::string::String),
+                    /// Optional. Data uri of the image.
+                    /// It is composed of four parts: a prefix (data:), a MIME type
+                    /// indicating the type of data, an optional base64 token if
+                    /// non-textual, and the data itself:
+                    /// data:[<mediatype>][;base64],<data>
+                    #[prost(string, tag = "6")]
+                    DataUri(::prost::alloc::string::String),
+                }
+            }
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum Block {
                 /// Block consisting of text content.
@@ -1363,6 +1422,9 @@ pub mod document {
                 /// Block consisting of list content/structure.
                 #[prost(message, tag = "4")]
                 ListBlock(LayoutListBlock),
+                /// Block consisting of image content.
+                #[prost(message, tag = "7")]
+                ImageBlock(LayoutImageBlock),
             }
         }
     }
@@ -1398,6 +1460,9 @@ pub mod document {
             /// Page footers associated with the chunk.
             #[prost(message, repeated, tag = "6")]
             pub page_footers: ::prost::alloc::vec::Vec<chunk::ChunkPageFooter>,
+            /// Chunk fields inside this chunk.
+            #[prost(message, repeated, tag = "7")]
+            pub chunk_fields: ::prost::alloc::vec::Vec<chunk::ChunkField>,
         }
         /// Nested message and enum types in `Chunk`.
         pub mod chunk {
@@ -1431,7 +1496,83 @@ pub mod document {
                 #[prost(message, optional, tag = "2")]
                 pub page_span: ::core::option::Option<ChunkPageSpan>,
             }
+            /// The image chunk field in the chunk.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct ImageChunkField {
+                /// Annotation of the image chunk field.
+                #[prost(message, optional, tag = "4")]
+                pub annotations: ::core::option::Option<super::super::Annotations>,
+                /// Source of the image.
+                #[prost(oneof = "image_chunk_field::ImageSource", tags = "1, 2, 3")]
+                pub image_source: ::core::option::Option<image_chunk_field::ImageSource>,
+            }
+            /// Nested message and enum types in `ImageChunkField`.
+            pub mod image_chunk_field {
+                /// Source of the image.
+                #[derive(Clone, PartialEq, ::prost::Oneof)]
+                pub enum ImageSource {
+                    /// Optional. Asset id of the inline image. If set, find the image
+                    /// content in the blob_assets field.
+                    #[prost(string, tag = "1")]
+                    BlobAssetId(::prost::alloc::string::String),
+                    /// Optional. Google Cloud Storage uri of the image.
+                    #[prost(string, tag = "2")]
+                    GcsUri(::prost::alloc::string::String),
+                    /// Optional. Data uri of the image.
+                    /// It is composed of four parts: a prefix (data:), a MIME type
+                    /// indicating the type of data, an optional base64 token if
+                    /// non-textual, and the data itself:
+                    /// data:[<mediatype>][;base64],<data>
+                    #[prost(string, tag = "3")]
+                    DataUri(::prost::alloc::string::String),
+                }
+            }
+            /// The table chunk field in the chunk.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct TableChunkField {
+                /// Annotation of the table chunk field.
+                #[prost(message, optional, tag = "1")]
+                pub annotations: ::core::option::Option<super::super::Annotations>,
+            }
+            /// The chunk field in the chunk. A chunk field could be one of the various
+            /// types (e.g. image, table) supported.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct ChunkField {
+                /// The type of the chunk field.
+                #[prost(oneof = "chunk_field::FieldType", tags = "1, 2")]
+                pub field_type: ::core::option::Option<chunk_field::FieldType>,
+            }
+            /// Nested message and enum types in `ChunkField`.
+            pub mod chunk_field {
+                /// The type of the chunk field.
+                #[derive(Clone, PartialEq, ::prost::Oneof)]
+                pub enum FieldType {
+                    /// The image chunk field in the chunk.
+                    #[prost(message, tag = "1")]
+                    ImageChunkField(super::ImageChunkField),
+                    /// The table chunk field in the chunk.
+                    #[prost(message, tag = "2")]
+                    TableChunkField(super::TableChunkField),
+                }
+            }
         }
+    }
+    /// Represents a blob asset. It's used to store the content of the inline blob
+    /// in this document, e.g. image bytes, such that it can be referenced by
+    /// other fields in the document via asset id.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct BlobAsset {
+        /// Optional. The id of the blob asset.
+        #[prost(string, tag = "1")]
+        pub asset_id: ::prost::alloc::string::String,
+        /// Optional. The content of the blob asset, e.g. image bytes.
+        #[prost(bytes = "vec", tag = "2")]
+        pub content: ::prost::alloc::vec::Vec<u8>,
+        /// The mime type of the blob asset.
+        /// An IANA published [media type (MIME
+        /// type)](<https://www.iana.org/assignments/media-types/media-types.xhtml>).
+        #[prost(string, tag = "3")]
+        pub mime_type: ::prost::alloc::string::String,
     }
     /// Original source document from the user.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -2981,9 +3122,18 @@ pub mod process_options {
         /// response.
         #[prost(bool, tag = "3")]
         pub return_bounding_boxes: bool,
+        /// Optional. Whether to include image annotations in layout parser response.
+        #[prost(bool, tag = "4")]
+        pub enable_image_annotation: bool,
+        /// Optional. Whether to extract images in layout parser response.
+        #[prost(bool, tag = "7")]
+        pub enable_image_extraction: bool,
         /// Optional. Whether to refine PDF layout using LLM.
         #[prost(bool, tag = "5")]
         pub enable_llm_layout_parsing: bool,
+        /// Optional. Whether to include table annotations in layout parser response.
+        #[prost(bool, tag = "6")]
+        pub enable_table_annotation: bool,
     }
     /// Nested message and enum types in `LayoutConfig`.
     pub mod layout_config {

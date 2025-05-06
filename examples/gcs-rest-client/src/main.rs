@@ -15,6 +15,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let google_project_id = gcloud_sdk::GoogleEnvironment::detect_google_project_id().await
         .expect("No Google Project ID detected. Please specify it explicitly using env variable: PROJECT_ID");
 
+    gcloud_sdk::GoogleEnvironment::find_default_creds(&gcloud_sdk::GCP_DEFAULT_SCOPES).await?;
+
     let google_rest_client = gcloud_sdk::GoogleRestApi::new().await?;
 
     let response = gcloud_sdk::google_rest_apis::storage_v1::buckets_api::storage_buckets_list(

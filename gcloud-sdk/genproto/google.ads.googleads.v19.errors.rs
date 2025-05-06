@@ -3668,6 +3668,8 @@ pub mod authentication_error_enum {
         /// The Cloud organization associated with the project is not associated with
         /// the developer token.
         OrganizationNotAssociatedWithDeveloperToken = 28,
+        /// The developer token is not valid.
+        DeveloperTokenInvalid = 29,
     }
     impl AuthenticationError {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3707,6 +3709,7 @@ pub mod authentication_error_enum {
                 Self::OrganizationNotAssociatedWithDeveloperToken => {
                     "ORGANIZATION_NOT_ASSOCIATED_WITH_DEVELOPER_TOKEN"
                 }
+                Self::DeveloperTokenInvalid => "DEVELOPER_TOKEN_INVALID",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3745,6 +3748,7 @@ pub mod authentication_error_enum {
                 "ORGANIZATION_NOT_ASSOCIATED_WITH_DEVELOPER_TOKEN" => {
                     Some(Self::OrganizationNotAssociatedWithDeveloperToken)
                 }
+                "DEVELOPER_TOKEN_INVALID" => Some(Self::DeveloperTokenInvalid),
                 _ => None,
             }
         }
@@ -5535,6 +5539,10 @@ pub mod campaign_error_enum {
         /// only when there are assets that are linked to the campaign's asset
         /// groups.
         RequiredLogoAssetNotLinked = 96,
+        /// This campaign does not support brand targeting overrides. Brand targeting
+        /// overrides are only supported for Performance Max campaigns that have a
+        /// product feed.
+        BrandTargetingOverridesNotSupported = 97,
         /// Brand Guideline fields can only be set for campaigns that have Brand
         /// Guidelines enabled.
         BrandGuidelinesNotEnabledForCampaign = 98,
@@ -5748,6 +5756,9 @@ pub mod campaign_error_enum {
                     "REQUIRED_BUSINESS_NAME_ASSET_NOT_LINKED"
                 }
                 Self::RequiredLogoAssetNotLinked => "REQUIRED_LOGO_ASSET_NOT_LINKED",
+                Self::BrandTargetingOverridesNotSupported => {
+                    "BRAND_TARGETING_OVERRIDES_NOT_SUPPORTED"
+                }
                 Self::BrandGuidelinesNotEnabledForCampaign => {
                     "BRAND_GUIDELINES_NOT_ENABLED_FOR_CAMPAIGN"
                 }
@@ -5975,6 +5986,9 @@ pub mod campaign_error_enum {
                 }
                 "REQUIRED_LOGO_ASSET_NOT_LINKED" => {
                     Some(Self::RequiredLogoAssetNotLinked)
+                }
+                "BRAND_TARGETING_OVERRIDES_NOT_SUPPORTED" => {
+                    Some(Self::BrandTargetingOverridesNotSupported)
                 }
                 "BRAND_GUIDELINES_NOT_ENABLED_FOR_CAMPAIGN" => {
                     Some(Self::BrandGuidelinesNotEnabledForCampaign)
@@ -8209,6 +8223,9 @@ pub mod criterion_error_enum {
         CannotAddRemovedBrandSharedSet = 157,
         /// Brand list can only be negatively targeted for the campaign type.
         OnlyExclusionBrandListAllowedForCampaignType = 158,
+        /// Cannot positively target locations outside of restricted area for
+        /// campaign.
+        LocationTargetingNotEligibleForRestrictedCampaign = 166,
     }
     impl CriterionError {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -8508,6 +8525,9 @@ pub mod criterion_error_enum {
                 }
                 Self::OnlyExclusionBrandListAllowedForCampaignType => {
                     "ONLY_EXCLUSION_BRAND_LIST_ALLOWED_FOR_CAMPAIGN_TYPE"
+                }
+                Self::LocationTargetingNotEligibleForRestrictedCampaign => {
+                    "LOCATION_TARGETING_NOT_ELIGIBLE_FOR_RESTRICTED_CAMPAIGN"
                 }
             }
         }
@@ -8839,6 +8859,9 @@ pub mod criterion_error_enum {
                 }
                 "ONLY_EXCLUSION_BRAND_LIST_ALLOWED_FOR_CAMPAIGN_TYPE" => {
                     Some(Self::OnlyExclusionBrandListAllowedForCampaignType)
+                }
+                "LOCATION_TARGETING_NOT_ELIGIBLE_FOR_RESTRICTED_CAMPAIGN" => {
+                    Some(Self::LocationTargetingNotEligibleForRestrictedCampaign)
                 }
                 _ => None,
             }

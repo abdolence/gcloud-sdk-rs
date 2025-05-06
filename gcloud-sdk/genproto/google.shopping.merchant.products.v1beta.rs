@@ -970,6 +970,27 @@ pub mod product_sustainability_incentive {
         Percentage(f64),
     }
 }
+/// Information regarding Automated Discounts.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AutomatedDiscounts {
+    /// The price prior to the application of the first price reduction.
+    /// Absent if the information about the prior price of the product is not
+    /// available.
+    #[prost(message, optional, tag = "1")]
+    pub prior_price: ::core::option::Option<super::super::super::r#type::Price>,
+    /// The price prior to the application of consecutive price reductions.
+    /// Absent if the information about the prior price of the product is not
+    /// available.
+    #[prost(message, optional, tag = "2")]
+    pub prior_price_progressive: ::core::option::Option<
+        super::super::super::r#type::Price,
+    >,
+    /// The current sale price for products with a price optimized using Google
+    /// Automated Discounts (GAD). Absent if the information about the GAD_price of
+    /// the product is not available.
+    #[prost(message, optional, tag = "3")]
+    pub gad_price: ::core::option::Option<super::super::super::r#type::Price>,
+}
 /// The subscription period of the product.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -1027,8 +1048,7 @@ impl SubscriptionPeriod {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductInput {
     /// Identifier. The name of the product input.
-    /// Format:
-    /// `"{productinput.name=accounts/{account}/productInputs/{productinput}}"`
+    /// Format: accounts/{account}/productInputs/{productinput}
     /// where the last section `productinput` consists of 4 parts:
     /// channel~content_language~feed_label~offer_id
     /// example for product input name is
@@ -1363,11 +1383,11 @@ pub mod product_inputs_service_client {
 /// The processed product, built from multiple [product
 /// inputs][google.shopping.merchant.products.v1main.ProductInput]
 /// after applying rules and supplemental data sources. This processed product
-/// matches what is shown in your Merchant Center account and in Shopping ads and
-/// other surfaces across Google. Each product is built from exactly one primary
-/// data source product input, and multiple supplemental data source inputs.
-/// After inserting, updating, or deleting a product input, it may take
-/// several minutes before the updated processed product can be retrieved.
+/// matches what is shown in your Merchant Center account. Each product is built
+/// from exactly one primary data source product input, and multiple supplemental
+/// data source inputs. After inserting, updating, or deleting a product input,
+/// it may take several minutes before the updated processed product can be
+/// retrieved.
 ///
 /// All fields in the processed product and its sub-messages match the name of
 /// their corresponding attribute in the [Product data
@@ -1377,10 +1397,10 @@ pub mod product_inputs_service_client {
 pub struct Product {
     /// The name of the product.
     /// Format:
-    /// `"{product.name=accounts/{account}/products/{product}}"` where the last
+    /// `accounts/{account}/products/{product}` where the last
     /// section `product` consists of 4 parts:
-    /// channel~content_language~feed_label~offer_id
-    /// example for product name is "accounts/123/products/online~en~US~sku123"
+    /// `channel~content_language~feed_label~offer_id`
+    /// example for product name is `accounts/123/products/online~en~US~sku123`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The
@@ -1442,6 +1462,9 @@ pub struct Product {
     /// information about a product computed asynchronously.
     #[prost(message, optional, tag = "10")]
     pub product_status: ::core::option::Option<ProductStatus>,
+    /// Output only. The automated discounts information for the product.
+    #[prost(message, optional, tag = "12")]
+    pub automated_discounts: ::core::option::Option<AutomatedDiscounts>,
 }
 /// Request message for the GetProduct method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1449,9 +1472,9 @@ pub struct GetProductRequest {
     /// Required. The name of the product to retrieve.
     /// Format: `accounts/{account}/products/{product}`
     /// where the last section `product` consists of 4 parts:
-    /// channel~content_language~feed_label~offer_id
+    /// `channel~content_language~feed_label~offer_id`
     /// example for product name is
-    /// "accounts/123/products/online~en~US~sku123"
+    /// `accounts/123/products/online~en~US~sku123`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1459,7 +1482,7 @@ pub struct GetProductRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProductsRequest {
     /// Required. The account to list processed products for.
-    /// Format: accounts/{account}
+    /// Format: `accounts/{account}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of products to return. The service may return fewer than
@@ -1500,7 +1523,6 @@ pub mod products_service_client {
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Service to use Product resource.
-    /// This service works for products with online channel only.
     #[derive(Debug, Clone)]
     pub struct ProductsServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -1612,8 +1634,8 @@ pub mod products_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Lists the processed products in your Merchant Center account. The response
-        /// might contain fewer items than specified by pageSize. Rely on pageToken to
-        /// determine if there are more items to be requested.
+        /// might contain fewer items than specified by `pageSize`. Rely on `pageToken`
+        /// to determine if there are more items to be requested.
         ///
         /// After inserting, updating, or deleting a product input, it may take several
         /// minutes before the updated processed product can be retrieved.

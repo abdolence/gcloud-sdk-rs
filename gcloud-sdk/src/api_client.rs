@@ -9,7 +9,7 @@ use tower::ServiceBuilder;
 use tracing::*;
 
 use crate::middleware::{GoogleAuthMiddlewareLayer, GoogleAuthMiddlewareService};
-use crate::token_source::credentials::Credentials;
+use crate::token_source::credentials::CredentialsInfo;
 use crate::token_source::*;
 
 #[async_trait]
@@ -193,16 +193,27 @@ impl GoogleEnvironment {
 
     pub async fn find_default_creds(
         token_scopes: &[String],
-    ) -> crate::error::Result<Option<Credentials>> {
+    ) -> crate::error::Result<Option<CredentialsInfo>> {
         debug!("Finding default credentials for scopes: {:?}", token_scopes);
 
         if let Some(src) = from_env_var(token_scopes)? {
             debug!("Creating credentials based on environment variable: GOOGLE_APPLICATION_CREDENTIALS");
-            return Ok(Some(src));
+            return Ok(src.to_credentials_info());
         }
         if let Some(src) = from_well_known_file(token_scopes)? {
             debug!("Creating credentials based on standard config files such as application_default_credentials.json");
-            return Ok(Some(src));
+            return Ok(src.to_credentials_info());
+        }
+        let mut metadata_server = crate::token_source::metadata::Metadata::new(token_scopes);
+        if metadata_server.init().await {
+            let metadata_result_email = metadata_server.email().await;
+            if let Some(email) = metadata_result_email {
+                debug!("Detected SA email using GKE metadata server");
+                return Ok(Some(CredentialsInfo {
+                    client_email: email,
+                    project_id: metadata_server.detect_google_project_id().await,
+                }));
+            }
         }
         Ok(None)
     }

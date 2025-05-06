@@ -8,7 +8,7 @@ pub struct BigQueryDestination {
     /// VPC-SC restrictions apply.
     #[prost(string, tag = "1")]
     pub table_uri: ::prost::alloc::string::String,
-    /// Required. Whether or not to overwrite destination table. By default the
+    /// Required. Whether or not to overwrite the destination table. By default the
     /// table won't be overwritten and an error will be returned if the table
     /// exists and contains data.
     #[prost(enumeration = "big_query_destination::WriteDisposition", tag = "2")]
@@ -99,7 +99,7 @@ impl LineOfBusiness {
 pub struct BacktestResult {
     /// Output only. The resource name of the BacktestResult.
     /// format:
-    /// "/projects/{project_num}/locations/{location}/instances/{instance}/backtestResults/{backtest_result}"
+    /// `/projects/{project_num}/locations/{location}/instances/{instance}/backtestResults/{backtest_result}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The timestamp of creation of this resource.
@@ -119,12 +119,12 @@ pub struct BacktestResult {
     pub state: i32,
     /// Required. The resource name of the Dataset to backtest on
     /// Format:
-    /// "/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}"
+    /// `/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}`
     #[prost(string, tag = "6")]
     pub dataset: ::prost::alloc::string::String,
     /// Required. The resource name of the Model to use or to backtest.
     /// Format:
-    /// "/projects/{project_num}/locations/{location}/instances/{instance}/models/{model}"
+    /// `/projects/{project_num}/locations/{location}/instances/{instance}/models/{model}`
     #[prost(string, tag = "7")]
     pub model: ::prost::alloc::string::String,
     /// Required. End_time specifies the latest time from which labels are used and
@@ -359,7 +359,7 @@ pub struct ExportBacktestResultMetadataResponse {}
 pub struct Dataset {
     /// Output only. The resource name of the Dataset.
     /// format:
-    /// "/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}"
+    /// `/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The timestamp of creation of this resource.
@@ -585,7 +585,7 @@ pub struct DeleteDatasetRequest {
 pub struct EngineConfig {
     /// Output only. The resource name of the EngineConfig.
     /// format:
-    /// "/projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engine_config}"
+    /// `/projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engine_config}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The timestamp of creation of this resource.
@@ -605,7 +605,7 @@ pub struct EngineConfig {
     pub state: i32,
     /// Required. The resource name of the EngineVersion used in this model tuning.
     /// format:
-    /// "/projects/{project_num}/locations/{location}/instances/{instance}/engineVersions/{engine_version}"
+    /// `/projects/{project_num}/locations/{location}/instances/{instance}/engineVersions/{engine_version}`
     #[prost(string, tag = "6")]
     pub engine_version: ::prost::alloc::string::String,
     /// Optional. Configuration for tuning in creation of the EngineConfig.
@@ -643,7 +643,7 @@ pub mod engine_config {
         /// Required. The resource name of the Primary Dataset used in this model
         /// tuning. For information about how primary and auxiliary datasets are
         /// used, refer to the engine version's documentation.  Format:
-        /// "/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}"
+        /// `/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}`
         #[prost(string, tag = "1")]
         pub primary_dataset: ::prost::alloc::string::String,
         /// Required. End_time specifies the latest time from which labels are used
@@ -671,12 +671,12 @@ pub mod engine_config {
     pub struct HyperparameterSource {
         /// Required. The resource name of the source EngineConfig whose outputs are
         /// used. Format:
-        /// "/projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engine_config}"
+        /// `/projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engine_config}`
         #[prost(string, tag = "1")]
         pub source_engine_config: ::prost::alloc::string::String,
         /// Output only. The resource name of the EngineVersion that was used in the
         /// tuning run. Format:
-        /// "/projects/{project_num}/locations/{location}/instances/{instance}/engineVersions/{engine_version}"
+        /// `/projects/{project_num}/locations/{location}/instances/{instance}/engineVersions/{engine_version}`
         #[prost(string, tag = "2")]
         pub source_engine_version: ::prost::alloc::string::String,
     }
@@ -922,7 +922,7 @@ pub struct ExportEngineConfigMetadataResponse {}
 pub struct EngineVersion {
     /// Output only. Identifier. The resource name of the EngineVersion
     /// format:
-    /// "/projects/{project_num}/locations/{location}/instances/{instance}/engineVersions/{engine_version}"
+    /// `/projects/{project_num}/locations/{location}/instances/{instance}/engineVersions/{engine_version}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The state of the version.
@@ -1051,7 +1051,7 @@ pub struct GetEngineVersionRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Instance {
     /// Output only. The full path to the Instance resource in this API.
-    /// format: "projects/{project}/locations/{location}/instances/{instance}"
+    /// format: `projects/{project}/locations/{location}/instances/{instance}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Timestamp when the Instance was created.
@@ -1074,7 +1074,7 @@ pub struct Instance {
     >,
     /// Required. The KMS key name used for CMEK (encryption-at-rest).
     /// format:
-    /// "projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{cryptoKey}"
+    /// `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{cryptoKey}`
     /// VPC-SC restrictions apply.
     #[prost(string, tag = "6")]
     pub kms_key: ::prost::alloc::string::String,
@@ -1266,12 +1266,12 @@ pub struct DeleteInstanceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportRegisteredPartiesRequest {
     /// Required. The full path to the Instance resource in this API.
-    /// format: "projects/{project}/locations/{location}/instances/{instance}"
+    /// format: `projects/{project}/locations/{location}/instances/{instance}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. List of BigQuery tables. Union of tables will be taken if there
     /// is more than one table. VPC-SC restrictions apply. format:
-    /// "bq://{project}.{bqDatasetID}.{bqTableID}" Use of `datasets` is preferred
+    /// `bq://{project}.{bqDatasetID}.{bqTableID}` Use of `datasets` is preferred
     /// over the latter due to its simplicity and the reduced risk of errors
     /// `party_tables` and `datasets` must not be provided at the
     /// same time
@@ -1280,8 +1280,8 @@ pub struct ImportRegisteredPartiesRequest {
     /// Required. Mode of the request.
     #[prost(enumeration = "import_registered_parties_request::UpdateMode", tag = "3")]
     pub mode: i32,
-    /// Optional. Is the request will not register the parties, just determine what
-    /// woud happen.
+    /// Optional. If the request will not register the parties, just determine what
+    /// would happen.
     #[prost(bool, tag = "4")]
     pub validate_only: bool,
     /// Required. LineOfBusiness for the specified registered parties.
@@ -1363,7 +1363,7 @@ pub struct ImportRegisteredPartiesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportRegisteredPartiesRequest {
     /// Required. The full path to the Instance resource in this API.
-    /// format: "projects/{project}/locations/{location}/instances/{instance}"
+    /// format: `projects/{project}/locations/{location}/instances/{instance}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The location to output the RegisteredParties.
@@ -1381,7 +1381,7 @@ pub struct ExportRegisteredPartiesResponse {}
 pub struct Model {
     /// Output only. The resource name of the Model.
     /// format:
-    /// "/projects/{project_num}/locations/{location}/instances/{instance}/models/{model}"
+    /// `/projects/{project_num}/locations/{location}/instances/{instance}/models/{model}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The timestamp of creation of this resource.
@@ -1405,13 +1405,13 @@ pub struct Model {
     pub engine_version: ::prost::alloc::string::String,
     /// Required. The resource name of the EngineConfig the model training will be
     /// based on. Format:
-    /// "/projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engineConfig}"
+    /// `/projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engineConfig}`
     #[prost(string, tag = "7")]
     pub engine_config: ::prost::alloc::string::String,
     /// Required. The resource name of the Primary Dataset used in this model
     /// training. For information about how primary and auxiliary datasets are
     /// used, refer to the engine version's documentation.  Format:
-    /// "/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}"
+    /// `/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}`
     #[prost(string, tag = "8")]
     pub primary_dataset: ::prost::alloc::string::String,
     /// Required. End_time specifies the latest time from which labels are used and
@@ -1622,7 +1622,7 @@ pub struct ExportModelMetadataResponse {}
 pub struct PredictionResult {
     /// Output only. The resource name of the PredictionResult.
     /// format:
-    /// "/projects/{project_num}/locations/{location}/instances/{instance}/predictionResults/{prediction_result}"
+    /// `/projects/{project_num}/locations/{location}/instances/{instance}/predictionResults/{prediction_result}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The timestamp of creation of this resource.
@@ -1643,12 +1643,12 @@ pub struct PredictionResult {
     pub state: i32,
     /// Required. The resource name of the Dataset to do predictions on
     /// Format:
-    /// "/projects/{project_num}/locations/{location}/instances/{instance}/dataset/{dataset_id}"
+    /// `/projects/{project_num}/locations/{location}/instances/{instance}/dataset/{dataset_id}`
     #[prost(string, tag = "6")]
     pub dataset: ::prost::alloc::string::String,
     /// Required. The resource name of the Model to use to use to make predictions
     /// Format:
-    /// "/projects/{project_num}/locations/{location}/instances/{instance}/models/{model}"
+    /// `/projects/{project_num}/locations/{location}/instances/{instance}/models/{model}`
     #[prost(string, tag = "7")]
     pub model: ::prost::alloc::string::String,
     /// Required. Specifies the latest time from which data is used to generate
@@ -1902,10 +1902,9 @@ pub struct OperationMetadata {
     /// Output only. Identifies whether the user has requested cancellation of the
     /// operation.
     ///
-    /// Successfully cancelled operations have a
-    /// [google.longrunning.Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
-    /// `Code.CANCELLED`.
+    /// Successfully cancelled operations have a [Operation.error][] value
+    /// with a [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding
+    /// to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.

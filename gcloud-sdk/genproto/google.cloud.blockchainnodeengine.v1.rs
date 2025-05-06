@@ -30,11 +30,9 @@ pub struct BlockchainNode {
     pub state: i32,
     /// Optional. When true, the node is only accessible via Private Service
     /// Connect; no public endpoints are exposed. Otherwise, the node is only
-    /// accessible via public endpoints. Warning: Private Service Connect enabled
-    /// nodes may require a manual migration effort to remain compatible with
-    /// future versions of the product. If this feature is enabled, you will be
-    /// notified of these changes along with any required action to avoid
-    /// disruption. See <https://cloud.google.com/vpc/docs/private-service-connect.>
+    /// accessible via public endpoints. Warning: These nodes are deprecated,
+    /// please use public endpoints instead.
+    #[deprecated]
     #[prost(bool, tag = "12")]
     pub private_service_connect_enabled: bool,
     /// Information that is specific to a particular blockchain type.
@@ -209,6 +207,7 @@ pub mod blockchain_node {
             pub mev_relay_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
             /// Immutable. When true, deploys a GCP-managed validator client alongside
             /// the beacon client.
+            #[deprecated]
             #[prost(bool, tag = "2")]
             pub managed_validator_client: bool,
             /// An Ethereum address which the beacon client will send fee rewards to if
