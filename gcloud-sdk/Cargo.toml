@@ -434,6 +434,7 @@ google-rest-servicecontrol-v1 = ["rest"]
 google-rest-servicecontrol-v2 = ["rest"]
 google-rest-sqladmin-v1 = ["rest"]
 google-rest-storage-v1 = ["rest"]
+google-rest-fcm-v1 = ["rest"]
 
 [dependencies]
 tonic = { version = "0.13.0" }

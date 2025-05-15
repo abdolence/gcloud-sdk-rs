@@ -10,6 +10,9 @@ pub mod compute_v1;
 #[cfg(any(feature = "google-rest-dns-v1"))]
 pub mod dns_v1;
 
+#[cfg(any(feature = "google-rest-fcm-v1"))]
+pub mod fcm_v1;
+
 #[cfg(any(feature = "google-rest-identitytoolkit-v3"))]
 pub mod identitytoolkit_v3;
 

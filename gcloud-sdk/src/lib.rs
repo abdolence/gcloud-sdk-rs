@@ -54,7 +54,7 @@ pub mod error;
 mod token_source;
 pub use token_source::auth_token_generator::GoogleAuthTokenGenerator;
 pub use token_source::metadata::Metadata as GceMetadataClient;
-pub use token_source::{ExternalJwtFunctionSource, Token, TokenSourceType};
+pub use token_source::{BoxSource, ExternalJwtFunctionSource, Source, Token, TokenSourceType};
 
 mod api_client;
 pub use api_client::*;
