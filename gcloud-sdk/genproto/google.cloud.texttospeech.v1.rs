@@ -106,6 +106,27 @@ pub mod custom_pronunciation_params {
         /// X-SAMPA, such as apple -> "{p@l".
         /// <https://en.wikipedia.org/wiki/X-SAMPA>
         XSampa = 2,
+        /// For reading-to-pron conversion to work well, the `pronunciation` field
+        ///   should only contain Kanji, Hiragana, and Katakana.
+        ///
+        /// The pronunciation can also contain pitch accents.
+        /// The start of a pitch phrase is specified with `^` and the down-pitch
+        /// position is specified with `!`, for example:
+        ///
+        ///      phrase:端  pronunciation:^はし
+        ///      phrase:箸  pronunciation:^は!し
+        ///      phrase:橋  pronunciation:^はし!
+        ///
+        /// We currently only support the Tokyo dialect, which allows at most one
+        /// down-pitch per phrase (i.e. at most one `!` between `^`).
+        JapaneseYomigana = 3,
+        /// Used to specify pronunciations for Mandarin words. See
+        /// <https://en.wikipedia.org/wiki/Pinyin.>
+        ///
+        /// For example: 朝阳, the pronunciation is "chao2 yang2". The number
+        /// represents the tone, and there is a space between syllables. Neutral
+        /// tones are represented by 5, for example 孩子 "hai2 zi5".
+        Pinyin = 4,
     }
     impl PhoneticEncoding {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -117,6 +138,8 @@ pub mod custom_pronunciation_params {
                 Self::Unspecified => "PHONETIC_ENCODING_UNSPECIFIED",
                 Self::Ipa => "PHONETIC_ENCODING_IPA",
                 Self::XSampa => "PHONETIC_ENCODING_X_SAMPA",
+                Self::JapaneseYomigana => "PHONETIC_ENCODING_JAPANESE_YOMIGANA",
+                Self::Pinyin => "PHONETIC_ENCODING_PINYIN",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -125,6 +148,8 @@ pub mod custom_pronunciation_params {
                 "PHONETIC_ENCODING_UNSPECIFIED" => Some(Self::Unspecified),
                 "PHONETIC_ENCODING_IPA" => Some(Self::Ipa),
                 "PHONETIC_ENCODING_X_SAMPA" => Some(Self::XSampa),
+                "PHONETIC_ENCODING_JAPANESE_YOMIGANA" => Some(Self::JapaneseYomigana),
+                "PHONETIC_ENCODING_PINYIN" => Some(Self::Pinyin),
                 _ => None,
             }
         }
@@ -177,7 +202,7 @@ pub struct SynthesisInput {
     #[prost(message, optional, tag = "3")]
     pub custom_pronunciations: ::core::option::Option<CustomPronunciations>,
     /// The input source, which is either plain text or SSML.
-    #[prost(oneof = "synthesis_input::InputSource", tags = "1, 2, 4")]
+    #[prost(oneof = "synthesis_input::InputSource", tags = "1, 5, 2, 4")]
     pub input_source: ::core::option::Option<synthesis_input::InputSource>,
 }
 /// Nested message and enum types in `SynthesisInput`.
@@ -188,6 +213,10 @@ pub mod synthesis_input {
         /// The raw text to be synthesized.
         #[prost(string, tag = "1")]
         Text(::prost::alloc::string::String),
+        /// Markup for HD voices specifically. This field may not be used with any
+        /// other voices.
+        #[prost(string, tag = "5")]
+        Markup(::prost::alloc::string::String),
         /// The SSML document to be synthesized. The SSML document must be valid
         /// and well-formed. Otherwise the RPC will fail and return
         /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]. For
@@ -407,7 +436,7 @@ pub struct StreamingSynthesizeConfig {
 /// Input to be synthesized.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingSynthesisInput {
-    #[prost(oneof = "streaming_synthesis_input::InputSource", tags = "1")]
+    #[prost(oneof = "streaming_synthesis_input::InputSource", tags = "1, 5")]
     pub input_source: ::core::option::Option<streaming_synthesis_input::InputSource>,
 }
 /// Nested message and enum types in `StreamingSynthesisInput`.
@@ -419,6 +448,10 @@ pub mod streaming_synthesis_input {
         /// in the output audio.
         #[prost(string, tag = "1")]
         Text(::prost::alloc::string::String),
+        /// Markup for HD voices specifically. This field may not be used with any
+        /// other voices.
+        #[prost(string, tag = "5")]
+        Markup(::prost::alloc::string::String),
     }
 }
 /// Request message for the `StreamingSynthesize` method. Multiple

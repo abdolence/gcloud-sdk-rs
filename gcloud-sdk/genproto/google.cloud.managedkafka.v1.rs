@@ -563,6 +563,91 @@ pub struct TaskRetryPolicy {
     #[prost(message, optional, tag = "2")]
     pub maximum_backoff: ::core::option::Option<::prost_types::Duration>,
 }
+/// Represents the set of ACLs for a given Kafka Resource Pattern, which consists
+/// of resource_type, resource_name and pattern_type.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Acl {
+    /// Identifier. The name for the acl. Represents a single Resource Pattern.
+    /// Structured like:
+    /// projects/{project}/locations/{location}/clusters/{cluster}/acls/{acl_id}
+    ///
+    /// The structure of `acl_id` defines the Resource Pattern (resource_type,
+    /// resource_name, pattern_type) of the acl. `acl_id` is structured like one of
+    /// the following:
+    ///
+    /// For acls on the cluster:
+    ///    `cluster`
+    ///
+    /// For acls on a single resource within the cluster:
+    ///    `topic/{resource_name}`
+    ///    `consumerGroup/{resource_name}`
+    ///    `transactionalId/{resource_name}`
+    ///
+    /// For acls on all resources that match a prefix:
+    ///    `topicPrefixed/{resource_name}`
+    ///    `consumerGroupPrefixed/{resource_name}`
+    ///    `transactionalIdPrefixed/{resource_name}`
+    ///
+    /// For acls on all resources of a given type (i.e. the wildcard literal "*"):
+    ///    `allTopics` (represents `topic/*`)
+    ///    `allConsumerGroups` (represents `consumerGroup/*`)
+    ///    `allTransactionalIds` (represents `transactionalId/*`)
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The ACL entries that apply to the resource pattern. The maximum
+    /// number of allowed entries 100.
+    #[prost(message, repeated, tag = "2")]
+    pub acl_entries: ::prost::alloc::vec::Vec<AclEntry>,
+    /// Optional. `etag` is used for concurrency control. An `etag` is returned in
+    /// the response to `GetAcl` and `CreateAcl`. Callers are required to put that
+    /// etag in the request to `UpdateAcl` to ensure that their change will be
+    /// applied to the same version of the acl that exists in the Kafka Cluster.
+    ///
+    /// A terminal 'T' character in the etag indicates that the AclEntries were
+    /// truncated; more entries for the Acl exist on the Kafka Cluster, but can't
+    /// be returned in the Acl due to repeated field limits.
+    #[prost(string, tag = "3")]
+    pub etag: ::prost::alloc::string::String,
+    /// Output only. The ACL resource type derived from the name. One of: CLUSTER,
+    /// TOPIC, GROUP, TRANSACTIONAL_ID.
+    #[prost(string, tag = "4")]
+    pub resource_type: ::prost::alloc::string::String,
+    /// Output only. The ACL resource name derived from the name. For cluster
+    /// resource_type, this is always "kafka-cluster". Can be the wildcard literal
+    /// "*".
+    #[prost(string, tag = "5")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Output only. The ACL pattern type derived from the name. One of: LITERAL,
+    /// PREFIXED.
+    #[prost(string, tag = "6")]
+    pub pattern_type: ::prost::alloc::string::String,
+}
+/// Represents the access granted for a given Resource Pattern in an ACL.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AclEntry {
+    /// Required. The principal. Specified as Google Cloud account, with the Kafka
+    /// StandardAuthorizer prefix "User:". For example:
+    /// "User:test-kafka-client@test-project.iam.gserviceaccount.com".
+    /// Can be the wildcard "User:*" to refer to all users.
+    #[prost(string, tag = "4")]
+    pub principal: ::prost::alloc::string::String,
+    /// Required. The permission type. Accepted values are (case insensitive):
+    /// ALLOW, DENY.
+    #[prost(string, tag = "5")]
+    pub permission_type: ::prost::alloc::string::String,
+    /// Required. The operation type. Allowed values are (case insensitive): ALL,
+    /// READ, WRITE, CREATE, DELETE, ALTER, DESCRIBE, CLUSTER_ACTION,
+    /// DESCRIBE_CONFIGS, ALTER_CONFIGS, and IDEMPOTENT_WRITE. See
+    /// <https://kafka.apache.org/documentation/#operations_resources_and_protocols>
+    /// for valid combinations of resource_type and operation for different Kafka
+    /// API requests.
+    #[prost(string, tag = "6")]
+    pub operation: ::prost::alloc::string::String,
+    /// Required. The host. Must be set to "*" for Managed Service for Apache
+    /// Kafka.
+    #[prost(string, tag = "7")]
+    pub host: ::prost::alloc::string::String,
+}
 /// Request for ListClusters.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersRequest {
@@ -843,6 +928,181 @@ pub struct DeleteConsumerGroupRequest {
     /// `projects/{project}/locations/{location}/clusters/{cluster}/consumerGroups/{consumerGroup}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+}
+/// Request for ListAcls.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAclsRequest {
+    /// Required. The parent cluster whose acls are to be listed.
+    /// Structured like
+    /// `projects/{project}/locations/{location}/clusters/{cluster}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of acls to return. The service may return
+    /// fewer than this value. If unset or zero, all acls for the parent is
+    /// returned.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListAcls` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListAcls` must match
+    /// the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response for ListAcls.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAclsResponse {
+    /// The list of acls in the requested parent. The order of the acls is
+    /// unspecified.
+    #[prost(message, repeated, tag = "1")]
+    pub acls: ::prost::alloc::vec::Vec<Acl>,
+    /// A token that can be sent as `page_token` to retrieve the next page of
+    /// results. If this field is omitted, there are no more results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request for GetAcl.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAclRequest {
+    /// Required. The name of the acl to return.
+    /// Structured like:
+    /// `projects/{project}/locations/{location}/clusters/{cluster}/acls/{acl_id}`.
+    ///
+    /// The structure of `acl_id` defines the Resource Pattern (resource_type,
+    /// resource_name, pattern_type) of the acl. See `Acl.name` for
+    /// details.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for CreateAcl.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateAclRequest {
+    /// Required. The parent cluster in which to create the acl.
+    /// Structured like
+    /// `projects/{project}/locations/{location}/clusters/{cluster}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ID to use for the acl, which will become the final component
+    /// of the acl's name. The structure of `acl_id` defines the Resource Pattern
+    /// (resource_type, resource_name, pattern_type) of the acl. `acl_id` is
+    /// structured like one of the following:
+    ///
+    /// For acls on the cluster:
+    ///    `cluster`
+    ///
+    /// For acls on a single resource within the cluster:
+    ///    `topic/{resource_name}`
+    ///    `consumerGroup/{resource_name}`
+    ///    `transactionalId/{resource_name}`
+    ///
+    /// For acls on all resources that match a prefix:
+    ///    `topicPrefixed/{resource_name}`
+    ///    `consumerGroupPrefixed/{resource_name}`
+    ///    `transactionalIdPrefixed/{resource_name}`
+    ///
+    /// For acls on all resources of a given type (i.e. the wildcard literal "*"):
+    ///    `allTopics` (represents `topic/*`)
+    ///    `allConsumerGroups` (represents `consumerGroup/*`)
+    ///    `allTransactionalIds` (represents `transactionalId/*`)
+    #[prost(string, tag = "2")]
+    pub acl_id: ::prost::alloc::string::String,
+    /// Required. Configuration of the acl to create. Its `name` field is ignored.
+    #[prost(message, optional, tag = "3")]
+    pub acl: ::core::option::Option<Acl>,
+}
+/// Request for UpdateAcl.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateAclRequest {
+    /// Required. The updated acl. Its `name` and `etag` fields must be populated.
+    /// `acl_entries` must not be empty in the updated acl; to remove all acl
+    /// entries for an acl, use DeleteAcl.
+    #[prost(message, optional, tag = "1")]
+    pub acl: ::core::option::Option<Acl>,
+    /// Optional. Field mask is used to specify the fields to be overwritten in the
+    /// Acl resource by the update. The fields specified in the update_mask are
+    /// relative to the resource, not the full request. A field will be overwritten
+    /// if it is in the mask.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request for DeleteAcl.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteAclRequest {
+    /// Required. The name of the acl to delete.
+    /// Structured like:
+    /// `projects/{project}/locations/{location}/clusters/{cluster}/acls/{acl_id}`.
+    ///
+    /// The structure of `acl_id` defines the Resource Pattern (resource_type,
+    /// resource_name, pattern_type) of the acl. See `Acl.name` for details.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for AddAclEntry.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AddAclEntryRequest {
+    /// Required. The name of the acl to add the acl entry to.
+    /// Structured like:
+    /// `projects/{project}/locations/{location}/clusters/{cluster}/acls/{acl_id}`.
+    ///
+    /// The structure of `acl_id` defines the Resource Pattern (resource_type,
+    /// resource_name, pattern_type) of the acl. See `Acl.name` for
+    /// details.
+    #[prost(string, tag = "1")]
+    pub acl: ::prost::alloc::string::String,
+    /// Required. The acl entry to add.
+    #[prost(message, optional, tag = "2")]
+    pub acl_entry: ::core::option::Option<AclEntry>,
+}
+/// Response for AddAclEntry.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AddAclEntryResponse {
+    /// The updated acl.
+    #[prost(message, optional, tag = "1")]
+    pub acl: ::core::option::Option<Acl>,
+    /// Whether the acl was created as a result of adding the acl entry.
+    #[prost(bool, tag = "2")]
+    pub acl_created: bool,
+}
+/// Request for RemoveAclEntry.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RemoveAclEntryRequest {
+    /// Required. The name of the acl to remove the acl entry from.
+    /// Structured like:
+    /// `projects/{project}/locations/{location}/clusters/{cluster}/acls/{acl_id}`.
+    ///
+    /// The structure of `acl_id` defines the Resource Pattern (resource_type,
+    /// resource_name, pattern_type) of the acl. See `Acl.name` for
+    /// details.
+    #[prost(string, tag = "1")]
+    pub acl: ::prost::alloc::string::String,
+    /// Required. The acl entry to remove.
+    #[prost(message, optional, tag = "2")]
+    pub acl_entry: ::core::option::Option<AclEntry>,
+}
+/// Response for RemoveAclEntry.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RemoveAclEntryResponse {
+    /// The result of removing the acl entry, depending on whether the acl was
+    /// deleted as a result of removing the acl entry.
+    #[prost(oneof = "remove_acl_entry_response::Result", tags = "1, 2")]
+    pub result: ::core::option::Option<remove_acl_entry_response::Result>,
+}
+/// Nested message and enum types in `RemoveAclEntryResponse`.
+pub mod remove_acl_entry_response {
+    /// The result of removing the acl entry, depending on whether the acl was
+    /// deleted as a result of removing the acl entry.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Result {
+        /// The updated acl. Returned if the removed acl entry was not the last entry
+        /// in the acl.
+        #[prost(message, tag = "1")]
+        Acl(super::Acl),
+        /// Returned with value true if the removed acl entry was the last entry in
+        /// the acl, resulting in acl deletion.
+        #[prost(bool, tag = "2")]
+        AclDeleted(bool),
+    }
 }
 /// Generated client implementations.
 pub mod managed_kafka_client {
@@ -1329,6 +1589,207 @@ pub mod managed_kafka_client {
                     GrpcMethod::new(
                         "google.cloud.managedkafka.v1.ManagedKafka",
                         "DeleteConsumerGroup",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists the acls in a given cluster.
+        pub async fn list_acls(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListAclsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListAclsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.managedkafka.v1.ManagedKafka/ListAcls",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedkafka.v1.ManagedKafka",
+                        "ListAcls",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns the properties of a single acl.
+        pub async fn get_acl(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAclRequest>,
+        ) -> std::result::Result<tonic::Response<super::Acl>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.managedkafka.v1.ManagedKafka/GetAcl",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedkafka.v1.ManagedKafka",
+                        "GetAcl",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new acl in the given project, location, and cluster.
+        pub async fn create_acl(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateAclRequest>,
+        ) -> std::result::Result<tonic::Response<super::Acl>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.managedkafka.v1.ManagedKafka/CreateAcl",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedkafka.v1.ManagedKafka",
+                        "CreateAcl",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the properties of a single acl.
+        pub async fn update_acl(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateAclRequest>,
+        ) -> std::result::Result<tonic::Response<super::Acl>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.managedkafka.v1.ManagedKafka/UpdateAcl",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedkafka.v1.ManagedKafka",
+                        "UpdateAcl",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes an acl.
+        pub async fn delete_acl(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteAclRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.managedkafka.v1.ManagedKafka/DeleteAcl",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedkafka.v1.ManagedKafka",
+                        "DeleteAcl",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Incremental update: Adds an acl entry to an acl. Creates the acl if it does
+        /// not exist yet.
+        pub async fn add_acl_entry(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AddAclEntryRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::AddAclEntryResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.managedkafka.v1.ManagedKafka/AddAclEntry",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedkafka.v1.ManagedKafka",
+                        "AddAclEntry",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Incremental update: Removes an acl entry from an acl. Deletes the acl if
+        /// its acl entries become empty (i.e. if the removed entry was the last one in
+        /// the acl).
+        pub async fn remove_acl_entry(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RemoveAclEntryRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::RemoveAclEntryResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.managedkafka.v1.ManagedKafka/RemoveAclEntry",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.managedkafka.v1.ManagedKafka",
+                        "RemoveAclEntry",
                     ),
                 );
             self.inner.unary(req, path, codec).await

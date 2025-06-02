@@ -218,15 +218,16 @@ pub mod access_settings {
         }
     }
 }
-/// Allows customers to configure tenant_id for GCIP instance per-app.
+/// Allows customers to configure tenant IDs for a Cloud Identity Platform (GCIP)
+/// instance for each application.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcipSettings {
-    /// Optional. GCIP tenant ids that are linked to the IAP resource.
-    /// tenant_ids could be a string beginning with a number character to indicate
-    /// authenticating with GCIP tenant flow, or in the format of _<ProjectNumber>
-    /// to indicate authenticating with GCIP agent flow.
-    /// If agent flow is used, tenant_ids should only contain one single element,
-    /// while for tenant flow, tenant_ids can contain multiple elements.
+    /// Optional. GCIP tenant IDs that are linked to the IAP resource. `tenant_ids`
+    /// could be a string beginning with a number character to indicate
+    /// authenticating with GCIP tenant flow, or in the format of
+    /// `_<ProjectNumber>` to indicate authenticating with GCIP agent flow. If
+    /// agent flow is used, `tenant_ids` should only contain one single element,
+    /// while for tenant flow, `tenant_ids` can contain multiple elements.
     #[prost(string, repeated, tag = "1")]
     pub tenant_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Login page URI associated with the GCIP tenants.
@@ -235,12 +236,13 @@ pub struct GcipSettings {
     #[prost(message, optional, tag = "2")]
     pub login_page_uri: ::core::option::Option<::prost::alloc::string::String>,
 }
-/// Allows customers to configure HTTP request paths that'll allow HTTP OPTIONS
-/// call to bypass authentication and authorization.
+/// Allows customers to configure HTTP request paths that'll allow HTTP
+/// `OPTIONS` call to bypass authentication and authorization.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CorsSettings {
-    /// Configuration to allow HTTP OPTIONS calls to skip authorization. If
-    /// undefined, IAP will not apply any special logic to OPTIONS requests.
+    /// Configuration to allow HTTP `OPTIONS` calls to skip
+    /// authentication and authorization. If undefined, IAP will not apply any
+    /// special logic to `OPTIONS` requests.
     #[prost(message, optional, tag = "1")]
     pub allow_http_options: ::core::option::Option<bool>,
 }

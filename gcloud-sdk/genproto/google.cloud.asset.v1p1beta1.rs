@@ -63,7 +63,7 @@ pub struct IamPolicySearchResult {
     /// form of `projects/{project_number}`. If an IAM policy is set on a resource
     /// -- such as a Compute Engine instance or a Cloud Storage bucket -- the
     /// project field will indicate the project that contains the resource. If an
-    /// IAM policy is set on a folder or orgnization, the project field will be
+    /// IAM policy is set on a folder or organization, the project field will be
     /// empty.
     #[prost(string, tag = "3")]
     pub project: ::prost::alloc::string::String,

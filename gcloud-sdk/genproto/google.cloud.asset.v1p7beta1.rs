@@ -254,13 +254,13 @@ pub mod partition_spec {
         /// Unspecified partition key. If used, it means using non-partitioned table.
         Unspecified = 0,
         /// The time when the snapshot is taken. If specified as partition key, the
-        /// result table(s) is partitoned by the additional timestamp column,
+        /// result table(s) is partitioned by the additional timestamp column,
         /// readTime. If \[read_time\] in ExportAssetsRequest is specified, the
         /// readTime column's value will be the same as it. Otherwise, its value will
         /// be the current time that is used to take the snapshot.
         ReadTime = 1,
         /// The time when the request is received and started to be processed. If
-        /// specified as partition key, the result table(s) is partitoned by the
+        /// specified as partition key, the result table(s) is partitioned by the
         /// requestTime column, an additional timestamp column representing when the
         /// request was received.
         RequestTime = 2,

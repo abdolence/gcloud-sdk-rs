@@ -862,7 +862,7 @@ pub struct IamPolicySearchResult {
     /// form of projects/{PROJECT_NUMBER}. If an IAM policy is set on a resource
     /// (like VM instance, Cloud Storage bucket), the project field will indicate
     /// the project that contains the resource. If an IAM policy is set on a folder
-    /// or orgnization, this field will be empty.
+    /// or organization, this field will be empty.
     ///
     /// To search against the `project`:
     ///
@@ -1664,13 +1664,13 @@ pub mod partition_spec {
         /// Unspecified partition key. If used, it means using non-partitioned table.
         Unspecified = 0,
         /// The time when the snapshot is taken. If specified as partition key, the
-        /// result table(s) is partitoned by the additional timestamp column,
+        /// result table(s) is partitioned by the additional timestamp column,
         /// readTime. If \[read_time\] in ExportAssetsRequest is specified, the
         /// readTime column's value will be the same as it. Otherwise, its value will
         /// be the current time that is used to take the snapshot.
         ReadTime = 1,
         /// The time when the request is received and started to be processed. If
-        /// specified as partition key, the result table(s) is partitoned by the
+        /// specified as partition key, the result table(s) is partitioned by the
         /// requestTime column, an additional timestamp column representing when the
         /// request was received.
         RequestTime = 2,
@@ -2497,7 +2497,7 @@ pub mod iam_policy_analysis_output_config {
             /// option.
             Unspecified = 0,
             /// The time when the request is received. If specified as partition key,
-            /// the result table(s) is partitoned by the RequestTime column, an
+            /// the result table(s) is partitioned by the RequestTime column, an
             /// additional timestamp column representing when the request was received.
             RequestTime = 1,
         }
@@ -2748,7 +2748,7 @@ pub struct AnalyzeMoveRequest {
     pub resource: ::prost::alloc::string::String,
     /// Required. Name of the Google Cloud folder or organization to reparent the
     /// target resource. The analysis will be performed against hypothetically
-    /// moving the resource to this specified desitination parent. This can only be
+    /// moving the resource to this specified destination parent. This can only be
     /// a folder number (such as "folders/123") or an organization number (such as
     /// "organizations/123").
     #[prost(string, tag = "2")]

@@ -25,7 +25,7 @@ pub struct Alert {
     /// This is output only after alert is created.
     /// For a list of available alert types see
     /// [Google Workspace Alert
-    /// types](<https://developers.google.com/admin-sdk/alertcenter/reference/alert-types>).
+    /// types](<https://developers.google.com/workspace/admin/alertcenter/reference/alert-types>).
     #[prost(string, tag = "6")]
     pub r#type: ::prost::alloc::string::String,
     /// Required. A unique identifier for the system that reported the alert.
@@ -157,7 +157,7 @@ pub struct Settings {
 pub mod settings {
     /// Settings for callback notifications.
     /// For more details see [Google Workspace Alert
-    /// Notification](<https://developers.google.com/admin-sdk/alertcenter/guides/notifications>).
+    /// Notification](<https://developers.google.com/workspace/admin/alertcenter/guides/notifications>).
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Notification {
         /// Exactly one destination to be specified.
@@ -307,9 +307,9 @@ pub struct ListAlertsRequest {
     pub page_token: ::prost::alloc::string::String,
     /// Optional. A query string for filtering alert results.
     /// For more details, see [Query
-    /// filters](<https://developers.google.com/admin-sdk/alertcenter/guides/query-filters>)
+    /// filters](<https://developers.google.com/workspace/admin/alertcenter/guides/query-filters>)
     /// and [Supported query filter
-    /// fields](<https://developers.google.com/admin-sdk/alertcenter/reference/filter-fields#alerts.list>).
+    /// fields](<https://developers.google.com/workspace/admin/alertcenter/reference/filter-fields#alerts.list>).
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The sort order of the list results.
@@ -410,9 +410,9 @@ pub struct ListAlertFeedbackRequest {
     pub alert_id: ::prost::alloc::string::String,
     /// Optional. A query string for filtering alert feedback results.
     /// For more details, see [Query
-    /// filters](<https://developers.google.com/admin-sdk/alertcenter/guides/query-filters>)
+    /// filters](<https://developers.google.com/workspace/admin/alertcenter/guides/query-filters>)
     /// and [Supported query filter
-    /// fields](<https://developers.google.com/admin-sdk/alertcenter/reference/filter-fields#alerts.feedback.list>).
+    /// fields](<https://developers.google.com/workspace/admin/alertcenter/reference/filter-fields#alerts.feedback.list>).
     #[prost(string, tag = "3")]
     pub filter: ::prost::alloc::string::String,
 }

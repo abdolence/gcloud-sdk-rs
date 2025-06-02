@@ -286,6 +286,9 @@ pub struct Backup {
     /// Format: `projects/{project_id}/locations/{location}`
     #[prost(string, tag = "14")]
     pub backup_region: ::prost::alloc::string::String,
+    /// Output only. The time until which the backup is not deletable.
+    #[prost(message, optional, tag = "15")]
+    pub enforced_retention_end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `Backup`.
 pub mod backup {
@@ -718,9 +721,42 @@ pub struct BackupVault {
     /// `projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}`
     #[prost(string, tag = "10")]
     pub destination_backup_vault: ::prost::alloc::string::String,
+    /// Optional. Backup retention policy defining the retenton of backups.
+    #[prost(message, optional, tag = "11")]
+    pub backup_retention_policy: ::core::option::Option<
+        backup_vault::BackupRetentionPolicy,
+    >,
 }
 /// Nested message and enum types in `BackupVault`.
 pub mod backup_vault {
+    /// Retention policy for backups in the backup vault
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct BackupRetentionPolicy {
+        /// Required. Minimum retention duration in days for backups in the backup
+        /// vault.
+        #[prost(int32, tag = "1")]
+        pub backup_minimum_enforced_retention_days: i32,
+        /// Optional. Indicates if the daily backups are immutable.
+        /// Atleast one of daily_backup_immutable, weekly_backup_immutable,
+        /// monthly_backup_immutable and manual_backup_immutable must be true.
+        #[prost(bool, tag = "2")]
+        pub daily_backup_immutable: bool,
+        /// Optional. Indicates if the weekly backups are immutable.
+        /// Atleast one of daily_backup_immutable, weekly_backup_immutable,
+        /// monthly_backup_immutable and manual_backup_immutable must be true.
+        #[prost(bool, tag = "3")]
+        pub weekly_backup_immutable: bool,
+        /// Optional. Indicates if the monthly backups are immutable.
+        /// Atleast one of daily_backup_immutable, weekly_backup_immutable,
+        /// monthly_backup_immutable and manual_backup_immutable must be true.
+        #[prost(bool, tag = "4")]
+        pub monthly_backup_immutable: bool,
+        /// Optional. Indicates if the manual backups are immutable.
+        /// Atleast one of daily_backup_immutable, weekly_backup_immutable,
+        /// monthly_backup_immutable and manual_backup_immutable must be true.
+        #[prost(bool, tag = "5")]
+        pub manual_backup_immutable: bool,
+    }
     /// The Backup Vault States
     #[derive(
         Clone,
@@ -2309,7 +2345,7 @@ impl RestrictedAction {
 /// TransferStats reports all statistics related to replication transfer.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransferStats {
-    /// Cumulative bytes trasferred so far for the replication relatinonship.
+    /// Cumulative bytes transferred so far for the replication relationship.
     #[prost(int64, optional, tag = "1")]
     pub transfer_bytes: ::core::option::Option<i64>,
     /// Cumulative time taken across all transfers for the replication
@@ -3209,6 +3245,17 @@ pub struct StoragePool {
     /// Output only. Reserved for future use
     #[prost(bool, tag = "24")]
     pub satisfies_pzi: bool,
+    /// Optional. True if using Independent Scaling of capacity and performance
+    /// (Hyperdisk) By default set to false
+    #[prost(bool, tag = "25")]
+    pub custom_performance_enabled: bool,
+    /// Optional. Custom Performance Total Throughput of the pool (in MiB/s)
+    #[prost(int64, tag = "26")]
+    pub total_throughput_mibps: i64,
+    /// Optional. Custom Performance Total IOPS of the pool
+    /// If not provided, it will be calculated based on the total_throughput_mibps
+    #[prost(int64, tag = "27")]
+    pub total_iops: i64,
 }
 /// Nested message and enum types in `StoragePool`.
 pub mod storage_pool {

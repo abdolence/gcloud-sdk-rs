@@ -265,15 +265,15 @@ pub struct Postdeploy {
 /// Standard represents the standard deployment strategy.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Standard {
-    /// Optional. Whether to verify a deployment.
+    /// Optional. Whether to verify a deployment via `skaffold verify`.
     #[prost(bool, tag = "1")]
     pub verify: bool,
     /// Optional. Configuration for the predeploy job. If this is not configured,
-    /// predeploy job will not be present.
+    /// the predeploy job will not be present.
     #[prost(message, optional, tag = "2")]
     pub predeploy: ::core::option::Option<Predeploy>,
     /// Optional. Configuration for the postdeploy job. If this is not configured,
-    /// postdeploy job will not be present.
+    /// the postdeploy job will not be present.
     #[prost(message, optional, tag = "3")]
     pub postdeploy: ::core::option::Option<Postdeploy>,
 }
@@ -314,7 +314,8 @@ pub struct CanaryDeployment {
     /// n is 0 <= n <= 100.
     #[prost(int32, repeated, packed = "false", tag = "1")]
     pub percentages: ::prost::alloc::vec::Vec<i32>,
-    /// Optional. Whether to run verify tests after each percentage deployment.
+    /// Optional. Whether to run verify tests after each percentage deployment via
+    /// `skaffold verify`.
     #[prost(bool, tag = "2")]
     pub verify: bool,
     /// Optional. Configuration for the predeploy job of the first phase. If this
@@ -356,7 +357,8 @@ pub mod custom_canary_deployment {
         /// `DeliveryPipeline` stage.
         #[prost(string, repeated, tag = "3")]
         pub profiles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// Optional. Whether to run verify tests after the deployment.
+        /// Optional. Whether to run verify tests after the deployment via `skaffold
+        /// verify`.
         #[prost(bool, tag = "4")]
         pub verify: bool,
         /// Optional. Configuration for the predeploy job of this phase. If this is
@@ -1661,7 +1663,7 @@ pub struct DeployPolicy {
     /// Required. Rules to apply. At least one rule must be present.
     #[prost(message, repeated, tag = "10")]
     pub rules: ::prost::alloc::vec::Vec<PolicyRule>,
-    /// The weak etag of the `Automation` resource.
+    /// The weak etag of the `DeployPolicy` resource.
     /// This checksum is computed by the server based on the value of other
     /// fields, and may be sent on update and delete requests to ensure the
     /// client has an up-to-date value before proceeding.

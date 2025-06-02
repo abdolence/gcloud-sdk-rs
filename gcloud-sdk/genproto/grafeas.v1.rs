@@ -87,6 +87,44 @@ pub struct FileLocation {
     /// can indicate the path to war file combined with the path to jar file.
     #[prost(string, tag = "1")]
     pub file_path: ::prost::alloc::string::String,
+    /// Each package found in a file should have its own layer metadata (that is,
+    /// information from the origin layer of the package).
+    #[prost(message, optional, tag = "2")]
+    pub layer_details: ::core::option::Option<LayerDetails>,
+}
+/// BaseImage describes a base image of a container image.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BaseImage {
+    /// The name of the base image.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The repository name in which the base image is from.
+    #[prost(string, tag = "2")]
+    pub repository: ::prost::alloc::string::String,
+    /// The number of layers that the base image is composed of.
+    #[prost(int32, tag = "3")]
+    pub layer_count: i32,
+}
+/// Details about the layer a package was found in.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LayerDetails {
+    /// The index of the layer in the container image.
+    #[prost(int32, tag = "1")]
+    pub index: i32,
+    /// The diff ID (typically a sha256 hash) of the layer in the container image.
+    #[prost(string, tag = "2")]
+    pub diff_id: ::prost::alloc::string::String,
+    /// The layer chain ID (sha256 hash) of the layer in the container image.
+    /// <https://github.com/opencontainers/image-spec/blob/main/config.md#layer-chainid>
+    #[prost(string, tag = "5")]
+    pub chain_id: ::prost::alloc::string::String,
+    /// The layer build command that was used to build the layer. This may not be
+    /// found in all layers depending on how the container image is built.
+    #[prost(string, tag = "3")]
+    pub command: ::prost::alloc::string::String,
+    /// The base images the layer is found within.
+    #[prost(message, repeated, tag = "4")]
+    pub base_images: ::prost::alloc::vec::Vec<BaseImage>,
 }
 /// License information.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -142,6 +180,8 @@ pub enum NoteKind {
     VulnerabilityAssessment = 11,
     /// This represents an SBOM Reference.
     SbomReference = 12,
+    /// This represents a secret.
+    Secret = 13,
 }
 impl NoteKind {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -163,6 +203,7 @@ impl NoteKind {
             Self::DsseAttestation => "DSSE_ATTESTATION",
             Self::VulnerabilityAssessment => "VULNERABILITY_ASSESSMENT",
             Self::SbomReference => "SBOM_REFERENCE",
+            Self::Secret => "SECRET",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -181,6 +222,7 @@ impl NoteKind {
             "DSSE_ATTESTATION" => Some(Self::DsseAttestation),
             "VULNERABILITY_ASSESSMENT" => Some(Self::VulnerabilityAssessment),
             "SBOM_REFERENCE" => Some(Self::SbomReference),
+            "SECRET" => Some(Self::Secret),
             _ => None,
         }
     }
@@ -2629,6 +2671,136 @@ pub struct SbomReferenceIntotoPredicate {
         ::prost::alloc::string::String,
     >,
 }
+/// The note representing a secret.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct SecretNote {}
+/// The occurrence provides details of a secret.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SecretOccurrence {
+    /// Type of secret.
+    #[prost(enumeration = "SecretKind", tag = "1")]
+    pub kind: i32,
+    /// Locations where the secret is detected.
+    #[prost(message, repeated, tag = "2")]
+    pub locations: ::prost::alloc::vec::Vec<SecretLocation>,
+    /// Status of the secret.
+    #[prost(message, repeated, tag = "3")]
+    pub statuses: ::prost::alloc::vec::Vec<SecretStatus>,
+}
+/// The location of the secret.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SecretLocation {
+    /// The detailed location of the secret.
+    #[prost(oneof = "secret_location::Location", tags = "1")]
+    pub location: ::core::option::Option<secret_location::Location>,
+}
+/// Nested message and enum types in `SecretLocation`.
+pub mod secret_location {
+    /// The detailed location of the secret.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Location {
+        /// The secret is found from a file.
+        #[prost(message, tag = "1")]
+        FileLocation(super::FileLocation),
+    }
+}
+/// The status of the secret with a timestamp.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SecretStatus {
+    /// The status of the secret.
+    #[prost(enumeration = "secret_status::Status", tag = "1")]
+    pub status: i32,
+    /// The time the secret status was last updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional message about the status code.
+    #[prost(string, tag = "3")]
+    pub message: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `SecretStatus`.
+pub mod secret_status {
+    /// The status of the secret.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Status {
+        /// Unspecified
+        Unspecified = 0,
+        /// The status of the secret is unknown.
+        Unknown = 1,
+        /// The secret is valid.
+        Valid = 2,
+        /// The secret is invalid.
+        Invalid = 3,
+    }
+    impl Status {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATUS_UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::Valid => "VALID",
+                Self::Invalid => "INVALID",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "VALID" => Some(Self::Valid),
+                "INVALID" => Some(Self::Invalid),
+                _ => None,
+            }
+        }
+    }
+}
+/// Kind of secret.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum SecretKind {
+    /// Unspecified
+    Unspecified = 0,
+    /// The secret kind is unknown.
+    Unknown = 1,
+    /// A GCP service account key per:
+    /// <https://cloud.google.com/iam/docs/creating-managing-service-account-keys>
+    GcpServiceAccountKey = 2,
+}
+impl SecretKind {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "SECRET_KIND_UNSPECIFIED",
+            Self::Unknown => "SECRET_KIND_UNKNOWN",
+            Self::GcpServiceAccountKey => "SECRET_KIND_GCP_SERVICE_ACCOUNT_KEY",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SECRET_KIND_UNSPECIFIED" => Some(Self::Unspecified),
+            "SECRET_KIND_UNKNOWN" => Some(Self::Unknown),
+            "SECRET_KIND_GCP_SERVICE_ACCOUNT_KEY" => Some(Self::GcpServiceAccountKey),
+            _ => None,
+        }
+    }
+}
 /// An Upgrade Note represents a potential upgrade of a package to a given
 /// version. For each package version combination (i.e. bash 4.0, bash 4.1,
 /// bash 4.1.2), there will be an Upgrade Note. For Windows, windows_update field
@@ -3412,7 +3584,7 @@ pub struct Occurrence {
     /// resource.
     #[prost(
         oneof = "occurrence::Details",
-        tags = "8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19"
+        tags = "8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20"
     )]
     pub details: ::core::option::Option<occurrence::Details>,
 }
@@ -3456,6 +3628,9 @@ pub mod occurrence {
         /// Describes a specific SBOM reference occurrences.
         #[prost(message, tag = "19")]
         SbomReference(super::SbomReferenceOccurrence),
+        /// Describes a secret.
+        #[prost(message, tag = "20")]
+        Secret(super::SecretOccurrence),
     }
 }
 /// A type of analysis that can be done for a resource.
@@ -3495,7 +3670,7 @@ pub struct Note {
     /// Required. Immutable. The type of analysis this note represents.
     #[prost(
         oneof = "note::Type",
-        tags = "10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21"
+        tags = "10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22"
     )]
     pub r#type: ::core::option::Option<note::Type>,
 }
@@ -3540,6 +3715,9 @@ pub mod note {
         /// A note describing an SBOM reference.
         #[prost(message, tag = "21")]
         SbomReference(super::SbomReferenceNote),
+        /// A note describing a secret.
+        #[prost(message, tag = "22")]
+        Secret(super::SecretNote),
     }
 }
 /// Request to get an occurrence.

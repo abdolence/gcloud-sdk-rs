@@ -11,6 +11,7 @@ pub struct LinuxNodeConfig {
     /// net.core.busy_read
     /// net.core.netdev_max_backlog
     /// net.core.rmem_max
+    /// net.core.rmem_default
     /// net.core.wmem_default
     /// net.core.wmem_max
     /// net.core.optmem_max
@@ -18,9 +19,16 @@ pub struct LinuxNodeConfig {
     /// net.ipv4.tcp_rmem
     /// net.ipv4.tcp_wmem
     /// net.ipv4.tcp_tw_reuse
+    /// net.netfilter.nf_conntrack_max
+    /// net.netfilter.nf_conntrack_buckets
+    /// net.netfilter.nf_conntrack_tcp_timeout_close_wait
+    /// net.netfilter.nf_conntrack_tcp_timeout_time_wait
+    /// net.netfilter.nf_conntrack_tcp_timeout_established
+    /// net.netfilter.nf_conntrack_acct
     /// kernel.shmmni
     /// kernel.shmmax
     /// kernel.shmall
+    /// vm.max_map_count
     #[prost(map = "string, string", tag = "1")]
     pub sysctls: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -94,10 +102,10 @@ pub mod linux_node_config {
 }
 /// Parameters that can be configured on Windows nodes.
 /// Windows Node Config that define the parameters that will be used to
-/// configure the Windows node pool settings
+/// configure the Windows node pool settings.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WindowsNodeConfig {
-    /// OSVersion specifies the Windows node config to be used on the node
+    /// OSVersion specifies the Windows node config to be used on the node.
     #[prost(enumeration = "windows_node_config::OsVersion", tag = "1")]
     pub os_version: i32,
 }
@@ -117,11 +125,11 @@ pub mod windows_node_config {
     )]
     #[repr(i32)]
     pub enum OsVersion {
-        /// When OSVersion is not specified
+        /// When OSVersion is not specified.
         Unspecified = 0,
-        /// LTSC2019 specifies to use LTSC2019 as the Windows Servercore Base Image
+        /// LTSC2019 specifies to use LTSC2019 as the Windows Servercore Base Image.
         Ltsc2019 = 1,
-        /// LTSC2022 specifies to use LTSC2022 as the Windows Servercore Base Image
+        /// LTSC2022 specifies to use LTSC2022 as the Windows Servercore Base Image.
         Ltsc2022 = 2,
     }
     impl OsVersion {
@@ -161,6 +169,16 @@ pub struct NodeKubeletConfig {
     /// The default value is 'none' if unspecified.
     #[prost(string, tag = "1")]
     pub cpu_manager_policy: ::prost::alloc::string::String,
+    /// Optional. Controls Topology Manager configuration on the node.
+    /// For more information, see:
+    /// <https://kubernetes.io/docs/tasks/administer-cluster/topology-manager/>
+    #[prost(message, optional, tag = "8")]
+    pub topology_manager: ::core::option::Option<TopologyManager>,
+    /// Optional. Controls NUMA-aware Memory Manager configuration on the
+    /// node. For more information, see:
+    /// <https://kubernetes.io/docs/tasks/administer-cluster/memory-manager/>
+    #[prost(message, optional, tag = "9")]
+    pub memory_manager: ::core::option::Option<MemoryManager>,
     /// Enable CPU CFS quota enforcement for containers that specify CPU limits.
     ///
     /// This option is enabled by default which makes kubelet use CFS quota
@@ -192,6 +210,143 @@ pub struct NodeKubeletConfig {
     /// Enable or disable Kubelet read only port.
     #[prost(bool, optional, tag = "7")]
     pub insecure_kubelet_readonly_port_enabled: ::core::option::Option<bool>,
+    /// Optional. Defines the percent of disk usage before which image garbage
+    /// collection is never run. Lowest disk usage to garbage collect to. The
+    /// percent is calculated as this field value out of 100.
+    ///
+    /// The value must be between 10 and 85, inclusive and smaller than
+    /// image_gc_high_threshold_percent.
+    ///
+    /// The default value is 80 if unspecified.
+    #[prost(int32, tag = "10")]
+    pub image_gc_low_threshold_percent: i32,
+    /// Optional. Defines the percent of disk usage after which image garbage
+    /// collection is always run. The percent is calculated as this field value out
+    /// of 100.
+    ///
+    /// The value must be between 10 and 85, inclusive and greater than
+    /// image_gc_low_threshold_percent.
+    ///
+    /// The default value is 85 if unspecified.
+    #[prost(int32, tag = "11")]
+    pub image_gc_high_threshold_percent: i32,
+    /// Optional. Defines the minimum age for an unused image before it is garbage
+    /// collected.
+    ///
+    /// The string must be a sequence of decimal numbers, each with optional
+    /// fraction and a unit suffix, such as "300s", "1.5h", and "2h45m". Valid time
+    /// units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
+    ///
+    /// The value must be a positive duration less than or equal to 2 minutes.
+    ///
+    /// The default value is "2m0s" if unspecified.
+    #[prost(string, tag = "12")]
+    pub image_minimum_gc_age: ::prost::alloc::string::String,
+    /// Optional. Defines the maximum age an image can be unused before it is
+    /// garbage collected. The string must be a sequence of decimal numbers, each
+    /// with optional fraction and a unit suffix, such as "300s", "1.5h", and
+    /// "2h45m". Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
+    ///
+    /// The value must be a positive duration greater than image_minimum_gc_age
+    /// or "0s".
+    ///
+    /// The default value is "0s" if unspecified, which disables this field,
+    /// meaning images won't be garbage collected based on being unused for too
+    /// long.
+    #[prost(string, tag = "13")]
+    pub image_maximum_gc_age: ::prost::alloc::string::String,
+    /// Optional. Defines the maximum size of the container log file before it is
+    /// rotated. See
+    /// <https://kubernetes.io/docs/concepts/cluster-administration/logging/#log-rotation>
+    ///
+    /// Valid format is positive number + unit, e.g. 100Ki, 10Mi. Valid units are
+    /// Ki, Mi, Gi.
+    /// The value must be between 10Mi and 500Mi, inclusive.
+    ///
+    /// Note that the total container log size (container_log_max_size *
+    /// container_log_max_files) cannot exceed 1% of the total
+    /// storage of the node, to avoid disk pressure caused by log files.
+    ///
+    /// The default value is 10Mi if unspecified.
+    #[prost(string, tag = "14")]
+    pub container_log_max_size: ::prost::alloc::string::String,
+    /// Optional. Defines the maximum number of container log files that can be
+    /// present for a container. See
+    /// <https://kubernetes.io/docs/concepts/cluster-administration/logging/#log-rotation>
+    ///
+    /// The value must be an integer between 2 and 10, inclusive.
+    /// The default value is 5 if unspecified.
+    #[prost(int32, tag = "15")]
+    pub container_log_max_files: i32,
+    /// Optional. Defines a comma-separated allowlist of unsafe sysctls or sysctl
+    /// patterns (ending in `*`).
+    ///
+    /// The unsafe namespaced sysctl groups are `kernel.shm*`, `kernel.msg*`,
+    /// `kernel.sem`, `fs.mqueue.*`, and `net.*`. Leaving this allowlist empty
+    /// means they cannot be set on Pods.
+    ///
+    /// To allow certain sysctls or sysctl patterns to be set on Pods, list them
+    /// separated by commas.
+    /// For example: `kernel.msg*,net.ipv4.route.min_pmtu`.
+    ///
+    /// See <https://kubernetes.io/docs/tasks/administer-cluster/sysctl-cluster/>
+    /// for more details.
+    #[prost(string, repeated, tag = "16")]
+    pub allowed_unsafe_sysctls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// TopologyManager defines the configuration options for Topology Manager
+/// feature. See
+/// <https://kubernetes.io/docs/tasks/administer-cluster/topology-manager/>
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TopologyManager {
+    /// Configures the strategy for resource alignment.
+    /// Allowed values are:
+    ///
+    /// * none: the default policy, and does not perform any topology alignment.
+    /// * restricted: the topology manager stores the preferred NUMA node affinity
+    /// for the container, and will reject the pod if the affinity if not
+    /// preferred.
+    /// * best-effort: the topology manager stores the preferred NUMA node affinity
+    /// for the container. If the affinity is not preferred, the topology manager
+    /// will admit the pod to the node anyway.
+    /// * single-numa-node: the topology manager determines if the single NUMA node
+    /// affinity is possible. If it is, Topology Manager will store this and the
+    /// Hint Providers can then use this information when making the resource
+    /// allocation decision. If, however, this is not possible then the
+    /// Topology Manager will reject the pod from the node. This will result in a
+    /// pod in a Terminated state with a pod admission failure.
+    ///
+    /// The default policy value is 'none' if unspecified.
+    /// Details about each strategy can be found
+    /// [here](<https://kubernetes.io/docs/tasks/administer-cluster/topology-manager/#topology-manager-policies>).
+    #[prost(string, tag = "1")]
+    pub policy: ::prost::alloc::string::String,
+    /// The Topology Manager aligns resources in following scopes:
+    ///
+    /// * container
+    /// * pod
+    ///
+    /// The default scope is 'container' if unspecified.
+    /// See
+    /// <https://kubernetes.io/docs/tasks/administer-cluster/topology-manager/#topology-manager-scopes>
+    #[prost(string, tag = "2")]
+    pub scope: ::prost::alloc::string::String,
+}
+/// The option enables the Kubernetes NUMA-aware Memory Manager feature.
+/// Detailed description about the feature can be found
+/// [here](<https://kubernetes.io/docs/tasks/administer-cluster/memory-manager/>).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MemoryManager {
+    /// Controls the memory management policy on the Node.
+    /// See
+    /// <https://kubernetes.io/docs/tasks/administer-cluster/memory-manager/#policies>
+    ///
+    /// The following values are allowed.
+    /// * "none"
+    /// * "static"
+    /// The default value is 'none' if unspecified.
+    #[prost(string, tag = "1")]
+    pub policy: ::prost::alloc::string::String,
 }
 /// Parameters that describe the nodes in a cluster.
 ///
@@ -437,8 +592,12 @@ pub struct NodeConfig {
     pub secondary_boot_disk_update_strategy: ::core::option::Option<
         SecondaryBootDiskUpdateStrategy,
     >,
+    /// The maximum duration for the nodes to exist.
+    /// If unspecified, the nodes can exist indefinitely.
+    #[prost(message, optional, tag = "53")]
+    pub max_run_duration: ::core::option::Option<::prost_types::Duration>,
     /// Specifies which method should be used for encrypting the
-    /// Local SSDs attahced to the node.
+    /// Local SSDs attached to the node.
     #[prost(enumeration = "node_config::LocalSsdEncryptionMode", optional, tag = "54")]
     pub local_ssd_encryption_mode: ::core::option::Option<i32>,
     /// Output only. effective_cgroup_mode is the cgroup mode actually used by the
@@ -447,6 +606,9 @@ pub struct NodeConfig {
     /// version.
     #[prost(enumeration = "node_config::EffectiveCgroupMode", tag = "55")]
     pub effective_cgroup_mode: i32,
+    /// Flex Start flag for enabling Flex Start VM.
+    #[prost(bool, optional, tag = "56")]
+    pub flex_start: ::core::option::Option<bool>,
 }
 /// Nested message and enum types in `NodeConfig`.
 pub mod node_config {
@@ -559,6 +721,64 @@ pub struct AdvancedMachineFeatures {
     /// Whether or not to enable nested virtualization (defaults to false).
     #[prost(bool, optional, tag = "2")]
     pub enable_nested_virtualization: ::core::option::Option<bool>,
+    /// Type of Performance Monitoring Unit (PMU) requested on node pool instances.
+    /// If unset, PMU will not be available to the node.
+    #[prost(
+        enumeration = "advanced_machine_features::PerformanceMonitoringUnit",
+        optional,
+        tag = "3"
+    )]
+    pub performance_monitoring_unit: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `AdvancedMachineFeatures`.
+pub mod advanced_machine_features {
+    /// Level of PMU access
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PerformanceMonitoringUnit {
+        /// PMU not enabled.
+        Unspecified = 0,
+        /// Architecturally defined non-LLC events.
+        Architectural = 1,
+        /// Most documented core/L2 events.
+        Standard = 2,
+        /// Most documented core/L2 and LLC events.
+        Enhanced = 3,
+    }
+    impl PerformanceMonitoringUnit {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PERFORMANCE_MONITORING_UNIT_UNSPECIFIED",
+                Self::Architectural => "ARCHITECTURAL",
+                Self::Standard => "STANDARD",
+                Self::Enhanced => "ENHANCED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PERFORMANCE_MONITORING_UNIT_UNSPECIFIED" => Some(Self::Unspecified),
+                "ARCHITECTURAL" => Some(Self::Architectural),
+                "STANDARD" => Some(Self::Standard),
+                "ENHANCED" => Some(Self::Enhanced),
+                _ => None,
+            }
+        }
+    }
 }
 /// Parameters for node pool-level network config.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -977,7 +1197,7 @@ pub mod containerd_config {
         pub struct CertificateAuthorityDomainConfig {
             /// List of fully qualified domain names (FQDN).
             /// Specifying port is supported.
-            /// Wilcards are NOT supported.
+            /// Wildcards are NOT supported.
             /// Examples:
             /// - my.customdomain.com
             /// - 10.0.1.2:5000
@@ -1240,6 +1460,11 @@ pub struct AddonsConfig {
     /// Optional. Configuration for Ray Operator addon.
     #[prost(message, optional, tag = "21")]
     pub ray_operator_config: ::core::option::Option<RayOperatorConfig>,
+    /// Configuration for the High Scale Checkpointing add-on.
+    #[prost(message, optional, tag = "22")]
+    pub high_scale_checkpointing_config: ::core::option::Option<
+        HighScaleCheckpointingConfig,
+    >,
 }
 /// Configuration options for the HTTP (L7) load balancing controller addon,
 /// which makes it easy to set up HTTP load balancers for services in a cluster.
@@ -1463,6 +1688,14 @@ pub struct ParallelstoreCsiDriverConfig {
     #[prost(bool, tag = "1")]
     pub enabled: bool,
 }
+/// Configuration for the High Scale Checkpointing.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct HighScaleCheckpointingConfig {
+    /// Whether the High Scale Checkpointing is enabled for this
+    /// cluster.
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
+}
 /// Configuration options for the Ray Operator add-on.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RayOperatorConfig {
@@ -1507,7 +1740,7 @@ pub struct MasterAuthorizedNetworksConfig {
     pub cidr_blocks: ::prost::alloc::vec::Vec<
         master_authorized_networks_config::CidrBlock,
     >,
-    /// Whether master is accessbile via Google Compute Engine Public IP addresses.
+    /// Whether master is accessible via Google Compute Engine Public IP addresses.
     #[prost(bool, optional, tag = "3")]
     pub gcp_public_cidrs_access_enabled: ::core::option::Option<bool>,
     /// Whether master authorized networks is enforced on private endpoint or not.
@@ -1778,6 +2011,10 @@ pub struct IpAllocationPolicy {
     /// notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
     /// `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
     /// to use.
+    ///
+    /// This field is deprecated due to the deprecation of 2VM TPU. The end of life
+    /// date for 2VM TPU is 2025-04-25.
+    #[deprecated]
     #[prost(string, tag = "13")]
     pub tpu_ipv4_cidr_block: ::prost::alloc::string::String,
     /// Whether routes will be used for pod IPs in the cluster.
@@ -1891,7 +2128,7 @@ pub struct Cluster {
     /// The monitoring service the cluster should use to write metrics.
     /// Currently available options:
     ///
-    /// * "monitoring.googleapis.com/kubernetes" - The Cloud Monitoring
+    /// * `monitoring.googleapis.com/kubernetes` - The Cloud Monitoring
     /// service with a Kubernetes-native resource model
     /// * `monitoring.googleapis.com` - The legacy Cloud Monitoring service (no
     ///    longer available as of GKE 1.15).
@@ -1947,6 +2184,13 @@ pub struct Cluster {
     /// creation.
     #[prost(bool, tag = "14")]
     pub enable_kubernetes_alpha: bool,
+    /// The list of user specified Kubernetes feature gates.
+    /// Each string represents the activation status of a feature gate (e.g.
+    /// "featureX=true" or "featureX=false")
+    #[prost(string, repeated, tag = "160")]
+    pub alpha_cluster_feature_gates: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
     /// The resource labels for the cluster to use to annotate any related
     /// Google Compute Engine resources.
     #[prost(map = "string, string", tag = "15")]
@@ -2131,11 +2375,17 @@ pub struct Cluster {
     #[prost(string, tag = "114")]
     pub location: ::prost::alloc::string::String,
     /// Enable the ability to use Cloud TPUs in this cluster.
+    /// This field is deprecated due to the deprecation of 2VM TPU. The end of life
+    /// date for 2VM TPU is 2025-04-25.
+    #[deprecated]
     #[prost(bool, tag = "115")]
     pub enable_tpu: bool,
     /// Output only. The IP address range of the Cloud TPUs in this cluster, in
     /// [CIDR](<http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
     /// notation (e.g. `1.2.3.4/29`).
+    /// This field is deprecated due to the deprecation of 2VM TPU. The end of life
+    /// date for 2VM TPU is 2025-04-25.
+    #[deprecated]
     #[prost(string, tag = "116")]
     pub tpu_ipv4_cidr_block: ::prost::alloc::string::String,
     /// Which conditions caused the current cluster state.
@@ -2161,6 +2411,9 @@ pub struct Cluster {
     /// in autopilot clusters and node auto-provisioning enabled clusters.
     #[prost(message, optional, tag = "136")]
     pub node_pool_auto_config: ::core::option::Option<NodePoolAutoConfig>,
+    /// The config for pod autoscaling.
+    #[prost(message, optional, tag = "138")]
+    pub pod_autoscaling: ::core::option::Option<PodAutoscaling>,
     /// This checksum is computed by the server based on the value of cluster
     /// fields, and may be sent on update requests to ensure the client has an
     /// up-to-date value before proceeding.
@@ -2202,6 +2455,12 @@ pub struct Cluster {
     /// RoleBindings that can be created.
     #[prost(message, optional, tag = "156")]
     pub rbac_binding_config: ::core::option::Option<RbacBindingConfig>,
+    /// Configuration for limiting anonymous access to all endpoints except the
+    /// health checks.
+    #[prost(message, optional, tag = "164")]
+    pub anonymous_authentication_config: ::core::option::Option<
+        AnonymousAuthenticationConfig,
+    >,
 }
 /// Nested message and enum types in `Cluster`.
 pub mod cluster {
@@ -2330,6 +2589,10 @@ pub struct UserManagedKeysConfig {
     #[prost(string, tag = "17")]
     pub gkeops_etcd_backup_encryption_key: ::prost::alloc::string::String,
 }
+/// AnonymousAuthenticationConfig defines the settings needed to limit endpoints
+/// that allow anonymous authentication.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct AnonymousAuthenticationConfig {}
 /// CompliancePostureConfig defines the settings needed to enable/disable
 /// features for the Compliance Posture.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2585,7 +2848,7 @@ pub struct ClusterUpdate {
     /// The monitoring service the cluster should use to write metrics.
     /// Currently available options:
     ///
-    /// * "monitoring.googleapis.com/kubernetes" - The Cloud Monitoring
+    /// * `monitoring.googleapis.com/kubernetes` - The Cloud Monitoring
     /// service with a Kubernetes-native resource model
     /// * `monitoring.googleapis.com` - The legacy Cloud Monitoring service (no
     ///    longer available as of GKE 1.15).
@@ -2776,6 +3039,9 @@ pub struct ClusterUpdate {
     /// in autopilot clusters and node auto-provisioning enabled clusters.
     #[prost(message, optional, tag = "110")]
     pub desired_node_pool_auto_config_network_tags: ::core::option::Option<NetworkTags>,
+    /// The desired config for pod autoscaling.
+    #[prost(message, optional, tag = "113")]
+    pub desired_pod_autoscaling: ::core::option::Option<PodAutoscaling>,
     /// The desired config of Gateway API on this cluster.
     #[prost(message, optional, tag = "114")]
     pub desired_gateway_api_config: ::core::option::Option<GatewayApiConfig>,
@@ -2820,7 +3086,7 @@ pub struct ClusterUpdate {
     /// Enable/Disable FQDN Network Policy for the cluster.
     #[prost(bool, optional, tag = "126")]
     pub desired_enable_fqdn_network_policy: ::core::option::Option<bool>,
-    /// The desired workload policy configuration for the autopilot cluster.
+    /// WorkloadPolicyConfig is the configuration related to GCW workload policy
     #[prost(message, optional, tag = "128")]
     pub desired_autopilot_workload_policy_config: ::core::option::Option<
         WorkloadPolicyConfig,
@@ -2873,6 +3139,9 @@ pub struct ClusterUpdate {
     /// The desired enterprise configuration for the cluster.
     #[prost(message, optional, tag = "147")]
     pub desired_enterprise_config: ::core::option::Option<DesiredEnterpriseConfig>,
+    /// Enable/Disable L4 LB VPC firewall reconciliation for the cluster.
+    #[prost(bool, optional, tag = "149")]
+    pub desired_disable_l4_lb_firewall_reconciliation: ::core::option::Option<bool>,
     /// The desired Linux node config for all auto-provisioned node pools
     /// in autopilot clusters and node auto-provisioning enabled clusters.
     ///
@@ -2880,6 +3149,12 @@ pub struct ClusterUpdate {
     #[prost(message, optional, tag = "150")]
     pub desired_node_pool_auto_config_linux_node_config: ::core::option::Option<
         LinuxNodeConfig,
+    >,
+    /// Configuration for limiting anonymous access to all endpoints except the
+    /// health checks.
+    #[prost(message, optional, tag = "156")]
+    pub desired_anonymous_authentication_config: ::core::option::Option<
+        AnonymousAuthenticationConfig,
     >,
 }
 /// AdditionalPodRangesConfig is the configuration for additional pod secondary
@@ -3062,15 +3337,16 @@ pub mod operation {
         /// The cluster is being created. The cluster should be assumed to be
         /// unusable until the operation finishes.
         ///
-        /// In the event of the operation failing, the cluster will enter the [ERROR
-        /// state][Cluster.Status.ERROR] and eventually be deleted.
+        /// In the event of the operation failing, the cluster will enter the
+        /// [ERROR state][google.container.v1.Cluster.Status.ERROR] and eventually be
+        /// deleted.
         CreateCluster = 1,
         /// The cluster is being deleted. The cluster should be assumed to be
         /// unusable as soon as this operation starts.
         ///
-        /// In the event of the operation failing, the cluster will enter the [ERROR
-        /// state][Cluster.Status.ERROR] and the deletion will be automatically
-        /// retried until completed.
+        /// In the event of the operation failing, the cluster will enter the
+        /// [ERROR state][google.container.v1.Cluster.Status.ERROR] and the deletion
+        /// will be automatically retried until completed.
         DeleteCluster = 2,
         /// The [cluster
         /// version][google.container.v1.ClusterUpdate.desired_master_version] is
@@ -3502,6 +3778,13 @@ pub struct UpdateNodePoolRequest {
     /// Existing Storage Pools will be replaced with storage-pools.
     #[prost(string, repeated, tag = "43")]
     pub storage_pools: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The maximum duration for the nodes to exist.
+    /// If unspecified, the nodes can exist indefinitely.
+    #[prost(message, optional, tag = "45")]
+    pub max_run_duration: ::core::option::Option<::prost_types::Duration>,
+    /// Flex Start flag for enabling Flex Start VM.
+    #[prost(bool, optional, tag = "46")]
+    pub flex_start: ::core::option::Option<bool>,
 }
 /// SetNodePoolAutoscalingRequest sets the autoscaler settings of a node pool.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3601,7 +3884,7 @@ pub struct SetMonitoringServiceRequest {
     /// Required. The monitoring service the cluster should use to write metrics.
     /// Currently available options:
     ///
-    /// * "monitoring.googleapis.com/kubernetes" - The Cloud Monitoring
+    /// * `monitoring.googleapis.com/kubernetes` - The Cloud Monitoring
     /// service with a Kubernetes-native resource model
     /// * `monitoring.googleapis.com` - The legacy Cloud Monitoring service (no
     ///    longer available as of GKE 1.15).
@@ -4892,8 +5175,8 @@ pub struct CompleteNodePoolUpgradeRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// RollbackNodePoolUpgradeRequest rollbacks the previously Aborted or Failed
-/// NodePool upgrade. This will be an no-op if the last upgrade successfully
-/// completed.
+///   NodePool upgrade. This will be an no-op if the last upgrade successfully
+///   completed.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RollbackNodePoolUpgradeRequest {
     /// Deprecated. The Google Developers Console [project ID or project
@@ -5070,7 +5353,7 @@ pub struct AutoprovisioningNodePoolDefaults {
     /// available image types.
     #[prost(string, tag = "10")]
     pub image_type: ::prost::alloc::string::String,
-    /// Enable or disable Kubelet read only port.
+    /// DEPRECATED. Use NodePoolAutoConfig.NodeKubeletConfig instead.
     #[prost(bool, optional, tag = "13")]
     pub insecure_kubelet_readonly_port_enabled: ::core::option::Option<bool>,
 }
@@ -5604,6 +5887,8 @@ pub mod status_condition {
         CloudKmsKeyError = 7,
         /// Cluster CA is expiring soon.
         CaExpiring = 9,
+        /// Node service account is missing permissions.
+        NodeServiceAccountMissingPermissions = 10,
     }
     impl Code {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -5619,6 +5904,9 @@ pub mod status_condition {
                 Self::SetByOperator => "SET_BY_OPERATOR",
                 Self::CloudKmsKeyError => "CLOUD_KMS_KEY_ERROR",
                 Self::CaExpiring => "CA_EXPIRING",
+                Self::NodeServiceAccountMissingPermissions => {
+                    "NODE_SERVICE_ACCOUNT_MISSING_PERMISSIONS"
+                }
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -5631,6 +5919,9 @@ pub mod status_condition {
                 "SET_BY_OPERATOR" => Some(Self::SetByOperator),
                 "CLOUD_KMS_KEY_ERROR" => Some(Self::CloudKmsKeyError),
                 "CA_EXPIRING" => Some(Self::CaExpiring),
+                "NODE_SERVICE_ACCOUNT_MISSING_PERMISSIONS" => {
+                    Some(Self::NodeServiceAccountMissingPermissions)
+                }
                 _ => None,
             }
         }
@@ -5709,6 +6000,9 @@ pub struct NetworkConfig {
     /// [ClusterUpdate.desired_default_enable_private_nodes][google.container.v1.ClusterUpdate.desired_default_enable_private_nodes]
     #[prost(bool, optional, tag = "22")]
     pub default_enable_private_nodes: ::core::option::Option<bool>,
+    /// Disable L4 load balancer VPC firewalls to enable firewall policies.
+    #[prost(bool, optional, tag = "24")]
+    pub disable_l4_lb_firewall_reconciliation: ::core::option::Option<bool>,
 }
 /// Nested message and enum types in `NetworkConfig`.
 pub mod network_config {
@@ -5915,7 +6209,7 @@ pub struct Jwk {
     #[prost(string, tag = "9")]
     pub crv: ::prost::alloc::string::String,
 }
-/// GetJSONWebKeysResponse is a valid JSON Web Key Set as specififed in rfc 7517
+/// GetJSONWebKeysResponse is a valid JSON Web Key Set as specified in rfc 7517
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetJsonWebKeysResponse {
     /// The public component of the keys used by the cluster to sign token
@@ -5948,7 +6242,7 @@ pub struct AutopilotCompatibilityIssue {
     /// The name of the resources which are subject to this issue.
     #[prost(string, repeated, tag = "4")]
     pub subjects: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// A URL to a public documnetation, which addresses resolving this issue.
+    /// A URL to a public documentation, which addresses resolving this issue.
     #[prost(string, tag = "5")]
     pub documentation_url: ::prost::alloc::string::String,
     /// The description of the issue.
@@ -6683,6 +6977,8 @@ pub mod notification_config {
         UpgradeEvent = 2,
         /// Corresponds with SecurityBulletinEvent.
         SecurityBulletinEvent = 3,
+        /// Corresponds with UpgradeInfoEvent.
+        UpgradeInfoEvent = 4,
     }
     impl EventType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -6695,6 +6991,7 @@ pub mod notification_config {
                 Self::UpgradeAvailableEvent => "UPGRADE_AVAILABLE_EVENT",
                 Self::UpgradeEvent => "UPGRADE_EVENT",
                 Self::SecurityBulletinEvent => "SECURITY_BULLETIN_EVENT",
+                Self::UpgradeInfoEvent => "UPGRADE_INFO_EVENT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6704,6 +7001,7 @@ pub mod notification_config {
                 "UPGRADE_AVAILABLE_EVENT" => Some(Self::UpgradeAvailableEvent),
                 "UPGRADE_EVENT" => Some(Self::UpgradeEvent),
                 "SECURITY_BULLETIN_EVENT" => Some(Self::SecurityBulletinEvent),
+                "UPGRADE_INFO_EVENT" => Some(Self::UpgradeInfoEvent),
                 _ => None,
             }
         }
@@ -6716,6 +7014,59 @@ pub struct ConfidentialNodes {
     /// Whether Confidential Nodes feature is enabled.
     #[prost(bool, tag = "1")]
     pub enabled: bool,
+    /// Defines the type of technology used by the confidential node.
+    #[prost(enumeration = "confidential_nodes::ConfidentialInstanceType", tag = "2")]
+    pub confidential_instance_type: i32,
+}
+/// Nested message and enum types in `ConfidentialNodes`.
+pub mod confidential_nodes {
+    /// The type of technology used by the confidential node.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ConfidentialInstanceType {
+        /// No type specified. Do not use this value.
+        Unspecified = 0,
+        /// AMD Secure Encrypted Virtualization.
+        Sev = 1,
+        /// AMD Secure Encrypted Virtualization - Secure Nested Paging.
+        SevSnp = 2,
+        /// Intel Trust Domain eXtension.
+        Tdx = 3,
+    }
+    impl ConfidentialInstanceType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CONFIDENTIAL_INSTANCE_TYPE_UNSPECIFIED",
+                Self::Sev => "SEV",
+                Self::SevSnp => "SEV_SNP",
+                Self::Tdx => "TDX",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONFIDENTIAL_INSTANCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SEV" => Some(Self::Sev),
+                "SEV_SNP" => Some(Self::SevSnp),
+                "TDX" => Some(Self::Tdx),
+                _ => None,
+            }
+        }
+    }
 }
 /// UpgradeEvent is a notification sent to customers by the cluster server when
 /// a resource is upgrading.
@@ -6770,9 +7121,18 @@ pub struct UpgradeInfoEvent {
     /// Output only. The state of the upgrade.
     #[prost(enumeration = "upgrade_info_event::State", tag = "8")]
     pub state: i32,
+    /// The end of standard support timestamp.
+    #[prost(message, optional, tag = "9")]
+    pub standard_support_end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The end of extended support timestamp.
+    #[prost(message, optional, tag = "10")]
+    pub extended_support_end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// A brief description of the event.
     #[prost(string, tag = "11")]
     pub description: ::prost::alloc::string::String,
+    /// The type of the event.
+    #[prost(enumeration = "upgrade_info_event::EventType", tag = "12")]
+    pub event_type: i32,
 }
 /// Nested message and enum types in `UpgradeInfoEvent`.
 pub mod upgrade_info_event {
@@ -6823,6 +7183,56 @@ pub mod upgrade_info_event {
                 "SUCCEEDED" => Some(Self::Succeeded),
                 "FAILED" => Some(Self::Failed),
                 "CANCELED" => Some(Self::Canceled),
+                _ => None,
+            }
+        }
+    }
+    /// The type of the event.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum EventType {
+        /// EVENT_TYPE_UNSPECIFIED indicates the event type is unspecified.
+        Unspecified = 0,
+        /// END_OF_SUPPORT indicates GKE version reaches end of support, check
+        /// standard_support_end_time and extended_support_end_time for more details.
+        EndOfSupport = 1,
+        /// COS_MILESTONE_VERSION_UPDATE indicates that the COS node image will
+        /// update COS milestone version for new patch versions starting with
+        /// the one in the description.
+        CosMilestoneVersionUpdate = 2,
+        /// UPGRADE_LIFECYCLE indicates the event is about the upgrade lifecycle.
+        UpgradeLifecycle = 3,
+    }
+    impl EventType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "EVENT_TYPE_UNSPECIFIED",
+                Self::EndOfSupport => "END_OF_SUPPORT",
+                Self::CosMilestoneVersionUpdate => "COS_MILESTONE_VERSION_UPDATE",
+                Self::UpgradeLifecycle => "UPGRADE_LIFECYCLE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "END_OF_SUPPORT" => Some(Self::EndOfSupport),
+                "COS_MILESTONE_VERSION_UPDATE" => Some(Self::CosMilestoneVersionUpdate),
+                "UPGRADE_LIFECYCLE" => Some(Self::UpgradeLifecycle),
                 _ => None,
             }
         }
@@ -6891,6 +7301,9 @@ pub struct SecurityBulletinEvent {
     /// must take to make their clusters safe.
     #[prost(bool, tag = "10")]
     pub manual_steps_required: bool,
+    /// The GKE versions where this vulnerability is mitigated.
+    #[prost(string, repeated, tag = "11")]
+    pub mitigated_versions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Autopilot is the configuration for Autopilot settings on the cluster.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -6898,17 +7311,20 @@ pub struct Autopilot {
     /// Enable Autopilot
     #[prost(bool, tag = "1")]
     pub enabled: bool,
-    /// Workload policy configuration for Autopilot.
+    /// WorkloadPolicyConfig is the configuration related to GCW workload policy
     #[prost(message, optional, tag = "2")]
     pub workload_policy_config: ::core::option::Option<WorkloadPolicyConfig>,
 }
-/// WorkloadPolicyConfig is the configuration of workload policy for autopilot
-/// clusters.
+/// WorkloadPolicyConfig is the configuration related to GCW workload policy
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct WorkloadPolicyConfig {
     /// If true, workloads can use NET_ADMIN capability.
     #[prost(bool, optional, tag = "1")]
     pub allow_net_admin: ::core::option::Option<bool>,
+    /// If true, enables the GCW Auditor that audits workloads on
+    /// standard clusters.
+    #[prost(bool, optional, tag = "2")]
+    pub autopilot_compatibility_auditing_enabled: ::core::option::Option<bool>,
 }
 /// LoggingConfig is cluster logging configuration.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6956,6 +7372,8 @@ pub mod logging_component_config {
         KcpSshd = 7,
         /// kcp connection logs
         KcpConnection = 8,
+        /// horizontal pod autoscaler decision logs
+        KcpHpa = 9,
     }
     impl Component {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -6972,6 +7390,7 @@ pub mod logging_component_config {
                 Self::ControllerManager => "CONTROLLER_MANAGER",
                 Self::KcpSshd => "KCP_SSHD",
                 Self::KcpConnection => "KCP_CONNECTION",
+                Self::KcpHpa => "KCP_HPA",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -6985,6 +7404,7 @@ pub mod logging_component_config {
                 "CONTROLLER_MANAGER" => Some(Self::ControllerManager),
                 "KCP_SSHD" => Some(Self::KcpSshd),
                 "KCP_CONNECTION" => Some(Self::KcpConnection),
+                "KCP_HPA" => Some(Self::KcpHpa),
                 _ => None,
             }
         }
@@ -7200,6 +7620,8 @@ pub mod monitoring_component_config {
         Kubelet = 14,
         /// NVIDIA Data Center GPU Manager (DCGM)
         Dcgm = 15,
+        /// JobSet
+        Jobset = 16,
     }
     impl Component {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -7222,6 +7644,7 @@ pub mod monitoring_component_config {
                 Self::Cadvisor => "CADVISOR",
                 Self::Kubelet => "KUBELET",
                 Self::Dcgm => "DCGM",
+                Self::Jobset => "JOBSET",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7241,6 +7664,7 @@ pub mod monitoring_component_config {
                 "CADVISOR" => Some(Self::Cadvisor),
                 "KUBELET" => Some(Self::Kubelet),
                 "DCGM" => Some(Self::Dcgm),
+                "JOBSET" => Some(Self::Jobset),
                 _ => None,
             }
         }
@@ -7253,6 +7677,119 @@ pub struct ManagedPrometheusConfig {
     /// Enable Managed Collection.
     #[prost(bool, tag = "1")]
     pub enabled: bool,
+    /// GKE Workload Auto-Monitoring Configuration.
+    #[prost(message, optional, tag = "2")]
+    pub auto_monitoring_config: ::core::option::Option<AutoMonitoringConfig>,
+}
+/// AutoMonitoringConfig defines the configuration for GKE Workload
+/// Auto-Monitoring.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct AutoMonitoringConfig {
+    /// Scope for GKE Workload Auto-Monitoring.
+    #[prost(enumeration = "auto_monitoring_config::Scope", tag = "1")]
+    pub scope: i32,
+}
+/// Nested message and enum types in `AutoMonitoringConfig`.
+pub mod auto_monitoring_config {
+    /// Scope for applications monitored by Auto-Monitoring
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Scope {
+        /// Not set.
+        Unspecified = 0,
+        /// Auto-Monitoring is enabled for all supported applications.
+        All = 1,
+        /// Disable Auto-Monitoring.
+        None = 2,
+    }
+    impl Scope {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SCOPE_UNSPECIFIED",
+                Self::All => "ALL",
+                Self::None => "NONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALL" => Some(Self::All),
+                "NONE" => Some(Self::None),
+                _ => None,
+            }
+        }
+    }
+}
+/// PodAutoscaling is used for configuration of parameters
+/// for workload autoscaling.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct PodAutoscaling {
+    /// Selected Horizontal Pod Autoscaling profile.
+    #[prost(enumeration = "pod_autoscaling::HpaProfile", optional, tag = "2")]
+    pub hpa_profile: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `PodAutoscaling`.
+pub mod pod_autoscaling {
+    /// Possible types of Horizontal Pod Autoscaling profile.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum HpaProfile {
+        /// HPA_PROFILE_UNSPECIFIED is used when no custom HPA profile is set.
+        Unspecified = 0,
+        /// Customers explicitly opt-out of HPA profiles.
+        None = 1,
+        /// PERFORMANCE is used when customers opt-in to the performance HPA profile.
+        /// In this profile we support a higher number of HPAs per cluster and faster
+        /// metrics collection for workload autoscaling.
+        Performance = 2,
+    }
+    impl HpaProfile {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "HPA_PROFILE_UNSPECIFIED",
+                Self::None => "NONE",
+                Self::Performance => "PERFORMANCE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "HPA_PROFILE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "PERFORMANCE" => Some(Self::Performance),
+                _ => None,
+            }
+        }
+    }
 }
 /// Fleet is the fleet configuration for the cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -7395,6 +7932,9 @@ pub struct EphemeralStorageLocalSsdConfig {
     /// for more info.
     #[prost(int32, tag = "1")]
     pub local_ssd_count: i32,
+    /// Number of local SSDs to use for GKE Data Cache.
+    #[prost(int32, tag = "2")]
+    pub data_cache_count: i32,
 }
 /// A map of resource manager tag keys and values to be attached to the nodes
 /// for managing Compute Engine firewalls using Network Firewall Policies.
@@ -7536,6 +8076,468 @@ pub mod secondary_boot_disk {
 /// in the future to define different options for updating secondary boot disks.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SecondaryBootDiskUpdateStrategy {}
+/// FetchClusterUpgradeInfoRequest fetches the upgrade information of a cluster.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchClusterUpgradeInfoRequest {
+    /// Required. The name (project, location, cluster) of the cluster to get.
+    /// Specified in the format `projects/*/locations/*/clusters/*` or
+    /// `projects/*/zones/*/clusters/*`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// API request version that initiates this operation.
+    #[prost(string, tag = "100")]
+    pub version: ::prost::alloc::string::String,
+}
+/// ClusterUpgradeInfo contains the upgrade information of a cluster.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ClusterUpgradeInfo {
+    /// minor_target_version indicates the target version for minor upgrade.
+    #[prost(string, optional, tag = "7")]
+    pub minor_target_version: ::core::option::Option<::prost::alloc::string::String>,
+    /// patch_target_version indicates the target version for patch upgrade.
+    #[prost(string, optional, tag = "8")]
+    pub patch_target_version: ::core::option::Option<::prost::alloc::string::String>,
+    /// The auto upgrade status.
+    #[prost(
+        enumeration = "cluster_upgrade_info::AutoUpgradeStatus",
+        repeated,
+        tag = "2"
+    )]
+    pub auto_upgrade_status: ::prost::alloc::vec::Vec<i32>,
+    /// The auto upgrade paused reason.
+    #[prost(
+        enumeration = "cluster_upgrade_info::AutoUpgradePausedReason",
+        repeated,
+        tag = "3"
+    )]
+    pub paused_reason: ::prost::alloc::vec::Vec<i32>,
+    /// The list of past auto upgrades.
+    #[prost(message, repeated, tag = "4")]
+    pub upgrade_details: ::prost::alloc::vec::Vec<UpgradeDetails>,
+    /// The cluster's current minor version's end of standard support timestamp.
+    #[prost(string, optional, tag = "5")]
+    pub end_of_standard_support_timestamp: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// The cluster's current minor version's end of extended support timestamp.
+    #[prost(string, optional, tag = "6")]
+    pub end_of_extended_support_timestamp: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+}
+/// Nested message and enum types in `ClusterUpgradeInfo`.
+pub mod cluster_upgrade_info {
+    /// AutoUpgradeStatus indicates the status of auto upgrade.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AutoUpgradeStatus {
+        /// UNKNOWN indicates an unknown status.
+        Unknown = 0,
+        /// ACTIVE indicates an active status.
+        Active = 1,
+        /// MINOR_UPGRADE_PAUSED indicates the minor version upgrade is
+        /// paused.
+        MinorUpgradePaused = 4,
+        /// UPGRADE_PAUSED indicates the upgrade is paused.
+        UpgradePaused = 5,
+    }
+    impl AutoUpgradeStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unknown => "UNKNOWN",
+                Self::Active => "ACTIVE",
+                Self::MinorUpgradePaused => "MINOR_UPGRADE_PAUSED",
+                Self::UpgradePaused => "UPGRADE_PAUSED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN" => Some(Self::Unknown),
+                "ACTIVE" => Some(Self::Active),
+                "MINOR_UPGRADE_PAUSED" => Some(Self::MinorUpgradePaused),
+                "UPGRADE_PAUSED" => Some(Self::UpgradePaused),
+                _ => None,
+            }
+        }
+    }
+    /// AutoUpgradePausedReason indicates the reason for auto upgrade paused
+    /// status.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AutoUpgradePausedReason {
+        /// AUTO_UPGRADE_PAUSED_REASON_UNSPECIFIED indicates an unspecified reason.
+        Unspecified = 0,
+        /// MAINTENANCE_WINDOW indicates the cluster is outside customer maintenance
+        /// window.
+        MaintenanceWindow = 1,
+        /// MAINTENANCE_EXCLUSION_NO_UPGRADES indicates the cluster is in a
+        /// maintenance exclusion with scope NO_UPGRADES.
+        MaintenanceExclusionNoUpgrades = 5,
+        /// MAINTENANCE_EXCLUSION_NO_MINOR_UPGRADES indicates the cluster is in a
+        /// maintenance exclusion with scope NO_MINOR_UPGRADES.
+        MaintenanceExclusionNoMinorUpgrades = 6,
+        /// CLUSTER_DISRUPTION_BUDGET indicates the cluster is outside the cluster
+        /// disruption budget.
+        ClusterDisruptionBudget = 4,
+        /// CLUSTER_DISRUPTION_BUDGET_MINOR_UPGRADE indicates the cluster is outside
+        /// the cluster disruption budget for minor version upgrade.
+        ClusterDisruptionBudgetMinorUpgrade = 7,
+        /// SYSTEM_CONFIG indicates the cluster upgrade is paused  by system config.
+        SystemConfig = 8,
+    }
+    impl AutoUpgradePausedReason {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "AUTO_UPGRADE_PAUSED_REASON_UNSPECIFIED",
+                Self::MaintenanceWindow => "MAINTENANCE_WINDOW",
+                Self::MaintenanceExclusionNoUpgrades => {
+                    "MAINTENANCE_EXCLUSION_NO_UPGRADES"
+                }
+                Self::MaintenanceExclusionNoMinorUpgrades => {
+                    "MAINTENANCE_EXCLUSION_NO_MINOR_UPGRADES"
+                }
+                Self::ClusterDisruptionBudget => "CLUSTER_DISRUPTION_BUDGET",
+                Self::ClusterDisruptionBudgetMinorUpgrade => {
+                    "CLUSTER_DISRUPTION_BUDGET_MINOR_UPGRADE"
+                }
+                Self::SystemConfig => "SYSTEM_CONFIG",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "AUTO_UPGRADE_PAUSED_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "MAINTENANCE_WINDOW" => Some(Self::MaintenanceWindow),
+                "MAINTENANCE_EXCLUSION_NO_UPGRADES" => {
+                    Some(Self::MaintenanceExclusionNoUpgrades)
+                }
+                "MAINTENANCE_EXCLUSION_NO_MINOR_UPGRADES" => {
+                    Some(Self::MaintenanceExclusionNoMinorUpgrades)
+                }
+                "CLUSTER_DISRUPTION_BUDGET" => Some(Self::ClusterDisruptionBudget),
+                "CLUSTER_DISRUPTION_BUDGET_MINOR_UPGRADE" => {
+                    Some(Self::ClusterDisruptionBudgetMinorUpgrade)
+                }
+                "SYSTEM_CONFIG" => Some(Self::SystemConfig),
+                _ => None,
+            }
+        }
+    }
+}
+/// UpgradeDetails contains detailed information of each individual upgrade
+/// operation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpgradeDetails {
+    /// Output only. The state of the upgrade.
+    #[prost(enumeration = "upgrade_details::State", tag = "1")]
+    pub state: i32,
+    /// The start timestamp of the upgrade.
+    #[prost(message, optional, tag = "2")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The end timestamp of the upgrade.
+    #[prost(message, optional, tag = "3")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The version before the upgrade.
+    #[prost(string, tag = "4")]
+    pub initial_version: ::prost::alloc::string::String,
+    /// The version after the upgrade.
+    #[prost(string, tag = "5")]
+    pub target_version: ::prost::alloc::string::String,
+    /// The start type of the upgrade.
+    #[prost(enumeration = "upgrade_details::StartType", tag = "6")]
+    pub start_type: i32,
+}
+/// Nested message and enum types in `UpgradeDetails`.
+pub mod upgrade_details {
+    /// State indicates the state of the upgrade.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Upgrade state is unknown.
+        Unknown = 0,
+        /// Upgrade has failed with an error.
+        Failed = 1,
+        /// Upgrade has succeeded.
+        Succeeded = 2,
+        /// Upgrade has been canceled.
+        Canceled = 3,
+        /// Upgrade is running.
+        Running = 4,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unknown => "UNKNOWN",
+                Self::Failed => "FAILED",
+                Self::Succeeded => "SUCCEEDED",
+                Self::Canceled => "CANCELED",
+                Self::Running => "RUNNING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN" => Some(Self::Unknown),
+                "FAILED" => Some(Self::Failed),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "CANCELED" => Some(Self::Canceled),
+                "RUNNING" => Some(Self::Running),
+                _ => None,
+            }
+        }
+    }
+    /// StartType indicates the type of starting the upgrade.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum StartType {
+        /// Upgrade start type is unspecified.
+        Unspecified = 0,
+        /// Upgrade started automatically.
+        Automatic = 1,
+        /// Upgrade started manually.
+        Manual = 2,
+    }
+    impl StartType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "START_TYPE_UNSPECIFIED",
+                Self::Automatic => "AUTOMATIC",
+                Self::Manual => "MANUAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "START_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUTOMATIC" => Some(Self::Automatic),
+                "MANUAL" => Some(Self::Manual),
+                _ => None,
+            }
+        }
+    }
+}
+/// FetchNodePoolUpgradeInfoRequest fetches the upgrade information of a
+/// nodepool.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchNodePoolUpgradeInfoRequest {
+    /// Required. The name (project, location, cluster, nodepool) of the nodepool
+    /// to get. Specified in the format
+    /// `projects/*/locations/*/clusters/*/nodePools/*` or
+    /// `projects/*/zones/*/clusters/*/nodePools/*`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// API request version that initiates this operation.
+    #[prost(string, tag = "100")]
+    pub version: ::prost::alloc::string::String,
+}
+/// NodePoolUpgradeInfo contains the upgrade information of a nodepool.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NodePoolUpgradeInfo {
+    /// minor_target_version indicates the target version for minor upgrade.
+    #[prost(string, optional, tag = "1")]
+    pub minor_target_version: ::core::option::Option<::prost::alloc::string::String>,
+    /// patch_target_version indicates the target version for patch upgrade.
+    #[prost(string, optional, tag = "2")]
+    pub patch_target_version: ::core::option::Option<::prost::alloc::string::String>,
+    /// The auto upgrade status.
+    #[prost(
+        enumeration = "node_pool_upgrade_info::AutoUpgradeStatus",
+        repeated,
+        tag = "3"
+    )]
+    pub auto_upgrade_status: ::prost::alloc::vec::Vec<i32>,
+    /// The auto upgrade paused reason.
+    #[prost(
+        enumeration = "node_pool_upgrade_info::AutoUpgradePausedReason",
+        repeated,
+        tag = "4"
+    )]
+    pub paused_reason: ::prost::alloc::vec::Vec<i32>,
+    /// The list of past auto upgrades.
+    #[prost(message, repeated, tag = "5")]
+    pub upgrade_details: ::prost::alloc::vec::Vec<UpgradeDetails>,
+    /// The nodepool's current minor version's end of standard support timestamp.
+    #[prost(string, optional, tag = "6")]
+    pub end_of_standard_support_timestamp: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+    /// The nodepool's current minor version's end of extended support timestamp.
+    #[prost(string, optional, tag = "7")]
+    pub end_of_extended_support_timestamp: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
+}
+/// Nested message and enum types in `NodePoolUpgradeInfo`.
+pub mod node_pool_upgrade_info {
+    /// AutoUpgradeStatus indicates the status of auto upgrade.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AutoUpgradeStatus {
+        /// UNKNOWN indicates an unknown status.
+        Unknown = 0,
+        /// ACTIVE indicates an active status.
+        Active = 1,
+        /// MINOR_UPGRADE_PAUSED indicates the minor version upgrade is
+        /// paused.
+        MinorUpgradePaused = 2,
+        /// UPGRADE_PAUSED indicates the upgrade is paused.
+        UpgradePaused = 3,
+    }
+    impl AutoUpgradeStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unknown => "UNKNOWN",
+                Self::Active => "ACTIVE",
+                Self::MinorUpgradePaused => "MINOR_UPGRADE_PAUSED",
+                Self::UpgradePaused => "UPGRADE_PAUSED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN" => Some(Self::Unknown),
+                "ACTIVE" => Some(Self::Active),
+                "MINOR_UPGRADE_PAUSED" => Some(Self::MinorUpgradePaused),
+                "UPGRADE_PAUSED" => Some(Self::UpgradePaused),
+                _ => None,
+            }
+        }
+    }
+    /// AutoUpgradePausedReason indicates the reason for auto upgrade paused
+    /// status.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AutoUpgradePausedReason {
+        /// AUTO_UPGRADE_PAUSED_REASON_UNSPECIFIED indicates an unspecified reason.
+        Unspecified = 0,
+        /// MAINTENANCE_WINDOW indicates the cluster is outside customer maintenance
+        /// window.
+        MaintenanceWindow = 1,
+        /// MAINTENANCE_EXCLUSION_NO_UPGRADES indicates the cluster is in a
+        /// maintenance exclusion with scope NO_UPGRADES.
+        MaintenanceExclusionNoUpgrades = 2,
+        /// MAINTENANCE_EXCLUSION_NO_MINOR_UPGRADES indicates the cluster is in a
+        /// maintenance exclusion with scope NO_MINOR_UPGRADES.
+        MaintenanceExclusionNoMinorUpgrades = 3,
+        /// SYSTEM_CONFIG indicates the cluster upgrade is paused by system config.
+        SystemConfig = 4,
+    }
+    impl AutoUpgradePausedReason {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "AUTO_UPGRADE_PAUSED_REASON_UNSPECIFIED",
+                Self::MaintenanceWindow => "MAINTENANCE_WINDOW",
+                Self::MaintenanceExclusionNoUpgrades => {
+                    "MAINTENANCE_EXCLUSION_NO_UPGRADES"
+                }
+                Self::MaintenanceExclusionNoMinorUpgrades => {
+                    "MAINTENANCE_EXCLUSION_NO_MINOR_UPGRADES"
+                }
+                Self::SystemConfig => "SYSTEM_CONFIG",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "AUTO_UPGRADE_PAUSED_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "MAINTENANCE_WINDOW" => Some(Self::MaintenanceWindow),
+                "MAINTENANCE_EXCLUSION_NO_UPGRADES" => {
+                    Some(Self::MaintenanceExclusionNoUpgrades)
+                }
+                "MAINTENANCE_EXCLUSION_NO_MINOR_UPGRADES" => {
+                    Some(Self::MaintenanceExclusionNoMinorUpgrades)
+                }
+                "SYSTEM_CONFIG" => Some(Self::SystemConfig),
+                _ => None,
+            }
+        }
+    }
+}
 /// PrivateIPv6GoogleAccess controls whether and how the pods can communicate
 /// with Google Services through gRPC over IPv6.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -8837,6 +9839,66 @@ pub mod cluster_manager_client {
                     GrpcMethod::new(
                         "google.container.v1.ClusterManager",
                         "CheckAutopilotCompatibility",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Fetch upgrade information of a specific cluster.
+        pub async fn fetch_cluster_upgrade_info(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FetchClusterUpgradeInfoRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ClusterUpgradeInfo>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.container.v1.ClusterManager/FetchClusterUpgradeInfo",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.container.v1.ClusterManager",
+                        "FetchClusterUpgradeInfo",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Fetch upgrade information of a specific nodepool.
+        pub async fn fetch_node_pool_upgrade_info(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FetchNodePoolUpgradeInfoRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::NodePoolUpgradeInfo>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.container.v1.ClusterManager/FetchNodePoolUpgradeInfo",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.container.v1.ClusterManager",
+                        "FetchNodePoolUpgradeInfo",
                     ),
                 );
             self.inner.unary(req, path, codec).await

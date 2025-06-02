@@ -436,6 +436,10 @@ pub struct Customer {
     /// Output only. Indicates whether a customer is fully onboarded
     #[prost(bool, tag = "4")]
     pub is_onboarded: bool,
+    /// Output only. The customer organization domain, extracted from
+    /// CRM Organization’s display_name field. e.g. "google.com"
+    #[prost(string, tag = "5")]
+    pub organization_domain: ::prost::alloc::string::String,
 }
 /// Request to list customers
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -472,6 +476,22 @@ pub struct ListCustomersResponse {
     /// Locations that could not be reached.
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request to create a customer
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateCustomerRequest {
+    /// Required. Parent resource
+    /// Format: `organizations/{organization}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The customer to create.
+    #[prost(message, optional, tag = "2")]
+    pub customer: ::core::option::Option<Customer>,
+    /// Required. The customer id to use for the customer, which will become the
+    /// final component of the customer's resource name. The specified value must
+    /// be a valid Google cloud organization id.
+    #[prost(string, tag = "3")]
+    pub customer_id: ::prost::alloc::string::String,
 }
 /// Message for getting a customer
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -549,6 +569,26 @@ pub mod customer_onboarding_step {
             }
         }
     }
+}
+/// Request to update a customer
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateCustomerRequest {
+    /// Required. The customer to update
+    /// Format:
+    /// `organizations/{organization}/locations/{location}/customers/{customer}`
+    #[prost(message, optional, tag = "1")]
+    pub customer: ::core::option::Option<Customer>,
+    /// Optional. The list of fields to update
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Message for deleting customer
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteCustomerRequest {
+    /// Required. name of the resource to be deleted
+    /// format: name=organizations/*/locations/*/customers/*
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// The EKM connections associated with a workload
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -825,7 +865,7 @@ pub mod ekm_metadata {
         Futurex = 2,
         /// EKM Partner Thales
         Thales = 3,
-        /// EKM Partner Virtu
+        /// This enum value is never used.
         Virtru = 4,
     }
     impl EkmSolution {
@@ -875,7 +915,7 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have been cancelled successfully
-    /// have [Operation.error][] value with a
+    /// have [Operation.error][google.longrunning.Operation.error] value with a
     /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
@@ -1204,6 +1244,87 @@ pub mod cloud_controls_partner_core_client {
                     GrpcMethod::new(
                         "google.cloud.cloudcontrolspartner.v1.CloudControlsPartnerCore",
                         "GetPartner",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new customer.
+        pub async fn create_customer(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateCustomerRequest>,
+        ) -> std::result::Result<tonic::Response<super::Customer>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.cloudcontrolspartner.v1.CloudControlsPartnerCore/CreateCustomer",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.cloudcontrolspartner.v1.CloudControlsPartnerCore",
+                        "CreateCustomer",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Update details of a single customer
+        pub async fn update_customer(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateCustomerRequest>,
+        ) -> std::result::Result<tonic::Response<super::Customer>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.cloudcontrolspartner.v1.CloudControlsPartnerCore/UpdateCustomer",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.cloudcontrolspartner.v1.CloudControlsPartnerCore",
+                        "UpdateCustomer",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Delete details of a single customer
+        pub async fn delete_customer(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteCustomerRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.cloudcontrolspartner.v1.CloudControlsPartnerCore/DeleteCustomer",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.cloudcontrolspartner.v1.CloudControlsPartnerCore",
+                        "DeleteCustomer",
                     ),
                 );
             self.inner.unary(req, path, codec).await

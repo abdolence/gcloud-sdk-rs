@@ -1442,6 +1442,20 @@ pub mod pin_control_metadata {
         pub product_id: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
+/// A list of string values.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StringList {
+    /// String values.
+    #[prost(string, repeated, tag = "1")]
+    pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// A message with a list of double values.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DoubleList {
+    /// The list of double values.
+    #[prost(double, repeated, tag = "1")]
+    pub values: ::prost::alloc::vec::Vec<f64>,
+}
 /// At which level we offer configuration for attributes.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -4207,8 +4221,13 @@ pub struct MerchantCenterLink {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MerchantCenterFeedFilter {
     /// Merchant Center primary feed ID.
+    /// Deprecated: use data_source_id instead.
+    #[deprecated]
     #[prost(int64, tag = "1")]
     pub primary_feed_id: i64,
+    /// AFM data source ID.
+    #[prost(int64, tag = "3")]
+    pub data_source_id: i64,
     /// Merchant Center primary feed name. The name is used for the display
     /// purposes only.
     #[prost(string, tag = "2")]
@@ -4682,39 +4701,39 @@ pub mod catalog_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Set a specified branch id as default branch. API methods such as
-        ///  [SearchService.Search][google.cloud.retail.v2alpha.SearchService.Search],
-        ///  [ProductService.GetProduct][google.cloud.retail.v2alpha.ProductService.GetProduct],
-        ///  [ProductService.ListProducts][google.cloud.retail.v2alpha.ProductService.ListProducts]
-        ///  will treat requests using "default_branch" to the actual branch id set as
-        ///  default.
+        /// [SearchService.Search][google.cloud.retail.v2alpha.SearchService.Search],
+        /// [ProductService.GetProduct][google.cloud.retail.v2alpha.ProductService.GetProduct],
+        /// [ProductService.ListProducts][google.cloud.retail.v2alpha.ProductService.ListProducts]
+        /// will treat requests using "default_branch" to the actual branch id set as
+        /// default.
         ///
-        ///  For example, if `projects/*/locations/*/catalogs/*/branches/1` is set as
-        ///  default, setting
-        ///  [SearchRequest.branch][google.cloud.retail.v2alpha.SearchRequest.branch]
-        ///  to `projects/*/locations/*/catalogs/*/branches/default_branch` is
-        ///  equivalent to setting
-        ///  [SearchRequest.branch][google.cloud.retail.v2alpha.SearchRequest.branch]
-        ///  to `projects/*/locations/*/catalogs/*/branches/1`.
+        /// For example, if `projects/*/locations/*/catalogs/*/branches/1` is set as
+        /// default, setting
+        /// [SearchRequest.branch][google.cloud.retail.v2alpha.SearchRequest.branch] to
+        /// `projects/*/locations/*/catalogs/*/branches/default_branch` is equivalent
+        /// to setting
+        /// [SearchRequest.branch][google.cloud.retail.v2alpha.SearchRequest.branch] to
+        /// `projects/*/locations/*/catalogs/*/branches/1`.
         ///
-        ///  Using multiple branches can be useful when developers would like
-        ///  to have a staging branch to test and verify for future usage. When it
-        ///  becomes ready, developers switch on the staging branch using this API
-        ///  while keeping using
-        ///  `projects/*/locations/*/catalogs/*/branches/default_branch` as
-        ///  [SearchRequest.branch][google.cloud.retail.v2alpha.SearchRequest.branch]
-        ///  to route the traffic to this staging branch.
+        /// Using multiple branches can be useful when developers would like
+        /// to have a staging branch to test and verify for future usage. When it
+        /// becomes ready, developers switch on the staging branch using this API
+        /// while keeping using
+        /// `projects/*/locations/*/catalogs/*/branches/default_branch` as
+        /// [SearchRequest.branch][google.cloud.retail.v2alpha.SearchRequest.branch] to
+        /// route the traffic to this staging branch.
         ///
-        ///  CAUTION: If you have live predict/search traffic, switching the default
-        ///  branch could potentially cause outages if the ID space of the new branch
-        ///  is very different from the old one.
+        /// CAUTION: If you have live predict/search traffic, switching the default
+        /// branch could potentially cause outages if the ID space of the new branch
+        /// is very different from the old one.
         ///
-        ///  More specifically:
+        /// More specifically:
         ///
-        ///  * PredictionService will only return product IDs from branch {newBranch}.
-        ///  * SearchService will only return product IDs from branch {newBranch}
-        ///    (if branch is not explicitly set).
-        ///  * UserEventService will only join events with products from branch
-        ///    {newBranch}.
+        /// * PredictionService will only return product IDs from branch {newBranch}.
+        /// * SearchService will only return product IDs from branch {newBranch}
+        ///   (if branch is not explicitly set).
+        /// * UserEventService will only join events with products from branch
+        ///   {newBranch}.
         pub async fn set_default_branch(
             &mut self,
             request: impl tonic::IntoRequest<super::SetDefaultBranchRequest>,
@@ -4742,8 +4761,8 @@ pub mod catalog_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Get which branch is currently default branch set by
-        ///  [CatalogService.SetDefaultBranch][google.cloud.retail.v2alpha.CatalogService.SetDefaultBranch]
-        ///  method under a specified parent catalog.
+        /// [CatalogService.SetDefaultBranch][google.cloud.retail.v2alpha.CatalogService.SetDefaultBranch]
+        /// method under a specified parent catalog.
         pub async fn get_default_branch(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDefaultBranchRequest>,
@@ -5412,6 +5431,31 @@ pub struct SearchRequest {
     /// for revenue optimization.
     #[prost(string, tag = "46")]
     pub place_id: ::prost::alloc::string::String,
+    /// Optional. The user attributes that could be used for personalization of
+    /// search results.
+    /// * Populate at most 100 key-value pairs per query.
+    /// * Only supports string keys and repeated string values.
+    /// * Duplcate keys are not allowed within a single query.
+    ///
+    /// Example:
+    ///     user_attributes: [
+    ///      { key: "pets"
+    ///        value {
+    ///          values: "dog"
+    ///          values: "cat"
+    ///        }
+    ///      },
+    ///      { key: "state"
+    ///        value {
+    ///          values: "CA"
+    ///        }
+    ///      }
+    ///     ]
+    #[prost(map = "string, message", tag = "47")]
+    pub user_attributes: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        StringList,
+    >,
 }
 /// Nested message and enum types in `SearchRequest`.
 pub mod search_request {
@@ -6342,6 +6386,12 @@ pub mod search_response {
         /// * `purchased`: Indicates that this product has been purchased before.
         #[prost(string, repeated, tag = "7")]
         pub personal_labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Google provided available scores.
+        #[prost(map = "string, message", tag = "8")]
+        pub model_scores: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            super::DoubleList,
+        >,
     }
     /// A facet result.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -7677,6 +7727,8 @@ pub mod conversational_search_response {
     /// Nested message and enum types in `FollowupQuestion`.
     pub mod followup_question {
         /// Suggested answers to the follow-up question.
+        /// If it's numerical attribute, only ProductAttributeInterval will be set.
+        /// If it's textual attribute, only productAttributeValue will be set.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct SuggestedAnswer {
             /// Product attribute value, including an attribute key and an
@@ -8308,8 +8360,13 @@ pub mod merchant_center_account_link {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MerchantCenterFeedFilter {
         /// Merchant Center primary feed ID.
+        /// Deprecated: use data_source_id instead.
+        #[deprecated]
         #[prost(int64, tag = "1")]
         pub primary_feed_id: i64,
+        /// AFM data source ID.
+        #[prost(int64, tag = "3")]
+        pub data_source_id: i64,
         /// Merchant Center primary feed name. The name is used for the display
         /// purposes only.
         #[prost(string, tag = "2")]

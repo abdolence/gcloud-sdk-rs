@@ -32,8 +32,8 @@ pub struct Instance {
     /// 12000, 16000, 20000, ...
     #[prost(int64, tag = "8")]
     pub capacity_gib: i64,
-    /// Output only. Deprecated 'daos_version' field.
-    /// Output only. The version of DAOS software running in the instance.
+    /// Output only. Deprecated: The version of DAOS software running in the
+    /// instance.
     #[deprecated]
     #[prost(string, tag = "9")]
     pub daos_version: ::prost::alloc::string::String,
@@ -161,7 +161,7 @@ pub struct TransferMetadataOptions {
 }
 /// Nested message and enum types in `TransferMetadataOptions`.
 pub mod transfer_metadata_options {
-    /// The UID perservation behavior.
+    /// The UID preservation behavior.
     #[derive(
         Clone,
         Copy,
@@ -362,8 +362,8 @@ pub struct CreateInstanceRequest {
     /// ignore the request if it has already been completed. The server will
     /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -390,8 +390,8 @@ pub struct UpdateInstanceRequest {
     /// ignore the request if it has already been completed. The server will
     /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -412,8 +412,8 @@ pub struct DeleteInstanceRequest {
     /// ignore the request if it has already been completed. The server will
     /// guarantee that for at least 60 minutes after the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -497,8 +497,8 @@ pub struct ImportDataRequest {
     /// ignore the request if it has already been completed. The server will
     /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -558,8 +558,8 @@ pub struct ExportDataRequest {
     /// ignore the request if it has already been completed. The server will
     /// guarantee that for at least 60 minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
     /// ID, the server can check if original operation with the same request ID
     /// was received, and if so, will ignore the second request. This prevents
     /// clients from accidentally creating duplicate commitments.
@@ -772,10 +772,10 @@ pub struct TransferCounters {
     /// Bytes that are copied to the data destination.
     #[prost(int64, tag = "6")]
     pub bytes_copied: i64,
-    /// Objects that are failed to write to the data destination.
+    /// Objects that failed to be written to the data destination.
     #[prost(int64, tag = "7")]
     pub objects_failed: i64,
-    /// Bytes that are failed to write to the data destination.
+    /// Bytes that failed to be written to the data destination.
     #[prost(int64, tag = "8")]
     pub bytes_failed: i64,
 }

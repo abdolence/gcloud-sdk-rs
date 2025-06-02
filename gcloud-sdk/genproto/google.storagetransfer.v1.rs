@@ -48,6 +48,13 @@ pub struct AzureCredentials {
 /// the `updated` property of Cloud Storage objects, the `LastModified` field
 /// of S3 objects, and the `Last-Modified` header of Azure blobs.
 ///
+/// For S3 objects, the `LastModified` value is the time the object begins
+/// uploading. If the object meets your "last modification time" criteria,
+/// but has not finished uploading, the object is not transferred. See
+/// [Transfer from Amazon S3 to Cloud
+/// Storage](<https://cloud.google.com/storage-transfer/docs/create-transfers/agentless/s3#transfer_options>)
+/// for more information.
+///
 /// Transfers with a [PosixFilesystem][google.storagetransfer.v1.PosixFilesystem]
 /// source or destination don't support `ObjectConditions`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -332,6 +339,40 @@ pub struct AzureBlobStorageData {
     /// Format: `projects/{project_number}/secrets/{secret_name}`
     #[prost(string, tag = "7")]
     pub credentials_secret: ::prost::alloc::string::String,
+    /// Optional. Federated identity config of a user registered Azure application.
+    ///
+    /// If `federated_identity_config` is specified, do not specify
+    /// [azure_credentials][google.storagetransfer.v1.AzureBlobStorageData.azure_credentials]
+    /// or
+    /// [credentials_secret][google.storagetransfer.v1.AzureBlobStorageData.credentials_secret].
+    #[prost(message, optional, tag = "8")]
+    pub federated_identity_config: ::core::option::Option<
+        azure_blob_storage_data::FederatedIdentityConfig,
+    >,
+}
+/// Nested message and enum types in `AzureBlobStorageData`.
+pub mod azure_blob_storage_data {
+    /// The identity of an Azure application through which Storage Transfer Service
+    /// can authenticate requests using Azure workload identity federation.
+    ///
+    /// Storage Transfer Service can issue requests to Azure Storage through
+    /// registered Azure applications, eliminating the need to pass credentials to
+    /// Storage Transfer Service directly.
+    ///
+    /// To configure federated identity, see
+    /// [Configure access to Microsoft Azure
+    /// Storage](<https://cloud.google.com/storage-transfer/docs/source-microsoft-azure#option_3_authenticate_using_federated_identity>).
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct FederatedIdentityConfig {
+        /// Required. The client (application) ID of the application with federated
+        /// credentials.
+        #[prost(string, tag = "1")]
+        pub client_id: ::prost::alloc::string::String,
+        /// Required. The tenant (directory) ID of the application with federated
+        /// credentials.
+        #[prost(string, tag = "2")]
+        pub tenant_id: ::prost::alloc::string::String,
+    }
 }
 /// An HttpData resource specifies a list of objects on the web to be
 ///   transferred over HTTP.  The information of the objects to be transferred is
@@ -376,8 +417,9 @@ pub struct AzureBlobStorageData {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpData {
     /// Required. The URL that points to the file that stores the object list
-    /// entries. This file must allow public access.  Currently, only URLs with
-    /// HTTP and HTTPS schemes are supported.
+    /// entries. This file must allow public access. The URL is either an
+    /// HTTP/HTTPS address (e.g. `<https://example.com/urllist.tsv`>) or a Cloud
+    /// Storage path (e.g. `gs://my-bucket/urllist.tsv`).
     #[prost(string, tag = "1")]
     pub list_url: ::prost::alloc::string::String,
 }
@@ -722,7 +764,7 @@ pub mod agent_pool {
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct TransferOptions {
     /// When to overwrite objects that already exist in the sink. The default is
-    /// that only objects that are different from the source are ovewritten. If
+    /// that only objects that are different from the source are overwritten. If
     /// true, all objects in the sink whose name matches an object in the source
     /// are overwritten with the source object.
     #[prost(bool, tag = "1")]
@@ -1479,7 +1521,7 @@ pub struct Schedule {
     /// [schedule_end_date][google.storagetransfer.v1.Schedule.schedule_end_date],
     /// `end_time_of_day` specifies the end date and time for starting new transfer
     /// operations. This field must be greater than or equal to the timestamp
-    /// corresponding to the combintation of
+    /// corresponding to the combination of
     /// [schedule_start_date][google.storagetransfer.v1.Schedule.schedule_start_date]
     /// and
     /// [start_time_of_day][google.storagetransfer.v1.Schedule.start_time_of_day],
@@ -1558,6 +1600,23 @@ pub struct TransferJob {
     /// The ID of the Google Cloud project that owns the job.
     #[prost(string, tag = "3")]
     pub project_id: ::prost::alloc::string::String,
+    /// Optional. The user-managed service account to which to delegate service
+    /// agent permissions. You can grant Cloud Storage bucket permissions to this
+    /// service account instead of to the Transfer Service service agent.
+    ///
+    /// Format is
+    /// `projects/-/serviceAccounts/ACCOUNT_EMAIL_OR_UNIQUEID`
+    ///
+    /// Either the service account email
+    /// (`SERVICE_ACCOUNT_NAME@PROJECT_ID.iam.gserviceaccount.com`) or the unique
+    /// ID (`123456789012345678901`) are accepted in the string. The `-`
+    /// wildcard character is required; replacing it with a project ID is invalid.
+    ///
+    /// See
+    /// <https://cloud.google.com//storage-transfer/docs/delegate-service-agent-permissions>
+    /// for required permissions.
+    #[prost(string, tag = "18")]
+    pub service_account: ::prost::alloc::string::String,
     /// Transfer specification.
     #[prost(message, optional, tag = "4")]
     pub transfer_spec: ::core::option::Option<TransferSpec>,
@@ -1960,7 +2019,7 @@ pub mod logging_config {
         Find = 1,
         /// Deleting objects at the source or the destination.
         Delete = 2,
-        /// Copying objects to Google Cloud Storage.
+        /// Copying objects to the destination.
         Copy = 3,
     }
     impl LoggableAction {
@@ -2009,6 +2068,10 @@ pub mod logging_config {
         /// `LoggableAction` terminated in an error state. `FAILED` actions are
         /// logged as [ERROR][google.logging.type.LogSeverity.ERROR].
         Failed = 2,
+        /// The `COPY` action was skipped for this file. Only supported for
+        /// agent-based transfers. `SKIPPED` actions are
+        /// logged as [INFO][google.logging.type.LogSeverity.INFO].
+        Skipped = 3,
     }
     impl LoggableActionState {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2020,6 +2083,7 @@ pub mod logging_config {
                 Self::Unspecified => "LOGGABLE_ACTION_STATE_UNSPECIFIED",
                 Self::Succeeded => "SUCCEEDED",
                 Self::Failed => "FAILED",
+                Self::Skipped => "SKIPPED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -2028,6 +2092,7 @@ pub mod logging_config {
                 "LOGGABLE_ACTION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
                 "SUCCEEDED" => Some(Self::Succeeded),
                 "FAILED" => Some(Self::Failed),
+                "SKIPPED" => Some(Self::Skipped),
                 _ => None,
             }
         }

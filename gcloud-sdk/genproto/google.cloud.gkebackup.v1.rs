@@ -362,9 +362,7 @@ pub struct BackupChannel {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Immutable. The project where Backups are allowed to be stored.
-    /// The format is `projects/{project}`.
-    /// Currently, {project} can only be the project number. Support for project
-    /// IDs will be added in the future.
+    /// The format is `projects/{projectId}` or `projects/{projectNumber}`.
     #[prost(string, tag = "2")]
     pub destination_project: ::prost::alloc::string::String,
     /// Output only. Server generated global unique identifier of
@@ -493,6 +491,12 @@ pub struct BackupPlan {
     /// current rpo_risk_level and action items if any.
     #[prost(string, tag = "17")]
     pub rpo_risk_reason: ::prost::alloc::string::String,
+    /// Output only. The fully qualified name of the BackupChannel to be used to
+    /// create a backup. This field is set only if the cluster being backed up is
+    /// in a different project.
+    /// `projects/*/locations/*/backupChannels/*`
+    #[prost(string, tag = "18")]
+    pub backup_channel: ::prost::alloc::string::String,
     /// Output only. Completion time of the last successful Backup. This is sourced
     /// from a successful Backup's complete_time field. This field is added to
     /// maintain consistency with BackupPlanBinding to display last successful
@@ -858,9 +862,95 @@ pub mod backup_plan_binding {
         /// `projects/*/locations/*/backupPlans/*/backups/*`
         #[prost(string, tag = "6")]
         pub last_successful_backup: ::prost::alloc::string::String,
+        /// Output only. Contains details about the BackupConfig of Backups created
+        /// via this BackupPlan.
+        #[prost(message, optional, tag = "7")]
+        pub backup_config_details: ::core::option::Option<
+            backup_plan_details::BackupConfigDetails,
+        >,
+        /// Output only. Contains details about the RetentionPolicy of Backups
+        /// created via this BackupPlan.
+        #[prost(message, optional, tag = "8")]
+        pub retention_policy_details: ::core::option::Option<
+            backup_plan_details::RetentionPolicyDetails,
+        >,
     }
     /// Nested message and enum types in `BackupPlanDetails`.
     pub mod backup_plan_details {
+        /// BackupConfigDetails defines the configuration of Backups created via this
+        /// BackupPlan.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct BackupConfigDetails {
+            /// Output only. This flag specifies whether volume data should be backed
+            /// up when PVCs are included in the scope of a Backup.
+            ///
+            /// Default: False
+            #[prost(bool, tag = "5")]
+            pub include_volume_data: bool,
+            /// Output only. This flag specifies whether Kubernetes Secret resources
+            /// should be included when they fall into the scope of Backups.
+            ///
+            /// Default: False
+            #[prost(bool, tag = "6")]
+            pub include_secrets: bool,
+            /// Output only. This defines a customer managed encryption key that will
+            /// be used to encrypt the "config" portion (the Kubernetes resources) of
+            /// Backups created via this plan.
+            ///
+            /// Default (empty): Config backup artifacts will not be encrypted.
+            #[prost(message, optional, tag = "7")]
+            pub encryption_key: ::core::option::Option<super::super::EncryptionKey>,
+            /// This defines the "scope" of the Backup - which namespaced
+            /// resources in the cluster will be included in a Backup.
+            /// Exactly one of the fields of backup_scope MUST be specified.
+            #[prost(oneof = "backup_config_details::BackupScope", tags = "1, 2, 3")]
+            pub backup_scope: ::core::option::Option<backup_config_details::BackupScope>,
+        }
+        /// Nested message and enum types in `BackupConfigDetails`.
+        pub mod backup_config_details {
+            /// This defines the "scope" of the Backup - which namespaced
+            /// resources in the cluster will be included in a Backup.
+            /// Exactly one of the fields of backup_scope MUST be specified.
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum BackupScope {
+                /// Output only. If True, include all namespaced resources
+                #[prost(bool, tag = "1")]
+                AllNamespaces(bool),
+                /// Output only. If set, include just the resources in the listed
+                /// namespaces.
+                #[prost(message, tag = "2")]
+                SelectedNamespaces(super::super::super::Namespaces),
+                /// Output only. If set, include just the resources referenced by the
+                /// listed ProtectedApplications.
+                #[prost(message, tag = "3")]
+                SelectedApplications(super::super::super::NamespacedNames),
+            }
+        }
+        /// RetentionPolicyDetails defines a Backup retention policy for a
+        /// BackupPlan.
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct RetentionPolicyDetails {
+            /// Optional. Minimum age for Backups created via this BackupPlan (in
+            /// days). This field MUST be an integer value between 0-90 (inclusive). A
+            /// Backup created under this BackupPlan will NOT be deletable until it
+            /// reaches Backup's (create_time + backup_delete_lock_days).
+            /// Updating this field of a BackupPlan does NOT affect existing Backups
+            /// under it. Backups created AFTER a successful update will inherit
+            /// the new value.
+            ///
+            /// Default: 0 (no delete blocking)
+            #[prost(int32, tag = "1")]
+            pub backup_delete_lock_days: i32,
+            /// Optional. The default maximum age of a Backup created via this
+            /// BackupPlan. This field MUST be an integer value >= 0 and <= 365. If
+            /// specified, a Backup created under this BackupPlan will be automatically
+            /// deleted after its age reaches (create_time + backup_retain_days). If
+            /// not specified, Backups created under this BackupPlan will NOT be
+            /// subject to automatic deletion.
+            /// Default: 0 (no automatic deletion)
+            #[prost(int32, tag = "2")]
+            pub backup_retain_days: i32,
+        }
         /// State
         #[derive(
             Clone,
@@ -1779,9 +1869,7 @@ pub struct RestoreChannel {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Immutable. The project into which the backups will be restored.
-    /// The format is `projects/{project}`.
-    /// Currently, {project} can only be the project number. Support for project
-    /// IDs will be added in the future.
+    /// The format is `projects/{projectId}` or `projects/{projectNumber}`.
     #[prost(string, tag = "2")]
     pub destination_project: ::prost::alloc::string::String,
     /// Output only. Server generated global unique identifier of
@@ -1888,6 +1976,12 @@ pub struct RestorePlan {
     /// consistent.
     #[prost(string, tag = "12")]
     pub state_reason: ::prost::alloc::string::String,
+    /// Output only. The fully qualified name of the RestoreChannel to be used to
+    /// create a RestorePlan. This field is set only if the `backup_plan` is in a
+    /// different project than the RestorePlan. Format:
+    /// `projects/*/locations/*/restoreChannels/*`
+    #[prost(string, tag = "13")]
+    pub restore_channel: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `RestorePlan`.
 pub mod restore_plan {
