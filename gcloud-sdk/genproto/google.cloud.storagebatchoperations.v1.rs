@@ -166,9 +166,9 @@ pub struct Manifest {
     /// upon.
     ///   `manifest_location` should either be
     /// 1) An absolute path to the object in the format of
-    /// gs://bucket_name/path/file_name.csv.
+    /// `gs://bucket_name/path/file_name.csv`.
     /// 2) An absolute path with a single wildcard character in the file name, for
-    /// example gs://bucket_name/path/file_name*.csv.
+    /// example `gs://bucket_name/path/file_name*.csv`.
     /// If manifest location is specified with a wildcard, objects in all manifest
     /// files matching the pattern will be acted upon.
     #[prost(string, tag = "2")]
@@ -531,9 +531,9 @@ pub struct CreateJobRequest {
     pub job: ::core::option::Option<Job>,
     /// Optional. An optional request ID to identify requests. Specify a unique
     /// request ID in case you need to retry your request. Requests with same
-    /// `request_id` will ignored for at least 60 minutes since the first request.
-    /// The request ID must be a valid UUID with the exception that zero UUID is
-    /// not supported (00000000-0000-0000-0000-000000000000).
+    /// `request_id` will be ignored for at least 60 minutes since the first
+    /// request. The request ID must be a valid UUID with the exception that zero
+    /// UUID is not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
@@ -546,9 +546,9 @@ pub struct CancelJobRequest {
     pub name: ::prost::alloc::string::String,
     /// Optional. An optional request ID to identify requests. Specify a unique
     /// request ID in case you need to retry your request. Requests with same
-    /// `request_id` will ignored for at least 60 minutes since the first request.
-    /// The request ID must be a valid UUID with the exception that zero UUID is
-    /// not supported (00000000-0000-0000-0000-000000000000).
+    /// `request_id` will be ignored for at least 60 minutes since the first
+    /// request. The request ID must be a valid UUID with the exception that zero
+    /// UUID is not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
@@ -561,9 +561,9 @@ pub struct DeleteJobRequest {
     pub name: ::prost::alloc::string::String,
     /// Optional. An optional request ID to identify requests. Specify a unique
     /// request ID in case you need to retry your request. Requests with same
-    /// `request_id` will ignored for at least 60 minutes since the first request.
-    /// The request ID must be a valid UUID with the exception that zero UUID is
-    /// not supported (00000000-0000-0000-0000-000000000000).
+    /// `request_id` will be ignored for at least 60 minutes since the first
+    /// request. The request ID must be a valid UUID with the exception that zero
+    /// UUID is not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
@@ -588,7 +588,8 @@ pub struct OperationMetadata {
     /// have
     /// [google.longrunning.Operation.error][google.longrunning.Operation.error]
     /// value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
-    /// corresponding to `Code.CANCELLED`.
+    /// corresponding to
+    /// `[Code.CANCELLED][google.rpc.Code.CANCELLED]`.
     #[prost(bool, tag = "7")]
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.

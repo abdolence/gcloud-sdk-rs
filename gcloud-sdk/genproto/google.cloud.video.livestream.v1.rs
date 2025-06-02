@@ -1372,7 +1372,7 @@ pub mod event {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Clip {
     /// The resource name of the clip, in the following format:
-    /// `projects/{project}/locations/{location}/channels/{c}/clips/{clipId}`.
+    /// `projects/{project}/locations/{location}/channels/{channelId}/clips/{clipId}`.
     /// `{clipId}` is a user-specified resource id that conforms to the following
     /// criteria:
     ///
@@ -1419,6 +1419,10 @@ pub struct Clip {
     /// allowed.
     #[prost(message, repeated, tag = "12")]
     pub clip_manifests: ::prost::alloc::vec::Vec<clip::ClipManifest>,
+    /// Optional. OutputType of the clip. If not specified, the default value is
+    /// MANIFEST.
+    #[prost(enumeration = "clip::OutputType", tag = "13")]
+    pub output_type: i32,
 }
 /// Nested message and enum types in `Clip`.
 pub mod clip {
@@ -1517,6 +1521,222 @@ pub mod clip {
                 "CREATING" => Some(Self::Creating),
                 "SUCCEEDED" => Some(Self::Succeeded),
                 "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
+    }
+    /// OutputType represents the output type of the clip.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum OutputType {
+        /// OutputType is not specified.
+        Unspecified = 0,
+        /// OutputType is a VOD manifest. This is the default value.
+        Manifest = 1,
+        /// OutputType is an MP4 file.
+        Mp4 = 2,
+    }
+    impl OutputType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "OUTPUT_TYPE_UNSPECIFIED",
+                Self::Manifest => "MANIFEST",
+                Self::Mp4 => "MP4",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OUTPUT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MANIFEST" => Some(Self::Manifest),
+                "MP4" => Some(Self::Mp4),
+                _ => None,
+            }
+        }
+    }
+}
+/// TimeInterval represents a time interval.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct TimeInterval {
+    /// Optional. The start time of the interval.
+    #[prost(message, optional, tag = "1")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. The end time of the interval.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// DvrSession is a sub-resource under channel. Each DvrSession represents a DVR
+/// recording of the live stream for a specific time range.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DvrSession {
+    /// Identifier. The resource name of the DVR session, in the following format:
+    /// `projects/{project}/locations/{location}/channels/{channelId}/dvrSessions/{dvrSessionId}`.
+    /// `{dvrSessionId}` is a user-specified resource id that conforms to the
+    /// following criteria:
+    ///
+    /// 1. 1 character minimum, 63 characters maximum
+    /// 2. Only contains letters, digits, underscores, and hyphens
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The creation time.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The update time.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. User-defined key/value metadata.
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. The state of the clip.
+    #[prost(enumeration = "dvr_session::State", tag = "5")]
+    pub state: i32,
+    /// Output only. An error object that describes the reason for the failure.
+    /// This property only presents when `state` is `FAILED`.
+    #[prost(message, optional, tag = "6")]
+    pub error: ::core::option::Option<super::super::super::super::rpc::Status>,
+    /// Required. A list of DVR manifests. Currently only one DVR manifest is
+    /// allowed.
+    #[prost(message, repeated, tag = "7")]
+    pub dvr_manifests: ::prost::alloc::vec::Vec<dvr_session::DvrManifest>,
+    /// Required. The specified ranges of segments to generate a DVR recording.
+    #[prost(message, repeated, tag = "8")]
+    pub dvr_windows: ::prost::alloc::vec::Vec<dvr_session::DvrWindow>,
+}
+/// Nested message and enum types in `DvrSession`.
+pub mod dvr_session {
+    /// DvrManifest identifies a source manifest and specifies a file name for the
+    /// generated DVR manifest.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DvrManifest {
+        /// Required. A unique key that identifies a manifest config in the parent
+        /// channel. This key is the same as `channel.manifests.key` for the selected
+        /// manifest.
+        #[prost(string, tag = "1")]
+        pub manifest_key: ::prost::alloc::string::String,
+        /// Output only. The output URI of the DVR manifest. The DVR output will be
+        /// placed in a directory named `dvr/dvrSessionId/` under the parent
+        /// channel's output uri. Format:
+        /// {channel.output.uri}/dvr/{dvrSessionId}/{channel.manifests.fileName}
+        /// Example: gs://my-bucket/outputs/dvr/my-dvr-session/main.m3u8
+        #[prost(string, tag = "2")]
+        pub output_uri: ::prost::alloc::string::String,
+    }
+    /// DvrWindow represents a DVR window.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct DvrWindow {
+        /// The allowlist forms of a DVR window.
+        #[prost(oneof = "dvr_window::Kind", tags = "1")]
+        pub kind: ::core::option::Option<dvr_window::Kind>,
+    }
+    /// Nested message and enum types in `DvrWindow`.
+    pub mod dvr_window {
+        /// The allowlist forms of a DVR window.
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        pub enum Kind {
+            /// A time interval in the form of a tuple of Unix epoch time.
+            #[prost(message, tag = "1")]
+            TimeInterval(super::super::TimeInterval),
+        }
+    }
+    /// State of the DVR session.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// State is not specified.
+        Unspecified = 0,
+        /// The operation is pending to be picked up by the server.
+        Pending = 1,
+        /// The session is being updated.
+        Updating = 2,
+        /// The session is scheduled and waiting for the start time.
+        Scheduled = 3,
+        /// The session is currently in progress and the outputs are available in the
+        /// specified Cloud Storage bucket. For additional information, see the
+        /// `dvr_manifests.output_uri` field.
+        Live = 4,
+        /// Outputs are available in the specified Cloud Storage bucket. For
+        /// additional information, see the `dvr_manifests.output_uri` field.
+        Finished = 5,
+        /// The operation has failed. For additional information, see the `error`
+        /// field.
+        Failed = 6,
+        /// The session is being deleted.
+        Deleting = 7,
+        /// The session is being post processed.
+        PostProcessing = 8,
+        /// The session is in cooldown. The cooldown period lasts for 60 seconds.
+        /// When the DVR session is updated by the user to have a new end time that
+        /// is likely already in the past, the DVR manifest will end as soon as
+        /// possible and the DVR session will move to this state. This is done to
+        /// prevent the players to receive a manifest update that removes a segment
+        /// that has already been played. After the cooldown period ends, a new
+        /// manifest is generated that honors the new end time.
+        Cooldown = 9,
+        /// The session is being stopped. The session will move to STOPPING state, if
+        /// the parent channel is updated.
+        Stopping = 10,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Pending => "PENDING",
+                Self::Updating => "UPDATING",
+                Self::Scheduled => "SCHEDULED",
+                Self::Live => "LIVE",
+                Self::Finished => "FINISHED",
+                Self::Failed => "FAILED",
+                Self::Deleting => "DELETING",
+                Self::PostProcessing => "POST_PROCESSING",
+                Self::Cooldown => "COOLDOWN",
+                Self::Stopping => "STOPPING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "UPDATING" => Some(Self::Updating),
+                "SCHEDULED" => Some(Self::Scheduled),
+                "LIVE" => Some(Self::Live),
+                "FINISHED" => Some(Self::Finished),
+                "FAILED" => Some(Self::Failed),
+                "DELETING" => Some(Self::Deleting),
+                "POST_PROCESSING" => Some(Self::PostProcessing),
+                "COOLDOWN" => Some(Self::Cooldown),
+                "STOPPING" => Some(Self::Stopping),
                 _ => None,
             }
         }
@@ -2183,6 +2403,7 @@ pub struct UpdateInputRequest {
     /// Field mask is used to specify the fields to be overwritten in the Input
     /// resource by the update. You can only update the following fields:
     ///
+    /// * [`tier`](<https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.inputs#Tier>)
     /// * [`preprocessingConfig`](<https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.inputs#PreprocessingConfig>)
     /// * [`securityRules`](<https://cloud.google.com/livestream/docs/reference/rest/v1/projects.locations.inputs#SecurityRule>)
     ///
@@ -2413,6 +2634,134 @@ pub struct DeleteClipRequest {
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
+/// Request message for "LivestreamService.ListDvrSessions".
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDvrSessionsRequest {
+    /// Required. Parent value for ListDvrSessionsRequest
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Requested page size. Server may return fewer items than
+    /// requested. If unspecified, server will pick an appropriate default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results the server should return.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filtering results
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Hint for how to order the results
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for "LivestreamService.ListDvrSessions".
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDvrSessionsResponse {
+    /// The list of DVR sessions
+    #[prost(message, repeated, tag = "1")]
+    pub dvr_sessions: ::prost::alloc::vec::Vec<DvrSession>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request message for "LivestreamService.GetDvrSession".
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetDvrSessionRequest {
+    /// Required. Name of the resource, in the following form:
+    /// `projects/{project}/locations/{location}/channels/{channelId}/dvrSessions/{dvrSessionId}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for "LivestreamService.CreateDvrSession".
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateDvrSessionRequest {
+    /// Required. The parent resource name, in the following form:
+    /// `projects/{project}/locations/{location}/channels/{channelId}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Id of the requesting object in the following form:
+    ///
+    /// 1. 1 character minimum, 63 characters maximum
+    /// 2. Only contains letters, digits, underscores, and hyphens
+    #[prost(string, tag = "2")]
+    pub dvr_session_id: ::prost::alloc::string::String,
+    /// Required. The resource being created
+    #[prost(message, optional, tag = "3")]
+    pub dvr_session: ::core::option::Option<DvrSession>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for "LivestreamService.DeleteDvrSession".
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteDvrSessionRequest {
+    /// Required. The name of the event resource, in the form of:
+    /// `projects/{project}/locations/{location}/channels/{channelId}/dvrSessions/{dvrSessionId}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request ID,
+    /// the server can check if original operation with the same request ID was
+    /// received, and if so, will ignore the second request. This prevents clients
+    /// from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported `(00000000-0000-0000-0000-000000000000)`.
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for "LivestreamService.UpdateDvrSession".
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateDvrSessionRequest {
+    /// Required. Field mask is used to specify the fields to be overwritten in the
+    /// DvrSession resource by the update. You can only update the following
+    /// fields:
+    ///
+    /// * `dvrWindows`
+    ///
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. The DVR session resource to be updated.
+    #[prost(message, optional, tag = "2")]
+    pub dvr_session: ::core::option::Option<DvrSession>,
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request ID,
+    /// the server can check if original operation with the same request ID was
+    /// received, and if so, will ignore the second request. This prevents clients
+    /// from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported `(00000000-0000-0000-0000-000000000000)`.
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
 /// Represents the metadata of the long-running operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
@@ -2430,9 +2779,10 @@ pub struct OperationMetadata {
     pub verb: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
-    /// `Code.CANCELLED`.
+    /// have
+    /// [google.longrunning.Operation.error][google.longrunning.Operation.error]
+    /// value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "5")]
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.
@@ -3130,7 +3480,7 @@ pub mod livestream_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified clip job resource. This method only deletes the clip
-        /// job and does not delete the VOD clip stored in the GCS.
+        /// job and does not delete the VOD clip stored in Cloud Storage.
         pub async fn delete_clip(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteClipRequest>,
@@ -3156,6 +3506,153 @@ pub mod livestream_service_client {
                     GrpcMethod::new(
                         "google.cloud.video.livestream.v1.LivestreamService",
                         "DeleteClip",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a DVR session with the provided unique ID in the specified channel.
+        pub async fn create_dvr_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateDvrSessionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.video.livestream.v1.LivestreamService/CreateDvrSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.video.livestream.v1.LivestreamService",
+                        "CreateDvrSession",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns a list of all DVR sessions in the specified channel.
+        pub async fn list_dvr_sessions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListDvrSessionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListDvrSessionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.video.livestream.v1.LivestreamService/ListDvrSessions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.video.livestream.v1.LivestreamService",
+                        "ListDvrSessions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns the specified DVR session.
+        pub async fn get_dvr_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetDvrSessionRequest>,
+        ) -> std::result::Result<tonic::Response<super::DvrSession>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.video.livestream.v1.LivestreamService/GetDvrSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.video.livestream.v1.LivestreamService",
+                        "GetDvrSession",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes the specified DVR session.
+        pub async fn delete_dvr_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteDvrSessionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.video.livestream.v1.LivestreamService/DeleteDvrSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.video.livestream.v1.LivestreamService",
+                        "DeleteDvrSession",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the specified DVR session.
+        pub async fn update_dvr_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateDvrSessionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.video.livestream.v1.LivestreamService/UpdateDvrSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.video.livestream.v1.LivestreamService",
+                        "UpdateDvrSession",
                     ),
                 );
             self.inner.unary(req, path, codec).await

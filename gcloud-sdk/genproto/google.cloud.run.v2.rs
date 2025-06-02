@@ -420,6 +420,8 @@ pub mod condition {
         PostponedRetry = 15,
         /// An internal error occurred. Further information may be in the message.
         Internal = 16,
+        /// User-provided VPC network was not found.
+        VpcNetworkNotFound = 17,
     }
     impl CommonReason {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -445,6 +447,7 @@ pub mod condition {
                 Self::ImmediateRetry => "IMMEDIATE_RETRY",
                 Self::PostponedRetry => "POSTPONED_RETRY",
                 Self::Internal => "INTERNAL",
+                Self::VpcNetworkNotFound => "VPC_NETWORK_NOT_FOUND",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -469,6 +472,7 @@ pub mod condition {
                 "IMMEDIATE_RETRY" => Some(Self::ImmediateRetry),
                 "POSTPONED_RETRY" => Some(Self::PostponedRetry),
                 "INTERNAL" => Some(Self::Internal),
+                "VPC_NETWORK_NOT_FOUND" => Some(Self::VpcNetworkNotFound),
                 _ => None,
             }
         }
@@ -1515,6 +1519,9 @@ pub struct TaskTemplate {
     /// <https://cloud.google.com/run/docs/configuring/connecting-vpc.>
     #[prost(message, optional, tag = "8")]
     pub vpc_access: ::core::option::Option<VpcAccess>,
+    /// Optional. The node selector for the task template.
+    #[prost(message, optional, tag = "11")]
+    pub node_selector: ::core::option::Option<NodeSelector>,
     #[prost(oneof = "task_template::Retries", tags = "3")]
     pub retries: ::core::option::Option<task_template::Retries>,
 }
@@ -1979,13 +1986,12 @@ pub struct ExecutionTemplate {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Specifies the maximum desired number of tasks the execution should run at
-    /// given time. Must be <= task_count.
-    /// When the job is run, if this field is 0 or unset, the maximum possible
-    /// value will be used for that execution.
-    /// The actual number of tasks running in steady state will be less than this
-    /// number when there are fewer tasks waiting to be completed remaining,
-    /// i.e. when the work left to do is less than max parallelism.
+    /// Optional. Specifies the maximum desired number of tasks the execution
+    /// should run at given time. When the job is run, if this field is 0 or unset,
+    /// the maximum possible value will be used for that execution. The actual
+    /// number of tasks running in steady state will be less than this number when
+    /// there are fewer tasks waiting to be completed remaining, i.e. when the work
+    /// left to do is less than max parallelism.
     #[prost(int32, tag = "3")]
     pub parallelism: i32,
     /// Specifies the desired number of tasks the execution should run.
@@ -2933,6 +2939,13 @@ pub struct Revision {
     /// The node selector for the revision.
     #[prost(message, optional, tag = "40")]
     pub node_selector: ::core::option::Option<NodeSelector>,
+    /// Optional. Output only. True if GPU zonal redundancy is disabled on this
+    /// revision.
+    #[prost(bool, optional, tag = "48")]
+    pub gpu_zonal_redundancy_disabled: ::core::option::Option<bool>,
+    /// Output only. Email address of the authenticated creator.
+    #[prost(string, tag = "49")]
+    pub creator: ::prost::alloc::string::String,
     /// Output only. A system-generated fingerprint for this version of the
     /// resource. May be used to detect modification conflict during updates.
     #[prost(string, tag = "99")]
@@ -3207,6 +3220,9 @@ pub struct RevisionTemplate {
     /// Optional. The node selector for the revision template.
     #[prost(message, optional, tag = "21")]
     pub node_selector: ::core::option::Option<NodeSelector>,
+    /// Optional. True if GPU zonal redundancy is disabled on this revision.
+    #[prost(bool, optional, tag = "24")]
+    pub gpu_zonal_redundancy_disabled: ::core::option::Option<bool>,
 }
 /// Holds a single traffic routing entry for the Service. Allocations can be done
 /// to a specific Revision name, or pointing to the latest Ready Revision.
@@ -4076,6 +4092,9 @@ pub struct Task {
     /// Output only. Reserved for future use.
     #[prost(bool, tag = "33")]
     pub satisfies_pzs: bool,
+    /// Output only. The node selector for the task.
+    #[prost(message, optional, tag = "36")]
+    pub node_selector: ::core::option::Option<NodeSelector>,
     /// Output only. A system-generated fingerprint for this version of the
     /// resource. May be used to detect modification conflict during updates.
     #[prost(string, tag = "99")]

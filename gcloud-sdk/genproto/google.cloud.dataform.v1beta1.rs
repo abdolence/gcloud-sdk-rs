@@ -1347,6 +1347,9 @@ pub struct CodeCompilationConfig {
     /// Optional. The prefix that should be prepended to all table names.
     #[prost(string, tag = "7")]
     pub table_prefix: ::prost::alloc::string::String,
+    /// Optional. The prefix to prepend to built-in assertion names.
+    #[prost(string, tag = "10")]
+    pub builtin_assertion_name_prefix: ::prost::alloc::string::String,
     /// Optional. The default notebook runtime options.
     #[prost(message, optional, tag = "9")]
     pub default_notebook_runtime_options: ::core::option::Option<NotebookRuntimeOptions>,
@@ -1354,6 +1357,12 @@ pub struct CodeCompilationConfig {
 /// Configures various aspects of Dataform notebook runtime.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotebookRuntimeOptions {
+    /// Optional. The resource name of the \[Colab runtime template\]
+    /// (<https://cloud.google.com/colab/docs/runtimes>), from which a runtime is
+    /// created for notebook executions. If not specified, a runtime is created
+    /// with Colab's default specifications.
+    #[prost(string, tag = "2")]
+    pub ai_platform_notebook_runtime_template: ::prost::alloc::string::String,
     /// The location to store the notebook execution result.
     #[prost(oneof = "notebook_runtime_options::ExecutionSink", tags = "1")]
     pub execution_sink: ::core::option::Option<notebook_runtime_options::ExecutionSink>,
@@ -1499,7 +1508,10 @@ pub struct CompilationResultAction {
     #[prost(string, optional, tag = "10")]
     pub internal_metadata: ::core::option::Option<::prost::alloc::string::String>,
     /// The compiled object.
-    #[prost(oneof = "compilation_result_action::CompiledObject", tags = "4, 5, 6, 7, 8")]
+    #[prost(
+        oneof = "compilation_result_action::CompiledObject",
+        tags = "4, 5, 6, 7, 8, 9"
+    )]
     pub compiled_object: ::core::option::Option<
         compilation_result_action::CompiledObject,
     >,
@@ -1729,6 +1741,100 @@ pub mod compilation_result_action {
         #[prost(string, repeated, tag = "4")]
         pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
+    /// Defines a compiled Data Preparation entity
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DataPreparation {
+        /// A list of actions that this action depends on.
+        #[prost(message, repeated, tag = "1")]
+        pub dependency_targets: ::prost::alloc::vec::Vec<super::Target>,
+        /// Whether this action is disabled (i.e. should not be run).
+        #[prost(bool, tag = "2")]
+        pub disabled: bool,
+        /// Arbitrary, user-defined tags on this action.
+        #[prost(string, repeated, tag = "4")]
+        pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// The definition for the data preparation.
+        #[prost(oneof = "data_preparation::Definition", tags = "5, 6")]
+        pub definition: ::core::option::Option<data_preparation::Definition>,
+    }
+    /// Nested message and enum types in `DataPreparation`.
+    pub mod data_preparation {
+        /// Definition of a SQL Data Preparation
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct SqlDefinition {
+            /// The SQL query representing the data preparation steps. Formatted as a
+            /// Pipe SQL query statement.
+            #[prost(string, tag = "1")]
+            pub query: ::prost::alloc::string::String,
+            /// Error table configuration,
+            #[prost(message, optional, tag = "2")]
+            pub error_table: ::core::option::Option<ErrorTable>,
+            /// Load configuration.
+            #[prost(message, optional, tag = "3")]
+            pub load: ::core::option::Option<super::LoadConfig>,
+        }
+        /// Error table information, used to write error data into a BigQuery
+        /// table.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ErrorTable {
+            /// Error Table target.
+            #[prost(message, optional, tag = "1")]
+            pub target: ::core::option::Option<super::super::Target>,
+            /// Error table partition expiration in days. Only positive values are
+            /// allowed.
+            #[prost(int32, tag = "2")]
+            pub retention_days: i32,
+        }
+        /// The definition for the data preparation.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Definition {
+            /// The data preparation definition, stored as a YAML string.
+            #[prost(string, tag = "5")]
+            ContentsYaml(::prost::alloc::string::String),
+            /// SQL definition for a Data Preparation. Contains a SQL query and
+            /// additional context information.
+            #[prost(message, tag = "6")]
+            ContentsSql(SqlDefinition),
+        }
+    }
+    /// Simplified load configuration for actions
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct LoadConfig {
+        /// Load mode
+        #[prost(oneof = "load_config::Mode", tags = "1, 2, 3, 4")]
+        pub mode: ::core::option::Option<load_config::Mode>,
+    }
+    /// Nested message and enum types in `LoadConfig`.
+    pub mod load_config {
+        /// Load mode
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Mode {
+            /// Replace destination table
+            #[prost(message, tag = "1")]
+            Replace(super::SimpleLoadMode),
+            /// Append into destination table
+            #[prost(message, tag = "2")]
+            Append(super::SimpleLoadMode),
+            /// Insert records where the value exceeds the previous maximum value for a
+            /// column in the destination table
+            #[prost(message, tag = "3")]
+            Maximum(super::IncrementalLoadMode),
+            /// Insert records where the value of a column is not already present in
+            /// the destination table
+            #[prost(message, tag = "4")]
+            Unique(super::IncrementalLoadMode),
+        }
+    }
+    /// Simple load definition
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct SimpleLoadMode {}
+    /// Load definition for incremental load modes
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct IncrementalLoadMode {
+        /// Column name for incremental load modes
+        #[prost(string, tag = "1")]
+        pub column: ::prost::alloc::string::String,
+    }
     /// The compiled object.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum CompiledObject {
@@ -1747,6 +1853,9 @@ pub mod compilation_result_action {
         /// The notebook executed by this action.
         #[prost(message, tag = "8")]
         Notebook(Notebook),
+        /// The data preparation executed by this action.
+        #[prost(message, tag = "9")]
+        DataPreparation(DataPreparation),
     }
 }
 /// `QueryCompilationResultActions` request message.
@@ -1816,6 +1925,9 @@ pub struct WorkflowConfig {
     pub recent_scheduled_execution_records: ::prost::alloc::vec::Vec<
         workflow_config::ScheduledExecutionRecord,
     >,
+    /// Optional. Disables automatic creation of workflow invocations.
+    #[prost(bool, tag = "8")]
+    pub disabled: bool,
     /// Output only. The timestamp of when the WorkflowConfig was created.
     #[prost(message, optional, tag = "9")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -2174,7 +2286,7 @@ pub struct WorkflowInvocationAction {
     #[prost(string, optional, tag = "10")]
     pub internal_metadata: ::core::option::Option<::prost::alloc::string::String>,
     /// The action's details.
-    #[prost(oneof = "workflow_invocation_action::Action", tags = "6, 8")]
+    #[prost(oneof = "workflow_invocation_action::Action", tags = "6, 8, 9")]
     pub action: ::core::option::Option<workflow_invocation_action::Action>,
 }
 /// Nested message and enum types in `WorkflowInvocationAction`.
@@ -2201,6 +2313,100 @@ pub mod workflow_invocation_action {
         /// Storage buckets. Only set once the job has started to run.
         #[prost(string, tag = "2")]
         pub job_id: ::prost::alloc::string::String,
+    }
+    /// Represents a workflow action that will run a Data Preparation.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DataPreparationAction {
+        /// Output only. The generated BigQuery SQL script that will be executed. For
+        /// reference only.
+        #[prost(string, tag = "3")]
+        pub generated_sql: ::prost::alloc::string::String,
+        /// Output only. The ID of the BigQuery job that executed the SQL in
+        /// sql_script. Only set once the job has started to run.
+        #[prost(string, tag = "4")]
+        pub job_id: ::prost::alloc::string::String,
+        /// The definition for the data preparation.
+        #[prost(oneof = "data_preparation_action::Definition", tags = "2, 6")]
+        pub definition: ::core::option::Option<data_preparation_action::Definition>,
+    }
+    /// Nested message and enum types in `DataPreparationAction`.
+    pub mod data_preparation_action {
+        /// Definition of a SQL Data Preparation
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ActionSqlDefinition {
+            /// The SQL query representing the data preparation steps. Formatted as a
+            /// Pipe SQL query statement.
+            #[prost(string, tag = "1")]
+            pub query: ::prost::alloc::string::String,
+            /// Error table configuration,
+            #[prost(message, optional, tag = "2")]
+            pub error_table: ::core::option::Option<ActionErrorTable>,
+            /// Load configuration.
+            #[prost(message, optional, tag = "3")]
+            pub load_config: ::core::option::Option<ActionLoadConfig>,
+        }
+        /// Error table information, used to write error data into a BigQuery
+        /// table.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ActionErrorTable {
+            /// Error Table target.
+            #[prost(message, optional, tag = "1")]
+            pub target: ::core::option::Option<super::super::Target>,
+            /// Error table partition expiration in days. Only positive values are
+            /// allowed.
+            #[prost(int32, tag = "2")]
+            pub retention_days: i32,
+        }
+        /// Simplified load configuration for actions
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ActionLoadConfig {
+            /// Load mode
+            #[prost(oneof = "action_load_config::Mode", tags = "1, 2, 3, 4")]
+            pub mode: ::core::option::Option<action_load_config::Mode>,
+        }
+        /// Nested message and enum types in `ActionLoadConfig`.
+        pub mod action_load_config {
+            /// Load mode
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum Mode {
+                /// Replace destination table
+                #[prost(message, tag = "1")]
+                Replace(super::ActionSimpleLoadMode),
+                /// Append into destination table
+                #[prost(message, tag = "2")]
+                Append(super::ActionSimpleLoadMode),
+                /// Insert records where the value exceeds the previous maximum value for
+                /// a column in the destination table
+                #[prost(message, tag = "3")]
+                Maximum(super::ActionIncrementalLoadMode),
+                /// Insert records where the value of a column is not already present in
+                /// the destination table
+                #[prost(message, tag = "4")]
+                Unique(super::ActionIncrementalLoadMode),
+            }
+        }
+        /// Simple load definition
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct ActionSimpleLoadMode {}
+        /// Load definition for incremental load modes
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ActionIncrementalLoadMode {
+            /// Column name for incremental load modes
+            #[prost(string, tag = "1")]
+            pub column: ::prost::alloc::string::String,
+        }
+        /// The definition for the data preparation.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Definition {
+            /// Output only. YAML representing the contents of the data preparation.
+            /// Can be used to show the customer what the input was to their workflow.
+            #[prost(string, tag = "2")]
+            ContentsYaml(::prost::alloc::string::String),
+            /// SQL definition for a Data Preparation. Contains a SQL query and
+            /// additional context information.
+            #[prost(message, tag = "6")]
+            ContentsSql(ActionSqlDefinition),
+        }
     }
     /// Represents the current state of a workflow invocation action.
     #[derive(
@@ -2272,6 +2478,9 @@ pub mod workflow_invocation_action {
         /// Output only. The workflow action's notebook action details.
         #[prost(message, tag = "8")]
         NotebookAction(NotebookAction),
+        /// Output only. The workflow action's data preparation action details.
+        #[prost(message, tag = "9")]
+        DataPreparationAction(DataPreparationAction),
     }
 }
 /// `QueryWorkflowInvocationActions` request message.
@@ -2428,6 +2637,9 @@ pub mod dataform_client {
             self
         }
         /// Lists Repositories in a given project and location.
+        ///
+        /// **Note:** *This method can return repositories not shown in the [Dataform
+        /// UI](https://console.cloud.google.com/bigquery/dataform)*.
         pub async fn list_repositories(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRepositoriesRequest>,
@@ -2513,11 +2725,10 @@ pub mod dataform_client {
         }
         /// Updates a single Repository.
         ///
-        /// **Note:** This method does not fully implement
-        /// [AIP-134](https://google.aip.dev/134); in particular:
-        /// - The wildcard entry (**\***) is treated as a bad request
-        /// - When the **field_mask** is omitted, instead of only updating the set
-        ///   fields, the request is treated as a full update on all modifiable fields
+        /// **Note:** *This method does not fully implement
+        /// [AIP/134](https://google.aip.dev/134). The wildcard entry (\*) is treated
+        /// as a bad request, and when the `field_mask` is omitted, the request is
+        /// treated as a full update on all modifiable fields.*
         pub async fn update_repository(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateRepositoryRequest>,
@@ -3461,11 +3672,10 @@ pub mod dataform_client {
         }
         /// Updates a single ReleaseConfig.
         ///
-        /// **Note:** This method does not fully implement
-        /// [AIP-134](https://google.aip.dev/134); in particular:
-        /// - The wildcard entry (**\***) is treated as a bad request
-        /// - When the **field_mask** is omitted, instead of only updating the set
-        ///   fields, the request is treated as a full update on all modifiable fields
+        /// **Note:** *This method does not fully implement
+        /// [AIP/134](https://google.aip.dev/134). The wildcard entry (\*) is treated
+        /// as a bad request, and when the `field_mask` is omitted, the request is
+        /// treated as a full update on all modifiable fields.*
         pub async fn update_release_config(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateReleaseConfigRequest>,
@@ -3725,11 +3935,10 @@ pub mod dataform_client {
         }
         /// Updates a single WorkflowConfig.
         ///
-        /// **Note:** This method does not fully implement
-        /// [AIP-134](https://google.aip.dev/134); in particular:
-        /// - The wildcard entry (**\***) is treated as a bad request
-        /// - When the **field_mask** is omitted, instead of only updating the set
-        ///   fields, the request is treated as a full update on all modifiable fields
+        /// **Note:** *This method does not fully implement
+        /// [AIP/134](https://google.aip.dev/134). The wildcard entry (\*) is treated
+        /// as a bad request, and when the `field_mask` is omitted, the request is
+        /// treated as a full update on all modifiable fields.*
         pub async fn update_workflow_config(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateWorkflowConfigRequest>,
@@ -3991,11 +4200,10 @@ pub mod dataform_client {
         }
         /// Update default config for a given project and location.
         ///
-        /// **Note:** This method does not fully implement
-        /// [AIP-134](https://google.aip.dev/134); in particular:
-        /// - The wildcard entry (**\***) is treated as a bad request
-        /// - When the **field_mask** is omitted, instead of only updating the set
-        ///   fields, the request is treated as a full update on all modifiable fields
+        /// **Note:** *This method does not fully implement
+        /// [AIP/134](https://google.aip.dev/134). The wildcard entry (\*) is treated
+        /// as a bad request, and when the `field_mask` is omitted, the request is
+        /// treated as a full update on all modifiable fields.*
         pub async fn update_config(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateConfigRequest>,

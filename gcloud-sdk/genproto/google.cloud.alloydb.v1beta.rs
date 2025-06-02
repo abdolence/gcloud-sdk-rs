@@ -13,47 +13,6 @@ pub struct CloudSqlBackupRunSource {
     #[prost(int64, tag = "3")]
     pub backup_run_id: i64,
 }
-/// SqlResult represents the result for the execution of a sql statement.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SqlResult {
-    /// List of columns included in the result. This also includes the data type
-    /// of the column.
-    #[prost(message, repeated, tag = "1")]
-    pub columns: ::prost::alloc::vec::Vec<SqlResultColumn>,
-    /// Rows returned by the SQL statement.
-    #[prost(message, repeated, tag = "2")]
-    pub rows: ::prost::alloc::vec::Vec<SqlResultRow>,
-}
-/// Contains the name and datatype of a column in a SQL Result.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SqlResultColumn {
-    /// Name of the column.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Datatype of the column as reported by the postgres driver.
-    /// Common type names are "VARCHAR", "TEXT", "NVARCHAR", "DECIMAL", "BOOL",
-    /// "INT", and "BIGINT".
-    #[prost(string, tag = "2")]
-    pub r#type: ::prost::alloc::string::String,
-}
-/// A single row from a sql result.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SqlResultRow {
-    /// List of values in a row of sql result.
-    #[prost(message, repeated, tag = "1")]
-    pub values: ::prost::alloc::vec::Vec<SqlResultValue>,
-}
-/// A single value in a row from a sql result.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SqlResultValue {
-    /// The cell value represented in string format.
-    /// Timestamps are converted to string using RFC3339Nano format.
-    #[prost(string, optional, tag = "1")]
-    pub value: ::core::option::Option<::prost::alloc::string::String>,
-    /// Set to true if cell value is null.
-    #[prost(bool, optional, tag = "2")]
-    pub null_value: ::core::option::Option<bool>,
-}
 /// Cluster level configuration parameters related to the Gemini in Databases
 /// add-on.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -75,6 +34,43 @@ pub struct GeminiInstanceConfig {
     /// the Admin Control Center (ACC) and cannot be toggled using AlloyDB's APIs.
     #[prost(bool, tag = "1")]
     pub entitled: bool,
+}
+/// Instance level configuration parameters related to the Gemini Cloud Assist
+/// product.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct GcaInstanceConfig {
+    /// Output only. Represents the GCA entitlement state of the instance.
+    #[prost(enumeration = "GcaEntitlementType", tag = "1")]
+    pub gca_entitlement: i32,
+}
+/// Enum representing the type of GCA entitlement assigned to a resource.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum GcaEntitlementType {
+    /// No GCA entitlement is assigned.
+    Unspecified = 0,
+    /// The resource is entitled to the GCA Standard Tier.
+    GcaStandard = 1,
+}
+impl GcaEntitlementType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "GCA_ENTITLEMENT_TYPE_UNSPECIFIED",
+            Self::GcaStandard => "GCA_STANDARD",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "GCA_ENTITLEMENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "GCA_STANDARD" => Some(Self::GcaStandard),
+            _ => None,
+        }
+    }
 }
 /// The username/password for a database user. Used for specifying initial
 /// users at cluster creation time.
@@ -349,8 +345,7 @@ pub struct AutomatedBackupPolicy {
     pub backup_window: ::core::option::Option<::prost_types::Duration>,
     /// Optional. The encryption config can be specified to encrypt the
     /// backups with a customer-managed encryption key (CMEK). When this field is
-    /// not specified, the backup will then use default encryption scheme to
-    /// protect the user data.
+    /// not specified, the backup will use the cluster's encryption config.
     #[prost(message, optional, tag = "8")]
     pub encryption_config: ::core::option::Option<EncryptionConfig>,
     /// The location where the backup will be stored. Currently, the only supported
@@ -479,8 +474,7 @@ pub struct ContinuousBackupConfig {
     pub recovery_window_days: i32,
     /// The encryption config can be specified to encrypt the
     /// backups with a customer-managed encryption key (CMEK). When this field is
-    /// not specified, the backup will then use default encryption scheme to
-    /// protect the user data.
+    /// not specified, the backup will use the cluster's encryption config.
     #[prost(message, optional, tag = "3")]
     pub encryption_config: ::core::option::Option<EncryptionConfig>,
 }
@@ -783,6 +777,10 @@ pub mod cluster {
         /// Connect endpoints to the instance.
         #[prost(bool, tag = "1")]
         pub psc_enabled: bool,
+        /// Output only. The project number that needs to be allowlisted on the
+        /// network attachment to enable outbound connectivity.
+        #[prost(int64, tag = "3")]
+        pub service_owned_project_number: i64,
     }
     /// Contains information and all metadata related to TRIAL clusters.
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -1101,18 +1099,26 @@ pub struct Instance {
     pub outbound_public_ip_addresses: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
     >,
+    /// Output only. Configuration parameters related to Gemini Cloud Assist.
+    #[prost(message, optional, tag = "38")]
+    pub gca_config: ::core::option::Option<GcaInstanceConfig>,
 }
 /// Nested message and enum types in `Instance`.
 pub mod instance {
     /// MachineConfig describes the configuration of a machine.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MachineConfig {
         /// The number of CPU's in the VM instance.
         #[prost(int32, tag = "1")]
         pub cpu_count: i32,
+        /// Machine type of the VM instance. E.g. "n2-highmem-4",
+        /// "n2-highmem-8", "c4a-highmem-4-lssd".
+        /// cpu_count must match the number of vCPUs in the machine type.
+        #[prost(string, tag = "4")]
+        pub machine_type: ::prost::alloc::string::String,
     }
     /// Details of a single node in the instance.
-    /// Nodes in an AlloyDB instance are ephemereal, they can change during
+    /// Nodes in an AlloyDB instance are ephemeral, they can change during
     /// update, failover, autohealing and resize operations.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Node {
@@ -1173,7 +1179,7 @@ pub mod instance {
         /// Output only. Track wait event types during query execution for an
         /// instance. This flag is turned "on" by default but tracking is enabled
         /// only after observability enabled flag is also turned on. This is
-        /// read-only flag and only modifiable by producer API.
+        /// read-only flag and only modifiable by internal API.
         #[prost(bool, optional, tag = "4")]
         pub track_wait_event_types: ::core::option::Option<bool>,
         /// Query string length. The default value is 10k.
@@ -1269,6 +1275,41 @@ pub mod instance {
         #[prost(message, optional, tag = "2")]
         pub ssl_config: ::core::option::Option<super::SslConfig>,
     }
+    /// Configuration for setting up a PSC interface to enable outbound
+    /// connectivity.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PscInterfaceConfig {
+        /// The network attachment resource created in the consumer network to which
+        /// the PSC interface will be linked. This is of the format:
+        /// "projects/${CONSUMER_PROJECT}/regions/${REGION}/networkAttachments/${NETWORK_ATTACHMENT_NAME}".
+        /// The network attachment must be in the same region as the instance.
+        #[prost(string, tag = "1")]
+        pub network_attachment_resource: ::prost::alloc::string::String,
+    }
+    /// Configuration for setting up PSC service automation. Consumer projects in
+    /// the configs will be allowlisted automatically for the instance.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PscAutoConnectionConfig {
+        /// The consumer project to which the PSC service automation endpoint will
+        /// be created.
+        #[prost(string, tag = "1")]
+        pub consumer_project: ::prost::alloc::string::String,
+        /// The consumer network for the PSC service automation, example:
+        /// "projects/vpc-host-project/global/networks/default".
+        /// The consumer network might be hosted a different project than the
+        /// consumer project.
+        #[prost(string, tag = "2")]
+        pub consumer_network: ::prost::alloc::string::String,
+        /// Output only. The IP address of the PSC service automation endpoint.
+        #[prost(string, tag = "3")]
+        pub ip_address: ::prost::alloc::string::String,
+        /// Output only. The status of the PSC service automation connection.
+        #[prost(string, tag = "4")]
+        pub status: ::prost::alloc::string::String,
+        /// Output only. The status of the service connection policy.
+        #[prost(string, tag = "5")]
+        pub consumer_network_status: ::prost::alloc::string::String,
+    }
     /// PscInstanceConfig contains PSC related configuration at an
     /// instance level.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1289,6 +1330,15 @@ pub mod instance {
         /// Name convention: <uid>.<uid>.<region>.alloydb-psc.goog
         #[prost(string, tag = "7")]
         pub psc_dns_name: ::prost::alloc::string::String,
+        /// Optional. Configurations for setting up PSC interfaces attached to the
+        /// instance which are used for outbound connectivity. Only primary instances
+        /// can have PSC interface attached. Currently we only support 0 or 1 PSC
+        /// interface.
+        #[prost(message, repeated, tag = "8")]
+        pub psc_interface_configs: ::prost::alloc::vec::Vec<PscInterfaceConfig>,
+        /// Optional. Configurations for setting up PSC service automation.
+        #[prost(message, repeated, tag = "9")]
+        pub psc_auto_connections: ::prost::alloc::vec::Vec<PscAutoConnectionConfig>,
     }
     /// Metadata related to instance-level network configuration.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1792,9 +1842,17 @@ pub struct SupportedDatabaseFlag {
     /// availability SLO's).
     #[prost(bool, tag = "6")]
     pub requires_db_restart: bool,
+    /// The scope of the flag.
+    #[prost(enumeration = "supported_database_flag::Scope", tag = "9")]
+    pub scope: i32,
     /// The restrictions on the flag value per type.
     #[prost(oneof = "supported_database_flag::Restrictions", tags = "7, 8")]
     pub restrictions: ::core::option::Option<supported_database_flag::Restrictions>,
+    /// The recommended value for the flag by type, if applicable.
+    #[prost(oneof = "supported_database_flag::RecommendedValue", tags = "10, 11")]
+    pub recommended_value: ::core::option::Option<
+        supported_database_flag::RecommendedValue,
+    >,
 }
 /// Nested message and enum types in `SupportedDatabaseFlag`.
 pub mod supported_database_flag {
@@ -1869,6 +1927,49 @@ pub mod supported_database_flag {
             }
         }
     }
+    /// The scope of the flag.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Scope {
+        /// The scope of the flag is not specified. Default is DATABASE.
+        Unspecified = 0,
+        /// The flag is a database flag.
+        Database = 1,
+        /// The flag is a connection pool flag.
+        ConnectionPool = 2,
+    }
+    impl Scope {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SCOPE_UNSPECIFIED",
+                Self::Database => "DATABASE",
+                Self::ConnectionPool => "CONNECTION_POOL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DATABASE" => Some(Self::Database),
+                "CONNECTION_POOL" => Some(Self::ConnectionPool),
+                _ => None,
+            }
+        }
+    }
     /// The restrictions on the flag value per type.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Restrictions {
@@ -1878,6 +1979,16 @@ pub mod supported_database_flag {
         /// Restriction on INTEGER type value.
         #[prost(message, tag = "8")]
         IntegerRestrictions(IntegerRestrictions),
+    }
+    /// The recommended value for the flag by type, if applicable.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum RecommendedValue {
+        /// The recommended value for a STRING flag.
+        #[prost(string, tag = "10")]
+        RecommendedStringValue(::prost::alloc::string::String),
+        /// The recommended value for an INTEGER flag.
+        #[prost(message, tag = "11")]
+        RecommendedIntegerValue(i64),
     }
 }
 /// Message describing User object.
@@ -2118,6 +2229,47 @@ impl SubscriptionType {
             _ => None,
         }
     }
+}
+/// SqlResult represents the result for the execution of a sql statement.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SqlResult {
+    /// List of columns included in the result. This also includes the data type
+    /// of the column.
+    #[prost(message, repeated, tag = "1")]
+    pub columns: ::prost::alloc::vec::Vec<SqlResultColumn>,
+    /// Rows returned by the SQL statement.
+    #[prost(message, repeated, tag = "2")]
+    pub rows: ::prost::alloc::vec::Vec<SqlResultRow>,
+}
+/// Contains the name and datatype of a column in a SQL Result.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SqlResultColumn {
+    /// Name of the column.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Datatype of the column as reported by the postgres driver.
+    /// Common type names are "VARCHAR", "TEXT", "NVARCHAR", "DECIMAL", "BOOL",
+    /// "INT", and "BIGINT".
+    #[prost(string, tag = "2")]
+    pub r#type: ::prost::alloc::string::String,
+}
+/// A single row from a sql result.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SqlResultRow {
+    /// List of values in a row of sql result.
+    #[prost(message, repeated, tag = "1")]
+    pub values: ::prost::alloc::vec::Vec<SqlResultValue>,
+}
+/// A single value in a row from a sql result.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SqlResultValue {
+    /// The cell value represented in string format.
+    /// Timestamps are converted to string using RFC3339Nano format.
+    #[prost(string, optional, tag = "1")]
+    pub value: ::core::option::Option<::prost::alloc::string::String>,
+    /// Set to true if cell value is null.
+    #[prost(bool, optional, tag = "2")]
+    pub null_value: ::core::option::Option<bool>,
 }
 /// Message for requesting list of Clusters
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2377,6 +2529,83 @@ pub mod export_cluster_response {
         #[prost(message, tag = "2")]
         GcsDestination(super::GcsDestination),
     }
+}
+/// Import cluster request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportClusterRequest {
+    /// Required. The resource name of the cluster.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The path to the file in Google Cloud Storage where the source
+    /// file for import will be stored. The URI is in the form
+    /// `gs://bucketName/fileName`.
+    #[prost(string, tag = "2")]
+    pub gcs_uri: ::prost::alloc::string::String,
+    /// Optional. Name of the database to which the import will be done.
+    /// For import from SQL file, this is required only if the file does not
+    /// specify a database.
+    /// Note - Value provided should be the same as expected from `SELECT
+    /// current_database();` and NOT as a resource reference.
+    #[prost(string, tag = "3")]
+    pub database: ::prost::alloc::string::String,
+    /// Optional. Database user to be used for importing the data.
+    /// Note - Value provided should be the same as expected from
+    /// `SELECT current_user;` and NOT as a resource reference.
+    #[prost(string, tag = "5")]
+    pub user: ::prost::alloc::string::String,
+    /// oneof field to support various import formats like SQL and CSV.
+    #[prost(oneof = "import_cluster_request::ImportOptions", tags = "4, 7")]
+    pub import_options: ::core::option::Option<import_cluster_request::ImportOptions>,
+}
+/// Nested message and enum types in `ImportClusterRequest`.
+pub mod import_cluster_request {
+    /// Options for importing data in SQL format.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct SqlImportOptions {}
+    /// Options for importing data in CSV format.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CsvImportOptions {
+        /// Required. The database table to import CSV file into.
+        #[prost(string, tag = "1")]
+        pub table: ::prost::alloc::string::String,
+        /// Optional. The columns to which CSV data is imported. If not specified,
+        /// all columns of the database table are loaded with CSV data.
+        #[prost(string, repeated, tag = "2")]
+        pub columns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. Specifies the character that separates columns within each row
+        /// (line) of the file. The default is comma. The value of this argument has
+        /// to be a character in Hex ASCII Code.
+        #[prost(string, tag = "3")]
+        pub field_delimiter: ::prost::alloc::string::String,
+        /// Optional. Specifies the quoting character to be used when a data value is
+        /// quoted. The default is double-quote. The value of this argument has to be
+        /// a character in Hex ASCII Code.
+        #[prost(string, tag = "4")]
+        pub quote_character: ::prost::alloc::string::String,
+        /// Optional. Specifies the character that should appear before a data
+        /// character that needs to be escaped. The default is same as quote
+        /// character. The value of this argument has to be a character in Hex ASCII
+        /// Code.
+        #[prost(string, tag = "5")]
+        pub escape_character: ::prost::alloc::string::String,
+    }
+    /// oneof field to support various import formats like SQL and CSV.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ImportOptions {
+        /// Options for importing data in SQL format.
+        #[prost(message, tag = "4")]
+        SqlImportOptions(SqlImportOptions),
+        /// Options for importing data in CSV format.
+        #[prost(message, tag = "7")]
+        CsvImportOptions(CsvImportOptions),
+    }
+}
+/// Response of import rpc.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ImportClusterResponse {
+    /// Required. Size of the object downloaded from Google Cloud Storage in bytes.
+    #[prost(int64, tag = "1")]
+    pub bytes_downloaded: i64,
 }
 /// Upgrades a cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3538,6 +3767,10 @@ pub struct ListSupportedDatabaseFlagsRequest {
     /// A token identifying a page of results the server should return.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
+    /// Optional. The scope for which supported flags are requested. If not
+    /// specified, default is DATABASE.
+    #[prost(enumeration = "supported_database_flag::Scope", tag = "6")]
+    pub scope: i32,
 }
 /// Message for response to listing SupportedDatabaseFlags.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3587,9 +3820,9 @@ pub struct GenerateClientCertificateRequest {
     /// Optional. The public key from the client.
     #[prost(string, tag = "5")]
     pub public_key: ::prost::alloc::string::String,
-    /// Optional. An optional hint to the endpoint to generate a client
-    /// ceritificate that can be used by AlloyDB connectors to exchange additional
-    /// metadata with the server after TLS handshake.
+    /// Optional. An optional hint to the endpoint to generate a client certificate
+    /// that can be used by AlloyDB connectors to exchange additional metadata with
+    /// the server after TLS handshake.
     #[prost(bool, tag = "6")]
     pub use_metadata_exchange: bool,
 }
@@ -4236,6 +4469,37 @@ pub mod alloy_db_admin_client {
                     GrpcMethod::new(
                         "google.cloud.alloydb.v1beta.AlloyDBAdmin",
                         "ExportCluster",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Imports data to the cluster.
+        /// Imperative only.
+        pub async fn import_cluster(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ImportClusterRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.alloydb.v1beta.AlloyDBAdmin/ImportCluster",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1beta.AlloyDBAdmin",
+                        "ImportCluster",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -5171,6 +5435,157 @@ pub mod alloy_db_admin_client {
                     GrpcMethod::new(
                         "google.cloud.alloydb.v1beta.AlloyDBAdmin",
                         "ListDatabases",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Message for registering Restoring from CloudSQL resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RestoreFromCloudSqlRequest {
+    /// Required. The location of the new cluster. For the required format, see the
+    /// comment on Cluster.name field.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. ID of the requesting object.
+    #[prost(string, tag = "2")]
+    pub cluster_id: ::prost::alloc::string::String,
+    /// Required. The resource being created
+    #[prost(message, optional, tag = "3")]
+    pub cluster: ::core::option::Option<Cluster>,
+    /// The source CloudSQL resource to restore from.
+    #[prost(oneof = "restore_from_cloud_sql_request::Source", tags = "101")]
+    pub source: ::core::option::Option<restore_from_cloud_sql_request::Source>,
+}
+/// Nested message and enum types in `RestoreFromCloudSQLRequest`.
+pub mod restore_from_cloud_sql_request {
+    /// The source CloudSQL resource to restore from.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// Cluster created from CloudSQL backup run.
+        #[prost(message, tag = "101")]
+        CloudsqlBackupRunSource(super::CloudSqlBackupRunSource),
+    }
+}
+/// Generated client implementations.
+pub mod alloy_dbcsql_admin_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service for interactions with CloudSQL.
+    #[derive(Debug, Clone)]
+    pub struct AlloyDbcsqlAdminClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl AlloyDbcsqlAdminClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> AlloyDbcsqlAdminClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> AlloyDbcsqlAdminClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            AlloyDbcsqlAdminClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Restores an AlloyDB cluster from a CloudSQL resource.
+        pub async fn restore_from_cloud_sql(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RestoreFromCloudSqlRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.alloydb.v1beta.AlloyDBCSQLAdmin/RestoreFromCloudSQL",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.alloydb.v1beta.AlloyDBCSQLAdmin",
+                        "RestoreFromCloudSQL",
                     ),
                 );
             self.inner.unary(req, path, codec).await

@@ -1314,6 +1314,20 @@ pub struct LookupHistoryHoursResponse {
     #[prost(string, tag = "3")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// (-- Request for the LookupPublicAlerts RPC. --)
+/// (-- TODO (418938868): mikesky - Add request fields.
+/// Reason: We want to parallelize our work and creating a simple proto for
+/// quick approval could help us do other tasks while the larger proto is
+/// being approved. --)
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct LookupPublicAlertsRequest {}
+/// (-- Response for the LookupPublicAlerts RPC. --)
+/// (-- TODO(418938868): mikesky - Add public weather alert records to the
+/// response. Reason: We want to parallelize our work and creating a simple proto
+/// for quick approval could help us do other tasks while the larger proto is
+/// being approved. --)
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct LookupPublicAlertsResponse {}
 /// Generated client implementations.
 pub mod weather_client {
     #![allow(
@@ -1525,6 +1539,36 @@ pub mod weather_client {
                     GrpcMethod::new(
                         "google.maps.weather.v1.Weather",
                         "LookupHistoryHours",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns public weather alerts for a given location.
+        pub async fn lookup_public_alerts(
+            &mut self,
+            request: impl tonic::IntoRequest<super::LookupPublicAlertsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::LookupPublicAlertsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.maps.weather.v1.Weather/LookupPublicAlerts",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.maps.weather.v1.Weather",
+                        "LookupPublicAlerts",
                     ),
                 );
             self.inner.unary(req, path, codec).await

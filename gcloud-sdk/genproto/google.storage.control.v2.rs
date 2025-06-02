@@ -619,6 +619,357 @@ pub struct ListAnywhereCachesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// The `IntelligenceConfig` resource associated with your organization, folder,
+/// or project.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IntelligenceConfig {
+    /// Identifier. The name of the `IntelligenceConfig` resource associated with
+    /// your organization, folder, or project.
+    ///
+    /// The name format varies based on the GCP resource hierarchy as follows:
+    ///
+    /// * For project:
+    /// `projects/{project_number}/locations/global/intelligenceConfig`
+    /// * For organization:
+    /// `organizations/{org_id}/locations/global/intelligenceConfig`
+    /// * For folder: `folders/{folder_id}/locations/global/intelligenceConfig`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The edition configuration of the `IntelligenceConfig` resource.
+    #[prost(enumeration = "intelligence_config::EditionConfig", tag = "2")]
+    pub edition_config: i32,
+    /// Output only. The time at which the `IntelligenceConfig` resource is last
+    /// updated.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Filter over location and bucket.
+    #[prost(message, optional, tag = "4")]
+    pub filter: ::core::option::Option<intelligence_config::Filter>,
+    /// Output only. The `IntelligenceConfig` resource that is applicable for the
+    /// resource.
+    #[prost(message, optional, tag = "5")]
+    pub effective_intelligence_config: ::core::option::Option<
+        intelligence_config::EffectiveIntelligenceConfig,
+    >,
+    /// The trial configuration of the `IntelligenceConfig` resource.
+    #[prost(message, optional, tag = "7")]
+    pub trial_config: ::core::option::Option<intelligence_config::TrialConfig>,
+}
+/// Nested message and enum types in `IntelligenceConfig`.
+pub mod intelligence_config {
+    /// Filter over location and bucket using include or exclude semantics.
+    /// Resources that match the include or exclude filter are exclusively included
+    /// or excluded from the Storage Intelligence plan.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Filter {
+        /// Bucket locations to include or exclude.
+        #[prost(oneof = "filter::CloudStorageLocations", tags = "1, 2")]
+        pub cloud_storage_locations: ::core::option::Option<
+            filter::CloudStorageLocations,
+        >,
+        /// Buckets to include or exclude.
+        #[prost(oneof = "filter::CloudStorageBuckets", tags = "3, 4")]
+        pub cloud_storage_buckets: ::core::option::Option<filter::CloudStorageBuckets>,
+    }
+    /// Nested message and enum types in `Filter`.
+    pub mod filter {
+        /// Collection of bucket locations.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct CloudStorageLocations {
+            /// Optional. Bucket locations. Location can be any of the Cloud Storage
+            /// regions specified in lower case format. For example, `us-east1`,
+            /// `us-west1`.
+            #[prost(string, repeated, tag = "1")]
+            pub locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        }
+        /// Collection of buckets.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct CloudStorageBuckets {
+            /// Optional. A regex pattern for matching bucket names. Regex should
+            /// follow the syntax specified in
+            /// [google/re2](<https://github.com/google/re2>). For example,
+            /// `^sample_.*` matches all buckets of the form
+            /// `gs://sample_bucket-1`, `gs://sample_bucket-2`,
+            /// `gs://sample_bucket-n` but not `gs://test_sample_bucket`.
+            /// If you want to match a single bucket, say `gs://sample_bucket`,
+            /// use `sample_bucket`.
+            #[prost(string, repeated, tag = "1")]
+            pub bucket_id_regexes: ::prost::alloc::vec::Vec<
+                ::prost::alloc::string::String,
+            >,
+        }
+        /// Bucket locations to include or exclude.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum CloudStorageLocations {
+            /// Bucket locations to include.
+            #[prost(message, tag = "1")]
+            IncludedCloudStorageLocations(CloudStorageLocations),
+            /// Bucket locations to exclude.
+            #[prost(message, tag = "2")]
+            ExcludedCloudStorageLocations(CloudStorageLocations),
+        }
+        /// Buckets to include or exclude.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum CloudStorageBuckets {
+            /// Buckets to include.
+            #[prost(message, tag = "3")]
+            IncludedCloudStorageBuckets(CloudStorageBuckets),
+            /// Buckets to exclude.
+            #[prost(message, tag = "4")]
+            ExcludedCloudStorageBuckets(CloudStorageBuckets),
+        }
+    }
+    /// The effective `IntelligenceConfig` for the resource.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct EffectiveIntelligenceConfig {
+        /// Output only. The `IntelligenceConfig` edition that is applicable for the
+        /// resource.
+        #[prost(
+            enumeration = "effective_intelligence_config::EffectiveEdition",
+            tag = "1"
+        )]
+        pub effective_edition: i32,
+        /// Output only. The `IntelligenceConfig` resource that is applied for the
+        /// target resource. Format:
+        /// `{organizations|folders|projects}/{id}/locations/{location}/intelligenceConfig`
+        #[prost(string, tag = "2")]
+        pub intelligence_config: ::prost::alloc::string::String,
+    }
+    /// Nested message and enum types in `EffectiveIntelligenceConfig`.
+    pub mod effective_intelligence_config {
+        /// The effective edition of the `IntelligenceConfig` resource.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum EffectiveEdition {
+            /// This is an unknown edition of the resource.
+            Unspecified = 0,
+            /// No edition.
+            None = 1,
+            /// The `IntelligenceConfig` resource is of STANDARD edition.
+            Standard = 2,
+        }
+        impl EffectiveEdition {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "EFFECTIVE_EDITION_UNSPECIFIED",
+                    Self::None => "NONE",
+                    Self::Standard => "STANDARD",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "EFFECTIVE_EDITION_UNSPECIFIED" => Some(Self::Unspecified),
+                    "NONE" => Some(Self::None),
+                    "STANDARD" => Some(Self::Standard),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// The trial configuration of the `IntelligenceConfig` resource.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct TrialConfig {
+        /// Output only. The time at which the trial expires.
+        #[prost(message, optional, tag = "3")]
+        pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
+    }
+    /// The edition configuration of the `IntelligenceConfig` resource. This
+    /// signifies the edition used for configuring the `IntelligenceConfig`
+    /// resource and can only take the following values:
+    /// `EDITION_CONFIG_UNSPECIFIED`, `INHERIT`, `DISABLED`, `STANDARD` and
+    /// `TRIAL`.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum EditionConfig {
+        /// This is an unknown edition of the resource.
+        Unspecified = 0,
+        /// The inherited edition from the parent and filters. This is the default
+        /// edition when there is no `IntelligenceConfig` setup for a GCP resource.
+        Inherit = 1,
+        /// The edition configuration is disabled for the `IntelligenceConfig`
+        /// resource and its children. Filters are not applicable.
+        Disabled = 2,
+        /// The `IntelligenceConfig` resource is of STANDARD edition.
+        Standard = 3,
+        /// The `IntelligenceConfig` resource is available in `TRIAL` edition. During
+        /// the trial period, Cloud Storage does not charge for Storage Intelligence
+        /// usage. You can specify the buckets to include in the trial period by
+        /// using filters. At the end of the trial period, the `IntelligenceConfig`
+        /// resource is upgraded to `STANDARD` edition.
+        Trial = 5,
+    }
+    impl EditionConfig {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "EDITION_CONFIG_UNSPECIFIED",
+                Self::Inherit => "INHERIT",
+                Self::Disabled => "DISABLED",
+                Self::Standard => "STANDARD",
+                Self::Trial => "TRIAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EDITION_CONFIG_UNSPECIFIED" => Some(Self::Unspecified),
+                "INHERIT" => Some(Self::Inherit),
+                "DISABLED" => Some(Self::Disabled),
+                "STANDARD" => Some(Self::Standard),
+                "TRIAL" => Some(Self::Trial),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request message to update the `IntelligenceConfig` resource associated with
+/// your organization.
+///
+/// **IAM Permissions**:
+///
+/// Requires `storage.intelligenceConfigs.update`
+/// [IAM](<https://cloud.google.com/iam/docs/overview#permissions>) permission on
+/// the organization.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateOrganizationIntelligenceConfigRequest {
+    /// Required. The `IntelligenceConfig` resource to be updated.
+    #[prost(message, optional, tag = "1")]
+    pub intelligence_config: ::core::option::Option<IntelligenceConfig>,
+    /// Required. The `update_mask` that specifies the fields within the
+    /// `IntelligenceConfig` resource that should be modified by this update. Only
+    /// the listed fields are updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. The ID that uniquely identifies the request, preventing duplicate
+    /// processing.
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message to update the `IntelligenceConfig` resource associated with
+/// your folder.
+///
+/// **IAM Permissions**:
+///
+/// Requires `storage.intelligenceConfigs.update`
+/// [IAM](<https://cloud.google.com/iam/docs/overview#permissions>) permission on
+/// the folder.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateFolderIntelligenceConfigRequest {
+    /// Required. The `IntelligenceConfig` resource to be updated.
+    #[prost(message, optional, tag = "1")]
+    pub intelligence_config: ::core::option::Option<IntelligenceConfig>,
+    /// Required. The `update_mask` that specifies the fields within the
+    /// `IntelligenceConfig` resource that should be modified by this update. Only
+    /// the listed fields are updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. The ID that uniquely identifies the request, preventing duplicate
+    /// processing.
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message to update the `IntelligenceConfig` resource associated with
+/// your project.
+///
+/// **IAM Permissions**:
+///
+/// Requires `storage.intelligenceConfigs.update`
+/// [IAM](<https://cloud.google.com/iam/docs/overview#permissions>) permission on
+/// the folder.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateProjectIntelligenceConfigRequest {
+    /// Required. The `IntelligenceConfig` resource to be updated.
+    #[prost(message, optional, tag = "1")]
+    pub intelligence_config: ::core::option::Option<IntelligenceConfig>,
+    /// Required. The `update_mask` that specifies the fields within the
+    /// `IntelligenceConfig` resource that should be modified by this update. Only
+    /// the listed fields are updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. The ID that uniquely identifies the request, preventing duplicate
+    /// processing.
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message to get the `IntelligenceConfig` resource associated with your
+/// organization.
+///
+/// **IAM Permissions**
+///
+/// Requires `storage.intelligenceConfigs.get`
+/// [IAM](<https://cloud.google.com/iam/docs/overview#permissions>) permission on
+/// the organization.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetOrganizationIntelligenceConfigRequest {
+    /// Required. The name of the `IntelligenceConfig` resource associated with
+    /// your organization.
+    ///
+    /// Format: `organizations/{org_id}/locations/global/intelligenceConfig`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message to get the `IntelligenceConfig` resource associated with your
+/// folder.
+///
+/// **IAM Permissions**
+///
+/// Requires `storage.intelligenceConfigs.get`
+/// [IAM](<https://cloud.google.com/iam/docs/overview#permissions>) permission on
+/// the folder.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetFolderIntelligenceConfigRequest {
+    /// Required. The name of the `IntelligenceConfig` resource associated with
+    /// your folder.
+    ///
+    /// Format: `folders/{id}/locations/global/intelligenceConfig`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message to get the `IntelligenceConfig` resource associated with your
+/// project.
+///
+/// **IAM Permissions**:
+///
+/// Requires `storage.intelligenceConfigs.get`
+/// [IAM](<https://cloud.google.com/iam/docs/overview#permissions>) permission
+/// on the project.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetProjectIntelligenceConfigRequest {
+    /// Required. The name of the `IntelligenceConfig` resource associated with
+    /// your project.
+    ///
+    /// Format: `projects/{id}/locations/global/intelligenceConfig`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
 /// Generated client implementations.
 pub mod storage_control_client {
     #![allow(
@@ -1195,6 +1546,194 @@ pub mod storage_control_client {
                     GrpcMethod::new(
                         "google.storage.control.v2.StorageControl",
                         "ListAnywhereCaches",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns the Project scoped singleton IntelligenceConfig resource.
+        pub async fn get_project_intelligence_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetProjectIntelligenceConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::IntelligenceConfig>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/GetProjectIntelligenceConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "GetProjectIntelligenceConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the Project scoped singleton IntelligenceConfig resource.
+        pub async fn update_project_intelligence_config(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::UpdateProjectIntelligenceConfigRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::IntelligenceConfig>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/UpdateProjectIntelligenceConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "UpdateProjectIntelligenceConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns the Folder scoped singleton IntelligenceConfig resource.
+        pub async fn get_folder_intelligence_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetFolderIntelligenceConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::IntelligenceConfig>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/GetFolderIntelligenceConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "GetFolderIntelligenceConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the Folder scoped singleton IntelligenceConfig resource.
+        pub async fn update_folder_intelligence_config(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::UpdateFolderIntelligenceConfigRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::IntelligenceConfig>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/UpdateFolderIntelligenceConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "UpdateFolderIntelligenceConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns the Organization scoped singleton IntelligenceConfig resource.
+        pub async fn get_organization_intelligence_config(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::GetOrganizationIntelligenceConfigRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::IntelligenceConfig>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/GetOrganizationIntelligenceConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "GetOrganizationIntelligenceConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the Organization scoped singleton IntelligenceConfig resource.
+        pub async fn update_organization_intelligence_config(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::UpdateOrganizationIntelligenceConfigRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::IntelligenceConfig>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.control.v2.StorageControl/UpdateOrganizationIntelligenceConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.storage.control.v2.StorageControl",
+                        "UpdateOrganizationIntelligenceConfig",
                     ),
                 );
             self.inner.unary(req, path, codec).await

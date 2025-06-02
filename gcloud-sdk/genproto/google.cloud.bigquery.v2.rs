@@ -1050,13 +1050,13 @@ pub mod get_dataset_request {
         /// The default value.
         /// Default to the FULL view.
         Unspecified = 0,
-        /// Updates metadata information for the dataset, such as friendlyName,
+        /// View metadata information for the dataset, such as friendlyName,
         /// description, labels, etc.
         Metadata = 1,
-        /// Updates ACL information for the dataset, which defines dataset access
+        /// View ACL information for the dataset, which defines dataset access
         /// for one or more entities.
         Acl = 2,
-        /// Updates both dataset metadata and ACL information.
+        /// View both dataset metadata and ACL information.
         Full = 3,
     }
     impl DatasetView {
@@ -1281,6 +1281,10 @@ pub struct ListFormatDataset {
     /// The geographic location where the dataset resides.
     #[prost(string, tag = "6")]
     pub location: ::prost::alloc::string::String,
+    /// Output only. Reference to a read-only external dataset defined in data
+    /// catalogs outside of BigQuery. Filled out when the dataset type is EXTERNAL.
+    #[prost(message, optional, tag = "11")]
+    pub external_dataset_reference: ::core::option::Option<ExternalDatasetReference>,
 }
 /// Response format for a page of results when listing datasets.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2961,6 +2965,8 @@ pub struct JobConfigurationQuery {
     ///
     /// * WRITE_TRUNCATE: If the table already exists, BigQuery overwrites the
     /// data, removes the constraints, and uses the schema from the query result.
+    /// * WRITE_TRUNCATE_DATA: If the table already exists, BigQuery overwrites the
+    /// data, but keeps the constraints and schema of the existing table.
     /// * WRITE_APPEND: If the table already exists, BigQuery appends the data to
     /// the table.
     /// * WRITE_EMPTY: If the table already exists and contains data, a 'duplicate'
@@ -3206,6 +3212,8 @@ pub struct JobConfigurationLoad {
     ///
     /// * WRITE_TRUNCATE:  If the table already exists, BigQuery overwrites the
     /// data, removes the constraints and uses the schema from the load job.
+    /// * WRITE_TRUNCATE_DATA: If the table already exists, BigQuery overwrites the
+    /// data, but keeps the constraints and schema of the existing table.
     /// * WRITE_APPEND: If the table already exists, BigQuery appends the data to
     /// the table.
     /// * WRITE_EMPTY: If the table already exists and contains data, a 'duplicate'
@@ -3467,8 +3475,8 @@ pub struct JobConfigurationLoad {
     /// * No options other than the above are specified.
     #[prost(message, optional, tag = "51")]
     pub copy_files_only: ::core::option::Option<bool>,
-    /// Optional. \[Experimental\] Default time zone that will apply when parsing
-    /// timestamp values that have no specific time zone.
+    /// Optional. Default time zone that will apply when parsing timestamp values
+    /// that have no specific time zone.
     #[prost(message, optional, tag = "52")]
     pub time_zone: ::core::option::Option<::prost::alloc::string::String>,
     /// Optional. A list of strings represented as SQL NULL value in a CSV file.
@@ -3840,8 +3848,6 @@ pub struct JobConfiguration {
 /// For
 /// [`jobs.insert`](<https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/insert>)
 /// method calls it will always be `REQUESTED`.
-///
-/// [Preview](<https://cloud.google.com/products/#product-launch-stages>)
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct JobCreationReason {
     /// Output only. Specifies the high level reason why a Job was created.
@@ -7319,6 +7325,10 @@ pub struct QueryTimelineSample {
     /// slot usage. This is the largest value observed since the last sample.
     #[prost(message, optional, tag = "5")]
     pub active_units: ::core::option::Option<i64>,
+    /// Total shuffle usage ratio in shuffle RAM per reservation of this query.
+    /// This will be provided for reservation customers only.
+    #[prost(message, optional, tag = "6")]
+    pub shuffle_ram_usage_ratio: ::core::option::Option<f64>,
     /// Units of work that can be scheduled immediately. Providing additional slots
     /// for these units of work will accelerate the query, if no other query in
     /// the reservation needs additional slots.
@@ -8069,8 +8079,7 @@ pub struct JobStatistics2 {
     /// Output only. Whether the query result was fetched from the query cache.
     #[prost(message, optional, tag = "9")]
     pub cache_hit: ::core::option::Option<bool>,
-    /// Output only. Referenced tables for the job. Queries that reference more
-    /// than 50 tables will not have a complete list.
+    /// Output only. Referenced tables for the job.
     #[prost(message, repeated, tag = "10")]
     pub referenced_tables: ::prost::alloc::vec::Vec<TableReference>,
     /// Output only. Referenced routines for the job.
@@ -9131,7 +9140,6 @@ pub struct Job {
     #[prost(string, tag = "13")]
     pub principal_subject: ::prost::alloc::string::String,
     /// Output only. The reason why a Job was created.
-    /// [Preview](<https://cloud.google.com/products/#product-launch-stages>)
     #[prost(message, optional, tag = "14")]
     pub job_creation_reason: ::core::option::Option<JobCreationReason>,
 }
@@ -9673,7 +9681,6 @@ pub struct QueryRequest {
     ///
     /// If set, the query request will follow the behavior described
     /// JobCreationMode.
-    /// [Preview](<https://cloud.google.com/products/#product-launch-stages>)
     #[prost(enumeration = "query_request::JobCreationMode", tag = "22")]
     pub job_creation_mode: i32,
     /// Optional. The reservation that jobs.query request would use. User can
@@ -9761,11 +9768,9 @@ pub struct QueryResponse {
     ///
     /// Only relevant when a job_reference is present in the response.
     /// If job_reference is not present it will always be unset.
-    /// [Preview](<https://cloud.google.com/products/#product-launch-stages>)
     #[prost(message, optional, tag = "15")]
     pub job_creation_reason: ::core::option::Option<JobCreationReason>,
     /// Auto-generated ID for the query.
-    /// [Preview](<https://cloud.google.com/products/#product-launch-stages>)
     #[prost(string, tag = "14")]
     pub query_id: ::prost::alloc::string::String,
     /// Output only. The geographic location of the query.

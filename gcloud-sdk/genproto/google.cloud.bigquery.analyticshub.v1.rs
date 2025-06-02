@@ -518,7 +518,7 @@ pub struct JavaScriptUdf {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataExchange {
     /// Output only. The resource name of the data exchange.
-    /// e.g. `projects/myproject/locations/US/dataExchanges/123`.
+    /// e.g. `projects/myproject/locations/us/dataExchanges/123`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Human-readable display name of the data exchange. The display
@@ -561,7 +561,6 @@ pub struct DataExchange {
     pub discovery_type: ::core::option::Option<i32>,
     /// Optional. By default, false.
     /// If true, the DataExchange has an email sharing mandate enabled.
-    /// Publishers can view the logged email of the subscriber.
     #[prost(bool, optional, tag = "10")]
     pub log_linked_dataset_query_user_email: ::core::option::Option<bool>,
 }
@@ -681,7 +680,7 @@ pub struct DestinationPubSubSubscription {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Listing {
     /// Output only. The resource name of the listing.
-    /// e.g. `projects/myproject/locations/US/dataExchanges/123/listings/456`
+    /// e.g. `projects/myproject/locations/us/dataExchanges/123/listings/456`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Human-readable display name of the listing. The display name must
@@ -740,10 +739,18 @@ pub struct Listing {
     /// Output only. Listing shared asset type.
     #[prost(enumeration = "SharedResourceType", tag = "15")]
     pub resource_type: i32,
+    /// Output only. Commercial info contains the information about the commercial
+    /// data products associated with the listing.
+    #[prost(message, optional, tag = "17")]
+    pub commercial_info: ::core::option::Option<listing::CommercialInfo>,
     /// Optional. By default, false.
     /// If true, the Listing has an email sharing mandate enabled.
     #[prost(bool, optional, tag = "18")]
     pub log_linked_dataset_query_user_email: ::core::option::Option<bool>,
+    /// Optional. If true, the listing is only available to get the resource
+    /// metadata. Listing is non subscribable.
+    #[prost(bool, optional, tag = "19")]
+    pub allow_only_metadata_sharing: ::core::option::Option<bool>,
     /// Listing source.
     #[prost(oneof = "listing::Source", tags = "6, 16")]
     pub source: ::core::option::Option<listing::Source>,
@@ -781,7 +788,7 @@ pub mod listing {
         /// Resource in this dataset that is selectively shared.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct SelectedResource {
-            #[prost(oneof = "selected_resource::Resource", tags = "1")]
+            #[prost(oneof = "selected_resource::Resource", tags = "1, 2")]
             pub resource: ::core::option::Option<selected_resource::Resource>,
         }
         /// Nested message and enum types in `SelectedResource`.
@@ -794,6 +801,12 @@ pub mod listing {
                 /// Example:"projects/test_project/datasets/test_dataset/tables/test_table"
                 #[prost(string, tag = "1")]
                 Table(::prost::alloc::string::String),
+                /// Optional. Format:
+                /// For routine:
+                /// `projects/{projectId}/datasets/{datasetId}/routines/{routineId}`
+                /// Example:"projects/test_project/datasets/test_dataset/routines/test_routine"
+                #[prost(string, tag = "2")]
+                Routine(::prost::alloc::string::String),
             }
         }
         /// Restricted export policy used to configure restricted export on linked
@@ -843,6 +856,82 @@ pub mod listing {
         /// restricted linked dataset table.
         #[prost(bool, tag = "2")]
         pub restrict_query_result: bool,
+    }
+    /// Commercial info contains the information about the commercial data products
+    /// associated with the listing.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CommercialInfo {
+        /// Output only. Details of the Marketplace Data Product associated with the
+        /// Listing.
+        #[prost(message, optional, tag = "1")]
+        pub cloud_marketplace: ::core::option::Option<
+            commercial_info::GoogleCloudMarketplaceInfo,
+        >,
+    }
+    /// Nested message and enum types in `CommercialInfo`.
+    pub mod commercial_info {
+        /// Specifies the details of the Marketplace Data Product associated with the
+        /// Listing.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct GoogleCloudMarketplaceInfo {
+            /// Output only. Resource name of the commercial service associated with
+            /// the Marketplace Data Product. e.g. example.com
+            #[prost(string, optional, tag = "1")]
+            pub service: ::core::option::Option<::prost::alloc::string::String>,
+            /// Output only. Commercial state of the Marketplace Data Product.
+            #[prost(
+                enumeration = "google_cloud_marketplace_info::CommercialState",
+                optional,
+                tag = "3"
+            )]
+            pub commercial_state: ::core::option::Option<i32>,
+        }
+        /// Nested message and enum types in `GoogleCloudMarketplaceInfo`.
+        pub mod google_cloud_marketplace_info {
+            /// Indicates whether this commercial access is currently active.
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum CommercialState {
+                /// Commercialization is incomplete and cannot be used.
+                Unspecified = 0,
+                /// Commercialization has been initialized.
+                Onboarding = 1,
+                /// Commercialization is complete and available for use.
+                Active = 2,
+            }
+            impl CommercialState {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        Self::Unspecified => "COMMERCIAL_STATE_UNSPECIFIED",
+                        Self::Onboarding => "ONBOARDING",
+                        Self::Active => "ACTIVE",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "COMMERCIAL_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "ONBOARDING" => Some(Self::Onboarding),
+                        "ACTIVE" => Some(Self::Active),
+                        _ => None,
+                    }
+                }
+            }
+        }
     }
     /// State of the listing.
     #[derive(
@@ -1000,7 +1089,7 @@ pub mod listing {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Subscription {
     /// Output only. The resource name of the subscription.
-    /// e.g. `projects/myproject/locations/US/subscriptions/123`.
+    /// e.g. `projects/myproject/locations/us/subscriptions/123`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Timestamp when the subscription was created.
@@ -1019,7 +1108,7 @@ pub struct Subscription {
     #[prost(enumeration = "subscription::State", tag = "7")]
     pub state: i32,
     /// Output only. Map of listing resource names to associated linked resource,
-    /// e.g. projects/123/locations/US/dataExchanges/456/listings/789
+    /// e.g. projects/123/locations/us/dataExchanges/456/listings/789
     /// ->
     /// projects/123/datasets/my_dataset
     ///
@@ -1040,11 +1129,18 @@ pub struct Subscription {
     /// Output only. Listing shared asset type.
     #[prost(enumeration = "SharedResourceType", tag = "12")]
     pub resource_type: i32,
+    /// Output only. This is set if this is a commercial subscription i.e. if this
+    /// subscription was created from subscribing to a commercial listing.
+    #[prost(message, optional, tag = "13")]
+    pub commercial_info: ::core::option::Option<subscription::CommercialInfo>,
     /// Output only. By default, false.
     /// If true, the Subscriber agreed to the email sharing mandate
     /// that is enabled for DataExchange/Listing.
     #[prost(bool, optional, tag = "14")]
     pub log_linked_dataset_query_user_email: ::core::option::Option<bool>,
+    /// Optional. BigQuery destination dataset to create for the subscriber.
+    #[prost(message, optional, tag = "15")]
+    pub destination_dataset: ::core::option::Option<DestinationDataset>,
     #[prost(oneof = "subscription::ResourceName", tags = "5, 6")]
     pub resource_name: ::core::option::Option<subscription::ResourceName>,
 }
@@ -1071,6 +1167,26 @@ pub mod subscription {
             /// projects/subscriberproject/subscriptions/subscriptions/sub_id
             #[prost(string, tag = "3")]
             LinkedPubsubSubscription(::prost::alloc::string::String),
+        }
+    }
+    /// Commercial info metadata for this subscription.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CommercialInfo {
+        /// Output only. This is set when the subscription is commercialised via
+        /// Cloud Marketplace.
+        #[prost(message, optional, tag = "1")]
+        pub cloud_marketplace: ::core::option::Option<
+            commercial_info::GoogleCloudMarketplaceInfo,
+        >,
+    }
+    /// Nested message and enum types in `CommercialInfo`.
+    pub mod commercial_info {
+        /// Cloud Marketplace commercial metadata for this subscription.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct GoogleCloudMarketplaceInfo {
+            /// Resource name of the Marketplace Order.
+            #[prost(string, tag = "1")]
+            pub order: ::prost::alloc::string::String,
         }
     }
     /// State of the subscription.
@@ -1125,11 +1241,11 @@ pub mod subscription {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ResourceName {
         /// Output only. Resource name of the source Listing.
-        /// e.g. projects/123/locations/US/dataExchanges/456/listings/789
+        /// e.g. projects/123/locations/us/dataExchanges/456/listings/789
         #[prost(string, tag = "5")]
         Listing(::prost::alloc::string::String),
         /// Output only. Resource name of the source Data Exchange.
-        /// e.g. projects/123/locations/US/dataExchanges/456
+        /// e.g. projects/123/locations/us/dataExchanges/456
         #[prost(string, tag = "6")]
         DataExchange(::prost::alloc::string::String),
     }
@@ -1138,7 +1254,7 @@ pub mod subscription {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataExchangesRequest {
     /// Required. The parent resource path of the data exchanges.
-    /// e.g. `projects/myproject/locations/US`.
+    /// e.g. `projects/myproject/locations/us`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of results to return in a single response page. Leverage
@@ -1165,7 +1281,7 @@ pub struct ListDataExchangesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOrgDataExchangesRequest {
     /// Required. The organization resource path of the projects containing
-    /// DataExchanges. e.g. `organizations/myorg/locations/US`.
+    /// DataExchanges. e.g. `organizations/myorg/locations/us`.
     #[prost(string, tag = "1")]
     pub organization: ::prost::alloc::string::String,
     /// The maximum number of results to return in a single response page. Leverage
@@ -1192,7 +1308,7 @@ pub struct ListOrgDataExchangesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDataExchangeRequest {
     /// Required. The resource name of the data exchange.
-    /// e.g. `projects/myproject/locations/US/dataExchanges/123`.
+    /// e.g. `projects/myproject/locations/us/dataExchanges/123`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1200,11 +1316,11 @@ pub struct GetDataExchangeRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDataExchangeRequest {
     /// Required. The parent resource path of the data exchange.
-    /// e.g. `projects/myproject/locations/US`.
+    /// e.g. `projects/myproject/locations/us`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The ID of the data exchange.
-    /// Must contain only ASCII letters, numbers (0-9), underscores (_).
+    /// Must contain only Unicode letters, numbers (0-9), underscores (_).
     /// Max length: 100 bytes.
     #[prost(string, tag = "2")]
     pub data_exchange_id: ::prost::alloc::string::String,
@@ -1228,7 +1344,7 @@ pub struct UpdateDataExchangeRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDataExchangeRequest {
     /// Required. The full name of the data exchange resource that you want to
-    /// delete. For example, `projects/myproject/locations/US/dataExchanges/123`.
+    /// delete. For example, `projects/myproject/locations/us/dataExchanges/123`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1236,7 +1352,7 @@ pub struct DeleteDataExchangeRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListListingsRequest {
     /// Required. The parent resource path of the listing.
-    /// e.g. `projects/myproject/locations/US/dataExchanges/123`.
+    /// e.g. `projects/myproject/locations/us/dataExchanges/123`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of results to return in a single response page. Leverage
@@ -1262,7 +1378,7 @@ pub struct ListListingsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetListingRequest {
     /// Required. The resource name of the listing.
-    /// e.g. `projects/myproject/locations/US/dataExchanges/123/listings/456`.
+    /// e.g. `projects/myproject/locations/us/dataExchanges/123/listings/456`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1270,11 +1386,11 @@ pub struct GetListingRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateListingRequest {
     /// Required. The parent resource path of the listing.
-    /// e.g. `projects/myproject/locations/US/dataExchanges/123`.
+    /// e.g. `projects/myproject/locations/us/dataExchanges/123`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The ID of the listing to create.
-    /// Must contain only ASCII letters, numbers (0-9), underscores (_).
+    /// Must contain only Unicode letters, numbers (0-9), underscores (_).
     /// Max length: 100 bytes.
     #[prost(string, tag = "2")]
     pub listing_id: ::prost::alloc::string::String,
@@ -1298,15 +1414,20 @@ pub struct UpdateListingRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteListingRequest {
     /// Required. Resource name of the listing to delete.
-    /// e.g. `projects/myproject/locations/US/dataExchanges/123/listings/456`.
+    /// e.g. `projects/myproject/locations/us/dataExchanges/123/listings/456`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. If the listing is commercial then this field must be set to true,
+    /// otherwise a failure is thrown. This acts as a safety guard to avoid
+    /// deleting commercial listings accidentally.
+    #[prost(bool, tag = "2")]
+    pub delete_commercial: bool,
 }
 /// Message for subscribing to a listing.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeListingRequest {
     /// Required. Resource name of the listing that you want to subscribe to.
-    /// e.g. `projects/myproject/locations/US/dataExchanges/123/listings/456`.
+    /// e.g. `projects/myproject/locations/us/dataExchanges/123/listings/456`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Resulting destination of the listing that you subscribed to.
@@ -1338,11 +1459,11 @@ pub struct SubscribeListingResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeDataExchangeRequest {
     /// Required. Resource name of the Data Exchange.
-    /// e.g. `projects/publisherproject/locations/US/dataExchanges/123`
+    /// e.g. `projects/publisherproject/locations/us/dataExchanges/123`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The parent resource path of the Subscription.
-    /// e.g. `projects/subscriberproject/locations/US`
+    /// e.g. `projects/subscriberproject/locations/us`
     #[prost(string, tag = "2")]
     pub destination: ::prost::alloc::string::String,
     /// Optional. BigQuery destination dataset to create for the subscriber.
@@ -1367,7 +1488,7 @@ pub struct SubscribeDataExchangeResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RefreshSubscriptionRequest {
     /// Required. Resource name of the Subscription to refresh.
-    /// e.g. `projects/subscriberproject/locations/US/subscriptions/123`
+    /// e.g. `projects/subscriberproject/locations/us/subscriptions/123`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1382,7 +1503,7 @@ pub struct RefreshSubscriptionResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSubscriptionRequest {
     /// Required. Resource name of the subscription.
-    /// e.g. projects/123/locations/US/subscriptions/456
+    /// e.g. projects/123/locations/us/subscriptions/456
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1390,14 +1511,14 @@ pub struct GetSubscriptionRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSubscriptionsRequest {
     /// Required. The parent resource path of the subscription.
-    /// e.g. projects/myproject/locations/US
+    /// e.g. projects/myproject/locations/us
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// An expression for filtering the results of the request. Eligible
     /// fields for filtering are:
     ///
-    ///   * `listing`
-    ///   * `data_exchange`
+    ///   + `listing`
+    ///   + `data_exchange`
     ///
     /// Alternatively, a literal wrapped in double quotes may be provided.
     /// This will be checked for an exact match against both fields above.
@@ -1405,9 +1526,9 @@ pub struct ListSubscriptionsRequest {
     /// In all cases, the full Data Exchange or Listing resource name must
     /// be provided. Some example of using filters:
     ///
-    ///   * data_exchange="projects/myproject/locations/us/dataExchanges/123"
-    ///   * listing="projects/123/locations/us/dataExchanges/456/listings/789"
-    ///   * "projects/myproject/locations/us/dataExchanges/123"
+    ///   + data_exchange="projects/myproject/locations/us/dataExchanges/123"
+    ///   + listing="projects/123/locations/us/dataExchanges/456/listings/789"
+    ///   + "projects/myproject/locations/us/dataExchanges/123"
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// The maximum number of results to return in a single response page.
@@ -1432,8 +1553,8 @@ pub struct ListSubscriptionsResponse {
 pub struct ListSharedResourceSubscriptionsRequest {
     /// Required. Resource name of the requested target. This resource may be
     /// either a Listing or a DataExchange. e.g.
-    /// projects/123/locations/US/dataExchanges/456 OR e.g.
-    /// projects/123/locations/US/dataExchanges/456/listings/789
+    /// projects/123/locations/us/dataExchanges/456 OR e.g.
+    /// projects/123/locations/us/dataExchanges/456/listings/789
     #[prost(string, tag = "1")]
     pub resource: ::prost::alloc::string::String,
     /// If selected, includes deleted subscriptions in the response
@@ -1461,9 +1582,14 @@ pub struct ListSharedResourceSubscriptionsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RevokeSubscriptionRequest {
     /// Required. Resource name of the subscription to revoke.
-    /// e.g. projects/123/locations/US/subscriptions/456
+    /// e.g. projects/123/locations/us/subscriptions/456
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. If the subscription is commercial then this field must be set to
+    /// true, otherwise a failure is thrown. This acts as a safety guard to avoid
+    /// revoking commercial subscriptions accidentally.
+    #[prost(bool, tag = "2")]
+    pub revoke_commercial: bool,
 }
 /// Message for response when you revoke a subscription.
 /// Empty for now.
@@ -1473,7 +1599,7 @@ pub struct RevokeSubscriptionResponse {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSubscriptionRequest {
     /// Required. Resource name of the subscription to delete.
-    /// e.g. projects/123/locations/US/subscriptions/456
+    /// e.g. projects/123/locations/us/subscriptions/456
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -2015,8 +2141,10 @@ pub mod analytics_hub_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Creates a Subscription to a Data Clean Room. This is a long-running
-        /// operation as it will create one or more linked datasets.
+        /// Creates a Subscription to a Data Clean Room. This is a
+        /// long-running operation as it will create one or more linked datasets.
+        /// Throws a Bad Request error if the Data Exchange does not contain any
+        /// listings.
         pub async fn subscribe_data_exchange(
             &mut self,
             request: impl tonic::IntoRequest<super::SubscribeDataExchangeRequest>,

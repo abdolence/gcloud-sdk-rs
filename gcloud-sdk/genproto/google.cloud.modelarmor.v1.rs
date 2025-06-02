@@ -577,6 +577,10 @@ pub mod sanitization_result {
         /// Error message if any.
         #[prost(string, tag = "2")]
         pub error_message: ::prost::alloc::string::String,
+        /// Passthrough field defined in TemplateMetadata to indicate whether to
+        /// ignore partial invocation failures.
+        #[prost(bool, tag = "3")]
+        pub ignore_partial_invocation_failures: bool,
     }
 }
 /// Filter Result obtained after Sanitization operations.
@@ -759,6 +763,12 @@ pub mod byte_data_item {
         PlaintextUtf8 = 1,
         /// PDF
         Pdf = 2,
+        /// DOCX, DOCM, DOTX, DOTM
+        WordDocument = 3,
+        /// XLSX, XLSM, XLTX, XLYM
+        ExcelDocument = 4,
+        /// PPTX, PPTM, POTX, POTM, POT
+        PowerpointDocument = 5,
     }
     impl ByteItemType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -770,6 +780,9 @@ pub mod byte_data_item {
                 Self::Unspecified => "BYTE_ITEM_TYPE_UNSPECIFIED",
                 Self::PlaintextUtf8 => "PLAINTEXT_UTF8",
                 Self::Pdf => "PDF",
+                Self::WordDocument => "WORD_DOCUMENT",
+                Self::ExcelDocument => "EXCEL_DOCUMENT",
+                Self::PowerpointDocument => "POWERPOINT_DOCUMENT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -778,6 +791,9 @@ pub mod byte_data_item {
                 "BYTE_ITEM_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "PLAINTEXT_UTF8" => Some(Self::PlaintextUtf8),
                 "PDF" => Some(Self::Pdf),
+                "WORD_DOCUMENT" => Some(Self::WordDocument),
+                "EXCEL_DOCUMENT" => Some(Self::ExcelDocument),
+                "POWERPOINT_DOCUMENT" => Some(Self::PowerpointDocument),
                 _ => None,
             }
         }
@@ -1252,7 +1268,7 @@ impl RaiFilterType {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum DetectionConfidenceLevel {
-    /// Same as MEDIUM_AND_ABOVE.
+    /// Same as LOW_AND_ABOVE.
     Unspecified = 0,
     /// Highest chance of a false positive.
     LowAndAbove = 1,

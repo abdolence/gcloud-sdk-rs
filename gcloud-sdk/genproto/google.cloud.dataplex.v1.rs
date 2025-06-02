@@ -5021,14 +5021,15 @@ pub mod metadata_job {
         #[prost(message, optional, tag = "5")]
         pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     }
-    /// Export Job Results. The result is based on the snapshot at the time when
-    /// the job is created.
+    /// Summary results from a metadata export job. The results are a snapshot of
+    /// the metadata at the time when the job was created. The exported entries are
+    /// saved to a Cloud Storage bucket.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExportJobResult {
-        /// Output only. The number of entries that have been exported.
+        /// Output only. The number of entries that were exported.
         #[prost(int64, tag = "1")]
         pub exported_entries: i64,
-        /// Output only. The error message if the export job failed.
+        /// Output only. The error message if the metadata export job failed.
         #[prost(string, tag = "2")]
         pub error_message: ::prost::alloc::string::String,
     }
@@ -5049,8 +5050,9 @@ pub mod metadata_job {
         /// this job.
         ///
         /// A metadata import file defines the values to set for each of the entries
-        /// and aspects in a metadata job. For more information about how to create a
-        /// metadata import file and the file requirements, see [Metadata import
+        /// and aspects in a metadata import job. For more information about how to
+        /// create a metadata import file and the file requirements, see [Metadata
+        /// import
         /// file](<https://cloud.google.com/dataplex/docs/import-metadata#metadata-import-file>).
         ///
         /// You can provide multiple metadata import files in the same metadata job.
@@ -5134,8 +5136,8 @@ pub mod metadata_job {
             #[prost(string, repeated, tag = "3")]
             pub aspect_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
-        /// Specifies how the entries and aspects in a metadata job are updated. For
-        /// more information, see [Sync
+        /// Specifies how the entries and aspects in a metadata import job are
+        /// updated. For more information, see [Sync
         /// mode](<https://cloud.google.com/dataplex/docs/import-metadata#sync-mode>).
         #[derive(
             Clone,
@@ -5251,65 +5253,78 @@ pub mod metadata_job {
             }
         }
     }
-    /// Export job specification.
+    /// Job specification for a metadata export job.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExportJobSpec {
-        /// Required. Selects the entries to be exported by this job.
+        /// Required. The scope of the export job.
         #[prost(message, optional, tag = "2")]
         pub scope: ::core::option::Option<export_job_spec::ExportJobScope>,
-        /// Required. The root path of the exported metadata.
-        /// Must be in the format: "gs://<bucket_id>"
-        /// Or specify a customized prefix after the bucket:
-        /// "gs://<bucket_id>/<folder1>/<folder2>/.../".
-        /// The length limit of the customized prefix is 128 characters.
-        /// The bucket must be in the same VPC-SC perimeter with the job.
+        /// Required. The root path of the Cloud Storage bucket to export the
+        /// metadata to, in the format `gs://{bucket}/`. You can optionally specify a
+        /// custom prefix after the bucket name, in the format
+        /// `gs://{bucket}/{prefix}/`. The maximum length of the custom prefix is 128
+        /// characters. Dataplex constructs the object path for the exported files by
+        /// using the bucket name and prefix that you provide, followed by a
+        /// system-generated path.
+        ///
+        /// The bucket must be in the same VPC Service Controls perimeter as the job.
         #[prost(string, tag = "3")]
         pub output_path: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `ExportJobSpec`.
     pub mod export_job_spec {
-        /// Scope of the export job.
+        /// The scope of the export job.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ExportJobScope {
-            /// Indicating if it is an organization level export job.
-            /// - When set to true, exports all entries from entry groups and projects
-            /// sharing the same organization id of the Metadata Job. Only projects and
-            /// entry groups in the VPC-SC perimeter will be exported. The projects and
-            /// entry groups are ignored.
-            /// - When set to false, one of the projects or entry groups must be
-            /// specified.
-            /// - Default to false.
+            /// Whether the metadata export job is an organization-level export job.
+            ///
+            /// - If `true`, the job exports the entries from the same organization and
+            /// VPC Service Controls perimeter as the job. The project that the job
+            /// belongs to determines the VPC Service Controls perimeter. If you set
+            /// the job scope to be at the organization level, then don't provide a
+            /// list of projects or entry groups.
+            /// - If `false`, you must specify a list of projects or a list of entry
+            /// groups whose entries you want to export.
+            ///
+            /// The default is `false`.
             #[prost(bool, tag = "1")]
             pub organization_level: bool,
-            /// The projects that are in the scope of the export job. Can either be
-            /// project numbers or project IDs. If specified, only the entries from the
-            /// specified projects will be exported. The projects must be in the same
-            /// organization and in the VPC-SC perimeter. Either projects or
-            /// entry_groups can be specified when organization_level_export is set to
-            /// false.
-            /// Must follow the format: "projects/<project_id_or_number>"
+            /// The projects whose metadata you want to export, in the format
+            /// `projects/{project_id_or_number}`. Only the entries from
+            /// the specified projects are exported.
+            ///
+            /// The projects must be in the same organization and VPC Service Controls
+            /// perimeter as the job.
+            ///
+            /// If you set the job scope to be a list of projects, then set the
+            /// organization-level export flag to false and don't provide a list of
+            /// entry groups.
             #[prost(string, repeated, tag = "2")]
             pub projects: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-            /// The entry groups that are in scope for the export job. Optional. If
-            /// specified, only entries in the specified entry groups will be exported
-            /// by the job. Must be in the VPC-SC perimeter of the job. The location of
-            /// the entry groups must be the same as the job. Either projects or
-            /// entry_groups can be specified when organization_level_export is set to
-            /// false. Must follow the format:
-            /// "projects/<project_id_or_number>/locations/<location>/entryGroups/<entry_group_id>"
+            /// The entry groups whose metadata you want to export, in the format
+            /// `projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}`.
+            /// Only the entries in the specified entry groups are exported.
+            ///
+            /// The entry groups must be in the same location and the same VPC Service
+            /// Controls perimeter as the job.
+            ///
+            /// If you set the job scope to be a list of entry groups, then set the
+            /// organization-level export flag to false and don't provide a list of
+            /// projects.
             #[prost(string, repeated, tag = "3")]
             pub entry_groups: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-            /// If specified, only entries of the specified types will be
-            /// affected by the job.
-            /// Must follow the format:
-            /// "projects/<project_id_or_number>/locations/<location>/entryTypes/<entry_type_id>"
+            /// The entry types that are in scope for the export job, specified as
+            /// relative resource names in the format
+            /// `projects/{project_id_or_number}/locations/{location}/entryTypes/{entry_type_id}`.
+            /// Only entries that belong to the specified entry types are affected by
+            /// the job.
             #[prost(string, repeated, tag = "4")]
             pub entry_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-            /// The aspect types that are in scope for the export job.
-            /// Optional. If specified, only aspects of the specified types will be
-            /// affected by the job.
-            /// Must follow the format:
-            /// "projects/<project_id_or_number>/locations/<location>/aspectTypes/<aspect_type_id>"
+            /// The aspect types that are in scope for the export job, specified as
+            /// relative resource names in the format
+            /// `projects/{project_id_or_number}/locations/{location}/aspectTypes/{aspect_type_id}`.
+            /// Only aspects that belong to the specified aspect types are affected by
+            /// the job.
             #[prost(string, repeated, tag = "5")]
             pub aspect_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
@@ -5414,7 +5429,7 @@ pub mod metadata_job {
         Unspecified = 0,
         /// Import job.
         Import = 1,
-        /// Export job type.
+        /// Export job.
         Export = 2,
     }
     impl Type {
@@ -6456,7 +6471,7 @@ pub mod encryption_config {
         pub enum ErrorCode {
             /// The error code is not specified
             Unknown = 0,
-            /// Error because of internal server error, will be retried automatically..
+            /// Error because of internal server error, will be retried automatically.
             InternalError = 1,
             /// User action is required to resolve the error.
             RequireUserAction = 2,
@@ -6543,12 +6558,9 @@ pub struct CreateEncryptionConfigRequest {
     /// Required. The location at which the EncryptionConfig is to be created.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. The ID of the EncryptionConfig to create.
-    /// The ID must contain only letters (a-z, A-Z), numbers (0-9),
-    /// and hyphens (-).
-    /// The maximum size is 63 characters.
-    /// The first character must be a letter.
-    /// The last character must be a letter or a number.
+    /// Required. The ID of the
+    /// [EncryptionConfig][google.cloud.dataplex.v1.EncryptionConfig] to create.
+    /// Currently, only a value of "default" is supported.
     #[prost(string, tag = "2")]
     pub encryption_config_id: ::prost::alloc::string::String,
     /// Required. The EncryptionConfig to create.
@@ -7547,7 +7559,7 @@ pub struct DataDiscoveryResult {
     pub bigquery_publishing: ::core::option::Option<
         data_discovery_result::BigQueryPublishing,
     >,
-    /// Output only. Statistics of the DataDiscoveryScan.
+    /// Output only. Describes result statistics of a data scan discovery job.
     #[prost(message, optional, tag = "2")]
     pub scan_statistics: ::core::option::Option<data_discovery_result::ScanStatistics>,
 }
@@ -7563,7 +7575,7 @@ pub mod data_discovery_result {
         #[prost(string, tag = "2")]
         pub location: ::prost::alloc::string::String,
     }
-    /// Statistics of the DataDiscoveryScan.
+    /// Describes result statistics of a data scan discovery job.
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct ScanStatistics {
         /// The number of files scanned.

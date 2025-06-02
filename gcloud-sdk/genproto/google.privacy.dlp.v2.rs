@@ -962,6 +962,11 @@ pub struct TableReference {
     /// Name of the table.
     #[prost(string, tag = "2")]
     pub table_id: ::prost::alloc::string::String,
+    /// The Google Cloud project ID of the project containing the table.
+    /// If omitted, the project ID is inferred from the parent project. This field
+    /// is required if the parent resource is an organization.
+    #[prost(string, tag = "3")]
+    pub project_id: ::prost::alloc::string::String,
 }
 /// Message defining a field of a BigQuery table.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5186,33 +5191,79 @@ pub mod action {
     /// Compatible with: Inspect
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PublishFindingsToCloudDataCatalog {}
-    /// Create a de-identified copy of the requested table or files.
+    /// Create a de-identified copy of a storage bucket. Only compatible
+    /// with Cloud Storage buckets.
+    ///
     ///
     /// A TransformationDetail will be created for each transformation.
     ///
-    /// If any rows in BigQuery are skipped during de-identification
-    /// (transformation errors or row size exceeds BigQuery insert API limits) they
-    /// are placed in the failure output table. If the original row exceeds
-    /// the BigQuery insert API limit it will be truncated when written to the
-    /// failure output table. The failure output table can be set in the
-    /// action.deidentify.output.big_query_output.deidentified_failure_output_table
-    /// field, if no table is set, a table will be automatically created in the
-    /// same project and dataset as the original table.
     ///
-    /// Compatible with: Inspect
+    /// Compatible with: Inspection of Cloud Storage
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Deidentify {
         /// User specified deidentify templates and configs for structured,
         /// unstructured, and image files.
         #[prost(message, optional, tag = "7")]
         pub transformation_config: ::core::option::Option<super::TransformationConfig>,
-        /// Config for storing transformation details. This is separate from the
-        /// de-identified content, and contains metadata about the successful
-        /// transformations and/or failures that occurred while de-identifying. This
-        /// needs to be set in order for users to access information about the status
-        /// of each transformation (see
+        /// Config for storing transformation details.
+        ///
+        /// This field specifies the configuration for storing detailed metadata
+        /// about each transformation performed during a de-identification process.
+        /// The metadata is stored separately from the de-identified content itself
+        /// and provides a granular record of both successful transformations and any
+        /// failures that occurred.
+        ///
+        /// Enabling this configuration is essential for users who need to access
+        /// comprehensive information about the status, outcome, and specifics of
+        /// each transformation. The details are captured in the
         /// [TransformationDetails][google.privacy.dlp.v2.TransformationDetails]
-        /// message for more information about what is noted).
+        /// message for each operation.
+        ///
+        /// Key use cases:
+        ///
+        /// * **Auditing and compliance**
+        ///      * Provides a verifiable audit trail of de-identification activities,
+        ///      which is crucial for meeting regulatory requirements and internal
+        ///      data governance policies.
+        ///      * Logs what data was transformed, what transformations were applied,
+        ///      when they occurred, and their success status. This helps
+        ///      demonstrate accountability and due diligence in protecting
+        ///      sensitive data.
+        ///
+        /// * **Troubleshooting and debugging**
+        ///      * Offers detailed error messages and context if a transformation
+        ///      fails. This information is useful for diagnosing and resolving
+        ///      issues in the de-identification pipeline.
+        ///      * Helps pinpoint the exact location and nature of failures, speeding
+        ///      up the debugging process.
+        ///
+        /// * **Process verification and quality assurance**
+        ///      * Allows users to confirm that de-identification rules and
+        ///      transformations were applied correctly and consistently across
+        ///      the dataset as intended.
+        ///      * Helps in verifying the effectiveness of the chosen
+        ///      de-identification strategies.
+        ///
+        /// * **Data lineage and impact analysis**
+        ///      * Creates a record of how data elements were modified, contributing
+        ///      to data lineage. This is useful for understanding the provenance
+        ///      of de-identified data.
+        ///      * Aids in assessing the potential impact of de-identification choices
+        ///      on downstream analytical processes or data usability.
+        ///
+        /// * **Reporting and operational insights**
+        ///      * You can analyze the metadata stored in a queryable BigQuery table
+        ///      to generate reports on transformation success rates, common
+        ///      error types, processing volumes (e.g., transformedBytes), and the
+        ///      types of transformations applied.
+        ///      * These insights can inform optimization of de-identification
+        ///      configurations and resource planning.
+        ///
+        /// To take advantage of these benefits, set this configuration. The stored
+        /// details include a description of the transformation, success or
+        /// error codes, error messages, the number of bytes transformed, the
+        /// location of the transformed content, and identifiers for the job and
+        /// source data.
         #[prost(message, optional, tag = "3")]
         pub transformation_details_storage_config: ::core::option::Option<
             super::TransformationDetailsStorageConfig,
@@ -5791,7 +5842,7 @@ pub struct InspectJobConfig {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataProfileAction {
     /// Type of action to execute when a profile is generated.
-    #[prost(oneof = "data_profile_action::Action", tags = "1, 2, 3, 4, 8")]
+    #[prost(oneof = "data_profile_action::Action", tags = "1, 2, 3, 4, 8, 9")]
     pub action: ::core::option::Option<data_profile_action::Action>,
 }
 /// Nested message and enum types in `DataProfileAction`.
@@ -5918,6 +5969,19 @@ pub mod data_profile_action {
     /// Center for each profile.
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct PublishToSecurityCommandCenter {}
+    /// Create Dataplex Catalog aspects for profiled resources with the aspect type
+    /// Sensitive Data Protection Profile. To learn more about aspects, see
+    /// <https://cloud.google.com/sensitive-data-protection/docs/add-aspects.>
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct PublishToDataplexCatalog {
+        /// Whether creating a Dataplex Catalog aspect for a profiled resource should
+        /// lower the risk of the profile for that resource. This also lowers the
+        /// data risk of resources at the lower levels of the resource hierarchy. For
+        /// example, reducing the data risk of a table data profile also reduces the
+        /// data risk of the constituent column data profiles.
+        #[prost(bool, tag = "1")]
+        pub lower_data_risk_to_low: bool,
+    }
     /// If set, attaches the \[tags\]
     /// (<https://cloud.google.com/resource-manager/docs/tags/tags-overview>)
     /// provided to profiled resources. Tags support [access
@@ -6066,6 +6130,10 @@ pub mod data_profile_action {
         /// Tags the profiled resources with the specified tag values.
         #[prost(message, tag = "8")]
         TagResources(TagResources),
+        /// Publishes a portion of each profile to Dataplex Catalog with the aspect
+        /// type Sensitive Data Protection Profile.
+        #[prost(message, tag = "9")]
+        PublishToDataplexCatalog(PublishToDataplexCatalog),
     }
 }
 /// Details about a piece of potentially sensitive information that was detected
@@ -6101,6 +6169,14 @@ pub struct DataProfileFinding {
     /// How broadly a resource has been shared.
     #[prost(enumeration = "ResourceVisibility", tag = "8")]
     pub resource_visibility: i32,
+    /// The [full resource
+    /// name](<https://cloud.google.com/apis/design/resource_names#full_resource_name>)
+    /// of the resource profiled for this finding.
+    #[prost(string, tag = "9")]
+    pub full_resource_name: ::prost::alloc::string::String,
+    /// The type of the resource that was profiled.
+    #[prost(message, optional, tag = "10")]
+    pub data_source_type: ::core::option::Option<DataSourceType>,
 }
 /// Location of a data profile finding within a resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -9512,7 +9588,8 @@ pub struct FileStoreDataProfile {
     /// The BigQuery table to which the sample findings are written.
     #[prost(message, optional, tag = "22")]
     pub sample_findings_table: ::core::option::Option<BigQueryTable>,
-    /// The file store does not have any files.
+    /// The file store does not have any files. If the profiling operation failed,
+    /// this is false.
     #[prost(bool, tag = "23")]
     pub file_store_is_empty: bool,
     /// The tags attached to the resource, including any tags attached during
