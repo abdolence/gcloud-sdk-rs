@@ -1242,6 +1242,104 @@ impl ClientLibraryDestination {
         }
     }
 }
+/// Rich semantic information of an API field beyond basic typing.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FieldInfo {
+    /// The standard format of a field value. This does not explicitly configure
+    /// any API consumer, just documents the API's format for the field it is
+    /// applied to.
+    #[prost(enumeration = "field_info::Format", tag = "1")]
+    pub format: i32,
+    /// The type(s) that the annotated, generic field may represent.
+    ///
+    /// Currently, this must only be used on fields of type `google.protobuf.Any`.
+    /// Supporting other generic types may be considered in the future.
+    #[prost(message, repeated, tag = "2")]
+    pub referenced_types: ::prost::alloc::vec::Vec<TypeReference>,
+}
+/// Nested message and enum types in `FieldInfo`.
+pub mod field_info {
+    /// The standard format of a field value. The supported formats are all backed
+    /// by either an RFC defined by the IETF or a Google-defined AIP.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Format {
+        /// Default, unspecified value.
+        Unspecified = 0,
+        /// Universally Unique Identifier, version 4, value as defined by
+        /// <https://datatracker.ietf.org/doc/html/rfc4122.> The value may be
+        /// normalized to entirely lowercase letters. For example, the value
+        /// `F47AC10B-58CC-0372-8567-0E02B2C3D479` would be normalized to
+        /// `f47ac10b-58cc-0372-8567-0e02b2c3d479`.
+        Uuid4 = 1,
+        /// Internet Protocol v4 value as defined by [RFC
+        /// 791](<https://datatracker.ietf.org/doc/html/rfc791>). The value may be
+        /// condensed, with leading zeros in each octet stripped. For example,
+        /// `001.022.233.040` would be condensed to `1.22.233.40`.
+        Ipv4 = 2,
+        /// Internet Protocol v6 value as defined by [RFC
+        /// 2460](<https://datatracker.ietf.org/doc/html/rfc2460>). The value may be
+        /// normalized to entirely lowercase letters with zeros compressed, following
+        /// [RFC 5952](<https://datatracker.ietf.org/doc/html/rfc5952>). For example,
+        /// the value `2001:0DB8:0::0` would be normalized to `2001:db8::`.
+        Ipv6 = 3,
+        /// An IP address in either v4 or v6 format as described by the individual
+        /// values defined herein. See the comments on the IPV4 and IPV6 types for
+        /// allowed normalizations of each.
+        Ipv4OrIpv6 = 4,
+    }
+    impl Format {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "FORMAT_UNSPECIFIED",
+                Self::Uuid4 => "UUID4",
+                Self::Ipv4 => "IPV4",
+                Self::Ipv6 => "IPV6",
+                Self::Ipv4OrIpv6 => "IPV4_OR_IPV6",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                "UUID4" => Some(Self::Uuid4),
+                "IPV4" => Some(Self::Ipv4),
+                "IPV6" => Some(Self::Ipv6),
+                "IPV4_OR_IPV6" => Some(Self::Ipv4OrIpv6),
+                _ => None,
+            }
+        }
+    }
+}
+/// A reference to a message type, for use in [FieldInfo][google.api.FieldInfo].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TypeReference {
+    /// The name of the type that the annotated, generic field may represent.
+    /// If the type is in the same protobuf package, the value can be the simple
+    /// message name e.g., `"MyMessage"`. Otherwise, the value must be the
+    /// fully-qualified message name e.g., `"google.library.v1.Book"`.
+    ///
+    /// If the type(s) are unknown to the service (e.g. the field accepts generic
+    /// user input), use the wildcard `"*"` to denote this behavior.
+    ///
+    /// See [AIP-202](<https://google.aip.dev/202#type-references>) for more details.
+    #[prost(string, tag = "1")]
+    pub type_name: ::prost::alloc::string::String,
+}
 /// `Authentication` defines the authentication configuration for API methods
 /// provided by an API service.
 ///
@@ -3122,104 +3220,6 @@ impl ErrorReason {
             _ => None,
         }
     }
-}
-/// Rich semantic information of an API field beyond basic typing.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FieldInfo {
-    /// The standard format of a field value. This does not explicitly configure
-    /// any API consumer, just documents the API's format for the field it is
-    /// applied to.
-    #[prost(enumeration = "field_info::Format", tag = "1")]
-    pub format: i32,
-    /// The type(s) that the annotated, generic field may represent.
-    ///
-    /// Currently, this must only be used on fields of type `google.protobuf.Any`.
-    /// Supporting other generic types may be considered in the future.
-    #[prost(message, repeated, tag = "2")]
-    pub referenced_types: ::prost::alloc::vec::Vec<TypeReference>,
-}
-/// Nested message and enum types in `FieldInfo`.
-pub mod field_info {
-    /// The standard format of a field value. The supported formats are all backed
-    /// by either an RFC defined by the IETF or a Google-defined AIP.
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum Format {
-        /// Default, unspecified value.
-        Unspecified = 0,
-        /// Universally Unique Identifier, version 4, value as defined by
-        /// <https://datatracker.ietf.org/doc/html/rfc4122.> The value may be
-        /// normalized to entirely lowercase letters. For example, the value
-        /// `F47AC10B-58CC-0372-8567-0E02B2C3D479` would be normalized to
-        /// `f47ac10b-58cc-0372-8567-0e02b2c3d479`.
-        Uuid4 = 1,
-        /// Internet Protocol v4 value as defined by [RFC
-        /// 791](<https://datatracker.ietf.org/doc/html/rfc791>). The value may be
-        /// condensed, with leading zeros in each octet stripped. For example,
-        /// `001.022.233.040` would be condensed to `1.22.233.40`.
-        Ipv4 = 2,
-        /// Internet Protocol v6 value as defined by [RFC
-        /// 2460](<https://datatracker.ietf.org/doc/html/rfc2460>). The value may be
-        /// normalized to entirely lowercase letters with zeros compressed, following
-        /// [RFC 5952](<https://datatracker.ietf.org/doc/html/rfc5952>). For example,
-        /// the value `2001:0DB8:0::0` would be normalized to `2001:db8::`.
-        Ipv6 = 3,
-        /// An IP address in either v4 or v6 format as described by the individual
-        /// values defined herein. See the comments on the IPV4 and IPV6 types for
-        /// allowed normalizations of each.
-        Ipv4OrIpv6 = 4,
-    }
-    impl Format {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                Self::Unspecified => "FORMAT_UNSPECIFIED",
-                Self::Uuid4 => "UUID4",
-                Self::Ipv4 => "IPV4",
-                Self::Ipv6 => "IPV6",
-                Self::Ipv4OrIpv6 => "IPV4_OR_IPV6",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
-                "UUID4" => Some(Self::Uuid4),
-                "IPV4" => Some(Self::Ipv4),
-                "IPV6" => Some(Self::Ipv6),
-                "IPV4_OR_IPV6" => Some(Self::Ipv4OrIpv6),
-                _ => None,
-            }
-        }
-    }
-}
-/// A reference to a message type, for use in [FieldInfo][google.api.FieldInfo].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TypeReference {
-    /// The name of the type that the annotated, generic field may represent.
-    /// If the type is in the same protobuf package, the value can be the simple
-    /// message name e.g., `"MyMessage"`. Otherwise, the value must be the
-    /// fully-qualified message name e.g., `"google.library.v1.Book"`.
-    ///
-    /// If the type(s) are unknown to the service (e.g. the field accepts generic
-    /// user input), use the wildcard `"*"` to denote this behavior.
-    ///
-    /// See [AIP-202](<https://google.aip.dev/202#type-references>) for more details.
-    #[prost(string, tag = "1")]
-    pub type_name: ::prost::alloc::string::String,
 }
 /// Message that represents an arbitrary HTTP body. It should only be used for
 /// payload formats that can't be represented as JSON, such as raw binary or

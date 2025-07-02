@@ -70,6 +70,44 @@ pub mod import_error_context {
         UserEvent(::prost::alloc::string::String),
     }
 }
+/// The error payload that is populated on LRO sync APIs, including the
+/// following:
+///
+/// * `google.cloud.discoveryengine.v1main.DataConnectorService.SetUpDataConnector`
+/// * `google.cloud.discoveryengine.v1main.DataConnectorService.StartConnectorRun`
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConnectorRunErrorContext {
+    /// The operation resource name of the LRO to sync the connector.
+    #[prost(string, tag = "1")]
+    pub operation: ::prost::alloc::string::String,
+    /// The full resource name of the DataConnector.
+    /// Format:
+    /// `projects/*/locations/*/collections/*/dataConnector`.
+    #[prost(string, tag = "2")]
+    pub data_connector: ::prost::alloc::string::String,
+    /// The full resource name of the Connector Run.
+    /// Format:
+    /// `projects/*/locations/*/collections/*/dataConnector/connectorRuns/*`.
+    /// The `connector_run_id` is system-generated.
+    #[prost(string, tag = "3")]
+    pub connector_run: ::prost::alloc::string::String,
+    /// The entity to sync for the connector run.
+    #[prost(string, tag = "4")]
+    pub entity: ::prost::alloc::string::String,
+    /// The type of sync run.
+    /// Can be one of the following:
+    ///
+    /// * `FULL`
+    /// * `INCREMENTAL`
+    #[prost(string, tag = "5")]
+    pub sync_type: ::prost::alloc::string::String,
+    /// The time when the connector run started.
+    #[prost(message, optional, tag = "6")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time when the connector run ended.
+    #[prost(message, optional, tag = "7")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
 /// An error log which is reported to the Error Reporting system.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ErrorLog {
@@ -108,4 +146,7 @@ pub struct ErrorLog {
     /// The error payload that is populated on LRO import APIs.
     #[prost(message, optional, tag = "7")]
     pub import_payload: ::core::option::Option<ImportErrorContext>,
+    /// The error payload that is populated on LRO connector sync APIs.
+    #[prost(message, optional, tag = "8")]
+    pub connector_run_payload: ::core::option::Option<ConnectorRunErrorContext>,
 }

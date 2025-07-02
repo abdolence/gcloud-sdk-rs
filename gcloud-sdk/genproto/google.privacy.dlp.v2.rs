@@ -7138,18 +7138,18 @@ pub mod discovery_cloud_storage_filter {
         Others(super::AllOtherResources),
     }
 }
-/// Match file stores (e.g. buckets) using regex filters.
+/// Match file stores (e.g. buckets) using filters.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FileStoreCollection {
-    /// The first filter containing a pattern that matches a file store will
-    /// be used.
+    /// The first filter containing a pattern that matches a file store will be
+    /// used.
     #[prost(oneof = "file_store_collection::Pattern", tags = "1")]
     pub pattern: ::core::option::Option<file_store_collection::Pattern>,
 }
 /// Nested message and enum types in `FileStoreCollection`.
 pub mod file_store_collection {
-    /// The first filter containing a pattern that matches a file store will
-    /// be used.
+    /// The first filter containing a pattern that matches a file store will be
+    /// used.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Pattern {
         /// Optional. A collection of regular expressions to match a file store
@@ -10394,6 +10394,15 @@ pub mod processing_location {
         #[prost(message, optional, tag = "200")]
         pub global_processing: ::core::option::Option<GlobalProcessing>,
     }
+}
+/// Collection of findings saved to a Cloud Storage bucket. This is used as the
+/// proto schema for textproto files created when specifying a cloud storage
+/// path to save inspection findings.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SaveToGcsFindingsOutput {
+    /// List of findings.
+    #[prost(message, repeated, tag = "1")]
+    pub findings: ::prost::alloc::vec::Vec<Finding>,
 }
 /// Enum of possible outcomes of transformations. SUCCESS if transformation and
 /// storing of transformation was successful, otherwise, reason for not

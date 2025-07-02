@@ -410,9 +410,9 @@ pub struct ExplicitDecodingConfig {
     #[prost(enumeration = "explicit_decoding_config::AudioEncoding", tag = "1")]
     pub encoding: i32,
     /// Optional. Sample rate in Hertz of the audio data sent for recognition.
-    /// Valid values are: 8000-48000. 16000 is optimal. For best results, set the
-    /// sampling rate of the audio source to 16000 Hz. If that's not possible, use
-    /// the native sample rate of the audio source (instead of re-sampling).
+    /// Valid values are: 8000-48000, and 16000 is optimal. For best results, set
+    /// the sampling rate of the audio source to 16000 Hz. If that's not possible,
+    /// use the native sample rate of the audio source (instead of resampling).
     /// Note that this field is marked as OPTIONAL for backward compatibility
     /// reasons. It is (and has always been) effectively REQUIRED.
     #[prost(int32, tag = "2")]
@@ -707,6 +707,22 @@ pub mod speech_adaptation {
         }
     }
 }
+/// Denoiser config. May not be supported for all models and may
+/// have no effect.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct DenoiserConfig {
+    /// Denoise audio before sending to the transcription model.
+    #[prost(bool, tag = "1")]
+    pub denoise_audio: bool,
+    /// Signal-to-Noise Ratio (SNR) threshold for the denoiser. Here SNR means the
+    /// loudness of the speech signal. Audio with an SNR below this threshold,
+    /// meaning the speech is too quiet, will be prevented from being sent to the
+    /// transcription model.
+    ///
+    /// If snr_threshold=0, no filtering will be applied.
+    #[prost(float, tag = "2")]
+    pub snr_threshold: f32,
+}
 /// Provides information to the Recognizer that specifies how to process the
 /// recognition request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -752,6 +768,10 @@ pub struct RecognitionConfig {
     /// the given audio to the desired language for supported models.
     #[prost(message, optional, tag = "15")]
     pub translation_config: ::core::option::Option<TranslationConfig>,
+    /// Optional. Optional denoiser config. May not be supported for all models
+    /// and may have no effect.
+    #[prost(message, optional, tag = "16")]
+    pub denoiser_config: ::core::option::Option<DenoiserConfig>,
     /// Decoding parameters for audio being sent for recognition.
     #[prost(oneof = "recognition_config::DecodingConfig", tags = "7, 8")]
     pub decoding_config: ::core::option::Option<recognition_config::DecodingConfig>,
@@ -2845,7 +2865,7 @@ pub mod speech_client {
         }
     }
 }
-/// Representes a singular feature of a model. If the feature is `recognizer`,
+/// Represents a singular feature of a model. If the feature is `recognizer`,
 /// the release_state of the feature represents the release_state of the model
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModelFeature {

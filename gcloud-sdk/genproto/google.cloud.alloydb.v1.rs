@@ -431,8 +431,7 @@ pub struct ContinuousBackupInfo {
     /// if ContinuousBackup is not enabled.
     #[prost(message, optional, tag = "2")]
     pub enabled_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Days of the week on which a continuous backup is taken. Output
-    /// only field. Ignored if passed into the request.
+    /// Output only. Days of the week on which a continuous backup is taken.
     #[prost(
         enumeration = "super::super::super::r#type::DayOfWeek",
         repeated,
@@ -440,8 +439,16 @@ pub struct ContinuousBackupInfo {
         tag = "3"
     )]
     pub schedule: ::prost::alloc::vec::Vec<i32>,
-    /// Output only. The earliest restorable time that can be restored to. Output
-    /// only field.
+    /// Output only. The earliest restorable time that can be restored to. If
+    /// continuous backups and recovery was recently enabled, the earliest
+    /// restorable time is the creation time of the earliest eligible backup within
+    /// this cluster's continuous backup recovery window. After a cluster has had
+    /// continuous backups enabled for the duration of its recovery window, the
+    /// earliest restorable time becomes "now minus the recovery window". For
+    /// example, assuming a point in time recovery is attempted at 04/16/2025
+    /// 3:23:00PM with a 14d recovery window, the earliest restorable time would be
+    /// 04/02/2025 3:23:00PM. This field is only visible if the
+    /// CLUSTER_VIEW_CONTINUOUS_BACKUP cluster view is provided.
     #[prost(message, optional, tag = "4")]
     pub earliest_restorable_time: ::core::option::Option<::prost_types::Timestamp>,
 }
@@ -478,6 +485,11 @@ pub struct MaintenanceUpdatePolicy {
     pub maintenance_windows: ::prost::alloc::vec::Vec<
         maintenance_update_policy::MaintenanceWindow,
     >,
+    /// Periods to deny maintenance. Currently limited to 1.
+    #[prost(message, repeated, tag = "2")]
+    pub deny_maintenance_periods: ::prost::alloc::vec::Vec<
+        maintenance_update_policy::DenyMaintenancePeriod,
+    >,
 }
 /// Nested message and enum types in `MaintenanceUpdatePolicy`.
 pub mod maintenance_update_policy {
@@ -496,6 +508,30 @@ pub mod maintenance_update_policy {
         pub start_time: ::core::option::Option<
             super::super::super::super::r#type::TimeOfDay,
         >,
+    }
+    /// DenyMaintenancePeriod definition. Excepting emergencies, maintenance
+    /// will not be scheduled to start within this deny period. The start_date must
+    /// be less than the end_date.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct DenyMaintenancePeriod {
+        /// Deny period start date.
+        /// This can be:
+        /// * A full date, with non-zero year, month and day values OR
+        /// * A month and day value, with a zero year for recurring
+        #[prost(message, optional, tag = "1")]
+        pub start_date: ::core::option::Option<super::super::super::super::r#type::Date>,
+        /// Deny period end date.
+        /// This can be:
+        /// * A full date, with non-zero year, month and day values OR
+        /// * A month and day value, with a zero year for recurring
+        #[prost(message, optional, tag = "2")]
+        pub end_date: ::core::option::Option<super::super::super::super::r#type::Date>,
+        /// Time in UTC when the deny period starts on start_date and ends on
+        /// end_date. This can be:
+        /// * Full time OR
+        /// * All zeros for 00:00:00 UTC
+        #[prost(message, optional, tag = "3")]
+        pub time: ::core::option::Option<super::super::super::super::r#type::TimeOfDay>,
     }
 }
 /// MaintenanceSchedule stores the maintenance schedule generated from
@@ -1026,6 +1062,15 @@ pub struct Instance {
     pub outbound_public_ip_addresses: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
     >,
+    /// Optional. Specifies whether an instance needs to spin up. Once the instance
+    /// is active, the activation policy can be updated to the `NEVER` to stop the
+    /// instance. Likewise, the activation policy can be updated to `ALWAYS` to
+    /// start the instance.
+    /// There are restrictions around when an instance can/cannot be activated (for
+    /// example, a read pool instance should be stopped before stopping primary
+    /// etc.). Please refer to the API documentation for more details.
+    #[prost(enumeration = "instance::ActivationPolicy", tag = "35")]
+    pub activation_policy: i32,
 }
 /// Nested message and enum types in `Instance`.
 pub mod instance {
@@ -1170,9 +1215,33 @@ pub mod instance {
         #[prost(string, tag = "3")]
         pub ip_address: ::prost::alloc::string::String,
         /// Output only. The status of the PSC service automation connection.
+        /// Possible values:
+        ///    "STATE_UNSPECIFIED" - An invalid state as the default case.
+        ///    "ACTIVE" - The connection has been created successfully.
+        ///    "FAILED" - The connection is not functional since some resources on the
+        /// connection fail to be created.
+        ///    "CREATING" - The connection is being created.
+        ///    "DELETING" - The connection is being deleted.
+        ///    "CREATE_REPAIRING" - The connection is being repaired to complete
+        /// creation.
+        ///    "DELETE_REPAIRING" - The connection is being repaired to complete
+        /// deletion.
         #[prost(string, tag = "4")]
         pub status: ::prost::alloc::string::String,
         /// Output only. The status of the service connection policy.
+        /// Possible values:
+        ///    "STATE_UNSPECIFIED" - Default state, when Connection Map is created
+        /// initially.
+        ///    "VALID" - Set when policy and map configuration is valid, and their
+        /// matching can lead to allowing creation of PSC Connections subject to
+        /// other constraints like connections limit.
+        ///    "CONNECTION_POLICY_MISSING" - No Service Connection Policy found for
+        /// this network and Service Class
+        ///    "POLICY_LIMIT_REACHED" - Service Connection Policy limit reached for
+        ///    this network and Service Class
+        ///    "CONSUMER_INSTANCE_PROJECT_NOT_ALLOWLISTED" - The consumer instance
+        /// project is not in AllowedGoogleProducersResourceHierarchyLevels of the
+        /// matching ServiceConnectionPolicy.
         #[prost(string, tag = "5")]
         pub consumer_network_status: ::prost::alloc::string::String,
     }
@@ -1221,6 +1290,22 @@ pub mod instance {
         /// server sending requests out into the internet.
         #[prost(bool, tag = "3")]
         pub enable_outbound_public_ip: bool,
+        /// Output only. The resource link for the VPC network in which instance
+        /// resources are created and from which they are accessible via Private IP.
+        /// This will be the same value as the parent cluster's network. It is
+        /// specified in the form: //
+        /// `projects/{project_number}/global/networks/{network_id}`.
+        #[prost(string, tag = "4")]
+        pub network: ::prost::alloc::string::String,
+        /// Optional. Name of the allocated IP range for the private IP AlloyDB
+        /// instance, for example: "google-managed-services-default". If set, the
+        /// instance IPs will be created from this allocated range and will override
+        /// the IP range used by the parent cluster. The range name must comply with
+        /// [RFC 1035](<http://datatracker.ietf.org/doc/html/rfc1035>). Specifically,
+        /// the name must be 1-63 characters long and match the regular expression
+        /// [a-z](\[-a-z0-9\]*[a-z0-9])?.
+        #[prost(string, tag = "5")]
+        pub allocated_ip_range_override: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `InstanceNetworkConfig`.
     pub mod instance_network_config {
@@ -1405,6 +1490,49 @@ pub mod instance {
             }
         }
     }
+    /// Specifies whether an instance needs to spin up.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ActivationPolicy {
+        /// The policy is not specified.
+        Unspecified = 0,
+        /// The instance is running.
+        Always = 1,
+        /// The instance is not running.
+        Never = 2,
+    }
+    impl ActivationPolicy {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ACTIVATION_POLICY_UNSPECIFIED",
+                Self::Always => "ALWAYS",
+                Self::Never => "NEVER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ACTIVATION_POLICY_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALWAYS" => Some(Self::Always),
+                "NEVER" => Some(Self::Never),
+                _ => None,
+            }
+        }
+    }
 }
 /// ConnectionInfo singleton resource.
 /// <https://google.aip.dev/156>
@@ -1454,11 +1582,17 @@ pub struct Backup {
     #[prost(message, optional, tag = "4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Update time stamp
+    ///
+    /// Users should not infer any meaning from this field. Its value is generally
+    /// unrelated to the timing of the backup creation operation.
     #[prost(message, optional, tag = "5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Delete time stamp
     #[prost(message, optional, tag = "15")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Timestamp when the resource finished being created.
+    #[prost(message, optional, tag = "26")]
+    pub create_completion_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Labels as key value pairs
     #[prost(map = "string, string", tag = "6")]
     pub labels: ::std::collections::HashMap<
@@ -2534,7 +2668,7 @@ pub mod upgrade_cluster_response {
         #[prost(string, tag = "3")]
         pub logs_url: ::prost::alloc::string::String,
     }
-    /// Details regarding the upgrade of instaces associated with a cluster.
+    /// Details regarding the upgrade of instances associated with a cluster.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InstanceUpgradeDetails {
         /// Normalized name of the instance.
@@ -2797,6 +2931,7 @@ pub struct PromoteClusterRequest {
 }
 /// Message for restoring a Cluster from a backup or another cluster at a given
 /// point in time.
+/// NEXT_ID: 11
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreClusterRequest {
     /// Required. The name of the parent resource. For the required format, see the

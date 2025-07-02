@@ -3767,6 +3767,57 @@ pub struct BackupInfo {
     #[prost(string, tag = "10")]
     pub source_backup: ::prost::alloc::string::String,
 }
+/// Represents a protobuf schema.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ProtoSchema {
+    /// Required. Contains a protobuf-serialized
+    /// [google.protobuf.FileDescriptorSet](<https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/descriptor.proto>),
+    /// which could include multiple proto files.
+    /// To generate it, [install](<https://grpc.io/docs/protoc-installation/>) and
+    /// run `protoc` with
+    /// `--include_imports` and `--descriptor_set_out`. For example, to generate
+    /// for moon/shot/app.proto, run
+    /// ```
+    /// $protoc  --proto_path=/app_path --proto_path=/lib_path \
+    ///           --include_imports \
+    ///           --descriptor_set_out=descriptors.pb \
+    ///           moon/shot/app.proto
+    /// ```
+    /// For more details, see protobuffer [self
+    /// description](<https://developers.google.com/protocol-buffers/docs/techniques#self-description>).
+    #[prost(bytes = "vec", tag = "2")]
+    pub proto_descriptors: ::prost::alloc::vec::Vec<u8>,
+}
+/// A named collection of related schemas.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SchemaBundle {
+    /// Identifier. The unique name identifying this schema bundle.
+    /// Values are of the form
+    /// `projects/{project}/instances/{instance}/tables/{table}/schemaBundles/{schema_bundle}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The etag for this schema bundle.
+    /// This may be sent on update and delete requests to ensure the
+    /// client has an up-to-date value before proceeding. The server
+    /// returns an ABORTED error on a mismatched etag.
+    #[prost(string, tag = "3")]
+    pub etag: ::prost::alloc::string::String,
+    /// The type of this schema bundle. The oneof case cannot change after
+    /// creation.
+    #[prost(oneof = "schema_bundle::Type", tags = "2")]
+    pub r#type: ::core::option::Option<schema_bundle::Type>,
+}
+/// Nested message and enum types in `SchemaBundle`.
+pub mod schema_bundle {
+    /// The type of this schema bundle. The oneof case cannot change after
+    /// creation.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Type {
+        /// Schema for Protobufs.
+        #[prost(message, tag = "2")]
+        ProtoSchema(super::ProtoSchema),
+    }
+}
 /// Indicates the type of the restore source.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -4623,7 +4674,8 @@ pub struct CreateAuthorizedViewRequest {
 /// The metadata for the Operation returned by CreateAuthorizedView.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAuthorizedViewMetadata {
-    /// The request that prompted the initiation of this CreateInstance operation.
+    /// The request that prompted the initiation of this CreateAuthorizedView
+    /// operation.
     #[prost(message, optional, tag = "1")]
     pub original_request: ::core::option::Option<CreateAuthorizedViewRequest>,
     /// The time at which the original request was received.
@@ -4656,8 +4708,8 @@ pub struct ListAuthorizedViewsRequest {
     /// Optional. The value of `next_page_token` returned by a previous call.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. The resource_view to be applied to the returned views' fields.
-    /// Default to NAME_ONLY.
+    /// Optional. The resource_view to be applied to the returned AuthorizedViews'
+    /// fields. Default to NAME_ONLY.
     #[prost(enumeration = "authorized_view::ResponseView", tag = "4")]
     pub view: i32,
 }
@@ -4694,8 +4746,8 @@ pub struct GetAuthorizedViewRequest {
 pub struct UpdateAuthorizedViewRequest {
     /// Required. The AuthorizedView to update. The `name` in `authorized_view` is
     /// used to identify the AuthorizedView. AuthorizedView name must in this
-    /// format
-    /// projects/<project>/instances/<instance>/tables/<table>/authorizedViews/<authorized_view>
+    /// format:
+    /// `projects/{project}/instances/{instance}/tables/{table}/authorizedViews/{authorized_view}`.
     #[prost(message, optional, tag = "1")]
     pub authorized_view: ::core::option::Option<AuthorizedView>,
     /// Optional. The list of fields to update.
@@ -4740,6 +4792,135 @@ pub struct DeleteAuthorizedViewRequest {
     /// If an etag is provided and does not match the current etag of the
     /// AuthorizedView, deletion will be blocked and an ABORTED error will be
     /// returned.
+    #[prost(string, tag = "2")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// The request for
+/// [CreateSchemaBundle][google.bigtable.admin.v2.BigtableTableAdmin.CreateSchemaBundle].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateSchemaBundleRequest {
+    /// Required. The parent resource where this schema bundle will be created.
+    /// Values are of the form
+    /// `projects/{project}/instances/{instance}/tables/{table}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The unique ID to use for the schema bundle, which will become the
+    /// final component of the schema bundle's resource name.
+    #[prost(string, tag = "2")]
+    pub schema_bundle_id: ::prost::alloc::string::String,
+    /// Required. The schema bundle to create.
+    #[prost(message, optional, tag = "3")]
+    pub schema_bundle: ::core::option::Option<SchemaBundle>,
+}
+/// The metadata for the Operation returned by
+/// [CreateSchemaBundle][google.bigtable.admin.v2.BigtableTableAdmin.CreateSchemaBundle].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateSchemaBundleMetadata {
+    /// The unique name identifying this schema bundle.
+    /// Values are of the form
+    /// `projects/{project}/instances/{instance}/tables/{table}/schemaBundles/{schema_bundle}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The time at which this operation started.
+    #[prost(message, optional, tag = "2")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// If set, the time at which this operation finished or was canceled.
+    #[prost(message, optional, tag = "3")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// The request for
+/// [UpdateSchemaBundle][google.bigtable.admin.v2.BigtableTableAdmin.UpdateSchemaBundle].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateSchemaBundleRequest {
+    /// Required. The schema bundle to update.
+    ///
+    /// The schema bundle's `name` field is used to identify the schema bundle to
+    /// update. Values are of the form
+    /// `projects/{project}/instances/{instance}/tables/{table}/schemaBundles/{schema_bundle}`
+    #[prost(message, optional, tag = "1")]
+    pub schema_bundle: ::core::option::Option<SchemaBundle>,
+    /// Optional. The list of fields to update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Optional. If set, ignore the safety checks when updating the Schema Bundle.
+    /// The safety checks are:
+    /// - The new Schema Bundle is backwards compatible with the existing Schema
+    /// Bundle.
+    #[prost(bool, tag = "3")]
+    pub ignore_warnings: bool,
+}
+/// The metadata for the Operation returned by
+/// [UpdateSchemaBundle][google.bigtable.admin.v2.BigtableTableAdmin.UpdateSchemaBundle].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateSchemaBundleMetadata {
+    /// The unique name identifying this schema bundle.
+    /// Values are of the form
+    /// `projects/{project}/instances/{instance}/tables/{table}/schemaBundles/{schema_bundle}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The time at which this operation started.
+    #[prost(message, optional, tag = "2")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// If set, the time at which this operation finished or was canceled.
+    #[prost(message, optional, tag = "3")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// The request for
+/// [GetSchemaBundle][google.bigtable.admin.v2.BigtableTableAdmin.GetSchemaBundle].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetSchemaBundleRequest {
+    /// Required. The unique name of the schema bundle to retrieve.
+    /// Values are of the form
+    /// `projects/{project}/instances/{instance}/tables/{table}/schemaBundles/{schema_bundle}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for
+/// [ListSchemaBundles][google.bigtable.admin.v2.BigtableTableAdmin.ListSchemaBundles].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSchemaBundlesRequest {
+    /// Required. The parent, which owns this collection of schema bundles.
+    /// Values are of the form
+    /// `projects/{project}/instances/{instance}/tables/{table}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of schema bundles to return. If the value is positive,
+    /// the server may return at most this value. If unspecified, the server will
+    /// return the maximum allowed page size.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListSchemaBundles` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListSchemaBundles` must
+    /// match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The response for
+/// [ListSchemaBundles][google.bigtable.admin.v2.BigtableTableAdmin.ListSchemaBundles].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSchemaBundlesResponse {
+    /// The schema bundles from the specified table.
+    #[prost(message, repeated, tag = "1")]
+    pub schema_bundles: ::prost::alloc::vec::Vec<SchemaBundle>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The request for
+/// [DeleteSchemaBundle][google.bigtable.admin.v2.BigtableTableAdmin.DeleteSchemaBundle].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteSchemaBundleRequest {
+    /// Required. The unique name of the schema bundle to delete.
+    /// Values are of the form
+    /// `projects/{project}/instances/{instance}/tables/{table}/schemaBundles/{schema_bundle}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The etag of the schema bundle.
+    /// If this is provided, it must match the server's etag. The server
+    /// returns an ABORTED error on a mismatched etag.
     #[prost(string, tag = "2")]
     pub etag: ::prost::alloc::string::String,
 }
@@ -5672,7 +5853,7 @@ pub mod bigtable_table_admin_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Gets the access control policy for a Table or Backup resource.
+        /// Gets the access control policy for a Bigtable resource.
         /// Returns an empty policy if the resource exists but does not have a policy
         /// set.
         pub async fn get_iam_policy(
@@ -5706,7 +5887,7 @@ pub mod bigtable_table_admin_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Sets the access control policy on a Table or Backup resource.
+        /// Sets the access control policy on a Bigtable resource.
         /// Replaces any existing policy.
         pub async fn set_iam_policy(
             &mut self,
@@ -5739,7 +5920,7 @@ pub mod bigtable_table_admin_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Returns permissions that the caller has on the specified Table or Backup
+        /// Returns permissions that the caller has on the specified Bigtable
         /// resource.
         pub async fn test_iam_permissions(
             &mut self,
@@ -5770,6 +5951,150 @@ pub mod bigtable_table_admin_client {
                     GrpcMethod::new(
                         "google.bigtable.admin.v2.BigtableTableAdmin",
                         "TestIamPermissions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new schema bundle in the specified table.
+        pub async fn create_schema_bundle(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateSchemaBundleRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableTableAdmin/CreateSchemaBundle",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.admin.v2.BigtableTableAdmin",
+                        "CreateSchemaBundle",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a schema bundle in the specified table.
+        pub async fn update_schema_bundle(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateSchemaBundleRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableTableAdmin/UpdateSchemaBundle",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.admin.v2.BigtableTableAdmin",
+                        "UpdateSchemaBundle",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets metadata information about the specified schema bundle.
+        pub async fn get_schema_bundle(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetSchemaBundleRequest>,
+        ) -> std::result::Result<tonic::Response<super::SchemaBundle>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableTableAdmin/GetSchemaBundle",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.admin.v2.BigtableTableAdmin",
+                        "GetSchemaBundle",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all schema bundles associated with the specified table.
+        pub async fn list_schema_bundles(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListSchemaBundlesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListSchemaBundlesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableTableAdmin/ListSchemaBundles",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.admin.v2.BigtableTableAdmin",
+                        "ListSchemaBundles",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a schema bundle in the specified table.
+        pub async fn delete_schema_bundle(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteSchemaBundleRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableTableAdmin/DeleteSchemaBundle",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.bigtable.admin.v2.BigtableTableAdmin",
+                        "DeleteSchemaBundle",
                     ),
                 );
             self.inner.unary(req, path, codec).await

@@ -3414,3 +3414,520 @@ pub mod spanner_client {
         }
     }
 }
+/// Spanner Change Streams enable customers to capture and stream out changes to
+/// their Spanner databases in real-time. A change stream
+/// can be created with option partition_mode='IMMUTABLE_KEY_RANGE' or
+/// partition_mode='MUTABLE_KEY_RANGE'.
+///
+/// This message is only used in Change Streams created with the option
+/// partition_mode='MUTABLE_KEY_RANGE'. Spanner automatically creates a special
+/// Table-Valued Function (TVF) along with each Change Streams. The function
+/// provides access to the change stream's records. The function is named
+/// READ_<change_stream_name> (where <change_stream_name> is the
+/// name of the change stream), and it returns a table with only one column
+/// called ChangeRecord.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ChangeStreamRecord {
+    /// One of the change stream subrecords.
+    #[prost(oneof = "change_stream_record::Record", tags = "1, 2, 3, 4, 5")]
+    pub record: ::core::option::Option<change_stream_record::Record>,
+}
+/// Nested message and enum types in `ChangeStreamRecord`.
+pub mod change_stream_record {
+    /// A data change record contains a set of changes to a table with the same
+    /// modification type (insert, update, or delete) committed at the same commit
+    /// timestamp in one change stream partition for the same transaction. Multiple
+    /// data change records can be returned for the same transaction across
+    /// multiple change stream partitions.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DataChangeRecord {
+        /// Indicates the timestamp in which the change was committed.
+        /// DataChangeRecord.commit_timestamps,
+        /// PartitionStartRecord.start_timestamps,
+        /// PartitionEventRecord.commit_timestamps, and
+        /// PartitionEndRecord.end_timestamps can have the same value in the same
+        /// partition.
+        #[prost(message, optional, tag = "1")]
+        pub commit_timestamp: ::core::option::Option<::prost_types::Timestamp>,
+        /// Record sequence numbers are unique and monotonically increasing (but not
+        /// necessarily contiguous) for a specific timestamp across record
+        /// types in the same partition. To guarantee ordered processing, the reader
+        /// should process records (of potentially different types) in
+        /// record_sequence order for a specific timestamp in the same partition.
+        ///
+        /// The record sequence number ordering across partitions is only meaningful
+        /// in the context of a specific transaction. Record sequence numbers are
+        /// unique across partitions for a specific transaction. Sort the
+        /// DataChangeRecords for the same
+        /// [server_transaction_id][google.spanner.v1.ChangeStreamRecord.DataChangeRecord.server_transaction_id]
+        /// by
+        /// [record_sequence][google.spanner.v1.ChangeStreamRecord.DataChangeRecord.record_sequence]
+        /// to reconstruct the ordering of the changes within the transaction.
+        #[prost(string, tag = "2")]
+        pub record_sequence: ::prost::alloc::string::String,
+        /// Provides a globally unique string that represents the transaction in
+        /// which the change was committed. Multiple transactions can have the same
+        /// commit timestamp, but each transaction has a unique
+        /// server_transaction_id.
+        #[prost(string, tag = "3")]
+        pub server_transaction_id: ::prost::alloc::string::String,
+        /// Indicates whether this is the last record for a transaction in the
+        ///   current partition. Clients can use this field to determine when all
+        ///   records for a transaction in the current partition have been received.
+        #[prost(bool, tag = "4")]
+        pub is_last_record_in_transaction_in_partition: bool,
+        /// Name of the table affected by the change.
+        #[prost(string, tag = "5")]
+        pub table: ::prost::alloc::string::String,
+        /// Provides metadata describing the columns associated with the
+        /// [mods][google.spanner.v1.ChangeStreamRecord.DataChangeRecord.mods] listed
+        /// below.
+        #[prost(message, repeated, tag = "6")]
+        pub column_metadata: ::prost::alloc::vec::Vec<
+            data_change_record::ColumnMetadata,
+        >,
+        /// Describes the changes that were made.
+        #[prost(message, repeated, tag = "7")]
+        pub mods: ::prost::alloc::vec::Vec<data_change_record::Mod>,
+        /// Describes the type of change.
+        #[prost(enumeration = "data_change_record::ModType", tag = "8")]
+        pub mod_type: i32,
+        /// Describes the value capture type that was specified in the change stream
+        /// configuration when this change was captured.
+        #[prost(enumeration = "data_change_record::ValueCaptureType", tag = "9")]
+        pub value_capture_type: i32,
+        /// Indicates the number of data change records that are part of this
+        /// transaction across all change stream partitions. This value can be used
+        /// to assemble all the records associated with a particular transaction.
+        #[prost(int32, tag = "10")]
+        pub number_of_records_in_transaction: i32,
+        /// Indicates the number of partitions that return data change records for
+        /// this transaction. This value can be helpful in assembling all records
+        /// associated with a particular transaction.
+        #[prost(int32, tag = "11")]
+        pub number_of_partitions_in_transaction: i32,
+        /// Indicates the transaction tag associated with this transaction.
+        #[prost(string, tag = "12")]
+        pub transaction_tag: ::prost::alloc::string::String,
+        /// Indicates whether the transaction is a system transaction. System
+        /// transactions include those issued by time-to-live (TTL), column backfill,
+        /// etc.
+        #[prost(bool, tag = "13")]
+        pub is_system_transaction: bool,
+    }
+    /// Nested message and enum types in `DataChangeRecord`.
+    pub mod data_change_record {
+        /// Metadata for a column.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ColumnMetadata {
+            /// Name of the column.
+            #[prost(string, tag = "1")]
+            pub name: ::prost::alloc::string::String,
+            /// Type of the column.
+            #[prost(message, optional, tag = "2")]
+            pub r#type: ::core::option::Option<super::super::Type>,
+            /// Indicates whether the column is a primary key column.
+            #[prost(bool, tag = "3")]
+            pub is_primary_key: bool,
+            /// Ordinal position of the column based on the original table definition
+            /// in the schema starting with a value of 1.
+            #[prost(int64, tag = "4")]
+            pub ordinal_position: i64,
+        }
+        /// Returns the value and associated metadata for a particular field of the
+        /// [Mod][google.spanner.v1.ChangeStreamRecord.DataChangeRecord.Mod].
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ModValue {
+            /// Index within the repeated
+            /// [column_metadata][google.spanner.v1.ChangeStreamRecord.DataChangeRecord.column_metadata]
+            /// field, to obtain the column metadata for the column that was modified.
+            #[prost(int32, tag = "1")]
+            pub column_metadata_index: i32,
+            /// The value of the column.
+            #[prost(message, optional, tag = "2")]
+            pub value: ::core::option::Option<::prost_types::Value>,
+        }
+        /// A mod describes all data changes in a watched table row.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Mod {
+            /// Returns the value of the primary key of the modified row.
+            #[prost(message, repeated, tag = "1")]
+            pub keys: ::prost::alloc::vec::Vec<ModValue>,
+            /// Returns the old values before the change for the modified columns.
+            /// Always empty for
+            /// [INSERT][google.spanner.v1.ChangeStreamRecord.DataChangeRecord.ModType.INSERT],
+            /// or if old values are not being captured specified by
+            /// [value_capture_type][google.spanner.v1.ChangeStreamRecord.DataChangeRecord.ValueCaptureType].
+            #[prost(message, repeated, tag = "2")]
+            pub old_values: ::prost::alloc::vec::Vec<ModValue>,
+            /// Returns the new values after the change for the modified columns.
+            /// Always empty for
+            /// [DELETE][google.spanner.v1.ChangeStreamRecord.DataChangeRecord.ModType.DELETE].
+            #[prost(message, repeated, tag = "3")]
+            pub new_values: ::prost::alloc::vec::Vec<ModValue>,
+        }
+        /// Mod type describes the type of change Spanner applied to the data. For
+        /// example, if the client submits an INSERT_OR_UPDATE request, Spanner will
+        /// perform an insert if there is no existing row and return ModType INSERT.
+        /// Alternatively, if there is an existing row, Spanner will perform an
+        /// update and return ModType UPDATE.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum ModType {
+            /// Not specified.
+            Unspecified = 0,
+            /// Indicates data was inserted.
+            Insert = 10,
+            /// Indicates existing data was updated.
+            Update = 20,
+            /// Indicates existing data was deleted.
+            Delete = 30,
+        }
+        impl ModType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "MOD_TYPE_UNSPECIFIED",
+                    Self::Insert => "INSERT",
+                    Self::Update => "UPDATE",
+                    Self::Delete => "DELETE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "MOD_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "INSERT" => Some(Self::Insert),
+                    "UPDATE" => Some(Self::Update),
+                    "DELETE" => Some(Self::Delete),
+                    _ => None,
+                }
+            }
+        }
+        /// Value capture type describes which values are recorded in the data
+        /// change record.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum ValueCaptureType {
+            /// Not specified.
+            Unspecified = 0,
+            /// Records both old and new values of the modified watched columns.
+            OldAndNewValues = 10,
+            /// Records only new values of the modified watched columns.
+            NewValues = 20,
+            /// Records new values of all watched columns, including modified and
+            /// unmodified columns.
+            NewRow = 30,
+            /// Records the new values of all watched columns, including modified and
+            /// unmodified columns. Also records the old values of the modified
+            /// columns.
+            NewRowAndOldValues = 40,
+        }
+        impl ValueCaptureType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "VALUE_CAPTURE_TYPE_UNSPECIFIED",
+                    Self::OldAndNewValues => "OLD_AND_NEW_VALUES",
+                    Self::NewValues => "NEW_VALUES",
+                    Self::NewRow => "NEW_ROW",
+                    Self::NewRowAndOldValues => "NEW_ROW_AND_OLD_VALUES",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "VALUE_CAPTURE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "OLD_AND_NEW_VALUES" => Some(Self::OldAndNewValues),
+                    "NEW_VALUES" => Some(Self::NewValues),
+                    "NEW_ROW" => Some(Self::NewRow),
+                    "NEW_ROW_AND_OLD_VALUES" => Some(Self::NewRowAndOldValues),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// A heartbeat record is returned as a progress indicator, when there are no
+    /// data changes or any other partition record types in the change stream
+    /// partition.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct HeartbeatRecord {
+        /// Indicates the timestamp at which the query has returned all the records
+        /// in the change stream partition with timestamp <= heartbeat timestamp.
+        /// The heartbeat timestamp will not be the same as the timestamps of other
+        /// record types in the same partition.
+        #[prost(message, optional, tag = "1")]
+        pub timestamp: ::core::option::Option<::prost_types::Timestamp>,
+    }
+    /// A partition start record serves as a notification that the client should
+    /// schedule the partitions to be queried. PartitionStartRecord returns
+    /// information about one or more partitions.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PartitionStartRecord {
+        /// Start timestamp at which the partitions should be queried to return
+        /// change stream records with timestamps >= start_timestamp.
+        /// DataChangeRecord.commit_timestamps,
+        /// PartitionStartRecord.start_timestamps,
+        /// PartitionEventRecord.commit_timestamps, and
+        /// PartitionEndRecord.end_timestamps can have the same value in the same
+        /// partition.
+        #[prost(message, optional, tag = "1")]
+        pub start_timestamp: ::core::option::Option<::prost_types::Timestamp>,
+        /// Record sequence numbers are unique and monotonically increasing (but not
+        /// necessarily contiguous) for a specific timestamp across record
+        /// types in the same partition. To guarantee ordered processing, the reader
+        /// should process records (of potentially different types) in
+        /// record_sequence order for a specific timestamp in the same partition.
+        #[prost(string, tag = "2")]
+        pub record_sequence: ::prost::alloc::string::String,
+        /// Unique partition identifiers to be used in queries.
+        #[prost(string, repeated, tag = "3")]
+        pub partition_tokens: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// A partition end record serves as a notification that the client should stop
+    /// reading the partition. No further records are expected to be retrieved on
+    /// it.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PartitionEndRecord {
+        /// End timestamp at which the change stream partition is terminated. All
+        /// changes generated by this partition will have timestamps <=
+        /// end_timestamp. DataChangeRecord.commit_timestamps,
+        /// PartitionStartRecord.start_timestamps,
+        /// PartitionEventRecord.commit_timestamps, and
+        /// PartitionEndRecord.end_timestamps can have the same value in the same
+        /// partition. PartitionEndRecord is the last record returned for a
+        /// partition.
+        #[prost(message, optional, tag = "1")]
+        pub end_timestamp: ::core::option::Option<::prost_types::Timestamp>,
+        /// Record sequence numbers are unique and monotonically increasing (but not
+        /// necessarily contiguous) for a specific timestamp across record
+        /// types in the same partition. To guarantee ordered processing, the reader
+        /// should process records (of potentially different types) in
+        /// record_sequence order for a specific timestamp in the same partition.
+        #[prost(string, tag = "2")]
+        pub record_sequence: ::prost::alloc::string::String,
+        /// Unique partition identifier describing the terminated change stream
+        /// partition.
+        /// [partition_token][google.spanner.v1.ChangeStreamRecord.PartitionEndRecord.partition_token]
+        /// is equal to the partition token of the change stream partition currently
+        /// queried to return this PartitionEndRecord.
+        #[prost(string, tag = "3")]
+        pub partition_token: ::prost::alloc::string::String,
+    }
+    /// A partition event record describes key range changes for a change stream
+    /// partition. The changes to a row defined by its primary key can be captured
+    /// in one change stream partition for a specific time range, and then be
+    /// captured in a different change stream partition for a different time range.
+    /// This movement of key ranges across change stream partitions is a reflection
+    /// of activities, such as Spanner's dynamic splitting and load balancing, etc.
+    /// Processing this event is needed if users want to guarantee processing of
+    /// the changes for any key in timestamp order. If time ordered processing of
+    /// changes for a primary key is not needed, this event can be ignored.
+    /// To guarantee time ordered processing for each primary key, if the event
+    /// describes move-ins, the reader of this partition needs to wait until the
+    /// readers of the source partitions have processed all records with timestamps
+    /// <= this PartitionEventRecord.commit_timestamp, before advancing beyond this
+    /// PartitionEventRecord. If the event describes move-outs, the reader can
+    /// notify the readers of the destination partitions that they can continue
+    /// processing.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PartitionEventRecord {
+        /// Indicates the commit timestamp at which the key range change occurred.
+        /// DataChangeRecord.commit_timestamps,
+        /// PartitionStartRecord.start_timestamps,
+        /// PartitionEventRecord.commit_timestamps, and
+        /// PartitionEndRecord.end_timestamps can have the same value in the same
+        /// partition.
+        #[prost(message, optional, tag = "1")]
+        pub commit_timestamp: ::core::option::Option<::prost_types::Timestamp>,
+        /// Record sequence numbers are unique and monotonically increasing (but not
+        /// necessarily contiguous) for a specific timestamp across record
+        /// types in the same partition. To guarantee ordered processing, the reader
+        /// should process records (of potentially different types) in
+        /// record_sequence order for a specific timestamp in the same partition.
+        #[prost(string, tag = "2")]
+        pub record_sequence: ::prost::alloc::string::String,
+        /// Unique partition identifier describing the partition this event
+        /// occurred on.
+        /// [partition_token][google.spanner.v1.ChangeStreamRecord.PartitionEventRecord.partition_token]
+        /// is equal to the partition token of the change stream partition currently
+        /// queried to return this PartitionEventRecord.
+        #[prost(string, tag = "3")]
+        pub partition_token: ::prost::alloc::string::String,
+        /// Set when one or more key ranges are moved into the change stream
+        /// partition identified by
+        /// [partition_token][google.spanner.v1.ChangeStreamRecord.PartitionEventRecord.partition_token].
+        ///
+        /// Example: Two key ranges are moved into partition (P1) from partition (P2)
+        /// and partition (P3) in a single transaction at timestamp T.
+        ///
+        /// The PartitionEventRecord returned in P1 will reflect the move as:
+        ///
+        /// PartitionEventRecord {
+        ///    commit_timestamp: T
+        ///    partition_token: "P1"
+        ///    move_in_events {
+        ///      source_partition_token: "P2"
+        ///    }
+        ///    move_in_events {
+        ///      source_partition_token: "P3"
+        ///    }
+        /// }
+        ///
+        /// The PartitionEventRecord returned in P2 will reflect the move as:
+        ///
+        /// PartitionEventRecord {
+        ///    commit_timestamp: T
+        ///    partition_token: "P2"
+        ///    move_out_events {
+        ///      destination_partition_token: "P1"
+        ///    }
+        /// }
+        ///
+        /// The PartitionEventRecord returned in P3 will reflect the move as:
+        ///
+        /// PartitionEventRecord {
+        ///    commit_timestamp: T
+        ///    partition_token: "P3"
+        ///    move_out_events {
+        ///      destination_partition_token: "P1"
+        ///    }
+        /// }
+        #[prost(message, repeated, tag = "4")]
+        pub move_in_events: ::prost::alloc::vec::Vec<
+            partition_event_record::MoveInEvent,
+        >,
+        /// Set when one or more key ranges are moved out of the change stream
+        /// partition identified by
+        /// [partition_token][google.spanner.v1.ChangeStreamRecord.PartitionEventRecord.partition_token].
+        ///
+        /// Example: Two key ranges are moved out of partition (P1) to partition (P2)
+        /// and partition (P3) in a single transaction at timestamp T.
+        ///
+        /// The PartitionEventRecord returned in P1 will reflect the move as:
+        ///
+        /// PartitionEventRecord {
+        ///    commit_timestamp: T
+        ///    partition_token: "P1"
+        ///    move_out_events {
+        ///      destination_partition_token: "P2"
+        ///    }
+        ///    move_out_events {
+        ///      destination_partition_token: "P3"
+        ///    }
+        /// }
+        ///
+        /// The PartitionEventRecord returned in P2 will reflect the move as:
+        ///
+        /// PartitionEventRecord {
+        ///    commit_timestamp: T
+        ///    partition_token: "P2"
+        ///    move_in_events {
+        ///      source_partition_token: "P1"
+        ///    }
+        /// }
+        ///
+        /// The PartitionEventRecord returned in P3 will reflect the move as:
+        ///
+        /// PartitionEventRecord {
+        ///    commit_timestamp: T
+        ///    partition_token: "P3"
+        ///    move_in_events {
+        ///      source_partition_token: "P1"
+        ///    }
+        /// }
+        #[prost(message, repeated, tag = "5")]
+        pub move_out_events: ::prost::alloc::vec::Vec<
+            partition_event_record::MoveOutEvent,
+        >,
+    }
+    /// Nested message and enum types in `PartitionEventRecord`.
+    pub mod partition_event_record {
+        /// Describes move-in of the key ranges into the change stream partition
+        /// identified by
+        /// [partition_token][google.spanner.v1.ChangeStreamRecord.PartitionEventRecord.partition_token].
+        ///
+        /// To maintain processing the changes for a particular key in timestamp
+        /// order, the query processing the change stream partition identified by
+        /// [partition_token][google.spanner.v1.ChangeStreamRecord.PartitionEventRecord.partition_token]
+        /// should not advance beyond the partition event record commit timestamp
+        /// until the queries processing the source change stream partitions have
+        /// processed all change stream records with timestamps <= the partition
+        /// event record commit timestamp.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct MoveInEvent {
+            /// An unique partition identifier describing the source change stream
+            /// partition that recorded changes for the key range that is moving
+            /// into this partition.
+            #[prost(string, tag = "1")]
+            pub source_partition_token: ::prost::alloc::string::String,
+        }
+        /// Describes move-out of the key ranges out of the change stream partition
+        /// identified by
+        /// [partition_token][google.spanner.v1.ChangeStreamRecord.PartitionEventRecord.partition_token].
+        ///
+        /// To maintain processing the changes for a particular key in timestamp
+        /// order, the query processing the
+        /// [MoveOutEvent][google.spanner.v1.ChangeStreamRecord.PartitionEventRecord.MoveOutEvent]
+        /// in the partition identified by
+        /// [partition_token][google.spanner.v1.ChangeStreamRecord.PartitionEventRecord.partition_token]
+        /// should inform the queries processing the destination partitions that
+        /// they can unblock and proceed processing records past the
+        /// [commit_timestamp][google.spanner.v1.ChangeStreamRecord.PartitionEventRecord.commit_timestamp].
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct MoveOutEvent {
+            /// An unique partition identifier describing the destination change
+            /// stream partition that will record changes for the key range that is
+            /// moving out of this partition.
+            #[prost(string, tag = "1")]
+            pub destination_partition_token: ::prost::alloc::string::String,
+        }
+    }
+    /// One of the change stream subrecords.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Record {
+        /// Data change record describing a data change for a change stream
+        /// partition.
+        #[prost(message, tag = "1")]
+        DataChangeRecord(DataChangeRecord),
+        /// Heartbeat record describing a heartbeat for a change stream partition.
+        #[prost(message, tag = "2")]
+        HeartbeatRecord(HeartbeatRecord),
+        /// Partition start record describing a new change stream partition.
+        #[prost(message, tag = "3")]
+        PartitionStartRecord(PartitionStartRecord),
+        /// Partition end record describing a terminated change stream partition.
+        #[prost(message, tag = "4")]
+        PartitionEndRecord(PartitionEndRecord),
+        /// Partition event record describing key range changes for a change stream
+        /// partition.
+        #[prost(message, tag = "5")]
+        PartitionEventRecord(PartitionEventRecord),
+    }
+}

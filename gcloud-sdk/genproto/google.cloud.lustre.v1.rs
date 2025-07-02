@@ -11,7 +11,7 @@ pub struct Instance {
     #[prost(string, tag = "10")]
     pub filesystem: ::prost::alloc::string::String,
     /// Required. The storage capacity of the instance in gibibytes (GiB). Allowed
-    /// values are from `18000` to `936000`, in increments of 9000.
+    /// values are from `18000` to `954000`, in increments of 9000.
     #[prost(int64, tag = "2")]
     pub capacity_gib: i64,
     /// Required. Immutable. The full name of the VPC network to which the instance
@@ -41,9 +41,8 @@ pub struct Instance {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Optional. The throughput of the instance in MB/s/TiB.
-    /// Valid values are 250, 500, 1000.
-    /// Default value is 1000.
+    /// Required. The throughput of the instance in MB/s/TiB.
+    /// Valid values are 125, 250, 500, 1000.
     #[prost(int64, tag = "11")]
     pub per_unit_storage_throughput: i64,
     /// Optional. Indicates whether you want to enable support for GKE clients. By
@@ -280,18 +279,19 @@ pub struct OperationMetadata {
 /// Message for importing data to Lustre.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDataRequest {
-    /// Required. Name of the resource.
+    /// Required. The name of the Managed Lustre instance in the format
+    /// `projects/{project}/locations/{location}/instances/{instance}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. UUID to identify requests.
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
     /// Optional. User-specified service account used to perform the transfer.
-    /// If unspecified, the default Lustre P4 service account will be used.
+    /// If unspecified, the default Managed Lustre service agent will be used.
     #[prost(string, tag = "5")]
     pub service_account: ::prost::alloc::string::String,
     /// A Cloud Storage URI of a folder to import file data from, in the
-    /// form of `gs://<bucket_name>/<path_inside_bucket>`
+    /// form of `gs://<bucket_name>/<path_inside_bucket>/`.
     #[prost(oneof = "import_data_request::Source", tags = "2")]
     pub source: ::core::option::Option<import_data_request::Source>,
     /// The destination of the data transfer.
@@ -301,10 +301,12 @@ pub struct ImportDataRequest {
 /// Nested message and enum types in `ImportDataRequest`.
 pub mod import_data_request {
     /// A Cloud Storage URI of a folder to import file data from, in the
-    /// form of `gs://<bucket_name>/<path_inside_bucket>`
+    /// form of `gs://<bucket_name>/<path_inside_bucket>/`.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// The Cloud Storage source bucket and, optionally, path inside the bucket.
+        /// If a path inside the bucket is specified, it must end with a forward
+        /// slash (`/`).
         #[prost(message, tag = "2")]
         GcsPath(super::GcsPath),
     }
@@ -316,10 +318,11 @@ pub mod import_data_request {
         LustrePath(super::LustrePath),
     }
 }
-/// Message for exporting data from Lustre.
+/// Export data from Managed Lustre to a Cloud Storage bucket.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDataRequest {
-    /// Required. Name of the resource.
+    /// Required. The name of the Managed Lustre instance in the format
+    /// `projects/{project}/locations/{location}/instances/{instance}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. UUID to identify requests.
@@ -341,14 +344,18 @@ pub mod export_data_request {
     /// The source of the data transfer.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
-        /// Lustre path source.
+        /// The root directory path to the Managed Lustre file system. Must start
+        /// with `/`. Default is `/`.
         #[prost(message, tag = "2")]
         LustrePath(super::LustrePath),
     }
     /// The destination of the data transfer.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
-        /// Cloud Storage destination.
+        /// The URI to a Cloud Storage bucket, or a path within a bucket, using
+        /// the format `gs://<bucket_name>/<optional_path_inside_bucket>/`. If a
+        /// path inside the bucket is specified, it must end with a forward slash
+        /// (`/`).
         #[prost(message, tag = "3")]
         GcsPath(super::GcsPath),
     }
@@ -422,19 +429,23 @@ pub struct ImportDataMetadata {
     #[prost(string, tag = "8")]
     pub api_version: ::prost::alloc::string::String,
 }
-/// Cloud Storage as the source of a data transfer.
+/// Specifies a Cloud Storage bucket and, optionally, a path inside the bucket.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsPath {
-    /// Required. URI to a Cloud Storage path in the format:
-    /// `gs://<bucket_name>`.
+    /// Required. The URI to a Cloud Storage bucket, or a path within a bucket,
+    /// using the format `gs://<bucket_name>/<optional_path_inside_bucket>/`. If a
+    /// path inside the bucket is specified, it must end with a forward slash
+    /// (`/`).
     #[prost(string, tag = "1")]
     pub uri: ::prost::alloc::string::String,
 }
-/// LustrePath represents a path in the Lustre file system.
+/// The root directory path to the Lustre file system.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LustrePath {
-    /// Optional. Root directory path to the Managed Lustre file system, starting
-    /// with `/`. Defaults to `/` if unset.
+    /// Optional. The root directory path to the Managed Lustre file system. Must
+    /// start with
+    /// `/`. Default is `/`. If you're importing data into Managed Lustre, any
+    /// path other than the default must already exist on the file system.
     #[prost(string, tag = "1")]
     pub path: ::prost::alloc::string::String,
 }

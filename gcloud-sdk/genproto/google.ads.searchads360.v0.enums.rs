@@ -1818,6 +1818,83 @@ pub mod targeting_dimension_enum {
         }
     }
 }
+/// Container for enum describing possible account levels.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct AccountLevelTypeEnum {}
+/// Nested message and enum types in `AccountLevelTypeEnum`.
+pub mod account_level_type_enum {
+    /// Enum describing possible account levels.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AccountLevelType {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Client account (Facebook)
+        ClientAccountFacebook = 2,
+        /// Client account (Google Ads)
+        ClientAccountGoogleAds = 3,
+        /// Client account (Microsoft)
+        ClientAccountMicrosoft = 4,
+        /// Client account (Yahoo Japan)
+        ClientAccountYahooJapan = 5,
+        /// Client account (Engine Track)
+        ClientAccountEngineTrack = 6,
+        /// Top-level manager.
+        Manager = 30,
+        /// Sub manager.
+        SubManager = 31,
+        /// Associate manager.
+        AssociateManager = 32,
+    }
+    impl AccountLevelType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Unknown => "UNKNOWN",
+                Self::ClientAccountFacebook => "CLIENT_ACCOUNT_FACEBOOK",
+                Self::ClientAccountGoogleAds => "CLIENT_ACCOUNT_GOOGLE_ADS",
+                Self::ClientAccountMicrosoft => "CLIENT_ACCOUNT_MICROSOFT",
+                Self::ClientAccountYahooJapan => "CLIENT_ACCOUNT_YAHOO_JAPAN",
+                Self::ClientAccountEngineTrack => "CLIENT_ACCOUNT_ENGINE_TRACK",
+                Self::Manager => "MANAGER",
+                Self::SubManager => "SUB_MANAGER",
+                Self::AssociateManager => "ASSOCIATE_MANAGER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "CLIENT_ACCOUNT_FACEBOOK" => Some(Self::ClientAccountFacebook),
+                "CLIENT_ACCOUNT_GOOGLE_ADS" => Some(Self::ClientAccountGoogleAds),
+                "CLIENT_ACCOUNT_MICROSOFT" => Some(Self::ClientAccountMicrosoft),
+                "CLIENT_ACCOUNT_YAHOO_JAPAN" => Some(Self::ClientAccountYahooJapan),
+                "CLIENT_ACCOUNT_ENGINE_TRACK" => Some(Self::ClientAccountEngineTrack),
+                "MANAGER" => Some(Self::Manager),
+                "SUB_MANAGER" => Some(Self::SubManager),
+                "ASSOCIATE_MANAGER" => Some(Self::AssociateManager),
+                _ => None,
+            }
+        }
+    }
+}
 /// Container for enum describing possible statuses of an account.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AccountStatusEnum {}
@@ -4902,7 +4979,9 @@ pub mod conversion_action_type_enum {
         GoogleHosted = 28,
         /// Conversions reported when a user submits a lead form. Read only.
         LeadFormSubmit = 29,
-        /// Conversions that come from Salesforce. Read only.
+        /// Deprecated: The Salesforce integration will be going away and
+        /// replaced with an improved way to import your conversions from Salesforce.
+        /// - see <https://support.google.com/google-ads/answer/14728349>
         Salesforce = 30,
         /// Conversions imported from Search Ads 360 Floodlight data. Read only.
         SearchAds360 = 31,

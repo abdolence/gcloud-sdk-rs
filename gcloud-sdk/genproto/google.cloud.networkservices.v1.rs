@@ -76,7 +76,7 @@ pub mod endpoint_matcher {
         ///
         /// If there is more than one best match, (for example, if a
         /// config P4 with selector <A:1,D:1> exists and if a client with
-        /// label <A:1,B:1,D:1> connects), an error will be thrown.
+        /// label <A:1,B:1,D:1> connects), pick up the one with older creation time.
         #[prost(
             enumeration = "metadata_label_matcher::MetadataLabelMatchCriteria",
             tag = "1"
@@ -161,6 +161,44 @@ pub mod endpoint_matcher {
         MetadataLabelMatcher(MetadataLabelMatcher),
     }
 }
+/// EnvoyHeader configuration for Mesh and Gateway
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum EnvoyHeaders {
+    /// Defaults to NONE.
+    Unspecified = 0,
+    /// Suppress envoy debug headers.
+    None = 1,
+    /// Envoy will insert default internal debug headers into upstream requests:
+    /// x-envoy-attempt-count
+    /// x-envoy-is-timeout-retry
+    /// x-envoy-expected-rq-timeout-ms
+    /// x-envoy-original-path
+    /// x-envoy-upstream-stream-duration-ms
+    DebugHeaders = 2,
+}
+impl EnvoyHeaders {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "ENVOY_HEADERS_UNSPECIFIED",
+            Self::None => "NONE",
+            Self::DebugHeaders => "DEBUG_HEADERS",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ENVOY_HEADERS_UNSPECIFIED" => Some(Self::Unspecified),
+            "NONE" => Some(Self::None),
+            "DEBUG_HEADERS" => Some(Self::DebugHeaders),
+            _ => None,
+        }
+    }
+}
 /// A single extension chain wrapper that contains the match conditions and
 /// extensions to execute.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -180,7 +218,8 @@ pub struct ExtensionChain {
     /// At least one extension is required.
     /// Up to 3 extensions can be defined for each extension chain
     /// for `LbTrafficExtension` resource.
-    /// `LbRouteExtension` chains are limited to 1 extension per extension chain.
+    /// `LbRouteExtension` and `LbEdgeExtension` chains are limited to 1 extension
+    /// per extension chain.
     #[prost(message, repeated, tag = "3")]
     pub extensions: ::prost::alloc::vec::Vec<extension_chain::Extension>,
 }
@@ -211,11 +250,12 @@ pub mod extension_chain {
         /// Optional. The `:authority` header in the gRPC request sent from Envoy
         /// to the extension service.
         /// Required for Callout extensions.
+        ///
+        /// This field is not supported for plugin extensions. Setting it results in
+        /// a validation error.
         #[prost(string, tag = "2")]
         pub authority: ::prost::alloc::string::String,
         /// Required. The reference to the service that runs the extension.
-        ///
-        /// Currently only callout extensions are supported here.
         ///
         /// To configure a callout extension, `service` must be a fully-qualified
         /// reference
@@ -225,17 +265,38 @@ pub mod extension_chain {
         /// `<https://www.googleapis.com/compute/v1/projects/{project}/regions/{region}/backendServices/{backendService}`>
         /// or
         /// `<https://www.googleapis.com/compute/v1/projects/{project}/global/backendServices/{backendService}`.>
+        ///
+        /// To configure a plugin extension, `service` must be a reference
+        /// to a [`WasmPlugin`
+        /// resource](<https://cloud.google.com/service-extensions/docs/reference/rest/v1beta1/projects.locations.wasmPlugins>)
+        /// in the format:
+        /// `projects/{project}/locations/{location}/wasmPlugins/{plugin}`
+        /// or
+        /// `//networkservices.googleapis.com/projects/{project}/locations/{location}/wasmPlugins/{wasmPlugin}`.
+        ///
+        /// Plugin extensions are currently supported for the
+        /// `LbTrafficExtension`, the `LbRouteExtension`, and the `LbEdgeExtension`
+        /// resources.
         #[prost(string, tag = "3")]
         pub service: ::prost::alloc::string::String,
         /// Optional. A set of events during request or response processing for which
-        /// this extension is called. This field is required for the
-        /// `LbTrafficExtension` resource. It must not be set for the
-        /// `LbRouteExtension` resource.
+        /// this extension is called.
+        ///
+        /// For the `LbTrafficExtension` resource, this field is required.
+        ///
+        /// For the `LbRouteExtension` resource, this field is optional. If
+        /// unspecified, `REQUEST_HEADERS` event is assumed as supported.
+        ///
+        /// For the `LbEdgeExtension` resource, this field is required and must only
+        /// contain `REQUEST_HEADERS` event.
         #[prost(enumeration = "super::EventType", repeated, packed = "false", tag = "4")]
         pub supported_events: ::prost::alloc::vec::Vec<i32>,
         /// Optional. Specifies the timeout for each individual message on the
-        /// stream. The timeout must be between 10-1000 milliseconds. Required for
-        /// Callout extensions.
+        /// stream. The timeout must be between `10`-`10000` milliseconds. Required
+        /// for callout extensions.
+        ///
+        /// This field is not supported for plugin extensions. Setting it results in
+        /// a validation error.
         #[prost(message, optional, tag = "5")]
         pub timeout: ::core::option::Option<::prost_types::Duration>,
         /// Optional. Determines how the proxy behaves if the call to the extension
@@ -259,6 +320,36 @@ pub mod extension_chain {
         /// Each element is a string indicating the header name.
         #[prost(string, repeated, tag = "7")]
         pub forward_headers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. The metadata provided here is included as part of the
+        /// `metadata_context` (of type `google.protobuf.Struct`) in the
+        /// `ProcessingRequest` message sent to the extension server.
+        ///
+        /// The metadata is available under the namespace
+        /// `com.google.<extension_type>.<resource_name>.<extension_chain_name>.<extension_name>`.
+        /// For example:
+        /// `com.google.lb_traffic_extension.lbtrafficextension1.chain1.ext1`.
+        ///
+        /// The following variables are supported in the metadata:
+        ///
+        /// `{forwarding_rule_id}` - substituted with the forwarding rule's fully
+        ///    qualified resource name.
+        ///
+        /// This field must not be set for plugin extensions. Setting it results in
+        /// a validation error.
+        ///
+        /// You can set metadata at either the resource level or the extension level.
+        /// The extension level metadata is recommended because you can pass a
+        /// different set of metadata through each extension to the backend.
+        ///
+        /// This field is subject to following limitations:
+        ///
+        /// * The total size of the metadata must be less than 1KiB.
+        /// * The total number of keys in the metadata must be less than 16.
+        /// * The length of each key must be less than 64 characters.
+        /// * The length of each value must be less than 1024 characters.
+        /// * All values must be strings.
+        #[prost(message, optional, tag = "9")]
+        pub metadata: ::core::option::Option<::prost_types::Struct>,
     }
 }
 /// `LbTrafficExtension` is a resource that lets the extension service modify the
@@ -291,9 +382,10 @@ pub struct LbTrafficExtension {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Required. A list of references to the forwarding rules to which this
-    /// service extension is attached to. At least one forwarding rule is required.
-    /// There can be only one `LBTrafficExtension` resource per forwarding rule.
+    /// Optional. A list of references to the forwarding rules to which this
+    /// service extension is attached. At least one forwarding rule is required.
+    /// Only one `LbTrafficExtension` resource can be associated with a forwarding
+    /// rule.
     #[prost(string, repeated, tag = "5")]
     pub forwarding_rules: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. A set of ordered extension chains that contain the match
@@ -306,19 +398,32 @@ pub struct LbTrafficExtension {
     pub extension_chains: ::prost::alloc::vec::Vec<ExtensionChain>,
     /// Required. All backend services and forwarding rules referenced by this
     /// extension must share the same load balancing scheme. Supported values:
-    /// `INTERNAL_MANAGED`, `EXTERNAL_MANAGED`. For more information, refer to
-    /// [Choosing a load
-    /// balancer](<https://cloud.google.com/load-balancing/docs/backend-service>).
+    /// `INTERNAL_MANAGED` and `EXTERNAL_MANAGED`. For more information, refer to
+    /// [Backend services
+    /// overview](<https://cloud.google.com/load-balancing/docs/backend-service>).
     #[prost(enumeration = "LoadBalancingScheme", tag = "8")]
     pub load_balancing_scheme: i32,
-    /// Optional. The metadata provided here is included in the
-    /// `ProcessingRequest.metadata_context.filter_metadata` map field. The
-    /// metadata is available under the key
+    /// Optional. The metadata provided here is included as part of the
+    /// `metadata_context` (of type `google.protobuf.Struct`) in the
+    /// `ProcessingRequest` message sent to the extension server.
+    ///
+    /// The metadata applies to all extensions in all extensions chains in this
+    /// resource.
+    ///
+    /// The metadata is available under the key
     /// `com.google.lb_traffic_extension.<resource_name>`.
+    ///
     /// The following variables are supported in the metadata:
     ///
     /// `{forwarding_rule_id}` - substituted with the forwarding rule's fully
     ///    qualified resource name.
+    ///
+    /// This field must not be set if at least one of the extension chains
+    /// contains plugin extensions. Setting it results in a validation error.
+    ///
+    /// You can set metadata at either the resource level or the extension level.
+    /// The extension level metadata is recommended because you can pass a
+    /// different set of metadata through each extension to the backend.
     #[prost(message, optional, tag = "10")]
     pub metadata: ::core::option::Option<::prost_types::Struct>,
 }
@@ -326,7 +431,7 @@ pub struct LbTrafficExtension {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLbTrafficExtensionsRequest {
     /// Required. The project and location from which the `LbTrafficExtension`
-    /// resources are listed, specified in the following format:
+    /// resources are listed. These values are specified in the following format:
     /// `projects/{project}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -340,7 +445,7 @@ pub struct ListLbTrafficExtensionsRequest {
     /// Optional. Filtering results.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
-    /// Optional. Hint for how to order the results.
+    /// Optional. Hint about how to order the results.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -383,12 +488,11 @@ pub struct CreateLbTrafficExtensionRequest {
     /// Optional. An optional request ID to identify requests. Specify a unique
     /// request ID so that if you must retry your request, the server can ignore
     /// the request if it has already been completed. The server guarantees
-    /// that for at least 60 minutes since the first request.
+    /// that for 60 minutes since the first request.
     ///
     /// For example, consider a situation where you make an initial request and the
     /// request times out. If you make the request again with the same request
-    /// ID, the server can check if original operation with the same request ID
-    /// was received, and if so, ignores the second request. This prevents
+    /// ID, the server ignores the second request This prevents
     /// clients from accidentally creating duplicate commitments.
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
@@ -401,7 +505,7 @@ pub struct CreateLbTrafficExtensionRequest {
 pub struct UpdateLbTrafficExtensionRequest {
     /// Optional. Used to specify the fields to be overwritten in the
     /// `LbTrafficExtension` resource by the update.
-    /// The fields specified in the update_mask are relative to the resource, not
+    /// The fields specified in the `update_mask` are relative to the resource, not
     /// the full request. A field is overwritten if it is in the mask. If the
     /// user does not specify a mask, then all fields are overwritten.
     #[prost(message, optional, tag = "1")]
@@ -412,12 +516,11 @@ pub struct UpdateLbTrafficExtensionRequest {
     /// Optional. An optional request ID to identify requests. Specify a unique
     /// request ID so that if you must retry your request, the server can ignore
     /// the request if it has already been completed. The server guarantees
-    /// that for at least 60 minutes since the first request.
+    /// that for 60 minutes since the first request.
     ///
     /// For example, consider a situation where you make an initial request and the
     /// request times out. If you make the request again with the same request
-    /// ID, the server can check if original operation with the same request ID
-    /// was received, and if so, ignores the second request. This prevents
+    /// ID, the server ignores the second request This prevents
     /// clients from accidentally creating duplicate commitments.
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
@@ -436,12 +539,11 @@ pub struct DeleteLbTrafficExtensionRequest {
     /// Optional. An optional request ID to identify requests. Specify a unique
     /// request ID so that if you must retry your request, the server can ignore
     /// the request if it has already been completed. The server guarantees
-    /// that for at least 60 minutes after the first request.
+    /// that for 60 minutes after the first request.
     ///
     /// For example, consider a situation where you make an initial request and the
     /// request times out. If you make the request again with the same request
-    /// ID, the server can check if original operation with the same request ID
-    /// was received, and if so, ignores the second request. This prevents
+    /// ID, the server ignores the second request This prevents
     /// clients from accidentally creating duplicate commitments.
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
@@ -478,8 +580,9 @@ pub struct LbRouteExtension {
         ::prost::alloc::string::String,
     >,
     /// Required. A list of references to the forwarding rules to which this
-    /// service extension is attached to. At least one forwarding rule is required.
-    /// There can be only one `LbRouteExtension` resource per forwarding rule.
+    /// service extension is attached. At least one forwarding rule is required.
+    /// Only one `LbRouteExtension` resource can be associated with a forwarding
+    /// rule.
     #[prost(string, repeated, tag = "5")]
     pub forwarding_rules: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. A set of ordered extension chains that contain the match
@@ -493,19 +596,31 @@ pub struct LbRouteExtension {
     /// Required. All backend services and forwarding rules referenced by this
     /// extension must share the same load balancing scheme. Supported values:
     /// `INTERNAL_MANAGED`, `EXTERNAL_MANAGED`. For more information, refer to
-    /// [Choosing a load
-    /// balancer](<https://cloud.google.com/load-balancing/docs/backend-service>).
+    /// [Backend services
+    /// overview](<https://cloud.google.com/load-balancing/docs/backend-service>).
     #[prost(enumeration = "LoadBalancingScheme", tag = "8")]
     pub load_balancing_scheme: i32,
     /// Optional. The metadata provided here is included as part of the
     /// `metadata_context` (of type `google.protobuf.Struct`) in the
-    /// `ProcessingRequest` message sent to the extension
-    /// server. The metadata is available under the namespace
+    /// `ProcessingRequest` message sent to the extension server.
+    ///
+    /// The metadata applies to all extensions in all extensions chains in this
+    /// resource.
+    ///
+    /// The metadata is available under the key
     /// `com.google.lb_route_extension.<resource_name>`.
-    /// The following variables are supported in the metadata Struct:
+    ///
+    /// The following variables are supported in the metadata:
     ///
     /// `{forwarding_rule_id}` - substituted with the forwarding rule's fully
     ///    qualified resource name.
+    ///
+    /// This field must not be set if at least one of the extension chains
+    /// contains plugin extensions. Setting it results in a validation error.
+    ///
+    /// You can set metadata at either the resource level or the extension level.
+    /// The extension level metadata is recommended because you can pass a
+    /// different set of metadata through each extension to the backend.
     #[prost(message, optional, tag = "10")]
     pub metadata: ::core::option::Option<::prost_types::Struct>,
 }
@@ -513,7 +628,7 @@ pub struct LbRouteExtension {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLbRouteExtensionsRequest {
     /// Required. The project and location from which the `LbRouteExtension`
-    /// resources are listed, specified in the following format:
+    /// resources are listed. These values are specified in the following format:
     /// `projects/{project}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -527,7 +642,7 @@ pub struct ListLbRouteExtensionsRequest {
     /// Optional. Filtering results.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
-    /// Optional. Hint for how to order the results.
+    /// Optional. Hint about how to order the results.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -570,12 +685,11 @@ pub struct CreateLbRouteExtensionRequest {
     /// Optional. An optional request ID to identify requests. Specify a unique
     /// request ID so that if you must retry your request, the server can ignore
     /// the request if it has already been completed. The server guarantees
-    /// that for at least 60 minutes since the first request.
+    /// that for 60 minutes since the first request.
     ///
     /// For example, consider a situation where you make an initial request and the
     /// request times out. If you make the request again with the same request
-    /// ID, the server can check if original operation with the same request ID
-    /// was received, and if so, ignores the second request. This prevents
+    /// ID, the server ignores the second request This prevents
     /// clients from accidentally creating duplicate commitments.
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
@@ -588,7 +702,7 @@ pub struct CreateLbRouteExtensionRequest {
 pub struct UpdateLbRouteExtensionRequest {
     /// Optional. Used to specify the fields to be overwritten in the
     /// `LbRouteExtension` resource by the update.
-    /// The fields specified in the update_mask are relative to the resource, not
+    /// The fields specified in the `update_mask` are relative to the resource, not
     /// the full request. A field is overwritten if it is in the mask. If the
     /// user does not specify a mask, then all fields are overwritten.
     #[prost(message, optional, tag = "1")]
@@ -599,12 +713,11 @@ pub struct UpdateLbRouteExtensionRequest {
     /// Optional. An optional request ID to identify requests. Specify a unique
     /// request ID so that if you must retry your request, the server can ignore
     /// the request if it has already been completed. The server guarantees
-    /// that for at least 60 minutes since the first request.
+    /// that for 60 minutes since the first request.
     ///
     /// For example, consider a situation where you make an initial request and the
     /// request times out. If you make the request again with the same request
-    /// ID, the server can check if original operation with the same request ID
-    /// was received, and if so, ignores the second request. This prevents
+    /// ID, the server ignores the second request This prevents
     /// clients from accidentally creating duplicate commitments.
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
@@ -623,12 +736,228 @@ pub struct DeleteLbRouteExtensionRequest {
     /// Optional. An optional request ID to identify requests. Specify a unique
     /// request ID so that if you must retry your request, the server can ignore
     /// the request if it has already been completed. The server guarantees
-    /// that for at least 60 minutes after the first request.
+    /// that for 60 minutes after the first request.
     ///
     /// For example, consider a situation where you make an initial request and the
     /// request times out. If you make the request again with the same request
-    /// ID, the server can check if original operation with the same request ID
-    /// was received, and if so, ignores the second request. This prevents
+    /// ID, the server ignores the second request This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// `AuthzExtension` is a resource that allows traffic forwarding
+/// to a callout backend service to make an authorization decision.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AuthzExtension {
+    /// Required. Identifier. Name of the `AuthzExtension` resource in the
+    /// following format:
+    /// `projects/{project}/locations/{location}/authzExtensions/{authz_extension}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The timestamp when the resource was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The timestamp when the resource was updated.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. A human-readable description of the resource.
+    #[prost(string, tag = "4")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. Set of labels associated with the `AuthzExtension`
+    /// resource.
+    ///
+    /// The format must comply with [the requirements for
+    /// labels](/compute/docs/labeling-resources#requirements) for Google Cloud
+    /// resources.
+    #[prost(map = "string, string", tag = "5")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Required. All backend services and forwarding rules referenced by this
+    /// extension must share the same load balancing scheme. Supported values:
+    /// `INTERNAL_MANAGED`, `EXTERNAL_MANAGED`. For more information, refer to
+    /// [Backend services
+    /// overview](<https://cloud.google.com/load-balancing/docs/backend-service>).
+    #[prost(enumeration = "LoadBalancingScheme", tag = "6")]
+    pub load_balancing_scheme: i32,
+    /// Required. The `:authority` header in the gRPC request sent from Envoy
+    /// to the extension service.
+    #[prost(string, tag = "7")]
+    pub authority: ::prost::alloc::string::String,
+    /// Required. The reference to the service that runs the extension.
+    ///
+    /// To configure a callout extension, `service` must be a fully-qualified
+    /// reference
+    /// to a [backend
+    /// service](<https://cloud.google.com/compute/docs/reference/rest/v1/backendServices>)
+    /// in the format:
+    /// `<https://www.googleapis.com/compute/v1/projects/{project}/regions/{region}/backendServices/{backendService}`>
+    /// or
+    /// `<https://www.googleapis.com/compute/v1/projects/{project}/global/backendServices/{backendService}`.>
+    #[prost(string, tag = "8")]
+    pub service: ::prost::alloc::string::String,
+    /// Required. Specifies the timeout for each individual message on the stream.
+    /// The timeout must be between 10-10000 milliseconds.
+    #[prost(message, optional, tag = "9")]
+    pub timeout: ::core::option::Option<::prost_types::Duration>,
+    /// Optional. Determines how the proxy behaves if the call to the extension
+    /// fails or times out.
+    ///
+    /// When set to `TRUE`, request or response processing continues without
+    /// error. Any subsequent extensions in the extension chain are also
+    /// executed. When set to `FALSE` or the default setting of `FALSE` is used,
+    /// one of the following happens:
+    ///
+    /// * If response headers have not been delivered to the downstream client,
+    /// a generic 500 error is returned to the client. The error response can be
+    /// tailored by configuring a custom error response in the load balancer.
+    ///
+    /// * If response headers have been delivered, then the HTTP stream to the
+    /// downstream client is reset.
+    #[prost(bool, tag = "10")]
+    pub fail_open: bool,
+    /// Optional. The metadata provided here is included as part of the
+    /// `metadata_context` (of type `google.protobuf.Struct`) in the
+    /// `ProcessingRequest` message sent to the extension
+    /// server. The metadata is available under the namespace
+    /// `com.google.authz_extension.<resource_name>`.
+    /// The following variables are supported in the metadata Struct:
+    ///
+    /// `{forwarding_rule_id}` - substituted with the forwarding rule's fully
+    ///    qualified resource name.
+    #[prost(message, optional, tag = "11")]
+    pub metadata: ::core::option::Option<::prost_types::Struct>,
+    /// Optional. List of the HTTP headers to forward to the extension
+    /// (from the client). If omitted, all headers are sent.
+    /// Each element is a string indicating the header name.
+    #[prost(string, repeated, tag = "12")]
+    pub forward_headers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The format of communication supported by the callout extension.
+    /// If not specified, the default value `EXT_PROC_GRPC` is used.
+    #[prost(enumeration = "WireFormat", tag = "14")]
+    pub wire_format: i32,
+}
+/// Message for requesting list of `AuthzExtension` resources.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAuthzExtensionsRequest {
+    /// Required. The project and location from which the `AuthzExtension`
+    /// resources are listed. These values are specified in the following format:
+    /// `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Requested page size. The server might return fewer items than
+    /// requested. If unspecified, the server picks an appropriate default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results that the server returns.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filtering results.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Hint about how to order the results.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Message for response to listing `AuthzExtension` resources.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAuthzExtensionsResponse {
+    /// The list of `AuthzExtension` resources.
+    #[prost(message, repeated, tag = "1")]
+    pub authz_extensions: ::prost::alloc::vec::Vec<AuthzExtension>,
+    /// A token identifying a page of results that the server returns.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Message for getting a `AuthzExtension` resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAuthzExtensionRequest {
+    /// Required. A name of the `AuthzExtension` resource to get. Must be in
+    /// the format
+    /// `projects/{project}/locations/{location}/authzExtensions/{authz_extension}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Message for creating a `AuthzExtension` resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateAuthzExtensionRequest {
+    /// Required. The parent resource of the `AuthzExtension` resource. Must
+    /// be in the format `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. User-provided ID of the `AuthzExtension` resource to be
+    /// created.
+    #[prost(string, tag = "2")]
+    pub authz_extension_id: ::prost::alloc::string::String,
+    /// Required. `AuthzExtension` resource to be created.
+    #[prost(message, optional, tag = "3")]
+    pub authz_extension: ::core::option::Option<AuthzExtension>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server can ignore
+    /// the request if it has already been completed. The server guarantees
+    /// that for 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server ignores the second request This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Message for updating a `AuthzExtension` resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateAuthzExtensionRequest {
+    /// Required. Used to specify the fields to be overwritten in the
+    /// `AuthzExtension` resource by the update.
+    /// The fields specified in the `update_mask` are relative to the resource, not
+    /// the full request. A field is overwritten if it is in the mask. If the
+    /// user does not specify a mask, then all fields are overwritten.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. `AuthzExtension` resource being updated.
+    #[prost(message, optional, tag = "2")]
+    pub authz_extension: ::core::option::Option<AuthzExtension>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server can ignore
+    /// the request if it has already been completed. The server guarantees
+    /// that for 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server ignores the second request This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Message for deleting a `AuthzExtension` resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteAuthzExtensionRequest {
+    /// Required. The name of the `AuthzExtension` resource to delete. Must
+    /// be in the format
+    /// `projects/{project}/locations/{location}/authzExtensions/{authz_extension}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server can ignore
+    /// the request if it has already been completed. The server guarantees
+    /// that for 60 minutes after the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request
+    /// ID, the server ignores the second request This prevents
     /// clients from accidentally creating duplicate commitments.
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
@@ -691,10 +1020,10 @@ impl EventType {
         }
     }
 }
-/// Load balancing schemes supported by the `LbTrafficExtension` resource and
-/// `LbRouteExtension` resource.
-/// For more information, refer to [Choosing a load
-/// balancer](<https://cloud.google.com/load-balancing/docs/backend-service>).
+/// Load balancing schemes supported by the `LbTrafficExtension`,
+/// `LbRouteExtension`, and `LbEdgeExtension` resources.
+/// For more information, refer to [Backend services
+/// overview](<https://cloud.google.com/load-balancing/docs/backend-service>).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum LoadBalancingScheme {
@@ -724,6 +1053,39 @@ impl LoadBalancingScheme {
             "LOAD_BALANCING_SCHEME_UNSPECIFIED" => Some(Self::Unspecified),
             "INTERNAL_MANAGED" => Some(Self::InternalManaged),
             "EXTERNAL_MANAGED" => Some(Self::ExternalManaged),
+            _ => None,
+        }
+    }
+}
+/// The format of communication supported by the extension.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum WireFormat {
+    /// Not specified.
+    Unspecified = 0,
+    /// The extension service uses ext_proc gRPC API over a gRPC stream. This is
+    /// the default value if the wire format is not specified. The backend service
+    /// for the extension must use HTTP2 or H2C as the protocol. All
+    /// `supported_events` for a client request are sent as part of the same
+    /// gRPC stream.
+    ExtProcGrpc = 1,
+}
+impl WireFormat {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "WIRE_FORMAT_UNSPECIFIED",
+            Self::ExtProcGrpc => "EXT_PROC_GRPC",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "WIRE_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+            "EXT_PROC_GRPC" => Some(Self::ExtProcGrpc),
             _ => None,
         }
     }
@@ -1121,6 +1483,155 @@ pub mod dep_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Lists `AuthzExtension` resources in a given project and location.
+        pub async fn list_authz_extensions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListAuthzExtensionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListAuthzExtensionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.DepService/ListAuthzExtensions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.DepService",
+                        "ListAuthzExtensions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of the specified `AuthzExtension` resource.
+        pub async fn get_authz_extension(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAuthzExtensionRequest>,
+        ) -> std::result::Result<tonic::Response<super::AuthzExtension>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.DepService/GetAuthzExtension",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.DepService",
+                        "GetAuthzExtension",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new `AuthzExtension` resource in a given project
+        /// and location.
+        pub async fn create_authz_extension(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateAuthzExtensionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.DepService/CreateAuthzExtension",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.DepService",
+                        "CreateAuthzExtension",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the parameters of the specified `AuthzExtension`
+        /// resource.
+        pub async fn update_authz_extension(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateAuthzExtensionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.DepService/UpdateAuthzExtension",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.DepService",
+                        "UpdateAuthzExtension",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes the specified `AuthzExtension` resource.
+        pub async fn delete_authz_extension(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteAuthzExtensionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.DepService/DeleteAuthzExtension",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.DepService",
+                        "DeleteAuthzExtension",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// EndpointPolicy is a resource that helps apply desired configuration
@@ -1129,7 +1640,7 @@ pub mod dep_service_client {
 /// an all endpoints that serve on port 8080.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EndpointPolicy {
-    /// Required. Name of the EndpointPolicy resource. It matches pattern
+    /// Identifier. Name of the EndpointPolicy resource. It matches pattern
     /// `projects/{project}/locations/global/endpointPolicies/{endpoint_policy}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -1247,6 +1758,11 @@ pub struct ListEndpointPoliciesRequest {
     /// next page of data.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
+    /// Optional. If true, allow partial responses for multi-regional Aggregated
+    /// List requests. Otherwise if one of the locations is down or unreachable,
+    /// the Aggregated List request will fail.
+    #[prost(bool, tag = "4")]
+    pub return_partial_success: bool,
 }
 /// Response returned by the ListEndpointPolicies method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1259,6 +1775,12 @@ pub struct ListEndpointPoliciesResponse {
     /// method again using the value of `next_page_token` as `page_token`.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable resources. Populated when the request opts into
+    /// [return_partial_success][google.cloud.networkservices.v1.ListEndpointPoliciesRequest.return_partial_success]
+    /// and reading across collections e.g. when
+    /// attempting to list all resources across all supported locations.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request used with the GetEndpointPolicy method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1305,13 +1827,523 @@ pub struct DeleteEndpointPolicyRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// `WasmPlugin` is a resource representing a service executing
+/// a customer-provided Wasm module.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WasmPlugin {
+    /// Identifier. Name of the `WasmPlugin` resource in the following format:
+    /// `projects/{project}/locations/{location}/wasmPlugins/{wasm_plugin}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The timestamp when the resource was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The timestamp when the resource was updated.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. A human-readable description of the resource.
+    #[prost(string, tag = "4")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. Set of labels associated with the `WasmPlugin` resource.
+    ///
+    /// The format must comply with [the following
+    /// requirements](/compute/docs/labeling-resources#requirements).
+    #[prost(map = "string, string", tag = "5")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. The ID of the `WasmPluginVersion` resource that is the
+    /// currently serving one. The version referred to must be a child of this
+    /// `WasmPlugin` resource.
+    #[prost(string, tag = "6")]
+    pub main_version_id: ::prost::alloc::string::String,
+    /// Optional. Specifies the logging options for the activity performed by this
+    /// plugin. If logging is enabled, plugin logs are exported to
+    /// Cloud Logging.
+    /// Note that the settings relate to the logs generated by using
+    /// logging statements in your Wasm code.
+    #[prost(message, optional, tag = "9")]
+    pub log_config: ::core::option::Option<wasm_plugin::LogConfig>,
+    /// Optional. All versions of this `WasmPlugin` resource in the key-value
+    /// format. The key is the resource ID, and the value is the `VersionDetails`
+    /// object.
+    ///
+    /// Lets you create or update a `WasmPlugin` resource and its versions in a
+    /// single request. When the `main_version_id` field is not empty, it must
+    /// point to one of the `VersionDetails` objects in the map.
+    ///
+    /// If provided in a `PATCH` request, the new versions replace the
+    /// previous set. Any version omitted from the `versions` field is removed.
+    /// Because the `WasmPluginVersion` resource is immutable, if a
+    /// `WasmPluginVersion` resource with the same name already exists and differs,
+    /// the request fails.
+    ///
+    /// Note: In a `GET` request, this field is populated only if the field
+    /// `GetWasmPluginRequest.view` is set to `WASM_PLUGIN_VIEW_FULL`.
+    #[prost(map = "string, message", tag = "10")]
+    pub versions: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        wasm_plugin::VersionDetails,
+    >,
+    /// Output only. List of all
+    /// [extensions](<https://cloud.google.com/service-extensions/docs/overview>)
+    /// that use this `WasmPlugin` resource.
+    #[prost(message, repeated, tag = "11")]
+    pub used_by: ::prost::alloc::vec::Vec<wasm_plugin::UsedBy>,
+}
+/// Nested message and enum types in `WasmPlugin`.
+pub mod wasm_plugin {
+    /// Details of a `WasmPluginVersion` resource to be inlined in the
+    /// `WasmPlugin` resource.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct VersionDetails {
+        /// Output only. The timestamp when the resource was created.
+        #[prost(message, optional, tag = "1")]
+        pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Output only. The timestamp when the resource was updated.
+        #[prost(message, optional, tag = "2")]
+        pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// Optional. A human-readable description of the resource.
+        #[prost(string, tag = "3")]
+        pub description: ::prost::alloc::string::String,
+        /// Optional. Set of labels associated with the `WasmPluginVersion`
+        /// resource.
+        #[prost(map = "string, string", tag = "4")]
+        pub labels: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
+        /// Optional. URI of the container image containing the Wasm module, stored
+        /// in the Artifact Registry. The container image must contain only a single
+        /// file with the name `plugin.wasm`. When a new `WasmPluginVersion` resource
+        /// is created, the URI gets resolved to an image digest and saved in the
+        /// `image_digest` field.
+        #[prost(string, tag = "5")]
+        pub image_uri: ::prost::alloc::string::String,
+        /// Output only. The resolved digest for the image specified in `image`.
+        /// The digest is resolved during the creation of a
+        /// `WasmPluginVersion` resource.
+        /// This field holds the digest value regardless of whether a tag or
+        /// digest was originally specified in the `image` field.
+        #[prost(string, tag = "6")]
+        pub image_digest: ::prost::alloc::string::String,
+        /// Output only. This field holds the digest (usually checksum) value for the
+        /// plugin configuration. The value is calculated based on the contents of
+        /// the `plugin_config_data` field or the container image defined by the
+        /// `plugin_config_uri` field.
+        #[prost(string, tag = "11")]
+        pub plugin_config_digest: ::prost::alloc::string::String,
+        #[prost(oneof = "version_details::PluginConfigSource", tags = "9, 10")]
+        pub plugin_config_source: ::core::option::Option<
+            version_details::PluginConfigSource,
+        >,
+    }
+    /// Nested message and enum types in `VersionDetails`.
+    pub mod version_details {
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum PluginConfigSource {
+            /// Configuration for the plugin.
+            /// The configuration is provided to the plugin at runtime through
+            /// the `ON_CONFIGURE` callback. When a new
+            /// `WasmPluginVersion` version is created, the digest of the
+            /// contents is saved in the `plugin_config_digest` field.
+            #[prost(bytes, tag = "9")]
+            PluginConfigData(::prost::alloc::vec::Vec<u8>),
+            /// URI of the plugin configuration stored in the Artifact Registry.
+            /// The configuration is provided to the plugin at runtime through
+            /// the `ON_CONFIGURE` callback. The container image must
+            /// contain only a single file with the name
+            /// `plugin.config`. When a new `WasmPluginVersion`
+            /// resource is created, the digest of the container image is saved in the
+            /// `plugin_config_digest` field.
+            #[prost(string, tag = "10")]
+            PluginConfigUri(::prost::alloc::string::String),
+        }
+    }
+    /// Specifies the logging options for the activity performed by this
+    /// plugin. If logging is enabled, plugin logs are exported to
+    /// Cloud Logging.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct LogConfig {
+        /// Optional. Specifies whether to enable logging for activity by this
+        /// plugin.
+        ///
+        /// Defaults to `false`.
+        #[prost(bool, tag = "1")]
+        pub enable: bool,
+        /// Non-empty default. Configures the sampling rate of activity logs, where
+        /// `1.0` means all logged activity is reported and `0.0` means no activity
+        /// is reported. A floating point value between `0.0` and `1.0` indicates
+        /// that a percentage of log messages is stored.
+        ///
+        /// The default value when logging is enabled is `1.0`. The value of the
+        /// field must be between `0` and `1` (inclusive).
+        ///
+        /// This field can be specified only if logging is enabled for this plugin.
+        #[prost(float, tag = "2")]
+        pub sample_rate: f32,
+        /// Non-empty default. Specificies the lowest level of the plugin logs that
+        /// are exported to Cloud Logging. This setting relates to the logs generated
+        /// by using logging statements in your Wasm code.
+        ///
+        /// This field is can be set only if logging is enabled for the plugin.
+        ///
+        /// If the field is not provided when logging is enabled, it is set to
+        /// `INFO` by default.
+        #[prost(enumeration = "log_config::LogLevel", tag = "3")]
+        pub min_log_level: i32,
+    }
+    /// Nested message and enum types in `LogConfig`.
+    pub mod log_config {
+        /// Possible values to specify the lowest level of logs to be exported to
+        /// Cloud Logging.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum LogLevel {
+            /// Unspecified value. Defaults to `LogLevel.INFO`.
+            Unspecified = 0,
+            /// Report logs with TRACE level and above.
+            Trace = 1,
+            /// Report logs with DEBUG level and above.
+            Debug = 2,
+            /// Report logs with INFO level and above.
+            Info = 3,
+            /// Report logs with WARN level and above.
+            Warn = 4,
+            /// Report logs with ERROR level and above.
+            Error = 5,
+            /// Report logs with CRITICAL level only.
+            Critical = 6,
+        }
+        impl LogLevel {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "LOG_LEVEL_UNSPECIFIED",
+                    Self::Trace => "TRACE",
+                    Self::Debug => "DEBUG",
+                    Self::Info => "INFO",
+                    Self::Warn => "WARN",
+                    Self::Error => "ERROR",
+                    Self::Critical => "CRITICAL",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "LOG_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+                    "TRACE" => Some(Self::Trace),
+                    "DEBUG" => Some(Self::Debug),
+                    "INFO" => Some(Self::Info),
+                    "WARN" => Some(Self::Warn),
+                    "ERROR" => Some(Self::Error),
+                    "CRITICAL" => Some(Self::Critical),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Defines a resource that uses the `WasmPlugin` resource.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct UsedBy {
+        /// Output only. Full name of the resource
+        /// <https://google.aip.dev/122#full-resource-names,> for example
+        /// `//networkservices.googleapis.com/projects/{project}/locations/{location}/lbRouteExtensions/{extension}`
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+    }
+}
+/// A single immutable version of a `WasmPlugin` resource.
+/// Defines the Wasm module used and optionally its runtime config.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WasmPluginVersion {
+    /// Identifier. Name of the `WasmPluginVersion` resource in the following
+    /// format: `projects/{project}/locations/{location}/wasmPlugins/{wasm_plugin}/
+    /// versions/{wasm_plugin_version}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The timestamp when the resource was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The timestamp when the resource was updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. A human-readable description of the resource.
+    #[prost(string, tag = "5")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. Set of labels associated with the `WasmPluginVersion`
+    /// resource.
+    #[prost(map = "string, string", tag = "6")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. URI of the container image containing the plugin, stored in the
+    /// Artifact Registry.
+    /// When a new `WasmPluginVersion` resource is created, the digest
+    /// of the container image is saved in the `image_digest` field.
+    /// When downloading an image, the digest value is used instead of an
+    /// image tag.
+    #[prost(string, tag = "8")]
+    pub image_uri: ::prost::alloc::string::String,
+    /// Output only. The resolved digest for the image specified in the `image`
+    /// field. The digest is resolved during the creation of `WasmPluginVersion`
+    /// resource. This field holds the digest value, regardless of whether a tag or
+    /// digest was originally specified in the `image` field.
+    #[prost(string, tag = "9")]
+    pub image_digest: ::prost::alloc::string::String,
+    /// Output only. This field holds the digest (usually checksum) value for the
+    /// plugin configuration. The value is calculated based on the contents of
+    /// `plugin_config_data` or the container image defined by
+    /// the `plugin_config_uri` field.
+    #[prost(string, tag = "14")]
+    pub plugin_config_digest: ::prost::alloc::string::String,
+    #[prost(oneof = "wasm_plugin_version::PluginConfigSource", tags = "12, 13")]
+    pub plugin_config_source: ::core::option::Option<
+        wasm_plugin_version::PluginConfigSource,
+    >,
+}
+/// Nested message and enum types in `WasmPluginVersion`.
+pub mod wasm_plugin_version {
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum PluginConfigSource {
+        /// Configuration for the plugin.
+        /// The configuration is provided to the plugin at runtime through
+        /// the `ON_CONFIGURE` callback. When a new
+        /// `WasmPluginVersion` resource is created, the digest of the
+        /// contents is saved in the `plugin_config_digest` field.
+        #[prost(bytes, tag = "12")]
+        PluginConfigData(::prost::alloc::vec::Vec<u8>),
+        /// URI of the plugin configuration stored in the Artifact Registry.
+        /// The configuration is provided to the plugin at runtime through
+        /// the `ON_CONFIGURE` callback. The container image must contain
+        /// only a single file with the name `plugin.config`. When a
+        /// new `WasmPluginVersion` resource is created, the digest of the
+        /// container image is saved in the `plugin_config_digest` field.
+        #[prost(string, tag = "13")]
+        PluginConfigUri(::prost::alloc::string::String),
+    }
+}
+/// Request used with the `ListWasmPlugins` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListWasmPluginsRequest {
+    /// Required. The project and location from which the `WasmPlugin` resources
+    /// are listed, specified in the following format:
+    /// `projects/{project}/locations/global`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Maximum number of `WasmPlugin` resources to return per call.
+    /// If not specified, at most 50 `WasmPlugin` resources are returned.
+    /// The maximum value is 1000; values above 1000 are coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The value returned by the last `ListWasmPluginsResponse` call.
+    /// Indicates that this is a continuation of a prior
+    /// `ListWasmPlugins` call, and that the
+    /// next page of data is to be returned.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response returned by the `ListWasmPlugins` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListWasmPluginsResponse {
+    /// List of `WasmPlugin` resources.
+    #[prost(message, repeated, tag = "1")]
+    pub wasm_plugins: ::prost::alloc::vec::Vec<WasmPlugin>,
+    /// If there might be more results than those appearing in this response, then
+    /// `next_page_token` is included. To get the next set of results,
+    /// call this method again using the value of `next_page_token` as
+    /// `page_token`.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable resources. Populated when the request attempts to list all
+    /// resources across all supported locations, while some locations are
+    /// temporarily unavailable.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request used by the `GetWasmPlugin` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetWasmPluginRequest {
+    /// Required. A name of the `WasmPlugin` resource to get. Must be in the
+    /// format `projects/{project}/locations/global/wasmPlugins/{wasm_plugin}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Determines how much data must be returned in the response. See
+    /// [AIP-157](<https://google.aip.dev/157>).
+    #[prost(enumeration = "WasmPluginView", tag = "2")]
+    pub view: i32,
+}
+/// Request used by the `CreateWasmPlugin` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateWasmPluginRequest {
+    /// Required. The parent resource of the `WasmPlugin` resource. Must be in the
+    /// format `projects/{project}/locations/global`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. User-provided ID of the `WasmPlugin` resource to be created.
+    #[prost(string, tag = "2")]
+    pub wasm_plugin_id: ::prost::alloc::string::String,
+    /// Required. `WasmPlugin` resource to be created.
+    #[prost(message, optional, tag = "3")]
+    pub wasm_plugin: ::core::option::Option<WasmPlugin>,
+}
+/// Request used by the `UpdateWasmPlugin` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateWasmPluginRequest {
+    /// Optional. Used to specify the fields to be overwritten in the
+    /// `WasmPlugin` resource by the update.
+    /// The fields specified in the `update_mask` field are relative to the
+    /// resource, not the full request.
+    /// An omitted `update_mask` field is treated as an implied `update_mask`
+    /// field equivalent to all fields that are populated (that have a non-empty
+    /// value).
+    /// The `update_mask` field supports a special value `*`, which means that
+    /// each field in the given `WasmPlugin` resource (including the empty ones)
+    /// replaces the current value.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. Updated `WasmPlugin` resource.
+    #[prost(message, optional, tag = "2")]
+    pub wasm_plugin: ::core::option::Option<WasmPlugin>,
+}
+/// Request used by the `DeleteWasmPlugin` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteWasmPluginRequest {
+    /// Required. A name of the `WasmPlugin` resource to delete. Must be in the
+    /// format `projects/{project}/locations/global/wasmPlugins/{wasm_plugin}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request used with the `ListWasmPluginVersions` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListWasmPluginVersionsRequest {
+    /// Required. The `WasmPlugin` resource whose `WasmPluginVersion`s
+    /// are listed, specified in the following format:
+    /// `projects/{project}/locations/global/wasmPlugins/{wasm_plugin}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Maximum number of `WasmPluginVersion` resources to return per
+    /// call. If not specified, at most 50 `WasmPluginVersion` resources are
+    /// returned. The maximum value is 1000; values above 1000 are coerced to
+    /// 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The value returned by the last `ListWasmPluginVersionsResponse` call.
+    /// Indicates that this is a continuation of a prior
+    /// `ListWasmPluginVersions` call, and that the
+    /// next page of data is to be returned.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response returned by the `ListWasmPluginVersions` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListWasmPluginVersionsResponse {
+    /// List of `WasmPluginVersion` resources.
+    #[prost(message, repeated, tag = "1")]
+    pub wasm_plugin_versions: ::prost::alloc::vec::Vec<WasmPluginVersion>,
+    /// If there might be more results than those appearing in this response, then
+    /// `next_page_token` is included. To get the next set of results,
+    /// call this method again using the value of `next_page_token` as
+    /// `page_token`.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable resources. Populated when the request attempts to list all
+    /// resources across all supported locations, while some locations are
+    /// temporarily unavailable.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request used by the `GetWasmPluginVersion` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetWasmPluginVersionRequest {
+    /// Required. A name of the `WasmPluginVersion` resource to get. Must be in
+    /// the format
+    /// `projects/{project}/locations/global/wasmPlugins/{wasm_plugin}/versions/{wasm_plugin_version}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request used by the `CreateWasmPluginVersion` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateWasmPluginVersionRequest {
+    /// Required. The parent resource of the `WasmPluginVersion` resource. Must be
+    /// in the format
+    /// `projects/{project}/locations/global/wasmPlugins/{wasm_plugin}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. User-provided ID of the `WasmPluginVersion` resource to be
+    /// created.
+    #[prost(string, tag = "2")]
+    pub wasm_plugin_version_id: ::prost::alloc::string::String,
+    /// Required. `WasmPluginVersion` resource to be created.
+    #[prost(message, optional, tag = "3")]
+    pub wasm_plugin_version: ::core::option::Option<WasmPluginVersion>,
+}
+/// Request used by the `DeleteWasmPluginVersion` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteWasmPluginVersionRequest {
+    /// Required. A name of the `WasmPluginVersion` resource to delete. Must be in
+    /// the format
+    /// `projects/{project}/locations/global/wasmPlugins/{wasm_plugin}/versions/{wasm_plugin_version}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Determines the information that should be returned by the server.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum WasmPluginView {
+    /// Unspecified value. Do not use.
+    Unspecified = 0,
+    /// If specified in the `GET` request for a `WasmPlugin` resource, the server's
+    /// response includes just the `WasmPlugin` resource.
+    Basic = 1,
+    /// If specified in the `GET` request for a `WasmPlugin` resource, the server's
+    /// response includes the `WasmPlugin` resource with all its versions.
+    Full = 2,
+}
+impl WasmPluginView {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "WASM_PLUGIN_VIEW_UNSPECIFIED",
+            Self::Basic => "WASM_PLUGIN_VIEW_BASIC",
+            Self::Full => "WASM_PLUGIN_VIEW_FULL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "WASM_PLUGIN_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "WASM_PLUGIN_VIEW_BASIC" => Some(Self::Basic),
+            "WASM_PLUGIN_VIEW_FULL" => Some(Self::Full),
+            _ => None,
+        }
+    }
+}
 /// Gateway represents the configuration for a proxy, typically a load balancer.
 /// It captures the ip:port over which the services are exposed by the proxy,
 /// along with any policy configurations. Routes have reference to to Gateways to
 /// dictate how requests should be routed by this Gateway.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Gateway {
-    /// Required. Name of the Gateway resource. It matches pattern
+    /// Identifier. Name of the Gateway resource. It matches pattern
     /// `projects/*/locations/*/gateways/<gateway_name>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -1338,15 +2370,25 @@ pub struct Gateway {
     /// This field is required. If unspecified, an error is returned.
     #[prost(enumeration = "gateway::Type", tag = "6")]
     pub r#type: i32,
-    /// Required. One or more ports that the Gateway must receive traffic on. The
-    /// proxy binds to the ports specified. Gateway listen on 0.0.0.0 on the ports
-    /// specified below.
+    /// Optional. Zero or one IPv4 or IPv6 address on which the Gateway will
+    /// receive the traffic. When no address is provided, an IP from the subnetwork
+    /// is allocated
+    ///
+    /// This field only applies to gateways of type 'SECURE_WEB_GATEWAY'.
+    /// Gateways of type 'OPEN_MESH' listen on 0.0.0.0 for IPv4 and :: for IPv6.
+    #[prost(string, repeated, tag = "7")]
+    pub addresses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Required. One or more port numbers (1-65535), on which the Gateway will
+    /// receive traffic. The proxy binds to the specified ports.
+    /// Gateways of type 'SECURE_WEB_GATEWAY' are limited to 1 port.
+    /// Gateways of type 'OPEN_MESH' listen on 0.0.0.0 for IPv4 and :: for IPv6 and
+    /// support multiple ports.
     #[prost(int32, repeated, packed = "false", tag = "11")]
     pub ports: ::prost::alloc::vec::Vec<i32>,
-    /// Required. Immutable. Scope determines how configuration across multiple
-    /// Gateway instances are merged. The configuration for multiple Gateway
-    /// instances with the same scope will be merged as presented as a single
-    /// coniguration to the proxy/load balancer.
+    /// Optional. Scope determines how configuration across multiple Gateway
+    /// instances are merged. The configuration for multiple Gateway instances with
+    /// the same scope will be merged as presented as a single configuration to the
+    /// proxy/load balancer.
     ///
     /// Max length 64 characters.
     /// Scope should start with a letter and can only have letters, numbers,
@@ -1357,6 +2399,49 @@ pub struct Gateway {
     /// TLS traffic is terminated. If empty, TLS termination is disabled.
     #[prost(string, tag = "9")]
     pub server_tls_policy: ::prost::alloc::string::String,
+    /// Optional. A fully-qualified Certificates URL reference. The proxy presents
+    /// a Certificate (selected based on SNI) when establishing a TLS connection.
+    /// This feature only applies to gateways of type 'SECURE_WEB_GATEWAY'.
+    #[prost(string, repeated, tag = "14")]
+    pub certificate_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. A fully-qualified GatewaySecurityPolicy URL reference.
+    /// Defines how a server should apply security policy to inbound
+    /// (VM to Proxy) initiated connections.
+    ///
+    /// For example:
+    /// `projects/*/locations/*/gatewaySecurityPolicies/swg-policy`.
+    ///
+    /// This policy is specific to gateways of type 'SECURE_WEB_GATEWAY'.
+    #[prost(string, tag = "18")]
+    pub gateway_security_policy: ::prost::alloc::string::String,
+    /// Optional. The relative resource name identifying the VPC network that is
+    /// using this configuration. For example:
+    /// `projects/*/global/networks/network-1`.
+    ///
+    /// Currently, this field is specific to gateways of type 'SECURE_WEB_GATEWAY'.
+    #[prost(string, tag = "16")]
+    pub network: ::prost::alloc::string::String,
+    /// Optional. The relative resource name identifying  the subnetwork in which
+    /// this SWG is allocated. For example:
+    /// `projects/*/regions/us-central1/subnetworks/network-1`
+    ///
+    /// Currently, this field is specific to gateways of type 'SECURE_WEB_GATEWAY".
+    #[prost(string, tag = "17")]
+    pub subnetwork: ::prost::alloc::string::String,
+    /// Optional. The IP Version that will be used by this gateway. Valid options
+    /// are IPV4 or IPV6. Default is IPV4.
+    #[prost(enumeration = "gateway::IpVersion", tag = "21")]
+    pub ip_version: i32,
+    /// Optional. Determines if envoy will insert internal debug headers into
+    /// upstream requests. Other Envoy headers may still be injected. By default,
+    /// envoy will not insert any debug headers.
+    #[prost(enumeration = "EnvoyHeaders", optional, tag = "28")]
+    pub envoy_headers: ::core::option::Option<i32>,
+    /// Optional. The routing mode of the Gateway.
+    /// This field is configurable only for gateways of type SECURE_WEB_GATEWAY.
+    /// This field is required for gateways of type SECURE_WEB_GATEWAY.
+    #[prost(enumeration = "gateway::RoutingMode", tag = "32")]
+    pub routing_mode: i32,
 }
 /// Nested message and enum types in `Gateway`.
 pub mod gateway {
@@ -1407,6 +2492,99 @@ pub mod gateway {
             }
         }
     }
+    /// The types of IP version for the gateway.
+    /// Possible values are:
+    /// * IPV4
+    /// * IPV6
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum IpVersion {
+        /// The type when IP version is not specified. Defaults to IPV4.
+        Unspecified = 0,
+        /// The type for IP version 4.
+        Ipv4 = 1,
+        /// The type for IP version 6.
+        Ipv6 = 2,
+    }
+    impl IpVersion {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "IP_VERSION_UNSPECIFIED",
+                Self::Ipv4 => "IPV4",
+                Self::Ipv6 => "IPV6",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "IP_VERSION_UNSPECIFIED" => Some(Self::Unspecified),
+                "IPV4" => Some(Self::Ipv4),
+                "IPV6" => Some(Self::Ipv6),
+                _ => None,
+            }
+        }
+    }
+    /// The routing mode of the Gateway, to determine how the Gateway routes
+    /// traffic. Today, this field only applies to Gateways of type
+    /// SECURE_WEB_GATEWAY. Possible values are:
+    /// * EXPLICIT_ROUTING_MODE
+    /// * NEXT_HOP_ROUTING_MODE
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RoutingMode {
+        /// The routing mode is explicit; clients are configured to send
+        /// traffic through the gateway. This is the default routing mode.
+        ExplicitRoutingMode = 0,
+        /// The routing mode is next-hop. Clients are unaware of the gateway,
+        /// and a route (advanced route or other route type)
+        /// can be configured to direct traffic from client to gateway.
+        /// The gateway then acts as a next-hop to the destination.
+        NextHopRoutingMode = 1,
+    }
+    impl RoutingMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::ExplicitRoutingMode => "EXPLICIT_ROUTING_MODE",
+                Self::NextHopRoutingMode => "NEXT_HOP_ROUTING_MODE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EXPLICIT_ROUTING_MODE" => Some(Self::ExplicitRoutingMode),
+                "NEXT_HOP_ROUTING_MODE" => Some(Self::NextHopRoutingMode),
+                _ => None,
+            }
+        }
+    }
 }
 /// Request used with the ListGateways method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1435,6 +2613,9 @@ pub struct ListGatewaysResponse {
     /// method again using the value of `next_page_token` as `page_token`.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request used by the GetGateway method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1484,7 +2665,7 @@ pub struct DeleteGatewayRequest {
 /// or Gateway resource is routed.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GrpcRoute {
-    /// Required. Name of the GrpcRoute resource. It matches pattern
+    /// Identifier. Name of the GrpcRoute resource. It matches pattern
     /// `projects/*/locations/global/grpcRoutes/<grpc_route_name>`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -1786,7 +2967,28 @@ pub mod grpc_route {
             pub percentage: ::core::option::Option<i32>,
         }
     }
+    /// The specification for cookie-based stateful session affinity where the
+    /// date plane supplies a “session cookie”  with the name "GSSA" which encodes
+    /// a specific destination host and each request containing that cookie will
+    /// be directed to that host as long as the destination host remains up and
+    /// healthy.
+    ///
+    /// The gRPC proxyless mesh library or sidecar proxy will manage the session
+    /// cookie but the client application code is responsible for copying the
+    /// cookie from each RPC in the session to the next.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct StatefulSessionAffinityPolicy {
+        /// Required. The cookie TTL value for the Set-Cookie header generated by the
+        /// data plane. The lifetime of the cookie may be set to a value from 0 to
+        /// 86400 seconds (24 hours) inclusive.
+        ///
+        /// Set this to 0s to use a session cookie and disable cookie expiration.
+        #[prost(message, optional, tag = "1")]
+        pub cookie_ttl: ::core::option::Option<::prost_types::Duration>,
+    }
     /// The specifications for retries.
+    /// Specifies one or more conditions for which this retry rule applies. Valid
+    /// values are:
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RetryPolicy {
         /// - connect-failure: Router will retry on failures connecting to Backend
@@ -1820,12 +3022,12 @@ pub mod grpc_route {
         /// Backend Service(s) according to the weight field of these destinations.
         #[prost(message, repeated, tag = "1")]
         pub destinations: ::prost::alloc::vec::Vec<Destination>,
-        /// Optional. The specification for fault injection introduced into traffic to test the
-        /// resiliency of clients to destination service failure. As part of fault
-        /// injection, when clients send requests to a destination, delays can be
-        /// introduced on a percentage of requests before sending those requests to
-        /// the destination service. Similarly requests from clients can be aborted
-        /// by for a percentage of requests.
+        /// Optional. The specification for fault injection introduced into traffic
+        /// to test the resiliency of clients to destination service failure. As part
+        /// of fault injection, when clients send requests to a destination, delays
+        /// can be introduced on a percentage of requests before sending those
+        /// requests to the destination service. Similarly requests from clients can
+        /// be aborted by for a percentage of requests.
         ///
         /// timeout and retry_policy will be ignored by clients that are configured
         /// with a fault_injection_policy
@@ -1840,6 +3042,18 @@ pub mod grpc_route {
         /// Optional. Specifies the retry policy associated with this route.
         #[prost(message, optional, tag = "8")]
         pub retry_policy: ::core::option::Option<RetryPolicy>,
+        /// Optional. Specifies cookie-based stateful session affinity.
+        #[prost(message, optional, tag = "11")]
+        pub stateful_session_affinity: ::core::option::Option<
+            StatefulSessionAffinityPolicy,
+        >,
+        /// Optional. Specifies the idle timeout for the selected route. The idle
+        /// timeout is defined as the period in which there are no bytes sent or
+        /// received on either the upstream or downstream connection. If not set, the
+        /// default idle timeout is 1 hour. If set to 0s, the timeout will be
+        /// disabled.
+        #[prost(message, optional, tag = "12")]
+        pub idle_timeout: ::core::option::Option<::prost_types::Duration>,
     }
     /// Describes how to route traffic.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1871,6 +3085,11 @@ pub struct ListGrpcRoutesRequest {
     /// and that the system should return the next page of data.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
+    /// Optional. If true, allow partial responses for multi-regional Aggregated
+    /// List requests. Otherwise if one of the locations is down or unreachable,
+    /// the Aggregated List request will fail.
+    #[prost(bool, tag = "4")]
+    pub return_partial_success: bool,
 }
 /// Response returned by the ListGrpcRoutes method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1883,6 +3102,12 @@ pub struct ListGrpcRoutesResponse {
     /// method again using the value of `next_page_token` as `page_token`.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable resources. Populated when the request opts into
+    /// [return_partial_success][google.cloud.networkservices.v1.ListGrpcRoutesRequest.return_partial_success]
+    /// and reading across collections e.g. when attempting to list all resources
+    /// across all supported locations.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request used by the GetGrpcRoute method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1932,7 +3157,7 @@ pub struct DeleteGrpcRouteRequest {
 /// Mesh or Gateway resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpRoute {
-    /// Required. Name of the HttpRoute resource. It matches pattern
+    /// Identifier. Name of the HttpRoute resource. It matches pattern
     /// `projects/*/locations/global/httpRoutes/http_route_name>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -2163,6 +3388,19 @@ pub mod http_route {
         /// in equal proportions to all of them.
         #[prost(int32, tag = "2")]
         pub weight: i32,
+        /// Optional. The specification for modifying the headers of a matching
+        /// request prior to delivery of the request to the destination. If
+        /// HeaderModifiers are set on both the Destination and the RouteAction, they
+        /// will be merged. Conflicts between the two will not be resolved on the
+        /// configuration.
+        #[prost(message, optional, tag = "3")]
+        pub request_header_modifier: ::core::option::Option<HeaderModifier>,
+        /// Optional. The specification for modifying the headers of a response prior
+        /// to sending the response back to the client. If HeaderModifiers are set on
+        /// both the Destination and the RouteAction, they will be merged. Conflicts
+        /// between the two will not be resolved on the configuration.
+        #[prost(message, optional, tag = "4")]
+        pub response_header_modifier: ::core::option::Option<HeaderModifier>,
     }
     /// The specification for redirecting traffic.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2309,6 +3547,25 @@ pub mod http_route {
             pub percentage: i32,
         }
     }
+    /// The specification for cookie-based stateful session affinity where the
+    /// date plane supplies a “session cookie”  with the name "GSSA" which encodes
+    /// a specific destination host and each request containing that cookie will
+    /// be directed to that host as long as the destination host remains up and
+    /// healthy.
+    ///
+    /// The gRPC proxyless mesh library or sidecar proxy will manage the session
+    /// cookie but the client application code is responsible for copying the
+    /// cookie from each RPC in the session to the next.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct StatefulSessionAffinityPolicy {
+        /// Required. The cookie TTL value for the Set-Cookie header generated by
+        /// the data plane. The lifetime of the cookie may be set to a value from 0
+        /// to 86400 seconds (24 hours) inclusive.
+        ///
+        /// Set this to 0s to use a session cookie and disable cookie expiration.
+        #[prost(message, optional, tag = "1")]
+        pub cookie_ttl: ::core::option::Option<::prost_types::Duration>,
+    }
     /// The specification for modifying HTTP header in HTTP request and HTTP
     /// response.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2383,12 +3640,17 @@ pub mod http_route {
     /// destination service. The proxy does not wait for responses from the
     /// shadow service. Prior to sending traffic to the shadow service, the
     /// host/authority header is suffixed with -shadow.
+    /// Mirroring is currently not supported for Cloud Run destinations.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RequestMirrorPolicy {
         /// The destination the requests will be mirrored to. The weight of the
         /// destination will be ignored.
         #[prost(message, optional, tag = "1")]
         pub destination: ::core::option::Option<Destination>,
+        /// Optional. The percentage of requests to get mirrored to the desired
+        /// destination.
+        #[prost(float, tag = "2")]
+        pub mirror_percent: f32,
     }
     /// The Specification for allowing client side cross-origin requests.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2429,6 +3691,31 @@ pub mod http_route {
         /// indicates that the CORS policy is in effect.
         #[prost(bool, tag = "8")]
         pub disabled: bool,
+    }
+    /// Static HTTP response object to be returned.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct HttpDirectResponse {
+        /// Required. Status to return as part of HTTP Response. Must be a positive
+        /// integer.
+        #[prost(int32, tag = "1")]
+        pub status: i32,
+        /// Body to return as part of HTTP Response.
+        #[prost(oneof = "http_direct_response::HttpBody", tags = "2, 3")]
+        pub http_body: ::core::option::Option<http_direct_response::HttpBody>,
+    }
+    /// Nested message and enum types in `HttpDirectResponse`.
+    pub mod http_direct_response {
+        /// Body to return as part of HTTP Response.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum HttpBody {
+            /// Optional. Response body as a string. Maximum body length is 1024
+            /// characters.
+            #[prost(string, tag = "2")]
+            StringBody(::prost::alloc::string::String),
+            /// Optional. Response body as bytes. Maximum body size is 4096B.
+            #[prost(bytes, tag = "3")]
+            BytesBody(::prost::alloc::vec::Vec<u8>),
+        }
     }
     /// The specifications for routing traffic and applying associated policies.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2484,6 +3771,22 @@ pub mod http_route {
         /// The specification for allowing client side cross-origin requests.
         #[prost(message, optional, tag = "11")]
         pub cors_policy: ::core::option::Option<CorsPolicy>,
+        /// Optional. Specifies cookie-based stateful session affinity.
+        #[prost(message, optional, tag = "12")]
+        pub stateful_session_affinity: ::core::option::Option<
+            StatefulSessionAffinityPolicy,
+        >,
+        /// Optional. Static HTTP Response object to be returned regardless of the
+        /// request.
+        #[prost(message, optional, tag = "13")]
+        pub direct_response: ::core::option::Option<HttpDirectResponse>,
+        /// Optional. Specifies the idle timeout for the selected route. The idle
+        /// timeout is defined as the period in which there are no bytes sent or
+        /// received on either the upstream or downstream connection. If not set, the
+        /// default idle timeout is 1 hour. If set to 0s, the timeout will be
+        /// disabled.
+        #[prost(message, optional, tag = "14")]
+        pub idle_timeout: ::core::option::Option<::prost_types::Duration>,
     }
     /// Specifies how to match traffic and how to route traffic when traffic is
     /// matched.
@@ -2520,6 +3823,11 @@ pub struct ListHttpRoutesRequest {
     /// and that the system should return the next page of data.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
+    /// Optional. If true, allow partial responses for multi-regional Aggregated
+    /// List requests. Otherwise if one of the locations is down or unreachable,
+    /// the Aggregated List request will fail.
+    #[prost(bool, tag = "4")]
+    pub return_partial_success: bool,
 }
 /// Response returned by the ListHttpRoutes method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2532,6 +3840,12 @@ pub struct ListHttpRoutesResponse {
     /// method again using the value of `next_page_token` as `page_token`.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable resources. Populated when the request opts into
+    /// [return_partial_success][google.cloud.networkservices.v1.ListHttpRoutesRequest.return_partial_success]
+    /// and reading across collections e.g. when attempting to list all resources
+    /// across all supported locations.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request used by the GetHttpRoute method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2582,7 +3896,7 @@ pub struct DeleteHttpRouteRequest {
 /// requests are routed within this logical mesh boundary.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Mesh {
-    /// Required. Name of the Mesh resource. It matches pattern
+    /// Identifier. Name of the Mesh resource. It matches pattern
     /// `projects/*/locations/global/meshes/<mesh_name>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -2613,6 +3927,11 @@ pub struct Mesh {
     /// deployments.
     #[prost(int32, tag = "8")]
     pub interception_port: i32,
+    /// Optional. Determines if envoy will insert internal debug headers into
+    /// upstream requests. Other Envoy headers may still be injected. By default,
+    /// envoy will not insert any debug headers.
+    #[prost(enumeration = "EnvoyHeaders", optional, tag = "16")]
+    pub envoy_headers: ::core::option::Option<i32>,
 }
 /// Request used with the ListMeshes method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2629,6 +3948,11 @@ pub struct ListMeshesRequest {
     /// and that the system should return the next page of data.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
+    /// Optional. If true, allow partial responses for multi-regional Aggregated
+    /// List requests. Otherwise if one of the locations is down or unreachable,
+    /// the Aggregated List request will fail.
+    #[prost(bool, tag = "4")]
+    pub return_partial_success: bool,
 }
 /// Response returned by the ListMeshes method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2641,6 +3965,11 @@ pub struct ListMeshesResponse {
     /// method again using the value of `next_page_token` as `page_token`.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable resources. Populated when the request opts into
+    /// `return_partial_success` and reading across collections e.g. when
+    /// attempting to list all resources across all supported locations.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request used by the GetMesh method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2686,12 +4015,143 @@ pub struct DeleteMeshRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// ServiceBinding is the resource that defines a Service Directory Service to
-/// be used in a BackendService resource.
+/// GatewayRouteView defines view-only resource for Routes to a Gateway
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GatewayRouteView {
+    /// Output only. Identifier. Full path name of the GatewayRouteView resource.
+    /// Format:
+    ///    projects/{project_number}/locations/{location}/gateways/{gateway}/routeViews/{route_view}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Project number where the route exists.
+    #[prost(int64, tag = "2")]
+    pub route_project_number: i64,
+    /// Output only. Location where the route exists.
+    #[prost(string, tag = "3")]
+    pub route_location: ::prost::alloc::string::String,
+    /// Output only. Type of the route: HttpRoute,GrpcRoute,TcpRoute, or TlsRoute
+    #[prost(string, tag = "4")]
+    pub route_type: ::prost::alloc::string::String,
+    /// Output only. The resource id for the route.
+    #[prost(string, tag = "5")]
+    pub route_id: ::prost::alloc::string::String,
+}
+/// MeshRouteView defines view-only resource for Routes to a Mesh
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MeshRouteView {
+    /// Output only. Identifier. Full path name of the MeshRouteView resource.
+    /// Format:
+    ///    projects/{project}/locations/{location}/meshes/{mesh}/routeViews/{route_view}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Project number where the route exists.
+    #[prost(int64, tag = "2")]
+    pub route_project_number: i64,
+    /// Output only. Location where the route exists.
+    #[prost(string, tag = "3")]
+    pub route_location: ::prost::alloc::string::String,
+    /// Output only. Type of the route: HttpRoute,GrpcRoute,TcpRoute, or TlsRoute
+    #[prost(string, tag = "4")]
+    pub route_type: ::prost::alloc::string::String,
+    /// Output only. The resource id for the route.
+    #[prost(string, tag = "5")]
+    pub route_id: ::prost::alloc::string::String,
+}
+/// Request used with the GetGatewayRouteView method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetGatewayRouteViewRequest {
+    /// Required. Name of the GatewayRouteView resource.
+    /// Formats:
+    ///    projects/{project}/locations/{location}/gateways/{gateway}/routeViews/{route_view}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request used with the GetMeshRouteView method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetMeshRouteViewRequest {
+    /// Required. Name of the MeshRouteView resource.
+    /// Format:
+    ///    projects/{project}/locations/{location}/meshes/{mesh}/routeViews/{route_view}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request used with the ListGatewayRouteViews method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListGatewayRouteViewsRequest {
+    /// Required. The Gateway to which a Route is associated.
+    /// Formats:
+    ///    projects/{project}/locations/{location}/gateways/{gateway}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Maximum number of GatewayRouteViews to return per call.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The value returned by the last `ListGatewayRouteViewsResponse`
+    /// Indicates that this is a continuation of a prior `ListGatewayRouteViews`
+    /// call, and that the system should return the next page of data.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Request used with the ListMeshRouteViews method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListMeshRouteViewsRequest {
+    /// Required. The Mesh to which a Route is associated.
+    /// Format:
+    ///    projects/{project}/locations/{location}/meshes/{mesh}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Maximum number of MeshRouteViews to return per call.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The value returned by the last `ListMeshRouteViewsResponse`
+    /// Indicates that this is a continuation of a prior `ListMeshRouteViews` call,
+    /// and that the system should return the next page of data.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response returned by the ListGatewayRouteViews method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListGatewayRouteViewsResponse {
+    /// List of GatewayRouteView resources.
+    #[prost(message, repeated, tag = "1")]
+    pub gateway_route_views: ::prost::alloc::vec::Vec<GatewayRouteView>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable resources. Populated when the request attempts to list all
+    /// resources across all supported locations, while some locations are
+    /// temporarily unavailable.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Response returned by the ListMeshRouteViews method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListMeshRouteViewsResponse {
+    /// List of MeshRouteView resources.
+    #[prost(message, repeated, tag = "1")]
+    pub mesh_route_views: ::prost::alloc::vec::Vec<MeshRouteView>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable resources. Populated when the request attempts to list all
+    /// resources across all supported locations, while some locations are
+    /// temporarily unavailable.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// ServiceBinding can be used to:
+/// - Bind a Service Directory Service to be used in a BackendService resource.
+///    This feature will be deprecated soon.
+/// - Bind a Private Service Connect producer service to be used in consumer
+///    Cloud Service Mesh or Application Load Balancers.
+/// - Bind a Cloud Run service to be used in consumer Cloud Service Mesh or
+///    Application Load Balancers.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceBinding {
-    /// Required. Name of the ServiceBinding resource. It matches pattern
-    /// `projects/*/locations/global/serviceBindings/service_binding_name`.
+    /// Identifier. Name of the ServiceBinding resource. It matches pattern
+    /// `projects/*/locations/*/serviceBindings/<service_binding_name>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. A free-text description of the resource. Max length 1024
@@ -2704,10 +4164,21 @@ pub struct ServiceBinding {
     /// Output only. The timestamp when the resource was updated.
     #[prost(message, optional, tag = "4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Required. The full service directory service name of the format
-    /// /projects/*/locations/*/namespaces/*/services/*
+    /// Optional. The full Service Directory Service name of the format
+    /// `projects/*/locations/*/namespaces/*/services/*`.
+    /// This field is for Service Directory integration which will be deprecated
+    /// soon.
+    #[deprecated]
     #[prost(string, tag = "5")]
     pub service: ::prost::alloc::string::String,
+    /// Output only. The unique identifier of the Service Directory Service against
+    /// which the ServiceBinding resource is validated. This is populated when the
+    /// Service Binding resource is used in another resource (like Backend
+    /// Service). This is of the UUID4 format. This field is for Service Directory
+    /// integration which will be deprecated soon.
+    #[deprecated]
+    #[prost(string, tag = "8")]
+    pub service_id: ::prost::alloc::string::String,
     /// Optional. Set of label tags associated with the ServiceBinding resource.
     #[prost(map = "string, string", tag = "7")]
     pub labels: ::std::collections::HashMap<
@@ -2719,7 +4190,7 @@ pub struct ServiceBinding {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServiceBindingsRequest {
     /// Required. The project and location from which the ServiceBindings should be
-    /// listed, specified in the format `projects/*/locations/global`.
+    /// listed, specified in the format `projects/*/locations/*`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Maximum number of ServiceBindings to return per call.
@@ -2742,12 +4213,17 @@ pub struct ListServiceBindingsResponse {
     /// method again using the value of `next_page_token` as `page_token`.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable resources. Populated when the request attempts to list all
+    /// resources across all supported locations, while some locations are
+    /// temporarily unavailable.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request used by the GetServiceBinding method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceBindingRequest {
     /// Required. A name of the ServiceBinding to get. Must be in the format
-    /// `projects/*/locations/global/serviceBindings/*`.
+    /// `projects/*/locations/*/serviceBindings/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -2755,7 +4231,7 @@ pub struct GetServiceBindingRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateServiceBindingRequest {
     /// Required. The parent resource of the ServiceBinding. Must be in the
-    /// format `projects/*/locations/global`.
+    /// format `projects/*/locations/*`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Short name of the ServiceBinding resource to be created.
@@ -2765,11 +4241,230 @@ pub struct CreateServiceBindingRequest {
     #[prost(message, optional, tag = "3")]
     pub service_binding: ::core::option::Option<ServiceBinding>,
 }
+/// Request used by the UpdateServiceBinding method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateServiceBindingRequest {
+    /// Optional. Field mask is used to specify the fields to be overwritten in the
+    /// ServiceBinding resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then all fields will be overwritten.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. Updated ServiceBinding resource.
+    #[prost(message, optional, tag = "2")]
+    pub service_binding: ::core::option::Option<ServiceBinding>,
+}
 /// Request used by the DeleteServiceBinding method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteServiceBindingRequest {
     /// Required. A name of the ServiceBinding to delete. Must be in the format
-    /// `projects/*/locations/global/serviceBindings/*`.
+    /// `projects/*/locations/*/serviceBindings/*`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// ServiceLbPolicy holds global load balancing and traffic distribution
+/// configuration that can be applied to a BackendService.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ServiceLbPolicy {
+    /// Identifier. Name of the ServiceLbPolicy resource. It matches pattern
+    /// `projects/{project}/locations/{location}/serviceLbPolicies/{service_lb_policy_name}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The timestamp when this resource was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The timestamp when this resource was last updated.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Set of label tags associated with the ServiceLbPolicy resource.
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. A free-text description of the resource. Max length 1024
+    /// characters.
+    #[prost(string, tag = "5")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. The type of load balancing algorithm to be used. The default
+    /// behavior is WATERFALL_BY_REGION.
+    #[prost(enumeration = "service_lb_policy::LoadBalancingAlgorithm", tag = "6")]
+    pub load_balancing_algorithm: i32,
+    /// Optional. Configuration to automatically move traffic away for unhealthy
+    /// IG/NEG for the associated Backend Service.
+    #[prost(message, optional, tag = "8")]
+    pub auto_capacity_drain: ::core::option::Option<
+        service_lb_policy::AutoCapacityDrain,
+    >,
+    /// Optional. Configuration related to health based failover.
+    #[prost(message, optional, tag = "10")]
+    pub failover_config: ::core::option::Option<service_lb_policy::FailoverConfig>,
+}
+/// Nested message and enum types in `ServiceLbPolicy`.
+pub mod service_lb_policy {
+    /// Option to specify if an unhealthy IG/NEG should be considered for global
+    /// load balancing and traffic routing.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct AutoCapacityDrain {
+        /// Optional. If set to 'True', an unhealthy IG/NEG will be set as drained.
+        /// - An IG/NEG is considered unhealthy if less than 25% of the
+        /// instances/endpoints in the IG/NEG are healthy.
+        /// - This option will never result in draining more than 50% of the
+        /// configured IGs/NEGs for the Backend Service.
+        #[prost(bool, tag = "1")]
+        pub enable: bool,
+    }
+    /// Option to specify health based failover behavior.
+    /// This is not related to Network load balancer FailoverPolicy.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct FailoverConfig {
+        /// Optional. The percentage threshold that a load balancer will begin to
+        /// send traffic to failover backends. If the percentage of endpoints in a
+        /// MIG/NEG is smaller than this value, traffic would be sent to failover
+        /// backends if possible. This field should be set to a value between 1
+        /// and 99. The default value is 50 for Global external HTTP(S) load balancer
+        /// (classic) and Proxyless service mesh, and 70 for others.
+        #[prost(int32, tag = "1")]
+        pub failover_health_threshold: i32,
+    }
+    /// The global load balancing algorithm to be used.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum LoadBalancingAlgorithm {
+        /// The type of the loadbalancing algorithm is unspecified.
+        Unspecified = 0,
+        /// Balance traffic across all backends across the world proportionally based
+        /// on capacity.
+        SprayToWorld = 3,
+        /// Direct traffic to the nearest region with endpoints and capacity before
+        /// spilling over to other regions and spread the traffic from each client to
+        /// all the MIGs/NEGs in a region.
+        SprayToRegion = 4,
+        /// Direct traffic to the nearest region with endpoints and capacity before
+        /// spilling over to other regions. All MIGs/NEGs within a region are evenly
+        /// loaded but each client might not spread the traffic to all the MIGs/NEGs
+        /// in the region.
+        WaterfallByRegion = 5,
+        /// Attempt to keep traffic in a single zone closest to the client, before
+        /// spilling over to other zones.
+        WaterfallByZone = 6,
+    }
+    impl LoadBalancingAlgorithm {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "LOAD_BALANCING_ALGORITHM_UNSPECIFIED",
+                Self::SprayToWorld => "SPRAY_TO_WORLD",
+                Self::SprayToRegion => "SPRAY_TO_REGION",
+                Self::WaterfallByRegion => "WATERFALL_BY_REGION",
+                Self::WaterfallByZone => "WATERFALL_BY_ZONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LOAD_BALANCING_ALGORITHM_UNSPECIFIED" => Some(Self::Unspecified),
+                "SPRAY_TO_WORLD" => Some(Self::SprayToWorld),
+                "SPRAY_TO_REGION" => Some(Self::SprayToRegion),
+                "WATERFALL_BY_REGION" => Some(Self::WaterfallByRegion),
+                "WATERFALL_BY_ZONE" => Some(Self::WaterfallByZone),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request used with the ListServiceLbPolicies method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListServiceLbPoliciesRequest {
+    /// Required. The project and location from which the ServiceLbPolicies should
+    /// be listed, specified in the format
+    /// `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Maximum number of ServiceLbPolicies to return per call.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The value returned by the last `ListServiceLbPoliciesResponse`
+    /// Indicates that this is a continuation of a prior `ListRouters` call,
+    /// and that the system should return the next page of data.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response returned by the ListServiceLbPolicies method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListServiceLbPoliciesResponse {
+    /// List of ServiceLbPolicy resources.
+    #[prost(message, repeated, tag = "1")]
+    pub service_lb_policies: ::prost::alloc::vec::Vec<ServiceLbPolicy>,
+    /// If there might be more results than those appearing in this response, then
+    /// `next_page_token` is included. To get the next set of results, call this
+    /// method again using the value of `next_page_token` as `page_token`.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable resources. Populated when the request attempts to list all
+    /// resources across all supported locations, while some locations are
+    /// temporarily unavailable.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request used by the GetServiceLbPolicy method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetServiceLbPolicyRequest {
+    /// Required. A name of the ServiceLbPolicy to get. Must be in the format
+    /// `projects/{project}/locations/{location}/serviceLbPolicies/*`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request used by the ServiceLbPolicy method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateServiceLbPolicyRequest {
+    /// Required. The parent resource of the ServiceLbPolicy. Must be in the
+    /// format `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Short name of the ServiceLbPolicy resource to be created.
+    /// E.g. for resource name
+    /// `projects/{project}/locations/{location}/serviceLbPolicies/{service_lb_policy_name}`.
+    /// the id is value of {service_lb_policy_name}
+    #[prost(string, tag = "2")]
+    pub service_lb_policy_id: ::prost::alloc::string::String,
+    /// Required. ServiceLbPolicy resource to be created.
+    #[prost(message, optional, tag = "3")]
+    pub service_lb_policy: ::core::option::Option<ServiceLbPolicy>,
+}
+/// Request used by the UpdateServiceLbPolicy method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateServiceLbPolicyRequest {
+    /// Optional. Field mask is used to specify the fields to be overwritten in the
+    /// ServiceLbPolicy resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then all fields will be overwritten.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. Updated ServiceLbPolicy resource.
+    #[prost(message, optional, tag = "2")]
+    pub service_lb_policy: ::core::option::Option<ServiceLbPolicy>,
+}
+/// Request used by the DeleteServiceLbPolicy method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteServiceLbPolicyRequest {
+    /// Required. A name of the ServiceLbPolicy to delete. Must be in the format
+    /// `projects/{project}/locations/{location}/serviceLbPolicies/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -2777,7 +4472,7 @@ pub struct DeleteServiceBindingRequest {
 /// Mesh/Gateway resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TcpRoute {
-    /// Required. Name of the TcpRoute resource. It matches pattern
+    /// Identifier. Name of the TcpRoute resource. It matches pattern
     /// `projects/*/locations/global/tcpRoutes/tcp_route_name>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -2847,12 +4542,10 @@ pub mod tcp_route {
         /// Required. Must be specified in the CIDR range format. A CIDR range
         /// consists of an IP Address and a prefix length to construct the subnet
         /// mask. By default, the prefix length is 32 (i.e. matches a single IP
-        /// address). Only IPV4 addresses are supported.
-        /// Examples:
-        /// "10.0.0.1" - matches against this exact IP address.
-        /// "10.0.0.0/8" - matches against any IP address within the 10.0.0.0 subnet
-        /// and 255.255.255.0 mask.
-        /// "0.0.0.0/0" - matches against any IP address'.
+        /// address). Only IPV4 addresses are supported. Examples: "10.0.0.1" -
+        /// matches against this exact IP address. "10.0.0.0/8" - matches against any
+        /// IP address within the 10.0.0.0 subnet and 255.255.255.0 mask. "0.0.0.0/0"
+        /// - matches against any IP address'.
         #[prost(string, tag = "1")]
         pub address: ::prost::alloc::string::String,
         /// Required. Specifies the destination port to match against.
@@ -2872,6 +4565,13 @@ pub mod tcp_route {
         /// Only one of route destinations or original destination can be set.
         #[prost(bool, tag = "3")]
         pub original_destination: bool,
+        /// Optional. Specifies the idle timeout for the selected route. The idle
+        /// timeout is defined as the period in which there are no bytes sent or
+        /// received on either the upstream or downstream connection. If not set, the
+        /// default idle timeout is 30 seconds. If set to 0s, the timeout will be
+        /// disabled.
+        #[prost(message, optional, tag = "5")]
+        pub idle_timeout: ::core::option::Option<::prost_types::Duration>,
     }
     /// Describe the destination for traffic to be routed to.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2912,6 +4612,11 @@ pub struct ListTcpRoutesRequest {
     /// and that the system should return the next page of data.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
+    /// Optional. If true, allow partial responses for multi-regional Aggregated
+    /// List requests. Otherwise if one of the locations is down or unreachable,
+    /// the Aggregated List request will fail.
+    #[prost(bool, tag = "4")]
+    pub return_partial_success: bool,
 }
 /// Response returned by the ListTcpRoutes method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2924,6 +4629,12 @@ pub struct ListTcpRoutesResponse {
     /// method again using the value of `next_page_token` as `page_token`.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable resources. Populated when the request opts into
+    /// [return_partial_success][google.cloud.networkservices.v1.ListTcpRoutesRequest.return_partial_success]
+    /// and reading across collections e.g. when attempting to list all resources
+    /// across all supported locations.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request used by the GetTcpRoute method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2973,7 +4684,7 @@ pub struct DeleteTcpRouteRequest {
 /// L3 attributes.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TlsRoute {
-    /// Required. Name of the TlsRoute resource. It matches pattern
+    /// Identifier. Name of the TlsRoute resource. It matches pattern
     /// `projects/*/locations/global/tlsRoutes/tls_route_name>`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -3011,6 +4722,12 @@ pub struct TlsRoute {
     /// `projects/*/locations/global/gateways/<gateway_name>`
     #[prost(string, repeated, tag = "7")]
     pub gateways: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Set of label tags associated with the TlsRoute resource.
+    #[prost(map = "string, string", tag = "11")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Nested message and enum types in `TlsRoute`.
 pub mod tls_route {
@@ -3019,7 +4736,8 @@ pub mod tls_route {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteRule {
         /// Required. RouteMatch defines the predicate used to match requests to a
-        /// given action. Multiple match types are "OR"ed for evaluation.
+        /// given action. Multiple match types are "OR"ed for evaluation. Atleast one
+        /// RouteMatch must be supplied.
         #[prost(message, repeated, tag = "1")]
         pub matches: ::prost::alloc::vec::Vec<RouteMatch>,
         /// Required. The detailed rule defining how to route matched traffic.
@@ -3028,8 +4746,6 @@ pub mod tls_route {
     }
     /// RouteMatch defines the predicate used to match requests to a given action.
     /// Multiple match types are "AND"ed for evaluation.
-    /// If no routeMatch field is specified, this rule will unconditionally match
-    /// traffic.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteMatch {
         /// Optional. SNI (server name indicator) to match against.
@@ -3039,7 +4755,7 @@ pub mod tls_route {
         /// Partial wildcards are not supported, and values like *w.example.com are
         /// invalid.
         /// At least one of sni_host and alpn is required.
-        /// Up to 5 sni hosts across all matches can be set.
+        /// Up to 100 sni hosts across all matches can be set.
         #[prost(string, repeated, tag = "1")]
         pub sni_host: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Optional. ALPN (Application-Layer Protocol Negotiation) to match against.
@@ -3056,6 +4772,13 @@ pub mod tls_route {
         /// At least one destination service is required.
         #[prost(message, repeated, tag = "1")]
         pub destinations: ::prost::alloc::vec::Vec<RouteDestination>,
+        /// Optional. Specifies the idle timeout for the selected route. The idle
+        /// timeout is defined as the period in which there are no bytes sent or
+        /// received on either the upstream or downstream connection. If not set, the
+        /// default idle timeout is 1 hour. If set to 0s, the timeout will be
+        /// disabled.
+        #[prost(message, optional, tag = "4")]
+        pub idle_timeout: ::core::option::Option<::prost_types::Duration>,
     }
     /// Describe the destination for traffic to be routed to.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3063,7 +4786,7 @@ pub mod tls_route {
         /// Required. The URL of a BackendService to route traffic to.
         #[prost(string, tag = "1")]
         pub service_name: ::prost::alloc::string::String,
-        /// Optional. Specifies the proportion of requests forwareded to the backend
+        /// Optional. Specifies the proportion of requests forwarded to the backend
         /// referenced by the service_name field. This is computed as:
         /// - weight/Sum(weights in destinations)
         /// Weights in all destinations does not need to sum up to 100.
@@ -3086,6 +4809,11 @@ pub struct ListTlsRoutesRequest {
     /// and that the system should return the next page of data.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
+    /// Optional. If true, allow partial responses for multi-regional Aggregated
+    /// List requests. Otherwise if one of the locations is down or unreachable,
+    /// the Aggregated List request will fail.
+    #[prost(bool, tag = "4")]
+    pub return_partial_success: bool,
 }
 /// Response returned by the ListTlsRoutes method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3098,6 +4826,12 @@ pub struct ListTlsRoutesResponse {
     /// method again using the value of `next_page_token` as `page_token`.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable resources. Populated when the request opts into
+    /// [return_partial_success][google.cloud.networkservices.v1.ListTlsRoutesRequest.return_partial_success]
+    /// and reading across collections e.g. when attempting to list all resources
+    /// across all supported locations.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request used by the GetTlsRoute method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3378,6 +5112,277 @@ pub mod network_services_client {
                     GrpcMethod::new(
                         "google.cloud.networkservices.v1.NetworkServices",
                         "DeleteEndpointPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists `WasmPluginVersion` resources in a given project and
+        /// location.
+        pub async fn list_wasm_plugin_versions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListWasmPluginVersionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListWasmPluginVersionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.NetworkServices/ListWasmPluginVersions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "ListWasmPluginVersions",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of the specified `WasmPluginVersion` resource.
+        pub async fn get_wasm_plugin_version(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetWasmPluginVersionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::WasmPluginVersion>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.NetworkServices/GetWasmPluginVersion",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "GetWasmPluginVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new `WasmPluginVersion` resource in a given project
+        /// and location.
+        pub async fn create_wasm_plugin_version(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateWasmPluginVersionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.NetworkServices/CreateWasmPluginVersion",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "CreateWasmPluginVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes the specified `WasmPluginVersion` resource.
+        pub async fn delete_wasm_plugin_version(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteWasmPluginVersionRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.NetworkServices/DeleteWasmPluginVersion",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "DeleteWasmPluginVersion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists `WasmPlugin` resources in a given project and
+        /// location.
+        pub async fn list_wasm_plugins(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListWasmPluginsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListWasmPluginsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.NetworkServices/ListWasmPlugins",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "ListWasmPlugins",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of the specified `WasmPlugin` resource.
+        pub async fn get_wasm_plugin(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetWasmPluginRequest>,
+        ) -> std::result::Result<tonic::Response<super::WasmPlugin>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.NetworkServices/GetWasmPlugin",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "GetWasmPlugin",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new `WasmPlugin` resource in a given project
+        /// and location.
+        pub async fn create_wasm_plugin(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateWasmPluginRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.NetworkServices/CreateWasmPlugin",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "CreateWasmPlugin",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the parameters of the specified `WasmPlugin` resource.
+        pub async fn update_wasm_plugin(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateWasmPluginRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.NetworkServices/UpdateWasmPlugin",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "UpdateWasmPlugin",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes the specified `WasmPlugin` resource.
+        pub async fn delete_wasm_plugin(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteWasmPluginRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.NetworkServices/DeleteWasmPlugin",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "DeleteWasmPlugin",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -4204,6 +6209,36 @@ pub mod network_services_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Updates the parameters of a single ServiceBinding.
+        pub async fn update_service_binding(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateServiceBindingRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.NetworkServices/UpdateServiceBinding",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "UpdateServiceBinding",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Deletes a single ServiceBinding.
         pub async fn delete_service_binding(
             &mut self,
@@ -4377,6 +6412,273 @@ pub mod network_services_client {
                     GrpcMethod::new(
                         "google.cloud.networkservices.v1.NetworkServices",
                         "DeleteMesh",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists ServiceLbPolicies in a given project and location.
+        pub async fn list_service_lb_policies(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListServiceLbPoliciesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListServiceLbPoliciesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.NetworkServices/ListServiceLbPolicies",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "ListServiceLbPolicies",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single ServiceLbPolicy.
+        pub async fn get_service_lb_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetServiceLbPolicyRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ServiceLbPolicy>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.NetworkServices/GetServiceLbPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "GetServiceLbPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new ServiceLbPolicy in a given project and location.
+        pub async fn create_service_lb_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateServiceLbPolicyRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.NetworkServices/CreateServiceLbPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "CreateServiceLbPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the parameters of a single ServiceLbPolicy.
+        pub async fn update_service_lb_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateServiceLbPolicyRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.NetworkServices/UpdateServiceLbPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "UpdateServiceLbPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single ServiceLbPolicy.
+        pub async fn delete_service_lb_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteServiceLbPolicyRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.NetworkServices/DeleteServiceLbPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "DeleteServiceLbPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get a single RouteView of a Gateway.
+        pub async fn get_gateway_route_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetGatewayRouteViewRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::GatewayRouteView>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.NetworkServices/GetGatewayRouteView",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "GetGatewayRouteView",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get a single RouteView of a Mesh.
+        pub async fn get_mesh_route_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetMeshRouteViewRequest>,
+        ) -> std::result::Result<tonic::Response<super::MeshRouteView>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.NetworkServices/GetMeshRouteView",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "GetMeshRouteView",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists RouteViews
+        pub async fn list_gateway_route_views(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListGatewayRouteViewsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListGatewayRouteViewsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.NetworkServices/ListGatewayRouteViews",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "ListGatewayRouteViews",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists RouteViews
+        pub async fn list_mesh_route_views(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListMeshRouteViewsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListMeshRouteViewsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkservices.v1.NetworkServices/ListMeshRouteViews",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkservices.v1.NetworkServices",
+                        "ListMeshRouteViews",
                     ),
                 );
             self.inner.unary(req, path, codec).await
