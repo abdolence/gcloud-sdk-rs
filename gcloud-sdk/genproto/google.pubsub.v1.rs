@@ -1362,6 +1362,10 @@ pub mod ingestion_failure_event {
     /// validation violation.
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct SchemaViolationReason {}
+    /// Set when a Pub/Sub message fails to get published due to a message
+    /// transformation error.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct MessageTransformationFailureReason {}
     /// Failure when ingesting from a Cloud Storage source.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CloudStorageFailure {
@@ -1377,7 +1381,7 @@ pub mod ingestion_failure_event {
         #[prost(int64, tag = "3")]
         pub object_generation: i64,
         /// Reason why ingestion failed for the specified object.
-        #[prost(oneof = "cloud_storage_failure::Reason", tags = "5, 6, 7")]
+        #[prost(oneof = "cloud_storage_failure::Reason", tags = "5, 6, 7, 8")]
         pub reason: ::core::option::Option<cloud_storage_failure::Reason>,
     }
     /// Nested message and enum types in `CloudStorageFailure`.
@@ -1395,6 +1399,12 @@ pub mod ingestion_failure_event {
             /// Optional. The Pub/Sub message failed schema validation.
             #[prost(message, tag = "7")]
             SchemaViolationReason(super::SchemaViolationReason),
+            /// Optional. Failure encountered when applying a message transformation to
+            /// the Pub/Sub message.
+            #[prost(message, tag = "8")]
+            MessageTransformationFailureReason(
+                super::MessageTransformationFailureReason,
+            ),
         }
     }
     /// Failure when ingesting from an Amazon MSK source.
@@ -1414,7 +1424,7 @@ pub mod ingestion_failure_event {
         #[prost(int64, tag = "4")]
         pub offset: i64,
         /// Reason why ingestion failed for the specified message.
-        #[prost(oneof = "aws_msk_failure_reason::Reason", tags = "5, 6")]
+        #[prost(oneof = "aws_msk_failure_reason::Reason", tags = "5, 6, 7")]
         pub reason: ::core::option::Option<aws_msk_failure_reason::Reason>,
     }
     /// Nested message and enum types in `AwsMskFailureReason`.
@@ -1429,6 +1439,12 @@ pub mod ingestion_failure_event {
             /// Optional. The Pub/Sub message failed schema validation.
             #[prost(message, tag = "6")]
             SchemaViolationReason(super::SchemaViolationReason),
+            /// Optional. Failure encountered when applying a message transformation to
+            /// the Pub/Sub message.
+            #[prost(message, tag = "7")]
+            MessageTransformationFailureReason(
+                super::MessageTransformationFailureReason,
+            ),
         }
     }
     /// Failure when ingesting from an Azure Event Hubs source.
@@ -1448,7 +1464,7 @@ pub mod ingestion_failure_event {
         #[prost(int64, tag = "4")]
         pub offset: i64,
         /// Reason why ingestion failed for the specified message.
-        #[prost(oneof = "azure_event_hubs_failure_reason::Reason", tags = "5, 6")]
+        #[prost(oneof = "azure_event_hubs_failure_reason::Reason", tags = "5, 6, 7")]
         pub reason: ::core::option::Option<azure_event_hubs_failure_reason::Reason>,
     }
     /// Nested message and enum types in `AzureEventHubsFailureReason`.
@@ -1463,6 +1479,12 @@ pub mod ingestion_failure_event {
             /// Optional. The Pub/Sub message failed schema validation.
             #[prost(message, tag = "6")]
             SchemaViolationReason(super::SchemaViolationReason),
+            /// Optional. Failure encountered when applying a message transformation to
+            /// the Pub/Sub message.
+            #[prost(message, tag = "7")]
+            MessageTransformationFailureReason(
+                super::MessageTransformationFailureReason,
+            ),
         }
     }
     /// Failure when ingesting from a Confluent Cloud source.
@@ -1482,7 +1504,7 @@ pub mod ingestion_failure_event {
         #[prost(int64, tag = "4")]
         pub offset: i64,
         /// Reason why ingestion failed for the specified message.
-        #[prost(oneof = "confluent_cloud_failure_reason::Reason", tags = "5, 6")]
+        #[prost(oneof = "confluent_cloud_failure_reason::Reason", tags = "5, 6, 7")]
         pub reason: ::core::option::Option<confluent_cloud_failure_reason::Reason>,
     }
     /// Nested message and enum types in `ConfluentCloudFailureReason`.
@@ -1497,6 +1519,12 @@ pub mod ingestion_failure_event {
             /// Optional. The Pub/Sub message failed schema validation.
             #[prost(message, tag = "6")]
             SchemaViolationReason(super::SchemaViolationReason),
+            /// Optional. Failure encountered when applying a message transformation to
+            /// the Pub/Sub message.
+            #[prost(message, tag = "7")]
+            MessageTransformationFailureReason(
+                super::MessageTransformationFailureReason,
+            ),
         }
     }
     /// Failure when ingesting from an AWS Kinesis source.
@@ -1512,7 +1540,7 @@ pub mod ingestion_failure_event {
         #[prost(string, tag = "3")]
         pub sequence_number: ::prost::alloc::string::String,
         /// Reason why ingestion failed for the specified message.
-        #[prost(oneof = "aws_kinesis_failure_reason::Reason", tags = "4")]
+        #[prost(oneof = "aws_kinesis_failure_reason::Reason", tags = "4, 5")]
         pub reason: ::core::option::Option<aws_kinesis_failure_reason::Reason>,
     }
     /// Nested message and enum types in `AwsKinesisFailureReason`.
@@ -1523,6 +1551,12 @@ pub mod ingestion_failure_event {
             /// Optional. The Pub/Sub message failed schema validation.
             #[prost(message, tag = "4")]
             SchemaViolationReason(super::SchemaViolationReason),
+            /// Optional. Failure encountered when applying a message transformation to
+            /// the Pub/Sub message.
+            #[prost(message, tag = "5")]
+            MessageTransformationFailureReason(
+                super::MessageTransformationFailureReason,
+            ),
         }
     }
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -2827,13 +2861,13 @@ pub struct StreamingPullResponse {
     #[prost(message, repeated, tag = "1")]
     pub received_messages: ::prost::alloc::vec::Vec<ReceivedMessage>,
     /// Optional. This field will only be set if `enable_exactly_once_delivery` is
-    /// set to `true`.
+    /// set to `true` and is not guaranteed to be populated.
     #[prost(message, optional, tag = "5")]
     pub acknowledge_confirmation: ::core::option::Option<
         streaming_pull_response::AcknowledgeConfirmation,
     >,
     /// Optional. This field will only be set if `enable_exactly_once_delivery` is
-    /// set to `true`.
+    /// set to `true` and is not guaranteed to be populated.
     #[prost(message, optional, tag = "3")]
     pub modify_ack_deadline_confirmation: ::core::option::Option<
         streaming_pull_response::ModifyAckDeadlineConfirmation,

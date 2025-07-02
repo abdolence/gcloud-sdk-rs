@@ -90,6 +90,84 @@ pub struct Geolocation {
     #[prost(string, tag = "1")]
     pub region_code: ::prost::alloc::string::String,
 }
+/// Details about resources affected by this finding.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct AffectedResources {
+    /// The count of resources affected by the finding.
+    #[prost(int64, tag = "1")]
+    pub count: i64,
+}
+/// Contains information about the AI model associated with the finding.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AiModel {
+    /// The name of the AI model, for example, "gemini:1.0.0".
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The domain of the model, for example, “image-classification”.
+    #[prost(string, tag = "2")]
+    pub domain: ::prost::alloc::string::String,
+    /// The name of the model library, for example, “transformers”.
+    #[prost(string, tag = "3")]
+    pub library: ::prost::alloc::string::String,
+    /// The region in which the model is used, for example, “us-central1”.
+    #[prost(string, tag = "4")]
+    pub location: ::prost::alloc::string::String,
+    /// The publisher of the model, for example, “google” or “nvidia”.
+    #[prost(string, tag = "5")]
+    pub publisher: ::prost::alloc::string::String,
+    /// The platform on which the model is deployed.
+    #[prost(enumeration = "ai_model::DeploymentPlatform", tag = "6")]
+    pub deployment_platform: i32,
+    /// The user defined display name of model. Ex. baseline-classification-model
+    #[prost(string, tag = "7")]
+    pub display_name: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `AiModel`.
+pub mod ai_model {
+    /// The platform on which the model is deployed.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DeploymentPlatform {
+        /// Unspecified deployment platform.
+        Unspecified = 0,
+        /// Vertex AI.
+        VertexAi = 1,
+        /// Google Kubernetes Engine.
+        Gke = 2,
+    }
+    impl DeploymentPlatform {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DEPLOYMENT_PLATFORM_UNSPECIFIED",
+                Self::VertexAi => "VERTEX_AI",
+                Self::Gke => "GKE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DEPLOYMENT_PLATFORM_UNSPECIFIED" => Some(Self::Unspecified),
+                "VERTEX_AI" => Some(Self::VertexAi),
+                "GKE" => Some(Self::Gke),
+                _ => None,
+            }
+        }
+    }
+}
 /// Represents an application associated with a finding.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Application {
@@ -456,6 +534,17 @@ pub struct BigQueryExport {
     /// upload data to the BigQuery dataset.
     #[prost(string, tag = "8")]
     pub principal: ::prost::alloc::string::String,
+}
+/// Contains details about a chokepoint, which is a resource or resource group
+/// where high-risk attack paths converge, based on \[attack path simulations\]
+/// (<https://cloud.google.com/security-command-center/docs/attack-exposure-learn#attack_path_simulations>).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Chokepoint {
+    /// List of resource names of findings associated with this chokepoint.
+    /// For example, organizations/123/sources/456/findings/789.
+    /// This list will have at most 100 findings.
+    #[prost(string, repeated, tag = "1")]
+    pub related_findings: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Fields related to Google Cloud Armor findings.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1038,7 +1127,7 @@ pub struct Database {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Disk {
     /// The name of the disk, for example,
-    /// `<https://www.googleapis.com/compute/v1/projects/{project-id}/zones/{zone-id}/disks/{disk-id}`.>
+    /// "<https://www.googleapis.com/compute/v1/projects/{project-id}/zones/{zone-id}/disks/{disk-id}".>
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1184,6 +1273,9 @@ pub struct File {
     /// Path of the file in terms of underlying disk/partition identifiers.
     #[prost(message, optional, tag = "7")]
     pub disk_path: ::core::option::Option<file::DiskPath>,
+    /// Operation(s) performed on a file.
+    #[prost(message, repeated, tag = "8")]
+    pub operations: ::prost::alloc::vec::Vec<file::FileOperation>,
 }
 /// Nested message and enum types in `File`.
 pub mod file {
@@ -1198,6 +1290,71 @@ pub mod file {
         /// Example: /home/user1/executable_file.sh
         #[prost(string, tag = "2")]
         pub relative_path: ::prost::alloc::string::String,
+    }
+    /// Operation(s) performed on a file.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct FileOperation {
+        /// The type of the operation
+        #[prost(enumeration = "file_operation::OperationType", tag = "1")]
+        pub r#type: i32,
+    }
+    /// Nested message and enum types in `FileOperation`.
+    pub mod file_operation {
+        /// The type of the operation
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum OperationType {
+            /// The operation is unspecified.
+            Unspecified = 0,
+            /// Represents an open operation.
+            Open = 1,
+            /// Represents a read operation.
+            Read = 2,
+            /// Represents a rename operation.
+            Rename = 3,
+            /// Represents a write operation.
+            Write = 4,
+            /// Represents an execute operation.
+            Execute = 5,
+        }
+        impl OperationType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "OPERATION_TYPE_UNSPECIFIED",
+                    Self::Open => "OPEN",
+                    Self::Read => "READ",
+                    Self::Rename => "RENAME",
+                    Self::Write => "WRITE",
+                    Self::Execute => "EXECUTE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "OPERATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "OPEN" => Some(Self::Open),
+                    "READ" => Some(Self::Read),
+                    "RENAME" => Some(Self::Rename),
+                    "WRITE" => Some(Self::Write),
+                    "EXECUTE" => Some(Self::Execute),
+                    _ => None,
+                }
+            }
+        }
     }
 }
 /// Contains details about groups of which this finding is a member. A group is a
@@ -1231,6 +1388,8 @@ pub mod group_membership {
         Unspecified = 0,
         /// Group represents a toxic combination.
         ToxicCombination = 1,
+        /// Group represents a chokepoint.
+        Chokepoint = 3,
     }
     impl GroupType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1241,6 +1400,7 @@ pub mod group_membership {
             match self {
                 Self::Unspecified => "GROUP_TYPE_UNSPECIFIED",
                 Self::ToxicCombination => "GROUP_TYPE_TOXIC_COMBINATION",
+                Self::Chokepoint => "GROUP_TYPE_CHOKEPOINT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1248,6 +1408,7 @@ pub mod group_membership {
             match value {
                 "GROUP_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "GROUP_TYPE_TOXIC_COMBINATION" => Some(Self::ToxicCombination),
+                "GROUP_TYPE_CHOKEPOINT" => Some(Self::Chokepoint),
                 _ => None,
             }
         }
@@ -1344,6 +1505,7 @@ pub mod indicator {
         /// Describes the type of resource associated with the signature.
         #[prost(enumeration = "process_signature::SignatureType", tag = "8")]
         pub signature_type: i32,
+        /// The signature.
         #[prost(oneof = "process_signature::Signature", tags = "6, 7")]
         pub signature: ::core::option::Option<process_signature::Signature>,
     }
@@ -1425,6 +1587,7 @@ pub mod indicator {
                 }
             }
         }
+        /// The signature.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Signature {
             /// Signature indicating that a binary family was matched.
@@ -1433,6 +1596,194 @@ pub mod indicator {
             /// Signature indicating that a YARA rule was matched.
             #[prost(message, tag = "7")]
             YaraRuleSignature(YaraRuleSignature),
+        }
+    }
+}
+/// IP rules associated with the finding.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IpRules {
+    /// The direction that the rule is applicable to, one of ingress or egress.
+    #[prost(enumeration = "ip_rules::Direction", tag = "1")]
+    pub direction: i32,
+    /// If source IP ranges are specified, the firewall rule applies only to
+    /// traffic that has a source IP address in these ranges. These ranges must be
+    /// expressed in CIDR format. Only supports IPv4.
+    #[prost(string, repeated, tag = "4")]
+    pub source_ip_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// If destination IP ranges are specified, the firewall rule applies only to
+    /// traffic that has a destination IP address in these ranges. These ranges
+    /// must be expressed in CIDR format. Only supports IPv4.
+    #[prost(string, repeated, tag = "5")]
+    pub destination_ip_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Name of the network protocol service, such as FTP, that is exposed by the
+    /// open port. Follows the naming convention available at:
+    /// <https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml.>
+    #[prost(string, repeated, tag = "6")]
+    pub exposed_services: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The list of allow rules specified by this firewall. Each rule specifies a
+    /// protocol and port-range tuple that describes a permitted connection.
+    #[prost(oneof = "ip_rules::Rules", tags = "2, 3")]
+    pub rules: ::core::option::Option<ip_rules::Rules>,
+}
+/// Nested message and enum types in `IpRules`.
+pub mod ip_rules {
+    /// The type of direction that the rule is applicable to, one of ingress or
+    /// egress. Not applicable to OPEN_X_PORT findings.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Direction {
+        /// Unspecified direction value.
+        Unspecified = 0,
+        /// Ingress direction value.
+        Ingress = 1,
+        /// Egress direction value.
+        Egress = 2,
+    }
+    impl Direction {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "DIRECTION_UNSPECIFIED",
+                Self::Ingress => "INGRESS",
+                Self::Egress => "EGRESS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DIRECTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "INGRESS" => Some(Self::Ingress),
+                "EGRESS" => Some(Self::Egress),
+                _ => None,
+            }
+        }
+    }
+    /// The list of allow rules specified by this firewall. Each rule specifies a
+    /// protocol and port-range tuple that describes a permitted connection.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Rules {
+        /// Tuple with allowed rules.
+        #[prost(message, tag = "2")]
+        Allowed(super::Allowed),
+        /// Tuple with denied rules.
+        #[prost(message, tag = "3")]
+        Denied(super::Denied),
+    }
+}
+/// IP rule information.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IpRule {
+    /// The IP protocol this rule applies to. This value can either be one of the
+    /// following well known protocol strings (TCP, UDP, ICMP, ESP, AH, IPIP,
+    /// SCTP) or a string representation of the integer value.
+    #[prost(string, tag = "1")]
+    pub protocol: ::prost::alloc::string::String,
+    /// Optional. An optional list of ports to which this rule applies. This field
+    /// is only applicable for the UDP or (S)TCP protocols. Each entry must be
+    /// either an integer or a range including a min and max port number.
+    #[prost(message, repeated, tag = "2")]
+    pub port_ranges: ::prost::alloc::vec::Vec<ip_rule::PortRange>,
+}
+/// Nested message and enum types in `IpRule`.
+pub mod ip_rule {
+    /// A port range which is inclusive of the min and max values.
+    /// Values are between 0 and 2^16-1. The max can be equal / must be not smaller
+    /// than the min value. If min and max are equal this indicates that it is a
+    /// single port.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct PortRange {
+        /// Minimum port value.
+        #[prost(int64, tag = "1")]
+        pub min: i64,
+        /// Maximum port value.
+        #[prost(int64, tag = "2")]
+        pub max: i64,
+    }
+}
+/// Allowed IP rule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Allowed {
+    /// Optional. Optional list of allowed IP rules.
+    #[prost(message, repeated, tag = "1")]
+    pub ip_rules: ::prost::alloc::vec::Vec<IpRule>,
+}
+/// Denied IP rule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Denied {
+    /// Optional. Optional list of denied IP rules.
+    #[prost(message, repeated, tag = "1")]
+    pub ip_rules: ::prost::alloc::vec::Vec<IpRule>,
+}
+/// Describes a job
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Job {
+    /// The fully-qualified name for a job.
+    /// e.g. `projects/<project_id>/jobs/<job_id>`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. State of the job, such as `RUNNING` or `PENDING`.
+    #[prost(enumeration = "JobState", tag = "2")]
+    pub state: i32,
+    /// Optional. If the job did not complete successfully, this field describes
+    /// why.
+    #[prost(int32, tag = "3")]
+    pub error_code: i32,
+    /// Optional. Gives the location where the job ran, such as `US` or
+    /// `europe-west1`
+    #[prost(string, tag = "4")]
+    pub location: ::prost::alloc::string::String,
+}
+/// JobState represents the state of the job.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum JobState {
+    /// Unspecified represents an unknown state and should not be used.
+    Unspecified = 0,
+    /// Job is scheduled and pending for run
+    Pending = 1,
+    /// Job in progress
+    Running = 2,
+    /// Job has completed with success
+    Succeeded = 3,
+    /// Job has completed but with failure
+    Failed = 4,
+}
+impl JobState {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "JOB_STATE_UNSPECIFIED",
+            Self::Pending => "PENDING",
+            Self::Running => "RUNNING",
+            Self::Succeeded => "SUCCEEDED",
+            Self::Failed => "FAILED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "JOB_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "PENDING" => Some(Self::Pending),
+            "RUNNING" => Some(Self::Running),
+            "SUCCEEDED" => Some(Self::Succeeded),
+            "FAILED" => Some(Self::Failed),
+            _ => None,
         }
     }
 }
@@ -1754,11 +2105,13 @@ pub struct LoadBalancer {
 /// An individual entry in a log.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogEntry {
+    /// The log entry.
     #[prost(oneof = "log_entry::LogEntry", tags = "1")]
     pub log_entry: ::core::option::Option<log_entry::LogEntry>,
 }
 /// Nested message and enum types in `LogEntry`.
 pub mod log_entry {
+    /// The log entry.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum LogEntry {
         /// An individual entry in a log stored in Cloud Logging.
@@ -1907,8 +2260,8 @@ pub mod mitre_attack {
             }
         }
     }
-    /// MITRE ATT&CK techniques that can be referenced by SCC findings.
-    /// See: <https://attack.mitre.org/techniques/enterprise/>
+    /// MITRE ATT&CK techniques that can be referenced by Security Command Center
+    /// findings. See: <https://attack.mitre.org/techniques/enterprise/>
     #[derive(
         Clone,
         Copy,
@@ -1924,6 +2277,32 @@ pub mod mitre_attack {
     pub enum Technique {
         /// Unspecified value.
         Unspecified = 0,
+        /// T1001
+        DataObfuscation = 70,
+        /// T1001.002
+        DataObfuscationSteganography = 71,
+        /// T1003
+        OsCredentialDumping = 114,
+        /// T1003.007
+        OsCredentialDumpingProcFilesystem = 115,
+        /// T1003.008
+        OsCredentialDumpingEtcPasswordAndEtcShadow = 122,
+        /// T1005
+        DataFromLocalSystem = 117,
+        /// T1020
+        AutomatedExfiltration = 68,
+        /// T1027
+        ObfuscatedFilesOrInfo = 72,
+        /// T1027.003
+        Steganography = 73,
+        /// T1027.004
+        CompileAfterDelivery = 74,
+        /// T1027.010
+        CommandObfuscation = 75,
+        /// T1029
+        ScheduledTransfer = 120,
+        /// T1033
+        SystemOwnerUserDiscovery = 118,
         /// T1036
         Masquerading = 49,
         /// T1036.005
@@ -1934,6 +2313,18 @@ pub mod mitre_attack {
         StartupItems = 38,
         /// T1046
         NetworkServiceDiscovery = 32,
+        /// T1053
+        ScheduledTaskJob = 89,
+        /// T1053.003
+        ScheduledTaskJobCron = 119,
+        /// T1053.007
+        ContainerOrchestrationJob = 90,
+        /// T1055
+        ProcessInjection = 93,
+        /// T1056
+        InputCapture = 103,
+        /// T1056.001
+        InputCaptureKeylogging = 104,
         /// T1057
         ProcessDiscovery = 56,
         /// T1059
@@ -1948,8 +2339,18 @@ pub mod mitre_attack {
         PermissionGroupsDiscovery = 18,
         /// T1069.003
         CloudGroups = 19,
+        /// T1070
+        IndicatorRemoval = 123,
+        /// T1070.002
+        IndicatorRemovalClearLinuxOrMacSystemLogs = 124,
+        /// T1070.003
+        IndicatorRemovalClearCommandHistory = 125,
         /// T1070.004
         IndicatorRemovalFileDeletion = 64,
+        /// T1070.006
+        IndicatorRemovalTimestomp = 128,
+        /// T1070.008
+        IndicatorRemovalClearMailboxData = 126,
         /// T1071
         ApplicationLayerProtocol = 45,
         /// T1071.004
@@ -1964,6 +2365,10 @@ pub mod mitre_attack {
         LocalAccounts = 15,
         /// T1078.004
         CloudAccounts = 16,
+        /// T1083
+        FileAndDirectoryDiscovery = 121,
+        /// T1087.001
+        AccountDiscoveryLocalAccount = 116,
         /// T1090
         Proxy = 9,
         /// T1090.002
@@ -1974,32 +2379,62 @@ pub mod mitre_attack {
         AccountManipulation = 22,
         /// T1098.001
         AdditionalCloudCredentials = 40,
+        /// T1098.003
+        AdditionalCloudRoles = 67,
         /// T1098.004
         SshAuthorizedKeys = 23,
         /// T1098.006
         AdditionalContainerClusterRoles = 58,
+        /// T1104
+        MultiStageChannels = 76,
         /// T1105
         IngressToolTransfer = 3,
         /// T1106
         NativeApi = 4,
         /// T1110
         BruteForce = 44,
+        /// T1119
+        AutomatedCollection = 94,
         /// T1129
         SharedModules = 5,
+        /// T1132
+        DataEncoding = 77,
+        /// T1132.001
+        StandardEncoding = 78,
         /// T1134
         AccessTokenManipulation = 33,
         /// T1134.001
         TokenImpersonationOrTheft = 39,
+        /// T1136
+        CreateAccount = 79,
+        /// T1136.001
+        LocalAccount = 80,
+        /// T1140
+        DeobfuscateDecodeFilesOrInfo = 95,
         /// T1190
         ExploitPublicFacingApplication = 27,
+        /// T1195
+        SupplyChainCompromise = 129,
+        /// T1195.001
+        CompromiseSoftwareDependenciesAndDevelopmentTools = 130,
+        /// T1203
+        ExploitationForClientExecution = 134,
+        /// T1204
+        UserExecution = 69,
+        /// T1222.002
+        LinuxAndMacFileAndDirectoryPermissionsModification = 135,
         /// T1484
         DomainPolicyModification = 30,
         /// T1485
         DataDestruction = 29,
+        /// T1486
+        DataEncryptedForImpact = 132,
         /// T1489
         ServiceStop = 52,
         /// T1490
         InhibitSystemRecovery = 36,
+        /// T1495
+        FirmwareCorruption = 81,
         /// T1496
         ResourceHijacking = 8,
         /// T1498
@@ -2010,22 +2445,62 @@ pub mod mitre_attack {
         StealApplicationAccessToken = 42,
         /// T1531
         AccountAccessRemoval = 51,
+        /// T1537
+        TransferDataToCloudAccount = 91,
         /// T1539
         StealWebSessionCookie = 25,
         /// T1543
         CreateOrModifySystemProcess = 24,
         /// T1546
         EventTriggeredExecution = 65,
+        /// T1547
+        BootOrLogonAutostartExecution = 82,
+        /// T1547.006
+        KernelModulesAndExtensions = 83,
+        /// T1547.009
+        ShortcutModification = 127,
         /// T1548
         AbuseElevationControlMechanism = 34,
+        /// T1548.001
+        AbuseElevationControlMechanismSetuidAndSetgid = 136,
+        /// T1548.003
+        AbuseElevationControlMechanismSudoAndSudoCaching = 109,
         /// T1552
         UnsecuredCredentials = 13,
+        /// T1552.001
+        CredentialsInFiles = 105,
+        /// T1552.003
+        BashHistory = 96,
+        /// T1552.004
+        PrivateKeys = 97,
+        /// T1553
+        SubvertTrustControl = 106,
+        /// T1553.004
+        InstallRootCertificate = 107,
+        /// T1554
+        CompromiseHostSoftwareBinary = 84,
+        /// T1555
+        CredentialsFromPasswordStores = 98,
         /// T1556
         ModifyAuthenticationProcess = 28,
+        /// T1556.003
+        PluggableAuthenticationModules = 108,
+        /// T1556.006
+        MultiFactorAuthentication = 137,
         /// T1562
         ImpairDefenses = 31,
         /// T1562.001
         DisableOrModifyTools = 55,
+        /// T1562.006
+        IndicatorBlocking = 110,
+        /// T1562.012
+        DisableOrModifyLinuxAuditSystem = 111,
+        /// T1564
+        HideArtifacts = 85,
+        /// T1564.001
+        HiddenFilesAndDirectories = 86,
+        /// T1564.002
+        HiddenUsers = 87,
         /// T1567
         ExfiltrationOverWebService = 20,
         /// T1567.002
@@ -2034,18 +2509,34 @@ pub mod mitre_attack {
         DynamicResolution = 12,
         /// T1570
         LateralToolTransfer = 41,
+        /// T1574
+        HijackExecutionFlow = 112,
+        /// T1574.006
+        HijackExecutionFlowDynamicLinkerHijacking = 113,
         /// T1578
         ModifyCloudComputeInfrastructure = 26,
         /// T1578.001
         CreateSnapshot = 54,
         /// T1580
         CloudInfrastructureDiscovery = 53,
+        /// T1587
+        DevelopCapabilities = 99,
+        /// T1587.001
+        DevelopCapabilitiesMalware = 100,
         /// T1588
         ObtainCapabilities = 43,
+        /// T1588.001
+        ObtainCapabilitiesMalware = 101,
+        /// T1588.006
+        ObtainCapabilitiesVulnerabilities = 133,
         /// T1595
         ActiveScanning = 1,
         /// T1595.001
         ScanningIpBlocks = 2,
+        /// T1608
+        StageCapabilities = 88,
+        /// T1608.001
+        UploadMalware = 102,
         /// T1609
         ContainerAdministrationCommand = 60,
         /// T1610
@@ -2054,8 +2545,12 @@ pub mod mitre_attack {
         EscapeToHost = 61,
         /// T1613
         ContainerAndResourceDiscovery = 57,
+        /// T1620
+        ReflectiveCodeLoading = 92,
         /// T1649
         StealOrForgeAuthenticationCertificates = 62,
+        /// T1657
+        FinancialTheft = 131,
     }
     impl Technique {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -2065,6 +2560,23 @@ pub mod mitre_attack {
         pub fn as_str_name(&self) -> &'static str {
             match self {
                 Self::Unspecified => "TECHNIQUE_UNSPECIFIED",
+                Self::DataObfuscation => "DATA_OBFUSCATION",
+                Self::DataObfuscationSteganography => "DATA_OBFUSCATION_STEGANOGRAPHY",
+                Self::OsCredentialDumping => "OS_CREDENTIAL_DUMPING",
+                Self::OsCredentialDumpingProcFilesystem => {
+                    "OS_CREDENTIAL_DUMPING_PROC_FILESYSTEM"
+                }
+                Self::OsCredentialDumpingEtcPasswordAndEtcShadow => {
+                    "OS_CREDENTIAL_DUMPING_ETC_PASSWORD_AND_ETC_SHADOW"
+                }
+                Self::DataFromLocalSystem => "DATA_FROM_LOCAL_SYSTEM",
+                Self::AutomatedExfiltration => "AUTOMATED_EXFILTRATION",
+                Self::ObfuscatedFilesOrInfo => "OBFUSCATED_FILES_OR_INFO",
+                Self::Steganography => "STEGANOGRAPHY",
+                Self::CompileAfterDelivery => "COMPILE_AFTER_DELIVERY",
+                Self::CommandObfuscation => "COMMAND_OBFUSCATION",
+                Self::ScheduledTransfer => "SCHEDULED_TRANSFER",
+                Self::SystemOwnerUserDiscovery => "SYSTEM_OWNER_USER_DISCOVERY",
                 Self::Masquerading => "MASQUERADING",
                 Self::MatchLegitimateNameOrLocation => {
                     "MATCH_LEGITIMATE_NAME_OR_LOCATION"
@@ -2074,6 +2586,12 @@ pub mod mitre_attack {
                 }
                 Self::StartupItems => "STARTUP_ITEMS",
                 Self::NetworkServiceDiscovery => "NETWORK_SERVICE_DISCOVERY",
+                Self::ScheduledTaskJob => "SCHEDULED_TASK_JOB",
+                Self::ScheduledTaskJobCron => "SCHEDULED_TASK_JOB_CRON",
+                Self::ContainerOrchestrationJob => "CONTAINER_ORCHESTRATION_JOB",
+                Self::ProcessInjection => "PROCESS_INJECTION",
+                Self::InputCapture => "INPUT_CAPTURE",
+                Self::InputCaptureKeylogging => "INPUT_CAPTURE_KEYLOGGING",
                 Self::ProcessDiscovery => "PROCESS_DISCOVERY",
                 Self::CommandAndScriptingInterpreter => {
                     "COMMAND_AND_SCRIPTING_INTERPRETER"
@@ -2085,7 +2603,18 @@ pub mod mitre_attack {
                 }
                 Self::PermissionGroupsDiscovery => "PERMISSION_GROUPS_DISCOVERY",
                 Self::CloudGroups => "CLOUD_GROUPS",
+                Self::IndicatorRemoval => "INDICATOR_REMOVAL",
+                Self::IndicatorRemovalClearLinuxOrMacSystemLogs => {
+                    "INDICATOR_REMOVAL_CLEAR_LINUX_OR_MAC_SYSTEM_LOGS"
+                }
+                Self::IndicatorRemovalClearCommandHistory => {
+                    "INDICATOR_REMOVAL_CLEAR_COMMAND_HISTORY"
+                }
                 Self::IndicatorRemovalFileDeletion => "INDICATOR_REMOVAL_FILE_DELETION",
+                Self::IndicatorRemovalTimestomp => "INDICATOR_REMOVAL_TIMESTOMP",
+                Self::IndicatorRemovalClearMailboxData => {
+                    "INDICATOR_REMOVAL_CLEAR_MAILBOX_DATA"
+                }
                 Self::ApplicationLayerProtocol => "APPLICATION_LAYER_PROTOCOL",
                 Self::Dns => "DNS",
                 Self::SoftwareDeploymentTools => "SOFTWARE_DEPLOYMENT_TOOLS",
@@ -2093,70 +2622,156 @@ pub mod mitre_attack {
                 Self::DefaultAccounts => "DEFAULT_ACCOUNTS",
                 Self::LocalAccounts => "LOCAL_ACCOUNTS",
                 Self::CloudAccounts => "CLOUD_ACCOUNTS",
+                Self::FileAndDirectoryDiscovery => "FILE_AND_DIRECTORY_DISCOVERY",
+                Self::AccountDiscoveryLocalAccount => "ACCOUNT_DISCOVERY_LOCAL_ACCOUNT",
                 Self::Proxy => "PROXY",
                 Self::ExternalProxy => "EXTERNAL_PROXY",
                 Self::MultiHopProxy => "MULTI_HOP_PROXY",
                 Self::AccountManipulation => "ACCOUNT_MANIPULATION",
                 Self::AdditionalCloudCredentials => "ADDITIONAL_CLOUD_CREDENTIALS",
+                Self::AdditionalCloudRoles => "ADDITIONAL_CLOUD_ROLES",
                 Self::SshAuthorizedKeys => "SSH_AUTHORIZED_KEYS",
                 Self::AdditionalContainerClusterRoles => {
                     "ADDITIONAL_CONTAINER_CLUSTER_ROLES"
                 }
+                Self::MultiStageChannels => "MULTI_STAGE_CHANNELS",
                 Self::IngressToolTransfer => "INGRESS_TOOL_TRANSFER",
                 Self::NativeApi => "NATIVE_API",
                 Self::BruteForce => "BRUTE_FORCE",
+                Self::AutomatedCollection => "AUTOMATED_COLLECTION",
                 Self::SharedModules => "SHARED_MODULES",
+                Self::DataEncoding => "DATA_ENCODING",
+                Self::StandardEncoding => "STANDARD_ENCODING",
                 Self::AccessTokenManipulation => "ACCESS_TOKEN_MANIPULATION",
                 Self::TokenImpersonationOrTheft => "TOKEN_IMPERSONATION_OR_THEFT",
+                Self::CreateAccount => "CREATE_ACCOUNT",
+                Self::LocalAccount => "LOCAL_ACCOUNT",
+                Self::DeobfuscateDecodeFilesOrInfo => "DEOBFUSCATE_DECODE_FILES_OR_INFO",
                 Self::ExploitPublicFacingApplication => {
                     "EXPLOIT_PUBLIC_FACING_APPLICATION"
                 }
+                Self::SupplyChainCompromise => "SUPPLY_CHAIN_COMPROMISE",
+                Self::CompromiseSoftwareDependenciesAndDevelopmentTools => {
+                    "COMPROMISE_SOFTWARE_DEPENDENCIES_AND_DEVELOPMENT_TOOLS"
+                }
+                Self::ExploitationForClientExecution => {
+                    "EXPLOITATION_FOR_CLIENT_EXECUTION"
+                }
+                Self::UserExecution => "USER_EXECUTION",
+                Self::LinuxAndMacFileAndDirectoryPermissionsModification => {
+                    "LINUX_AND_MAC_FILE_AND_DIRECTORY_PERMISSIONS_MODIFICATION"
+                }
                 Self::DomainPolicyModification => "DOMAIN_POLICY_MODIFICATION",
                 Self::DataDestruction => "DATA_DESTRUCTION",
+                Self::DataEncryptedForImpact => "DATA_ENCRYPTED_FOR_IMPACT",
                 Self::ServiceStop => "SERVICE_STOP",
                 Self::InhibitSystemRecovery => "INHIBIT_SYSTEM_RECOVERY",
+                Self::FirmwareCorruption => "FIRMWARE_CORRUPTION",
                 Self::ResourceHijacking => "RESOURCE_HIJACKING",
                 Self::NetworkDenialOfService => "NETWORK_DENIAL_OF_SERVICE",
                 Self::CloudServiceDiscovery => "CLOUD_SERVICE_DISCOVERY",
                 Self::StealApplicationAccessToken => "STEAL_APPLICATION_ACCESS_TOKEN",
                 Self::AccountAccessRemoval => "ACCOUNT_ACCESS_REMOVAL",
+                Self::TransferDataToCloudAccount => "TRANSFER_DATA_TO_CLOUD_ACCOUNT",
                 Self::StealWebSessionCookie => "STEAL_WEB_SESSION_COOKIE",
                 Self::CreateOrModifySystemProcess => "CREATE_OR_MODIFY_SYSTEM_PROCESS",
                 Self::EventTriggeredExecution => "EVENT_TRIGGERED_EXECUTION",
+                Self::BootOrLogonAutostartExecution => {
+                    "BOOT_OR_LOGON_AUTOSTART_EXECUTION"
+                }
+                Self::KernelModulesAndExtensions => "KERNEL_MODULES_AND_EXTENSIONS",
+                Self::ShortcutModification => "SHORTCUT_MODIFICATION",
                 Self::AbuseElevationControlMechanism => {
                     "ABUSE_ELEVATION_CONTROL_MECHANISM"
                 }
+                Self::AbuseElevationControlMechanismSetuidAndSetgid => {
+                    "ABUSE_ELEVATION_CONTROL_MECHANISM_SETUID_AND_SETGID"
+                }
+                Self::AbuseElevationControlMechanismSudoAndSudoCaching => {
+                    "ABUSE_ELEVATION_CONTROL_MECHANISM_SUDO_AND_SUDO_CACHING"
+                }
                 Self::UnsecuredCredentials => "UNSECURED_CREDENTIALS",
+                Self::CredentialsInFiles => "CREDENTIALS_IN_FILES",
+                Self::BashHistory => "BASH_HISTORY",
+                Self::PrivateKeys => "PRIVATE_KEYS",
+                Self::SubvertTrustControl => "SUBVERT_TRUST_CONTROL",
+                Self::InstallRootCertificate => "INSTALL_ROOT_CERTIFICATE",
+                Self::CompromiseHostSoftwareBinary => "COMPROMISE_HOST_SOFTWARE_BINARY",
+                Self::CredentialsFromPasswordStores => "CREDENTIALS_FROM_PASSWORD_STORES",
                 Self::ModifyAuthenticationProcess => "MODIFY_AUTHENTICATION_PROCESS",
+                Self::PluggableAuthenticationModules => {
+                    "PLUGGABLE_AUTHENTICATION_MODULES"
+                }
+                Self::MultiFactorAuthentication => "MULTI_FACTOR_AUTHENTICATION",
                 Self::ImpairDefenses => "IMPAIR_DEFENSES",
                 Self::DisableOrModifyTools => "DISABLE_OR_MODIFY_TOOLS",
+                Self::IndicatorBlocking => "INDICATOR_BLOCKING",
+                Self::DisableOrModifyLinuxAuditSystem => {
+                    "DISABLE_OR_MODIFY_LINUX_AUDIT_SYSTEM"
+                }
+                Self::HideArtifacts => "HIDE_ARTIFACTS",
+                Self::HiddenFilesAndDirectories => "HIDDEN_FILES_AND_DIRECTORIES",
+                Self::HiddenUsers => "HIDDEN_USERS",
                 Self::ExfiltrationOverWebService => "EXFILTRATION_OVER_WEB_SERVICE",
                 Self::ExfiltrationToCloudStorage => "EXFILTRATION_TO_CLOUD_STORAGE",
                 Self::DynamicResolution => "DYNAMIC_RESOLUTION",
                 Self::LateralToolTransfer => "LATERAL_TOOL_TRANSFER",
+                Self::HijackExecutionFlow => "HIJACK_EXECUTION_FLOW",
+                Self::HijackExecutionFlowDynamicLinkerHijacking => {
+                    "HIJACK_EXECUTION_FLOW_DYNAMIC_LINKER_HIJACKING"
+                }
                 Self::ModifyCloudComputeInfrastructure => {
                     "MODIFY_CLOUD_COMPUTE_INFRASTRUCTURE"
                 }
                 Self::CreateSnapshot => "CREATE_SNAPSHOT",
                 Self::CloudInfrastructureDiscovery => "CLOUD_INFRASTRUCTURE_DISCOVERY",
+                Self::DevelopCapabilities => "DEVELOP_CAPABILITIES",
+                Self::DevelopCapabilitiesMalware => "DEVELOP_CAPABILITIES_MALWARE",
                 Self::ObtainCapabilities => "OBTAIN_CAPABILITIES",
+                Self::ObtainCapabilitiesMalware => "OBTAIN_CAPABILITIES_MALWARE",
+                Self::ObtainCapabilitiesVulnerabilities => {
+                    "OBTAIN_CAPABILITIES_VULNERABILITIES"
+                }
                 Self::ActiveScanning => "ACTIVE_SCANNING",
                 Self::ScanningIpBlocks => "SCANNING_IP_BLOCKS",
+                Self::StageCapabilities => "STAGE_CAPABILITIES",
+                Self::UploadMalware => "UPLOAD_MALWARE",
                 Self::ContainerAdministrationCommand => {
                     "CONTAINER_ADMINISTRATION_COMMAND"
                 }
                 Self::DeployContainer => "DEPLOY_CONTAINER",
                 Self::EscapeToHost => "ESCAPE_TO_HOST",
                 Self::ContainerAndResourceDiscovery => "CONTAINER_AND_RESOURCE_DISCOVERY",
+                Self::ReflectiveCodeLoading => "REFLECTIVE_CODE_LOADING",
                 Self::StealOrForgeAuthenticationCertificates => {
                     "STEAL_OR_FORGE_AUTHENTICATION_CERTIFICATES"
                 }
+                Self::FinancialTheft => "FINANCIAL_THEFT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
         pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
             match value {
                 "TECHNIQUE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DATA_OBFUSCATION" => Some(Self::DataObfuscation),
+                "DATA_OBFUSCATION_STEGANOGRAPHY" => {
+                    Some(Self::DataObfuscationSteganography)
+                }
+                "OS_CREDENTIAL_DUMPING" => Some(Self::OsCredentialDumping),
+                "OS_CREDENTIAL_DUMPING_PROC_FILESYSTEM" => {
+                    Some(Self::OsCredentialDumpingProcFilesystem)
+                }
+                "OS_CREDENTIAL_DUMPING_ETC_PASSWORD_AND_ETC_SHADOW" => {
+                    Some(Self::OsCredentialDumpingEtcPasswordAndEtcShadow)
+                }
+                "DATA_FROM_LOCAL_SYSTEM" => Some(Self::DataFromLocalSystem),
+                "AUTOMATED_EXFILTRATION" => Some(Self::AutomatedExfiltration),
+                "OBFUSCATED_FILES_OR_INFO" => Some(Self::ObfuscatedFilesOrInfo),
+                "STEGANOGRAPHY" => Some(Self::Steganography),
+                "COMPILE_AFTER_DELIVERY" => Some(Self::CompileAfterDelivery),
+                "COMMAND_OBFUSCATION" => Some(Self::CommandObfuscation),
+                "SCHEDULED_TRANSFER" => Some(Self::ScheduledTransfer),
+                "SYSTEM_OWNER_USER_DISCOVERY" => Some(Self::SystemOwnerUserDiscovery),
                 "MASQUERADING" => Some(Self::Masquerading),
                 "MATCH_LEGITIMATE_NAME_OR_LOCATION" => {
                     Some(Self::MatchLegitimateNameOrLocation)
@@ -2166,6 +2781,12 @@ pub mod mitre_attack {
                 }
                 "STARTUP_ITEMS" => Some(Self::StartupItems),
                 "NETWORK_SERVICE_DISCOVERY" => Some(Self::NetworkServiceDiscovery),
+                "SCHEDULED_TASK_JOB" => Some(Self::ScheduledTaskJob),
+                "SCHEDULED_TASK_JOB_CRON" => Some(Self::ScheduledTaskJobCron),
+                "CONTAINER_ORCHESTRATION_JOB" => Some(Self::ContainerOrchestrationJob),
+                "PROCESS_INJECTION" => Some(Self::ProcessInjection),
+                "INPUT_CAPTURE" => Some(Self::InputCapture),
+                "INPUT_CAPTURE_KEYLOGGING" => Some(Self::InputCaptureKeylogging),
                 "PROCESS_DISCOVERY" => Some(Self::ProcessDiscovery),
                 "COMMAND_AND_SCRIPTING_INTERPRETER" => {
                     Some(Self::CommandAndScriptingInterpreter)
@@ -2177,8 +2798,19 @@ pub mod mitre_attack {
                 }
                 "PERMISSION_GROUPS_DISCOVERY" => Some(Self::PermissionGroupsDiscovery),
                 "CLOUD_GROUPS" => Some(Self::CloudGroups),
+                "INDICATOR_REMOVAL" => Some(Self::IndicatorRemoval),
+                "INDICATOR_REMOVAL_CLEAR_LINUX_OR_MAC_SYSTEM_LOGS" => {
+                    Some(Self::IndicatorRemovalClearLinuxOrMacSystemLogs)
+                }
+                "INDICATOR_REMOVAL_CLEAR_COMMAND_HISTORY" => {
+                    Some(Self::IndicatorRemovalClearCommandHistory)
+                }
                 "INDICATOR_REMOVAL_FILE_DELETION" => {
                     Some(Self::IndicatorRemovalFileDeletion)
+                }
+                "INDICATOR_REMOVAL_TIMESTOMP" => Some(Self::IndicatorRemovalTimestomp),
+                "INDICATOR_REMOVAL_CLEAR_MAILBOX_DATA" => {
+                    Some(Self::IndicatorRemovalClearMailboxData)
                 }
                 "APPLICATION_LAYER_PROTOCOL" => Some(Self::ApplicationLayerProtocol),
                 "DNS" => Some(Self::Dns),
@@ -2187,28 +2819,55 @@ pub mod mitre_attack {
                 "DEFAULT_ACCOUNTS" => Some(Self::DefaultAccounts),
                 "LOCAL_ACCOUNTS" => Some(Self::LocalAccounts),
                 "CLOUD_ACCOUNTS" => Some(Self::CloudAccounts),
+                "FILE_AND_DIRECTORY_DISCOVERY" => Some(Self::FileAndDirectoryDiscovery),
+                "ACCOUNT_DISCOVERY_LOCAL_ACCOUNT" => {
+                    Some(Self::AccountDiscoveryLocalAccount)
+                }
                 "PROXY" => Some(Self::Proxy),
                 "EXTERNAL_PROXY" => Some(Self::ExternalProxy),
                 "MULTI_HOP_PROXY" => Some(Self::MultiHopProxy),
                 "ACCOUNT_MANIPULATION" => Some(Self::AccountManipulation),
                 "ADDITIONAL_CLOUD_CREDENTIALS" => Some(Self::AdditionalCloudCredentials),
+                "ADDITIONAL_CLOUD_ROLES" => Some(Self::AdditionalCloudRoles),
                 "SSH_AUTHORIZED_KEYS" => Some(Self::SshAuthorizedKeys),
                 "ADDITIONAL_CONTAINER_CLUSTER_ROLES" => {
                     Some(Self::AdditionalContainerClusterRoles)
                 }
+                "MULTI_STAGE_CHANNELS" => Some(Self::MultiStageChannels),
                 "INGRESS_TOOL_TRANSFER" => Some(Self::IngressToolTransfer),
                 "NATIVE_API" => Some(Self::NativeApi),
                 "BRUTE_FORCE" => Some(Self::BruteForce),
+                "AUTOMATED_COLLECTION" => Some(Self::AutomatedCollection),
                 "SHARED_MODULES" => Some(Self::SharedModules),
+                "DATA_ENCODING" => Some(Self::DataEncoding),
+                "STANDARD_ENCODING" => Some(Self::StandardEncoding),
                 "ACCESS_TOKEN_MANIPULATION" => Some(Self::AccessTokenManipulation),
                 "TOKEN_IMPERSONATION_OR_THEFT" => Some(Self::TokenImpersonationOrTheft),
+                "CREATE_ACCOUNT" => Some(Self::CreateAccount),
+                "LOCAL_ACCOUNT" => Some(Self::LocalAccount),
+                "DEOBFUSCATE_DECODE_FILES_OR_INFO" => {
+                    Some(Self::DeobfuscateDecodeFilesOrInfo)
+                }
                 "EXPLOIT_PUBLIC_FACING_APPLICATION" => {
                     Some(Self::ExploitPublicFacingApplication)
                 }
+                "SUPPLY_CHAIN_COMPROMISE" => Some(Self::SupplyChainCompromise),
+                "COMPROMISE_SOFTWARE_DEPENDENCIES_AND_DEVELOPMENT_TOOLS" => {
+                    Some(Self::CompromiseSoftwareDependenciesAndDevelopmentTools)
+                }
+                "EXPLOITATION_FOR_CLIENT_EXECUTION" => {
+                    Some(Self::ExploitationForClientExecution)
+                }
+                "USER_EXECUTION" => Some(Self::UserExecution),
+                "LINUX_AND_MAC_FILE_AND_DIRECTORY_PERMISSIONS_MODIFICATION" => {
+                    Some(Self::LinuxAndMacFileAndDirectoryPermissionsModification)
+                }
                 "DOMAIN_POLICY_MODIFICATION" => Some(Self::DomainPolicyModification),
                 "DATA_DESTRUCTION" => Some(Self::DataDestruction),
+                "DATA_ENCRYPTED_FOR_IMPACT" => Some(Self::DataEncryptedForImpact),
                 "SERVICE_STOP" => Some(Self::ServiceStop),
                 "INHIBIT_SYSTEM_RECOVERY" => Some(Self::InhibitSystemRecovery),
+                "FIRMWARE_CORRUPTION" => Some(Self::FirmwareCorruption),
                 "RESOURCE_HIJACKING" => Some(Self::ResourceHijacking),
                 "NETWORK_DENIAL_OF_SERVICE" => Some(Self::NetworkDenialOfService),
                 "CLOUD_SERVICE_DISCOVERY" => Some(Self::CloudServiceDiscovery),
@@ -2216,24 +2875,64 @@ pub mod mitre_attack {
                     Some(Self::StealApplicationAccessToken)
                 }
                 "ACCOUNT_ACCESS_REMOVAL" => Some(Self::AccountAccessRemoval),
+                "TRANSFER_DATA_TO_CLOUD_ACCOUNT" => {
+                    Some(Self::TransferDataToCloudAccount)
+                }
                 "STEAL_WEB_SESSION_COOKIE" => Some(Self::StealWebSessionCookie),
                 "CREATE_OR_MODIFY_SYSTEM_PROCESS" => {
                     Some(Self::CreateOrModifySystemProcess)
                 }
                 "EVENT_TRIGGERED_EXECUTION" => Some(Self::EventTriggeredExecution),
+                "BOOT_OR_LOGON_AUTOSTART_EXECUTION" => {
+                    Some(Self::BootOrLogonAutostartExecution)
+                }
+                "KERNEL_MODULES_AND_EXTENSIONS" => Some(Self::KernelModulesAndExtensions),
+                "SHORTCUT_MODIFICATION" => Some(Self::ShortcutModification),
                 "ABUSE_ELEVATION_CONTROL_MECHANISM" => {
                     Some(Self::AbuseElevationControlMechanism)
                 }
+                "ABUSE_ELEVATION_CONTROL_MECHANISM_SETUID_AND_SETGID" => {
+                    Some(Self::AbuseElevationControlMechanismSetuidAndSetgid)
+                }
+                "ABUSE_ELEVATION_CONTROL_MECHANISM_SUDO_AND_SUDO_CACHING" => {
+                    Some(Self::AbuseElevationControlMechanismSudoAndSudoCaching)
+                }
                 "UNSECURED_CREDENTIALS" => Some(Self::UnsecuredCredentials),
+                "CREDENTIALS_IN_FILES" => Some(Self::CredentialsInFiles),
+                "BASH_HISTORY" => Some(Self::BashHistory),
+                "PRIVATE_KEYS" => Some(Self::PrivateKeys),
+                "SUBVERT_TRUST_CONTROL" => Some(Self::SubvertTrustControl),
+                "INSTALL_ROOT_CERTIFICATE" => Some(Self::InstallRootCertificate),
+                "COMPROMISE_HOST_SOFTWARE_BINARY" => {
+                    Some(Self::CompromiseHostSoftwareBinary)
+                }
+                "CREDENTIALS_FROM_PASSWORD_STORES" => {
+                    Some(Self::CredentialsFromPasswordStores)
+                }
                 "MODIFY_AUTHENTICATION_PROCESS" => {
                     Some(Self::ModifyAuthenticationProcess)
                 }
+                "PLUGGABLE_AUTHENTICATION_MODULES" => {
+                    Some(Self::PluggableAuthenticationModules)
+                }
+                "MULTI_FACTOR_AUTHENTICATION" => Some(Self::MultiFactorAuthentication),
                 "IMPAIR_DEFENSES" => Some(Self::ImpairDefenses),
                 "DISABLE_OR_MODIFY_TOOLS" => Some(Self::DisableOrModifyTools),
+                "INDICATOR_BLOCKING" => Some(Self::IndicatorBlocking),
+                "DISABLE_OR_MODIFY_LINUX_AUDIT_SYSTEM" => {
+                    Some(Self::DisableOrModifyLinuxAuditSystem)
+                }
+                "HIDE_ARTIFACTS" => Some(Self::HideArtifacts),
+                "HIDDEN_FILES_AND_DIRECTORIES" => Some(Self::HiddenFilesAndDirectories),
+                "HIDDEN_USERS" => Some(Self::HiddenUsers),
                 "EXFILTRATION_OVER_WEB_SERVICE" => Some(Self::ExfiltrationOverWebService),
                 "EXFILTRATION_TO_CLOUD_STORAGE" => Some(Self::ExfiltrationToCloudStorage),
                 "DYNAMIC_RESOLUTION" => Some(Self::DynamicResolution),
                 "LATERAL_TOOL_TRANSFER" => Some(Self::LateralToolTransfer),
+                "HIJACK_EXECUTION_FLOW" => Some(Self::HijackExecutionFlow),
+                "HIJACK_EXECUTION_FLOW_DYNAMIC_LINKER_HIJACKING" => {
+                    Some(Self::HijackExecutionFlowDynamicLinkerHijacking)
+                }
                 "MODIFY_CLOUD_COMPUTE_INFRASTRUCTURE" => {
                     Some(Self::ModifyCloudComputeInfrastructure)
                 }
@@ -2241,9 +2940,17 @@ pub mod mitre_attack {
                 "CLOUD_INFRASTRUCTURE_DISCOVERY" => {
                     Some(Self::CloudInfrastructureDiscovery)
                 }
+                "DEVELOP_CAPABILITIES" => Some(Self::DevelopCapabilities),
+                "DEVELOP_CAPABILITIES_MALWARE" => Some(Self::DevelopCapabilitiesMalware),
                 "OBTAIN_CAPABILITIES" => Some(Self::ObtainCapabilities),
+                "OBTAIN_CAPABILITIES_MALWARE" => Some(Self::ObtainCapabilitiesMalware),
+                "OBTAIN_CAPABILITIES_VULNERABILITIES" => {
+                    Some(Self::ObtainCapabilitiesVulnerabilities)
+                }
                 "ACTIVE_SCANNING" => Some(Self::ActiveScanning),
                 "SCANNING_IP_BLOCKS" => Some(Self::ScanningIpBlocks),
+                "STAGE_CAPABILITIES" => Some(Self::StageCapabilities),
+                "UPLOAD_MALWARE" => Some(Self::UploadMalware),
                 "CONTAINER_ADMINISTRATION_COMMAND" => {
                     Some(Self::ContainerAdministrationCommand)
                 }
@@ -2252,13 +2959,23 @@ pub mod mitre_attack {
                 "CONTAINER_AND_RESOURCE_DISCOVERY" => {
                     Some(Self::ContainerAndResourceDiscovery)
                 }
+                "REFLECTIVE_CODE_LOADING" => Some(Self::ReflectiveCodeLoading),
                 "STEAL_OR_FORGE_AUTHENTICATION_CERTIFICATES" => {
                     Some(Self::StealOrForgeAuthenticationCertificates)
                 }
+                "FINANCIAL_THEFT" => Some(Self::FinancialTheft),
                 _ => None,
             }
         }
     }
+}
+/// Contains information about a VPC network associated with the finding.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Network {
+    /// The name of the VPC network resource, for example,
+    /// `//compute.googleapis.com/projects/my-project/global/networks/my-network`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// Represents a Jupyter notebook IPYNB file, such as a [Colab Enterprise
 /// notebook](<https://cloud.google.com/colab/docs/introduction>) file, that is
@@ -2324,6 +3041,10 @@ pub struct Process {
     /// The parent process ID.
     #[prost(int64, tag = "10")]
     pub parent_pid: i64,
+    /// The ID of the user that executed the process. E.g. If this is the root user
+    /// this will always be 0.
+    #[prost(int64, tag = "11")]
+    pub user_id: i64,
 }
 /// A name-value pair representing an environment variable used in an operating
 /// system process.
@@ -2462,6 +3183,45 @@ pub struct ToxicCombination {
     #[prost(string, repeated, tag = "2")]
     pub related_findings: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Vertex AI-related information associated with the finding.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VertexAi {
+    /// Datasets associated with the finding.
+    #[prost(message, repeated, tag = "1")]
+    pub datasets: ::prost::alloc::vec::Vec<vertex_ai::Dataset>,
+    /// Pipelines associated with the finding.
+    #[prost(message, repeated, tag = "2")]
+    pub pipelines: ::prost::alloc::vec::Vec<vertex_ai::Pipeline>,
+}
+/// Nested message and enum types in `VertexAi`.
+pub mod vertex_ai {
+    /// Vertex AI dataset associated with the finding.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Dataset {
+        /// Resource name of the dataset, e.g.
+        /// projects/{project}/locations/{location}/datasets/2094040236064505856
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// The user defined display name of dataset, e.g. plants-dataset
+        #[prost(string, tag = "2")]
+        pub display_name: ::prost::alloc::string::String,
+        /// Data source, such as a BigQuery source URI, e.g.
+        /// bq://scc-nexus-test.AIPPtest.gsod
+        #[prost(string, tag = "3")]
+        pub source: ::prost::alloc::string::String,
+    }
+    /// Vertex AI training pipeline associated with the finding.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Pipeline {
+        /// Resource name of the pipeline, e.g.
+        /// projects/{project}/locations/{location}/trainingPipelines/5253428229225578496
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// The user-defined display name of pipeline, e.g. plants-classification
+        #[prost(string, tag = "2")]
+        pub display_name: ::prost::alloc::string::String,
+    }
+}
 /// Refers to common vulnerability fields e.g. cve, cvss, cwe etc.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Vulnerability {
@@ -2478,6 +3238,18 @@ pub struct Vulnerability {
     /// The security bulletin is relevant to this finding.
     #[prost(message, optional, tag = "4")]
     pub security_bulletin: ::core::option::Option<SecurityBulletin>,
+    /// Provider provided risk_score based on multiple factors. The higher the risk
+    /// score, the more risky the vulnerability is.
+    #[prost(int64, tag = "5")]
+    pub provider_risk_score: i64,
+    /// Represents whether the vulnerability is reachable (detected via static
+    /// analysis)
+    #[prost(bool, tag = "6")]
+    pub reachable: bool,
+    /// Represents one or more Common Weakness Enumeration (CWE) information on
+    /// this vulnerability.
+    #[prost(message, repeated, tag = "7")]
+    pub cwes: ::prost::alloc::vec::Vec<Cwe>,
 }
 /// CVE stands for Common Vulnerabilities and Exposures.
 /// Information from the [CVE
@@ -3026,6 +3798,18 @@ pub struct SecurityBulletin {
     #[prost(string, tag = "3")]
     pub suggested_upgrade_version: ::prost::alloc::string::String,
 }
+/// CWE stands for Common Weakness Enumeration. Information about this weakness,
+/// as described by [CWE](<https://cwe.mitre.org/>).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Cwe {
+    /// The CWE identifier, e.g. CWE-94
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    /// Any reference to the details on the CWE, for example,
+    /// <https://cwe.mitre.org/data/definitions/94.html>
+    #[prost(message, repeated, tag = "2")]
+    pub references: ::prost::alloc::vec::Vec<Reference>,
+}
 /// Security Command Center finding.
 ///
 /// A finding is a record of assessment data like security, risk, health, or
@@ -3035,7 +3819,7 @@ pub struct SecurityBulletin {
 /// finding.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Finding {
-    /// The [relative resource
+    /// Identifier. The [relative resource
     /// name](<https://cloud.google.com/apis/design/resource_names#relative_resource_name>)
     /// of the finding. The following list shows some examples:
     ///
@@ -3263,9 +4047,15 @@ pub struct Finding {
     /// Contains information about the org policies associated with the finding.
     #[prost(message, repeated, tag = "43")]
     pub org_policies: ::prost::alloc::vec::Vec<OrgPolicy>,
+    /// Job associated with the finding.
+    #[prost(message, optional, tag = "44")]
+    pub job: ::core::option::Option<Job>,
     /// Represents an application associated with the finding.
     #[prost(message, optional, tag = "45")]
     pub application: ::core::option::Option<Application>,
+    /// IP rules associated with the finding.
+    #[prost(message, optional, tag = "46")]
+    pub ip_rules: ::core::option::Option<IpRules>,
     /// Fields related to Backup and DR findings.
     #[prost(message, optional, tag = "47")]
     pub backup_disaster_recovery: ::core::option::Option<BackupDisasterRecovery>,
@@ -3305,11 +4095,29 @@ pub struct Finding {
     /// Data flow events associated with the finding.
     #[prost(message, repeated, tag = "62")]
     pub data_flow_events: ::prost::alloc::vec::Vec<DataFlowEvent>,
+    /// Represents the VPC networks that the resource is attached to.
+    #[prost(message, repeated, tag = "63")]
+    pub networks: ::prost::alloc::vec::Vec<Network>,
     /// Data retention deletion events associated with the finding.
     #[prost(message, repeated, tag = "64")]
     pub data_retention_deletion_events: ::prost::alloc::vec::Vec<
         DataRetentionDeletionEvent,
     >,
+    /// AffectedResources associated with the finding.
+    #[prost(message, optional, tag = "65")]
+    pub affected_resources: ::core::option::Option<AffectedResources>,
+    /// The AI model associated with the finding.
+    #[prost(message, optional, tag = "66")]
+    pub ai_model: ::core::option::Option<AiModel>,
+    /// Contains details about a chokepoint, which is a resource or resource group
+    /// where high-risk attack paths converge, based on \[attack path simulations\]
+    /// (<https://cloud.google.com/security-command-center/docs/attack-exposure-learn#attack_path_simulations>).
+    /// This field cannot be updated. Its value is ignored in all update requests.
+    #[prost(message, optional, tag = "69")]
+    pub chokepoint: ::core::option::Option<Chokepoint>,
+    /// VertexAi associated with the finding.
+    #[prost(message, optional, tag = "72")]
+    pub vertex_ai: ::core::option::Option<VertexAi>,
 }
 /// Nested message and enum types in `Finding`.
 pub mod finding {
@@ -3575,6 +4383,9 @@ pub mod finding {
         /// Describes a potential security risk to data assets that contain sensitive
         /// data.
         SensitiveDataRisk = 8,
+        /// Describes a resource or resource group where high risk attack paths
+        /// converge, based on attack path simulations (APS).
+        Chokepoint = 9,
     }
     impl FindingClass {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -3592,6 +4403,7 @@ pub mod finding {
                 Self::PostureViolation => "POSTURE_VIOLATION",
                 Self::ToxicCombination => "TOXIC_COMBINATION",
                 Self::SensitiveDataRisk => "SENSITIVE_DATA_RISK",
+                Self::Chokepoint => "CHOKEPOINT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -3606,6 +4418,7 @@ pub mod finding {
                 "POSTURE_VIOLATION" => Some(Self::PostureViolation),
                 "TOXIC_COMBINATION" => Some(Self::ToxicCombination),
                 "SENSITIVE_DATA_RISK" => Some(Self::SensitiveDataRisk),
+                "CHOKEPOINT" => Some(Self::Chokepoint),
                 _ => None,
             }
         }
@@ -3770,6 +4583,10 @@ pub struct NotificationConfig {
     /// permission to publish to the Pub/Sub topic.
     #[prost(string, tag = "4")]
     pub service_account: ::prost::alloc::string::String,
+    /// Output only. The timestamp of when the notification config was last
+    /// updated.
+    #[prost(message, optional, tag = "7")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The config for triggering notifications.
     #[prost(oneof = "notification_config::NotifyConfig", tags = "5")]
     pub notify_config: ::core::option::Option<notification_config::NotifyConfig>,
@@ -3849,11 +4666,13 @@ pub struct Resource {
     /// where there can be any number of management groups.
     #[prost(string, tag = "11")]
     pub resource_path_string: ::prost::alloc::string::String,
+    /// The metadata associated with the cloud provider.
     #[prost(oneof = "resource::CloudProviderMetadata", tags = "7, 8, 9")]
     pub cloud_provider_metadata: ::core::option::Option<resource::CloudProviderMetadata>,
 }
 /// Nested message and enum types in `Resource`.
 pub mod resource {
+    /// The metadata associated with the cloud provider.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum CloudProviderMetadata {
         /// The GCP metadata associated with the finding.
@@ -3867,8 +4686,8 @@ pub mod resource {
         AzureMetadata(super::AzureMetadata),
     }
 }
-/// GCP metadata associated with the resource, only applicable if the finding's
-/// cloud provider is Google Cloud Platform.
+/// Google Cloud metadata associated with the resource. Only applicable if the
+/// finding's cloud provider is Google Cloud.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcpMetadata {
     /// The full resource name of project that the resource belongs to.
@@ -4118,7 +4937,7 @@ pub mod resource_path {
 pub enum CloudProvider {
     /// The cloud provider is unspecified.
     Unspecified = 0,
-    /// The cloud provider is Google Cloud Platform.
+    /// The cloud provider is Google Cloud.
     GoogleCloudPlatform = 1,
     /// The cloud provider is Amazon Web Services.
     AmazonWebServices = 2,
@@ -4712,6 +5531,37 @@ pub struct DeleteResourceValueConfigRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// The destination big query dataset to export findings to.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BigQueryDestination {
+    /// Required. The relative resource name of the destination dataset, in the
+    /// form projects/{projectId}/datasets/{datasetId}.
+    #[prost(string, tag = "1")]
+    pub dataset: ::prost::alloc::string::String,
+}
+/// The LRO metadata for a ExportFindings request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportFindingsMetadata {
+    /// Optional. Timestamp at which export was started
+    #[prost(message, optional, tag = "1")]
+    pub export_start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The destination to export findings to.
+    #[prost(oneof = "export_findings_metadata::Destination", tags = "2")]
+    pub destination: ::core::option::Option<export_findings_metadata::Destination>,
+}
+/// Nested message and enum types in `ExportFindingsMetadata`.
+pub mod export_findings_metadata {
+    /// The destination to export findings to.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Destination {
+        /// Required. The destination big query dataset to export findings to.
+        #[prost(message, tag = "2")]
+        BigQueryDestination(super::BigQueryDestination),
+    }
+}
+/// The response to a ExportFindings request. Contains the LRO information.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct ExportFindingsResponse {}
 /// Request message for retrieving a BigQuery export.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBigQueryExportRequest {
@@ -5167,6 +6017,7 @@ pub mod list_findings_response {
             /// where there can be any number of management groups.
             #[prost(string, tag = "11")]
             pub resource_path_string: ::prost::alloc::string::String,
+            /// The metadata associated with the cloud provider.
             #[prost(oneof = "resource::CloudProviderMetadata", tags = "7, 8, 9")]
             pub cloud_provider_metadata: ::core::option::Option<
                 resource::CloudProviderMetadata,
@@ -5174,6 +6025,7 @@ pub mod list_findings_response {
         }
         /// Nested message and enum types in `Resource`.
         pub mod resource {
+            /// The metadata associated with the cloud provider.
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum CloudProviderMetadata {
                 /// The GCP metadata associated with the finding.

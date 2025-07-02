@@ -103,6 +103,19 @@ pub struct Secret {
     /// [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].
     #[prost(message, optional, tag = "15")]
     pub customer_managed_encryption: ::core::option::Option<CustomerManagedEncryption>,
+    /// Optional. Input only. Immutable. Mapping of Tag keys/values directly bound
+    /// to this resource. For example:
+    ///    "123/environment": "production",
+    ///    "123/costCenter": "marketing"
+    ///
+    /// Tags are used to organize and group resources.
+    ///
+    /// Tags can be used to control policy evaluation for the resource.
+    #[prost(map = "string, string", tag = "16")]
+    pub tags: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Expiration policy attached to the
     /// [Secret][google.cloud.secretmanager.v1.Secret]. If specified the
     /// [Secret][google.cloud.secretmanager.v1.Secret] and all

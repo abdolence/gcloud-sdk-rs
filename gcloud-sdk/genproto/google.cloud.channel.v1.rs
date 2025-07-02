@@ -430,6 +430,59 @@ pub struct Customer {
     /// Populated only if a CRM ID exists for this customer.
     #[prost(string, tag = "14")]
     pub correlation_id: ::prost::alloc::string::String,
+    /// Optional. Indicate whether a customer is attesting about the correctness of
+    /// provided information. Only required if creating a GCP Entitlement.
+    #[prost(enumeration = "customer::CustomerAttestationState", tag = "16")]
+    pub customer_attestation_state: i32,
+}
+/// Nested message and enum types in `Customer`.
+pub mod customer {
+    /// The enum represents whether a customer belongs to public sector
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CustomerAttestationState {
+        /// Default value if not set yet
+        Unspecified = 0,
+        /// Customer is exempt from attesting based on exemption list at
+        /// <https://cloud.google.com/terms/direct-tos-exemptions.> Contact information
+        /// of customer will be mandatory.
+        Exempt = 1,
+        /// Customer is not exempt and has verified the information provided is
+        /// correct. Contact information of customer will be mandatory.
+        NonExemptAndInfoVerified = 2,
+    }
+    impl CustomerAttestationState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CUSTOMER_ATTESTATION_STATE_UNSPECIFIED",
+                Self::Exempt => "EXEMPT",
+                Self::NonExemptAndInfoVerified => "NON_EXEMPT_AND_INFO_VERIFIED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CUSTOMER_ATTESTATION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "EXEMPT" => Some(Self::Exempt),
+                "NON_EXEMPT_AND_INFO_VERIFIED" => Some(Self::NonExemptAndInfoVerified),
+                _ => None,
+            }
+        }
+    }
 }
 /// Contact information for a customer account.
 #[derive(Clone, PartialEq, ::prost::Message)]

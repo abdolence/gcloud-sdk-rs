@@ -2615,6 +2615,461 @@ pub mod business_info_service_client {
         }
     }
 }
+/// Request message for `GetCheckoutSettings` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetCheckoutSettingsRequest {
+    /// Required. The name/identifier of the merchant account.
+    /// Format: `accounts/{account}/programs/{program}/checkoutSettings`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for the `CreateCheckoutSettings` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateCheckoutSettingsRequest {
+    /// Required. The merchant account for which the `CheckoutSettings` will be
+    /// created.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The `CheckoutSettings` object to create.
+    #[prost(message, optional, tag = "2")]
+    pub checkout_settings: ::core::option::Option<CheckoutSettings>,
+}
+/// Request message for the `UpdateCheckoutSettings` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateCheckoutSettingsRequest {
+    /// Required. The updated version of the `CheckoutSettings`.
+    /// The `name` field is used to identify the `CheckoutSettings`.
+    /// Format: `accounts/{account}/programs/{program}/checkoutSettings`
+    #[prost(message, optional, tag = "1")]
+    pub checkout_settings: ::core::option::Option<CheckoutSettings>,
+    /// Required. List of fields being updated.
+    /// The following fields are supported (in both `snake_case` and
+    /// `lowerCamelCase`):
+    ///
+    /// - `eligible_destinations`
+    /// - `uri_settings`
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for the `DeleteCheckoutSettings` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteCheckoutSettingsRequest {
+    /// Required. The name/identifier of the merchant account.
+    /// Format: `accounts/{account}/programs/{program}/checkoutSettings`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// [CheckoutSettings](<https://support.google.com/merchants/answer/13945960>) for
+/// a specific merchant.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CheckoutSettings {
+    /// Identifier. The resource name of the program configuration settings.
+    /// Format: `accounts/{account}/programs/{program}/checkoutSettings`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// URI settings for cart or checkout URL.
+    #[prost(message, optional, tag = "2")]
+    pub uri_settings: ::core::option::Option<UriSettings>,
+    /// Optional. The destinations to which the checkout program applies, valid
+    /// destination values are `SHOPPING_ADS`, `FREE_LISTINGS`
+    #[prost(
+        enumeration = "super::super::super::r#type::destination::DestinationEnum",
+        repeated,
+        packed = "false",
+        tag = "8"
+    )]
+    pub eligible_destinations: ::prost::alloc::vec::Vec<i32>,
+    /// Output only. Reflects the merchant enrollment state in `Checkout` program.
+    #[prost(
+        enumeration = "checkout_settings::CheckoutEnrollmentState",
+        optional,
+        tag = "3"
+    )]
+    pub enrollment_state: ::core::option::Option<i32>,
+    /// Output only. Reflects the merchant review state in `Checkout` program.
+    /// This is set based on the data quality reviews of the URL provided by
+    /// the merchant.
+    /// A merchant with enrollment state
+    /// as `ENROLLED` can be in the following review states: `IN_REVIEW`,
+    /// `APPROVED` or `DISAPPROVED`. A merchant must be in an `enrollment_state` of
+    /// `ENROLLED` before a review can begin for the merchant.For more details,
+    /// check the help center doc.
+    #[prost(enumeration = "checkout_settings::CheckoutReviewState", optional, tag = "4")]
+    pub review_state: ::core::option::Option<i32>,
+    /// Output only. The effective value of `uri_settings` for a given merchant. If
+    /// account level settings are present then this value will be a copy of url
+    /// settings. Otherwise, it will have the value of the parent account (for only
+    /// marketplace sellers).
+    #[prost(message, optional, tag = "5")]
+    pub effective_uri_settings: ::core::option::Option<UriSettings>,
+    /// Output only. The effective value of enrollment_state for a given merchant
+    /// ID. If account level settings are present then this value will be a copy of
+    /// the account level settings. Otherwise, it will have the value of the parent
+    /// account (for only marketplace sellers).
+    #[prost(
+        enumeration = "checkout_settings::CheckoutEnrollmentState",
+        optional,
+        tag = "6"
+    )]
+    pub effective_enrollment_state: ::core::option::Option<i32>,
+    /// Output only. The effective value of `review_state` for a given merchant ID.
+    /// If account level settings are present then this value will be a copy of the
+    /// account level settings. Otherwise, it will have the value of the parent
+    /// account (for only marketplace sellers).
+    #[prost(enumeration = "checkout_settings::CheckoutReviewState", optional, tag = "7")]
+    pub effective_review_state: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `CheckoutSettings`.
+pub mod checkout_settings {
+    /// Enum indicating the enrollment state of merchant in `Checkout`
+    /// program.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CheckoutEnrollmentState {
+        /// Default enrollment state when enrollment state is not specified.
+        Unspecified = 0,
+        /// Merchant has not enrolled into the program.
+        Inactive = 1,
+        /// Merchant has enrolled into the program by providing either an
+        /// account level URL or checkout URLs as part of their feed.
+        Enrolled = 2,
+        /// Merchant has previously enrolled but opted out of the program.
+        OptedOut = 3,
+    }
+    impl CheckoutEnrollmentState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CHECKOUT_ENROLLMENT_STATE_UNSPECIFIED",
+                Self::Inactive => "INACTIVE",
+                Self::Enrolled => "ENROLLED",
+                Self::OptedOut => "OPTED_OUT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CHECKOUT_ENROLLMENT_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INACTIVE" => Some(Self::Inactive),
+                "ENROLLED" => Some(Self::Enrolled),
+                "OPTED_OUT" => Some(Self::OptedOut),
+                _ => None,
+            }
+        }
+    }
+    /// Enum indicating the review state of merchant in `Checkout`
+    /// program.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CheckoutReviewState {
+        /// Default review state when review state is not specified.
+        Unspecified = 0,
+        /// Merchant provided URLs are being reviewed for data quality issues.
+        InReview = 1,
+        /// Merchant account has been approved. Indicates the data quality checks
+        /// have passed.
+        Approved = 2,
+        /// Merchant account has been disapproved due to data quality issues.
+        Disapproved = 3,
+    }
+    impl CheckoutReviewState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CHECKOUT_REVIEW_STATE_UNSPECIFIED",
+                Self::InReview => "IN_REVIEW",
+                Self::Approved => "APPROVED",
+                Self::Disapproved => "DISAPPROVED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CHECKOUT_REVIEW_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IN_REVIEW" => Some(Self::InReview),
+                "APPROVED" => Some(Self::Approved),
+                "DISAPPROVED" => Some(Self::Disapproved),
+                _ => None,
+            }
+        }
+    }
+}
+/// URL settings for cart or checkout URL.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UriSettings {
+    /// Specifications related to the `Checkout` URL. The `UriTemplate` is
+    /// of the form `<https://www.mystore.com/checkout?item_id={id}`>
+    /// where `{id}` will be automatically replaced with \[offer_id\]
+    /// (<https://developers.google.com/shopping-content/reference/rest/v2.1/products#Product.FIELDS.offer_id>)
+    /// attribute from the merchant account
+    #[prost(oneof = "uri_settings::UriTemplate", tags = "1, 2")]
+    pub uri_template: ::core::option::Option<uri_settings::UriTemplate>,
+}
+/// Nested message and enum types in `UriSettings`.
+pub mod uri_settings {
+    /// Specifications related to the `Checkout` URL. The `UriTemplate` is
+    /// of the form `<https://www.mystore.com/checkout?item_id={id}`>
+    /// where `{id}` will be automatically replaced with \[offer_id\]
+    /// (<https://developers.google.com/shopping-content/reference/rest/v2.1/products#Product.FIELDS.offer_id>)
+    /// attribute from the merchant account
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum UriTemplate {
+        /// Checkout URL template. When the placeholders are expanded will redirect
+        /// the buyer to the merchant checkout page with the item in the cart. For
+        /// more details, check the [help center
+        /// doc](<https://support.google.com/merchants/answer/13945960#method1&zippy=%2Cproduct-level-url-formatting%2Caccount-level-url-formatting>)
+        #[prost(string, tag = "1")]
+        CheckoutUriTemplate(::prost::alloc::string::String),
+        /// Cart URL template. When the placeholders are expanded will redirect the
+        /// buyer to the cart page on the merchant website with the selected
+        /// item in cart. For more details, check the [help center
+        /// doc](<https://support.google.com/merchants/answer/13945960#method1&zippy=%2Cproduct-level-url-formatting%2Caccount-level-url-formatting>)
+        #[prost(string, tag = "2")]
+        CartUriTemplate(::prost::alloc::string::String),
+    }
+}
+/// Generated client implementations.
+pub mod checkout_settings_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service for supporting [checkout
+    /// settings](https://support.google.com/merchants/answer/13945960).
+    #[derive(Debug, Clone)]
+    pub struct CheckoutSettingsServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl CheckoutSettingsServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> CheckoutSettingsServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> CheckoutSettingsServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            CheckoutSettingsServiceClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Gets `CheckoutSettings` for the given merchant. This includes
+        /// information about review state, enrollment state and URL settings.
+        pub async fn get_checkout_settings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetCheckoutSettingsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::CheckoutSettings>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.shopping.merchant.accounts.v1beta.CheckoutSettingsService/GetCheckoutSettings",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.shopping.merchant.accounts.v1beta.CheckoutSettingsService",
+                        "GetCheckoutSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates `CheckoutSettings` for the given merchant.
+        pub async fn create_checkout_settings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateCheckoutSettingsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::CheckoutSettings>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.shopping.merchant.accounts.v1beta.CheckoutSettingsService/CreateCheckoutSettings",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.shopping.merchant.accounts.v1beta.CheckoutSettingsService",
+                        "CreateCheckoutSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates `CheckoutSettings` for the given merchant.
+        pub async fn update_checkout_settings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateCheckoutSettingsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::CheckoutSettings>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.shopping.merchant.accounts.v1beta.CheckoutSettingsService/UpdateCheckoutSettings",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.shopping.merchant.accounts.v1beta.CheckoutSettingsService",
+                        "UpdateCheckoutSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes `CheckoutSettings` and unenrolls merchant from
+        /// `Checkout` program.
+        pub async fn delete_checkout_settings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteCheckoutSettingsRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.shopping.merchant.accounts.v1beta.CheckoutSettingsService/DeleteCheckoutSettings",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.shopping.merchant.accounts.v1beta.CheckoutSettingsService",
+                        "DeleteCheckoutSettings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// The categories of notifications the user opted into / opted out of. The email
 /// preferences do not include mandatory announcements as users can't opt out of
 /// them.

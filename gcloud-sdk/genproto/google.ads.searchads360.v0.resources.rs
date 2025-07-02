@@ -1096,7 +1096,7 @@ pub mod asset_group_signal {
         Audience(super::super::common::AudienceInfo),
     }
 }
-/// A view on the usage of ad group ad asset combination.
+/// A view on the usage of asset group asset top combinations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetGroupTopCombinationView {
     /// Output only. The resource name of the asset group top combination view.
@@ -2379,6 +2379,34 @@ pub struct Customer {
     /// in the customer's time zone and in "yyyy-MM-dd HH:mm:ss" format.
     #[prost(string, tag = "42")]
     pub creation_time: ::prost::alloc::string::String,
+    /// Output only. The customer ID of the manager. A 0 value indicates that the
+    /// customer has no SA360 manager.
+    #[prost(int64, tag = "47")]
+    pub manager_id: i64,
+    /// Output only. The descriptive name of the manager.
+    #[prost(string, tag = "48")]
+    pub manager_descriptive_name: ::prost::alloc::string::String,
+    /// Output only. The customer ID of the sub manager. A 0 value indicates that
+    /// the customer has no sub SA360 manager.
+    #[prost(int64, tag = "49")]
+    pub sub_manager_id: i64,
+    /// Output only. The descriptive name of the sub manager.
+    #[prost(string, tag = "50")]
+    pub sub_manager_descriptive_name: ::prost::alloc::string::String,
+    /// Output only. The customer ID of the associate manager. A 0 value indicates
+    /// that the customer has no SA360 associate manager.
+    #[prost(int64, tag = "51")]
+    pub associate_manager_id: i64,
+    /// Output only. The descriptive name of the associate manager.
+    #[prost(string, tag = "52")]
+    pub associate_manager_descriptive_name: ::prost::alloc::string::String,
+    /// Output only. The account level of the customer: Manager, Sub-manager,
+    /// Associate manager, Service account.
+    #[prost(
+        enumeration = "super::enums::account_level_type_enum::AccountLevelType",
+        tag = "53"
+    )]
+    pub account_level: i32,
 }
 /// A collection of customer-wide settings related to Search Ads 360 Conversion
 /// Tracking.
