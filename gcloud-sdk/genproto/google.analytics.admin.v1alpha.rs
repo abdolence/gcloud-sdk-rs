@@ -2256,7 +2256,7 @@ pub mod change_history_change {
     pub struct ChangeHistoryResource {
         #[prost(
             oneof = "change_history_resource::Resource",
-            tags = "1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32"
+            tags = "1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33"
         )]
         pub resource: ::core::option::Option<change_history_resource::Resource>,
     }
@@ -2352,6 +2352,9 @@ pub mod change_history_change {
             /// A snapshot of a ReportingDataAnnotation resource in change history.
             #[prost(message, tag = "32")]
             ReportingDataAnnotation(super::super::ReportingDataAnnotation),
+            /// A snapshot of a SubpropertySyncConfig resource in change history.
+            #[prost(message, tag = "33")]
+            SubpropertySyncConfig(super::super::SubpropertySyncConfig),
         }
     }
 }
@@ -3867,6 +3870,83 @@ pub mod reporting_data_annotation {
         AnnotationDateRange(DateRange),
     }
 }
+/// Subproperty synchronization configuration controls how ordinary property
+/// configurations are synchronized to subproperties. This resource is
+/// provisioned automatically for each subproperty.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SubpropertySyncConfig {
+    /// Output only. Identifier. Format:
+    /// properties/{ordinary_property_id}/subpropertySyncConfigs/{subproperty_id}
+    /// Example: properties/1234/subpropertySyncConfigs/5678
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Immutable. Resource name of the Subproperty that these
+    /// settings apply to.
+    #[prost(string, tag = "2")]
+    pub apply_to_property: ::prost::alloc::string::String,
+    /// Required. Specifies the Custom Dimension / Metric synchronization mode for
+    /// the Subproperty.
+    ///
+    /// If set to ALL, Custom Dimension / Metric synchronization will be
+    /// immediately enabled.  Local configuration of Custom Dimensions / Metrics
+    /// will not be allowed on the Subproperty so long as the synchronization mode
+    /// is set to ALL.
+    ///
+    /// If set to NONE, Custom Dimensions / Metric synchronization is disabled.
+    /// Custom Dimensions / Metrics must be configured explicitly on the
+    /// Subproperty.
+    #[prost(enumeration = "subproperty_sync_config::SynchronizationMode", tag = "3")]
+    pub custom_dimension_and_metric_sync_mode: i32,
+}
+/// Nested message and enum types in `SubpropertySyncConfig`.
+pub mod subproperty_sync_config {
+    /// Synchronization modes for a Subproperty
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum SynchronizationMode {
+        /// Synchronization mode unknown or not specified.
+        Unspecified = 0,
+        /// Entities are not synchronized.
+        /// Local edits are allowed on the Subproperty.
+        None = 1,
+        /// Entities are synchronized from Parent Property.
+        /// Local mutations are not allowed on the Subproperty (Create / Update /
+        /// Delete)
+        All = 2,
+    }
+    impl SynchronizationMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SYNCHRONIZATION_MODE_UNSPECIFIED",
+                Self::None => "NONE",
+                Self::All => "ALL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SYNCHRONIZATION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "ALL" => Some(Self::All),
+                _ => None,
+            }
+        }
+    }
+}
 /// The category selected for this property, used for industry benchmarking.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -4164,6 +4244,8 @@ pub enum ChangeHistoryResourceType {
     CalculatedMetric = 31,
     /// ReportingDataAnnotation resource
     ReportingDataAnnotation = 32,
+    /// SubpropertySyncConfig resource
+    SubpropertySyncConfig = 33,
 }
 impl ChangeHistoryResourceType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -4204,6 +4286,7 @@ impl ChangeHistoryResourceType {
             Self::KeyEvent => "KEY_EVENT",
             Self::CalculatedMetric => "CALCULATED_METRIC",
             Self::ReportingDataAnnotation => "REPORTING_DATA_ANNOTATION",
+            Self::SubpropertySyncConfig => "SUBPROPERTY_SYNC_CONFIG",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4243,6 +4326,7 @@ impl ChangeHistoryResourceType {
             "KEY_EVENT" => Some(Self::KeyEvent),
             "CALCULATED_METRIC" => Some(Self::CalculatedMetric),
             "REPORTING_DATA_ANNOTATION" => Some(Self::ReportingDataAnnotation),
+            "SUBPROPERTY_SYNC_CONFIG" => Some(Self::SubpropertySyncConfig),
             _ => None,
         }
     }
@@ -7052,6 +7136,10 @@ pub struct ProvisionSubpropertyRequest {
     /// Optional. The subproperty event filter to create on an ordinary property.
     #[prost(message, optional, tag = "3")]
     pub subproperty_event_filter: ::core::option::Option<SubpropertyEventFilter>,
+    /// Optional. The subproperty feature synchronization mode for Custom
+    /// Dimensions and Metrics
+    #[prost(enumeration = "subproperty_sync_config::SynchronizationMode", tag = "4")]
+    pub custom_dimension_and_metric_synchronization_mode: i32,
 }
 /// Response message for ProvisionSubproperty RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -7305,6 +7393,62 @@ pub struct SubmitUserDeletionResponse {
     /// received.
     #[prost(message, optional, tag = "1")]
     pub deletion_request_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for GetSubpropertySyncConfig RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetSubpropertySyncConfigRequest {
+    /// Required. Resource name of the SubpropertySyncConfig to lookup.
+    /// Format:
+    /// properties/{ordinary_property_id}/subpropertySyncConfigs/{subproperty_id}
+    /// Example: properties/1234/subpropertySyncConfigs/5678
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for ListSubpropertySyncConfigs RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSubpropertySyncConfigsRequest {
+    /// Required. Resource name of the property.
+    /// Format: properties/property_id
+    /// Example: properties/123
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of resources to return. The service may return
+    /// fewer than this value, even if there are additional pages. If unspecified,
+    /// at most 50 resources will be returned. The maximum value is 200; (higher
+    /// values will be coerced to the maximum)
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous
+    /// `ListSubpropertySyncConfig` call. Provide this to retrieve the subsequent
+    /// page. When paginating, all other parameters provided to
+    /// `ListSubpropertySyncConfig` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListSubpropertySyncConfigs RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListSubpropertySyncConfigsResponse {
+    /// List of Subproperty Sync Configs.
+    #[prost(message, repeated, tag = "1")]
+    pub subproperty_sync_configs: ::prost::alloc::vec::Vec<SubpropertySyncConfig>,
+    /// A token, which can be sent as `page_token` to retrieve the next page. If
+    /// this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for UpdateSubpropertySyncConfig RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateSubpropertySyncConfigRequest {
+    /// Required. The SubpropertySyncConfig to update.
+    #[prost(message, optional, tag = "1")]
+    pub subproperty_sync_config: ::core::option::Option<SubpropertySyncConfig>,
+    /// Optional. The list of fields to update. Field names must be in snake case
+    /// (for example, "field_to_update"). Omitted fields will not be updated. To
+    /// replace the entire entity, use one path with the string "*" to match all
+    /// fields.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Generated client implementations.
 pub mod analytics_admin_service_client {
@@ -12053,6 +12197,96 @@ pub mod analytics_admin_service_client {
                     GrpcMethod::new(
                         "google.analytics.admin.v1alpha.AnalyticsAdminService",
                         "SubmitUserDeletion",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// List all Subproperty Sync Configs on a property.
+        pub async fn list_subproperty_sync_configs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListSubpropertySyncConfigsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListSubpropertySyncConfigsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListSubpropertySyncConfigs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "ListSubpropertySyncConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a Subproperty Sync Config.
+        pub async fn update_subproperty_sync_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateSubpropertySyncConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SubpropertySyncConfig>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateSubpropertySyncConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "UpdateSubpropertySyncConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lookup for a single Subproperty Sync Config.
+        pub async fn get_subproperty_sync_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetSubpropertySyncConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::SubpropertySyncConfig>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetSubpropertySyncConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "GetSubpropertySyncConfig",
                     ),
                 );
             self.inner.unary(req, path, codec).await

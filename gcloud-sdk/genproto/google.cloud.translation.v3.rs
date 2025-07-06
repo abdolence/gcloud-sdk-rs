@@ -941,13 +941,15 @@ pub struct TranslateTextRequest {
     pub mime_type: ::prost::alloc::string::String,
     /// Optional. The ISO-639 language code of the input text if
     /// known, for example, "en-US" or "sr-Latn". Supported language codes are
-    /// listed in Language Support. If the source language isn't specified, the API
-    /// attempts to identify the source language automatically and returns the
-    /// source language within the response.
+    /// listed in [Language
+    /// Support](<https://cloud.google.com/translate/docs/languages>). If the source
+    /// language isn't specified, the API attempts to identify the source language
+    /// automatically and returns the source language within the response.
     #[prost(string, tag = "4")]
     pub source_language_code: ::prost::alloc::string::String,
     /// Required. The ISO-639 language code to use for translation of the input
-    /// text, set to one of the language codes listed in Language Support.
+    /// text, set to one of the language codes listed in [Language
+    /// Support](<https://cloud.google.com/translate/docs/languages>).
     #[prost(string, tag = "5")]
     pub target_language_code: ::prost::alloc::string::String,
     /// Required. Project or location to make a call. Must refer to a caller's
@@ -1069,9 +1071,12 @@ pub struct RomanizeTextRequest {
     #[prost(string, repeated, tag = "1")]
     pub contents: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The ISO-639 language code of the input text if
-    /// known, for example, "hi" or "zh". If the source language isn't specified,
-    /// the API attempts to identify the source language automatically and returns
-    /// the source language for each content in the response.
+    /// known, for example, "hi" or "zh". Supported language codes are
+    /// listed in [Language
+    /// Support](<https://cloud.google.com/translate/docs/languages#roman>). If the
+    /// source language isn't specified, the API attempts to identify the source
+    /// language automatically and returns the source language for each content in
+    /// the response.
     #[prost(string, tag = "2")]
     pub source_language_code: ::prost::alloc::string::String,
 }
@@ -1534,14 +1539,16 @@ pub struct TranslateDocumentRequest {
     pub parent: ::prost::alloc::string::String,
     /// Optional. The ISO-639 language code of the input document if known, for
     /// example, "en-US" or "sr-Latn". Supported language codes are listed in
-    /// Language Support. If the source language isn't specified, the API attempts
-    /// to identify the source language automatically and returns the source
-    /// language within the response. Source language must be specified if the
-    /// request contains a glossary or a custom model.
+    /// [Language Support](<https://cloud.google.com/translate/docs/languages>). If
+    /// the source language isn't specified, the API attempts to identify the
+    /// source language automatically and returns the source language within the
+    /// response. Source language must be specified if the request contains a
+    /// glossary or a custom model.
     #[prost(string, tag = "2")]
     pub source_language_code: ::prost::alloc::string::String,
     /// Required. The ISO-639 language code to use for translation of the input
-    /// document, set to one of the language codes listed in Language Support.
+    /// document, set to one of the language codes listed in [Language
+    /// Support](<https://cloud.google.com/translate/docs/languages>).
     #[prost(string, tag = "3")]
     pub target_language_code: ::prost::alloc::string::String,
     /// Required. Input configurations.
@@ -1667,10 +1674,14 @@ pub struct BatchTranslateTextRequest {
     /// error is returned.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. Source language code.
+    /// Required. Source language code. Supported language codes are listed in
+    /// [Language
+    /// Support](<https://cloud.google.com/translate/docs/languages>).
     #[prost(string, tag = "2")]
     pub source_language_code: ::prost::alloc::string::String,
-    /// Required. Specify up to 10 language codes here.
+    /// Required. Specify up to 10 language codes here. Supported language codes
+    /// are listed in [Language
+    /// Support](<https://cloud.google.com/translate/docs/languages>).
     #[prost(string, repeated, tag = "3")]
     pub target_language_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The models to use for translation. Map's key is target language
@@ -2334,7 +2345,9 @@ pub struct BatchTranslateDocumentRequest {
     #[prost(string, tag = "2")]
     pub source_language_code: ::prost::alloc::string::String,
     /// Required. The ISO-639 language code to use for translation of the input
-    /// document. Specify up to 10 language codes here.
+    /// document. Specify up to 10 language codes here. Supported language codes
+    /// are listed in [Language
+    /// Support](<https://cloud.google.com/translate/docs/languages>).
     #[prost(string, repeated, tag = "3")]
     pub target_language_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. Input configurations.

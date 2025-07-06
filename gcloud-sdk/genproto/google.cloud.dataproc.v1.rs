@@ -1116,6 +1116,10 @@ pub mod autotuning_config {
         BroadcastHashJoin = 3,
         /// Memory management for workloads.
         Memory = 4,
+        /// No autotuning.
+        None = 5,
+        /// Automatic selection of scenarios.
+        Auto = 6,
     }
     impl Scenario {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1128,6 +1132,8 @@ pub mod autotuning_config {
                 Self::Scaling => "SCALING",
                 Self::BroadcastHashJoin => "BROADCAST_HASH_JOIN",
                 Self::Memory => "MEMORY",
+                Self::None => "NONE",
+                Self::Auto => "AUTO",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -1137,6 +1143,8 @@ pub mod autotuning_config {
                 "SCALING" => Some(Self::Scaling),
                 "BROADCAST_HASH_JOIN" => Some(Self::BroadcastHashJoin),
                 "MEMORY" => Some(Self::Memory),
+                "NONE" => Some(Self::None),
+                "AUTO" => Some(Self::Auto),
                 _ => None,
             }
         }
@@ -1168,6 +1176,8 @@ pub enum Component {
     /// It cannot be activated on clusters created with supported Dataproc on
     /// Compute Engine image versions.
     Anaconda = 5,
+    /// Delta Lake.
+    Delta = 20,
     /// Docker
     Docker = 13,
     /// The Druid query engine. (alpha)
@@ -1180,8 +1190,12 @@ pub enum Component {
     HiveWebhcat = 3,
     /// Hudi.
     Hudi = 18,
+    /// Iceberg.
+    Iceberg = 19,
     /// The Jupyter Notebook.
     Jupyter = 1,
+    /// The Pig component.
+    Pig = 21,
     /// The Presto query engine.
     Presto = 6,
     /// The Trino query engine.
@@ -1204,13 +1218,16 @@ impl Component {
         match self {
             Self::Unspecified => "COMPONENT_UNSPECIFIED",
             Self::Anaconda => "ANACONDA",
+            Self::Delta => "DELTA",
             Self::Docker => "DOCKER",
             Self::Druid => "DRUID",
             Self::Flink => "FLINK",
             Self::Hbase => "HBASE",
             Self::HiveWebhcat => "HIVE_WEBHCAT",
             Self::Hudi => "HUDI",
+            Self::Iceberg => "ICEBERG",
             Self::Jupyter => "JUPYTER",
+            Self::Pig => "PIG",
             Self::Presto => "PRESTO",
             Self::Trino => "TRINO",
             Self::Ranger => "RANGER",
@@ -1224,13 +1241,16 @@ impl Component {
         match value {
             "COMPONENT_UNSPECIFIED" => Some(Self::Unspecified),
             "ANACONDA" => Some(Self::Anaconda),
+            "DELTA" => Some(Self::Delta),
             "DOCKER" => Some(Self::Docker),
             "DRUID" => Some(Self::Druid),
             "FLINK" => Some(Self::Flink),
             "HBASE" => Some(Self::Hbase),
             "HIVE_WEBHCAT" => Some(Self::HiveWebhcat),
             "HUDI" => Some(Self::Hudi),
+            "ICEBERG" => Some(Self::Iceberg),
             "JUPYTER" => Some(Self::Jupyter),
+            "PIG" => Some(Self::Pig),
             "PRESTO" => Some(Self::Presto),
             "TRINO" => Some(Self::Trino),
             "RANGER" => Some(Self::Ranger),
@@ -2264,6 +2284,9 @@ pub struct Cluster {
 /// The cluster config.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClusterConfig {
+    /// Optional. The cluster tier.
+    #[prost(enumeration = "cluster_config::ClusterTier", tag = "29")]
+    pub cluster_tier: i32,
     /// Optional. A Cloud Storage bucket used to stage job
     /// dependencies, config files, and job driver console output.
     /// If you do not specify a staging bucket, Cloud
@@ -2349,6 +2372,52 @@ pub struct ClusterConfig {
     /// Optional. The node group settings.
     #[prost(message, repeated, tag = "25")]
     pub auxiliary_node_groups: ::prost::alloc::vec::Vec<AuxiliaryNodeGroup>,
+}
+/// Nested message and enum types in `ClusterConfig`.
+pub mod cluster_config {
+    /// The cluster tier.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ClusterTier {
+        /// Not set. Works the same as CLUSTER_TIER_STANDARD.
+        Unspecified = 0,
+        /// Standard Dataproc cluster.
+        Standard = 1,
+        /// Premium Dataproc cluster.
+        Premium = 2,
+    }
+    impl ClusterTier {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CLUSTER_TIER_UNSPECIFIED",
+                Self::Standard => "CLUSTER_TIER_STANDARD",
+                Self::Premium => "CLUSTER_TIER_PREMIUM",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CLUSTER_TIER_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLUSTER_TIER_STANDARD" => Some(Self::Standard),
+                "CLUSTER_TIER_PREMIUM" => Some(Self::Premium),
+                _ => None,
+            }
+        }
+    }
 }
 /// The Dataproc cluster config for a cluster that does not directly control the
 /// underlying compute resources, such as a [Dataproc-on-GKE

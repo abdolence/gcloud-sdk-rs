@@ -5,21 +5,21 @@
 pub struct QuotaInfo {
     /// Resource name of this QuotaInfo.
     /// The ID component following "locations/" must be "global".
-    /// Example:
+    /// For example,
     /// `projects/123/locations/global/services/compute.googleapis.com/quotaInfos/CpusPerProjectPerRegion`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The id of the quota, which is unquie within the service.
-    /// Example: `CpusPerProjectPerRegion`
+    /// For example, `CpusPerProjectPerRegion`
     #[prost(string, tag = "2")]
     pub quota_id: ::prost::alloc::string::String,
     /// The metric of the quota. It specifies the resources consumption the quota
     /// is defined for.
-    /// Example: `compute.googleapis.com/cpus`
+    /// For example, `compute.googleapis.com/cpus`
     #[prost(string, tag = "3")]
     pub metric: ::prost::alloc::string::String,
     /// The name of the service in which the quota is defined.
-    /// Example: `compute.googleapis.com`
+    /// For example, `compute.googleapis.com`
     #[prost(string, tag = "4")]
     pub service: ::prost::alloc::string::String,
     /// Whether this is a precise quota. A precise quota is tracked with absolute
@@ -28,8 +28,8 @@ pub struct QuotaInfo {
     pub is_precise: bool,
     /// The reset time interval for the quota. Refresh interval applies to rate
     /// quota only.
-    /// Example: "minute" for per minute, "day" for per day, or "10 seconds" for
-    /// every 10 seconds.
+    /// For example, "minute" for per minute, "day" for per day, or "10 seconds"
+    /// for every 10 seconds.
     #[prost(string, tag = "6")]
     pub refresh_interval: ::prost::alloc::string::String,
     /// The container type of the QuotaInfo.
@@ -191,25 +191,26 @@ pub mod quota_increase_eligibility {
 pub struct QuotaPreference {
     /// Required except in the CREATE requests.
     /// The resource name of the quota preference.
-    /// The ID component following "locations/" must be "global".
-    /// Example:
+    /// The path that follows `/locations` must be `/global`.
+    /// For example:
     /// `projects/123/locations/global/quotaPreferences/my-config-for-us-east1`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Immutable. The dimensions that this quota preference applies to. The key of
-    /// the map entry is the name of a dimension, such as "region", "zone",
-    /// "network_id", and the value of the map entry is the dimension value.
+    /// the map entry is the name of a dimension, such as `region`, `zone`,
+    /// `network_id`, and the value of the map entry is the dimension value.
     ///
     /// If a dimension is missing from the map of dimensions, the quota preference
     /// applies to all the dimension values except for those that have other quota
     /// preferences configured for the specific value.
     ///
-    /// NOTE: QuotaPreferences can only be applied across all values of "user" and
-    /// "resource" dimension. Do not set values for "user" or "resource" in the
+    /// Note: QuotaPreferences can only be applied across all values of `user` and
+    /// `resource` dimension. Do not set values for `user` or `resource` in the
     /// dimension map.
     ///
-    /// Example: {"provider", "Foo Inc"} where "provider" is a service specific
-    /// dimension.
+    /// For example: `{"provider" : "Example Organization"}` where `provider` is a
+    /// service-specific quota dimension and `Example Organization` is the provider
+    /// name.
     #[prost(map = "string, string", tag = "2")]
     pub dimensions: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -234,7 +235,7 @@ pub struct QuotaPreference {
     #[prost(string, tag = "7")]
     pub service: ::prost::alloc::string::String,
     /// Required. The id of the quota to which the quota preference is applied. A
-    /// quota name is unique in the service. Example: `CpusPerProjectPerRegion`
+    /// quota name is unique in the service. For example, `CpusPerProjectPerRegion`
     #[prost(string, tag = "8")]
     pub quota_id: ::prost::alloc::string::String,
     /// Output only. Is the quota preference pending Google Cloud approval and
@@ -244,9 +245,9 @@ pub struct QuotaPreference {
     /// The reason / justification for this quota preference.
     #[prost(string, tag = "11")]
     pub justification: ::prost::alloc::string::String,
-    /// Input only. An email address that can be used to contact the the user, in
-    /// case Google Cloud needs more information to make a decision before
-    /// additional quota can be granted.
+    /// Input only. An email address that can be used to contact the user, in case
+    /// Google Cloud needs more information to make a decision before additional
+    /// quota can be granted.
     ///
     /// When requesting a quota increase, the email address is required.
     /// When requesting a quota decrease, the email address is optional.
@@ -338,14 +339,15 @@ pub mod quota_config {
 /// combination of dimensions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DimensionsInfo {
-    /// The map of dimensions for this dimensions info. The key of a map entry
-    /// is "region", "zone" or the name of a service specific dimension, and the
-    /// value of a map entry is the value of the dimension.  If a dimension does
+    /// The map of dimensions in key-value pairs. The key of a map entry
+    /// is "region", "zone", or the name of a service-specific dimension, and the
+    /// value of a map entry is the value of the dimension. If a dimension does
     /// not appear in the map of dimensions, the dimensions info applies to all
-    /// the dimension values except for those that have another DimenisonInfo
+    /// the dimension values except for those that have another DimensionInfo
     /// instance configured for the specific value.
-    /// Example: {"provider" : "Foo Inc"} where "provider" is a service specific
-    /// dimension of a quota.
+    /// For example: `{"provider" : "Example Organization"}` where `provider` is a
+    /// service-specific quota dimension and `Example Organization` is the provider
+    /// name.
     #[prost(map = "string, string", tag = "1")]
     pub dimensions: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -354,7 +356,7 @@ pub struct DimensionsInfo {
     /// Quota details for the specified dimensions.
     #[prost(message, optional, tag = "2")]
     pub details: ::core::option::Option<QuotaDetails>,
-    /// The applicable regions or zones of this dimensions info. The field will be
+    /// The applicable regions or zones of this dimension. The field is
     /// set to \['global'\] for quotas that are not per region or per zone.
     /// Otherwise, it will be set to the list of locations this dimension info is
     /// applicable to.
@@ -873,12 +875,13 @@ pub struct UpdateQuotaAdjusterSettingsRequest {
 /// Adjuster.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuotaAdjusterSettings {
-    /// Identifier. Name of the configuration, in the following format:
-    ///    `projects/PROJECT_NUMBER/locations/global/quotaAdjusterSettings`.
-    /// Replace PROJECT_NUMBER with the project number for your project.
+    /// Identifier. Name of the config would be of the format:
+    ///    projects/PROJECT_NUMBER/locations/global/quotaAdjusterSettings
+    ///    folders/FOLDER_NUMBER/locations/global/quotaAdjusterSettings
+    ///    organizations/ORGANIZATION_NUMBER/locations/global/quotaAdjusterSettings
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. The configured value of the enablement at the given resource.
+    /// Optional. The configured value of the enablement at the given resource.
     #[prost(enumeration = "quota_adjuster_settings::Enablement", tag = "2")]
     pub enablement: i32,
     /// Output only. The timestamp when the QuotaAdjusterSettings resource was last
@@ -891,6 +894,18 @@ pub struct QuotaAdjusterSettings {
     /// See <https://google.aip.dev/134#etags> for more details on ETags.
     #[prost(string, tag = "6")]
     pub etag: ::prost::alloc::string::String,
+    /// Optional. Indicates whether the setting is inherited or explicitly
+    /// specified.
+    #[prost(bool, tag = "7")]
+    pub inherited: bool,
+    /// Output only. The resource container from which the setting is inherited.
+    /// This refers to the  nearest ancestor with enablement set (either ENABLED or
+    /// DISABLED). The value can be an organizations/{organization_id},
+    /// folders/{folder_id}, or can be 'default' if no ancestor exists with
+    /// enablement set. The value will be empty when enablement is directly set on
+    /// this container.
+    #[prost(string, tag = "8")]
+    pub inherited_from: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `QuotaAdjusterSettings`.
 pub mod quota_adjuster_settings {

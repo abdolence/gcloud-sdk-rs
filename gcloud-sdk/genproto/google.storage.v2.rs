@@ -65,6 +65,9 @@ pub struct CreateBucketRequest {
     /// "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
     #[prost(string, tag = "7")]
     pub predefined_default_object_acl: ::prost::alloc::string::String,
+    /// Optional. If true, enable object retention on the bucket.
+    #[prost(bool, tag = "9")]
+    pub enable_object_retention: bool,
 }
 /// Request message for ListBuckets.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1353,6 +1356,9 @@ pub struct UpdateObjectRequest {
     /// object.
     #[prost(message, optional, tag = "8")]
     pub common_object_request_params: ::core::option::Option<CommonObjectRequestParams>,
+    /// Optional. Overrides the unlocked retention config on the object.
+    #[prost(bool, tag = "11")]
+    pub override_unlocked_retention: bool,
 }
 /// Parameters that can be passed to any object request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1677,6 +1683,10 @@ pub struct Bucket {
     /// soft-deleted objects from being permanently deleted.
     #[prost(message, optional, tag = "31")]
     pub soft_delete_policy: ::core::option::Option<bucket::SoftDeletePolicy>,
+    /// Optional. The bucket's object retention configuration. Must be enabled
+    /// before objects in the bucket may have retention configured.
+    #[prost(message, optional, tag = "33")]
+    pub object_retention: ::core::option::Option<bucket::ObjectRetention>,
     /// Optional. The bucket's IP filter configuration.
     #[prost(message, optional, tag = "38")]
     pub ip_filter: ::core::option::Option<bucket::IpFilter>,
@@ -1725,6 +1735,75 @@ pub mod bucket {
         /// objects inserted into this bucket, if no encryption method is specified.
         #[prost(string, tag = "1")]
         pub default_kms_key: ::prost::alloc::string::String,
+        /// Optional. If omitted, then new objects with GMEK encryption-type is
+        /// allowed. If set, then new objects created in this bucket must comply with
+        /// enforcement config. Changing this has no effect on existing objects; it
+        /// applies to new objects only.
+        #[prost(message, optional, tag = "2")]
+        pub google_managed_encryption_enforcement_config: ::core::option::Option<
+            encryption::GoogleManagedEncryptionEnforcementConfig,
+        >,
+        /// Optional. If omitted, then new objects with CMEK encryption-type is
+        /// allowed. If set, then new objects created in this bucket must comply with
+        /// enforcement config. Changing this has no effect on existing objects; it
+        /// applies to new objects only.
+        #[prost(message, optional, tag = "3")]
+        pub customer_managed_encryption_enforcement_config: ::core::option::Option<
+            encryption::CustomerManagedEncryptionEnforcementConfig,
+        >,
+        /// Optional. If omitted, then new objects with CSEK encryption-type is
+        /// allowed. If set, then new objects created in this bucket must comply with
+        /// enforcement config. Changing this has no effect on existing objects; it
+        /// applies to new objects only.
+        #[prost(message, optional, tag = "4")]
+        pub customer_supplied_encryption_enforcement_config: ::core::option::Option<
+            encryption::CustomerSuppliedEncryptionEnforcementConfig,
+        >,
+    }
+    /// Nested message and enum types in `Encryption`.
+    pub mod encryption {
+        /// Google Managed Encryption (GMEK) enforcement config of a bucket.
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct GoogleManagedEncryptionEnforcementConfig {
+            /// Whether Google Managed Encryption (GMEK) is restricted for new
+            /// objects within the bucket.
+            /// If true, new objects can't be created using GMEK encryption.
+            /// If false or unset, creation of new objects with GMEK encryption is
+            /// allowed.
+            #[prost(bool, optional, tag = "1")]
+            pub restricted: ::core::option::Option<bool>,
+            /// Time from which the config was effective. This is service-provided.
+            #[prost(message, optional, tag = "2")]
+            pub effective_time: ::core::option::Option<::prost_types::Timestamp>,
+        }
+        /// Customer Managed Encryption (CMEK) enforcement config of a bucket.
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct CustomerManagedEncryptionEnforcementConfig {
+            /// Whether Customer Managed Encryption (CMEK) is restricted for new
+            /// objects within the bucket.
+            /// If true, new objects can't be created using CMEK encryption.
+            /// If false or unset, creation of new objects with CMEK encryption is
+            /// allowed.
+            #[prost(bool, optional, tag = "1")]
+            pub restricted: ::core::option::Option<bool>,
+            /// Time from which the config was effective. This is service-provided.
+            #[prost(message, optional, tag = "2")]
+            pub effective_time: ::core::option::Option<::prost_types::Timestamp>,
+        }
+        /// Customer Supplied Encryption (CSEK) enforcement config of a bucket.
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct CustomerSuppliedEncryptionEnforcementConfig {
+            /// Whether Customer Supplied Encryption (CSEK) is restricted for new
+            /// objects within the bucket.
+            /// If true, new objects can't be created using CSEK encryption.
+            /// If false or unset, creation of new objects with CSEK encryption is
+            /// allowed.
+            #[prost(bool, optional, tag = "1")]
+            pub restricted: ::core::option::Option<bool>,
+            /// Time from which the config was effective. This is service-provided.
+            #[prost(message, optional, tag = "2")]
+            pub effective_time: ::core::option::Option<::prost_types::Timestamp>,
+        }
     }
     /// Bucket restriction options.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1878,6 +1957,14 @@ pub mod bucket {
         #[prost(string, tag = "2")]
         pub log_object_prefix: ::prost::alloc::string::String,
     }
+    /// Object Retention related properties of a bucket.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct ObjectRetention {
+        /// Optional. Output only. If true, object retention is enabled for the
+        /// bucket.
+        #[prost(bool, tag = "1")]
+        pub enabled: bool,
+    }
     /// Retention policy properties of a bucket.
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct RetentionPolicy {
@@ -1938,7 +2025,7 @@ pub mod bucket {
     }
     /// Configuration for Custom Dual Regions.  It should specify precisely two
     /// eligible regions within the same Multiregion. More information on regions
-    /// may be found [<https://cloud.google.com/storage/docs/locations][here].>
+    /// may be found [here](<https://cloud.google.com/storage/docs/locations>).
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CustomPlacementConfig {
         /// Optional. List of locations to use for data placement.
@@ -2000,6 +2087,10 @@ pub mod bucket {
         /// bucket as well as validated for existence.
         #[prost(bool, tag = "4")]
         pub allow_cross_org_vpcs: bool,
+        /// Whether or not to allow all P4SA access to the bucket. When set to true,
+        /// IP filter config validation will not apply.
+        #[prost(bool, optional, tag = "5")]
+        pub allow_all_service_agent_access: ::core::option::Option<bool>,
     }
     /// Nested message and enum types in `IpFilter`.
     pub mod ip_filter {

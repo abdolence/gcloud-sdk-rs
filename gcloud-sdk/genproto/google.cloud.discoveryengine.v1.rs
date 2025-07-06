@@ -607,6 +607,8 @@ pub mod answer {
                 JailBreakingQuery = 3,
                 /// Non-answer-seeking query classification type, for no clear intent.
                 NonAnswerSeekingQueryV2 = 4,
+                /// User defined query classification type.
+                UserDefinedClassificationQuery = 5,
             }
             impl Type {
                 /// String value of the enum field names used in the ProtoBuf definition.
@@ -620,6 +622,9 @@ pub mod answer {
                         Self::NonAnswerSeekingQuery => "NON_ANSWER_SEEKING_QUERY",
                         Self::JailBreakingQuery => "JAIL_BREAKING_QUERY",
                         Self::NonAnswerSeekingQueryV2 => "NON_ANSWER_SEEKING_QUERY_V2",
+                        Self::UserDefinedClassificationQuery => {
+                            "USER_DEFINED_CLASSIFICATION_QUERY"
+                        }
                     }
                 }
                 /// Creates an enum from field names used in the ProtoBuf definition.
@@ -631,6 +636,9 @@ pub mod answer {
                         "JAIL_BREAKING_QUERY" => Some(Self::JailBreakingQuery),
                         "NON_ANSWER_SEEKING_QUERY_V2" => {
                             Some(Self::NonAnswerSeekingQueryV2)
+                        }
+                        "USER_DEFINED_CLASSIFICATION_QUERY" => {
+                            Some(Self::UserDefinedClassificationQuery)
                         }
                         _ => None,
                     }
@@ -745,6 +753,18 @@ pub mod answer {
         /// Google skips the answer if a well grounded answer was unable to be
         /// generated.
         LowGroundedAnswer = 9,
+        /// The user defined query classification ignored case.
+        ///
+        /// Google skips the answer if the query is classified as a user defined
+        /// query classification.
+        UserDefinedClassificationQueryIgnored = 10,
+        /// The unhelpful answer case.
+        ///
+        /// Google skips the answer if the answer is not helpful. This can be due to
+        /// a variety of factors, including but not limited to: the query is not
+        /// answerable, the answer is not relevant to the query, or the answer is
+        /// not well-formatted.
+        UnhelpfulAnswer = 11,
     }
     impl AnswerSkippedReason {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -765,6 +785,10 @@ pub mod answer {
                     "NON_ANSWER_SEEKING_QUERY_IGNORED_V2"
                 }
                 Self::LowGroundedAnswer => "LOW_GROUNDED_ANSWER",
+                Self::UserDefinedClassificationQueryIgnored => {
+                    "USER_DEFINED_CLASSIFICATION_QUERY_IGNORED"
+                }
+                Self::UnhelpfulAnswer => "UNHELPFUL_ANSWER",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -784,6 +808,10 @@ pub mod answer {
                     Some(Self::NonAnswerSeekingQueryIgnoredV2)
                 }
                 "LOW_GROUNDED_ANSWER" => Some(Self::LowGroundedAnswer),
+                "USER_DEFINED_CLASSIFICATION_QUERY_IGNORED" => {
+                    Some(Self::UserDefinedClassificationQueryIgnored)
+                }
+                "UNHELPFUL_ANSWER" => Some(Self::UnhelpfulAnswer),
                 _ => None,
             }
         }
@@ -827,6 +855,20 @@ pub struct Chunk {
     /// Output only. Metadata of the current chunk.
     #[prost(message, optional, tag = "7")]
     pub chunk_metadata: ::core::option::Option<chunk::ChunkMetadata>,
+    /// Output only. Image Data URLs if the current chunk contains images.
+    /// Data URLs are composed of four parts: a prefix (data:), a MIME type
+    /// indicating the type of data, an optional base64 token if non-textual,
+    /// and the data itself:
+    /// data:[<mediatype>][;base64],<data>
+    #[prost(string, repeated, tag = "9")]
+    pub data_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. Annotation contents if the current chunk contains annotations.
+    #[prost(string, repeated, tag = "11")]
+    pub annotation_contents: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. The annotation metadata includes structured content in the
+    /// current chunk.
+    #[prost(message, repeated, tag = "12")]
+    pub annotation_metadata: ::prost::alloc::vec::Vec<chunk::AnnotationMetadata>,
 }
 /// Nested message and enum types in `Chunk`.
 pub mod chunk {
@@ -876,6 +918,539 @@ pub mod chunk {
         /// API.
         #[prost(message, repeated, tag = "2")]
         pub next_chunks: ::prost::alloc::vec::Vec<super::Chunk>,
+    }
+    /// The structured content information.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct StructuredContent {
+        /// Output only. The structure type of the structured content.
+        #[prost(enumeration = "StructureType", tag = "1")]
+        pub structure_type: i32,
+        /// Output only. The content of the structured content.
+        #[prost(string, tag = "2")]
+        pub content: ::prost::alloc::string::String,
+    }
+    /// The annotation metadata includes structured content in the current chunk.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AnnotationMetadata {
+        /// Output only. The structured content information.
+        #[prost(message, optional, tag = "1")]
+        pub structured_content: ::core::option::Option<StructuredContent>,
+        /// Output only. Image id is provided if the structured content is based on
+        /// an image.
+        #[prost(string, tag = "2")]
+        pub image_id: ::prost::alloc::string::String,
+    }
+    /// Defines the types of the structured content that can be extracted.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum StructureType {
+        /// Default value.
+        Unspecified = 0,
+        /// Shareholder structure.
+        ShareholderStructure = 1,
+        /// Signature structure.
+        SignatureStructure = 2,
+        /// Checkbox structure.
+        CheckboxStructure = 3,
+    }
+    impl StructureType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STRUCTURE_TYPE_UNSPECIFIED",
+                Self::ShareholderStructure => "SHAREHOLDER_STRUCTURE",
+                Self::SignatureStructure => "SIGNATURE_STRUCTURE",
+                Self::CheckboxStructure => "CHECKBOX_STRUCTURE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STRUCTURE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SHAREHOLDER_STRUCTURE" => Some(Self::ShareholderStructure),
+                "SIGNATURE_STRUCTURE" => Some(Self::SignatureStructure),
+                "CHECKBOX_STRUCTURE" => Some(Self::CheckboxStructure),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request message for UpdateCmekConfig method.
+/// rpc.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateCmekConfigRequest {
+    /// Required. The CmekConfig resource.
+    #[prost(message, optional, tag = "1")]
+    pub config: ::core::option::Option<CmekConfig>,
+    /// Set the following CmekConfig as the default to be used for child
+    /// resources if one is not specified.
+    #[prost(bool, tag = "2")]
+    pub set_default: bool,
+}
+/// Request message for GetCmekConfigRequest method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetCmekConfigRequest {
+    /// Required. Resource name of
+    /// [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig], such as
+    /// `projects/*/locations/*/cmekConfig` or
+    /// `projects/*/locations/*/cmekConfigs/*`.
+    ///
+    /// If the caller does not have permission to access the
+    /// [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig], regardless of
+    /// whether or not it exists, a PERMISSION_DENIED error is returned.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Metadata for single-regional CMEKs.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SingleRegionKey {
+    /// Required. Single-regional kms key resource name which will be used to
+    /// encrypt resources
+    /// `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}`.
+    #[prost(string, tag = "1")]
+    pub kms_key: ::prost::alloc::string::String,
+}
+/// Configurations used to enable CMEK data encryption with Cloud KMS keys.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CmekConfig {
+    /// Required. The name of the CmekConfig of the form
+    /// `projects/{project}/locations/{location}/cmekConfig` or
+    /// `projects/{project}/locations/{location}/cmekConfigs/{cmek_config}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// KMS key resource name which will be used to encrypt resources
+    /// `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}`.
+    #[prost(string, tag = "2")]
+    pub kms_key: ::prost::alloc::string::String,
+    /// KMS key version resource name which will be used to encrypt resources
+    /// `<kms_key>/cryptoKeyVersions/{keyVersion}`.
+    #[prost(string, tag = "6")]
+    pub kms_key_version: ::prost::alloc::string::String,
+    /// Output only. The states of the CmekConfig.
+    #[prost(enumeration = "cmek_config::State", tag = "3")]
+    pub state: i32,
+    /// Output only. The default CmekConfig for the Customer.
+    #[prost(bool, tag = "4")]
+    pub is_default: bool,
+    /// Output only. The timestamp of the last key rotation.
+    #[prost(int64, tag = "5")]
+    pub last_rotation_timestamp_micros: i64,
+    /// Optional. Single-regional CMEKs that are required for some VAIS features.
+    #[prost(message, repeated, tag = "7")]
+    pub single_region_keys: ::prost::alloc::vec::Vec<SingleRegionKey>,
+    /// Output only. Whether the NotebookLM Corpus is ready to be used.
+    #[prost(enumeration = "cmek_config::NotebookLmState", tag = "8")]
+    pub notebooklm_state: i32,
+}
+/// Nested message and enum types in `CmekConfig`.
+pub mod cmek_config {
+    /// States of the CmekConfig.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The CmekConfig state is unknown.
+        Unspecified = 0,
+        /// The CmekConfig is creating.
+        Creating = 1,
+        /// The CmekConfig can be used with DataStores.
+        Active = 2,
+        /// The CmekConfig is unavailable, most likely due to the KMS Key being
+        /// revoked.
+        KeyIssue = 3,
+        /// The CmekConfig is deleting.
+        Deleting = 4,
+        /// The CmekConfig deletion process failed.
+        DeleteFailed = 7,
+        /// The CmekConfig is not usable, most likely due to some internal issue.
+        Unusable = 5,
+        /// The KMS key version is being rotated.
+        ActiveRotating = 6,
+        /// The KMS key is soft deleted. Some cleanup policy will eventually be
+        /// applied.
+        Deleted = 8,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Creating => "CREATING",
+                Self::Active => "ACTIVE",
+                Self::KeyIssue => "KEY_ISSUE",
+                Self::Deleting => "DELETING",
+                Self::DeleteFailed => "DELETE_FAILED",
+                Self::Unusable => "UNUSABLE",
+                Self::ActiveRotating => "ACTIVE_ROTATING",
+                Self::Deleted => "DELETED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "ACTIVE" => Some(Self::Active),
+                "KEY_ISSUE" => Some(Self::KeyIssue),
+                "DELETING" => Some(Self::Deleting),
+                "DELETE_FAILED" => Some(Self::DeleteFailed),
+                "UNUSABLE" => Some(Self::Unusable),
+                "ACTIVE_ROTATING" => Some(Self::ActiveRotating),
+                "DELETED" => Some(Self::Deleted),
+                _ => None,
+            }
+        }
+    }
+    /// States of NotebookLM.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum NotebookLmState {
+        /// The NotebookLM state is unknown.
+        Unspecified = 0,
+        /// The NotebookLM is not ready.
+        NotebookLmNotReady = 1,
+        /// The NotebookLM is ready to be used.
+        NotebookLmReady = 2,
+        /// The NotebookLM is not enabled.
+        NotebookLmNotEnabled = 3,
+    }
+    impl NotebookLmState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "NOTEBOOK_LM_STATE_UNSPECIFIED",
+                Self::NotebookLmNotReady => "NOTEBOOK_LM_NOT_READY",
+                Self::NotebookLmReady => "NOTEBOOK_LM_READY",
+                Self::NotebookLmNotEnabled => "NOTEBOOK_LM_NOT_ENABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "NOTEBOOK_LM_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NOTEBOOK_LM_NOT_READY" => Some(Self::NotebookLmNotReady),
+                "NOTEBOOK_LM_READY" => Some(Self::NotebookLmReady),
+                "NOTEBOOK_LM_NOT_ENABLED" => Some(Self::NotebookLmNotEnabled),
+                _ => None,
+            }
+        }
+    }
+}
+/// Metadata related to the progress of the
+/// [CmekConfigService.UpdateCmekConfig][google.cloud.discoveryengine.v1.CmekConfigService.UpdateCmekConfig]
+/// operation. This will be returned by the google.longrunning.Operation.metadata
+/// field.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct UpdateCmekConfigMetadata {
+    /// Operation create time.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Operation last update time. If the operation is done, this is also the
+    /// finish time.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for
+/// [CmekConfigService.ListCmekConfigs][google.cloud.discoveryengine.v1.CmekConfigService.ListCmekConfigs]
+/// method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListCmekConfigsRequest {
+    /// Required. The parent location resource name, such as
+    /// `projects/{project}/locations/{location}`.
+    ///
+    /// If the caller does not have permission to list
+    /// [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig]s under this
+    /// location, regardless of whether or not a CmekConfig exists, a
+    /// PERMISSION_DENIED error is returned.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [CmekConfigService.ListCmekConfigs][google.cloud.discoveryengine.v1.CmekConfigService.ListCmekConfigs]
+/// method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListCmekConfigsResponse {
+    /// All the customer's
+    /// [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig]s.
+    #[prost(message, repeated, tag = "1")]
+    pub cmek_configs: ::prost::alloc::vec::Vec<CmekConfig>,
+}
+/// Request message for
+/// [CmekConfigService.DeleteCmekConfig][google.cloud.discoveryengine.v1.CmekConfigService.DeleteCmekConfig]
+/// method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteCmekConfigRequest {
+    /// Required. The resource name of the
+    /// [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig] to delete, such as
+    /// `projects/{project}/locations/{location}/cmekConfigs/{cmek_config}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Metadata related to the progress of the
+/// [CmekConfigService.DeleteCmekConfig][google.cloud.discoveryengine.v1.CmekConfigService.DeleteCmekConfig]
+/// operation. This will be returned by the google.longrunning.Operation.metadata
+/// field.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct DeleteCmekConfigMetadata {
+    /// Operation create time.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Operation last update time. If the operation is done, this is also the
+    /// finish time.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Generated client implementations.
+pub mod cmek_config_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service for managing CMEK related tasks
+    #[derive(Debug, Clone)]
+    pub struct CmekConfigServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl CmekConfigServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> CmekConfigServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> CmekConfigServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            CmekConfigServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Provisions a CMEK key for use in a location of a customer's project.
+        /// This method will also conduct location validation on the provided
+        /// cmekConfig to make sure the key is valid and can be used in the
+        /// selected location.
+        pub async fn update_cmek_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateCmekConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1.CmekConfigService/UpdateCmekConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1.CmekConfigService",
+                        "UpdateCmekConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig].
+        pub async fn get_cmek_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetCmekConfigRequest>,
+        ) -> std::result::Result<tonic::Response<super::CmekConfig>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1.CmekConfigService/GetCmekConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1.CmekConfigService",
+                        "GetCmekConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all the [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig]s
+        /// with the project.
+        pub async fn list_cmek_configs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListCmekConfigsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListCmekConfigsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1.CmekConfigService/ListCmekConfigs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1.CmekConfigService",
+                        "ListCmekConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// De-provisions a CmekConfig.
+        pub async fn delete_cmek_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteCmekConfigRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1.CmekConfigService/DeleteCmekConfig",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1.CmekConfigService",
+                        "DeleteCmekConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// A floating point interval.
@@ -995,6 +1570,56 @@ pub struct DoubleList {
     #[prost(double, repeated, tag = "1")]
     pub values: ::prost::alloc::vec::Vec<f64>,
 }
+/// Principal identifier of a user or a group.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Principal {
+    /// Union field principal. Principal can be a user or a group.
+    #[prost(oneof = "principal::Principal", tags = "1, 2, 3")]
+    pub principal: ::core::option::Option<principal::Principal>,
+}
+/// Nested message and enum types in `Principal`.
+pub mod principal {
+    /// Union field principal. Principal can be a user or a group.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Principal {
+        /// User identifier.
+        /// For Google Workspace user account, user_id should be the google workspace
+        /// user email.
+        /// For non-google identity provider user account, user_id is the mapped user
+        /// identifier configured during the workforcepool config.
+        #[prost(string, tag = "1")]
+        UserId(::prost::alloc::string::String),
+        /// Group identifier.
+        /// For Google Workspace user account, group_id should be the google
+        /// workspace group email.
+        /// For non-google identity provider user account, group_id is the mapped
+        /// group identifier configured during the workforcepool config.
+        #[prost(string, tag = "2")]
+        GroupId(::prost::alloc::string::String),
+        /// For 3P application identities which are not present in the customer
+        /// identity provider.
+        #[prost(string, tag = "3")]
+        ExternalEntityId(::prost::alloc::string::String),
+    }
+}
+/// Config to data store for `HEALTHCARE_FHIR` vertical.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct HealthcareFhirConfig {
+    /// Whether to enable configurable schema for `HEALTHCARE_FHIR` vertical.
+    ///
+    /// If set to `true`, the predefined healthcare fhir schema can be extended
+    /// for more customized searching and filtering.
+    #[prost(bool, tag = "1")]
+    pub enable_configurable_schema: bool,
+    /// Whether to enable static indexing for `HEALTHCARE_FHIR` batch
+    /// ingestion.
+    ///
+    /// If set to `true`, the batch ingestion will be processed in a static
+    /// indexing mode which is slower but more capable of handling larger
+    /// volume.
+    #[prost(bool, tag = "2")]
+    pub enable_static_indexing_for_batch_ingestion: bool,
+}
 /// Promotion proto includes uri and other helping information to display the
 /// promotion.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1007,6 +1632,11 @@ pub struct SearchLinkPromotion {
     /// site search. For other verticals, this is optional.
     #[prost(string, tag = "2")]
     pub uri: ::prost::alloc::string::String,
+    /// Optional. The [Document][google.cloud.discoveryengine.v1.Document] the user
+    /// wants to promote. For site search, leave unset and only populate uri. Can
+    /// be set along with uri.
+    #[prost(string, tag = "6")]
+    pub document: ::prost::alloc::string::String,
     /// Optional. The promotion thumbnail image url.
     #[prost(string, tag = "3")]
     pub image_uri: ::prost::alloc::string::String,
@@ -1322,9 +1952,8 @@ pub struct Document {
     /// The identifier of the schema located in the same data store.
     #[prost(string, tag = "3")]
     pub schema_id: ::prost::alloc::string::String,
-    /// The unstructured data linked to this document. Content must be set if this
-    /// document is under a
-    /// `CONTENT_REQUIRED` data store.
+    /// The unstructured data linked to this document. Content can only be set
+    /// and must be set if this document is under a `CONTENT_REQUIRED` data store.
     #[prost(message, optional, tag = "10")]
     pub content: ::core::option::Option<document::Content>,
     /// The identifier of the parent document. Currently supports at most two level
@@ -1338,6 +1967,9 @@ pub struct Document {
     /// It contains derived data that are not in the original input document.
     #[prost(message, optional, tag = "6")]
     pub derived_struct_data: ::core::option::Option<::prost_types::Struct>,
+    /// Access control information for the document.
+    #[prost(message, optional, tag = "11")]
+    pub acl_info: ::core::option::Option<document::AclInfo>,
     /// Output only. The last time the document was indexed. If this field is set,
     /// the document could be returned in search results.
     ///
@@ -1370,18 +2002,34 @@ pub mod document {
         ///
         /// * `application/pdf` (PDF, only native PDFs are supported for now)
         /// * `text/html` (HTML)
+        /// * `text/plain` (TXT)
+        /// * `application/xml` or `text/xml` (XML)
+        /// * `application/json` (JSON)
         /// * `application/vnd.openxmlformats-officedocument.wordprocessingml.document` (DOCX)
         /// * `application/vnd.openxmlformats-officedocument.presentationml.presentation` (PPTX)
-        /// * `text/plain` (TXT)
+        /// * `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`
+        /// (XLSX)
+        /// * `application/vnd.ms-excel.sheet.macroenabled.12` (XLSM)
+        ///
+        /// The following types are supported only if layout parser is enabled in the
+        /// data store:
+        ///
+        /// * `image/bmp` (BMP)
+        /// * `image/gif` (GIF)
+        /// * `image/jpeg` (JPEG)
+        /// * `image/png` (PNG)
+        /// * `image/tiff` (TIFF)
         ///
         /// See <https://www.iana.org/assignments/media-types/media-types.xhtml.>
         #[prost(string, tag = "1")]
         pub mime_type: ::prost::alloc::string::String,
+        /// The content of the unstructured document.
         #[prost(oneof = "content::Content", tags = "2, 3")]
         pub content: ::core::option::Option<content::Content>,
     }
     /// Nested message and enum types in `Content`.
     pub mod content {
+        /// The content of the unstructured document.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Content {
             /// The content represented as a stream of bytes. The maximum length is
@@ -1399,6 +2047,84 @@ pub mod document {
             /// is 2.5 MB for text-based formats, 200 MB for other formats.
             #[prost(string, tag = "3")]
             Uri(::prost::alloc::string::String),
+        }
+    }
+    /// ACL Information of the Document.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AclInfo {
+        /// Readers of the document.
+        #[prost(message, repeated, tag = "1")]
+        pub readers: ::prost::alloc::vec::Vec<acl_info::AccessRestriction>,
+    }
+    /// Nested message and enum types in `AclInfo`.
+    pub mod acl_info {
+        /// AclRestriction to model complex inheritance restrictions.
+        ///
+        /// Example: Modeling a "Both Permit" inheritance, where to access a
+        /// child document, user needs to have access to parent document.
+        ///
+        /// Document Hierarchy - Space_S --> Page_P.
+        ///
+        /// Readers:
+        ///    Space_S: group_1, user_1
+        ///    Page_P: group_2, group_3, user_2
+        ///
+        /// Space_S ACL Restriction -
+        /// {
+        ///    "acl_info": {
+        ///      "readers": [
+        ///        {
+        ///          "principals": [
+        ///            {
+        ///              "group_id": "group_1"
+        ///            },
+        ///            {
+        ///              "user_id": "user_1"
+        ///            }
+        ///          ]
+        ///        }
+        ///      ]
+        ///    }
+        /// }
+        ///
+        /// Page_P ACL Restriction.
+        /// {
+        ///    "acl_info": {
+        ///      "readers": [
+        ///        {
+        ///          "principals": [
+        ///            {
+        ///              "group_id": "group_2"
+        ///            },
+        ///            {
+        ///              "group_id": "group_3"
+        ///            },
+        ///            {
+        ///              "user_id": "user_2"
+        ///            }
+        ///          ],
+        ///        },
+        ///        {
+        ///          "principals": [
+        ///            {
+        ///              "group_id": "group_1"
+        ///            },
+        ///            {
+        ///              "user_id": "user_1"
+        ///            }
+        ///          ],
+        ///        }
+        ///      ]
+        ///    }
+        /// }
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct AccessRestriction {
+            /// List of principals.
+            #[prost(message, repeated, tag = "1")]
+            pub principals: ::prost::alloc::vec::Vec<super::super::Principal>,
+            /// All users within the Identity Provider.
+            #[prost(bool, tag = "2")]
+            pub idp_wide: bool,
         }
     }
     /// Index status of the document.
@@ -3502,7 +4228,7 @@ pub struct Condition {
     /// Optional. Query regex to match the whole search query.
     /// Cannot be set when
     /// [Condition.query_terms][google.cloud.discoveryengine.v1.Condition.query_terms]
-    /// is set. This is currently supporting promotion use case.
+    /// is set. Only supported for Basic Site Search promotion serving controls.
     #[prost(string, tag = "4")]
     pub query_regex: ::prost::alloc::string::String,
 }
@@ -3853,8 +4579,6 @@ pub mod control {
         #[prost(message, tag = "10")]
         SynonymsAction(SynonymsAction),
         /// Promote certain links based on predefined trigger queries.
-        ///
-        /// This now only supports basic site search.
         #[prost(message, tag = "15")]
         PromoteAction(PromoteAction),
     }
@@ -4505,6 +5229,12 @@ pub mod search_request {
         /// [Boosting](<https://cloud.google.com/generative-ai-app-builder/docs/boost-search-results>)
         #[prost(message, optional, tag = "6")]
         pub boost_spec: ::core::option::Option<BoostSpec>,
+        /// Optional. Custom search operators which if specified will be used to
+        /// filter results from workspace data stores. For more information on custom
+        /// search operators, see
+        /// [SearchOperators](<https://support.google.com/cloudsearch/answer/6172299>).
+        #[prost(string, tag = "7")]
+        pub custom_search_operators: ::prost::alloc::string::String,
     }
     /// A facet specification to perform faceted search.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -7087,6 +7817,8 @@ pub mod answer_query_request {
                 JailBreakingQuery = 3,
                 /// Non-answer-seeking query classification type, for no clear intent.
                 NonAnswerSeekingQueryV2 = 4,
+                /// User defined query classification type.
+                UserDefinedClassificationQuery = 5,
             }
             impl Type {
                 /// String value of the enum field names used in the ProtoBuf definition.
@@ -7100,6 +7832,9 @@ pub mod answer_query_request {
                         Self::NonAnswerSeekingQuery => "NON_ANSWER_SEEKING_QUERY",
                         Self::JailBreakingQuery => "JAIL_BREAKING_QUERY",
                         Self::NonAnswerSeekingQueryV2 => "NON_ANSWER_SEEKING_QUERY_V2",
+                        Self::UserDefinedClassificationQuery => {
+                            "USER_DEFINED_CLASSIFICATION_QUERY"
+                        }
                     }
                 }
                 /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7111,6 +7846,9 @@ pub mod answer_query_request {
                         "JAIL_BREAKING_QUERY" => Some(Self::JailBreakingQuery),
                         "NON_ANSWER_SEEKING_QUERY_V2" => {
                             Some(Self::NonAnswerSeekingQueryV2)
+                        }
+                        "USER_DEFINED_CLASSIFICATION_QUERY" => {
+                            Some(Self::UserDefinedClassificationQuery)
                         }
                         _ => None,
                     }
@@ -8104,8 +8842,40 @@ pub mod document_processing_config {
             pub use_native_text: bool,
         }
         /// The layout parsing configurations for documents.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
-        pub struct LayoutParsingConfig {}
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct LayoutParsingConfig {
+            /// Optional. If true, the LLM based annotation is added to the table
+            /// during parsing.
+            #[prost(bool, tag = "1")]
+            pub enable_table_annotation: bool,
+            /// Optional. If true, the LLM based annotation is added to the image
+            /// during parsing.
+            #[prost(bool, tag = "2")]
+            pub enable_image_annotation: bool,
+            /// Optional. Contains the required structure types to extract from the
+            /// document. Supported values:
+            ///
+            /// * `shareholder-structure`
+            #[prost(string, repeated, tag = "9")]
+            pub structured_content_types: ::prost::alloc::vec::Vec<
+                ::prost::alloc::string::String,
+            >,
+            /// Optional. List of HTML elements to exclude from the parsed content.
+            #[prost(string, repeated, tag = "10")]
+            pub exclude_html_elements: ::prost::alloc::vec::Vec<
+                ::prost::alloc::string::String,
+            >,
+            /// Optional. List of HTML classes to exclude from the parsed content.
+            #[prost(string, repeated, tag = "11")]
+            pub exclude_html_classes: ::prost::alloc::vec::Vec<
+                ::prost::alloc::string::String,
+            >,
+            /// Optional. List of HTML ids to exclude from the parsed content.
+            #[prost(string, repeated, tag = "12")]
+            pub exclude_html_ids: ::prost::alloc::vec::Vec<
+                ::prost::alloc::string::String,
+            >,
+        }
         /// Configs for document processing types.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum TypeDedicatedConfig {
@@ -8158,7 +8928,7 @@ pub mod schema {
 /// DataStore captures global settings and configs at the DataStore level.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataStore {
-    /// Immutable. The full resource name of the data store.
+    /// Immutable. Identifier. The full resource name of the data store.
     /// Format:
     /// `projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}`.
     ///
@@ -8200,9 +8970,41 @@ pub struct DataStore {
     /// Optional. Configuration for advanced site search.
     #[prost(message, optional, tag = "12")]
     pub advanced_site_search_config: ::core::option::Option<AdvancedSiteSearchConfig>,
+    /// Input only. The KMS key to be used to protect this DataStore at creation
+    /// time.
+    ///
+    /// Must be set for requests that need to comply with CMEK Org Policy
+    /// protections.
+    ///
+    /// If this field is set and processed successfully, the DataStore will be
+    /// protected by the KMS key, as indicated in the cmek_config field.
+    #[prost(string, tag = "32")]
+    pub kms_key_name: ::prost::alloc::string::String,
+    /// Output only. CMEK-related information for the DataStore.
+    #[prost(message, optional, tag = "18")]
+    pub cmek_config: ::core::option::Option<CmekConfig>,
     /// Output only. Data size estimation for billing.
     #[prost(message, optional, tag = "23")]
     pub billing_estimation: ::core::option::Option<data_store::BillingEstimation>,
+    /// Immutable. Whether data in the
+    /// [DataStore][google.cloud.discoveryengine.v1.DataStore] has ACL information.
+    /// If set to `true`, the source data must have ACL. ACL will be ingested when
+    /// data is ingested by
+    /// [DocumentService.ImportDocuments][google.cloud.discoveryengine.v1.DocumentService.ImportDocuments]
+    /// methods.
+    ///
+    /// When ACL is enabled for the
+    /// [DataStore][google.cloud.discoveryengine.v1.DataStore],
+    /// [Document][google.cloud.discoveryengine.v1.Document] can't be accessed by
+    /// calling
+    /// [DocumentService.GetDocument][google.cloud.discoveryengine.v1.DocumentService.GetDocument]
+    /// or
+    /// [DocumentService.ListDocuments][google.cloud.discoveryengine.v1.DocumentService.ListDocuments].
+    ///
+    /// Currently ACL is only supported in `GENERIC` industry vertical with
+    /// non-`PUBLIC_WEBSITE` content config.
+    #[prost(bool, tag = "24")]
+    pub acl_enabled: bool,
     /// Config to store data store type configuration for workspace data. This
     /// must be set when
     /// [DataStore.content_config][google.cloud.discoveryengine.v1.DataStore.content_config]
@@ -8232,6 +9034,16 @@ pub struct DataStore {
     /// doc](<https://cloud.google.com/generative-ai-app-builder/docs/provide-schema>).
     #[prost(message, optional, tag = "28")]
     pub starting_schema: ::core::option::Option<Schema>,
+    /// Optional. Configuration for `HEALTHCARE_FHIR` vertical.
+    #[prost(message, optional, tag = "29")]
+    pub healthcare_fhir_config: ::core::option::Option<HealthcareFhirConfig>,
+    /// Immutable. The fully qualified resource name of the associated
+    /// [IdentityMappingStore][google.cloud.discoveryengine.v1.IdentityMappingStore].
+    /// This field can only be set for acl_enabled DataStores with `THIRD_PARTY` or
+    /// `GSUITE` IdP. Format:
+    /// `projects/{project}/locations/{location}/identityMappingStores/{identity_mapping_store}`.
+    #[prost(string, tag = "31")]
+    pub identity_mapping_store: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `DataStore`.
 pub mod data_store {
@@ -8457,6 +9269,26 @@ pub struct CreateDataStoreRequest {
     /// This flag cannot be specified if `data_store.starting_schema` is specified.
     #[prost(bool, tag = "7")]
     pub skip_default_schema_creation: bool,
+    /// CMEK options for the DataStore. Setting this field will override the
+    /// default CmekConfig if one is set for the project.
+    #[prost(oneof = "create_data_store_request::CmekOptions", tags = "5, 6")]
+    pub cmek_options: ::core::option::Option<create_data_store_request::CmekOptions>,
+}
+/// Nested message and enum types in `CreateDataStoreRequest`.
+pub mod create_data_store_request {
+    /// CMEK options for the DataStore. Setting this field will override the
+    /// default CmekConfig if one is set for the project.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum CmekOptions {
+        /// Resource name of the CmekConfig to use for protecting this DataStore.
+        #[prost(string, tag = "5")]
+        CmekConfigName(::prost::alloc::string::String),
+        /// DataStore without CMEK protections. If a default CmekConfig is set for
+        /// the project, setting this field will override the default CmekConfig as
+        /// well.
+        #[prost(bool, tag = "6")]
+        DisableCmek(bool),
+    }
 }
 /// Request message for
 /// [DataStoreService.GetDataStore][google.cloud.discoveryengine.v1.DataStoreService.GetDataStore]
@@ -9513,7 +10345,7 @@ pub mod document_service_client {
 /// [Engine][google.cloud.discoveryengine.v1.Engine].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Engine {
-    /// Immutable. The fully qualified resource name of the engine.
+    /// Immutable. Identifier. The fully qualified resource name of the engine.
     ///
     /// This field must be a UTF-8 encoded string with a length limit of 1024
     /// characters.
@@ -9534,7 +10366,7 @@ pub struct Engine {
     /// Output only. Timestamp the Recommendation Engine was last updated.
     #[prost(message, optional, tag = "4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The data stores associated with this engine.
+    /// Optional. The data stores associated with this engine.
     ///
     /// For
     /// [SOLUTION_TYPE_SEARCH][google.cloud.discoveryengine.v1.SolutionType.SOLUTION_TYPE_SEARCH]
@@ -9557,7 +10389,7 @@ pub struct Engine {
     /// Required. The solutions of the engine.
     #[prost(enumeration = "SolutionType", tag = "6")]
     pub solution_type: i32,
-    /// The industry vertical that the engine registers.
+    /// Optional. The industry vertical that the engine registers.
     /// The restriction of the Engine industry vertical is based on
     /// [DataStore][google.cloud.discoveryengine.v1.DataStore]: Vertical on Engine
     /// has to match vertical of the DataStore linked to the engine.
@@ -9571,7 +10403,7 @@ pub struct Engine {
     #[prost(bool, tag = "26")]
     pub disable_analytics: bool,
     /// Additional config specs that defines the behavior of the engine.
-    #[prost(oneof = "engine::EngineConfig", tags = "11, 13")]
+    #[prost(oneof = "engine::EngineConfig", tags = "11, 13, 14")]
     pub engine_config: ::core::option::Option<engine::EngineConfig>,
     /// Engine metadata to monitor the status of the engine.
     #[prost(oneof = "engine::EngineMetadata", tags = "12")]
@@ -9595,6 +10427,175 @@ pub mod engine {
         /// The add-on that this search engine enables.
         #[prost(enumeration = "super::SearchAddOn", repeated, tag = "2")]
         pub search_add_ons: ::prost::alloc::vec::Vec<i32>,
+    }
+    /// Additional config specs for a Media Recommendation engine.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MediaRecommendationEngineConfig {
+        /// Required. The type of engine. e.g., `recommended-for-you`.
+        ///
+        /// This field together with
+        /// [optimization_objective][google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.optimization_objective]
+        /// describe engine metadata to use to control engine training and serving.
+        ///
+        /// Currently supported values: `recommended-for-you`, `others-you-may-like`,
+        /// `more-like-this`, `most-popular-items`.
+        #[prost(string, tag = "1")]
+        pub r#type: ::prost::alloc::string::String,
+        /// The optimization objective. e.g., `cvr`.
+        ///
+        /// This field together with
+        /// [optimization_objective][google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.type]
+        /// describe engine metadata to use to control engine training and serving.
+        ///
+        /// Currently supported
+        /// values: `ctr`, `cvr`.
+        ///
+        ///   If not specified, we choose default based on engine type.
+        /// Default depends on type of recommendation:
+        ///
+        /// `recommended-for-you` => `ctr`
+        ///
+        /// `others-you-may-like` => `ctr`
+        #[prost(string, tag = "2")]
+        pub optimization_objective: ::prost::alloc::string::String,
+        /// Name and value of the custom threshold for cvr optimization_objective.
+        /// For target_field `watch-time`, target_field_value must be an integer
+        /// value indicating the media progress time in seconds between (0, 86400]
+        /// (excludes 0, includes 86400) (e.g., 90).
+        /// For target_field `watch-percentage`, the target_field_value must be a
+        /// valid float value between (0, 1.0] (excludes 0, includes 1.0) (e.g.,
+        /// 0.5).
+        #[prost(message, optional, tag = "3")]
+        pub optimization_objective_config: ::core::option::Option<
+            media_recommendation_engine_config::OptimizationObjectiveConfig,
+        >,
+        /// The training state that the engine is in (e.g.
+        /// `TRAINING` or `PAUSED`).
+        ///
+        /// Since part of the cost of running the service
+        /// is frequency of training - this can be used to determine when to train
+        /// engine in order to control cost. If not specified: the default value for
+        /// `CreateEngine` method is `TRAINING`. The default value for
+        /// `UpdateEngine` method is to keep the state the same as before.
+        #[prost(
+            enumeration = "media_recommendation_engine_config::TrainingState",
+            tag = "4"
+        )]
+        pub training_state: i32,
+        /// Optional. Additional engine features config.
+        #[prost(message, optional, tag = "5")]
+        pub engine_features_config: ::core::option::Option<
+            media_recommendation_engine_config::EngineFeaturesConfig,
+        >,
+    }
+    /// Nested message and enum types in `MediaRecommendationEngineConfig`.
+    pub mod media_recommendation_engine_config {
+        /// Custom threshold for `cvr` optimization_objective.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct OptimizationObjectiveConfig {
+            /// Required. The name of the field to target. Currently supported
+            /// values: `watch-percentage`, `watch-time`.
+            #[prost(string, tag = "1")]
+            pub target_field: ::prost::alloc::string::String,
+            /// Required. The threshold to be applied to the target (e.g., 0.5).
+            #[prost(float, tag = "2")]
+            pub target_field_value_float: f32,
+        }
+        /// More feature configs of the selected engine type.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct EngineFeaturesConfig {
+            /// Feature related configurations applied to a specific type of meida
+            /// recommendation engines.
+            #[prost(
+                oneof = "engine_features_config::TypeDedicatedConfig",
+                tags = "1, 2"
+            )]
+            pub type_dedicated_config: ::core::option::Option<
+                engine_features_config::TypeDedicatedConfig,
+            >,
+        }
+        /// Nested message and enum types in `EngineFeaturesConfig`.
+        pub mod engine_features_config {
+            /// Feature related configurations applied to a specific type of meida
+            /// recommendation engines.
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum TypeDedicatedConfig {
+                /// Recommended for you engine feature config.
+                #[prost(message, tag = "1")]
+                RecommendedForYouConfig(super::RecommendedForYouFeatureConfig),
+                /// Most popular engine feature config.
+                #[prost(message, tag = "2")]
+                MostPopularConfig(super::MostPopularFeatureConfig),
+            }
+        }
+        /// Additional feature configurations for creating a `recommended-for-you`
+        /// engine.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct RecommendedForYouFeatureConfig {
+            /// The type of event with which the engine is queried at prediction time.
+            /// If set to `generic`, only `view-item`, `media-play`,and
+            /// `media-complete` will be used as `context-event` in engine training. If
+            /// set to `view-home-page`, `view-home-page` will also be used as
+            /// `context-events` in addition to `view-item`, `media-play`, and
+            /// `media-complete`. Currently supported for the `recommended-for-you`
+            /// engine. Currently supported values: `view-home-page`, `generic`.
+            #[prost(string, tag = "1")]
+            pub context_event_type: ::prost::alloc::string::String,
+        }
+        /// Feature configurations that are required for creating a Most Popular
+        /// engine.
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct MostPopularFeatureConfig {
+            /// The time window of which the engine is queried at training and
+            /// prediction time. Positive integers only. The value translates to the
+            /// last X days of events. Currently required for the `most-popular-items`
+            /// engine.
+            #[prost(int64, tag = "1")]
+            pub time_window_days: i64,
+        }
+        /// The training state of the engine.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum TrainingState {
+            /// Unspecified training state.
+            Unspecified = 0,
+            /// The engine training is paused.
+            Paused = 1,
+            /// The engine is training.
+            Training = 2,
+        }
+        impl TrainingState {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "TRAINING_STATE_UNSPECIFIED",
+                    Self::Paused => "PAUSED",
+                    Self::Training => "TRAINING",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TRAINING_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "PAUSED" => Some(Self::Paused),
+                    "TRAINING" => Some(Self::Training),
+                    _ => None,
+                }
+            }
+        }
     }
     /// Configurations for a Chat Engine.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -9712,6 +10713,15 @@ pub mod engine {
         /// [SOLUTION_TYPE_SEARCH][google.cloud.discoveryengine.v1.SolutionType.SOLUTION_TYPE_SEARCH].
         #[prost(message, tag = "13")]
         SearchEngineConfig(SearchEngineConfig),
+        /// Configurations for the Media Engine. Only applicable on the data
+        /// stores with
+        /// [solution_type][google.cloud.discoveryengine.v1.Engine.solution_type]
+        /// [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
+        /// and
+        /// [IndustryVertical.MEDIA][google.cloud.discoveryengine.v1.IndustryVertical.MEDIA]
+        /// vertical.
+        #[prost(message, tag = "14")]
+        MediaRecommendationEngineConfig(MediaRecommendationEngineConfig),
     }
     /// Engine metadata to monitor the status of the engine.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -10135,6 +11145,15 @@ pub struct FactChunk {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// The URI of the source.
+    #[prost(string, tag = "5")]
+    pub uri: ::prost::alloc::string::String,
+    /// The title of the source.
+    #[prost(string, tag = "6")]
+    pub title: ::prost::alloc::string::String,
+    /// The domain of the source.
+    #[prost(string, tag = "7")]
+    pub domain: ::prost::alloc::string::String,
 }
 /// Base structured datatype containing multi-part content of a message.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -10694,6 +11713,9 @@ pub struct CheckGroundingSpec {
     /// threshold will default to 0.6.
     #[prost(double, optional, tag = "1")]
     pub citation_threshold: ::core::option::Option<f64>,
+    /// The control flag that enables claim-level grounding score in the response.
+    #[prost(bool, optional, tag = "4")]
+    pub enable_claim_level_score: ::core::option::Option<bool>,
 }
 /// Request message for
 /// [GroundedGenerationService.CheckGrounding][google.cloud.discoveryengine.v1.GroundedGenerationService.CheckGrounding]
@@ -10810,6 +11832,11 @@ pub mod check_grounding_response {
         /// should not be returned.
         #[prost(bool, optional, tag = "6")]
         pub grounding_check_required: ::core::option::Option<bool>,
+        /// Confidence score for the claim in the answer candidate, in the range of
+        /// \[0, 1\]. This is set only when
+        /// `CheckGroundingRequest.grounding_spec.enable_claim_level_score` is true.
+        #[prost(double, optional, tag = "7")]
+        pub score: ::core::option::Option<f64>,
     }
 }
 /// Generated client implementations.
@@ -10996,6 +12023,633 @@ pub mod grounded_generation_service_client {
                     GrpcMethod::new(
                         "google.cloud.discoveryengine.v1.GroundedGenerationService",
                         "CheckGrounding",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Identity Mapping Store which contains Identity Mapping Entries.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IdentityMappingStore {
+    /// Immutable. The full resource name of the identity mapping store.
+    /// Format:
+    /// `projects/{project}/locations/{location}/identityMappingStores/{identity_mapping_store}`.
+    /// This field must be a UTF-8 encoded string with a length limit of 1024
+    /// characters.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Input only. The KMS key to be used to protect this Identity Mapping Store
+    /// at creation time.
+    ///
+    /// Must be set for requests that need to comply with CMEK Org Policy
+    /// protections.
+    ///
+    /// If this field is set and processed successfully, the Identity Mapping Store
+    /// will be protected by the KMS key, as indicated in the cmek_config field.
+    #[prost(string, tag = "3")]
+    pub kms_key_name: ::prost::alloc::string::String,
+    /// Output only. CMEK-related information for the Identity Mapping Store.
+    #[prost(message, optional, tag = "4")]
+    pub cmek_config: ::core::option::Option<CmekConfig>,
+}
+/// Identity Mapping Entry that maps an external identity to an internal
+/// identity.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IdentityMappingEntry {
+    /// Required. Identity outside the customer identity provider.
+    /// The length limit of external identity will be of 100 characters.
+    #[prost(string, tag = "1")]
+    pub external_identity: ::prost::alloc::string::String,
+    /// Union field identity_provider_id. Identity Provider id can be a user or a
+    /// group.
+    #[prost(oneof = "identity_mapping_entry::IdentityProviderId", tags = "2, 3")]
+    pub identity_provider_id: ::core::option::Option<
+        identity_mapping_entry::IdentityProviderId,
+    >,
+}
+/// Nested message and enum types in `IdentityMappingEntry`.
+pub mod identity_mapping_entry {
+    /// Union field identity_provider_id. Identity Provider id can be a user or a
+    /// group.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum IdentityProviderId {
+        /// User identifier.
+        /// For Google Workspace user account, user_id should be the google workspace
+        /// user email.
+        /// For non-google identity provider, user_id is the mapped user identifier
+        /// configured during the workforcepool config.
+        #[prost(string, tag = "2")]
+        UserId(::prost::alloc::string::String),
+        /// Group identifier.
+        /// For Google Workspace user account, group_id should be the google
+        /// workspace group email.
+        /// For non-google identity provider, group_id is the mapped group identifier
+        /// configured during the workforcepool config.
+        #[prost(string, tag = "3")]
+        GroupId(::prost::alloc::string::String),
+    }
+}
+/// Request message for
+/// [IdentityMappingStoreService.CreateIdentityMappingStore][google.cloud.discoveryengine.v1.IdentityMappingStoreService.CreateIdentityMappingStore]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateIdentityMappingStoreRequest {
+    /// Required. The parent collection resource name, such as
+    /// `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ID of the Identity Mapping Store to create.
+    ///
+    /// The ID must contain only letters (a-z, A-Z), numbers (0-9), underscores
+    /// (_), and hyphens (-). The maximum length is 63 characters.
+    #[prost(string, tag = "2")]
+    pub identity_mapping_store_id: ::prost::alloc::string::String,
+    /// Required. The Identity Mapping Store to create.
+    #[prost(message, optional, tag = "3")]
+    pub identity_mapping_store: ::core::option::Option<IdentityMappingStore>,
+    /// CMEK options for the Identity Mapping Store. Setting this field will
+    /// override the default CmekConfig if one is set for the project.
+    #[prost(oneof = "create_identity_mapping_store_request::CmekOptions", tags = "5, 6")]
+    pub cmek_options: ::core::option::Option<
+        create_identity_mapping_store_request::CmekOptions,
+    >,
+}
+/// Nested message and enum types in `CreateIdentityMappingStoreRequest`.
+pub mod create_identity_mapping_store_request {
+    /// CMEK options for the Identity Mapping Store. Setting this field will
+    /// override the default CmekConfig if one is set for the project.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum CmekOptions {
+        /// Resource name of the CmekConfig to use for protecting this Identity
+        /// Mapping Store.
+        #[prost(string, tag = "5")]
+        CmekConfigName(::prost::alloc::string::String),
+        /// Identity Mapping Store without CMEK protections. If a default CmekConfig
+        /// is set for the project, setting this field will override the default
+        /// CmekConfig as well.
+        #[prost(bool, tag = "6")]
+        DisableCmek(bool),
+    }
+}
+/// Request message for
+/// [IdentityMappingStoreService.GetIdentityMappingStore][google.cloud.discoveryengine.v1.IdentityMappingStoreService.GetIdentityMappingStore]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetIdentityMappingStoreRequest {
+    /// Required. The name of the Identity Mapping Store to get.
+    /// Format:
+    /// `projects/{project}/locations/{location}/identityMappingStores/{identityMappingStore}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [IdentityMappingStoreService.DeleteIdentityMappingStore][google.cloud.discoveryengine.v1.IdentityMappingStoreService.DeleteIdentityMappingStore]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteIdentityMappingStoreRequest {
+    /// Required. The name of the Identity Mapping Store to delete.
+    /// Format:
+    /// `projects/{project}/locations/{location}/identityMappingStores/{identityMappingStore}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [IdentityMappingStoreService.ImportIdentityMappings][google.cloud.discoveryengine.v1.IdentityMappingStoreService.ImportIdentityMappings]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportIdentityMappingsRequest {
+    /// Required. The name of the Identity Mapping Store to import Identity Mapping
+    /// Entries to. Format:
+    /// `projects/{project}/locations/{location}/identityMappingStores/{identityMappingStore}`
+    #[prost(string, tag = "1")]
+    pub identity_mapping_store: ::prost::alloc::string::String,
+    /// The source of the input.
+    #[prost(oneof = "import_identity_mappings_request::Source", tags = "2")]
+    pub source: ::core::option::Option<import_identity_mappings_request::Source>,
+}
+/// Nested message and enum types in `ImportIdentityMappingsRequest`.
+pub mod import_identity_mappings_request {
+    /// The inline source to import identity mapping entries from.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct InlineSource {
+        /// A maximum of 10000 entries can be imported at one time
+        #[prost(message, repeated, tag = "1")]
+        pub identity_mapping_entries: ::prost::alloc::vec::Vec<
+            super::IdentityMappingEntry,
+        >,
+    }
+    /// The source of the input.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// The inline source to import identity mapping entries from.
+        #[prost(message, tag = "2")]
+        InlineSource(InlineSource),
+    }
+}
+/// Response message for
+/// [IdentityMappingStoreService.ImportIdentityMappings][google.cloud.discoveryengine.v1.IdentityMappingStoreService.ImportIdentityMappings]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImportIdentityMappingsResponse {
+    /// A sample of errors encountered while processing the request.
+    #[prost(message, repeated, tag = "1")]
+    pub error_samples: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
+}
+/// Request message for
+/// [IdentityMappingStoreService.PurgeIdentityMappings][google.cloud.discoveryengine.v1.IdentityMappingStoreService.PurgeIdentityMappings]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PurgeIdentityMappingsRequest {
+    /// Required. The name of the Identity Mapping Store to purge Identity Mapping
+    /// Entries from. Format:
+    /// `projects/{project}/locations/{location}/identityMappingStores/{identityMappingStore}`
+    #[prost(string, tag = "1")]
+    pub identity_mapping_store: ::prost::alloc::string::String,
+    /// Filter matching identity mappings to purge.
+    /// The eligible field for filtering is:
+    /// * `update_time`: in ISO 8601 "zulu" format.
+    /// * `external_id`
+    ///
+    /// Examples:
+    ///
+    /// * Deleting all identity mappings updated in a time range:
+    ///    `update_time > "2012-04-23T18:25:43.511Z" AND update_time <
+    ///    "2012-04-23T18:30:43.511Z"`
+    /// * Deleting all identity mappings for a given external_id:
+    /// `external_id = "id1"`
+    /// * Deleting all identity mappings inside an identity mapping store:
+    ///    `*`
+    ///
+    /// The filtering fields are assumed to have an implicit AND.
+    /// Should not be used with source. An error will be thrown, if both are
+    /// provided.
+    #[prost(string, tag = "3")]
+    pub filter: ::prost::alloc::string::String,
+    /// Actually performs the purge. If `force` is set to false, return the
+    /// expected purge count without deleting any identity mappings. This field is
+    /// only supported for purge with filter. For input source this field is
+    /// ignored and data will be purged regardless of the value of this field.
+    #[prost(bool, optional, tag = "4")]
+    pub force: ::core::option::Option<bool>,
+    /// The source of the input.
+    #[prost(oneof = "purge_identity_mappings_request::Source", tags = "2")]
+    pub source: ::core::option::Option<purge_identity_mappings_request::Source>,
+}
+/// Nested message and enum types in `PurgeIdentityMappingsRequest`.
+pub mod purge_identity_mappings_request {
+    /// The inline source to purge identity mapping entries from.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct InlineSource {
+        /// A maximum of 10000 entries can be purged at one time
+        #[prost(message, repeated, tag = "1")]
+        pub identity_mapping_entries: ::prost::alloc::vec::Vec<
+            super::IdentityMappingEntry,
+        >,
+    }
+    /// The source of the input.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// The inline source to purge identity mapping entries from.
+        #[prost(message, tag = "2")]
+        InlineSource(InlineSource),
+    }
+}
+/// Request message for
+/// [IdentityMappingStoreService.ListIdentityMappings][google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappings]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListIdentityMappingsRequest {
+    /// Required. The name of the Identity Mapping Store to list Identity Mapping
+    /// Entries in. Format:
+    /// `projects/{project}/locations/{location}/identityMappingStores/{identityMappingStore}`
+    #[prost(string, tag = "1")]
+    pub identity_mapping_store: ::prost::alloc::string::String,
+    /// Maximum number of IdentityMappings to return. If unspecified, defaults
+    /// to 2000. The maximum allowed value is 10000. Values above 10000 will be
+    /// coerced to 10000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListIdentityMappings` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `ListIdentityMappings` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [IdentityMappingStoreService.ListIdentityMappings][google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappings]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListIdentityMappingsResponse {
+    /// The Identity Mapping Entries.
+    #[prost(message, repeated, tag = "1")]
+    pub identity_mapping_entries: ::prost::alloc::vec::Vec<IdentityMappingEntry>,
+    /// A token that can be sent as `page_token` to retrieve the next page. If this
+    /// field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [IdentityMappingStoreService.ListIdentityMappingStores][google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappingStores]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListIdentityMappingStoresRequest {
+    /// Required. The parent of the Identity Mapping Stores to list.
+    /// Format:
+    /// `projects/{project}/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Maximum number of IdentityMappingStores to return. If unspecified, defaults
+    /// to 100. The maximum allowed value is 1000. Values above 1000 will be
+    /// coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListIdentityMappingStores` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `ListIdentityMappingStores` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [IdentityMappingStoreService.ListIdentityMappingStores][google.cloud.discoveryengine.v1.IdentityMappingStoreService.ListIdentityMappingStores]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListIdentityMappingStoresResponse {
+    /// The Identity Mapping Stores.
+    #[prost(message, repeated, tag = "1")]
+    pub identity_mapping_stores: ::prost::alloc::vec::Vec<IdentityMappingStore>,
+    /// A token that can be sent as `page_token` to retrieve the next page. If this
+    /// field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// IdentityMappingEntry LongRunningOperation metadata for
+/// [IdentityMappingStoreService.ImportIdentityMappings][google.cloud.discoveryengine.v1.IdentityMappingStoreService.ImportIdentityMappings]
+/// and
+/// [IdentityMappingStoreService.PurgeIdentityMappings][google.cloud.discoveryengine.v1.IdentityMappingStoreService.PurgeIdentityMappings]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct IdentityMappingEntryOperationMetadata {
+    /// The number of IdentityMappingEntries that were successfully processed.
+    #[prost(int64, tag = "1")]
+    pub success_count: i64,
+    /// The number of IdentityMappingEntries that failed to be processed.
+    #[prost(int64, tag = "2")]
+    pub failure_count: i64,
+    /// The total number of IdentityMappingEntries that were processed.
+    #[prost(int64, tag = "3")]
+    pub total_count: i64,
+}
+/// Metadata related to the progress of the
+/// [IdentityMappingStoreService.DeleteIdentityMappingStore][google.cloud.discoveryengine.v1.IdentityMappingStoreService.DeleteIdentityMappingStore]
+/// operation. This will be returned by the google.longrunning.Operation.metadata
+/// field.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct DeleteIdentityMappingStoreMetadata {
+    /// Operation create time.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Operation last update time. If the operation is done, this is also the
+    /// finish time.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Generated client implementations.
+pub mod identity_mapping_store_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service for managing Identity Mapping Stores.
+    #[derive(Debug, Clone)]
+    pub struct IdentityMappingStoreServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl IdentityMappingStoreServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> IdentityMappingStoreServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> IdentityMappingStoreServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            IdentityMappingStoreServiceClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Creates a new Identity Mapping Store.
+        pub async fn create_identity_mapping_store(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateIdentityMappingStoreRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::IdentityMappingStore>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1.IdentityMappingStoreService/CreateIdentityMappingStore",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
+                        "CreateIdentityMappingStore",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets the Identity Mapping Store.
+        pub async fn get_identity_mapping_store(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetIdentityMappingStoreRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::IdentityMappingStore>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1.IdentityMappingStoreService/GetIdentityMappingStore",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
+                        "GetIdentityMappingStore",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes the Identity Mapping Store.
+        pub async fn delete_identity_mapping_store(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteIdentityMappingStoreRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1.IdentityMappingStoreService/DeleteIdentityMappingStore",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
+                        "DeleteIdentityMappingStore",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Imports a list of Identity Mapping Entries to an Identity Mapping Store.
+        pub async fn import_identity_mappings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ImportIdentityMappingsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1.IdentityMappingStoreService/ImportIdentityMappings",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
+                        "ImportIdentityMappings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Purges specified or all Identity Mapping Entries from an Identity Mapping
+        /// Store.
+        pub async fn purge_identity_mappings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PurgeIdentityMappingsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1.IdentityMappingStoreService/PurgeIdentityMappings",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
+                        "PurgeIdentityMappings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists Identity Mappings in an Identity Mapping Store.
+        pub async fn list_identity_mappings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListIdentityMappingsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListIdentityMappingsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1.IdentityMappingStoreService/ListIdentityMappings",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
+                        "ListIdentityMappings",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all Identity Mapping Stores.
+        pub async fn list_identity_mapping_stores(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListIdentityMappingStoresRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListIdentityMappingStoresResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1.IdentityMappingStoreService/ListIdentityMappingStores",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1.IdentityMappingStoreService",
+                        "ListIdentityMappingStores",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -12991,6 +14645,10 @@ pub mod target_site {
         /// 1. target site deleted if unindexing is successful;
         /// 2. state reverts to SUCCEEDED if the unindexing fails.
         Deleting = 4,
+        /// The target site change is pending but cancellable.
+        Cancellable = 5,
+        /// The target site change is cancelled.
+        Cancelled = 6,
     }
     impl IndexingStatus {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -13004,6 +14662,8 @@ pub mod target_site {
                 Self::Failed => "FAILED",
                 Self::Succeeded => "SUCCEEDED",
                 Self::Deleting => "DELETING",
+                Self::Cancellable => "CANCELLABLE",
+                Self::Cancelled => "CANCELLED",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -13014,6 +14674,8 @@ pub mod target_site {
                 "FAILED" => Some(Self::Failed),
                 "SUCCEEDED" => Some(Self::Succeeded),
                 "DELETING" => Some(Self::Deleting),
+                "CANCELLABLE" => Some(Self::Cancellable),
+                "CANCELLED" => Some(Self::Cancelled),
                 _ => None,
             }
         }
@@ -14553,6 +16215,379 @@ pub mod user_event_service_client {
                     GrpcMethod::new(
                         "google.cloud.discoveryengine.v1.UserEventService",
                         "ImportUserEvents",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// User License information assigned by the admin.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UserLicense {
+    /// Required. Immutable. The user principal of the User, could be email address
+    /// or other prinical identifier. This field is immutable. Admin assign
+    /// licenses based on the user principal.
+    #[prost(string, tag = "1")]
+    pub user_principal: ::prost::alloc::string::String,
+    /// Optional. The user profile.
+    /// We user user full name(First name + Last name) as user profile.
+    #[prost(string, tag = "3")]
+    pub user_profile: ::prost::alloc::string::String,
+    /// Output only. License assignment state of the user.
+    /// If the user is assigned with a license config, the user loggin will be
+    /// assigned with the license;
+    /// If the user's license assignment state is unassigned or unspecified, no
+    /// license config will be associated to the user;
+    #[prost(enumeration = "user_license::LicenseAssignmentState", tag = "4")]
+    pub license_assignment_state: i32,
+    /// Optional. The full resource name of the Subscription(LicenseConfig)
+    /// assigned to the user.
+    #[prost(string, tag = "5")]
+    pub license_config: ::prost::alloc::string::String,
+    /// Output only. User created timestamp.
+    #[prost(message, optional, tag = "6")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. User update timestamp.
+    #[prost(message, optional, tag = "7")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. User last logged in time.
+    /// If the user has not logged in yet, this field will be empty.
+    #[prost(message, optional, tag = "8")]
+    pub last_login_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `UserLicense`.
+pub mod user_license {
+    /// License assignment state enumeration.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum LicenseAssignmentState {
+        /// Default value.
+        Unspecified = 0,
+        /// License assigned to the user.
+        Assigned = 1,
+        /// No license assigned to the user.
+        /// Deprecated, translated to NO_LICENSE.
+        Unassigned = 2,
+        /// No license assigned to the user.
+        NoLicense = 3,
+        /// User attempted to login but no license assigned to the user.
+        /// This state is only used for no user first time login attempt but cannot
+        /// get license assigned.
+        /// Users already logged in but cannot get license assigned will be assigned
+        /// NO_LICENSE state(License could be unassigned by admin).
+        NoLicenseAttemptedLogin = 4,
+    }
+    impl LicenseAssignmentState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "LICENSE_ASSIGNMENT_STATE_UNSPECIFIED",
+                Self::Assigned => "ASSIGNED",
+                Self::Unassigned => "UNASSIGNED",
+                Self::NoLicense => "NO_LICENSE",
+                Self::NoLicenseAttemptedLogin => "NO_LICENSE_ATTEMPTED_LOGIN",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LICENSE_ASSIGNMENT_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ASSIGNED" => Some(Self::Assigned),
+                "UNASSIGNED" => Some(Self::Unassigned),
+                "NO_LICENSE" => Some(Self::NoLicense),
+                "NO_LICENSE_ATTEMPTED_LOGIN" => Some(Self::NoLicenseAttemptedLogin),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request message for
+/// [UserLicenseService.ListUserLicenses][google.cloud.discoveryengine.v1.UserLicenseService.ListUserLicenses].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListUserLicensesRequest {
+    /// Required. The parent [UserStore][] resource name, format:
+    /// `projects/{project}/locations/{location}/userStores/{user_store_id}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Requested page size. Server may return fewer items than
+    /// requested. If unspecified, defaults to 10. The maximum value is 50; values
+    /// above 50 will be coerced to 50.
+    ///
+    /// If this field is negative, an INVALID_ARGUMENT error is returned.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListUserLicenses` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListUserLicenses`
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter for the list request.
+    ///
+    /// Supported fields:
+    ///
+    /// * `license_assignment_state`
+    ///
+    /// Examples:
+    ///
+    /// * `license_assignment_state = ASSIGNED` to list assigned user licenses.
+    /// * `license_assignment_state = NO_LICENSE` to list not licensed users.
+    /// * `license_assignment_state = NO_LICENSE_ATTEMPTED_LOGIN` to list users
+    /// who attempted login but no license assigned.
+    /// * `license_assignment_state != NO_LICENSE_ATTEMPTED_LOGIN` to filter
+    /// out users who attempted login but no license assigned.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Response message for
+/// [UserLicenseService.ListUserLicenses][google.cloud.discoveryengine.v1.UserLicenseService.ListUserLicenses].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListUserLicensesResponse {
+    /// All the customer's
+    /// [UserLicense][google.cloud.discoveryengine.v1.UserLicense]s.
+    #[prost(message, repeated, tag = "1")]
+    pub user_licenses: ::prost::alloc::vec::Vec<UserLicense>,
+    /// A token, which can be sent as `page_token` to retrieve the next page. If
+    /// this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for
+/// [UserLicenseService.BatchUpdateUserLicenses][google.cloud.discoveryengine.v1.UserLicenseService.BatchUpdateUserLicenses]
+/// method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchUpdateUserLicensesRequest {
+    /// Required. The parent [UserStore][] resource name, format:
+    /// `projects/{project}/locations/{location}/userStores/{user_store_id}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. If true, if user licenses removed associated license config, the
+    /// user license will be deleted. By default which is false, the user license
+    /// will be updated to unassigned state.
+    #[prost(bool, tag = "4")]
+    pub delete_unassigned_user_licenses: bool,
+    /// Required. The source of the input.
+    #[prost(oneof = "batch_update_user_licenses_request::Source", tags = "2")]
+    pub source: ::core::option::Option<batch_update_user_licenses_request::Source>,
+}
+/// Nested message and enum types in `BatchUpdateUserLicensesRequest`.
+pub mod batch_update_user_licenses_request {
+    /// The inline source for the input config for BatchUpdateUserLicenses
+    /// method.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct InlineSource {
+        /// Required. A list of user licenses to update. Each user license
+        /// must have a valid
+        /// [UserLicense.user_principal][google.cloud.discoveryengine.v1.UserLicense.user_principal].
+        #[prost(message, repeated, tag = "1")]
+        pub user_licenses: ::prost::alloc::vec::Vec<super::UserLicense>,
+        /// Optional. The list of fields to update.
+        #[prost(message, optional, tag = "2")]
+        pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    }
+    /// Required. The source of the input.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// The inline source for the input content for document embeddings.
+        #[prost(message, tag = "2")]
+        InlineSource(InlineSource),
+    }
+}
+/// Metadata related to the progress of the
+/// [UserLicenseService.BatchUpdateUserLicenses][google.cloud.discoveryengine.v1.UserLicenseService.BatchUpdateUserLicenses]
+/// operation. This will be returned by the google.longrunning.Operation.metadata
+/// field.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct BatchUpdateUserLicensesMetadata {
+    /// Operation create time.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Operation last update time. If the operation is done, this is also the
+    /// finish time.
+    #[prost(message, optional, tag = "2")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Count of user licenses successfully updated.
+    #[prost(int64, tag = "3")]
+    pub success_count: i64,
+    /// Count of user licenses that failed to be updated.
+    #[prost(int64, tag = "4")]
+    pub failure_count: i64,
+}
+/// Response message for
+/// [UserLicenseService.BatchUpdateUserLicenses][google.cloud.discoveryengine.v1.UserLicenseService.BatchUpdateUserLicenses]
+/// method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchUpdateUserLicensesResponse {
+    /// UserLicenses successfully updated.
+    #[prost(message, repeated, tag = "1")]
+    pub user_licenses: ::prost::alloc::vec::Vec<UserLicense>,
+    /// A sample of errors encountered while processing the request.
+    #[prost(message, repeated, tag = "2")]
+    pub error_samples: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
+}
+/// Generated client implementations.
+pub mod user_license_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service for managing User Licenses.
+    #[derive(Debug, Clone)]
+    pub struct UserLicenseServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl UserLicenseServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> UserLicenseServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> UserLicenseServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            UserLicenseServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Lists the User Licenses.
+        pub async fn list_user_licenses(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListUserLicensesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListUserLicensesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1.UserLicenseService/ListUserLicenses",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1.UserLicenseService",
+                        "ListUserLicenses",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the User License.
+        /// This method is used for batch assign/unassign licenses to users.
+        pub async fn batch_update_user_licenses(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchUpdateUserLicensesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1.UserLicenseService/BatchUpdateUserLicenses",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1.UserLicenseService",
+                        "BatchUpdateUserLicenses",
                     ),
                 );
             self.inner.unary(req, path, codec).await

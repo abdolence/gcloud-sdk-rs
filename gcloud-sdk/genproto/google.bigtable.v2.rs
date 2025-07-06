@@ -1268,6 +1268,24 @@ pub mod partial_result_set {
         ProtoRowsBatch(super::ProtoRowsBatch),
     }
 }
+/// Parameters on mutations where clients want to ensure idempotency (i.e.
+/// at-most-once semantics). This is currently only needed for certain aggregate
+/// types.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Idempotency {
+    /// Unique token used to identify replays of this mutation.
+    /// Must be at least 8 bytes long.
+    #[prost(bytes = "vec", tag = "1")]
+    pub token: ::prost::alloc::vec::Vec<u8>,
+    /// Client-assigned timestamp when the mutation's first attempt was sent.
+    /// Used to reject mutations that arrive after idempotency protection may
+    /// have expired. May cause spurious rejections if clock skew is too high.
+    ///
+    /// Leave unset or zero to always accept the mutation, at the risk of
+    /// double counting if the protection for previous attempts has expired.
+    #[prost(message, optional, tag = "2")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+}
 /// ReadIterationStats captures information about the iteration of rows or cells
 /// over the course of a read, e.g. how many results were scanned in a read
 /// operation versus the results returned.
@@ -1647,6 +1665,10 @@ pub struct MutateRowRequest {
     /// ones. Must contain at least one entry and at most 100000.
     #[prost(message, repeated, tag = "3")]
     pub mutations: ::prost::alloc::vec::Vec<Mutation>,
+    /// Optional parameter for ensuring a MutateRow request is only applied once.
+    /// Currently applicable only for certain aggregate types.
+    #[prost(message, optional, tag = "8")]
+    pub idempotency: ::core::option::Option<Idempotency>,
 }
 /// Response message for Bigtable.MutateRow.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
