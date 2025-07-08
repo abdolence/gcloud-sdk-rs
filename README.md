@@ -8,7 +8,7 @@
 Async Google Cloud Platform (GCP) gRPC/REST APIs client implementation based on Tonic middleware and Reqwest.
 
 ## Disclaimer
-This is NOT OFFICIAL Google Cloud SDK (and it doesn't exist for Rust at the time this page updated).
+This is NOT OFFICIAL Google Cloud SDK (there is early versions with limited functionality of the official Google Cloud SDK now [here](https://github.com/googleapis/google-cloud-rust)).
 
 # Overview
 This library contains all the code generated from the Google API for gRPC and REST APIs.
