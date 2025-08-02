@@ -1,11 +1,42 @@
-use futures::TryStreamExt;
-use gcloud_sdk::google::cloud::bigquery::storage::v1::append_rows_request::ProtoData;
+use std::io::Cursor;
+use arrow::record_batch::RecordBatch;
+use arrow::ipc::reader::StreamReader;
 use gcloud_sdk::google::cloud::bigquery::storage::v1::big_query_read_client::BigQueryReadClient;
 use gcloud_sdk::google::cloud::bigquery::storage::v1::{
-    DataFormat, ProtoRows, ProtoSchema, CreateReadSessionRequest, ReadSession, ReadRowsRequest
+    DataFormat, CreateReadSessionRequest, ReadSession, ReadRowsRequest, ReadRowsResponse, read_rows_response, read_session
 };
 
 use gcloud_sdk::*;
+
+
+fn read_rows_response_to_record_batch(response: ReadRowsResponse, schema: &Vec<u8>) -> RecordBatch {
+    let mut buffer = Vec::new();
+    // TODO: bubble up the error if we unexpectedly get a record batch with no
+    // schema or not an ArrowSchema.
+    // TODO: why is the schema empty?
+    // let mut schema = match response.schema.unwrap() {
+    //     read_rows_response::Schema::ArrowSchema(value) => value.serialized_schema,
+    //     _ => panic!("unexpectedly got some format other than arrow bytes"),
+    // };
+    buffer.append(&mut schema.clone());
+    // TODO: Bubble up if we unexpectedly get a record batch with no rows.
+    // TODO: This might not actually be unexpected? What happens when there's a
+    // super selective row filter?
+    let mut serialized_record_batch = match response.rows.unwrap() {
+        read_rows_response::Rows::ArrowRecordBatch(value) => {value.serialized_record_batch},
+        _ => panic!("unexpectedly got some format other than arrow bytes"),
+    };
+    buffer.append(&mut serialized_record_batch);
+
+    let cursor = Cursor::new(buffer);
+
+    // TODO: Bubble up if we unexpectedly get a bad record batch.
+    let mut reader = StreamReader::try_new(cursor, None).unwrap();
+
+    // TODO: maybe double-check that there are no recordbatches after this?
+    // There should only be one if the API returned the expected results.
+    reader.next().unwrap().expect("missing recordbatch")
+}
 
 
 #[tokio::main]
@@ -44,13 +75,19 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         ..Default::default()
     };
 
-    let read_session = read_client.get().create_read_session(request).await?;
+    let read_session = read_client.get().create_read_session(request).await?.into_inner();
+    let schema = match read_session.schema.unwrap() {
+        read_session::Schema::ArrowSchema(value) => value.serialized_schema,
+        _ => panic!("unexpectedly got schema type other than arrow")
+    };
 
+    let mut messages_received = 0;
+    let mut rows_received = 0;
     let mut batches = Vec::new();
 
     // TODO: request more than one stream and do this in parallel (with some
     // thread safety added).
-    for stream in read_session.into_inner().streams {
+    for stream in read_session.streams {
         let stream_name = stream.name;
         let read_rows_request = ReadRowsRequest{
             read_stream: stream_name,
@@ -65,20 +102,23 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             let message = messages.message().await?;
             match message {
                 Some(value) => {
-                    batches.push(value);
+                    messages_received += 1;
+                    rows_received += value.row_count;
+                    batches.push(read_rows_response_to_record_batch(value, &schema));
                 },
                 None => {break 'messages;}
             }
         }
     }
 
-    // let response = write_client.get().append_rows(rows_stream).await?;
+    let mut rows_deserialized = 0;
+    for batch in batches {
+        rows_deserialized += batch.num_rows();
+    }
 
-    // let response_stream = response.into_inner();
-
-    // let collected: Vec<AppendRowsResponse> = response_stream.try_collect().await?;
-
-    println!("Response: {:?}", batches.len());
+    println!("Messages received: {:?}", messages_received);
+    println!("Rows received: {:?}", rows_received);
+    println!("Rows deserialized: {:?}", rows_deserialized);
 
     Ok(())
 }
