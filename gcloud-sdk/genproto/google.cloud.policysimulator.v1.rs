@@ -40,7 +40,7 @@ pub struct ExplainedPolicy {
     /// permission for the resource. There might be another policy that overrides
     /// this policy. To determine whether the principal actually has the
     /// permission, use the `access` field in the
-    /// [TroubleshootIamPolicyResponse][IamChecker.TroubleshootIamPolicyResponse].
+    /// [TroubleshootIamPolicyResponse][google.cloud.policytroubleshooter.v3.TroubleshootIamPolicyResponse].
     #[prost(enumeration = "AccessState", tag = "1")]
     pub access: i32,
     /// The full resource name that identifies the resource. For example,
@@ -70,7 +70,7 @@ pub struct ExplainedPolicy {
     #[prost(message, repeated, tag = "4")]
     pub binding_explanations: ::prost::alloc::vec::Vec<BindingExplanation>,
     /// The relevance of this policy to the overall determination in the
-    /// [TroubleshootIamPolicyResponse][IamChecker.TroubleshootIamPolicyResponse].
+    /// [TroubleshootIamPolicyResponse][google.cloud.policytroubleshooter.v3.TroubleshootIamPolicyResponse].
     ///
     /// If the user who created the
     /// [Replay][google.cloud.policysimulator.v1.Replay] does not have
@@ -89,7 +89,7 @@ pub struct BindingExplanation {
     /// permission for the resource. There might be another binding that overrides
     /// this binding. To determine whether the principal actually has the
     /// permission, use the `access` field in the
-    /// [TroubleshootIamPolicyResponse][IamChecker.TroubleshootIamPolicyResponse].
+    /// [TroubleshootIamPolicyResponse][google.cloud.policytroubleshooter.v3.TroubleshootIamPolicyResponse].
     #[prost(enumeration = "AccessState", tag = "1")]
     pub access: i32,
     /// The role that this binding grants. For example,
@@ -345,6 +345,618 @@ impl HeuristicRelevance {
             "NORMAL" => Some(Self::Normal),
             "HIGH" => Some(Self::High),
             _ => None,
+        }
+    }
+}
+/// OrgPolicyViolationsPreview is a resource providing a preview of the
+/// violations that will exist if an OrgPolicy change is made.
+///
+/// The list of violations are modeled as child resources and retrieved via a
+/// [ListOrgPolicyViolations][] API call. There are potentially more
+/// [OrgPolicyViolations][] than could fit in an embedded field. Thus, the use of
+/// a child resource instead of a field.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OrgPolicyViolationsPreview {
+    /// Output only. The resource name of the `OrgPolicyViolationsPreview`. It has
+    /// the following format:
+    ///
+    /// `organizations/{organization}/locations/{location}/orgPolicyViolationsPreviews/{orgPolicyViolationsPreview}`
+    ///
+    /// Example:
+    /// `organizations/my-example-org/locations/global/orgPolicyViolationsPreviews/506a5f7f`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The state of the `OrgPolicyViolationsPreview`.
+    #[prost(enumeration = "PreviewState", tag = "2")]
+    pub state: i32,
+    /// Required. The proposed changes we are previewing violations for.
+    #[prost(message, optional, tag = "3")]
+    pub overlay: ::core::option::Option<OrgPolicyOverlay>,
+    /// Output only. The number of [OrgPolicyViolations][] in this
+    /// `OrgPolicyViolationsPreview`. This count may differ from
+    /// `resource_summary.noncompliant_count` because each
+    /// [OrgPolicyViolation][google.cloud.policysimulator.v1.OrgPolicyViolation] is
+    /// specific to a resource **and** constraint. If there are multiple
+    /// constraints being evaluated (i.e. multiple policies in the overlay), a
+    /// single resource may violate multiple constraints.
+    #[prost(int32, tag = "4")]
+    pub violations_count: i32,
+    /// Output only. A summary of the state of all resources scanned for compliance
+    /// with the changed OrgPolicy.
+    #[prost(message, optional, tag = "5")]
+    pub resource_counts: ::core::option::Option<
+        org_policy_violations_preview::ResourceCounts,
+    >,
+    /// Output only. The names of the constraints against which all
+    /// `OrgPolicyViolations` were evaluated.
+    ///
+    /// If `OrgPolicyOverlay` only contains `PolicyOverlay` then it contains
+    /// the name of the configured custom constraint, applicable to the specified
+    /// policies. Otherwise it contains the name of the constraint specified in
+    /// `CustomConstraintOverlay`.
+    ///
+    /// Format:
+    /// `organizations/{organization_id}/customConstraints/{custom_constraint_id}`
+    ///
+    /// Example: `organizations/123/customConstraints/custom.createOnlyE2TypeVms`
+    #[prost(string, repeated, tag = "6")]
+    pub custom_constraints: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. Time when this `OrgPolicyViolationsPreview` was created.
+    #[prost(message, optional, tag = "7")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `OrgPolicyViolationsPreview`.
+pub mod org_policy_violations_preview {
+    /// A summary of the state of all resources scanned for compliance with the
+    /// changed OrgPolicy.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct ResourceCounts {
+        /// Output only. Number of resources checked for compliance.
+        ///
+        /// Must equal:  unenforced + noncompliant + compliant + error
+        #[prost(int32, tag = "1")]
+        pub scanned: i32,
+        /// Output only. Number of scanned resources with at least one violation.
+        #[prost(int32, tag = "2")]
+        pub noncompliant: i32,
+        /// Output only. Number of scanned resources with zero violations.
+        #[prost(int32, tag = "3")]
+        pub compliant: i32,
+        /// Output only. Number of resources where the constraint was not enforced,
+        /// i.e. the Policy set `enforced: false` for that resource.
+        #[prost(int32, tag = "4")]
+        pub unenforced: i32,
+        /// Output only. Number of resources that returned an error when scanned.
+        #[prost(int32, tag = "5")]
+        pub errors: i32,
+    }
+}
+/// OrgPolicyViolation is a resource representing a single resource violating a
+/// single OrgPolicy constraint.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OrgPolicyViolation {
+    /// The name of the `OrgPolicyViolation`. Example:
+    /// organizations/my-example-org/locations/global/orgPolicyViolationsPreviews/506a5f7f/orgPolicyViolations/38ce`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The resource violating the constraint.
+    #[prost(message, optional, tag = "2")]
+    pub resource: ::core::option::Option<ResourceContext>,
+    /// The custom constraint being violated.
+    #[prost(message, optional, tag = "3")]
+    pub custom_constraint: ::core::option::Option<
+        super::super::orgpolicy::v2::CustomConstraint,
+    >,
+    /// Any error encountered during the evaluation.
+    #[prost(message, optional, tag = "4")]
+    pub error: ::core::option::Option<super::super::super::rpc::Status>,
+}
+/// ResourceContext provides the context we know about a resource.
+/// It is similar in concept to google.cloud.asset.v1.Resource, but focuses
+/// on the information specifically used by Simulator.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResourceContext {
+    /// The full name of the resource. Example:
+    /// `//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1`
+    ///
+    /// See [Resource
+    /// names](<https://cloud.google.com/apis/design/resource_names#full_resource_name>)
+    /// for more information.
+    #[prost(string, tag = "1")]
+    pub resource: ::prost::alloc::string::String,
+    /// The asset type of the resource as defined by CAIS.
+    ///
+    /// Example: `compute.googleapis.com/Firewall`
+    ///
+    /// See [Supported asset
+    /// types](<https://cloud.google.com/asset-inventory/docs/supported-asset-types>)
+    /// for more information.
+    #[prost(string, tag = "2")]
+    pub asset_type: ::prost::alloc::string::String,
+    /// The ancestry path of the resource in Google Cloud [resource
+    /// hierarchy](<https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>),
+    /// represented as a list of relative resource names. An ancestry path starts
+    /// with the closest ancestor in the hierarchy and ends at root. If the
+    /// resource is a project, folder, or organization, the ancestry path starts
+    /// from the resource itself.
+    ///
+    /// Example: `\["projects/123456789", "folders/5432", "organizations/1234"\]`
+    #[prost(string, repeated, tag = "3")]
+    pub ancestors: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// The proposed changes to OrgPolicy.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OrgPolicyOverlay {
+    /// Optional. The OrgPolicy changes to preview violations for.
+    ///
+    /// Any existing OrgPolicies with the same name will be overridden
+    /// in the simulation. That is, violations will be determined as if all
+    /// policies in the overlay were created or updated.
+    #[prost(message, repeated, tag = "1")]
+    pub policies: ::prost::alloc::vec::Vec<org_policy_overlay::PolicyOverlay>,
+    /// Optional. The OrgPolicy CustomConstraint changes to preview violations for.
+    ///
+    /// Any existing CustomConstraints with the same name will be overridden
+    /// in the simulation. That is, violations will be determined as if all
+    /// custom constraints in the overlay were instantiated.
+    ///
+    /// Only a single custom_constraint is supported in the overlay at a time.
+    /// For evaluating multiple constraints, multiple
+    /// `GenerateOrgPolicyViolationsPreview` requests are made, where each request
+    /// evaluates a single constraint.
+    #[prost(message, repeated, tag = "2")]
+    pub custom_constraints: ::prost::alloc::vec::Vec<
+        org_policy_overlay::CustomConstraintOverlay,
+    >,
+}
+/// Nested message and enum types in `OrgPolicyOverlay`.
+pub mod org_policy_overlay {
+    /// A change to an OrgPolicy.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PolicyOverlay {
+        /// Optional. The parent of the policy we are attaching to.
+        /// Example: "projects/123456"
+        #[prost(string, tag = "1")]
+        pub policy_parent: ::prost::alloc::string::String,
+        /// Optional. The new or updated OrgPolicy.
+        #[prost(message, optional, tag = "2")]
+        pub policy: ::core::option::Option<super::super::super::orgpolicy::v2::Policy>,
+    }
+    /// A change to an OrgPolicy custom constraint.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CustomConstraintOverlay {
+        /// Optional. Resource the constraint is attached to.
+        /// Example: "organization/987654"
+        #[prost(string, tag = "1")]
+        pub custom_constraint_parent: ::prost::alloc::string::String,
+        /// Optional. The new or updated custom constraint.
+        #[prost(message, optional, tag = "2")]
+        pub custom_constraint: ::core::option::Option<
+            super::super::super::orgpolicy::v2::CustomConstraint,
+        >,
+    }
+}
+/// CreateOrgPolicyViolationsPreviewOperationMetadata is metadata about an
+/// OrgPolicyViolationsPreview generations operation.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct CreateOrgPolicyViolationsPreviewOperationMetadata {
+    /// Time when the request was received.
+    #[prost(message, optional, tag = "1")]
+    pub request_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Time when the request started processing, i.e., when the state was set to
+    /// RUNNING.
+    #[prost(message, optional, tag = "2")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The current state of the operation.
+    #[prost(enumeration = "PreviewState", tag = "3")]
+    pub state: i32,
+    /// Total number of resources that need scanning.
+    /// Should equal resource_scanned + resources_pending
+    #[prost(int32, tag = "4")]
+    pub resources_found: i32,
+    /// Number of resources already scanned.
+    #[prost(int32, tag = "5")]
+    pub resources_scanned: i32,
+    /// Number of resources still to scan.
+    #[prost(int32, tag = "6")]
+    pub resources_pending: i32,
+}
+/// ListOrgPolicyViolationsPreviewsRequest is the request message for
+/// [OrgPolicyViolationsPreviewService.ListOrgPolicyViolationsPreviews][google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService.ListOrgPolicyViolationsPreviews].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListOrgPolicyViolationsPreviewsRequest {
+    /// Required. The parent the violations are scoped to.
+    /// Format:
+    /// `organizations/{organization}/locations/{location}`
+    ///
+    /// Example: `organizations/my-example-org/locations/global`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of items to return. The service may return
+    /// fewer than this value. If unspecified, at most 5 items will be returned.
+    /// The maximum value is 10; values above 10 will be coerced to 10.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous call. Provide this to
+    /// retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters must match the call that provided the
+    /// page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// ListOrgPolicyViolationsPreviewsResponse is the response message for
+/// [OrgPolicyViolationsPreviewService.ListOrgPolicyViolationsPreviews][google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService.ListOrgPolicyViolationsPreviews].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListOrgPolicyViolationsPreviewsResponse {
+    /// The list of OrgPolicyViolationsPreview
+    #[prost(message, repeated, tag = "1")]
+    pub org_policy_violations_previews: ::prost::alloc::vec::Vec<
+        OrgPolicyViolationsPreview,
+    >,
+    /// A token that you can use to retrieve the next page of results.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// GetOrgPolicyViolationsPreviewRequest is the request message for
+/// [OrgPolicyViolationsPreviewService.GetOrgPolicyViolationsPreview][google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService.GetOrgPolicyViolationsPreview].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetOrgPolicyViolationsPreviewRequest {
+    /// Required. The name of the OrgPolicyViolationsPreview to get.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// CreateOrgPolicyViolationsPreviewRequest is the request message for
+/// [OrgPolicyViolationsPreviewService.CreateOrgPolicyViolationsPreview][google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService.CreateOrgPolicyViolationsPreview].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateOrgPolicyViolationsPreviewRequest {
+    /// Required. The organization under which this
+    /// [OrgPolicyViolationsPreview][google.cloud.policysimulator.v1.OrgPolicyViolationsPreview]
+    /// will be created.
+    ///
+    /// Example: `organizations/my-example-org/locations/global`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The
+    /// [OrgPolicyViolationsPreview][google.cloud.policysimulator.v1.OrgPolicyViolationsPreview]
+    /// to generate.
+    #[prost(message, optional, tag = "2")]
+    pub org_policy_violations_preview: ::core::option::Option<
+        OrgPolicyViolationsPreview,
+    >,
+    /// Optional. An optional user-specified ID for the
+    /// [OrgPolicyViolationsPreview][google.cloud.policysimulator.v1.OrgPolicyViolationsPreview].
+    /// If not provided, a random ID will be generated.
+    #[prost(string, tag = "3")]
+    pub org_policy_violations_preview_id: ::prost::alloc::string::String,
+}
+/// ListOrgPolicyViolationsRequest is the request message for
+/// [OrgPolicyViolationsPreviewService.ListOrgPolicyViolations][google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService.ListOrgPolicyViolations].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListOrgPolicyViolationsRequest {
+    /// Required. The OrgPolicyViolationsPreview to get OrgPolicyViolations from.
+    /// Format:
+    /// organizations/{organization}/locations/{location}/orgPolicyViolationsPreviews/{orgPolicyViolationsPreview}
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of items to return. The service may return
+    /// fewer than this value. If unspecified, at most 1000 items will be returned.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous call. Provide this to
+    /// retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters must match the call that provided the
+    /// page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// ListOrgPolicyViolationsResponse is the response message for
+/// [OrgPolicyViolationsPreviewService.ListOrgPolicyViolations][google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService.ListOrgPolicyViolations]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListOrgPolicyViolationsResponse {
+    /// The list of OrgPolicyViolations
+    #[prost(message, repeated, tag = "1")]
+    pub org_policy_violations: ::prost::alloc::vec::Vec<OrgPolicyViolation>,
+    /// A token that you can use to retrieve the next page of results.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The current state of an
+/// [OrgPolicyViolationsPreview][google.cloud.policysimulator.v1.OrgPolicyViolationsPreview].
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum PreviewState {
+    /// The state is unspecified.
+    Unspecified = 0,
+    /// The
+    /// [OrgPolicyViolationsPreview][google.cloud.policysimulator.v1.OrgPolicyViolationsPreview]
+    /// has not been created yet.
+    PreviewPending = 1,
+    /// The
+    /// [OrgPolicyViolationsPreview][google.cloud.policysimulator.v1.OrgPolicyViolationsPreview]
+    /// is currently being created.
+    PreviewRunning = 2,
+    /// The
+    /// [OrgPolicyViolationsPreview][google.cloud.policysimulator.v1.OrgPolicyViolationsPreview]
+    /// creation finished successfully.
+    PreviewSucceeded = 3,
+    /// The
+    /// [OrgPolicyViolationsPreview][google.cloud.policysimulator.v1.OrgPolicyViolationsPreview]
+    /// creation failed with an error.
+    PreviewFailed = 4,
+}
+impl PreviewState {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "PREVIEW_STATE_UNSPECIFIED",
+            Self::PreviewPending => "PREVIEW_PENDING",
+            Self::PreviewRunning => "PREVIEW_RUNNING",
+            Self::PreviewSucceeded => "PREVIEW_SUCCEEDED",
+            Self::PreviewFailed => "PREVIEW_FAILED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "PREVIEW_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "PREVIEW_PENDING" => Some(Self::PreviewPending),
+            "PREVIEW_RUNNING" => Some(Self::PreviewRunning),
+            "PREVIEW_SUCCEEDED" => Some(Self::PreviewSucceeded),
+            "PREVIEW_FAILED" => Some(Self::PreviewFailed),
+            _ => None,
+        }
+    }
+}
+/// Generated client implementations.
+pub mod org_policy_violations_preview_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Violations Preview API service for OrgPolicy.
+    ///
+    /// An
+    /// [OrgPolicyViolationsPreview][google.cloud.policysimulator.v1.OrgPolicyViolationsPreview]
+    /// is a preview of the violations that will exist as soon as a proposed
+    /// OrgPolicy change is submitted. To create an
+    /// [OrgPolicyViolationsPreview][google.cloud.policysimulator.v1.OrgPolicyViolationsPreview],
+    /// the API user specifies the changes they wish to make and requests the
+    /// generation of a preview via [GenerateViolationsPreview][]. the OrgPolicy
+    /// Simulator service then scans the API user's currently existing resources to
+    /// determine these resources violate the newly set OrgPolicy.
+    #[derive(Debug, Clone)]
+    pub struct OrgPolicyViolationsPreviewServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl OrgPolicyViolationsPreviewServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> OrgPolicyViolationsPreviewServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> OrgPolicyViolationsPreviewServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            OrgPolicyViolationsPreviewServiceClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// ListOrgPolicyViolationsPreviews lists each
+        /// [OrgPolicyViolationsPreview][google.cloud.policysimulator.v1.OrgPolicyViolationsPreview]
+        /// in an organization. Each
+        /// [OrgPolicyViolationsPreview][google.cloud.policysimulator.v1.OrgPolicyViolationsPreview]
+        /// is available for at least 7 days.
+        pub async fn list_org_policy_violations_previews(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::ListOrgPolicyViolationsPreviewsRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::ListOrgPolicyViolationsPreviewsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService/ListOrgPolicyViolationsPreviews",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService",
+                        "ListOrgPolicyViolationsPreviews",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// GetOrgPolicyViolationsPreview gets the specified
+        /// [OrgPolicyViolationsPreview][google.cloud.policysimulator.v1.OrgPolicyViolationsPreview].
+        /// Each
+        /// [OrgPolicyViolationsPreview][google.cloud.policysimulator.v1.OrgPolicyViolationsPreview]
+        /// is available for at least 7 days.
+        pub async fn get_org_policy_violations_preview(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetOrgPolicyViolationsPreviewRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::OrgPolicyViolationsPreview>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService/GetOrgPolicyViolationsPreview",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService",
+                        "GetOrgPolicyViolationsPreview",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// CreateOrgPolicyViolationsPreview creates an
+        /// [OrgPolicyViolationsPreview][google.cloud.policysimulator.v1.OrgPolicyViolationsPreview]
+        /// for the proposed changes in the provided
+        /// [OrgPolicyViolationsPreview.OrgPolicyOverlay][]. The changes to OrgPolicy
+        /// are specified by this `OrgPolicyOverlay`. The resources to scan are
+        /// inferred from these specified changes.
+        pub async fn create_org_policy_violations_preview(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::CreateOrgPolicyViolationsPreviewRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService/CreateOrgPolicyViolationsPreview",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService",
+                        "CreateOrgPolicyViolationsPreview",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// ListOrgPolicyViolations lists the [OrgPolicyViolations][] that are present
+        /// in an
+        /// [OrgPolicyViolationsPreview][google.cloud.policysimulator.v1.OrgPolicyViolationsPreview].
+        pub async fn list_org_policy_violations(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListOrgPolicyViolationsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListOrgPolicyViolationsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService/ListOrgPolicyViolations",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService",
+                        "ListOrgPolicyViolations",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }

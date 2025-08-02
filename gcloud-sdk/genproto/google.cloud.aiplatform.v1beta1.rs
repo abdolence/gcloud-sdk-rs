@@ -2206,30 +2206,26 @@ pub struct MachineSpec {
     #[prost(message, optional, tag = "5")]
     pub reservation_affinity: ::core::option::Option<ReservationAffinity>,
 }
-/// A description of resources that are dedicated to a DeployedModel, and
-/// that need a higher degree of manual configuration.
+/// A description of resources that are dedicated to a DeployedModel or
+/// DeployedIndex, and that need a higher degree of manual configuration.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DedicatedResources {
-    /// Required. Immutable. The specification of a single machine used by the
-    /// prediction.
+    /// Required. Immutable. The specification of a single machine being used.
     #[prost(message, optional, tag = "1")]
     pub machine_spec: ::core::option::Option<MachineSpec>,
-    /// Required. Immutable. The minimum number of machine replicas this
-    /// DeployedModel will be always deployed on. This value must be greater than
-    /// or equal to 1.
+    /// Required. Immutable. The minimum number of machine replicas that will be
+    /// always deployed on. This value must be greater than or equal to 1.
     ///
-    /// If traffic against the DeployedModel increases, it may dynamically be
-    /// deployed onto more replicas, and as traffic decreases, some of these extra
-    /// replicas may be freed.
+    /// If traffic increases, it may dynamically be deployed onto more replicas,
+    /// and as traffic decreases, some of these extra replicas may be freed.
     #[prost(int32, tag = "2")]
     pub min_replica_count: i32,
-    /// Immutable. The maximum number of replicas this DeployedModel may be
-    /// deployed on when the traffic against it increases. If the requested value
-    /// is too large, the deployment will error, but if deployment succeeds then
-    /// the ability to scale the model to that many replicas is guaranteed (barring
-    /// service outages). If traffic against the DeployedModel increases beyond
-    /// what its replicas at maximum may handle, a portion of the traffic will be
-    /// dropped. If this value is not provided, will use
+    /// Immutable. The maximum number of replicas that may be deployed on when the
+    /// traffic against it increases. If the requested value is too large, the
+    /// deployment will error, but if deployment succeeds then the ability to scale
+    /// to that many replicas is guaranteed (barring service outages). If traffic
+    /// increases beyond what its replicas at maximum may handle, a portion of the
+    /// traffic will be dropped. If this value is not provided, will use
     /// [min_replica_count][google.cloud.aiplatform.v1beta1.DedicatedResources.min_replica_count]
     /// as the default value.
     ///
@@ -2240,8 +2236,8 @@ pub struct DedicatedResources {
     #[prost(int32, tag = "3")]
     pub max_replica_count: i32,
     /// Optional. Number of required available replicas for the deployment to
-    /// succeed. This field is only needed when partial model deployment/mutation
-    /// is desired. If set, the model deploy/mutate operation will succeed once
+    /// succeed. This field is only needed when partial deployment/mutation is
+    /// desired. If set, the deploy/mutate operation will succeed once
     /// available_replica_count reaches required_replica_count, and the rest of
     /// the replicas will be retried. If not set, the default
     /// required_replica_count will be min_replica_count.
@@ -2276,29 +2272,33 @@ pub struct DedicatedResources {
     /// VMs](<https://cloud.google.com/kubernetes-engine/docs/concepts/spot-vms>).
     #[prost(bool, tag = "5")]
     pub spot: bool,
+    /// Optional. Immutable. If set, use DWS resource to schedule the deployment
+    /// workload. reference:
+    /// (<https://cloud.google.com/blog/products/compute/introducing-dynamic-workload-scheduler>)
+    #[prost(message, optional, tag = "10")]
+    pub flex_start: ::core::option::Option<FlexStart>,
 }
 /// A description of resources that to large degree are decided by Vertex AI,
 /// and require only a modest additional configuration.
 /// Each Model supporting these resources documents its specific guidelines.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct AutomaticResources {
-    /// Immutable. The minimum number of replicas this DeployedModel will be always
-    /// deployed on. If traffic against it increases, it may dynamically be
-    /// deployed onto more replicas up to
+    /// Immutable. The minimum number of replicas that will be always deployed on.
+    /// If traffic against it increases, it may dynamically be deployed onto more
+    /// replicas up to
     /// [max_replica_count][google.cloud.aiplatform.v1beta1.AutomaticResources.max_replica_count],
     /// and as traffic decreases, some of these extra replicas may be freed. If the
     /// requested value is too large, the deployment will error.
     #[prost(int32, tag = "1")]
     pub min_replica_count: i32,
-    /// Immutable. The maximum number of replicas this DeployedModel may be
-    /// deployed on when the traffic against it increases. If the requested value
-    /// is too large, the deployment will error, but if deployment succeeds then
-    /// the ability to scale the model to that many replicas is guaranteed (barring
-    /// service outages). If traffic against the DeployedModel increases beyond
-    /// what its replicas at maximum may handle, a portion of the traffic will be
-    /// dropped. If this value is not provided, a no upper bound for scaling under
-    /// heavy traffic will be assume, though Vertex AI may be unable to scale
-    /// beyond certain replica number.
+    /// Immutable. The maximum number of replicas that may be deployed on when the
+    /// traffic against it increases. If the requested value is too large, the
+    /// deployment will error, but if deployment succeeds then the ability to scale
+    /// to that many replicas is guaranteed (barring service outages). If traffic
+    /// increases beyond what its replicas at maximum may handle, a portion of the
+    /// traffic will be dropped. If this value is not provided, a no upper bound
+    /// for scaling under heavy traffic will be assume, though Vertex AI may be
+    /// unable to scale beyond certain replica number.
     #[prost(int32, tag = "2")]
     pub max_replica_count: i32,
 }
@@ -2318,6 +2318,15 @@ pub struct BatchDedicatedResources {
     /// be scaled to. The default value is 10.
     #[prost(int32, tag = "3")]
     pub max_replica_count: i32,
+    /// Optional. Immutable. If set, use DWS resource to schedule the deployment
+    /// workload. reference:
+    /// (<https://cloud.google.com/blog/products/compute/introducing-dynamic-workload-scheduler>)
+    #[prost(message, optional, tag = "4")]
+    pub flex_start: ::core::option::Option<FlexStart>,
+    /// Optional. If true, schedule the deployment workload on [spot
+    /// VMs](<https://cloud.google.com/kubernetes-engine/docs/concepts/spot-vms>).
+    #[prost(bool, tag = "5")]
+    pub spot: bool,
 }
 /// Statistics information about resource consumption.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -2331,9 +2340,10 @@ pub struct ResourcesConsumed {
 /// Represents the spec of disk options.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskSpec {
-    /// Type of the boot disk (default is "pd-ssd").
-    /// Valid values: "pd-ssd" (Persistent Disk Solid State Drive) or
-    /// "pd-standard" (Persistent Disk Hard Disk Drive).
+    /// Type of the boot disk. For non-A3U machines, the default value is
+    /// "pd-ssd", for A3U machines, the default value is "hyperdisk-balanced".
+    /// Valid values: "pd-ssd" (Persistent Disk Solid State Drive),
+    /// "pd-standard" (Persistent Disk Hard Disk Drive) or "hyperdisk-balanced".
     #[prost(string, tag = "1")]
     pub boot_disk_type: ::prost::alloc::string::String,
     /// Size in GB of the boot disk (default is 100GB).
@@ -2382,6 +2392,7 @@ pub struct AutoscalingMetricSpec {
     /// * For Online Prediction:
     /// * `aiplatform.googleapis.com/prediction/online/accelerator/duty_cycle`
     /// * `aiplatform.googleapis.com/prediction/online/cpu/utilization`
+    /// * `aiplatform.googleapis.com/prediction/online/request_count`
     #[prost(string, tag = "1")]
     pub metric_name: ::prost::alloc::string::String,
     /// The target resource utilization in percentage (1% - 100%) for the given
@@ -2405,6 +2416,16 @@ pub struct ShieldedVmConfig {
     /// boot process if signature verification fails.
     #[prost(bool, tag = "1")]
     pub enable_secure_boot: bool,
+}
+/// FlexStart is used to schedule the deployment workload on DWS resource. It
+/// contains the max duration of the deployment.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct FlexStart {
+    /// The max duration of the deployment is max_runtime_duration. The
+    /// deployment will be terminated after the duration. The
+    /// max_runtime_duration can be set up to 7 days.
+    #[prost(message, optional, tag = "1")]
+    pub max_runtime_duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Manual batch tuning parameters.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -7602,6 +7623,8 @@ pub mod candidate {
         Spii = 8,
         /// The function call generated by the model is invalid.
         MalformedFunctionCall = 9,
+        /// The model response was blocked by Model Armor.
+        ModelArmor = 10,
     }
     impl FinishReason {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -7620,6 +7643,7 @@ pub mod candidate {
                 Self::ProhibitedContent => "PROHIBITED_CONTENT",
                 Self::Spii => "SPII",
                 Self::MalformedFunctionCall => "MALFORMED_FUNCTION_CALL",
+                Self::ModelArmor => "MODEL_ARMOR",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -7635,6 +7659,7 @@ pub mod candidate {
                 "PROHIBITED_CONTENT" => Some(Self::ProhibitedContent),
                 "SPII" => Some(Self::Spii),
                 "MALFORMED_FUNCTION_CALL" => Some(Self::MalformedFunctionCall),
+                "MODEL_ARMOR" => Some(Self::ModelArmor),
                 _ => None,
             }
         }
@@ -7874,6 +7899,18 @@ pub struct RetrievalMetadata {
     /// compared to the threshold to determine whether to trigger Google Search.
     #[prost(float, tag = "2")]
     pub google_search_dynamic_retrieval_score: f32,
+}
+/// Configuration for Model Armor integrations of prompt and responses.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ModelArmorConfig {
+    /// Optional. The name of the Model Armor template to use for prompt
+    /// sanitization.
+    #[prost(string, tag = "1")]
+    pub prompt_template_name: ::prost::alloc::string::String,
+    /// Optional. The name of the Model Armor template to use for response
+    /// sanitization.
+    #[prost(string, tag = "2")]
+    pub response_template_name: ::prost::alloc::string::String,
 }
 /// Represents token counting info for a single modality.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -9825,9 +9862,6 @@ pub struct AssessDataRequest {
     /// The assessment type.
     #[prost(oneof = "assess_data_request::AssessmentConfig", tags = "2, 3, 6, 7")]
     pub assessment_config: ::core::option::Option<assess_data_request::AssessmentConfig>,
-    /// The read config for the dataset.
-    #[prost(oneof = "assess_data_request::ReadConfig", tags = "4, 5")]
-    pub read_config: ::core::option::Option<assess_data_request::ReadConfig>,
 }
 /// Nested message and enum types in `AssessDataRequest`.
 pub mod assess_data_request {
@@ -9931,18 +9965,6 @@ pub mod assess_data_request {
         BatchPredictionResourceUsageAssessmentConfig(
             BatchPredictionResourceUsageAssessmentConfig,
         ),
-    }
-    /// The read config for the dataset.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum ReadConfig {
-        /// Optional. Config for assembling templates with a Gemini API structure to
-        /// assess assembled data.
-        #[prost(message, tag = "4")]
-        GeminiTemplateConfig(super::GeminiTemplateConfig),
-        /// Optional. The column name in the underlying table that contains already
-        /// fully assembled requests.
-        #[prost(string, tag = "5")]
-        RequestColumnName(::prost::alloc::string::String),
     }
 }
 /// Response message for
@@ -10128,24 +10150,6 @@ pub struct AssembleDataRequest {
     /// Optional. The read config for the dataset.
     #[prost(message, optional, tag = "6")]
     pub gemini_request_read_config: ::core::option::Option<GeminiRequestReadConfig>,
-    /// The read config for the dataset.
-    #[prost(oneof = "assemble_data_request::ReadConfig", tags = "2, 5")]
-    pub read_config: ::core::option::Option<assemble_data_request::ReadConfig>,
-}
-/// Nested message and enum types in `AssembleDataRequest`.
-pub mod assemble_data_request {
-    /// The read config for the dataset.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum ReadConfig {
-        /// Optional. Config for assembling templates with a Gemini API structure.
-        #[prost(message, tag = "2")]
-        GeminiTemplateConfig(super::GeminiTemplateConfig),
-        /// Optional. The column name in the underlying table that contains already
-        /// fully assembled requests. If this field is set, the original request will
-        /// be copied to the output table.
-        #[prost(string, tag = "5")]
-        RequestColumnName(::prost::alloc::string::String),
-    }
 }
 /// Response message for
 /// [DatasetService.AssembleData][google.cloud.aiplatform.v1beta1.DatasetService.AssembleData].
@@ -11830,6 +11834,63 @@ pub mod deployment_resource_pool_service_client {
         }
     }
 }
+/// Stage field indicating the current progress of a deployment.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DeploymentStage {
+    /// Default value. This value is unused.
+    Unspecified = 0,
+    /// The deployment is initializing and setting up the environment.
+    StartingDeployment = 5,
+    /// The deployment is preparing the model assets.
+    PreparingModel = 6,
+    /// The deployment is creating the underlying serving cluster.
+    CreatingServingCluster = 7,
+    /// The deployment is adding nodes to the serving cluster.
+    AddingNodesToCluster = 8,
+    /// The deployment is getting the container image for the model server.
+    GettingContainerImage = 9,
+    /// The deployment is starting the model server.
+    StartingModelServer = 3,
+    /// The deployment is performing finalization steps.
+    FinishingUp = 4,
+    /// The deployment has terminated.
+    DeploymentTerminated = 10,
+}
+impl DeploymentStage {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "DEPLOYMENT_STAGE_UNSPECIFIED",
+            Self::StartingDeployment => "STARTING_DEPLOYMENT",
+            Self::PreparingModel => "PREPARING_MODEL",
+            Self::CreatingServingCluster => "CREATING_SERVING_CLUSTER",
+            Self::AddingNodesToCluster => "ADDING_NODES_TO_CLUSTER",
+            Self::GettingContainerImage => "GETTING_CONTAINER_IMAGE",
+            Self::StartingModelServer => "STARTING_MODEL_SERVER",
+            Self::FinishingUp => "FINISHING_UP",
+            Self::DeploymentTerminated => "DEPLOYMENT_TERMINATED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DEPLOYMENT_STAGE_UNSPECIFIED" => Some(Self::Unspecified),
+            "STARTING_DEPLOYMENT" => Some(Self::StartingDeployment),
+            "PREPARING_MODEL" => Some(Self::PreparingModel),
+            "CREATING_SERVING_CLUSTER" => Some(Self::CreatingServingCluster),
+            "ADDING_NODES_TO_CLUSTER" => Some(Self::AddingNodesToCluster),
+            "GETTING_CONTAINER_IMAGE" => Some(Self::GettingContainerImage),
+            "STARTING_MODEL_SERVER" => Some(Self::StartingModelServer),
+            "FINISHING_UP" => Some(Self::FinishingUp),
+            "DEPLOYMENT_TERMINATED" => Some(Self::DeploymentTerminated),
+            _ => None,
+        }
+    }
+}
 /// Request message for
 /// [EndpointService.CreateEndpoint][google.cloud.aiplatform.v1beta1.EndpointService.CreateEndpoint].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -11865,6 +11926,10 @@ pub struct CreateEndpointOperationMetadata {
     /// The operation generic information.
     #[prost(message, optional, tag = "1")]
     pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+    /// Output only. The deployment stage of the model. Only populated if this
+    /// CreateEndpoint request deploys a model at the same time.
+    #[prost(enumeration = "DeploymentStage", tag = "2")]
+    pub deployment_stage: i32,
 }
 /// Request message for
 /// [EndpointService.GetEndpoint][google.cloud.aiplatform.v1beta1.EndpointService.GetEndpoint]
@@ -12021,6 +12086,9 @@ pub struct DeployModelOperationMetadata {
     /// The operation generic information.
     #[prost(message, optional, tag = "1")]
     pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+    /// Output only. The deployment stage of the model.
+    #[prost(enumeration = "DeploymentStage", tag = "2")]
+    pub deployment_stage: i32,
 }
 /// Request message for
 /// [EndpointService.UndeployModel][google.cloud.aiplatform.v1beta1.EndpointService.UndeployModel].
@@ -12103,6 +12171,8 @@ pub struct MutateDeployedModelRequest {
     /// * `max_replica_count` in either
     /// [DedicatedResources][google.cloud.aiplatform.v1beta1.DedicatedResources] or
     /// [AutomaticResources][google.cloud.aiplatform.v1beta1.AutomaticResources]
+    /// * `required_replica_count` in
+    /// [DedicatedResources][google.cloud.aiplatform.v1beta1.DedicatedResources]
     /// * [autoscaling_metric_specs][google.cloud.aiplatform.v1beta1.DedicatedResources.autoscaling_metric_specs]
     /// * `disable_container_logging` (v1 only)
     /// * `enable_container_logging` (v1beta1 only)
@@ -12457,9 +12527,9 @@ pub mod endpoint_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Updates an existing deployed model. Updatable fields include
-        /// `min_replica_count`, `max_replica_count`, `autoscaling_metric_specs`,
-        /// `disable_container_logging` (v1 only), and `enable_container_logging`
-        /// (v1beta1 only).
+        /// `min_replica_count`, `max_replica_count`, `required_replica_count`,
+        /// `autoscaling_metric_specs`, `disable_container_logging` (v1 only), and
+        /// `enable_container_logging` (v1beta1 only).
         pub async fn mutate_deployed_model(
             &mut self,
             request: impl tonic::IntoRequest<super::MutateDeployedModelRequest>,
@@ -13083,6 +13153,10 @@ pub struct EvaluateDatasetOperationMetadata {
 /// Response in LRO for EvaluationService.EvaluateDataset.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvaluateDatasetResponse {
+    /// Output only. Aggregation statistics derived from results of
+    /// EvaluationService.EvaluateDataset.
+    #[prost(message, optional, tag = "1")]
+    pub aggregation_output: ::core::option::Option<AggregationOutput>,
     /// Output only. Output info for EvaluationService.EvaluateDataset.
     #[prost(message, optional, tag = "3")]
     pub output_info: ::core::option::Option<OutputInfo>,
@@ -13103,6 +13177,50 @@ pub mod output_info {
         /// which the evaluation results and aggregation results are written.
         #[prost(string, tag = "1")]
         GcsOutputDirectory(::prost::alloc::string::String),
+    }
+}
+/// The aggregation result for the entire dataset and all metrics.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AggregationOutput {
+    /// The dataset used for evaluation & aggregation.
+    #[prost(message, optional, tag = "1")]
+    pub dataset: ::core::option::Option<EvaluationDataset>,
+    /// One AggregationResult per metric.
+    #[prost(message, repeated, tag = "2")]
+    pub aggregation_results: ::prost::alloc::vec::Vec<AggregationResult>,
+}
+/// The aggregation result for a single metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AggregationResult {
+    /// Aggregation metric.
+    #[prost(enumeration = "metric::AggregationMetric", tag = "4")]
+    pub aggregation_metric: i32,
+    /// The aggregation result.
+    #[prost(oneof = "aggregation_result::AggregationResult", tags = "5, 6, 7, 8, 9")]
+    pub aggregation_result: ::core::option::Option<
+        aggregation_result::AggregationResult,
+    >,
+}
+/// Nested message and enum types in `AggregationResult`.
+pub mod aggregation_result {
+    /// The aggregation result.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum AggregationResult {
+        /// Result for pointwise metric.
+        #[prost(message, tag = "5")]
+        PointwiseMetricResult(super::PointwiseMetricResult),
+        /// Result for pairwise metric.
+        #[prost(message, tag = "6")]
+        PairwiseMetricResult(super::PairwiseMetricResult),
+        /// Results for exact match metric.
+        #[prost(message, tag = "7")]
+        ExactMatchMetricValue(super::ExactMatchMetricValue),
+        /// Results for bleu metric.
+        #[prost(message, tag = "8")]
+        BleuMetricValue(super::BleuMetricValue),
+        /// Results for rouge metric.
+        #[prost(message, tag = "9")]
+        RougeMetricValue(super::RougeMetricValue),
     }
 }
 /// Request message for EvaluationService.EvaluateDataset.
@@ -13177,25 +13295,25 @@ pub mod metric {
     pub enum AggregationMetric {
         /// Unspecified aggregation metric.
         Unspecified = 0,
-        /// Average aggregation metric.
+        /// Average aggregation metric. Not supported for Pairwise metric.
         Average = 1,
         /// Mode aggregation metric.
         Mode = 2,
-        /// Standard deviation aggregation metric.
+        /// Standard deviation aggregation metric. Not supported for pairwise metric.
         StandardDeviation = 3,
-        /// Variance aggregation metric.
+        /// Variance aggregation metric. Not supported for pairwise metric.
         Variance = 4,
-        /// Minimum aggregation metric.
+        /// Minimum aggregation metric. Not supported for pairwise metric.
         Minimum = 5,
-        /// Maximum aggregation metric.
+        /// Maximum aggregation metric. Not supported for pairwise metric.
         Maximum = 6,
-        /// Median aggregation metric.
+        /// Median aggregation metric. Not supported for pairwise metric.
         Median = 7,
-        /// 90th percentile aggregation metric.
+        /// 90th percentile aggregation metric. Not supported for pairwise metric.
         PercentileP90 = 8,
-        /// 95th percentile aggregation metric.
+        /// 95th percentile aggregation metric. Not supported for pairwise metric.
         PercentileP95 = 9,
-        /// 99th percentile aggregation metric.
+        /// 99th percentile aggregation metric. Not supported for pairwise metric.
         PercentileP99 = 10,
     }
     impl AggregationMetric {
@@ -13286,9 +13404,9 @@ pub struct AutoraterConfig {
     /// is 32.
     #[prost(int32, optional, tag = "1")]
     pub sampling_count: ::core::option::Option<i32>,
-    /// Optional. Whether to flip the candidate and baseline responses.
-    /// This is only applicable to the pairwise metric. If enabled, also provide
-    /// PairwiseMetricSpec.candidate_response_field_name and
+    /// Optional. Default is true. Whether to flip the candidate and baseline
+    /// responses. This is only applicable to the pairwise metric. If enabled, also
+    /// provide PairwiseMetricSpec.candidate_response_field_name and
     /// PairwiseMetricSpec.baseline_response_field_name. When rendering
     /// PairwiseMetricSpec.metric_prompt_template, the candidate and baseline
     /// fields will be flipped for half of the samples to reduce bias.
@@ -24600,6 +24718,14 @@ pub struct TuningJob {
     /// [TuningJob][google.cloud.aiplatform.v1.TuningJob].
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
+    /// Optional. The user-provided path to custom model weights. Set this field
+    /// to tune a custom model. The path must be a Cloud Storage directory that
+    /// contains the model weights in .safetensors format along with associated
+    /// model metadata files. If this field is set, the base_model field must still
+    /// be set to indicate which base model the custom model is derived from. This
+    /// feature is only available for open source models.
+    #[prost(string, tag = "26")]
+    pub custom_base_model: ::prost::alloc::string::String,
     /// Output only. The detailed state of the job.
     #[prost(enumeration = "JobState", tag = "6")]
     pub state: i32,
@@ -24672,9 +24798,14 @@ pub struct TuningJob {
     /// permission on this service account.
     #[prost(string, tag = "22")]
     pub service_account: ::prost::alloc::string::String,
+    /// Optional. Cloud Storage path to the directory where tuning job outputs are
+    /// written to. This field is only available and required for open source
+    /// models.
+    #[prost(string, tag = "25")]
+    pub output_uri: ::prost::alloc::string::String,
     #[prost(oneof = "tuning_job::SourceModel", tags = "4")]
     pub source_model: ::core::option::Option<tuning_job::SourceModel>,
-    #[prost(oneof = "tuning_job::TuningSpec", tags = "5, 17, 21")]
+    #[prost(oneof = "tuning_job::TuningSpec", tags = "5, 17, 21, 33")]
     pub tuning_spec: ::core::option::Option<tuning_job::TuningSpec>,
 }
 /// Nested message and enum types in `TuningJob`.
@@ -24697,6 +24828,9 @@ pub mod tuning_job {
         /// Tuning Spec for open sourced and third party Partner models.
         #[prost(message, tag = "21")]
         PartnerModelTuningSpec(super::PartnerModelTuningSpec),
+        /// Tuning Spec for Veo Tuning.
+        #[prost(message, tag = "33")]
+        VeoTuningSpec(super::VeoTuningSpec),
     }
 }
 /// The Model Registry Model and Online Prediction Endpoint associated with
@@ -24704,7 +24838,15 @@ pub mod tuning_job {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TunedModel {
     /// Output only. The resource name of the TunedModel. Format:
-    /// `projects/{project}/locations/{location}/models/{model}`.
+    ///
+    /// `projects/{project}/locations/{location}/models/{model}@{version_id}`
+    ///
+    /// When tuning from a base model, the version_id will be 1.
+    ///
+    /// For continuous tuning, the version id will be incremented by 1 from the
+    /// last version id in the parent model. E.g.,
+    /// `projects/{project}/locations/{location}/models/{model}@{last_version_id +
+    /// 1}`
     #[prost(string, tag = "1")]
     pub model: ::prost::alloc::string::String,
     /// Output only. A resource name of an Endpoint. Format:
@@ -24929,11 +25071,21 @@ pub struct SupervisedHyperParameters {
     #[prost(int64, tag = "1")]
     pub epoch_count: i64,
     /// Optional. Multiplier for adjusting the default learning rate.
+    /// Mutually exclusive with `learning_rate`.
     #[prost(double, tag = "2")]
     pub learning_rate_multiplier: f64,
+    /// Optional. Learning rate for tuning.
+    /// Mutually exclusive with `learning_rate_multiplier`.
+    /// This feature is only available for open source models.
+    #[prost(double, tag = "6")]
+    pub learning_rate: f64,
     /// Optional. Adapter size for tuning.
     #[prost(enumeration = "supervised_hyper_parameters::AdapterSize", tag = "3")]
     pub adapter_size: i32,
+    /// Optional. Batch size for tuning.
+    /// This feature is only available for open source models.
+    #[prost(int64, tag = "5")]
+    pub batch_size: i64,
 }
 /// Nested message and enum types in `SupervisedHyperParameters`.
 pub mod supervised_hyper_parameters {
@@ -25000,12 +25152,14 @@ pub mod supervised_hyper_parameters {
 /// Tuning Spec for Supervised Tuning for first party models.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SupervisedTuningSpec {
-    /// Required. Cloud Storage path to file containing training dataset for
-    /// tuning. The dataset must be formatted as a JSONL file.
+    /// Required. Training dataset used for tuning. The dataset can be specified as
+    /// either a Cloud Storage path to a JSONL file or as the resource name of a
+    /// Vertex Multimodal Dataset.
     #[prost(string, tag = "1")]
     pub training_dataset_uri: ::prost::alloc::string::String,
-    /// Optional. Cloud Storage path to file containing validation dataset for
-    /// tuning. The dataset must be formatted as a JSONL file.
+    /// Optional. Validation dataset used for tuning. The dataset can be specified
+    /// as either a Cloud Storage path to a JSONL file or as the resource name of a
+    /// Vertex Multimodal Dataset.
     #[prost(string, tag = "2")]
     pub validation_dataset_uri: ::prost::alloc::string::String,
     /// Optional. Hyperparameters for SFT.
@@ -25016,6 +25170,55 @@ pub struct SupervisedTuningSpec {
     /// checkpoints for SFT. Default is false.
     #[prost(bool, tag = "6")]
     pub export_last_checkpoint_only: bool,
+    /// Tuning mode.
+    #[prost(enumeration = "supervised_tuning_spec::TuningMode", tag = "7")]
+    pub tuning_mode: i32,
+}
+/// Nested message and enum types in `SupervisedTuningSpec`.
+pub mod supervised_tuning_spec {
+    /// Supported tuning modes.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum TuningMode {
+        /// Tuning mode is unspecified.
+        Unspecified = 0,
+        /// Full fine-tuning mode.
+        Full = 1,
+        /// PEFT adapter tuning mode.
+        PeftAdapter = 2,
+    }
+    impl TuningMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "TUNING_MODE_UNSPECIFIED",
+                Self::Full => "TUNING_MODE_FULL",
+                Self::PeftAdapter => "TUNING_MODE_PEFT_ADAPTER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TUNING_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TUNING_MODE_FULL" => Some(Self::Full),
+                "TUNING_MODE_PEFT_ADAPTER" => Some(Self::PeftAdapter),
+                _ => None,
+            }
+        }
+    }
 }
 /// Tuning Spec for Distillation.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -25117,6 +25320,83 @@ pub mod tuned_model_ref {
         #[prost(string, tag = "3")]
         PipelineJob(::prost::alloc::string::String),
     }
+}
+/// Hyperparameters for Veo.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct VeoHyperParameters {
+    /// Optional. Number of complete passes the model makes over the entire
+    /// training dataset during training.
+    #[prost(int64, tag = "1")]
+    pub epoch_count: i64,
+    /// Optional. Multiplier for adjusting the default learning rate.
+    #[prost(double, tag = "2")]
+    pub learning_rate_multiplier: f64,
+    /// Optional. The tuning task. Either I2V or T2V.
+    #[prost(enumeration = "veo_hyper_parameters::TuningTask", tag = "3")]
+    pub tuning_task: i32,
+}
+/// Nested message and enum types in `VeoHyperParameters`.
+pub mod veo_hyper_parameters {
+    /// An enum defining the tuning task used for Veo.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum TuningTask {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// Tuning task for image to video.
+        I2v = 1,
+        /// Tuning task for text to video.
+        T2v = 2,
+    }
+    impl TuningTask {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "TUNING_TASK_UNSPECIFIED",
+                Self::I2v => "TUNING_TASK_I2V",
+                Self::T2v => "TUNING_TASK_T2V",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TUNING_TASK_UNSPECIFIED" => Some(Self::Unspecified),
+                "TUNING_TASK_I2V" => Some(Self::I2v),
+                "TUNING_TASK_T2V" => Some(Self::T2v),
+                _ => None,
+            }
+        }
+    }
+}
+/// Tuning Spec for Veo Model Tuning.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VeoTuningSpec {
+    /// Required. Training dataset used for tuning. The dataset can be specified as
+    /// either a Cloud Storage path to a JSONL file or as the resource name of a
+    /// Vertex Multimodal Dataset.
+    #[prost(string, tag = "1")]
+    pub training_dataset_uri: ::prost::alloc::string::String,
+    /// Optional. Validation dataset used for tuning. The dataset can be specified
+    /// as either a Cloud Storage path to a JSONL file or as the resource name of a
+    /// Vertex Multimodal Dataset.
+    #[prost(string, tag = "2")]
+    pub validation_dataset_uri: ::prost::alloc::string::String,
+    /// Optional. Hyperparameters for Veo.
+    #[prost(message, optional, tag = "3")]
+    pub hyper_parameters: ::core::option::Option<VeoHyperParameters>,
 }
 /// TunedModelCheckpoint for the Tuned Model of a Tuning Job.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -27058,6 +27338,18 @@ pub struct DeployedIndex {
     /// Estimate your costs before enabling this option.
     #[prost(bool, tag = "8")]
     pub enable_access_logging: bool,
+    /// Optional. If true, logs to Cloud Logging errors relating to datapoint
+    /// upserts.
+    ///
+    /// Under normal operation conditions, these log entries should be very rare.
+    /// However, if incompatible datapoint updates are being uploaded to an index,
+    /// a high volume of log entries may be generated in a short period of time.
+    ///
+    /// Note that logs may incur a cost, especially if the deployed index receives
+    /// a high volume of datapoint upserts. Estimate your costs before enabling
+    /// this option.
+    #[prost(bool, tag = "20")]
+    pub enable_datapoint_upsert_logging: bool,
     /// Optional. If set, the authentication is enabled for the private endpoint.
     #[prost(message, optional, tag = "9")]
     pub deployed_index_auth_config: ::core::option::Option<DeployedIndexAuthConfig>,
@@ -35519,11 +35811,30 @@ pub struct DeployRequest {
     #[prost(message, optional, tag = "7")]
     pub deploy_config: ::core::option::Option<deploy_request::DeployConfig>,
     /// The artifacts to deploy.
-    #[prost(oneof = "deploy_request::Artifacts", tags = "1, 2")]
+    #[prost(oneof = "deploy_request::Artifacts", tags = "1, 2, 3")]
     pub artifacts: ::core::option::Option<deploy_request::Artifacts>,
 }
 /// Nested message and enum types in `DeployRequest`.
 pub mod deploy_request {
+    /// The custom model to deploy from model weights in a Google Cloud Storage URI
+    /// or Model Registry model.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CustomModel {
+        /// The source of the custom model.
+        #[prost(oneof = "custom_model::ModelSource", tags = "2")]
+        pub model_source: ::core::option::Option<custom_model::ModelSource>,
+    }
+    /// Nested message and enum types in `CustomModel`.
+    pub mod custom_model {
+        /// The source of the custom model.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum ModelSource {
+            /// Immutable. The Google Cloud Storage URI of the custom model, storing
+            /// weights and config files (which can be used to infer the base model).
+            #[prost(string, tag = "2")]
+            GcsUri(::prost::alloc::string::String),
+        }
+    }
     /// The model config to use for the deployment.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ModelConfig {
@@ -35597,6 +35908,9 @@ pub mod deploy_request {
         /// Format: Hugging Face model ID like `google/gemma-2-2b-it`.
         #[prost(string, tag = "2")]
         HuggingFaceModelId(::prost::alloc::string::String),
+        /// The custom model to deploy from a Google Cloud Storage URI.
+        #[prost(message, tag = "3")]
+        CustomModel(CustomModel),
     }
 }
 /// Request message for
@@ -44054,6 +44368,10 @@ pub struct GenerateContentRequest {
     /// Enforced on GenerateContentResponse.candidates.
     #[prost(message, repeated, tag = "3")]
     pub safety_settings: ::prost::alloc::vec::Vec<SafetySetting>,
+    /// Optional. Settings for prompt and response sanitization using the Model
+    /// Armor service. If supplied, safety_settings must not be supplied.
+    #[prost(message, optional, tag = "11")]
+    pub model_armor_config: ::core::option::Option<ModelArmorConfig>,
     /// Optional. Generation config.
     #[prost(message, optional, tag = "4")]
     pub generation_config: ::core::option::Option<GenerationConfig>,
@@ -44127,6 +44445,8 @@ pub mod generate_content_response {
             Blocklist = 3,
             /// Candidates blocked due to prohibited content.
             ProhibitedContent = 4,
+            /// The user prompt was blocked by Model Armor.
+            ModelArmor = 5,
         }
         impl BlockedReason {
             /// String value of the enum field names used in the ProtoBuf definition.
@@ -44140,6 +44460,7 @@ pub mod generate_content_response {
                     Self::Other => "OTHER",
                     Self::Blocklist => "BLOCKLIST",
                     Self::ProhibitedContent => "PROHIBITED_CONTENT",
+                    Self::ModelArmor => "MODEL_ARMOR",
                 }
             }
             /// Creates an enum from field names used in the ProtoBuf definition.
@@ -44150,6 +44471,7 @@ pub mod generate_content_response {
                     "OTHER" => Some(Self::Other),
                     "BLOCKLIST" => Some(Self::Blocklist),
                     "PROHIBITED_CONTENT" => Some(Self::ProhibitedContent),
+                    "MODEL_ARMOR" => Some(Self::ModelArmor),
                     _ => None,
                 }
             }
@@ -44825,6 +45147,13 @@ pub mod prediction_service_client {
 /// ReasoningEngine configurations
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReasoningEngineSpec {
+    /// Optional. The service account that the Reasoning Engine artifact runs as.
+    /// It should have "roles/storage.objectViewer" for reading the user project's
+    /// Cloud Storage and "roles/aiplatform.user" for using Vertex extensions. If
+    /// not specified, the Vertex AI Reasoning Engine Service Agent in the project
+    /// will be used.
+    #[prost(string, optional, tag = "1")]
+    pub service_account: ::core::option::Option<::prost::alloc::string::String>,
     /// Optional. User provided package spec of the ReasoningEngine.
     /// Ignored when users directly specify a deployment image through
     /// `deployment_spec.first_party_image_override`, but keeping the
@@ -44912,6 +45241,11 @@ pub struct ReasoningEngine {
     /// context.
     #[prost(message, optional, tag = "9")]
     pub context_spec: ::core::option::Option<ReasoningEngineContextSpec>,
+    /// Customer-managed encryption key spec for a ReasoningEngine. If set, this
+    /// ReasoningEngine and all sub-resources of this ReasoningEngine will be
+    /// secured by this key.
+    #[prost(message, optional, tag = "11")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
 }
 /// Configuration for how Agent Engine sub-resources should manage context.
 #[derive(Clone, PartialEq, ::prost::Message)]

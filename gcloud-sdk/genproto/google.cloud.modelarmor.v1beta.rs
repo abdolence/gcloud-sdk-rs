@@ -55,6 +55,69 @@ pub mod template {
         /// Optional. If true, log sanitize operations.
         #[prost(bool, tag = "7")]
         pub log_sanitize_operations: bool,
+        /// Optional. Enforcement type for Model Armor filters.
+        #[prost(enumeration = "template_metadata::EnforcementType", tag = "8")]
+        pub enforcement_type: i32,
+        /// Optional. Metadata for multi language detection.
+        #[prost(message, optional, tag = "9")]
+        pub multi_language_detection: ::core::option::Option<
+            template_metadata::MultiLanguageDetection,
+        >,
+    }
+    /// Nested message and enum types in `TemplateMetadata`.
+    pub mod template_metadata {
+        /// Metadata to enable multi language detection via template.
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct MultiLanguageDetection {
+            /// Required. If true, multi language detection will be enabled.
+            #[prost(bool, tag = "1")]
+            pub enable_multi_language_detection: bool,
+        }
+        /// Enforcement type for Model Armor filters.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum EnforcementType {
+            /// Default value. Same as INSPECT_AND_BLOCK.
+            Unspecified = 0,
+            /// Model Armor filters will run in inspect only mode. No action will be
+            /// taken on the request.
+            InspectOnly = 1,
+            /// Model Armor filters will run in inspect and block mode. Requests
+            /// that trip Model Armor filters will be blocked.
+            InspectAndBlock = 2,
+        }
+        impl EnforcementType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "ENFORCEMENT_TYPE_UNSPECIFIED",
+                    Self::InspectOnly => "INSPECT_ONLY",
+                    Self::InspectAndBlock => "INSPECT_AND_BLOCK",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "ENFORCEMENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "INSPECT_ONLY" => Some(Self::InspectOnly),
+                    "INSPECT_AND_BLOCK" => Some(Self::InspectAndBlock),
+                    _ => None,
+                }
+            }
+        }
     }
 }
 /// Message describing FloorSetting resource
@@ -75,6 +138,111 @@ pub struct FloorSetting {
     /// Optional. Floor Settings enforcement status.
     #[prost(bool, optional, tag = "5")]
     pub enable_floor_setting_enforcement: ::core::option::Option<bool>,
+    /// Optional. List of integrated services for which the floor setting is
+    /// applicable.
+    #[prost(
+        enumeration = "floor_setting::IntegratedService",
+        repeated,
+        packed = "false",
+        tag = "6"
+    )]
+    pub integrated_services: ::prost::alloc::vec::Vec<i32>,
+    /// Optional. AI Platform floor setting.
+    #[prost(message, optional, tag = "7")]
+    pub ai_platform_floor_setting: ::core::option::Option<AiPlatformFloorSetting>,
+    /// Optional. Metadata for FloorSetting
+    #[prost(message, optional, tag = "8")]
+    pub floor_setting_metadata: ::core::option::Option<
+        floor_setting::FloorSettingMetadata,
+    >,
+}
+/// Nested message and enum types in `FloorSetting`.
+pub mod floor_setting {
+    /// message describing FloorSetting Metadata
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct FloorSettingMetadata {
+        /// Optional. Metadata for multi language detection.
+        #[prost(message, optional, tag = "1")]
+        pub multi_language_detection: ::core::option::Option<
+            floor_setting_metadata::MultiLanguageDetection,
+        >,
+    }
+    /// Nested message and enum types in `FloorSettingMetadata`.
+    pub mod floor_setting_metadata {
+        /// Metadata to enable multi language detection via floor setting.
+        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        pub struct MultiLanguageDetection {
+            /// Required. If true, multi language detection will be enabled.
+            #[prost(bool, tag = "1")]
+            pub enable_multi_language_detection: bool,
+        }
+    }
+    /// Integrated service for which the floor setting is applicable.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum IntegratedService {
+        /// Unspecified integrated service.
+        Unspecified = 0,
+        /// AI Platform.
+        AiPlatform = 1,
+    }
+    impl IntegratedService {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "INTEGRATED_SERVICE_UNSPECIFIED",
+                Self::AiPlatform => "AI_PLATFORM",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INTEGRATED_SERVICE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AI_PLATFORM" => Some(Self::AiPlatform),
+                _ => None,
+            }
+        }
+    }
+}
+/// message describing AiPlatformFloorSetting
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct AiPlatformFloorSetting {
+    /// Optional. If true, log Model Armor filter results to Cloud Logging.
+    #[prost(bool, tag = "3")]
+    pub enable_cloud_logging: bool,
+    /// enforcement type for Model Armor filters.
+    #[prost(oneof = "ai_platform_floor_setting::EnforcementType", tags = "1, 2")]
+    pub enforcement_type: ::core::option::Option<
+        ai_platform_floor_setting::EnforcementType,
+    >,
+}
+/// Nested message and enum types in `AiPlatformFloorSetting`.
+pub mod ai_platform_floor_setting {
+    /// enforcement type for Model Armor filters.
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    pub enum EnforcementType {
+        /// Optional. If true, Model Armor filters will be run in inspect only mode.
+        /// No action will be taken on the request.
+        #[prost(bool, tag = "1")]
+        InspectOnly(bool),
+        /// Optional. If true, Model Armor filters will be run in inspect and block
+        /// mode. Requests that trip Model Armor filters will be blocked.
+        #[prost(bool, tag = "2")]
+        InspectAndBlock(bool),
+    }
 }
 /// Message for requesting list of Templates
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -477,7 +645,7 @@ pub struct SdpAdvancedConfig {
     /// Sanitization. All Sensitive Data Protection findings identified during
     /// inspection will be returned as SdpFinding in SdpInsepctionResult.
     ///
-    ///   e.g.
+    /// e.g.
     /// `projects/{project}/locations/{location}/inspectTemplates/{inspect_template}`
     #[prost(string, tag = "1")]
     pub inspect_template: ::prost::alloc::string::String,
@@ -505,6 +673,11 @@ pub struct SanitizeUserPromptRequest {
     /// Required. User prompt data to sanitize.
     #[prost(message, optional, tag = "2")]
     pub user_prompt_data: ::core::option::Option<DataItem>,
+    /// Optional. Metadata related to Multi Language Detection.
+    #[prost(message, optional, tag = "6")]
+    pub multi_language_detection_metadata: ::core::option::Option<
+        MultiLanguageDetectionMetadata,
+    >,
 }
 /// Sanitize Model Response request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -519,7 +692,7 @@ pub struct SanitizeModelResponseRequest {
     /// Optional. User Prompt associated with Model response.
     #[prost(string, tag = "4")]
     pub user_prompt: ::prost::alloc::string::String,
-    /// Optional. Metadata related for Translations.
+    /// Optional. Metadata related for multi language detection.
     #[prost(message, optional, tag = "7")]
     pub multi_language_detection_metadata: ::core::option::Option<
         MultiLanguageDetectionMetadata,
@@ -588,9 +761,19 @@ pub mod sanitization_result {
         pub ignore_partial_invocation_failures: bool,
     }
 }
-/// Message for Translation Support.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
-pub struct MultiLanguageDetectionMetadata {}
+/// Message for Enabling Multi Language Detection.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MultiLanguageDetectionMetadata {
+    /// Optional. Optional Source language of the user prompt.
+    ///
+    /// If multi-language detection is enabled but language is not set in that case
+    /// we would automatically detect the source language.
+    #[prost(string, tag = "1")]
+    pub source_language: ::prost::alloc::string::String,
+    /// Optional. Enable detection of multi-language prompts and responses.
+    #[prost(bool, tag = "2")]
+    pub enable_multi_language_detection: bool,
+}
 /// Filter Result obtained after Sanitization operations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FilterResult {

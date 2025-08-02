@@ -1418,6 +1418,9 @@ pub struct Fulfillment {
     /// associated with no-match event handlers.
     #[prost(bool, tag = "12")]
     pub enable_generative_fallback: bool,
+    /// A list of Generators to be called during this fulfillment.
+    #[prost(message, repeated, tag = "13")]
+    pub generators: ::prost::alloc::vec::Vec<fulfillment::GeneratorSettings>,
 }
 /// Nested message and enum types in `Fulfillment`.
 pub mod fulfillment {
@@ -1483,6 +1486,33 @@ pub mod fulfillment {
                 }
             }
         }
+    }
+    /// Generator settings used by the LLM to generate a text response.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GeneratorSettings {
+        /// Required. The generator to call.
+        /// Format:
+        /// `projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/generators/<GeneratorID>`.
+        #[prost(string, tag = "1")]
+        pub generator: ::prost::alloc::string::String,
+        /// Map from [placeholder parameter][Generator.Parameter.id] in the
+        /// [Generator][google.cloud.dialogflow.cx.v3.Generator] to corresponding
+        /// session parameters. By default, Dialogflow uses the session parameter
+        /// with the same name to fill in the generator template. e.g. If there is a
+        /// placeholder parameter `city` in the Generator, Dialogflow default to fill
+        /// in the `$city` with
+        /// `$session.params.city`. However, you may choose to fill `$city` with
+        /// `$session.params.desination-city`.
+        /// - Map key: [parameter ID][Genrator.Parameter.id]
+        /// - Map value: session parameter name
+        #[prost(map = "string, string", tag = "2")]
+        pub input_parameters: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
+        /// Required. Output parameter which should contain the generator response.
+        #[prost(string, tag = "3")]
+        pub output_parameter: ::prost::alloc::string::String,
     }
 }
 /// A Dialogflow CX conversation (session) can be described and visualized as a

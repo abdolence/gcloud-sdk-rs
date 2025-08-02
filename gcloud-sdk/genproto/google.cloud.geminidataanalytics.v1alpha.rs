@@ -175,7 +175,7 @@ pub struct PrivateLookerInstanceInfo {
 /// A datasource that can be used to answer questions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Datasource {
-    /// Output only. The schema of the datasource.
+    /// Optional. The schema of the datasource.
     #[prost(message, optional, tag = "7")]
     pub schema: ::core::option::Option<Schema>,
     /// The reference to the datasource.
@@ -201,7 +201,7 @@ pub mod datasource {
 /// The schema of a Datasource or QueryResult instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Schema {
-    /// Output only. The fields in the schema.
+    /// Optional. The fields in the schema.
     #[prost(message, repeated, tag = "1")]
     pub fields: ::prost::alloc::vec::Vec<Field>,
     /// Optional. Table display_name (same as label in
@@ -213,16 +213,16 @@ pub struct Schema {
 /// A field in a schema.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Field {
-    /// Output only. The name of the field.
+    /// Optional. The name of the field.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. The type of the field.
+    /// Optional. The type of the field.
     #[prost(string, tag = "2")]
     pub r#type: ::prost::alloc::string::String,
-    /// Output only. A brief description of the field.
+    /// Optional. A brief description of the field.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
-    /// Output only. The mode of the field (e.g., NULLABLE, REPEATED).
+    /// Optional. The mode of the field (e.g., NULLABLE, REPEATED).
     #[prost(string, tag = "4")]
     pub mode: ::prost::alloc::string::String,
     /// Optional. Field display_name (same as label in
@@ -231,6 +231,11 @@ pub struct Field {
     /// Optional. Recursive property for nested schema structures.
     #[prost(message, repeated, tag = "9")]
     pub subfields: ::prost::alloc::vec::Vec<Field>,
+    /// Optional. Field category, not required, currently only useful for Looker.
+    /// We are using a string to avoid depending on an external package and keep
+    /// this package self-contained.
+    #[prost(string, tag = "10")]
+    pub category: ::prost::alloc::string::String,
 }
 /// A collection of context to apply to this conversation
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -318,11 +323,12 @@ pub mod analysis_options {
 /// Request for retrieving BigQuery table contextual data via direct lookup.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RetrieveBigQueryTableContextRequest {
+    /// Required.
     #[deprecated]
     #[prost(string, tag = "5")]
     pub project: ::prost::alloc::string::String,
     /// Required. Parent value for RetrieveBigQueryTableContextRequest.
-    /// Pattern: projects/{project}/locations/{location}
+    /// Pattern: `projects/{project}/locations/{location}`
     /// For location, use "global" for now. Regional location value will be
     /// supported in the future.
     #[prost(string, tag = "6")]
@@ -354,7 +360,7 @@ pub mod retrieve_big_query_table_context_response {
     pub struct Candidate {
         /// The fully qualified resource name of the candidate in its source system,
         /// if applicable. E.g. for BigQuery tables, the format is:
-        /// //bigquery.googleapis.com/projects/{project_id}/datasets/{dataset_id}/tables/{table_id}
+        /// `bigquery.googleapis.com/projects/{project_id}/datasets/{dataset_id}/tables/{table_id}`
         #[prost(string, tag = "1")]
         pub linked_resource: ::prost::alloc::string::String,
         /// Content in string format.
@@ -362,14 +368,37 @@ pub mod retrieve_big_query_table_context_response {
         pub content: ::prost::alloc::string::String,
     }
 }
+/// Request for retrieving BigQuery table contextual data via direct lookup.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RetrieveBigQueryTableContextsRequest {
+    /// Required. Parent value for RetrieveBigQueryTableContextRequest.
+    /// Pattern: `projects/{project}/locations/{location}`
+    /// For location, use "global" for now. Regional location value will be
+    /// supported in the future.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. User query in natural language.
+    #[prost(string, tag = "2")]
+    pub query: ::prost::alloc::string::String,
+    /// Optional. A list of direct lookup parameters.
+    #[prost(message, repeated, tag = "3")]
+    pub direct_lookups: ::prost::alloc::vec::Vec<DirectLookup>,
+}
+/// Response for retrieving BigQuery table contextual data via direct lookup.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RetrieveBigQueryTableContextsResponse {
+    /// List of retrieved candidates with their bundled metadata.
+    #[prost(message, repeated, tag = "1")]
+    pub table_candidates: ::prost::alloc::vec::Vec<TableCandidate>,
+}
 /// Request for retrieving BigQuery table contextual data from recently accessed
 /// tables. Response is sorted by semantic similarity to the query.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RetrieveBigQueryTableContextsFromRecentTablesRequest {
     /// Required. Parent value for
     /// RetrieveBigQueryTableContextsFromRecentTablesRequest. Pattern:
-    /// projects/{project}/locations/{location} For location, use "global" for now.
-    /// Regional location value will be supported in the future.
+    /// `projects/{project}/locations/{location}` For location, use "global" for
+    /// now. Regional location value will be supported in the future.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. User query in natural language.
@@ -390,8 +419,8 @@ pub struct RetrieveBigQueryTableContextsFromRecentTablesResponse {
 pub struct RetrieveBigQueryTableSuggestedDescriptionsRequest {
     /// Required. Parent value for
     /// RetrieveBigQueryTableSuggestedDescriptionsRequest. Pattern:
-    /// projects/{project}/locations/{location} For location, use "global" for now.
-    /// Regional location value will be supported in the future.
+    /// `projects/{project}/locations/{location}` For location, use "global" for
+    /// now. Regional location value will be supported in the future.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. A list of direct lookup parameters.
@@ -406,12 +435,52 @@ pub struct RetrieveBigQueryTableSuggestedDescriptionsResponse {
     #[prost(message, repeated, tag = "1")]
     pub table_candidates: ::prost::alloc::vec::Vec<TableCandidate>,
 }
+/// Request for retrieving BigQuery table schema with suggested NL-SQL examples.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RetrieveBigQueryTableSuggestedExamplesRequest {
+    /// Required. Parent value for RetrieveBigQueryTableSuggestedExamplesRequest.
+    /// Pattern: `projects/{project}/locations/{location}`
+    /// For location, use "global" for now. Regional location value will be
+    /// supported in the future.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. A list of direct lookup parameters.
+    #[prost(message, repeated, tag = "2")]
+    pub direct_lookup: ::prost::alloc::vec::Vec<DirectLookup>,
+}
+/// Request for retrieving BigQuery table schema with suggested NL-SQL examples.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RetrieveBigQueryTableSuggestedExamplesResponse {
+    /// List of suggested examples.
+    #[prost(message, repeated, tag = "2")]
+    pub example_suggestions: ::prost::alloc::vec::Vec<
+        retrieve_big_query_table_suggested_examples_response::ExampleSuggestion,
+    >,
+}
+/// Nested message and enum types in `RetrieveBigQueryTableSuggestedExamplesResponse`.
+pub mod retrieve_big_query_table_suggested_examples_response {
+    /// A suggested BigQuery NL-SQL example for the given table.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ExampleSuggestion {
+        /// The natural language query.
+        #[prost(string, tag = "1")]
+        pub nl_query: ::prost::alloc::string::String,
+        /// The SQL answer to the query.
+        #[prost(string, tag = "2")]
+        pub sql: ::prost::alloc::string::String,
+        /// The linked table resources for the suggested example.
+        #[prost(string, repeated, tag = "3")]
+        pub linked_bigquery_tables: ::prost::alloc::vec::Vec<
+            ::prost::alloc::string::String,
+        >,
+    }
+}
 /// Request for retrieving BigQuery table references from recently accessed
 /// tables. Response is sorted by semantic similarity to the query.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RetrieveBigQueryRecentRelevantTablesRequest {
     /// Required. Parent value for RetrieveBigQueryRecentTablesRequest.
-    /// Pattern: projects/{project}/locations/{location}
+    /// Pattern: `projects/{project}/locations/{location}`
     /// For location, use "global" for now. Regional location value will be
     /// supported in the future.
     #[prost(string, tag = "1")]
@@ -443,7 +512,7 @@ pub struct DirectLookup {
 pub struct TableCandidate {
     /// The fully qualified resource name of the candidate in its source system,
     /// if applicable. E.g. for BigQuery tables, the format is:
-    /// //bigquery.googleapis.com/projects/{project_id}/datasets/{dataset_id}/tables/{table_id}.
+    /// `bigquery.googleapis.com/projects/{project_id}/datasets/{dataset_id}/tables/{table_id}`.
     #[prost(string, tag = "1")]
     pub linked_resource: ::prost::alloc::string::String,
     /// In-context-learning string. For example, could be in DDL format.
@@ -598,6 +667,38 @@ pub mod context_retrieval_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Retrieves BigQuery table contextual data for provided table references.
+        /// Contextual data includes table schema information as well as sample
+        /// values.
+        pub async fn retrieve_big_query_table_contexts(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RetrieveBigQueryTableContextsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::RetrieveBigQueryTableContextsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.geminidataanalytics.v1alpha.ContextRetrievalService/RetrieveBigQueryTableContexts",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.geminidataanalytics.v1alpha.ContextRetrievalService",
+                        "RetrieveBigQueryTableContexts",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Retrieves BigQuery table contextual data from recently accessed tables.
         /// Contextual data includes table schema information as well as sample
         /// values.
@@ -667,6 +768,38 @@ pub mod context_retrieval_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Retrieves BigQuery table schema with suggested NL-SQL examples.
+        pub async fn retrieve_big_query_table_suggested_examples(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::RetrieveBigQueryTableSuggestedExamplesRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::RetrieveBigQueryTableSuggestedExamplesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.geminidataanalytics.v1alpha.ContextRetrievalService/RetrieveBigQueryTableSuggestedExamples",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.geminidataanalytics.v1alpha.ContextRetrievalService",
+                        "RetrieveBigQueryTableSuggestedExamples",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Retrieves BigQuery table references from recently accessed tables.
         pub async fn retrieve_big_query_recent_relevant_tables(
             &mut self,
@@ -711,7 +844,7 @@ pub struct Conversation {
     /// Required. Agent(s) in the conversation.
     /// Currently, only one agent is supported. This field is repeated to allow
     /// for future support of multiple agents in a conversation.
-    /// Format: projects/{project}/locations/{location}/dataAgents/{agent}
+    /// Format: `projects/{project}/locations/{location}/dataAgents/{agent}`
     #[prost(string, repeated, tag = "2")]
     pub agents: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. Creation timestamp.
@@ -733,7 +866,7 @@ pub struct Conversation {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConversationRequest {
     /// Required. Parent value for CreateConversationRequest.
-    /// Format: projects/{project}/locations/{location}
+    /// Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The conversation id of the conversation to create.
@@ -754,7 +887,7 @@ pub struct CreateConversationRequest {
 pub struct GetConversationRequest {
     /// Required. Name of the resource.
     /// Format:
-    /// projects/{project}/locations/{location}/conversations/{conversation}
+    /// `projects/{project}/locations/{location}/conversations/{conversation}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -762,7 +895,7 @@ pub struct GetConversationRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConversationsRequest {
     /// Required. Parent value for ListConversationsRequest.
-    /// Format: projects/{project}/locations/{location}
+    /// Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server may return fewer items than
@@ -813,12 +946,12 @@ pub struct DataAnalyticsAgent {
 pub struct DataAgent {
     /// Optional. Identifier. The unique resource name of a Agent.
     /// Format:
-    /// "projects/{project}/locations/{location}/dataAgents/{data_agent_id}"
+    /// `projects/{project}/locations/{location}/dataAgents/{data_agent_id}`
     /// `{data_agent}` is the resource id and should be 63 characters or less and
     /// must match the format described in
     /// <https://google.aip.dev/122#resource-id-segments>
     ///
-    /// Example: "projects/1234567890/locations/us-central1/dataAgents/my-agent"
+    /// Example: `projects/1234567890/locations/us-central1/dataAgents/my-agent`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. User friendly display name.
@@ -907,6 +1040,101 @@ pub struct ListDataAgentsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataAgentsResponse {
     /// The list of DataAgent.
+    #[prost(message, repeated, tag = "1")]
+    pub data_agents: ::prost::alloc::vec::Vec<DataAgent>,
+    /// The next page token or empty if none.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unordered list. Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Message for requesting list of accessible DataAgents.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAccessibleDataAgentsRequest {
+    /// Required. Parent value for ListAccessibleDataAgentsRequest.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Server may return fewer items than requested.
+    /// If unspecified, server will pick an appropriate default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListAccessibleDataAgents`
+    /// call. Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `ListAccessibleDataAgents` must match the call that provided the page
+    /// token. The service may return fewer than this value.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filtering results. See [AIP-160](<https://google.aip.dev/160>) for
+    /// syntax.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. User specification for how to order the results.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+    /// Optional. If true, the list results will include soft-deleted DataAgents.
+    /// Defaults to false.
+    #[prost(bool, tag = "6")]
+    pub show_deleted: bool,
+    /// Optional. Filter for the creator of the agent.
+    #[prost(
+        enumeration = "list_accessible_data_agents_request::CreatorFilter",
+        tag = "7"
+    )]
+    pub creator_filter: i32,
+}
+/// Nested message and enum types in `ListAccessibleDataAgentsRequest`.
+pub mod list_accessible_data_agents_request {
+    /// Filter for the creator of the agent.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum CreatorFilter {
+        /// Default value.
+        Unspecified = 0,
+        /// No creator-specific filter will be applied. All agents will be returned.
+        None = 1,
+        /// Only agents created by the user calling the API will be returned.
+        CreatorOnly = 2,
+    }
+    impl CreatorFilter {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "CREATOR_FILTER_UNSPECIFIED",
+                Self::None => "NONE",
+                Self::CreatorOnly => "CREATOR_ONLY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CREATOR_FILTER_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "CREATOR_ONLY" => Some(Self::CreatorOnly),
+                _ => None,
+            }
+        }
+    }
+}
+/// Message for response to listing accessible DataAgents.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAccessibleDataAgentsResponse {
+    /// The list of accessible DataAgent.
     #[prost(message, repeated, tag = "1")]
     pub data_agents: ::prost::alloc::vec::Vec<DataAgent>,
     /// The next page token or empty if none.
@@ -1157,6 +1385,37 @@ pub mod data_agent_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Lists DataAgents that are accessible to the caller in a given project and
+        /// location.
+        pub async fn list_accessible_data_agents(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListAccessibleDataAgentsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListAccessibleDataAgentsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.geminidataanalytics.v1alpha.DataAgentService/ListAccessibleDataAgents",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.geminidataanalytics.v1alpha.DataAgentService",
+                        "ListAccessibleDataAgents",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Gets details of a single DataAgent.
         pub async fn get_data_agent(
             &mut self,
@@ -1274,6 +1533,70 @@ pub mod data_agent_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Gets the IAM policy for DataAgent
+        pub async fn get_iam_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::super::super::super::iam::v1::GetIamPolicyRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::iam::v1::Policy>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.geminidataanalytics.v1alpha.DataAgentService/GetIamPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.geminidataanalytics.v1alpha.DataAgentService",
+                        "GetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Sets the IAM policy for a DataAgent.
+        pub async fn set_iam_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::super::super::super::iam::v1::SetIamPolicyRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::iam::v1::Policy>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.geminidataanalytics.v1alpha.DataAgentService/SetIamPolicy",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.geminidataanalytics.v1alpha.DataAgentService",
+                        "SetIamPolicy",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// Request for listing chat messages based on parent and conversation_id.
@@ -1281,7 +1604,7 @@ pub mod data_agent_service_client {
 pub struct ListMessagesRequest {
     /// Required. The conversation to list messages under.
     /// Format:
-    /// projects/{project}/locations/{location}/conversations/{conversation_id}
+    /// `projects/{project}/locations/{location}/conversations/{conversation_id}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server may return fewer items than
@@ -1329,7 +1652,7 @@ pub struct ChatRequest {
     #[prost(string, tag = "1")]
     pub project: ::prost::alloc::string::String,
     /// Required. The parent value for chat request.
-    /// Pattern: projects/{project}/locations/{location}
+    /// Pattern: `projects/{project}/locations/{location}`
     #[prost(string, tag = "3")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Content of current conversation.
@@ -1441,7 +1764,7 @@ pub mod data_agent_context {
 pub struct ConversationReference {
     /// Required. Name of the conversation resource.
     /// Format:
-    /// projects/{project}/locations/{location}/conversations/{conversation_id}
+    /// `projects/{project}/locations/{location}/conversations/{conversation_id}`
     #[prost(string, tag = "1")]
     pub conversation: ::prost::alloc::string::String,
     /// Required. Context for the chat request using a data agent.
@@ -1498,6 +1821,11 @@ pub mod user_message {
 /// the system.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SystemMessage {
+    /// Identifies the group that the event belongs to. Similar events are deemed
+    /// to be logically relevant to each other and should be shown together in
+    /// the UI.
+    #[prost(int32, optional, tag = "12")]
+    pub group_id: ::core::option::Option<i32>,
     /// The kind of content in the system message.
     #[prost(oneof = "system_message::Kind", tags = "1, 2, 3, 4, 5, 6")]
     pub kind: ::core::option::Option<system_message::Kind>,
@@ -1530,7 +1858,7 @@ pub mod system_message {
 /// A multi-part text message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextMessage {
-    /// Output only. The parts of the message.
+    /// Optional. The parts of the message.
     #[prost(string, repeated, tag = "1")]
     pub parts: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -1559,14 +1887,14 @@ pub mod schema_message {
 /// A query for resolving the schema relevant to the posed question.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SchemaQuery {
-    /// Output only. The question to send to the system for schema resolution.
+    /// Optional. The question to send to the system for schema resolution.
     #[prost(string, tag = "1")]
     pub question: ::prost::alloc::string::String,
 }
 /// The result of schema resolution.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SchemaResult {
-    /// Output only. The datasources used to resolve the schema query.
+    /// Optional. The datasources used to resolve the schema query.
     #[prost(message, repeated, tag = "1")]
     pub datasources: ::prost::alloc::vec::Vec<Datasource>,
 }
@@ -1640,36 +1968,36 @@ pub mod looker_query {
 /// A query for retrieving data.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataQuery {
-    /// Output only. A natural language question to answer.
+    /// Optional. A natural language question to answer.
     #[prost(string, tag = "1")]
     pub question: ::prost::alloc::string::String,
-    /// Output only. A snake-case name for the query that reflects its intent. It
-    /// is used to name the corresponding data result, so that it can be referenced
-    /// in later steps.
+    /// Optional. A snake-case name for the query that reflects its intent. It is
+    /// used to name the corresponding data result, so that it can be referenced in
+    /// later steps.
     ///
-    /// Example: "total_sales_by_product"
-    /// Example: "sales_for_product_12345"
+    /// * Example: "total_sales_by_product"
+    /// * Example: "sales_for_product_12345"
     #[prost(string, tag = "3")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. The datasources available to answer the question.
+    /// Optional. The datasources available to answer the question.
     #[prost(message, repeated, tag = "2")]
     pub datasources: ::prost::alloc::vec::Vec<Datasource>,
 }
 /// Retrieved data.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataResult {
-    /// Output only. A snake-case name for the data result that reflects its
-    /// contents. The name is used to pass the result around by reference, and
-    /// serves as a signal about its meaning.
+    /// Optional. A snake-case name for the data result that reflects its contents.
+    /// The name is used to pass the result around by reference, and serves as a
+    /// signal about its meaning.
     ///
-    /// Example: "total_sales_by_product"
-    /// Example: "sales_for_product_12345"
+    /// * Example: "total_sales_by_product"
+    /// * Example: "sales_for_product_12345"
     #[prost(string, tag = "3")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. The schema of the data.
+    /// Optional. The schema of the data.
     #[prost(message, optional, tag = "5")]
     pub schema: ::core::option::Option<Schema>,
-    /// Output only. The content of the data. Each row is a struct that matches the
+    /// Optional. The content of the data. Each row is a struct that matches the
     /// schema. Simple values are represented as strings, while nested structures
     /// are represented as lists or structs.
     #[prost(message, repeated, tag = "2")]
@@ -1693,14 +2021,13 @@ pub struct BigQueryJob {
     /// See <https://cloud.google.com/bigquery/docs/reference/rest/v2/JobReference>
     #[prost(string, tag = "5")]
     pub location: ::prost::alloc::string::String,
-    /// Output only. A reference to the destination table of the job's query
-    /// results.
+    /// Optional. A reference to the destination table of the job's query results.
     ///
     /// See
     /// <https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#jobconfigurationquery>
     #[prost(message, optional, tag = "3")]
     pub destination_table: ::core::option::Option<BigQueryTableReference>,
-    /// Output only. The schema of the job's query results.
+    /// Optional. The schema of the job's query results.
     ///
     /// See
     /// <https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#jobstatistics2>
@@ -1732,11 +2059,10 @@ pub mod analysis_message {
 /// A query for performing an analysis.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalysisQuery {
-    /// Output only. An analysis question to help answer the user's original
-    /// question.
+    /// Optional. An analysis question to help answer the user's original question.
     #[prost(string, tag = "1")]
     pub question: ::prost::alloc::string::String,
-    /// Output only. The names of previously retrieved data results to analyze.
+    /// Optional. The names of previously retrieved data results to analyze.
     #[prost(string, repeated, tag = "2")]
     pub data_result_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -1809,10 +2135,10 @@ pub mod chart_message {
 /// A query for generating a chart.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChartQuery {
-    /// Output only. Natural language instructions for generating the chart.
+    /// Optional. Natural language instructions for generating the chart.
     #[prost(string, tag = "1")]
     pub instructions: ::prost::alloc::string::String,
-    /// Output only. The name of a previously retrieved data result to use in the
+    /// Optional. The name of a previously retrieved data result to use in the
     /// chart.
     #[prost(string, tag = "2")]
     pub data_result_name: ::prost::alloc::string::String,
@@ -1820,7 +2146,7 @@ pub struct ChartQuery {
 /// The result of a chart generation query.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChartResult {
-    /// Output only. A generated Vega chart config.
+    /// Optional. A generated Vega chart config.
     /// See <https://vega.github.io/vega/docs/config/>
     #[prost(message, optional, tag = "2")]
     pub vega_config: ::core::option::Option<::prost_types::Struct>,

@@ -513,9 +513,10 @@ pub struct DeleteCustomEmojiRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Output only. Annotations associated with the plain-text body of the message.
-/// To add basic formatting to a text message, see
-/// [Format text
+/// Output only. Annotations can be associated with the plain-text body of the
+/// message or with chips that link to Google Workspace resources like Google
+/// Docs or Sheets with `start_index` and `length` of 0. To add basic formatting
+/// to a text message, see [Format text
 /// messages](<https://developers.google.com/workspace/chat/format-messages>).
 ///
 /// Example plain-text message body:
@@ -550,7 +551,7 @@ pub struct Annotation {
     #[prost(int32, optional, tag = "2")]
     pub start_index: ::core::option::Option<i32>,
     /// Length of the substring in the plain-text message body this annotation
-    /// corresponds to.
+    /// corresponds to. If not present, indicates a length of 0.
     #[prost(int32, tag = "3")]
     pub length: i32,
     /// Additional metadata about the annotation.
@@ -695,7 +696,10 @@ pub mod slash_command_metadata {
         }
     }
 }
-/// A rich link to a resource.
+/// A rich link to a resource. Rich links can be associated with the plain-text
+/// body of the message or represent chips that link to Google Workspace
+/// resources like Google Docs or Sheets with `start_index` and `length`
+/// of 0.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RichLinkMetadata {
     /// The URI of this link.
@@ -705,7 +709,7 @@ pub struct RichLinkMetadata {
     #[prost(enumeration = "rich_link_metadata::RichLinkType", tag = "2")]
     pub rich_link_type: i32,
     /// Data for the linked resource.
-    #[prost(oneof = "rich_link_metadata::Data", tags = "3, 4")]
+    #[prost(oneof = "rich_link_metadata::Data", tags = "3, 4, 5, 6")]
     pub data: ::core::option::Option<rich_link_metadata::Data>,
 }
 /// Nested message and enum types in `RichLinkMetadata`.
@@ -730,6 +734,10 @@ pub mod rich_link_metadata {
         DriveFile = 1,
         /// A Chat space rich link type. For example, a space smart chip.
         ChatSpace = 2,
+        /// A Meet message rich link type. For example, a Meet chip.
+        MeetSpace = 4,
+        /// A Calendar message rich link type. For example, a Calendar chip.
+        CalendarEvent = 5,
     }
     impl RichLinkType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -741,6 +749,8 @@ pub mod rich_link_metadata {
                 Self::Unspecified => "RICH_LINK_TYPE_UNSPECIFIED",
                 Self::DriveFile => "DRIVE_FILE",
                 Self::ChatSpace => "CHAT_SPACE",
+                Self::MeetSpace => "MEET_SPACE",
+                Self::CalendarEvent => "CALENDAR_EVENT",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -749,6 +759,8 @@ pub mod rich_link_metadata {
                 "RICH_LINK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
                 "DRIVE_FILE" => Some(Self::DriveFile),
                 "CHAT_SPACE" => Some(Self::ChatSpace),
+                "MEET_SPACE" => Some(Self::MeetSpace),
+                "CALENDAR_EVENT" => Some(Self::CalendarEvent),
                 _ => None,
             }
         }
@@ -762,6 +774,12 @@ pub mod rich_link_metadata {
         /// Data for a chat space link.
         #[prost(message, tag = "4")]
         ChatSpaceLinkData(super::ChatSpaceLinkData),
+        /// Data for a Meet space link.
+        #[prost(message, tag = "5")]
+        MeetSpaceLinkData(super::MeetSpaceLinkData),
+        /// Data for a Calendar event link.
+        #[prost(message, tag = "6")]
+        CalendarEventLinkData(super::CalendarEventLinkData),
     }
 }
 /// Annotation metadata for custom emoji.
@@ -801,6 +819,129 @@ pub struct ChatSpaceLinkData {
     /// Format: `spaces/{space}/messages/{message}`
     #[prost(string, tag = "3")]
     pub message: ::prost::alloc::string::String,
+}
+/// Data for Meet space links.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MeetSpaceLinkData {
+    /// Meeting code of the linked Meet space.
+    #[prost(string, tag = "1")]
+    pub meeting_code: ::prost::alloc::string::String,
+    /// Indicates the type of the Meet space.
+    #[prost(enumeration = "meet_space_link_data::Type", tag = "2")]
+    pub r#type: i32,
+    /// Optional. Output only. If the Meet is a Huddle, indicates the status of the
+    /// huddle. Otherwise, this is unset.
+    #[prost(enumeration = "meet_space_link_data::HuddleStatus", tag = "3")]
+    pub huddle_status: i32,
+}
+/// Nested message and enum types in `MeetSpaceLinkData`.
+pub mod meet_space_link_data {
+    /// The type of the Meet space.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// Default value for the enum. Don't use.
+        Unspecified = 0,
+        /// The Meet space is a meeting.
+        Meeting = 1,
+        /// The Meet space is a huddle.
+        Huddle = 2,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "TYPE_UNSPECIFIED",
+                Self::Meeting => "MEETING",
+                Self::Huddle => "HUDDLE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MEETING" => Some(Self::Meeting),
+                "HUDDLE" => Some(Self::Huddle),
+                _ => None,
+            }
+        }
+    }
+    /// The status of the huddle
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum HuddleStatus {
+        /// Default value for the enum. Don't use.
+        Unspecified = 0,
+        /// The huddle has started.
+        Started = 1,
+        /// The huddle has ended. In this case the Meet space URI and identifiers
+        /// will no longer be valid.
+        Ended = 2,
+        /// The huddle has been missed. In this case the Meet space URI and
+        /// identifiers will no longer be valid.
+        Missed = 3,
+    }
+    impl HuddleStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "HUDDLE_STATUS_UNSPECIFIED",
+                Self::Started => "STARTED",
+                Self::Ended => "ENDED",
+                Self::Missed => "MISSED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "HUDDLE_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "STARTED" => Some(Self::Started),
+                "ENDED" => Some(Self::Ended),
+                "MISSED" => Some(Self::Missed),
+                _ => None,
+            }
+        }
+    }
+}
+/// Data for Calendar event links.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CalendarEventLinkData {
+    /// The [Calendar
+    /// identifier](<https://developers.google.com/workspace/calendar/api/v3/reference/calendars>)
+    /// of the linked Calendar.
+    #[prost(string, tag = "1")]
+    pub calendar_id: ::prost::alloc::string::String,
+    /// The [Event
+    /// identifier](<https://developers.google.com/workspace/calendar/api/v3/reference/events>)
+    /// of the linked Calendar event.
+    #[prost(string, tag = "2")]
+    pub event_id: ::prost::alloc::string::String,
 }
 /// Type of the annotation.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1037,8 +1178,6 @@ pub struct CreateMembershipRequest {
     /// - When [authenticating as an
     /// app](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>),
     /// the `chat.app.memberships` authorization scope is required.
-    /// Authenticating as an app is available in [Developer
-    /// Preview](<https://developers.google.com/workspace/preview>).
     ///
     /// - Set `user.type` to `HUMAN`, and set `user.name` with format
     /// `users/{user}`, where `{user}` can be the email address for the user. For
@@ -1253,9 +1392,13 @@ pub struct DeleteMembershipRequest {
     /// human users' or their own memberships. Chat apps can't delete other apps'
     /// memberships.
     ///
-    /// When deleting a human membership, requires the `chat.memberships` scope and
-    /// `spaces/{space}/members/{member}` format. You can use the email as an
-    /// alias for `{member}`. For example,
+    /// When deleting a human membership, requires the `chat.memberships` scope
+    /// with [user
+    /// authentication](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>)
+    /// or the `chat.memberships.app` scope with [app
+    /// authentication](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>)
+    /// and the `spaces/{space}/members/{member}` format.
+    /// You can use the email as an alias for `{member}`. For example,
     /// `spaces/{space}/members/example@gmail.com` where `example@gmail.com` is the
     /// email of the Google Chat user.
     ///
@@ -1777,7 +1920,9 @@ pub struct DeletionMetadata {
 /// Nested message and enum types in `DeletionMetadata`.
 pub mod deletion_metadata {
     /// Who deleted the message and how it was deleted. More values may be added in
-    /// the future.
+    /// the future. See [Edit or delete a message in Google
+    /// Chat](<https://support.google.com/chat/answer/7653281>) for details on when
+    /// messages can be deleted.
     #[derive(
         Clone,
         Copy,
@@ -1795,18 +1940,22 @@ pub mod deletion_metadata {
         Unspecified = 0,
         /// User deleted their own message.
         Creator = 1,
-        /// The space owner deleted the message.
+        /// A space manager deleted the message.
         SpaceOwner = 2,
-        /// A Google Workspace admin deleted the message.
+        /// A Google Workspace administrator deleted the message. Administrators can
+        /// delete any message in the space, including messages sent by any space
+        /// member or Chat app.
         Admin = 3,
         /// A Chat app deleted its own message when it expired.
         AppMessageExpiry = 4,
-        /// A Chat app deleted the message on behalf of the user.
+        /// A Chat app deleted the message on behalf of the creator (using user
+        /// authentication).
         CreatorViaApp = 5,
-        /// A Chat app deleted the message on behalf of the space owner.
+        /// A Chat app deleted the message on behalf of a space manager (using user
+        /// authentication).
         SpaceOwnerViaApp = 6,
-        /// A member of the space deleted the message. Human users can delete
-        /// messages sent by apps.
+        /// A member of the space deleted the message. Users can delete messages sent
+        /// by apps.
         SpaceMember = 7,
     }
     impl DeletionType {
@@ -1851,12 +2000,12 @@ pub struct MatchedUrl {
     #[prost(string, tag = "2")]
     pub url: ::prost::alloc::string::String,
 }
-/// A [slash
+/// Metadata about a [slash
 /// command](<https://developers.google.com/workspace/chat/commands>) in
 /// Google Chat.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct SlashCommand {
-    /// The ID of the slash command invoked.
+    /// The ID of the slash command.
     #[prost(int64, tag = "1")]
     pub command_id: i64,
 }
@@ -2002,6 +2151,20 @@ pub struct Space {
     /// Only populated when the `space_type` is `SPACE`.
     #[prost(message, optional, tag = "23")]
     pub access_settings: ::core::option::Option<space::AccessSettings>,
+    /// Optional. Immutable. The customer id of the domain of the space.
+    /// Required only when creating a space with [app
+    /// authentication](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>)
+    /// and `SpaceType` is `SPACE`, otherwise should not be set.
+    ///
+    /// In the format `customers/{customer}`, where `customer` is the `id` from the
+    /// [Admin SDK customer resource](
+    /// <https://developers.google.com/admin-sdk/directory/reference/rest/v1/customers>).
+    /// Private apps can also use the `customers/my_customer` alias to create
+    /// the space in the same Google Workspace organization as the app.
+    ///
+    /// For DMs, this field isn't populated.
+    #[prost(string, optional, tag = "24")]
+    pub customer: ::core::option::Option<::prost::alloc::string::String>,
     /// Output only. The URI for a user to access the space.
     #[prost(string, tag = "25")]
     pub space_uri: ::prost::alloc::string::String,
@@ -2017,9 +2180,6 @@ pub struct Space {
     /// Represents the \[permission settings\]
     /// (<https://support.google.com/chat/answer/13340792>) of a space. Only
     /// populated when the `space_type` is `SPACE`.
-    ///
-    /// Requires [user
-    /// authentication](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>).
     #[prost(oneof = "space::SpacePermissionSettings", tags = "26, 27")]
     pub space_permission_settings: ::core::option::Option<
         space::SpacePermissionSettings,
@@ -2082,8 +2242,7 @@ pub mod space {
         /// authentication](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>)
         /// with [administrator
         /// approval](<https://support.google.com/a?p=chat-app-auth>)
-        /// with the `chat.app.spaces` scope in [Developer
-        /// Preview](<https://developers.google.com/workspace/preview>).
+        /// with the `chat.app.spaces` scope.
         ///
         /// This field is not populated when using the `chat.bot` scope with [app
         /// authentication](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>).
@@ -2387,20 +2546,40 @@ pub mod space {
     /// Represents the \[permission settings\]
     /// (<https://support.google.com/chat/answer/13340792>) of a space. Only
     /// populated when the `space_type` is `SPACE`.
-    ///
-    /// Requires [user
-    /// authentication](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>).
     #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
     pub enum SpacePermissionSettings {
         /// Optional. Input only. Predefined space permission settings, input only
         /// when creating a space. If the field is not set, a collaboration space is
         /// created. After you create the space, settings are populated in the
         /// `PermissionSettings` field.
+        ///
+        /// Setting predefined permission settings supports:
+        ///
+        /// - [App
+        /// authentication](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>)
+        /// with [administrator
+        /// approval](<https://support.google.com/a?p=chat-app-auth>) with the
+        /// `chat.app.spaces` or `chat.app.spaces.create` scopes.
+        ///
+        /// - [User
+        /// authentication](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>)
         #[prost(enumeration = "PredefinedPermissionSettings", tag = "26")]
         PredefinedPermissionSettings(i32),
         /// Optional. Space permission settings for existing spaces. Input for
         /// updating exact space permission settings, where existing permission
         /// settings are replaced. Output lists current permission settings.
+        ///
+        /// Reading and updating permission settings supports:
+        ///
+        /// - [App
+        /// authentication](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-app>)
+        /// with [administrator
+        /// approval](<https://support.google.com/a?p=chat-app-auth>) with the
+        /// `chat.app.spaces` scope. Only populated and settable when the Chat app
+        /// created the space.
+        ///
+        /// - [User
+        /// authentication](<https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>)
         #[prost(message, tag = "27")]
         PermissionSettings(PermissionSettings),
     }
@@ -2897,7 +3076,9 @@ pub struct Message {
     /// [Card builder](<https://addons.gsuite.google.com/uikit/builder>)
     #[prost(message, repeated, tag = "22")]
     pub cards_v2: ::prost::alloc::vec::Vec<CardWithId>,
-    /// Output only. Annotations associated with the `text` in this message.
+    /// Output only. Annotations can be associated with the plain-text body of the
+    /// message or with chips that link to Google Workspace resources like Google
+    /// Docs or Sheets with `start_index` and `length` of 0.
     #[prost(message, repeated, tag = "10")]
     pub annotations: ::prost::alloc::vec::Vec<Annotation>,
     /// The thread the message belongs to. For example usage, see
@@ -4198,7 +4379,7 @@ pub struct SetUpSpaceRequest {
     /// Optional. The Google Chat users or groups to invite to join the space. Omit
     /// the calling user, as they are added automatically.
     ///
-    /// The set currently allows up to 20 memberships (in addition to the caller).
+    /// The set currently allows up to 49 memberships (in addition to the caller).
     ///
     /// For human membership, the `Membership.member` field must contain a `user`
     /// with `name` populated (format: `users/{user}`) and `type` set to
@@ -4359,10 +4540,21 @@ pub mod chat_service_client {
         /// Creates a message in a Google Chat space. For an example, see [Send a
         /// message](https://developers.google.com/workspace/chat/create-messages).
         ///
-        /// The `create()` method requires either [user
+        /// Supports the following types of
+        /// [authentication](https://developers.google.com/workspace/chat/authenticate-authorize):
+        ///
+        /// - [App
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-app)
+        /// with the authorization scope:
+        ///     - `https://www.googleapis.com/auth/chat.bot`
+        /// - [User
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
-        /// or [app
-        /// authentication](https://developers.google.com/workspace/chat/authorize-import).
+        /// with one of the following authorization scopes:
+        ///     - `https://www.googleapis.com/auth/chat.messages.create`
+        ///     - `https://www.googleapis.com/auth/chat.messages`
+        ///     - `https://www.googleapis.com/auth/chat.import` (import mode spaces
+        ///     only)
+        ///
         /// Chat attributes the message sender differently depending on the type of
         /// authentication that you use in your request.
         ///
@@ -4419,7 +4611,13 @@ pub mod chat_service_client {
         /// messages](https://developers.google.com/workspace/chat/api/guides/v1/messages/list).
         ///
         /// Requires [user
-        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with one of the following [authorization
+        /// scopes](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        ///   - `https://www.googleapis.com/auth/chat.messages.readonly`
+        ///   - `https://www.googleapis.com/auth/chat.messages`
+        ///   - `https://www.googleapis.com/auth/chat.import` (import mode spaces only)
         pub async fn list_messages(
             &mut self,
             request: impl tonic::IntoRequest<super::ListMessagesRequest>,
@@ -4461,11 +4659,23 @@ pub mod chat_service_client {
         ///
         /// - [App
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-app)
+        /// with one of the following authorization scopes:
+        ///     - `https://www.googleapis.com/auth/chat.bot`
+        ///     - `https://www.googleapis.com/auth/chat.app.memberships` (requires
+        ///     [administrator approval](https://support.google.com/a?p=chat-app-auth))
         ///
         /// - [User
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
-        /// You can authenticate and authorize this method with administrator
-        /// privileges by setting the `use_admin_access` field in the request.
+        /// with one of the following authorization scopes:
+        ///     - `https://www.googleapis.com/auth/chat.memberships.readonly`
+        ///     - `https://www.googleapis.com/auth/chat.memberships`
+        ///     - `https://www.googleapis.com/auth/chat.import` (import mode spaces
+        ///     only)
+        ///     - User authentication grants administrator privileges when an
+        ///     administrator account authenticates, `use_admin_access` is `true`, and
+        ///     one of the following authorization scopes is used:
+        ///         - `https://www.googleapis.com/auth/chat.admin.memberships.readonly`
+        ///         - `https://www.googleapis.com/auth/chat.admin.memberships`
         pub async fn list_memberships(
             &mut self,
             request: impl tonic::IntoRequest<super::ListMembershipsRequest>,
@@ -4501,11 +4711,21 @@ pub mod chat_service_client {
         ///
         /// - [App
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-app)
+        /// with one of the following authorization scopes:
+        ///     - `https://www.googleapis.com/auth/chat.bot`
+        ///     - `https://www.googleapis.com/auth/chat.app.memberships` (requires
+        ///     [administrator approval](https://support.google.com/a?p=chat-app-auth))
         ///
         /// - [User
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
-        /// You can authenticate and authorize this method with administrator
-        /// privileges by setting the `use_admin_access` field in the request.
+        /// with one of the following authorization scopes:
+        ///     - `https://www.googleapis.com/auth/chat.memberships.readonly`
+        ///     - `https://www.googleapis.com/auth/chat.memberships`
+        ///     - User authentication grants administrator privileges when an
+        ///     administrator account authenticates, `use_admin_access` is `true`, and
+        ///     one of the following authorization scopes is used:
+        ///         - `https://www.googleapis.com/auth/chat.admin.memberships.readonly`
+        ///         - `https://www.googleapis.com/auth/chat.admin.memberships`
         pub async fn get_membership(
             &mut self,
             request: impl tonic::IntoRequest<super::GetMembershipRequest>,
@@ -4536,9 +4756,14 @@ pub mod chat_service_client {
         ///
         /// - [App
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-app)
+        /// with the authorization scope:
+        ///     - `https://www.googleapis.com/auth/chat.bot`
         ///
         /// - [User
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with one of the following authorization scopes:
+        ///     - `https://www.googleapis.com/auth/chat.messages.readonly`
+        ///     - `https://www.googleapis.com/auth/chat.messages`
         ///
         /// Note: Might return a message from a blocked member or space.
         pub async fn get_message(
@@ -4574,9 +4799,15 @@ pub mod chat_service_client {
         ///
         /// - [App
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-app)
+        /// with the authorization scope:
+        ///     - `https://www.googleapis.com/auth/chat.bot`
         ///
         /// - [User
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with one of the following authorization scopes:
+        ///     - `https://www.googleapis.com/auth/chat.messages`
+        ///     - `https://www.googleapis.com/auth/chat.import` (import mode spaces
+        ///     only)
         ///
         /// When using app authentication, requests can only update messages
         /// created by the calling Chat app.
@@ -4610,9 +4841,15 @@ pub mod chat_service_client {
         ///
         /// - [App
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-app)
+        /// with the authorization scope:
+        ///     - `https://www.googleapis.com/auth/chat.bot`
         ///
         /// - [User
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with one of the following authorization scopes:
+        ///     - `https://www.googleapis.com/auth/chat.messages`
+        ///     - `https://www.googleapis.com/auth/chat.import` (import mode spaces
+        ///     only)
         ///
         /// When using app authentication, requests can only delete messages
         /// created by the calling Chat app.
@@ -4643,8 +4880,13 @@ pub mod chat_service_client {
         /// For an example, see
         /// [Get metadata about a message
         /// attachment](https://developers.google.com/workspace/chat/get-media-attachments).
+        ///
         /// Requires [app
-        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-app).
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-app)
+        /// with the [authorization
+        /// scope](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        ///   - `https://www.googleapis.com/auth/chat.bot`
         pub async fn get_attachment(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAttachmentRequest>,
@@ -4671,7 +4913,13 @@ pub mod chat_service_client {
         /// attachment](https://developers.google.com/workspace/chat/upload-media-attachments).
         ///
         /// Requires user
-        /// [authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+        /// [authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with one of the following [authorization
+        /// scopes](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        ///   - `https://www.googleapis.com/auth/chat.messages.create`
+        ///   - `https://www.googleapis.com/auth/chat.messages`
+        ///   - `https://www.googleapis.com/auth/chat.import` (import mode spaces only)
         ///
         /// You can upload attachments up to 200 MB. Certain file types aren't
         /// supported. For details, see [File types blocked by Google
@@ -4712,9 +4960,14 @@ pub mod chat_service_client {
         ///
         /// - [App
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-app)
+        /// with the authorization scope:
+        ///     - `https://www.googleapis.com/auth/chat.bot`
         ///
         /// - [User
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with one of the following authorization scopes:
+        ///     - `https://www.googleapis.com/auth/chat.spaces.readonly`
+        ///     - `https://www.googleapis.com/auth/chat.spaces`
         ///
         /// To list all named spaces by Google Workspace organization, use the
         /// [`spaces.search()`](https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces/search)
@@ -4748,7 +5001,13 @@ pub mod chat_service_client {
         ///
         /// Requires [user
         /// authentication with administrator
-        /// privileges](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user#admin-privileges).
+        /// privileges](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user#admin-privileges)
+        /// and one of the following [authorization
+        /// scopes](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        ///   - `https://www.googleapis.com/auth/chat.admin.spaces.readonly`
+        ///   - `https://www.googleapis.com/auth/chat.admin.spaces`
+        ///
         /// In the request, set `use_admin_access` to `true`.
         pub async fn search_spaces(
             &mut self,
@@ -4783,11 +5042,29 @@ pub mod chat_service_client {
         ///
         /// - [App
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-app)
+        /// with one of the following authorization scopes:
+        ///     - `https://www.googleapis.com/auth/chat.bot`
+        ///     - `https://www.googleapis.com/auth/chat.app.spaces` with [administrator
+        ///     approval](https://support.google.com/a?p=chat-app-auth)
         ///
         /// - [User
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
-        /// You can authenticate and authorize this method with administrator
-        /// privileges by setting the `use_admin_access` field in the request.
+        /// with one of the following authorization scopes:
+        ///     - `https://www.googleapis.com/auth/chat.spaces.readonly`
+        ///     - `https://www.googleapis.com/auth/chat.spaces`
+        ///     - User authentication grants administrator privileges when an
+        ///     administrator account authenticates, `use_admin_access` is `true`, and
+        ///     one of the following authorization scopes is used:
+        ///         - `https://www.googleapis.com/auth/chat.admin.spaces.readonly`
+        ///         - `https://www.googleapis.com/auth/chat.admin.spaces`
+        ///
+        /// App authentication has the following limitations:
+        ///
+        /// - `space.access_settings` is only populated when using the
+        /// `chat.app.spaces` scope.
+        /// - `space.predefind_permission_settings` and `space.permission_settings` are
+        /// only populated when using the `chat.app.spaces` scope, and only for
+        /// spaces the app created.
         pub async fn get_space(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSpaceRequest>,
@@ -4809,13 +5086,9 @@ pub mod chat_service_client {
                 .insert(GrpcMethod::new("google.chat.v1.ChatService", "GetSpace"));
             self.inner.unary(req, path, codec).await
         }
-        /// Creates a space with no members. Can be used to create a named space, or a
+        /// Creates a space. Can be used to create a named space, or a
         /// group chat in `Import mode`. For an example, see [Create a
         /// space](https://developers.google.com/workspace/chat/create-spaces).
-        ///
-        ///  If you receive the error message `ALREADY_EXISTS` when creating
-        ///  a space, try a different `displayName`. An existing space within
-        ///  the Google Workspace organization might already use this display name.
         ///
         /// Supports the following types of
         /// [authentication](https://developers.google.com/workspace/chat/authenticate-authorize):
@@ -4823,13 +5096,38 @@ pub mod chat_service_client {
         /// - [App
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-app)
         /// with [administrator approval](https://support.google.com/a?p=chat-app-auth)
-        /// in [Developer Preview](https://developers.google.com/workspace/preview)
+        /// and one of the following authorization scopes:
+        ///     - `https://www.googleapis.com/auth/chat.app.spaces.create`
+        ///     - `https://www.googleapis.com/auth/chat.app.spaces`
         ///
         /// - [User
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with one of the following authorization scopes:
+        ///     - `https://www.googleapis.com/auth/chat.spaces.create`
+        ///     - `https://www.googleapis.com/auth/chat.spaces`
+        ///     - `https://www.googleapis.com/auth/chat.import` (import mode spaces
+        ///     only)
         ///
         /// When authenticating as an app, the `space.customer` field must be set in
         /// the request.
+        ///
+        /// When authenticating as an app, the Chat app is added as a member of the
+        /// space. However, unlike human authentication, the Chat app is not added as a
+        /// space manager. By default, the Chat app can be removed from the space by
+        /// all space members. To allow only space managers to remove the app from a
+        /// space, set `space.permission_settings.manage_apps` to `managers_allowed`.
+        ///
+        /// Space membership upon creation depends on whether the space is created in
+        /// `Import mode`:
+        ///
+        /// * **Import mode:** No members are created.
+        /// * **All other modes:**  The calling user is added as a member. This is:
+        ///     * The app itself when using app authentication.
+        ///     * The human user when using user authentication.
+        ///
+        ///  If you receive the error message `ALREADY_EXISTS` when creating
+        ///  a space, try a different `displayName`. An existing space within
+        ///  the Google Workspace organization might already use this display name.
         pub async fn create_space(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateSpaceRequest>,
@@ -4902,7 +5200,12 @@ pub mod chat_service_client {
         /// might already use this display name.
         ///
         /// Requires [user
-        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with one of the following [authorization
+        /// scopes](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        ///   - `https://www.googleapis.com/auth/chat.spaces.create`
+        ///   - `https://www.googleapis.com/auth/chat.spaces`
         pub async fn set_up_space(
             &mut self,
             request: impl tonic::IntoRequest<super::SetUpSpaceRequest>,
@@ -4938,12 +5241,26 @@ pub mod chat_service_client {
         /// - [App
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-app)
         /// with [administrator approval](https://support.google.com/a?p=chat-app-auth)
-        /// in [Developer Preview](https://developers.google.com/workspace/preview)
+        /// and one of the following authorization scopes:
+        ///     - `https://www.googleapis.com/auth/chat.app.spaces`
         ///
         /// - [User
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
-        /// You can authenticate and authorize this method with administrator
-        /// privileges by setting the `use_admin_access` field in the request.
+        /// with one of the following authorization scopes:
+        ///     - `https://www.googleapis.com/auth/chat.spaces`
+        ///     - `https://www.googleapis.com/auth/chat.import` (import mode spaces
+        ///     only)
+        ///     - User authentication grants administrator privileges when an
+        ///     administrator account authenticates, `use_admin_access` is `true`, and
+        ///     the following authorization scopes is used:
+        ///         - `https://www.googleapis.com/auth/chat.admin.spaces`
+        ///
+        /// App authentication has the following limitations:
+        ///
+        /// - To update either `space.predefined_permission_settings` or
+        /// `space.permission_settings`, the app must be the space creator.
+        /// - Updating the `space.access_settings.audience` is not supported for app
+        /// authentication.
         pub async fn update_space(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateSpaceRequest>,
@@ -4976,13 +5293,22 @@ pub mod chat_service_client {
         ///
         /// - [App
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-app)
-        /// with [administrator approval](https://support.google.com/a?p=chat-app-auth)
-        /// in [Developer Preview](https://developers.google.com/workspace/preview)
+        /// with [administrator
+        /// approval](https://support.google.com/a?p=chat-app-auth) and the
+        /// authorization scope:
+        ///     - `https://www.googleapis.com/auth/chat.app.delete` (only in
+        ///     spaces the app created)
         ///
         /// - [User
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
-        /// You can authenticate and authorize this method with administrator
-        /// privileges by setting the `use_admin_access` field in the request.
+        /// with one of the following authorization scopes:
+        ///     - `https://www.googleapis.com/auth/chat.delete`
+        ///     - `https://www.googleapis.com/auth/chat.import` (import mode spaces
+        ///     only)
+        ///     - User authentication grants administrator privileges when an
+        ///     administrator account authenticates, `use_admin_access` is `true`, and
+        ///     the following authorization scope is used:
+        ///         - `https://www.googleapis.com/auth/chat.admin.delete`
         pub async fn delete_space(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteSpaceRequest>,
@@ -5008,9 +5334,14 @@ pub mod chat_service_client {
         /// [import process](https://developers.google.com/workspace/chat/import-data)
         /// for the specified space and makes it visible to users.
         ///
-        /// Requires [app
-        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-app)
-        /// and domain-wide delegation. For more information, see [Authorize Google
+        /// Requires [user
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// and domain-wide delegation with the [authorization
+        /// scope](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        ///   - `https://www.googleapis.com/auth/chat.import`
+        ///
+        /// For more information, see [Authorize Google
         /// Chat apps to import
         /// data](https://developers.google.com/workspace/chat/authorize-import).
         pub async fn complete_import_space(
@@ -5054,14 +5385,19 @@ pub mod chat_service_client {
         /// returns the direct message space between the specified user and the
         /// authenticated user.
         ///
-        /// // Supports the following types of
+        /// Supports the following types of
         /// [authentication](https://developers.google.com/workspace/chat/authenticate-authorize):
         ///
         /// - [App
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-app)
+        /// with the authorization scope:
+        ///     - `https://www.googleapis.com/auth/chat.bot`
         ///
         /// - [User
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with one of the following authorization scopes:
+        ///     - `https://www.googleapis.com/auth/chat.spaces.readonly`
+        ///     - `https://www.googleapis.com/auth/chat.spaces`
         pub async fn find_direct_message(
             &mut self,
             request: impl tonic::IntoRequest<super::FindDirectMessageRequest>,
@@ -5098,21 +5434,35 @@ pub mod chat_service_client {
         /// - [App
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-app)
         /// with [administrator approval](https://support.google.com/a?p=chat-app-auth)
-        /// in [Developer Preview](https://developers.google.com/workspace/preview)
+        /// and the authorization scope:
+        ///     - `https://www.googleapis.com/auth/chat.app.memberships`
         ///
         /// - [User
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
-        /// You can authenticate and authorize this method with administrator
-        /// privileges by setting the `use_admin_access` field in the request.
+        /// with one of the following authorization scopes:
+        ///     - `https://www.googleapis.com/auth/chat.memberships`
+        ///     - `https://www.googleapis.com/auth/chat.memberships.app` (to add the
+        ///     calling app to the space)
+        ///     - `https://www.googleapis.com/auth/chat.import` (import mode spaces
+        ///     only)
+        ///     - User authentication grants administrator privileges when an
+        ///     administrator account authenticates, `use_admin_access` is `true`, and
+        ///     the following authorization scope is used:
+        ///         - `https://www.googleapis.com/auth/chat.admin.memberships`
+        ///
+        /// App authentication is not supported for the following use cases:
+        ///
+        /// - Inviting users external to the Workspace organization that owns the
+        /// space.
+        /// - Adding a Google Group to a space.
+        /// - Adding a Chat app to a space.
         ///
         /// For example usage, see:
         ///
         /// - [Invite or add a user to a
         /// space](https://developers.google.com/workspace/chat/create-members#create-user-membership).
-        ///
         /// - [Invite or add a Google Group to a
         /// space](https://developers.google.com/workspace/chat/create-members#create-group-membership).
-        ///
         /// - [Add the Chat app to a
         /// space](https://developers.google.com/workspace/chat/create-members#create-membership-calling-api).
         pub async fn create_membership(
@@ -5146,13 +5496,22 @@ pub mod chat_service_client {
         ///
         /// - [App
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-app)
-        /// with [administrator approval](https://support.google.com/a?p=chat-app-auth)
-        /// in [Developer Preview](https://developers.google.com/workspace/preview)
+        /// with [administrator
+        /// approval](https://support.google.com/a?p=chat-app-auth) and the
+        /// authorization scope:
+        ///     - `https://www.googleapis.com/auth/chat.app.memberships` (only in
+        ///     spaces the app created)
         ///
         /// - [User
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
-        /// You can authenticate and authorize this method with administrator
-        /// privileges by setting the `use_admin_access` field in the request.
+        /// with one of the following authorization scopes:
+        ///     - `https://www.googleapis.com/auth/chat.memberships`
+        ///     - `https://www.googleapis.com/auth/chat.import` (import mode spaces
+        ///     only)
+        ///     - User authentication grants administrator privileges when an
+        ///     administrator account authenticates, `use_admin_access` is `true`, and
+        ///     the following authorization scope is used:
+        ///         - `https://www.googleapis.com/auth/chat.admin.memberships`
         pub async fn update_membership(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateMembershipRequest>,
@@ -5186,12 +5545,31 @@ pub mod chat_service_client {
         /// - [App
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-app)
         /// with [administrator approval](https://support.google.com/a?p=chat-app-auth)
-        /// in [Developer Preview](https://developers.google.com/workspace/preview)
+        /// and the authorization scope:
+        ///     - `https://www.googleapis.com/auth/chat.app.memberships`
         ///
         /// - [User
         /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
-        /// You can authenticate and authorize this method with administrator
-        /// privileges by setting the `use_admin_access` field in the request.
+        /// with one of the following authorization scopes:
+        ///     - `https://www.googleapis.com/auth/chat.memberships`
+        ///     - `https://www.googleapis.com/auth/chat.memberships.app` (to remove
+        ///     the calling app from the space)
+        ///     - `https://www.googleapis.com/auth/chat.import` (import mode spaces
+        ///     only)
+        ///     - User authentication grants administrator privileges when an
+        ///     administrator account authenticates, `use_admin_access` is `true`, and
+        ///     the following authorization scope is used:
+        ///         - `https://www.googleapis.com/auth/chat.admin.memberships`
+        ///
+        /// App authentication is not supported for the following use cases:
+        ///
+        /// - Removing a Google Group from a space.
+        /// - Removing a Chat app from a space.
+        ///
+        /// To delete memberships for space managers, the requester
+        /// must be a space manager. If you're using [app
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-app)
+        /// the Chat app must be the space creator.
         pub async fn delete_membership(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteMembershipRequest>,
@@ -5220,7 +5598,14 @@ pub mod chat_service_client {
         /// message](https://developers.google.com/workspace/chat/create-reactions).
         ///
         /// Requires [user
-        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with one of the following [authorization
+        /// scopes](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        ///   - `https://www.googleapis.com/auth/chat.messages.reactions.create`
+        ///   - `https://www.googleapis.com/auth/chat.messages.reactions`
+        ///   - `https://www.googleapis.com/auth/chat.messages`
+        ///   - `https://www.googleapis.com/auth/chat.import` (import mode spaces only)
         pub async fn create_reaction(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateReactionRequest>,
@@ -5247,7 +5632,14 @@ pub mod chat_service_client {
         /// message](https://developers.google.com/workspace/chat/list-reactions).
         ///
         /// Requires [user
-        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with one of the following [authorization
+        /// scopes](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        ///   - `https://www.googleapis.com/auth/chat.messages.reactions.readonly`
+        ///   - `https://www.googleapis.com/auth/chat.messages.reactions`
+        ///   - `https://www.googleapis.com/auth/chat.messages.readonly`
+        ///   - `https://www.googleapis.com/auth/chat.messages`
         pub async fn list_reactions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListReactionsRequest>,
@@ -5277,7 +5669,13 @@ pub mod chat_service_client {
         /// reaction](https://developers.google.com/workspace/chat/delete-reactions).
         ///
         /// Requires [user
-        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with one of the following [authorization
+        /// scopes](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        ///   - `https://www.googleapis.com/auth/chat.messages.reactions`
+        ///   - `https://www.googleapis.com/auth/chat.messages`
+        ///   - `https://www.googleapis.com/auth/chat.import` (import mode spaces only)
         pub async fn delete_reaction(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteReactionRequest>,
@@ -5309,7 +5707,11 @@ pub mod chat_service_client {
         /// permissions](https://support.google.com/a/answer/12850085).
         ///
         /// Requires [user
-        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with the [authorization
+        /// scope](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        ///   - `https://www.googleapis.com/auth/chat.customemojis`
         pub async fn create_custom_emoji(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateCustomEmojiRequest>,
@@ -5343,7 +5745,12 @@ pub mod chat_service_client {
         /// permissions](https://support.google.com/a/answer/12850085).
         ///
         /// Requires [user
-        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with one of the following [authorization
+        /// scopes](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        ///   - `https://www.googleapis.com/auth/chat.customemojis.readonly`
+        ///   - `https://www.googleapis.com/auth/chat.customemojis`
         pub async fn get_custom_emoji(
             &mut self,
             request: impl tonic::IntoRequest<super::GetCustomEmojiRequest>,
@@ -5375,7 +5782,12 @@ pub mod chat_service_client {
         /// permissions](https://support.google.com/a/answer/12850085).
         ///
         /// Requires [user
-        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with one of the following [authorization
+        /// scopes](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        ///   - `https://www.googleapis.com/auth/chat.customemojis.readonly`
+        ///   - `https://www.googleapis.com/auth/chat.customemojis`
         pub async fn list_custom_emojis(
             &mut self,
             request: impl tonic::IntoRequest<super::ListCustomEmojisRequest>,
@@ -5416,7 +5828,11 @@ pub mod chat_service_client {
         /// permissions](https://support.google.com/a/answer/12850085).
         ///
         /// Requires [user
-        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with the [authorization
+        /// scope](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        ///   - `https://www.googleapis.com/auth/chat.customemojis`
         pub async fn delete_custom_emoji(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteCustomEmojiRequest>,
@@ -5446,7 +5862,12 @@ pub mod chat_service_client {
         /// state](https://developers.google.com/workspace/chat/get-space-read-state).
         ///
         /// Requires [user
-        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with one of the following [authorization
+        /// scopes](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        ///   - `https://www.googleapis.com/auth/chat.users.readstate.readonly`
+        ///   - `https://www.googleapis.com/auth/chat.users.readstate`
         pub async fn get_space_read_state(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSpaceReadStateRequest>,
@@ -5475,7 +5896,11 @@ pub mod chat_service_client {
         /// state](https://developers.google.com/workspace/chat/update-space-read-state).
         ///
         /// Requires [user
-        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with the [authorization
+        /// scope](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        ///   - `https://www.googleapis.com/auth/chat.users.readstate`
         pub async fn update_space_read_state(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateSpaceReadStateRequest>,
@@ -5505,7 +5930,12 @@ pub mod chat_service_client {
         /// state](https://developers.google.com/workspace/chat/get-thread-read-state).
         ///
         /// Requires [user
-        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with one of the following [authorization
+        /// scopes](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        ///   - `https://www.googleapis.com/auth/chat.users.readstate.readonly`
+        ///   - `https://www.googleapis.com/auth/chat.users.readstate`
         pub async fn get_thread_read_state(
             &mut self,
             request: impl tonic::IntoRequest<super::GetThreadReadStateRequest>,
@@ -5543,7 +5973,20 @@ pub mod chat_service_client {
         /// object of the Space event data for this request.
         ///
         /// Requires [user
-        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with an [authorization
+        /// scope](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes)
+        /// appropriate for reading the requested data:
+        ///
+        ///   - `https://www.googleapis.com/auth/chat.spaces.readonly`
+        ///   - `https://www.googleapis.com/auth/chat.spaces`
+        ///   - `https://www.googleapis.com/auth/chat.messages.readonly`
+        ///   - `https://www.googleapis.com/auth/chat.messages`
+        ///   - `https://www.googleapis.com/auth/chat.messages.reactions.readonly`
+        ///   - `https://www.googleapis.com/auth/chat.messages.reactions`
+        ///   - `https://www.googleapis.com/auth/chat.memberships.readonly`
+        ///   - `https://www.googleapis.com/auth/chat.memberships`
+        ///
         /// To get an event, the authenticated user must be a member of the space.
         ///
         /// For an example, see [Get details about an
@@ -5579,7 +6022,20 @@ pub mod chat_service_client {
         /// `Membership` resource.
         ///
         /// Requires [user
-        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with an [authorization
+        /// scope](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes)
+        /// appropriate for reading the requested data:
+        ///
+        ///   - `https://www.googleapis.com/auth/chat.spaces.readonly`
+        ///   - `https://www.googleapis.com/auth/chat.spaces`
+        ///   - `https://www.googleapis.com/auth/chat.messages.readonly`
+        ///   - `https://www.googleapis.com/auth/chat.messages`
+        ///   - `https://www.googleapis.com/auth/chat.messages.reactions.readonly`
+        ///   - `https://www.googleapis.com/auth/chat.messages.reactions`
+        ///   - `https://www.googleapis.com/auth/chat.memberships.readonly`
+        ///   - `https://www.googleapis.com/auth/chat.memberships`
+        ///
         /// To list events, the authenticated user must be a member of the space.
         ///
         /// For an example, see [List events from a Google Chat
@@ -5615,7 +6071,11 @@ pub mod chat_service_client {
         /// setting](https://developers.google.com/workspace/chat/get-space-notification-setting).
         ///
         /// Requires [user
-        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with the [authorization
+        /// scope](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        ///   - `https://www.googleapis.com/auth/chat.users.spacesettings`
         pub async fn get_space_notification_setting(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSpaceNotificationSettingRequest>,
@@ -5650,7 +6110,11 @@ pub mod chat_service_client {
         /// setting](https://developers.google.com/workspace/chat/update-space-notification-setting).
         ///
         /// Requires [user
-        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+        /// authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user)
+        /// with the [authorization
+        /// scope](https://developers.google.com/workspace/chat/authenticate-authorize#chat-api-scopes):
+        ///
+        ///   - `https://www.googleapis.com/auth/chat.users.spacesettings`
         pub async fn update_space_notification_setting(
             &mut self,
             request: impl tonic::IntoRequest<

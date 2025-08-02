@@ -34,11 +34,11 @@ pub mod speed_reading_interval {
     pub enum Speed {
         /// Default value. This value is unused.
         Unspecified = 0,
-        /// Normal speed, no slowdown is detected.
+        /// Normal speed, no traffic delays.
         Normal = 1,
-        /// Slowdown detected, but no traffic jam formed.
+        /// Slowdown detected, medium amount of traffic.
         Slow = 2,
-        /// Traffic jam detected.
+        /// Traffic delays.
         TrafficJam = 3,
     }
     impl Speed {
@@ -299,6 +299,21 @@ pub struct VehicleLocation {
     /// Accuracy of `raw_location` as a radius, in meters.
     #[prost(message, optional, tag = "25")]
     pub raw_location_accuracy: ::core::option::Option<f64>,
+    /// The location from Android's Fused Location Provider.
+    #[prost(message, optional, tag = "29")]
+    pub flp_location: ::core::option::Option<
+        super::super::super::google::r#type::LatLng,
+    >,
+    /// Update timestamp of `flp_location`.
+    #[prost(message, optional, tag = "30")]
+    pub flp_update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Accuracy of `flp_location` in meters as a radius.
+    #[prost(message, optional, tag = "31")]
+    pub flp_latlng_accuracy_meters: ::core::option::Option<f64>,
+    /// Direction the vehicle is moving in degrees, as determined by the Fused
+    /// Location Provider. 0 represents North. The valid range is [0,360).
+    #[prost(message, optional, tag = "32")]
+    pub flp_heading_degrees: ::core::option::Option<i32>,
     /// Supplemental location provided by the integrating app.
     #[prost(message, optional, tag = "18")]
     pub supplemental_location: ::core::option::Option<
@@ -318,6 +333,33 @@ pub struct VehicleLocation {
     #[deprecated]
     #[prost(bool, tag = "26")]
     pub road_snapped: bool,
+}
+/// Describes a trip attribute as a key-value pair. The "key:value" string length
+/// cannot exceed 256 characters.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TripAttribute {
+    /// The attribute's key. Keys may not contain the colon character (:).
+    #[prost(string, tag = "1")]
+    pub key: ::prost::alloc::string::String,
+    /// The attribute's value, can be in string, bool, or double type.
+    #[prost(oneof = "trip_attribute::TripAttributeValue", tags = "2, 3, 4")]
+    pub trip_attribute_value: ::core::option::Option<trip_attribute::TripAttributeValue>,
+}
+/// Nested message and enum types in `TripAttribute`.
+pub mod trip_attribute {
+    /// The attribute's value, can be in string, bool, or double type.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum TripAttributeValue {
+        /// String typed attribute value.
+        #[prost(string, tag = "2")]
+        StringValue(::prost::alloc::string::String),
+        /// Boolean typed attribute value.
+        #[prost(bool, tag = "3")]
+        BoolValue(bool),
+        /// Double typed attribute value.
+        #[prost(double, tag = "4")]
+        NumberValue(f64),
+    }
 }
 /// The type of a trip.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -861,6 +903,9 @@ pub struct Trip {
     /// interpreted.
     #[prost(enumeration = "TripView", tag = "31")]
     pub view: i32,
+    /// A list of custom Trip attributes. Each attribute must have a unique key.
+    #[prost(message, repeated, tag = "35")]
+    pub attributes: ::prost::alloc::vec::Vec<TripAttribute>,
 }
 /// The actual location where a stop (pickup/dropoff) happened.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -1111,10 +1156,11 @@ pub struct GetTripRequest {
     /// If a minimum is unspecified, the route data are always retrieved.
     #[prost(message, optional, tag = "6")]
     pub current_route_segment_version: ::core::option::Option<::prost_types::Timestamp>,
-    /// Indicates the minimum timestamp (exclusive) for which
-    /// `Trip.remaining_waypoints` are retrieved. If they are unchanged since this
-    /// timestamp, the `remaining_waypoints` are not set in the response. If this
-    /// field is unspecified, `remaining_waypoints` is always retrieved.
+    /// Deprecated: `Trip.remaining_waypoints` are always retrieved. Use
+    /// `remaining_waypoints_route_version` to control when
+    /// `Trip.remaining_waypoints.traffic_to_waypoint` and
+    /// `Trip.remaining_waypoints.path_to_waypoint` data are retrieved.
+    #[deprecated]
     #[prost(message, optional, tag = "7")]
     pub remaining_waypoints_version: ::core::option::Option<::prost_types::Timestamp>,
     /// The returned current route format, `LAT_LNG_LIST_TYPE` (in `Trip.route`),
