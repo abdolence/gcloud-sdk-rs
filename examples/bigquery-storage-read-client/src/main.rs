@@ -6,6 +6,7 @@ use gcloud_sdk::google::cloud::bigquery::storage::v1::{
     ReadRowsResponse, ReadSession,
 };
 use std::io::Cursor;
+use std::sync::Arc;
 use std::time::Instant;
 
 use gcloud_sdk::*;
@@ -32,6 +33,44 @@ fn read_rows_response_to_record_batch(response: ReadRowsResponse, schema: &Vec<u
     // TODO: maybe double-check that there are no recordbatches after this?
     // There should only be one if the API returned the expected results.
     reader.next().unwrap().expect("missing recordbatch")
+}
+
+async fn read_stream(
+    read_client: Arc<GoogleApi<BigQueryReadClient<GoogleAuthMiddleware>>>,
+    schema: Arc<Vec<u8>>,
+    stream_name: String,
+    tx: Arc<tokio::sync::mpsc::Sender<RecordBatch>>,
+) {
+    let read_rows_request = ReadRowsRequest {
+        read_stream: stream_name.clone(),
+        offset: 0,
+    };
+
+    let messages = read_client
+        .get()
+        .read_rows(read_rows_request)
+        .await
+        .unwrap();
+    let mut messages = messages.into_inner();
+
+    'messages: loop {
+        // TODO: if there's an error, call read_rows with the most recent
+        // offset to resume.
+        let message = messages.message().await.unwrap();
+        match message {
+            Some(value) => {
+                // If there's an error here, that means the receiver dropped, so
+                // we should just exit rather than try to restart the stream at
+                // offset.
+                tx.send(read_rows_response_to_record_batch(value, &schema))
+                    .await
+                    .unwrap();
+            }
+            None => {
+                break 'messages;
+            }
+        }
+    }
 }
 
 #[tokio::main]
@@ -65,7 +104,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let request = CreateReadSessionRequest {
         parent: format!("projects/{google_project_id}"),
-        max_stream_count: 1,
+        // If you are reading from a query results table where order matters,
+        // limit this to a single stream.
+        max_stream_count: match std::thread::available_parallelism() {
+            Ok(value) => value.get() as i32,
+            Err(_) => 1,
+        },
         read_session: Some(read_session),
         ..Default::default()
     };
@@ -80,43 +124,43 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         _ => panic!("unexpectedly got schema type other than arrow"),
     };
 
-    let mut messages_received = 0;
-    let mut rows_received = 0;
-    let mut batches = Vec::new();
+    let (tx, mut rx) = tokio::sync::mpsc::channel(1024); // Create an MPSC channel
+    let shared_tx = Arc::new(tx);
+    let shared_client = Arc::new(read_client);
+    let shared_schema = Arc::new(schema);
+    let mut handles = Vec::new();
 
-    // TODO: request more than one stream and do this in parallel (with some
-    // thread safety added).
     for stream in read_session.streams {
         let stream_name = stream.name;
-        let read_rows_request = ReadRowsRequest {
-            read_stream: stream_name,
-            offset: 0,
-        };
-        let messages = read_client.get().read_rows(read_rows_request).await?;
-        let mut messages = messages.into_inner();
+        let handle = tokio::task::spawn(read_stream(
+            shared_client.clone(),
+            shared_schema.clone(),
+            stream_name,
+            shared_tx.clone(),
+        ));
+        handles.push(handle);
+    }
 
-        'messages: loop {
-            // TODO: if there's an error, call read_rows with the most recent
-            // offset to resume.
-            let message = messages.message().await?;
-            match message {
-                Some(value) => {
-                    messages_received += 1;
-                    rows_received += value.row_count;
-                    batches.push(read_rows_response_to_record_batch(value, &schema));
-                }
-                None => {
-                    break 'messages;
-                }
-            }
+    // Don't need the sender here anymore. Drop it so that the receiver can know
+    // when all the other uses of sender have finished.
+    std::mem::drop(shared_tx);
+
+    let mut batches = Vec::new();
+
+    loop {
+        match rx.recv().await {
+            Some(value) => batches.push(value),
+            None => break,
         }
     }
 
     let duration = start.elapsed();
 
-    let mut rows_deserialized = 0;
+    let mut messages_received = 0;
+    let mut rows_received = 0;
     for batch in batches {
-        rows_deserialized += batch.num_rows();
+        messages_received += 1;
+        rows_received += batch.num_rows();
     }
 
     println!(
@@ -125,7 +169,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
     println!("Messages received: {:?}", messages_received);
     println!("Rows received: {:?}", rows_received);
-    println!("Rows deserialized: {:?}", rows_deserialized);
+
+    // Wait for all spawned threads to complete
+    for handle in handles {
+        handle.await?;
+    }
 
     Ok(())
 }
