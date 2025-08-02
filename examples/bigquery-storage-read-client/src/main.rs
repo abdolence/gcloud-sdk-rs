@@ -1,13 +1,13 @@
-use std::io::Cursor;
-use arrow::record_batch::RecordBatch;
 use arrow::ipc::reader::StreamReader;
+use arrow::record_batch::RecordBatch;
 use gcloud_sdk::google::cloud::bigquery::storage::v1::big_query_read_client::BigQueryReadClient;
 use gcloud_sdk::google::cloud::bigquery::storage::v1::{
-    DataFormat, CreateReadSessionRequest, ReadSession, ReadRowsRequest, ReadRowsResponse, read_rows_response, read_session
+    read_rows_response, read_session, CreateReadSessionRequest, DataFormat, ReadRowsRequest,
+    ReadRowsResponse, ReadSession,
 };
+use std::io::Cursor;
 
 use gcloud_sdk::*;
-
 
 fn read_rows_response_to_record_batch(response: ReadRowsResponse, schema: &Vec<u8>) -> RecordBatch {
     let mut buffer = Vec::new();
@@ -23,7 +23,7 @@ fn read_rows_response_to_record_batch(response: ReadRowsResponse, schema: &Vec<u
     // TODO: This might not actually be unexpected? What happens when there's a
     // super selective row filter?
     let mut serialized_record_batch = match response.rows.unwrap() {
-        read_rows_response::Rows::ArrowRecordBatch(value) => {value.serialized_record_batch},
+        read_rows_response::Rows::ArrowRecordBatch(value) => value.serialized_record_batch,
         _ => panic!("unexpectedly got some format other than arrow bytes"),
     };
     buffer.append(&mut serialized_record_batch);
@@ -37,7 +37,6 @@ fn read_rows_response_to_record_batch(response: ReadRowsResponse, schema: &Vec<u
     // There should only be one if the API returned the expected results.
     reader.next().unwrap().expect("missing recordbatch")
 }
-
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -60,25 +59,27 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         )
         .await?;
 
-    let read_session = ReadSession{
+    let read_session = ReadSession {
         data_format: DataFormat::Arrow as i32,
         table: "projects/bigquery-public-data/datasets/usa_names/tables/usa_1910_2013".to_string(),
         ..Default::default()
     };
 
-    let request = CreateReadSessionRequest{
-        parent: format!(
-            "projects/{google_project_id}"
-        ),
+    let request = CreateReadSessionRequest {
+        parent: format!("projects/{google_project_id}"),
         max_stream_count: 1,
         read_session: Some(read_session),
         ..Default::default()
     };
 
-    let read_session = read_client.get().create_read_session(request).await?.into_inner();
+    let read_session = read_client
+        .get()
+        .create_read_session(request)
+        .await?
+        .into_inner();
     let schema = match read_session.schema.unwrap() {
         read_session::Schema::ArrowSchema(value) => value.serialized_schema,
-        _ => panic!("unexpectedly got schema type other than arrow")
+        _ => panic!("unexpectedly got schema type other than arrow"),
     };
 
     let mut messages_received = 0;
@@ -89,7 +90,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // thread safety added).
     for stream in read_session.streams {
         let stream_name = stream.name;
-        let read_rows_request = ReadRowsRequest{
+        let read_rows_request = ReadRowsRequest {
             read_stream: stream_name,
             offset: 0,
         };
@@ -105,8 +106,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                     messages_received += 1;
                     rows_received += value.row_count;
                     batches.push(read_rows_response_to_record_batch(value, &schema));
-                },
-                None => {break 'messages;}
+                }
+                None => {
+                    break 'messages;
+                }
             }
         }
     }
