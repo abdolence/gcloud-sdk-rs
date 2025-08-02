@@ -6,18 +6,14 @@ use gcloud_sdk::google::cloud::bigquery::storage::v1::{
     ReadRowsResponse, ReadSession,
 };
 use std::io::Cursor;
+use std::time::Instant;
 
 use gcloud_sdk::*;
 
 fn read_rows_response_to_record_batch(response: ReadRowsResponse, schema: &Vec<u8>) -> RecordBatch {
     let mut buffer = Vec::new();
-    // TODO: bubble up the error if we unexpectedly get a record batch with no
-    // schema or not an ArrowSchema.
-    // TODO: why is the schema empty?
-    // let mut schema = match response.schema.unwrap() {
-    //     read_rows_response::Schema::ArrowSchema(value) => value.serialized_schema,
-    //     _ => panic!("unexpectedly got some format other than arrow bytes"),
-    // };
+    // TODO: We're not quite zero-copy with this approach. Maybe using the
+    // StreamReader once for the whole thing would be better?
     buffer.append(&mut schema.clone());
     // TODO: Bubble up if we unexpectedly get a record batch with no rows.
     // TODO: This might not actually be unexpected? What happens when there's a
@@ -45,6 +41,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .with_env_filter("gcloud_sdk=debug")
         .finish();
     tracing::subscriber::set_global_default(subscriber)?;
+
+    let start = Instant::now();
 
     // Detect Google project ID using environment variables PROJECT_ID/GCP_PROJECT_ID
     // or GKE metadata server when the app runs inside GKE
@@ -114,11 +112,17 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
 
+    let duration = start.elapsed();
+
     let mut rows_deserialized = 0;
     for batch in batches {
         rows_deserialized += batch.num_rows();
     }
 
+    println!(
+        "Time to download and deserialized all messages: {:?}",
+        duration
+    );
     println!("Messages received: {:?}", messages_received);
     println!("Rows received: {:?}", rows_received);
     println!("Rows deserialized: {:?}", rows_deserialized);
