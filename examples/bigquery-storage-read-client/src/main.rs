@@ -13,8 +13,6 @@ use gcloud_sdk::*;
 
 fn read_rows_response_to_record_batch(response: ReadRowsResponse, schema: &Vec<u8>) -> RecordBatch {
     let mut buffer = Vec::new();
-    // TODO: We're not quite zero-copy with this approach. Maybe using the
-    // StreamReader once for the whole thing would be better?
     buffer.append(&mut schema.clone());
     // TODO: Bubble up if we unexpectedly get a record batch with no rows.
     // TODO: This might not actually be unexpected? What happens when there's a
