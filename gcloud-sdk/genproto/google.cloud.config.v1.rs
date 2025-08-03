@@ -3,7 +3,7 @@
 /// Infra Manager.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Deployment {
-    /// Resource name of the deployment.
+    /// Identifier. Resource name of the deployment.
     /// Format: `projects/{project}/locations/{location}/deployments/{deployment}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -13,7 +13,7 @@ pub struct Deployment {
     /// Output only. Time when the deployment was last modified.
     #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// User-defined metadata for the deployment.
+    /// Optional. User-defined metadata for the deployment.
     #[prost(map = "string, string", tag = "4")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -318,7 +318,7 @@ pub mod deployment {
 /// describes the resources and configs to be deployed.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TerraformBlueprint {
-    /// Input variable values for the Terraform blueprint.
+    /// Optional. Input variable values for the Terraform blueprint.
     #[prost(map = "string, message", tag = "4")]
     pub input_values: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -350,7 +350,7 @@ pub mod terraform_blueprint {
 /// A Terraform input variable.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TerraformVariable {
-    /// Input variable value.
+    /// Optional. Input variable value.
     #[prost(message, optional, tag = "5")]
     pub input_value: ::core::option::Option<::prost_types::Value>,
 }
@@ -964,7 +964,8 @@ pub struct TerraformError {
     /// A human-readable error description.
     #[prost(string, tag = "3")]
     pub error_description: ::prost::alloc::string::String,
-    /// Original error response from underlying Google API, if available.
+    /// Output only. Original error response from underlying Google API, if
+    /// available.
     #[prost(message, optional, tag = "4")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
 }
@@ -1504,7 +1505,7 @@ pub struct Preview {
     #[prost(string, optional, tag = "19")]
     pub tf_version_constraint: ::core::option::Option<::prost::alloc::string::String>,
     /// Optional. Arbitrary key-value metadata storage e.g. to help client tools
-    /// identifiy preview during automation. See
+    /// identify preview during automation. See
     /// <https://google.aip.dev/148#annotations> for details on format and size
     /// limitations.
     #[prost(map = "string, string", tag = "20")]
@@ -1966,14 +1967,14 @@ pub struct ListTerraformVersionsRequest {
     /// 'projects/{project_id}/locations/{location}'.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. When requesting a page of resources, 'page_size' specifies number
-    /// of resources to return. If unspecified, at most 500 will be returned. The
-    /// maximum value is 1000.
+    /// Optional. When requesting a page of terraform versions, 'page_size'
+    /// specifies number of terraform versions to return. If unspecified, at most
+    /// 500 will be returned. The maximum value is 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. Token returned by previous call to 'ListTerraformVersions' which
     /// specifies the position in the list from where to continue listing the
-    /// resources.
+    /// terraform versions.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. Lists the TerraformVersions that match the filter expression. A
@@ -2074,6 +2075,299 @@ pub mod terraform_version {
             }
         }
     }
+}
+/// Terraform info of a ResourceChange.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResourceChangeTerraformInfo {
+    /// Output only. TF resource address that uniquely identifies the resource.
+    #[prost(string, tag = "1")]
+    pub address: ::prost::alloc::string::String,
+    /// Output only. TF resource type.
+    #[prost(string, tag = "2")]
+    pub r#type: ::prost::alloc::string::String,
+    /// Output only. TF resource name.
+    #[prost(string, tag = "3")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Output only. TF resource provider.
+    #[prost(string, tag = "4")]
+    pub provider: ::prost::alloc::string::String,
+    /// Output only. TF resource actions.
+    #[prost(string, repeated, tag = "5")]
+    pub actions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// A resource change represents a change to a resource in the state file.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResourceChange {
+    /// Identifier. The name of the resource change.
+    /// Format:
+    /// 'projects/{project_id}/locations/{location}/previews/{preview}/resourceChanges/{resource_change}'.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Terraform info of the resource change.
+    #[prost(message, optional, tag = "2")]
+    pub terraform_info: ::core::option::Option<ResourceChangeTerraformInfo>,
+    /// Output only. The intent of the resource change.
+    #[prost(enumeration = "resource_change::Intent", tag = "3")]
+    pub intent: i32,
+    /// Output only. The property changes of the resource change.
+    #[prost(message, repeated, tag = "4")]
+    pub property_changes: ::prost::alloc::vec::Vec<PropertyChange>,
+}
+/// Nested message and enum types in `ResourceChange`.
+pub mod resource_change {
+    /// Possible intent of the resource change.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Intent {
+        /// The default value.
+        Unspecified = 0,
+        /// The resource will be created.
+        Create = 1,
+        /// The resource will be updated.
+        Update = 2,
+        /// The resource will be deleted.
+        Delete = 3,
+        /// The resource will be recreated.
+        Recreate = 4,
+        /// The resource will be untouched.
+        Unchanged = 5,
+    }
+    impl Intent {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "INTENT_UNSPECIFIED",
+                Self::Create => "CREATE",
+                Self::Update => "UPDATE",
+                Self::Delete => "DELETE",
+                Self::Recreate => "RECREATE",
+                Self::Unchanged => "UNCHANGED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INTENT_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATE" => Some(Self::Create),
+                "UPDATE" => Some(Self::Update),
+                "DELETE" => Some(Self::Delete),
+                "RECREATE" => Some(Self::Recreate),
+                "UNCHANGED" => Some(Self::Unchanged),
+                _ => None,
+            }
+        }
+    }
+}
+/// A property change represents a change to a property in the state file.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PropertyChange {
+    /// Output only. The path of the property change.
+    #[prost(string, tag = "1")]
+    pub path: ::prost::alloc::string::String,
+    /// Output only. The paths of sensitive fields in `before`. Paths are relative
+    /// to `path`.
+    #[prost(string, repeated, tag = "2")]
+    pub before_sensitive_paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. Representations of the object value before the actions.
+    #[prost(message, optional, tag = "3")]
+    pub before: ::core::option::Option<::prost_types::Value>,
+    /// Output only. The paths of sensitive fields in `after`. Paths are relative
+    /// to `path`.
+    #[prost(string, repeated, tag = "4")]
+    pub after_sensitive_paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. Representations of the object value after the actions.
+    #[prost(message, optional, tag = "5")]
+    pub after: ::core::option::Option<::prost_types::Value>,
+}
+/// The request message for the ListResourceChanges method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListResourceChangesRequest {
+    /// Required. The parent in whose context the ResourceChanges are listed. The
+    /// parent value is in the format:
+    /// 'projects/{project_id}/locations/{location}/previews/{preview}'.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. When requesting a page of resource changes, 'page_size' specifies
+    /// number of resource changes to return. If unspecified, at most 500 will be
+    /// returned. The maximum value is 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Token returned by previous call to 'ListResourceChanges' which
+    /// specifies the position in the list from where to continue listing the
+    /// resource changes.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Lists the resource changes that match the filter expression. A
+    /// filter expression filters the resource changes listed in the response. The
+    /// expression must be of the form '{field} {operator} {value}' where
+    /// operators: '<', '>',
+    /// '<=',
+    /// '>=',
+    /// '!=', '=', ':' are supported (colon ':' represents a HAS operator which is
+    /// roughly synonymous with equality). {field} can refer to a proto or JSON
+    /// field, or a synthetic field. Field names can be camelCase or snake_case.
+    ///
+    /// Examples:
+    /// - Filter by name:
+    ///    name =
+    ///    "projects/foo/locations/us-central1/previews/dep/resourceChanges/baz
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Field to use to sort the list.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// A response to a 'ListResourceChanges' call. Contains a list of
+/// ResourceChanges.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListResourceChangesResponse {
+    /// List of ResourceChanges.
+    #[prost(message, repeated, tag = "1")]
+    pub resource_changes: ::prost::alloc::vec::Vec<ResourceChange>,
+    /// A token to request the next page of resources from the
+    /// 'ListResourceChanges' method. The value of an empty string means that
+    ///   there are no more resources to return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable resources, if any.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// The request message for the GetResourceChange method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetResourceChangeRequest {
+    /// Required. The name of the resource change to retrieve.
+    /// Format:
+    /// 'projects/{project_id}/locations/{location}/previews/{preview}/resourceChanges/{resource_change}'.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Terraform info of a ResourceChange.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResourceDriftTerraformInfo {
+    /// Output only. The address of the drifted resource.
+    #[prost(string, tag = "1")]
+    pub address: ::prost::alloc::string::String,
+    /// Output only. The type of the drifted resource.
+    #[prost(string, tag = "2")]
+    pub r#type: ::prost::alloc::string::String,
+    /// Output only. TF resource name.
+    #[prost(string, tag = "3")]
+    pub resource_name: ::prost::alloc::string::String,
+    /// Output only. The provider of the drifted resource.
+    #[prost(string, tag = "4")]
+    pub provider: ::prost::alloc::string::String,
+}
+/// A resource drift represents a drift to a resource in the state file.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResourceDrift {
+    /// Identifier. The name of the resource drift.
+    /// Format:
+    /// 'projects/{project_id}/locations/{location}/previews/{preview}/resourceDrifts/{resource_drift}'.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Terraform info of the resource drift.
+    #[prost(message, optional, tag = "2")]
+    pub terraform_info: ::core::option::Option<ResourceDriftTerraformInfo>,
+    /// Output only. The property drifts of the resource drift.
+    #[prost(message, repeated, tag = "3")]
+    pub property_drifts: ::prost::alloc::vec::Vec<PropertyDrift>,
+}
+/// A property drift represents a drift to a property in the state file.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PropertyDrift {
+    /// Output only. The path of the property drift.
+    #[prost(string, tag = "1")]
+    pub path: ::prost::alloc::string::String,
+    /// Output only. The paths of sensitive fields in `before`. Paths are relative
+    /// to `path`.
+    #[prost(string, repeated, tag = "2")]
+    pub before_sensitive_paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. Representations of the object value before the actions.
+    #[prost(message, optional, tag = "3")]
+    pub before: ::core::option::Option<::prost_types::Value>,
+    /// Output only. The paths of sensitive fields in `after`. Paths are relative
+    /// to `path`.
+    #[prost(string, repeated, tag = "4")]
+    pub after_sensitive_paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. Representations of the object value after the actions.
+    #[prost(message, optional, tag = "5")]
+    pub after: ::core::option::Option<::prost_types::Value>,
+}
+/// The request message for the ListResourceDrifts method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListResourceDriftsRequest {
+    /// Required. The parent in whose context the ResourceDrifts are listed. The
+    /// parent value is in the format:
+    /// 'projects/{project_id}/locations/{location}/previews/{preview}'.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. When requesting a page of resource drifts, 'page_size' specifies
+    /// number of resource drifts to return. If unspecified, at most 500 will be
+    /// returned. The maximum value is 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Token returned by previous call to 'ListResourceDrifts' which
+    /// specifies the position in the list from where to continue listing the
+    /// resource drifts.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Lists the resource drifts that match the filter expression. A
+    /// filter expression filters the resource drifts listed in the response. The
+    /// expression must be of the form '{field} {operator} {value}' where
+    /// operators: '<', '>',
+    /// '<=',
+    /// '>=',
+    /// '!=', '=', ':' are supported (colon ':' represents a HAS operator which is
+    /// roughly synonymous with equality). {field} can refer to a proto or JSON
+    /// field, or a synthetic field. Field names can be camelCase or snake_case.
+    ///
+    /// Examples:
+    /// - Filter by name:
+    ///    name =
+    ///    "projects/foo/locations/us-central1/previews/dep/resourceDrifts/baz
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Field to use to sort the list.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// A response to a 'ListResourceDrifts' call. Contains a list of ResourceDrifts.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListResourceDriftsResponse {
+    /// List of ResourceDrifts.
+    #[prost(message, repeated, tag = "1")]
+    pub resource_drifts: ::prost::alloc::vec::Vec<ResourceDrift>,
+    /// A token to request the next page of resources from the
+    /// 'ListResourceDrifts' method. The value of an empty string means that
+    /// there are no more resources to return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Unreachable resources, if any.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// The request message for the GetResourceDrift method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetResourceDriftRequest {
+    /// Required. The name of the resource drift to retrieve.
+    /// Format:
+    /// 'projects/{project_id}/locations/{location}/previews/{preview}/resourceDrifts/{resource_drift}'.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// Enum values to control quota checks for resources in terraform
 /// configuration files.
@@ -2812,6 +3106,114 @@ pub mod config_client {
                         "google.cloud.config.v1.Config",
                         "GetTerraformVersion",
                     ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists ResourceChanges for a given preview.
+        pub async fn list_resource_changes(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListResourceChangesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListResourceChangesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.config.v1.Config/ListResourceChanges",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.config.v1.Config",
+                        "ListResourceChanges",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get a ResourceChange for a given preview.
+        pub async fn get_resource_change(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetResourceChangeRequest>,
+        ) -> std::result::Result<tonic::Response<super::ResourceChange>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.config.v1.Config/GetResourceChange",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.config.v1.Config", "GetResourceChange"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// List ResourceDrifts for a given preview.
+        pub async fn list_resource_drifts(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListResourceDriftsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListResourceDriftsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.config.v1.Config/ListResourceDrifts",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.config.v1.Config",
+                        "ListResourceDrifts",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Get a ResourceDrift for a given preview.
+        pub async fn get_resource_drift(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetResourceDriftRequest>,
+        ) -> std::result::Result<tonic::Response<super::ResourceDrift>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.config.v1.Config/GetResourceDrift",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("google.cloud.config.v1.Config", "GetResourceDrift"),
                 );
             self.inner.unary(req, path, codec).await
         }

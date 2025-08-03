@@ -26,7 +26,10 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Type {
     /// The kind of type that this represents.
-    #[prost(oneof = "r#type::Kind", tags = "1, 2, 5, 12, 9, 8, 10, 11, 6, 7, 3, 4")]
+    #[prost(
+        oneof = "r#type::Kind",
+        tags = "1, 2, 5, 12, 9, 8, 10, 11, 6, 7, 3, 4, 13, 14"
+    )]
     pub kind: ::core::option::Option<r#type::Kind>,
 }
 /// Nested message and enum types in `Type`.
@@ -194,6 +197,30 @@ pub mod r#type {
             pub r#type: ::core::option::Option<super::super::Type>,
         }
     }
+    /// A protobuf message type.
+    /// Values of type `Proto` are stored in `Value.bytes_value`.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Proto {
+        /// The ID of the schema bundle that this proto is defined in.
+        #[prost(string, tag = "1")]
+        pub schema_bundle_id: ::prost::alloc::string::String,
+        /// The fully qualified name of the protobuf message, including package. In
+        /// the format of "foo.bar.Message".
+        #[prost(string, tag = "2")]
+        pub message_name: ::prost::alloc::string::String,
+    }
+    /// A protobuf enum type.
+    /// Values of type `Enum` are stored in `Value.int_value`.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Enum {
+        /// The ID of the schema bundle that this enum is defined in.
+        #[prost(string, tag = "1")]
+        pub schema_bundle_id: ::prost::alloc::string::String,
+        /// The fully qualified name of the protobuf enum message, including package.
+        /// In the format of "foo.bar.EnumMessage".
+        #[prost(string, tag = "2")]
+        pub enum_name: ::prost::alloc::string::String,
+    }
     /// An ordered list of elements of a given type.
     /// Values of type `Array` are stored in `Value.array_value`.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -324,6 +351,12 @@ pub mod r#type {
         /// Map
         #[prost(message, tag = "4")]
         MapType(::prost::alloc::boxed::Box<Map>),
+        /// Proto
+        #[prost(message, tag = "13")]
+        ProtoType(Proto),
+        /// Enum
+        #[prost(message, tag = "14")]
+        EnumType(Enum),
     }
 }
 /// Specifies the complete (requested) contents of a single row of a table.
@@ -452,6 +485,7 @@ pub mod value {
         #[prost(bool, tag = "10")]
         BoolValue(bool),
         /// Represents a typed value transported as a floating point number.
+        /// Does not support NaN or infinities.
         #[prost(double, tag = "11")]
         FloatValue(f64),
         /// Represents a typed value transported as a timestamp.
@@ -1347,8 +1381,7 @@ pub struct FullReadStatsView {
 }
 /// RequestStats is the container for additional information pertaining to a
 /// single request, helpful for evaluating the performance of the sent request.
-/// Currently, there are the following supported methods:
-///    * google.bigtable.v2.ReadRows
+/// Currently, the following method is supported: google.bigtable.v2.ReadRows
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct RequestStats {
     /// Information pertaining to each request type received. The type is chosen
@@ -1492,26 +1525,11 @@ pub struct ReadRowsResponse {
     /// key, allowing the client to skip that work on a retry.
     #[prost(bytes = "vec", tag = "2")]
     pub last_scanned_row_key: ::prost::alloc::vec::Vec<u8>,
-    ///
-    /// If requested, provide enhanced query performance statistics. The semantics
-    /// dictate:
-    ///    * request_stats is empty on every (streamed) response, except
-    ///    * request_stats has non-empty information after all chunks have been
-    ///      streamed, where the ReadRowsResponse message only contains
-    ///      request_stats.
-    ///        * For example, if a read request would have returned an empty
-    ///          response instead a single ReadRowsResponse is streamed with empty
-    ///          chunks and request_stats filled.
-    ///
-    /// Visually, response messages will stream as follows:
-    ///     ... -> {chunks: \[...\]} -> {chunks: \[\], request_stats: {...}}
-    ///    \______________________/  \________________________________/
-    ///        Primary response         Trailer of RequestStats info
-    ///
-    /// Or if the read did not return any values:
-    ///    {chunks: \[\], request_stats: {...}}
-    ///    \________________________________/
-    ///       Trailer of RequestStats info
+    /// If requested, return enhanced query performance statistics. The field
+    /// request_stats is empty in a streamed response unless the ReadRowsResponse
+    /// message contains request_stats in the last message of the stream. Always
+    /// returned when requested, even when the read request returns an empty
+    /// response.
     #[prost(message, optional, tag = "3")]
     pub request_stats: ::core::option::Option<RequestStats>,
 }
@@ -1665,8 +1683,8 @@ pub struct MutateRowRequest {
     /// ones. Must contain at least one entry and at most 100000.
     #[prost(message, repeated, tag = "3")]
     pub mutations: ::prost::alloc::vec::Vec<Mutation>,
-    /// Optional parameter for ensuring a MutateRow request is only applied once.
-    /// Currently applicable only for certain aggregate types.
+    /// If set consistently across retries, prevents this mutation from being
+    /// double applied to aggregate column families within a 15m window.
     #[prost(message, optional, tag = "8")]
     pub idempotency: ::core::option::Option<Idempotency>,
 }
@@ -1715,6 +1733,10 @@ pub mod mutate_rows_request {
         /// masked by later ones. You must specify at least one mutation.
         #[prost(message, repeated, tag = "2")]
         pub mutations: ::prost::alloc::vec::Vec<super::Mutation>,
+        /// If set consistently across retries, prevents this mutation from being
+        /// double applied to aggregate column families within a 15m window.
+        #[prost(message, optional, tag = "3")]
+        pub idempotency: ::core::option::Option<super::Idempotency>,
     }
 }
 /// Response message for BigtableService.MutateRows.
@@ -1763,7 +1785,7 @@ pub struct RateLimitInfo {
     /// target load should be 80. After adjusting, the client should ignore
     /// `factor` until another `period` has passed.
     ///
-    /// The client can measure its load using any unit that's comparable over time
+    /// The client can measure its load using any unit that's comparable over time.
     /// For example, QPS can be used as long as each request involves a similar
     /// amount of work.
     #[prost(double, tag = "2")]
@@ -1866,7 +1888,8 @@ pub struct ReadModifyWriteRowRequest {
     pub row_key: ::prost::alloc::vec::Vec<u8>,
     /// Required. Rules specifying how the specified row's contents are to be
     /// transformed into writes. Entries are applied in order, meaning that earlier
-    /// rules will affect the results of later ones.
+    /// rules will affect the results of later ones. At least one entry must be
+    /// specified, and there can be at most 100000 rules.
     #[prost(message, repeated, tag = "3")]
     pub rules: ::prost::alloc::vec::Vec<ReadModifyWriteRule>,
 }
@@ -1948,10 +1971,10 @@ pub mod read_change_stream_request {
         /// the position. Tokens are delivered on the stream as part of `Heartbeat`
         /// and `CloseStream` messages.
         ///
-        /// If a single token is provided, the token’s partition must exactly match
-        /// the request’s partition. If multiple tokens are provided, as in the case
+        /// If a single token is provided, the token's partition must exactly match
+        /// the request's partition. If multiple tokens are provided, as in the case
         /// of a partition merge, the union of the token partitions must exactly
-        /// cover the request’s partition. Otherwise, INVALID_ARGUMENT will be
+        /// cover the request's partition. Otherwise, INVALID_ARGUMENT will be
         /// returned.
         #[prost(message, tag = "6")]
         ContinuationTokens(super::StreamContinuationTokens),
@@ -2047,8 +2070,8 @@ pub mod read_change_stream_response {
         /// An estimate of the commit timestamp that is usually lower than or equal
         /// to any timestamp for a record that will be delivered in the future on the
         /// stream. It is possible that, under particular circumstances that a future
-        /// record has a timestamp is is lower than a previously seen timestamp. For
-        /// an example usage see
+        /// record has a timestamp that is lower than a previously seen timestamp.
+        /// For an example usage see
         /// <https://beam.apache.org/documentation/basics/#watermarks>
         #[prost(message, optional, tag = "10")]
         pub estimated_low_watermark: ::core::option::Option<::prost_types::Timestamp>,
@@ -2115,8 +2138,8 @@ pub mod read_change_stream_response {
         /// An estimate of the commit timestamp that is usually lower than or equal
         /// to any timestamp for a record that will be delivered in the future on the
         /// stream. It is possible that, under particular circumstances that a future
-        /// record has a timestamp is is lower than a previously seen timestamp. For
-        /// an example usage see
+        /// record has a timestamp that is lower than a previously seen timestamp.
+        /// For an example usage see
         /// <https://beam.apache.org/documentation/basics/#watermarks>
         #[prost(message, optional, tag = "2")]
         pub estimated_low_watermark: ::core::option::Option<::prost_types::Timestamp>,
@@ -2127,17 +2150,19 @@ pub mod read_change_stream_response {
     /// If `continuation_tokens` & `new_partitions` are present, then a change in
     /// partitioning requires the client to open a new stream for each token to
     /// resume reading. Example:
-    ///                                   [B,      D) ends
-    ///                                        |
-    ///                                        v
-    ///                new_partitions:  [A,  C) [C,  E)
-    /// continuation_tokens.partitions:  [B,C) [C,D)
-    ///                                   ^---^ ^---^
-    ///                                   ^     ^
-    ///                                   |     |
-    ///                                   |     StreamContinuationToken 2
-    ///                                   |
-    ///                                   StreamContinuationToken 1
+    ///
+    ///                                       [B,      D) ends
+    ///                                            |
+    ///                                            v
+    ///                    new_partitions:  [A,  C) [C,  E)
+    ///      continuation_tokens.partitions:  [B,C) [C,D)
+    ///                                       ^---^ ^---^
+    ///                                       ^     ^
+    ///                                       |     |
+    ///                                       |     StreamContinuationToken 2
+    ///                                       |
+    ///                                       StreamContinuationToken 1
+    ///
     /// To read the new partition [A,C), supply the continuation tokens whose
     /// ranges cover the new partition, for example ContinuationToken[A,B) &
     /// ContinuationToken[B,C).
@@ -2644,10 +2669,10 @@ pub mod bigtable_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// NOTE: This API is intended to be used by Apache Beam BigtableIO.
         /// Returns the current list of partitions that make up the table's
         /// change stream. The union of partitions will cover the entire keyspace.
         /// Partitions can be read with `ReadChangeStream`.
+        /// NOTE: This API is only intended to be used by Apache Beam BigtableIO.
         pub async fn generate_initial_change_stream_partitions(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -2683,10 +2708,10 @@ pub mod bigtable_client {
                 );
             self.inner.server_streaming(req, path, codec).await
         }
-        /// NOTE: This API is intended to be used by Apache Beam BigtableIO.
         /// Reads changes from a table's change stream. Changes will
         /// reflect both user-initiated mutations and mutations that are caused by
         /// garbage collection.
+        /// NOTE: This API is only intended to be used by Apache Beam BigtableIO.
         pub async fn read_change_stream(
             &mut self,
             request: impl tonic::IntoRequest<super::ReadChangeStreamRequest>,
@@ -2812,9 +2837,6 @@ pub struct FeatureFlags {
     pub direct_access_requested: bool,
 }
 /// Response metadata proto
-/// This is an experimental feature that will be used to get zone_id and
-/// cluster_id from response trailers to tag the metrics. This should not be
-/// used by customers directly
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResponseParams {
     /// The cloud bigtable zone associated with the cluster.

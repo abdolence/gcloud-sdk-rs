@@ -60,7 +60,7 @@ pub struct MerchantReviewAttributes {
     /// Required. The timestamp indicating when the review was written.
     #[prost(message, optional, tag = "14")]
     pub review_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Required. The language of the review defined by BCP-47 language code.
+    /// Optional. The language of the review defined by BCP-47 language code.
     #[prost(string, optional, tag = "15")]
     pub review_language: ::core::option::Option<::prost::alloc::string::String>,
     /// Optional. The country where the reviewer made the order defined by ISO
@@ -316,8 +316,8 @@ pub struct MerchantReview {
     pub merchant_review_id: ::prost::alloc::string::String,
     /// Optional. A list of merchant review attributes.
     #[prost(message, optional, tag = "3")]
-    pub attributes: ::core::option::Option<MerchantReviewAttributes>,
-    /// Required. A list of custom (merchant-provided) attributes. It can also be
+    pub merchant_review_attributes: ::core::option::Option<MerchantReviewAttributes>,
+    /// Optional. A list of custom (merchant-provided) attributes. It can also be
     /// used for submitting any attribute of the data specification in its generic
     /// form (for example,
     /// `{ "name": "size type", "value": "regular" }`).
@@ -602,7 +602,8 @@ pub struct ProductReviewAttributes {
     /// Optional. The title of the review.
     #[prost(string, optional, tag = "11")]
     pub title: ::core::option::Option<::prost::alloc::string::String>,
-    /// Required. The content of the review.
+    /// Optional. The content of the review. If empty, the content might still get
+    /// populated from pros and cons.
     #[prost(string, optional, tag = "12")]
     pub content: ::core::option::Option<::prost::alloc::string::String>,
     /// Optional. Contains the advantages based on the opinion of the reviewer.
@@ -663,6 +664,12 @@ pub struct ProductReviewAttributes {
     /// system.
     #[prost(bool, optional, tag = "27")]
     pub is_spam: ::core::option::Option<bool>,
+    /// Optional. Indicates whether the reviewer's purchase is verified.
+    #[prost(bool, optional, tag = "30")]
+    pub is_verified_purchase: ::core::option::Option<bool>,
+    /// Optional. Indicates whether the review is incentivized.
+    #[prost(bool, optional, tag = "31")]
+    pub is_incentivized_review: ::core::option::Option<bool>,
     /// Optional. The method used to collect the review.
     #[prost(enumeration = "product_review_attributes::CollectionMethod", tag = "28")]
     pub collection_method: i32,
@@ -968,7 +975,7 @@ pub struct ProductReview {
     pub product_review_id: ::prost::alloc::string::String,
     /// Optional. A list of product review attributes.
     #[prost(message, optional, tag = "3")]
-    pub attributes: ::core::option::Option<ProductReviewAttributes>,
+    pub product_review_attributes: ::core::option::Option<ProductReviewAttributes>,
     /// Optional. A list of custom (merchant-provided) attributes.
     #[prost(message, repeated, tag = "4")]
     pub custom_attributes: ::prost::alloc::vec::Vec<

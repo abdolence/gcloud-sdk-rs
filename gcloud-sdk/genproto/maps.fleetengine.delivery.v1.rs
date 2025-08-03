@@ -132,6 +132,21 @@ pub struct DeliveryVehicleLocation {
     /// Accuracy of `raw_location` as a radius, in meters.
     #[prost(message, optional, tag = "25")]
     pub raw_location_accuracy: ::core::option::Option<f64>,
+    /// The location from Android's Fused Location Provider.
+    #[prost(message, optional, tag = "29")]
+    pub flp_location: ::core::option::Option<
+        super::super::super::super::google::r#type::LatLng,
+    >,
+    /// Update timestamp of the `flp_location`
+    #[prost(message, optional, tag = "30")]
+    pub flp_update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Accuracy of `flp_location` in meters as a radius.
+    #[prost(message, optional, tag = "31")]
+    pub flp_latlng_accuracy_meters: ::core::option::Option<f64>,
+    /// Direction the vehicle is moving in degrees, as determined by the Fused
+    /// Location Provider. 0 represents North. The valid range is [0,360).
+    #[prost(message, optional, tag = "32")]
+    pub flp_heading_degrees: ::core::option::Option<i32>,
     /// Supplemental location provided by the integrating app.
     #[prost(message, optional, tag = "18")]
     pub supplemental_location: ::core::option::Option<

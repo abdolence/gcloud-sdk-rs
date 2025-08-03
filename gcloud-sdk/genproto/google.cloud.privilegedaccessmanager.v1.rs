@@ -630,7 +630,10 @@ pub mod grant {
             /// Output only. The time (as recorded at server) when this event occurred.
             #[prost(message, optional, tag = "1")]
             pub event_time: ::core::option::Option<::prost_types::Timestamp>,
-            #[prost(oneof = "event::Event", tags = "2, 3, 4, 5, 6, 7, 8, 10, 11, 12")]
+            #[prost(
+                oneof = "event::Event",
+                tags = "2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13"
+            )]
             pub event: ::core::option::Option<event::Event>,
         }
         /// Nested message and enum types in `Event`.
@@ -675,6 +678,9 @@ pub mod grant {
                 #[prost(string, tag = "2")]
                 pub actor: ::prost::alloc::string::String,
             }
+            /// An event representing that the grant was withdrawn.
+            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+            pub struct Withdrawn {}
             /// An event representing that the grant has been scheduled to be
             /// activated later.
             #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -742,6 +748,9 @@ pub mod grant {
                 /// The policy bindings made by grant have been modified outside of PAM.
                 #[prost(message, tag = "12")]
                 ExternallyModified(ExternallyModified),
+                /// The grant was withdrawn.
+                #[prost(message, tag = "13")]
+                Withdrawn(Withdrawn),
             }
         }
     }
@@ -800,6 +809,10 @@ pub mod grant {
         /// System took back access as the requested duration was over. This is a
         /// terminal state.
         Ended = 11,
+        /// Access is being withdrawn.
+        Withdrawing = 12,
+        /// Grant was withdrawn by the grant owner. This is a terminal state.
+        Withdrawn = 13,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -819,6 +832,8 @@ pub mod grant {
                 Self::Revoking => "REVOKING",
                 Self::Revoked => "REVOKED",
                 Self::Ended => "ENDED",
+                Self::Withdrawing => "WITHDRAWING",
+                Self::Withdrawn => "WITHDRAWN",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -835,6 +850,8 @@ pub mod grant {
                 "REVOKING" => Some(Self::Revoking),
                 "REVOKED" => Some(Self::Revoked),
                 "ENDED" => Some(Self::Ended),
+                "WITHDRAWING" => Some(Self::Withdrawing),
+                "WITHDRAWN" => Some(Self::Withdrawn),
                 _ => None,
             }
         }

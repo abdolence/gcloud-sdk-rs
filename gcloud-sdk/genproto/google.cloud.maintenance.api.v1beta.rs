@@ -37,6 +37,7 @@ pub struct SummarizeMaintenancesRequest {
     #[prost(string, tag = "10508")]
     pub order_by: ::prost::alloc::string::String,
 }
+/// Request message for SummarizeMaintenances custom method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SummarizeMaintenancesResponse {
     /// The resulting summaries.
@@ -103,6 +104,7 @@ pub struct MaintenanceSummary {
 }
 /// Nested message and enum types in `MaintenanceSummary`.
 pub mod maintenance_summary {
+    /// Stats indicates the type of aggregate and the corresponding aggregates.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Stats {
         /// groupBy specifies the type of aggregate.
@@ -115,6 +117,7 @@ pub mod maintenance_summary {
         #[prost(message, repeated, tag = "2")]
         pub aggregates: ::prost::alloc::vec::Vec<Aggregate>,
     }
+    /// Aggregate is a <group, count> pair.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Aggregate {
         /// Specifies what specific value of the group_by the count represents. For

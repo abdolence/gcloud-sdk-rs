@@ -1522,6 +1522,9 @@ pub struct TaskTemplate {
     /// Optional. The node selector for the task template.
     #[prost(message, optional, tag = "11")]
     pub node_selector: ::core::option::Option<NodeSelector>,
+    /// Optional. True if GPU zonal redundancy is disabled on this task template.
+    #[prost(bool, optional, tag = "12")]
+    pub gpu_zonal_redundancy_disabled: ::core::option::Option<bool>,
     #[prost(oneof = "task_template::Retries", tags = "3")]
     pub retries: ::core::option::Option<task_template::Retries>,
 }
@@ -4095,6 +4098,10 @@ pub struct Task {
     /// Output only. The node selector for the task.
     #[prost(message, optional, tag = "36")]
     pub node_selector: ::core::option::Option<NodeSelector>,
+    /// Optional. Output only. True if GPU zonal redundancy is disabled on this
+    /// task.
+    #[prost(bool, optional, tag = "37")]
+    pub gpu_zonal_redundancy_disabled: ::core::option::Option<bool>,
     /// Output only. A system-generated fingerprint for this version of the
     /// resource. May be used to detect modification conflict during updates.
     #[prost(string, tag = "99")]
@@ -4111,8 +4118,16 @@ pub struct TaskAttemptResult {
     /// This may be unset if the container was unable to exit cleanly with a code
     /// due to some other failure.
     /// See status field for possible failure details.
+    ///
+    /// At most one of exit_code or term_signal will be set.
     #[prost(int32, tag = "2")]
     pub exit_code: i32,
+    /// Output only. Termination signal of the container. This is set to non-zero
+    /// if the container is terminated by the system.
+    ///
+    /// At most one of exit_code or term_signal will be set.
+    #[prost(int32, tag = "3")]
+    pub term_signal: i32,
 }
 /// Generated client implementations.
 pub mod tasks_client {

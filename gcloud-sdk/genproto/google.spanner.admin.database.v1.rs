@@ -1932,6 +1932,28 @@ pub mod split_points {
         pub key_parts: ::core::option::Option<::prost_types::ListValue>,
     }
 }
+/// Internal request proto, do not use directly.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InternalUpdateGraphOperationRequest {
+    /// Internal field, do not use directly.
+    #[prost(string, tag = "1")]
+    pub database: ::prost::alloc::string::String,
+    /// Internal field, do not use directly.
+    #[prost(string, tag = "2")]
+    pub operation_id: ::prost::alloc::string::String,
+    /// Internal field, do not use directly.
+    #[prost(string, tag = "5")]
+    pub vm_identity_token: ::prost::alloc::string::String,
+    /// Internal field, do not use directly.
+    #[prost(double, tag = "3")]
+    pub progress: f64,
+    /// Internal field, do not use directly.
+    #[prost(message, optional, tag = "6")]
+    pub status: ::core::option::Option<super::super::super::super::rpc::Status>,
+}
+/// Internal response proto, do not use directly.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct InternalUpdateGraphOperationResponse {}
 /// Indicates the type of the restore source.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -2953,6 +2975,37 @@ pub mod database_admin_client {
                     GrpcMethod::new(
                         "google.spanner.admin.database.v1.DatabaseAdmin",
                         "ListBackupSchedules",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// This is an internal API called by Spanner Graph jobs. You should never need
+        /// to call this API directly.
+        pub async fn internal_update_graph_operation(
+            &mut self,
+            request: impl tonic::IntoRequest<super::InternalUpdateGraphOperationRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::InternalUpdateGraphOperationResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.spanner.admin.database.v1.DatabaseAdmin/InternalUpdateGraphOperation",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.spanner.admin.database.v1.DatabaseAdmin",
+                        "InternalUpdateGraphOperation",
                     ),
                 );
             self.inner.unary(req, path, codec).await

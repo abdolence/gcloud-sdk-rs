@@ -1014,8 +1014,8 @@ pub struct Variant {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// Required. Unordered list. resources contain the kubernetes manifests
-    /// (YAMLs) for this variant.
+    /// Required. Input only. Unordered list. resources contain the kubernetes
+    /// manifests (YAMLs) for this variant.
     #[prost(string, repeated, tag = "2")]
     pub resources: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Identifier. Name follows format of

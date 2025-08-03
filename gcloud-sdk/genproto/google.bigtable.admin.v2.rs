@@ -2453,7 +2453,10 @@ pub mod bigtable_instance_admin_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Type {
     /// The kind of type that this represents.
-    #[prost(oneof = "r#type::Kind", tags = "1, 2, 5, 12, 9, 8, 10, 11, 6, 7, 3, 4")]
+    #[prost(
+        oneof = "r#type::Kind",
+        tags = "1, 2, 5, 12, 9, 8, 10, 11, 6, 7, 3, 4, 13, 14"
+    )]
     pub kind: ::core::option::Option<r#type::Kind>,
 }
 /// Nested message and enum types in `Type`.
@@ -2768,6 +2771,30 @@ pub mod r#type {
             }
         }
     }
+    /// A protobuf message type.
+    /// Values of type `Proto` are stored in `Value.bytes_value`.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Proto {
+        /// The ID of the schema bundle that this proto is defined in.
+        #[prost(string, tag = "1")]
+        pub schema_bundle_id: ::prost::alloc::string::String,
+        /// The fully qualified name of the protobuf message, including package. In
+        /// the format of "foo.bar.Message".
+        #[prost(string, tag = "2")]
+        pub message_name: ::prost::alloc::string::String,
+    }
+    /// A protobuf enum type.
+    /// Values of type `Enum` are stored in `Value.int_value`.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Enum {
+        /// The ID of the schema bundle that this enum is defined in.
+        #[prost(string, tag = "1")]
+        pub schema_bundle_id: ::prost::alloc::string::String,
+        /// The fully qualified name of the protobuf enum message, including package.
+        /// In the format of "foo.bar.EnumMessage".
+        #[prost(string, tag = "2")]
+        pub enum_name: ::prost::alloc::string::String,
+    }
     /// An ordered list of elements of a given type.
     /// Values of type `Array` are stored in `Value.array_value`.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2898,6 +2925,12 @@ pub mod r#type {
         /// Map
         #[prost(message, tag = "4")]
         MapType(::prost::alloc::boxed::Box<Map>),
+        /// Proto
+        #[prost(message, tag = "13")]
+        ProtoType(Proto),
+        /// Enum
+        #[prost(message, tag = "14")]
+        EnumType(Enum),
     }
 }
 /// Information about a table restore.

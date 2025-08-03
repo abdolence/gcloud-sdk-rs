@@ -5333,6 +5333,9 @@ pub struct SearchRequest {
     /// INVALID_ARGUMENT error is returned.
     #[prost(string, repeated, tag = "17")]
     pub variant_rollup_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. An ID for the experiment group this search belongs to.
+    #[prost(string, tag = "18")]
+    pub experiment_id: ::prost::alloc::string::String,
     /// The categories associated with a category page. Must be set for category
     /// navigation queries to achieve good search quality. The format should be
     /// the same as
@@ -5435,7 +5438,7 @@ pub struct SearchRequest {
     /// search results.
     /// * Populate at most 100 key-value pairs per query.
     /// * Only supports string keys and repeated string values.
-    /// * Duplcate keys are not allowed within a single query.
+    /// * Duplicate keys are not allowed within a single query.
     ///
     /// Example:
     ///     user_attributes: [
@@ -5822,9 +5825,9 @@ pub mod search_request {
         /// [Condition.DISABLED][google.cloud.retail.v2alpha.SearchRequest.QueryExpansionSpec.Condition.DISABLED].
         #[prost(enumeration = "query_expansion_spec::Condition", tag = "1")]
         pub condition: i32,
-        /// Whether to pin unexpanded results. If this field is set to true,
-        /// unexpanded products are always at the top of the search results, followed
-        /// by the expanded results.
+        /// Whether to pin unexpanded results. The default value is false. If this
+        /// field is set to true, unexpanded products are always at the top of the
+        /// search results, followed by the expanded results.
         #[prost(bool, tag = "2")]
         pub pin_unexpanded_results: bool,
     }
@@ -7479,6 +7482,166 @@ pub mod control_service_client {
         }
     }
 }
+/// Safety settings.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct SafetySetting {
+    /// Harm category.
+    #[prost(enumeration = "HarmCategory", tag = "1")]
+    pub category: i32,
+    /// The harm block threshold.
+    #[prost(enumeration = "safety_setting::HarmBlockThreshold", tag = "2")]
+    pub threshold: i32,
+    /// Optional. Specify if the threshold is used for probability or severity
+    /// score. If not specified, the threshold is used for probability score.
+    #[prost(enumeration = "safety_setting::HarmBlockMethod", tag = "3")]
+    pub method: i32,
+}
+/// Nested message and enum types in `SafetySetting`.
+pub mod safety_setting {
+    /// Probability based thresholds levels for blocking.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum HarmBlockThreshold {
+        /// Unspecified harm block threshold.
+        Unspecified = 0,
+        /// Block low threshold and above (i.e. block more).
+        BlockLowAndAbove = 1,
+        /// Block medium threshold and above.
+        BlockMediumAndAbove = 2,
+        /// Block only high threshold (i.e. block less).
+        BlockOnlyHigh = 3,
+        /// Block none.
+        BlockNone = 4,
+        /// Turn off the safety filter.
+        Off = 5,
+    }
+    impl HarmBlockThreshold {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "HARM_BLOCK_THRESHOLD_UNSPECIFIED",
+                Self::BlockLowAndAbove => "BLOCK_LOW_AND_ABOVE",
+                Self::BlockMediumAndAbove => "BLOCK_MEDIUM_AND_ABOVE",
+                Self::BlockOnlyHigh => "BLOCK_ONLY_HIGH",
+                Self::BlockNone => "BLOCK_NONE",
+                Self::Off => "OFF",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "HARM_BLOCK_THRESHOLD_UNSPECIFIED" => Some(Self::Unspecified),
+                "BLOCK_LOW_AND_ABOVE" => Some(Self::BlockLowAndAbove),
+                "BLOCK_MEDIUM_AND_ABOVE" => Some(Self::BlockMediumAndAbove),
+                "BLOCK_ONLY_HIGH" => Some(Self::BlockOnlyHigh),
+                "BLOCK_NONE" => Some(Self::BlockNone),
+                "OFF" => Some(Self::Off),
+                _ => None,
+            }
+        }
+    }
+    /// Probability vs severity.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum HarmBlockMethod {
+        /// The harm block method is unspecified.
+        Unspecified = 0,
+        /// The harm block method uses both probability and severity scores.
+        Severity = 1,
+        /// The harm block method uses the probability score.
+        Probability = 2,
+    }
+    impl HarmBlockMethod {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "HARM_BLOCK_METHOD_UNSPECIFIED",
+                Self::Severity => "SEVERITY",
+                Self::Probability => "PROBABILITY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "HARM_BLOCK_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                "SEVERITY" => Some(Self::Severity),
+                "PROBABILITY" => Some(Self::Probability),
+                _ => None,
+            }
+        }
+    }
+}
+/// Harm categories that will block the content.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum HarmCategory {
+    /// The harm category is unspecified.
+    Unspecified = 0,
+    /// The harm category is hate speech.
+    HateSpeech = 1,
+    /// The harm category is dangerous content.
+    DangerousContent = 2,
+    /// The harm category is harassment.
+    Harassment = 3,
+    /// The harm category is sexually explicit content.
+    SexuallyExplicit = 4,
+    /// The harm category is civic integrity.
+    CivicIntegrity = 5,
+}
+impl HarmCategory {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "HARM_CATEGORY_UNSPECIFIED",
+            Self::HateSpeech => "HARM_CATEGORY_HATE_SPEECH",
+            Self::DangerousContent => "HARM_CATEGORY_DANGEROUS_CONTENT",
+            Self::Harassment => "HARM_CATEGORY_HARASSMENT",
+            Self::SexuallyExplicit => "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+            Self::CivicIntegrity => "HARM_CATEGORY_CIVIC_INTEGRITY",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "HARM_CATEGORY_UNSPECIFIED" => Some(Self::Unspecified),
+            "HARM_CATEGORY_HATE_SPEECH" => Some(Self::HateSpeech),
+            "HARM_CATEGORY_DANGEROUS_CONTENT" => Some(Self::DangerousContent),
+            "HARM_CATEGORY_HARASSMENT" => Some(Self::Harassment),
+            "HARM_CATEGORY_SEXUALLY_EXPLICIT" => Some(Self::SexuallyExplicit),
+            "HARM_CATEGORY_CIVIC_INTEGRITY" => Some(Self::CivicIntegrity),
+            _ => None,
+        }
+    }
+}
 /// Request message for
 /// [ConversationalSearchService.ConversationalSearch][google.cloud.retail.v2alpha.ConversationalSearchService.ConversationalSearch]
 /// method.
@@ -7552,6 +7715,32 @@ pub struct ConversationalSearchRequest {
     pub conversational_filtering_spec: ::core::option::Option<
         conversational_search_request::ConversationalFilteringSpec,
     >,
+    /// Optional. The user labels applied to a resource must meet the following
+    /// requirements:
+    ///
+    /// * Each resource can have multiple labels, up to a maximum of 64.
+    /// * Each label must be a key-value pair.
+    /// * Keys have a minimum length of 1 character and a maximum length of 63
+    ///    characters and cannot be empty. Values can be empty and have a maximum
+    ///    length of 63 characters.
+    /// * Keys and values can contain only lowercase letters, numeric characters,
+    ///    underscores, and dashes. All characters must use UTF-8 encoding, and
+    ///    international characters are allowed.
+    /// * The key portion of a label must be unique. However, you can use the same
+    ///    key with multiple resources.
+    /// * Keys must start with a lowercase letter or international character.
+    ///
+    /// See [Google Cloud
+    /// Document](<https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>)
+    /// for more details.
+    #[prost(map = "string, string", tag = "12")]
+    pub user_labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. The safety settings to be applied to the generated content.
+    #[prost(message, repeated, tag = "14")]
+    pub safety_settings: ::prost::alloc::vec::Vec<SafetySetting>,
 }
 /// Nested message and enum types in `ConversationalSearchRequest`.
 pub mod conversational_search_request {
@@ -7659,6 +7848,10 @@ pub mod conversational_search_request {
         pub enum Mode {
             /// Default value.
             Unspecified = 0,
+            /// Disable Conversational Filtering.
+            Disabled = 1,
+            /// Enabled Conversational Filtering with default Conversational Search.
+            Enabled = 2,
             /// Enabled Conversational Filtering without default Conversational Search.
             ConversationalFilterOnly = 3,
         }
@@ -7670,6 +7863,8 @@ pub mod conversational_search_request {
             pub fn as_str_name(&self) -> &'static str {
                 match self {
                     Self::Unspecified => "MODE_UNSPECIFIED",
+                    Self::Disabled => "DISABLED",
+                    Self::Enabled => "ENABLED",
                     Self::ConversationalFilterOnly => "CONVERSATIONAL_FILTER_ONLY",
                 }
             }
@@ -7677,6 +7872,8 @@ pub mod conversational_search_request {
             pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
                 match value {
                     "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "DISABLED" => Some(Self::Disabled),
+                    "ENABLED" => Some(Self::Enabled),
                     "CONVERSATIONAL_FILTER_ONLY" => Some(Self::ConversationalFilterOnly),
                     _ => None,
                 }
@@ -7689,6 +7886,36 @@ pub mod conversational_search_request {
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversationalSearchResponse {
+    /// The types Retail classifies the search query as.
+    ///
+    /// Supported values are:
+    ///
+    /// - "ADVERSARIAL"
+    /// - "CHITCHAT"
+    /// - "JAILBREAK"
+    /// - "ORDER_SUPPORT"
+    /// - "SIMPLE_PRODUCT_SEARCH"
+    /// - "INTENT_REFINEMENT"
+    /// - "PRODUCT_DETAILS"
+    /// - "PRODUCT_COMPARISON"
+    /// - "DEALS_AND_COUPONS"
+    /// - "STORE_RELEVANT"
+    /// - "BLOCKLISTED"
+    /// - "BEST_PRODUCT"
+    /// - "RETAIL_SUPPORT"
+    /// - "DISABLED"
+    /// clang-format off
+    /// clang-format on
+    #[prost(string, repeated, tag = "10")]
+    pub user_query_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The conversational answer-based text response generated by the Server.
+    #[prost(string, tag = "2")]
+    pub conversational_text_response: ::prost::alloc::string::String,
+    /// The conversational followup question generated for Intent refinement.
+    #[prost(message, optional, tag = "3")]
+    pub followup_question: ::core::option::Option<
+        conversational_search_response::FollowupQuestion,
+    >,
     /// Conversation UUID. This field will be stored in client side storage to
     /// maintain the conversation session with server and will be used for next
     /// search request's
@@ -7709,6 +7936,9 @@ pub struct ConversationalSearchResponse {
     pub conversational_filtering_result: ::core::option::Option<
         conversational_search_response::ConversationalFilteringResult,
     >,
+    /// Output only. The state of the response generation.
+    #[prost(enumeration = "conversational_search_response::State", tag = "9")]
+    pub state: i32,
 }
 /// Nested message and enum types in `ConversationalSearchResponse`.
 pub mod conversational_search_response {
@@ -7776,6 +8006,49 @@ pub mod conversational_search_response {
             pub product_attribute_value: ::core::option::Option<
                 super::super::ProductAttributeValue,
             >,
+        }
+    }
+    /// The state of the response generation.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Unknown.
+        Unspecified = 0,
+        /// Response generation is being streamed.
+        Streaming = 1,
+        /// Response generation has succeeded.
+        Succeeded = 2,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Streaming => "STREAMING",
+                Self::Succeeded => "SUCCEEDED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STREAMING" => Some(Self::Streaming),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                _ => None,
+            }
         }
     }
 }

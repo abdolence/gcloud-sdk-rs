@@ -7,7 +7,7 @@
 /// [Certificates][google.cloud.security.privateca.v1.Certificate].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CertificateAuthority {
-    /// Output only. The resource name for this
+    /// Identifier. The resource name for this
     /// [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
     /// in the format `projects/*/locations/*/caPools/*/certificateAuthorities/*`.
     #[prost(string, tag = "1")]
@@ -114,6 +114,19 @@ pub struct CertificateAuthority {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. User-defined URLs for CA certificate and CRLs. The service does
+    /// not publish content to these URLs. It is up to the user to mirror content
+    /// to these URLs.
+    #[prost(message, optional, tag = "18")]
+    pub user_defined_access_urls: ::core::option::Option<
+        certificate_authority::UserDefinedAccessUrls,
+    >,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "19")]
+    pub satisfies_pzs: bool,
+    /// Output only. Reserved for future use.
+    #[prost(bool, tag = "20")]
+    pub satisfies_pzi: bool,
 }
 /// Nested message and enum types in `CertificateAuthority`.
 pub mod certificate_authority {
@@ -160,6 +173,29 @@ pub mod certificate_authority {
             #[prost(enumeration = "super::SignHashAlgorithm", tag = "2")]
             Algorithm(i32),
         }
+    }
+    /// User-defined URLs for accessing content published by this
+    /// [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority].
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct UserDefinedAccessUrls {
+        /// Optional. A list of URLs where the issuer CA certificate may be
+        /// downloaded, which appears in the "Authority Information Access" extension
+        /// in the certificate. If specified, the default [Cloud Storage
+        /// URLs][google.cloud.security.privateca.v1.CertificateAuthority.AccessUrls.ca_certificate_access_url]
+        /// will be omitted.
+        #[prost(string, repeated, tag = "1")]
+        pub aia_issuing_certificate_urls: ::prost::alloc::vec::Vec<
+            ::prost::alloc::string::String,
+        >,
+        /// Optional. A list of URLs where to obtain CRL information, i.e.
+        /// the DistributionPoint.fullName described by
+        /// <https://tools.ietf.org/html/rfc5280#section-4.2.1.13.>
+        /// If specified, the default
+        /// [Cloud Storage
+        /// URLs][google.cloud.security.privateca.v1.CertificateAuthority.AccessUrls.crl_access_urls]
+        /// will be omitted.
+        #[prost(string, repeated, tag = "2")]
+        pub crl_access_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// The type of a
     /// [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority],
@@ -374,7 +410,7 @@ pub mod certificate_authority {
 /// resources and to rotate CA certificates in and out of the trust anchor.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CaPool {
-    /// Output only. The resource name for this
+    /// Identifier. The resource name for this
     /// [CaPool][google.cloud.security.privateca.v1.CaPool] in the format
     /// `projects/*/locations/*/caPools/*`.
     #[prost(string, tag = "1")]
@@ -504,6 +540,15 @@ pub mod ca_pool {
         /// the key types listed here. Otherwise, any key may be used.
         #[prost(message, repeated, tag = "1")]
         pub allowed_key_types: ::prost::alloc::vec::Vec<issuance_policy::AllowedKeyType>,
+        /// Optional. The duration to backdate all certificates issued from this
+        /// [CaPool][google.cloud.security.privateca.v1.CaPool]. If not set, the
+        /// certificates will be issued with a not_before_time of the issuance time
+        /// (i.e. the current time). If set, the certificates will be issued with a
+        /// not_before_time of the issuance time minus the backdate_duration. The
+        /// not_after_time will be adjusted to preserve the requested lifetime. The
+        /// backdate_duration must be less than or equal to 48 hours.
+        #[prost(message, optional, tag = "7")]
+        pub backdate_duration: ::core::option::Option<::prost_types::Duration>,
         /// Optional. The maximum lifetime allowed for issued
         /// [Certificates][google.cloud.security.privateca.v1.Certificate]. Note that
         /// if the issuing
@@ -742,7 +787,7 @@ pub mod ca_pool {
 /// contains the serial numbers of certificates that should no longer be trusted.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CertificateRevocationList {
-    /// Output only. The resource name for this
+    /// Identifier. The resource name for this
     /// [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList]
     /// in the format `projects/*/locations/*/caPools/*certificateAuthorities/*/
     ///     certificateRevocationLists/*`.
@@ -867,7 +912,7 @@ pub mod certificate_revocation_list {
 /// [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Certificate {
-    /// Output only. The resource name for this
+    /// Identifier. The resource name for this
     /// [Certificate][google.cloud.security.privateca.v1.Certificate] in the format
     /// `projects/*/locations/*/caPools/*/certificates/*`.
     #[prost(string, tag = "1")]
@@ -967,7 +1012,7 @@ pub mod certificate {
 /// refers to a managed template for certificate issuance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CertificateTemplate {
-    /// Output only. The resource name for this
+    /// Identifier. The resource name for this
     /// [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate]
     /// in the format `projects/*/locations/*/certificateTemplates/*`.
     #[prost(string, tag = "1")]
@@ -1058,7 +1103,9 @@ pub struct X509Parameters {
     pub key_usage: ::core::option::Option<KeyUsage>,
     /// Optional. Describes options in this
     /// [X509Parameters][google.cloud.security.privateca.v1.X509Parameters] that
-    /// are relevant in a CA certificate.
+    /// are relevant in a CA certificate. If not specified, a default basic
+    /// constraints extension with `is_ca=false` will be added for leaf
+    /// certificates.
     #[prost(message, optional, tag = "2")]
     pub ca_options: ::core::option::Option<x509_parameters::CaOptions>,
     /// Optional. Describes the X.509 certificate policy object identifiers, per
@@ -1079,20 +1126,20 @@ pub struct X509Parameters {
 }
 /// Nested message and enum types in `X509Parameters`.
 pub mod x509_parameters {
-    /// Describes values that are relevant in a CA certificate.
+    /// Describes the X.509 basic constraints extension, per [RFC 5280
+    /// section 4.2.1.9](<https://tools.ietf.org/html/rfc5280#section-4.2.1.9>)
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
     pub struct CaOptions {
-        /// Optional. Refers to the "CA" X.509 extension, which is a boolean value.
-        /// When this value is missing, the extension will be omitted from the CA
-        /// certificate.
+        /// Optional. Refers to the "CA" boolean field in the X.509 extension.
+        /// When this value is missing, the basic constraints extension will be
+        /// omitted from the certificate.
         #[prost(bool, optional, tag = "1")]
         pub is_ca: ::core::option::Option<bool>,
-        /// Optional. Refers to the path length restriction X.509 extension. For a CA
-        /// certificate, this value describes the depth of subordinate CA
-        /// certificates that are allowed.
-        /// If this value is less than 0, the request will fail.
-        /// If this value is missing, the max path length will be omitted from the
-        /// CA certificate.
+        /// Optional. Refers to the path length constraint field in the X.509
+        /// extension. For a CA certificate, this value describes the depth of
+        /// subordinate CA certificates that are allowed. If this value is less than
+        /// 0, the request will fail. If this value is missing, the max path length
+        /// will be omitted from the certificate.
         #[prost(int32, optional, tag = "2")]
         pub max_issuer_path_length: ::core::option::Option<i32>,
     }
@@ -1365,6 +1412,12 @@ pub struct CertificateDescription {
     pub cert_fingerprint: ::core::option::Option<
         certificate_description::CertificateFingerprint,
     >,
+    /// The hash of the pre-signed certificate, which will be signed by the CA.
+    /// Corresponds to the TBS Certificate in
+    /// <https://tools.ietf.org/html/rfc5280#section-4.1.2.> The field will always be
+    /// populated.
+    #[prost(string, tag = "9")]
+    pub tbs_certificate_digest: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `CertificateDescription`.
 pub mod certificate_description {
@@ -1522,6 +1575,40 @@ pub mod key_usage {
         pub ocsp_signing: bool,
     }
 }
+/// [AttributeTypeAndValue][google.cloud.security.privateca.v1.AttributeTypeAndValue]
+/// specifies an attribute type and value. It can use either a OID or enum value
+/// to specify the attribute type.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AttributeTypeAndValue {
+    /// The value for the attribute type.
+    #[prost(string, tag = "3")]
+    pub value: ::prost::alloc::string::String,
+    /// The attribute type for the attribute and value pair.
+    #[prost(oneof = "attribute_type_and_value::AttributeType", tags = "1, 2")]
+    pub attribute_type: ::core::option::Option<attribute_type_and_value::AttributeType>,
+}
+/// Nested message and enum types in `AttributeTypeAndValue`.
+pub mod attribute_type_and_value {
+    /// The attribute type for the attribute and value pair.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum AttributeType {
+        /// The attribute type of the attribute and value pair.
+        #[prost(enumeration = "super::AttributeType", tag = "1")]
+        Type(i32),
+        /// Object ID for an attribute type of an attribute and value pair.
+        #[prost(message, tag = "2")]
+        ObjectId(super::ObjectId),
+    }
+}
+/// [RelativeDistinguishedName][google.cloud.security.privateca.v1.RelativeDistinguishedName]
+/// specifies a relative distinguished name which will be used to build a
+/// distinguished name.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RelativeDistinguishedName {
+    /// Attributes describes the attribute value assertions in the RDN.
+    #[prost(message, repeated, tag = "1")]
+    pub attributes: ::prost::alloc::vec::Vec<AttributeTypeAndValue>,
+}
 /// [Subject][google.cloud.security.privateca.v1.Subject] describes parts of a
 /// distinguished name that, in turn, describes the subject of the certificate.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1550,6 +1637,9 @@ pub struct Subject {
     /// The postal code of the subject.
     #[prost(string, tag = "8")]
     pub postal_code: ::prost::alloc::string::String,
+    /// This field can be used in place of the named subject fields.
+    #[prost(message, repeated, tag = "9")]
+    pub rdn_sequence: ::prost::alloc::vec::Vec<RelativeDistinguishedName>,
 }
 /// [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames]
 /// corresponds to a more modern way of listing what the asserted identity is in
@@ -1717,6 +1807,64 @@ pub mod certificate_extension_constraints {
         }
     }
 }
+/// [AttributeType][google.cloud.security.privateca.v1.AttributeType] specifies
+/// the type of Attribute in a relative distinguished name.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum AttributeType {
+    /// Attribute type is unspecified.
+    Unspecified = 0,
+    /// The "common name" of the subject.
+    CommonName = 1,
+    /// The country code of the subject.
+    CountryCode = 2,
+    /// The organization of the subject.
+    Organization = 3,
+    /// The organizational unit of the subject.
+    OrganizationalUnit = 4,
+    /// The locality or city of the subject.
+    Locality = 5,
+    /// The province, territory, or regional state of the subject.
+    Province = 6,
+    /// The street address of the subject.
+    StreetAddress = 7,
+    /// The postal code of the subject.
+    PostalCode = 8,
+}
+impl AttributeType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "ATTRIBUTE_TYPE_UNSPECIFIED",
+            Self::CommonName => "COMMON_NAME",
+            Self::CountryCode => "COUNTRY_CODE",
+            Self::Organization => "ORGANIZATION",
+            Self::OrganizationalUnit => "ORGANIZATIONAL_UNIT",
+            Self::Locality => "LOCALITY",
+            Self::Province => "PROVINCE",
+            Self::StreetAddress => "STREET_ADDRESS",
+            Self::PostalCode => "POSTAL_CODE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ATTRIBUTE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "COMMON_NAME" => Some(Self::CommonName),
+            "COUNTRY_CODE" => Some(Self::CountryCode),
+            "ORGANIZATION" => Some(Self::Organization),
+            "ORGANIZATIONAL_UNIT" => Some(Self::OrganizationalUnit),
+            "LOCALITY" => Some(Self::Locality),
+            "PROVINCE" => Some(Self::Province),
+            "STREET_ADDRESS" => Some(Self::StreetAddress),
+            "POSTAL_CODE" => Some(Self::PostalCode),
+            _ => None,
+        }
+    }
+}
 /// A [RevocationReason][google.cloud.security.privateca.v1.RevocationReason]
 /// indicates whether a
 /// [Certificate][google.cloud.security.privateca.v1.Certificate] has been
@@ -1811,6 +1959,16 @@ pub enum SubjectRequestMode {
     /// specified in the certificate request. This mode requires the caller to have
     /// the `privateca.certificates.create` permission.
     Default = 1,
+    /// A mode used to get an accurate representation of the Subject
+    /// field's distinguished name. Indicates that the certificate's
+    /// [Subject][google.cloud.security.privateca.v1.Subject] and/or
+    /// [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames] are
+    /// specified in the certificate request. When parsing a PEM CSR this mode will
+    /// maintain the sequence of RDNs found in the CSR's subject field in the
+    /// issued [Certificate][google.cloud.security.privateca.v1.Certificate]. This
+    /// mode requires the caller to have the `privateca.certificates.create`
+    /// permission.
+    RdnSequence = 3,
     /// A mode reserved for special cases. Indicates that the certificate should
     /// have one SPIFFE
     /// [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames] set
@@ -1831,6 +1989,7 @@ impl SubjectRequestMode {
         match self {
             Self::Unspecified => "SUBJECT_REQUEST_MODE_UNSPECIFIED",
             Self::Default => "DEFAULT",
+            Self::RdnSequence => "RDN_SEQUENCE",
             Self::ReflectedSpiffe => "REFLECTED_SPIFFE",
         }
     }
@@ -1839,6 +1998,7 @@ impl SubjectRequestMode {
         match value {
             "SUBJECT_REQUEST_MODE_UNSPECIFIED" => Some(Self::Unspecified),
             "DEFAULT" => Some(Self::Default),
+            "RDN_SEQUENCE" => Some(Self::RdnSequence),
             "REFLECTED_SPIFFE" => Some(Self::ReflectedSpiffe),
             _ => None,
         }
@@ -1857,8 +2017,9 @@ pub struct CreateCertificateRequest {
     /// Optional. It must be unique within a location and match the regular
     /// expression `\[a-zA-Z0-9_-\]{1,63}`. This field is required when using a
     /// [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
-    /// in the Enterprise [CertificateAuthority.Tier][], but is optional and its
-    /// value is ignored otherwise.
+    /// in the Enterprise
+    /// [CertificateAuthority.tier][google.cloud.security.privateca.v1.CertificateAuthority.tier],
+    /// but is optional and its value is ignored otherwise.
     #[prost(string, tag = "2")]
     pub certificate_id: ::prost::alloc::string::String,
     /// Required. A [Certificate][google.cloud.security.privateca.v1.Certificate]
@@ -1964,8 +2125,8 @@ pub struct ListCertificatesResponse {
     #[prost(message, repeated, tag = "1")]
     pub certificates: ::prost::alloc::vec::Vec<Certificate>,
     /// A token to retrieve next page of results. Pass this value in
-    /// [ListCertificatesRequest.next_page_token][] to retrieve the
-    /// next page of results.
+    /// [ListCertificatesRequest.page_token][google.cloud.security.privateca.v1.ListCertificatesRequest.page_token]
+    /// to retrieve the next page of results.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// A list of locations (e.g. "us-west1") that could not be reached.
@@ -2222,8 +2383,8 @@ pub struct ListCertificateAuthoritiesResponse {
     #[prost(message, repeated, tag = "1")]
     pub certificate_authorities: ::prost::alloc::vec::Vec<CertificateAuthority>,
     /// A token to retrieve next page of results. Pass this value in
-    /// [ListCertificateAuthoritiesRequest.next_page_token][] to retrieve the next
-    /// page of results.
+    /// [ListCertificateAuthoritiesRequest.page_token][google.cloud.security.privateca.v1.ListCertificateAuthoritiesRequest.page_token]
+    /// to retrieve the next page of results.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// A list of locations (e.g. "us-west1") that could not be reached.
@@ -2504,8 +2665,8 @@ pub struct ListCaPoolsResponse {
     #[prost(message, repeated, tag = "1")]
     pub ca_pools: ::prost::alloc::vec::Vec<CaPool>,
     /// A token to retrieve next page of results. Pass this value in
-    /// [ListCertificateAuthoritiesRequest.next_page_token][] to retrieve the next
-    /// page of results.
+    /// [ListCertificateAuthoritiesRequest.page_token][google.cloud.security.privateca.v1.ListCertificateAuthoritiesRequest.page_token]
+    /// to retrieve the next page of results.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// A list of locations (e.g. "us-west1") that could not be reached.
@@ -2565,8 +2726,8 @@ pub struct ListCertificateRevocationListsResponse {
         CertificateRevocationList,
     >,
     /// A token to retrieve next page of results. Pass this value in
-    /// [ListCertificateRevocationListsRequest.next_page_token][] to retrieve the
-    /// next page of results.
+    /// [ListCertificateRevocationListsRequest.page_token][google.cloud.security.privateca.v1.ListCertificateRevocationListsRequest.page_token]
+    /// to retrieve the next page of results.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// A list of locations (e.g. "us-west1") that could not be reached.
@@ -2710,8 +2871,8 @@ pub struct ListCertificateTemplatesResponse {
     #[prost(message, repeated, tag = "1")]
     pub certificate_templates: ::prost::alloc::vec::Vec<CertificateTemplate>,
     /// A token to retrieve next page of results. Pass this value in
-    /// [ListCertificateTemplatesRequest.next_page_token][] to retrieve
-    /// the next page of results.
+    /// [ListCertificateTemplatesRequest.page_token][google.cloud.security.privateca.v1.ListCertificateTemplatesRequest.page_token]
+    /// to retrieve the next page of results.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// A list of locations (e.g. "us-west1") that could not be reached.
@@ -2766,9 +2927,10 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
-    /// `Code.CANCELLED`.
+    /// have
+    /// [google.longrunning.Operation.error][google.longrunning.Operation.error]
+    /// value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.

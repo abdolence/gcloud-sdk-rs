@@ -45,6 +45,12 @@ pub struct Instance {
     /// Output only. A list of hostnames for this instance.
     #[prost(message, optional, tag = "9")]
     pub host_config: ::core::option::Option<instance::HostConfig>,
+    /// Optional. Configuration for Workforce Identity Federation to support
+    /// third party identity provider. If unset, defaults to the Google OIDC IdP.
+    #[prost(message, optional, tag = "14")]
+    pub workforce_identity_federation_config: ::core::option::Option<
+        instance::WorkforceIdentityFederationConfig,
+    >,
 }
 /// Nested message and enum types in `Instance`.
 pub mod instance {
@@ -54,8 +60,7 @@ pub mod instance {
         /// Output only. HTML hostname.
         #[prost(string, tag = "1")]
         pub html: ::prost::alloc::string::String,
-        /// Output only. API hostname. This is the hostname to use for **Host: Data
-        /// Plane** endpoints.
+        /// Output only. API hostname.
         #[prost(string, tag = "2")]
         pub api: ::prost::alloc::string::String,
         /// Output only. Git HTTP hostname.
@@ -71,7 +76,7 @@ pub mod instance {
         /// Required. Immutable. Indicate if it's private instance.
         #[prost(bool, tag = "1")]
         pub is_private: bool,
-        /// Required. Immutable. CA pool resource, resource must in the format of
+        /// Optional. Immutable. CA pool resource, resource must in the format of
         /// `projects/{project}/locations/{location}/caPools/{ca_pool}`.
         #[prost(string, tag = "2")]
         pub ca_pool: ::prost::alloc::string::String,
@@ -90,6 +95,14 @@ pub mod instance {
         pub psc_allowed_projects: ::prost::alloc::vec::Vec<
             ::prost::alloc::string::String,
         >,
+    }
+    /// WorkforceIdentityFederationConfig allows this instance to support users
+    /// from external identity providers.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct WorkforceIdentityFederationConfig {
+        /// Optional. Immutable. Whether Workforce Identity Federation is enabled.
+        #[prost(bool, tag = "1")]
+        pub enabled: bool,
     }
     /// Secure Source Manager instance state.
     #[derive(
@@ -206,10 +219,9 @@ pub struct Repository {
     /// Optional. The name of the instance in which the repository is hosted,
     /// formatted as
     /// `projects/{project_number}/locations/{location_id}/instances/{instance_id}`
-    /// When creating repository via
-    /// securesourcemanager.googleapis.com (Control Plane API), this field is used
-    /// as input. When creating repository via *.sourcemanager.dev (Data Plane
-    /// API), this field is output only.
+    /// When creating repository via securesourcemanager.googleapis.com, this field
+    /// is used as input. When creating repository via *.sourcemanager.dev, this
+    /// field is output only.
     #[prost(string, tag = "3")]
     pub instance: ::prost::alloc::string::String,
     /// Output only. Unique identifier of the repository.
@@ -390,8 +402,97 @@ pub mod repository {
         pub readme: ::prost::alloc::string::String,
     }
 }
+/// Metadata of a Secure Source Manager Hook.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Hook {
+    /// Identifier. A unique identifier for a Hook. The name should be of the
+    /// format:
+    /// `projects/{project}/locations/{location_id}/repositories/{repository_id}/hooks/{hook_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The target URI to which the payloads will be delivered.
+    #[prost(string, tag = "2")]
+    pub target_uri: ::prost::alloc::string::String,
+    /// Optional. Determines if the hook disabled or not.
+    /// Set to true to stop sending traffic.
+    #[prost(bool, tag = "3")]
+    pub disabled: bool,
+    /// Optional. The events that trigger hook on.
+    #[prost(enumeration = "hook::HookEventType", repeated, packed = "false", tag = "4")]
+    pub events: ::prost::alloc::vec::Vec<i32>,
+    /// Output only. Create timestamp.
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Update timestamp.
+    #[prost(message, optional, tag = "6")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Unique identifier of the hook.
+    #[prost(string, tag = "7")]
+    pub uid: ::prost::alloc::string::String,
+    /// Optional. The trigger option for push events.
+    #[prost(message, optional, tag = "9")]
+    pub push_option: ::core::option::Option<hook::PushOption>,
+    /// Optional. The sensitive query string to be appended to the target URI.
+    #[prost(string, tag = "10")]
+    pub sensitive_query_string: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `Hook`.
+pub mod hook {
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PushOption {
+        /// Optional. Trigger hook for matching branches only.
+        /// Specified as glob pattern. If empty or *, events for all branches are
+        /// reported. Examples: main, {main,release*}.
+        /// See <https://pkg.go.dev/github.com/gobwas/glob> documentation.
+        #[prost(string, tag = "1")]
+        pub branch_filter: ::prost::alloc::string::String,
+    }
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum HookEventType {
+        /// Unspecified.
+        Unspecified = 0,
+        /// Push events are triggered when pushing to the repository.
+        Push = 1,
+        /// Pull request events are triggered when a pull request is opened, closed,
+        /// reopened, or edited.
+        PullRequest = 2,
+    }
+    impl HookEventType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "UNSPECIFIED",
+                Self::Push => "PUSH",
+                Self::PullRequest => "PULL_REQUEST",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "PUSH" => Some(Self::Push),
+                "PULL_REQUEST" => Some(Self::PullRequest),
+                _ => None,
+            }
+        }
+    }
+}
 /// Metadata of a BranchRule. BranchRule is the protection rule to enforce
-/// pre-defined rules on desginated branches within a repository.
+/// pre-defined rules on designated branches within a repository.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BranchRule {
     /// Optional. A unique identifier for a BranchRule. The name should be of the
@@ -465,6 +566,406 @@ pub mod branch_rule {
         /// Required. The context of the check.
         #[prost(string, tag = "1")]
         pub context: ::prost::alloc::string::String,
+    }
+}
+/// Metadata of a PullRequest. PullRequest is the request
+/// from a user to merge a branch (head) into another branch (base).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PullRequest {
+    /// Output only. A unique identifier for a PullRequest. The number appended at
+    /// the end is generated by the server. Format:
+    /// `projects/{project}/locations/{location}/repositories/{repository}/pullRequests/{pull_request_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The pull request title.
+    #[prost(string, tag = "2")]
+    pub title: ::prost::alloc::string::String,
+    /// Optional. The pull request body. Provides a detailed description of the
+    /// changes.
+    #[prost(string, tag = "3")]
+    pub body: ::prost::alloc::string::String,
+    /// Required. The branch to merge changes in.
+    #[prost(message, optional, tag = "4")]
+    pub base: ::core::option::Option<pull_request::Branch>,
+    /// Immutable. The branch containing the changes to be merged.
+    #[prost(message, optional, tag = "5")]
+    pub head: ::core::option::Option<pull_request::Branch>,
+    /// Output only. State of the pull request (open, closed or merged).
+    #[prost(enumeration = "pull_request::State", tag = "6")]
+    pub state: i32,
+    /// Output only. Creation timestamp.
+    #[prost(message, optional, tag = "7")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Last updated timestamp.
+    #[prost(message, optional, tag = "8")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Close timestamp (if closed or merged). Cleared when pull
+    /// request is re-opened.
+    #[prost(message, optional, tag = "9")]
+    pub close_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `PullRequest`.
+pub mod pull_request {
+    /// Branch represents a branch involved in a pull request.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Branch {
+        /// Required. Name of the branch.
+        #[prost(string, tag = "1")]
+        pub r#ref: ::prost::alloc::string::String,
+        /// Output only. The commit at the tip of the branch.
+        #[prost(string, tag = "2")]
+        pub sha: ::prost::alloc::string::String,
+    }
+    /// State of the pull request.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Unspecified.
+        Unspecified = 0,
+        /// An open pull request.
+        Open = 1,
+        /// A closed pull request.
+        Closed = 2,
+        /// A merged pull request.
+        Merged = 3,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Open => "OPEN",
+                Self::Closed => "CLOSED",
+                Self::Merged => "MERGED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "OPEN" => Some(Self::Open),
+                "CLOSED" => Some(Self::Closed),
+                "MERGED" => Some(Self::Merged),
+                _ => None,
+            }
+        }
+    }
+}
+/// Metadata of a FileDiff. FileDiff represents a single file diff in a pull
+/// request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FileDiff {
+    /// Output only. The name of the file.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The action taken on the file (eg. added, modified, deleted).
+    #[prost(enumeration = "file_diff::Action", tag = "2")]
+    pub action: i32,
+    /// Output only. The commit pointing to the file changes.
+    #[prost(string, tag = "3")]
+    pub sha: ::prost::alloc::string::String,
+    /// Output only. The git patch containing the file changes.
+    #[prost(string, tag = "4")]
+    pub patch: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `FileDiff`.
+pub mod file_diff {
+    /// Action taken on the file.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Action {
+        /// Unspecified.
+        Unspecified = 0,
+        /// The file was added.
+        Added = 1,
+        /// The file was modified.
+        Modified = 2,
+        /// The file was deleted.
+        Deleted = 3,
+    }
+    impl Action {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ACTION_UNSPECIFIED",
+                Self::Added => "ADDED",
+                Self::Modified => "MODIFIED",
+                Self::Deleted => "DELETED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ACTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "ADDED" => Some(Self::Added),
+                "MODIFIED" => Some(Self::Modified),
+                "DELETED" => Some(Self::Deleted),
+                _ => None,
+            }
+        }
+    }
+}
+/// Metadata of an Issue.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Issue {
+    /// Identifier. Unique identifier for an issue. The issue id is generated by
+    /// the server. Format:
+    /// `projects/{project}/locations/{location}/repositories/{repository}/issues/{issue_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Issue title.
+    #[prost(string, tag = "2")]
+    pub title: ::prost::alloc::string::String,
+    /// Optional. Issue body. Provides a detailed description of the issue.
+    #[prost(string, tag = "3")]
+    pub body: ::prost::alloc::string::String,
+    /// Output only. State of the issue.
+    #[prost(enumeration = "issue::State", tag = "4")]
+    pub state: i32,
+    /// Output only. Creation timestamp.
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Last updated timestamp.
+    #[prost(message, optional, tag = "6")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Close timestamp (if closed). Cleared when is re-opened.
+    #[prost(message, optional, tag = "7")]
+    pub close_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. This checksum is computed by the server based on the value of
+    /// other fields, and may be sent on update and delete requests to ensure the
+    /// client has an up-to-date value before proceeding.
+    #[prost(string, tag = "8")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `Issue`.
+pub mod issue {
+    /// Possible states of an issue.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Unspecified.
+        Unspecified = 0,
+        /// An open issue.
+        Open = 1,
+        /// A closed issue.
+        Closed = 2,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "STATE_UNSPECIFIED",
+                Self::Open => "OPEN",
+                Self::Closed => "CLOSED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "OPEN" => Some(Self::Open),
+                "CLOSED" => Some(Self::Closed),
+                _ => None,
+            }
+        }
+    }
+}
+/// IssueComment represents a comment on an issue.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IssueComment {
+    /// Identifier. Unique identifier for an issue comment. The comment id is
+    /// generated by the server. Format:
+    /// `projects/{project}/locations/{location}/repositories/{repository}/issues/{issue}/issueComments/{comment_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The comment body.
+    #[prost(string, tag = "2")]
+    pub body: ::prost::alloc::string::String,
+    /// Output only. Creation timestamp.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Last updated timestamp.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// PullRequestComment represents a comment on a pull request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PullRequestComment {
+    /// Identifier. Unique identifier for the pull request comment. The comment id
+    /// is generated by the server. Format:
+    /// `projects/{project}/locations/{location}/repositories/{repository}/pullRequests/{pull_request}/pullRequestComments/{comment_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Creation timestamp.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Last updated timestamp.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The comment detail. A comment can be a review, a general comment, or a
+    /// code comment.
+    #[prost(oneof = "pull_request_comment::CommentDetail", tags = "4, 5, 6")]
+    pub comment_detail: ::core::option::Option<pull_request_comment::CommentDetail>,
+}
+/// Nested message and enum types in `PullRequestComment`.
+pub mod pull_request_comment {
+    /// The review summary comment.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Review {
+        /// Required. The review action type.
+        #[prost(enumeration = "review::ActionType", tag = "1")]
+        pub action_type: i32,
+        /// Optional. The comment body.
+        #[prost(string, tag = "2")]
+        pub body: ::prost::alloc::string::String,
+        /// Output only. The effective commit sha this review is pointing to.
+        #[prost(string, tag = "4")]
+        pub effective_commit_sha: ::prost::alloc::string::String,
+    }
+    /// Nested message and enum types in `Review`.
+    pub mod review {
+        /// The review action type.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum ActionType {
+            /// Unspecified.
+            Unspecified = 0,
+            /// A general review comment.
+            Comment = 1,
+            /// Change required from this review.
+            ChangeRequested = 2,
+            /// Change approved from this review.
+            Approved = 3,
+        }
+        impl ActionType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "ACTION_TYPE_UNSPECIFIED",
+                    Self::Comment => "COMMENT",
+                    Self::ChangeRequested => "CHANGE_REQUESTED",
+                    Self::Approved => "APPROVED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "ACTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "COMMENT" => Some(Self::Comment),
+                    "CHANGE_REQUESTED" => Some(Self::ChangeRequested),
+                    "APPROVED" => Some(Self::Approved),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// The general pull request comment.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Comment {
+        /// Required. The comment body.
+        #[prost(string, tag = "1")]
+        pub body: ::prost::alloc::string::String,
+    }
+    /// The comment on a code line.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Code {
+        /// Required. The comment body.
+        #[prost(string, tag = "1")]
+        pub body: ::prost::alloc::string::String,
+        /// Optional. Input only. The PullRequestComment resource name that this
+        /// comment is replying to.
+        #[prost(string, tag = "2")]
+        pub reply: ::prost::alloc::string::String,
+        /// Optional. The position of the comment.
+        #[prost(message, optional, tag = "3")]
+        pub position: ::core::option::Option<Position>,
+        /// Output only. The root comment of the conversation, derived from the reply
+        /// field.
+        #[prost(string, tag = "4")]
+        pub effective_root_comment: ::prost::alloc::string::String,
+        /// Output only. Boolean indicator if the comment is resolved.
+        #[prost(bool, tag = "5")]
+        pub resolved: bool,
+        /// Output only. The effective commit sha this code comment is pointing to.
+        #[prost(string, tag = "7")]
+        pub effective_commit_sha: ::prost::alloc::string::String,
+    }
+    /// The position of the code comment.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Position {
+        /// Required. The path of the file.
+        #[prost(string, tag = "1")]
+        pub path: ::prost::alloc::string::String,
+        /// Required. The line number of the comment. Positive value means it's on
+        /// the new side of the diff, negative value means it's on the old side.
+        #[prost(int64, tag = "2")]
+        pub line: i64,
+    }
+    /// The comment detail. A comment can be a review, a general comment, or a
+    /// code comment.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum CommentDetail {
+        /// Optional. The review summary comment.
+        #[prost(message, tag = "4")]
+        Review(Review),
+        /// Optional. The general pull request comment.
+        #[prost(message, tag = "5")]
+        Comment(Comment),
+        /// Optional. The comment on a code line.
+        #[prost(message, tag = "6")]
+        Code(Code),
     }
 }
 /// ListInstancesRequest is the request to list instances.
@@ -576,7 +1077,7 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a
+    /// have [Operation.error][google.longrunning.Operation.error] value with a
     /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
@@ -604,10 +1105,9 @@ pub struct ListRepositoriesRequest {
     /// Optional. The name of the instance in which the repository is hosted,
     /// formatted as
     /// `projects/{project_number}/locations/{location_id}/instances/{instance_id}`.
-    /// When listing repositories via
-    /// securesourcemanager.googleapis.com (Control Plane API), this field is
-    /// required. When listing repositories via *.sourcemanager.dev (Data Plane
-    /// API), this field is ignored.
+    /// When listing repositories via securesourcemanager.googleapis.com, this
+    /// field is required. When listing repositories via *.sourcemanager.dev, this
+    /// field is ignored.
     #[prost(string, tag = "5")]
     pub instance: ::prost::alloc::string::String,
 }
@@ -645,18 +1145,110 @@ pub struct CreateRepositoryRequest {
     #[prost(string, tag = "3")]
     pub repository_id: ::prost::alloc::string::String,
 }
+/// UpdateRepositoryRequest is the request to update a repository.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateRepositoryRequest {
+    /// Optional. Field mask is used to specify the fields to be overwritten in the
+    /// repository resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then all fields will be overwritten.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. The repository being updated.
+    #[prost(message, optional, tag = "2")]
+    pub repository: ::core::option::Option<Repository>,
+    /// Optional. False by default. If set to true, the request is validated and
+    /// the user is provided with an expected result, but no actual change is made.
+    #[prost(bool, tag = "3")]
+    pub validate_only: bool,
+}
 /// DeleteRepositoryRequest is the request to delete a repository.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRepositoryRequest {
     /// Required. Name of the repository to delete.
     /// The format is
-    /// projects/{project_number}/locations/{location_id}/repositories/{repository_id}.
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. If set to true, and the repository is not found, the request will
     /// succeed but no action will be taken on the server.
     #[prost(bool, tag = "2")]
     pub allow_missing: bool,
+}
+/// ListHooksRequest is request to list hooks.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListHooksRequest {
+    /// Required. Parent value for ListHooksRequest.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Requested page size. Server may return fewer items than
+    /// requested. If unspecified, server will pick an appropriate default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results the server should return.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// ListHooksResponse is response to list hooks.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListHooksResponse {
+    /// The list of hooks.
+    #[prost(message, repeated, tag = "1")]
+    pub hooks: ::prost::alloc::vec::Vec<Hook>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// GetHookRequest is the request for getting a hook.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetHookRequest {
+    /// Required. Name of the hook to retrieve.
+    /// The format is
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}/hooks/{hook_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// CreateHookRequest is the request for creating a hook.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateHookRequest {
+    /// Required. The repository in which to create the hook. Values are of the
+    /// form
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The resource being created.
+    #[prost(message, optional, tag = "2")]
+    pub hook: ::core::option::Option<Hook>,
+    /// Required. The ID to use for the hook, which will become the final component
+    /// of the hook's resource name. This value restricts to lower-case letters,
+    /// numbers, and hyphen, with the first character a letter, the last a letter
+    /// or a number, and a 63 character maximum.
+    #[prost(string, tag = "3")]
+    pub hook_id: ::prost::alloc::string::String,
+}
+/// UpdateHookRequest is the request to update a hook.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateHookRequest {
+    /// Required. Field mask is used to specify the fields to be overwritten in the
+    /// hook resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask.
+    /// The special value "*" means full replacement.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. The hook being updated.
+    #[prost(message, optional, tag = "2")]
+    pub hook: ::core::option::Option<Hook>,
+}
+/// DeleteHookRequest is the request to delete a hook.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteHookRequest {
+    /// Required. Name of the hook to delete.
+    /// The format is
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}/hooks/{hook_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// GetBranchRuleRequest is the request for getting a branch rule.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -724,6 +1316,563 @@ pub struct ListBranchRulesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// CreatePullRequestRequest is the request to create a pull request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreatePullRequestRequest {
+    /// Required. The repository that the pull request is created from. Format:
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The pull request to create.
+    #[prost(message, optional, tag = "2")]
+    pub pull_request: ::core::option::Option<PullRequest>,
+}
+/// GetPullRequestRequest is the request to get a pull request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetPullRequestRequest {
+    /// Required. Name of the pull request to retrieve.
+    /// The format is
+    /// `projects/{project}/locations/{location}/repositories/{repository}/pullRequests/{pull_request}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// ListPullRequestsRequest is the request to list pull requests.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListPullRequestsRequest {
+    /// Required. The repository in which to list pull requests. Format:
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Requested page size. Server may return fewer items than
+    /// requested. If unspecified, server will pick an appropriate default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results the server should return.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// ListPullRequestsResponse is the response to list pull requests.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListPullRequestsResponse {
+    /// The list of pull requests.
+    #[prost(message, repeated, tag = "1")]
+    pub pull_requests: ::prost::alloc::vec::Vec<PullRequest>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// UpdatePullRequestRequest is the request to update a pull request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdatePullRequestRequest {
+    /// Required. The pull request to update.
+    #[prost(message, optional, tag = "1")]
+    pub pull_request: ::core::option::Option<PullRequest>,
+    /// Optional. Field mask is used to specify the fields to be overwritten in the
+    /// pull request resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask.
+    /// The special value "*" means full replacement.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// MergePullRequestRequest is the request to merge a pull request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MergePullRequestRequest {
+    /// Required. The pull request to merge.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// OpenPullRequestRequest is the request to open a pull request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OpenPullRequestRequest {
+    /// Required. The pull request to open.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// ClosePullRequestRequest is the request to close a pull request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ClosePullRequestRequest {
+    /// Required. The pull request to close.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// ListPullRequestFileDiffsRequest is the request to list pull request file
+/// diffs.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListPullRequestFileDiffsRequest {
+    /// Required. The pull request to list file diffs for.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Requested page size. Server may return fewer items than
+    /// requested. If unspecified, server will pick an appropriate default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results the server should return.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// ListPullRequestFileDiffsResponse is the response containing file diffs
+/// returned from ListPullRequestFileDiffs.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListPullRequestFileDiffsResponse {
+    /// The list of pull request file diffs.
+    #[prost(message, repeated, tag = "1")]
+    pub file_diffs: ::prost::alloc::vec::Vec<FileDiff>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The request to create an issue.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateIssueRequest {
+    /// Required. The repository in which to create the issue. Format:
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The issue to create.
+    #[prost(message, optional, tag = "2")]
+    pub issue: ::core::option::Option<Issue>,
+}
+/// The request to get an issue.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetIssueRequest {
+    /// Required. Name of the issue to retrieve.
+    /// The format is
+    /// `projects/{project}/locations/{location}/repositories/{repository}/issues/{issue_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request to list issues.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListIssuesRequest {
+    /// Required. The repository in which to list issues. Format:
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Requested page size. Server may return fewer items than
+    /// requested. If unspecified, server will pick an appropriate default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results the server should return.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Used to filter the resulting issues list.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// The response to list issues.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListIssuesResponse {
+    /// The list of issues.
+    #[prost(message, repeated, tag = "1")]
+    pub issues: ::prost::alloc::vec::Vec<Issue>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The request to update an issue.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateIssueRequest {
+    /// Required. The issue to update.
+    #[prost(message, optional, tag = "1")]
+    pub issue: ::core::option::Option<Issue>,
+    /// Optional. Field mask is used to specify the fields to be overwritten in the
+    /// issue resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask.
+    /// The special value "*" means full replacement.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// The request to delete an issue.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteIssueRequest {
+    /// Required. Name of the issue to delete.
+    /// The format is
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}/issues/{issue_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The current etag of the issue.
+    /// If the etag is provided and does not match the current etag of the issue,
+    /// deletion will be blocked and an ABORTED error will be returned.
+    #[prost(string, tag = "2")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// The request to close an issue.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloseIssueRequest {
+    /// Required. Name of the issue to close.
+    /// The format is
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}/issues/{issue_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The current etag of the issue.
+    /// If the etag is provided and does not match the current etag of the issue,
+    /// closing will be blocked and an ABORTED error will be returned.
+    #[prost(string, tag = "2")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// The request to open an issue.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OpenIssueRequest {
+    /// Required. Name of the issue to open.
+    /// The format is
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}/issues/{issue_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. The current etag of the issue.
+    /// If the etag is provided and does not match the current etag of the issue,
+    /// opening will be blocked and an ABORTED error will be returned.
+    #[prost(string, tag = "2")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// Represents an entry within a tree structure (like a Git tree).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TreeEntry {
+    /// Output only. The type of the object (TREE, BLOB, COMMIT).  Output-only.
+    #[prost(enumeration = "tree_entry::ObjectType", tag = "1")]
+    pub r#type: i32,
+    /// Output only. The SHA-1 hash of the object (unique identifier). Output-only.
+    #[prost(string, tag = "2")]
+    pub sha: ::prost::alloc::string::String,
+    /// Output only. The path of the file or directory within the tree (e.g.,
+    /// "src/main/java/MyClass.java"). Output-only.
+    #[prost(string, tag = "3")]
+    pub path: ::prost::alloc::string::String,
+    /// Output only. The file mode as a string (e.g., "100644"). Indicates file
+    /// type. Output-only.
+    #[prost(string, tag = "4")]
+    pub mode: ::prost::alloc::string::String,
+    /// Output only. The size of the object in bytes (only for blobs). Output-only.
+    #[prost(int64, tag = "5")]
+    pub size: i64,
+}
+/// Nested message and enum types in `TreeEntry`.
+pub mod tree_entry {
+    /// Defines the type of object the TreeEntry represents.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ObjectType {
+        /// Default value, indicating the object type is unspecified.
+        Unspecified = 0,
+        /// Represents a directory (folder).
+        Tree = 1,
+        /// Represents a file (contains file data).
+        Blob = 2,
+        /// Represents a pointer to another repository (submodule).
+        Commit = 3,
+    }
+    impl ObjectType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "OBJECT_TYPE_UNSPECIFIED",
+                Self::Tree => "TREE",
+                Self::Blob => "BLOB",
+                Self::Commit => "COMMIT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OBJECT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TREE" => Some(Self::Tree),
+                "BLOB" => Some(Self::Blob),
+                "COMMIT" => Some(Self::Commit),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request message for fetching a tree structure from a repository.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchTreeRequest {
+    /// Required. The format is
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}`.
+    /// Specifies the repository to fetch the tree from.
+    #[prost(string, tag = "1")]
+    pub repository: ::prost::alloc::string::String,
+    /// Optional. `ref` can be a SHA-1 hash, a branch name, or a tag. Specifies
+    /// which tree to fetch. If not specified, the default branch will be used.
+    #[prost(string, tag = "2")]
+    pub r#ref: ::prost::alloc::string::String,
+    /// Optional. If true, include all subfolders and their files in the response.
+    /// If false, only the immediate children are returned.
+    #[prost(bool, tag = "3")]
+    pub recursive: bool,
+    /// Optional. Requested page size.  Server may return fewer items than
+    /// requested. If unspecified, at most 10,000 items will be returned.
+    #[prost(int32, tag = "4")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results the server should return.
+    #[prost(string, tag = "5")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message containing a list of TreeEntry objects.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchTreeResponse {
+    /// The list of TreeEntry objects.
+    #[prost(message, repeated, tag = "1")]
+    pub tree_entries: ::prost::alloc::vec::Vec<TreeEntry>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for fetching a blob (file content) from a repository.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchBlobRequest {
+    /// Required. The format is
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}`.
+    /// Specifies the repository containing the blob.
+    #[prost(string, tag = "1")]
+    pub repository: ::prost::alloc::string::String,
+    /// Required. The SHA-1 hash of the blob to retrieve.
+    #[prost(string, tag = "2")]
+    pub sha: ::prost::alloc::string::String,
+}
+/// Response message containing the content of a blob.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FetchBlobResponse {
+    /// The SHA-1 hash of the blob.
+    #[prost(string, tag = "1")]
+    pub sha: ::prost::alloc::string::String,
+    /// The content of the blob, encoded as base64.
+    #[prost(string, tag = "2")]
+    pub content: ::prost::alloc::string::String,
+}
+/// The request to list pull request comments.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListPullRequestCommentsRequest {
+    /// Required. The pull request in which to list pull request comments. Format:
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Requested page size. If unspecified, at most 100 pull request
+    /// comments will be returned. The maximum value is 100; values above 100 will
+    /// be coerced to 100.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results the server should return.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The response to list pull request comments.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListPullRequestCommentsResponse {
+    /// The list of pull request comments.
+    #[prost(message, repeated, tag = "1")]
+    pub pull_request_comments: ::prost::alloc::vec::Vec<PullRequestComment>,
+    /// A token to set as page_token to retrieve the next page. If this field is
+    /// omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The request to create a pull request comment.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreatePullRequestCommentRequest {
+    /// Required. The pull request in which to create the pull request comment.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The pull request comment to create.
+    #[prost(message, optional, tag = "2")]
+    pub pull_request_comment: ::core::option::Option<PullRequestComment>,
+}
+/// The request to batch create pull request comments.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchCreatePullRequestCommentsRequest {
+    /// Required. The pull request in which to create the pull request comments.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The request message specifying the resources to create. There
+    /// should be exactly one CreatePullRequestCommentRequest with CommentDetail
+    /// being REVIEW in the list, and no more than 100
+    /// CreatePullRequestCommentRequests with CommentDetail being CODE in the list
+    #[prost(message, repeated, tag = "2")]
+    pub requests: ::prost::alloc::vec::Vec<CreatePullRequestCommentRequest>,
+}
+/// The response to batch create pull request comments.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchCreatePullRequestCommentsResponse {
+    /// The list of pull request comments created.
+    #[prost(message, repeated, tag = "1")]
+    pub pull_request_comments: ::prost::alloc::vec::Vec<PullRequestComment>,
+}
+/// The request to update a pull request comment.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdatePullRequestCommentRequest {
+    /// Required. The pull request comment to update.
+    #[prost(message, optional, tag = "1")]
+    pub pull_request_comment: ::core::option::Option<PullRequestComment>,
+    /// Optional. Field mask is used to specify the fields to be overwritten in the
+    /// pull request comment resource by the update. Updatable fields are
+    /// `body`.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// The request to delete a pull request comment. A Review PullRequestComment
+/// cannot be deleted.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeletePullRequestCommentRequest {
+    /// Required. Name of the pull request comment to delete.
+    /// The format is
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}/pullRequestComments/{comment_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request to get a pull request comment.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetPullRequestCommentRequest {
+    /// Required. Name of the pull request comment to retrieve.
+    /// The format is
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}/pullRequestComments/{comment_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request to resolve multiple pull request comments.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResolvePullRequestCommentsRequest {
+    /// Required. The pull request in which to resolve the pull request comments.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The names of the pull request comments to resolve. Format:
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}/pullRequestComments/{comment_id}`
+    /// Only comments from the same threads are allowed in the same request.
+    #[prost(string, repeated, tag = "2")]
+    pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. If set, at least one comment in a thread is required, rest of the
+    /// comments in the same thread will be automatically updated to resolved. If
+    /// unset, all comments in the same thread need be present.
+    #[prost(bool, tag = "3")]
+    pub auto_fill: bool,
+}
+/// The response to resolve multiple pull request comments.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResolvePullRequestCommentsResponse {
+    /// The list of pull request comments resolved.
+    #[prost(message, repeated, tag = "1")]
+    pub pull_request_comments: ::prost::alloc::vec::Vec<PullRequestComment>,
+}
+/// The request to unresolve multiple pull request comments.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UnresolvePullRequestCommentsRequest {
+    /// Required. The pull request in which to resolve the pull request comments.
+    /// Format:
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The names of the pull request comments to unresolve. Format:
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}/pullRequests/{pull_request_id}/pullRequestComments/{comment_id}`
+    /// Only comments from the same threads are allowed in the same request.
+    #[prost(string, repeated, tag = "2")]
+    pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. If set, at least one comment in a thread is required, rest of the
+    /// comments in the same thread will be automatically updated to unresolved. If
+    /// unset, all comments in the same thread need be present.
+    #[prost(bool, tag = "3")]
+    pub auto_fill: bool,
+}
+/// The response to unresolve multiple pull request comments.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UnresolvePullRequestCommentsResponse {
+    /// The list of pull request comments unresolved.
+    #[prost(message, repeated, tag = "1")]
+    pub pull_request_comments: ::prost::alloc::vec::Vec<PullRequestComment>,
+}
+/// The request to create an issue comment.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateIssueCommentRequest {
+    /// Required. The issue in which to create the issue comment. Format:
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}/issues/{issue_id}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The issue comment to create.
+    #[prost(message, optional, tag = "2")]
+    pub issue_comment: ::core::option::Option<IssueComment>,
+}
+/// The request to get an issue comment.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetIssueCommentRequest {
+    /// Required. Name of the issue comment to retrieve.
+    /// The format is
+    /// `projects/{project}/locations/{location}/repositories/{repository}/issues/{issue_id}/issueComments/{comment_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request to list issue comments.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListIssueCommentsRequest {
+    /// Required. The issue in which to list the comments. Format:
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}/issues/{issue_id}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Requested page size. Server may return fewer items than
+    /// requested. If unspecified, server will pick an appropriate default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A token identifying a page of results the server should return.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The response to list issue comments.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListIssueCommentsResponse {
+    /// The list of issue comments.
+    #[prost(message, repeated, tag = "1")]
+    pub issue_comments: ::prost::alloc::vec::Vec<IssueComment>,
+    /// A token identifying a page of results the server should return.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The request to update an issue comment.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateIssueCommentRequest {
+    /// Required. The issue comment to update.
+    #[prost(message, optional, tag = "1")]
+    pub issue_comment: ::core::option::Option<IssueComment>,
+    /// Optional. Field mask is used to specify the fields to be overwritten in the
+    /// issue comment resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask.
+    /// The special value "*" means full replacement.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// The request to delete an issue comment.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteIssueCommentRequest {
+    /// Required. Name of the issue comment to delete.
+    /// The format is
+    /// `projects/{project_number}/locations/{location_id}/repositories/{repository_id}/issues/{issue_id}/issueComments/{comment_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
 /// Generated client implementations.
 pub mod secure_source_manager_client {
     #![allow(
@@ -738,23 +1887,6 @@ pub mod secure_source_manager_client {
     /// Secure Source Manager API
     ///
     /// Access Secure Source Manager instances, resources, and repositories.
-    ///
-    /// This API is split across two servers: the Control Plane and the Data Plane.
-    ///
-    /// Data Plane endpoints are hosted directly by your Secure Source Manager
-    /// instance, so you must connect to your instance's API hostname to access
-    /// them. The API hostname looks like the following:
-    ///
-    ///    https://[instance-id]-[project-number]-api.[location].sourcemanager.dev
-    ///
-    /// For example,
-    ///
-    ///    https://my-instance-702770452863-api.us-central1.sourcemanager.dev
-    ///
-    /// Data Plane endpoints are denoted with **Host: Data Plane**.
-    ///
-    /// All other endpoints are found in the normal Cloud API location, namely,
-    /// `securcesourcemanager.googleapis.com`.
     #[derive(Debug, Clone)]
     pub struct SecureSourceManagerClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -954,7 +2086,8 @@ pub mod secure_source_manager_client {
         }
         /// Lists Repositories in a given project and location.
         ///
-        /// **Host: Data Plane**
+        /// The instance field is required in the query parameter for requests using
+        /// the securesourcemanager.googleapis.com endpoint.
         pub async fn list_repositories(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRepositoriesRequest>,
@@ -985,8 +2118,6 @@ pub mod secure_source_manager_client {
             self.inner.unary(req, path, codec).await
         }
         /// Gets metadata of a repository.
-        ///
-        /// **Host: Data Plane**
         pub async fn get_repository(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRepositoryRequest>,
@@ -1015,7 +2146,8 @@ pub mod secure_source_manager_client {
         }
         /// Creates a new repository in a given project and location.
         ///
-        /// **Host: Data Plane**
+        /// The Repository.Instance field is required in the request body for requests
+        /// using the securesourcemanager.googleapis.com endpoint.
         pub async fn create_repository(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateRepositoryRequest>,
@@ -1045,9 +2177,37 @@ pub mod secure_source_manager_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// Updates the metadata of a repository.
+        pub async fn update_repository(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateRepositoryRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/UpdateRepository",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "UpdateRepository",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
         /// Deletes a Repository.
-        ///
-        /// **Host: Data Plane**
         pub async fn delete_repository(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRepositoryRequest>,
@@ -1073,6 +2233,153 @@ pub mod secure_source_manager_client {
                     GrpcMethod::new(
                         "google.cloud.securesourcemanager.v1.SecureSourceManager",
                         "DeleteRepository",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists hooks in a given repository.
+        pub async fn list_hooks(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListHooksRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListHooksResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/ListHooks",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "ListHooks",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets metadata of a hook.
+        pub async fn get_hook(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetHookRequest>,
+        ) -> std::result::Result<tonic::Response<super::Hook>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/GetHook",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "GetHook",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new hook in a given repository.
+        pub async fn create_hook(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateHookRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/CreateHook",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "CreateHook",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the metadata of a hook.
+        pub async fn update_hook(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateHookRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/UpdateHook",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "UpdateHook",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a Hook.
+        pub async fn delete_hook(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteHookRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/DeleteHook",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "DeleteHook",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -1319,6 +2626,913 @@ pub mod secure_source_manager_client {
                     GrpcMethod::new(
                         "google.cloud.securesourcemanager.v1.SecureSourceManager",
                         "DeleteBranchRule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a pull request.
+        pub async fn create_pull_request(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreatePullRequestRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/CreatePullRequest",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "CreatePullRequest",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a pull request.
+        pub async fn get_pull_request(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetPullRequestRequest>,
+        ) -> std::result::Result<tonic::Response<super::PullRequest>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/GetPullRequest",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "GetPullRequest",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists pull requests in a repository.
+        pub async fn list_pull_requests(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListPullRequestsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListPullRequestsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/ListPullRequests",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "ListPullRequests",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a pull request.
+        pub async fn update_pull_request(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdatePullRequestRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/UpdatePullRequest",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "UpdatePullRequest",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Merges a pull request.
+        pub async fn merge_pull_request(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MergePullRequestRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/MergePullRequest",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "MergePullRequest",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Opens a pull request.
+        pub async fn open_pull_request(
+            &mut self,
+            request: impl tonic::IntoRequest<super::OpenPullRequestRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/OpenPullRequest",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "OpenPullRequest",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Closes a pull request without merging.
+        pub async fn close_pull_request(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ClosePullRequestRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/ClosePullRequest",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "ClosePullRequest",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists a pull request's file diffs.
+        pub async fn list_pull_request_file_diffs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListPullRequestFileDiffsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListPullRequestFileDiffsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/ListPullRequestFileDiffs",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "ListPullRequestFileDiffs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Fetches a tree from a repository.
+        pub async fn fetch_tree(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FetchTreeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FetchTreeResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/FetchTree",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "FetchTree",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Fetches a blob from a repository.
+        pub async fn fetch_blob(
+            &mut self,
+            request: impl tonic::IntoRequest<super::FetchBlobRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::FetchBlobResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/FetchBlob",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "FetchBlob",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates an issue.
+        pub async fn create_issue(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateIssueRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/CreateIssue",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "CreateIssue",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets an issue.
+        pub async fn get_issue(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetIssueRequest>,
+        ) -> std::result::Result<tonic::Response<super::Issue>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/GetIssue",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "GetIssue",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists issues in a repository.
+        pub async fn list_issues(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListIssuesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListIssuesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/ListIssues",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "ListIssues",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a issue.
+        pub async fn update_issue(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateIssueRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/UpdateIssue",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "UpdateIssue",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes an issue.
+        pub async fn delete_issue(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteIssueRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/DeleteIssue",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "DeleteIssue",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Opens an issue.
+        pub async fn open_issue(
+            &mut self,
+            request: impl tonic::IntoRequest<super::OpenIssueRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/OpenIssue",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "OpenIssue",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Closes an issue.
+        pub async fn close_issue(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CloseIssueRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/CloseIssue",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "CloseIssue",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a pull request comment.
+        pub async fn get_pull_request_comment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetPullRequestCommentRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::PullRequestComment>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/GetPullRequestComment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "GetPullRequestComment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists pull request comments.
+        pub async fn list_pull_request_comments(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListPullRequestCommentsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListPullRequestCommentsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/ListPullRequestComments",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "ListPullRequestComments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a pull request comment. This function is used to create a single
+        /// PullRequestComment of type Comment, or a single PullRequestComment of type
+        /// Code that's replying to another PullRequestComment of type Code. Use
+        /// BatchCreatePullRequestComments to create multiple PullRequestComments for
+        /// code reviews.
+        pub async fn create_pull_request_comment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreatePullRequestCommentRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/CreatePullRequestComment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "CreatePullRequestComment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a pull request comment.
+        pub async fn update_pull_request_comment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdatePullRequestCommentRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/UpdatePullRequestComment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "UpdatePullRequestComment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a pull request comment.
+        pub async fn delete_pull_request_comment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeletePullRequestCommentRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/DeletePullRequestComment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "DeletePullRequestComment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Batch creates pull request comments. This function is used to create
+        /// multiple PullRequestComments for code review. There needs to be exactly one
+        /// PullRequestComment of type Review, and at most 100 PullRequestComments of
+        /// type Code per request. The Postition of the code comments must be unique
+        /// within the request.
+        pub async fn batch_create_pull_request_comments(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::BatchCreatePullRequestCommentsRequest,
+            >,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/BatchCreatePullRequestComments",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "BatchCreatePullRequestComments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Resolves pull request comments. A list of PullRequestComment names must be
+        /// provided. The PullRequestComment names must be in the same conversation
+        /// thread. If auto_fill is set, all comments in the conversation thread will
+        /// be resolved.
+        pub async fn resolve_pull_request_comments(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ResolvePullRequestCommentsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/ResolvePullRequestComments",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "ResolvePullRequestComments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Unresolves pull request comments. A list of PullRequestComment names must
+        /// be provided. The PullRequestComment names must be in the same conversation
+        /// thread. If auto_fill is set, all comments in the conversation thread will
+        /// be unresolved.
+        pub async fn unresolve_pull_request_comments(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UnresolvePullRequestCommentsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/UnresolvePullRequestComments",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "UnresolvePullRequestComments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates an issue comment.
+        pub async fn create_issue_comment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateIssueCommentRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/CreateIssueComment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "CreateIssueComment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets an issue comment.
+        pub async fn get_issue_comment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetIssueCommentRequest>,
+        ) -> std::result::Result<tonic::Response<super::IssueComment>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/GetIssueComment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "GetIssueComment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists comments in an issue.
+        pub async fn list_issue_comments(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListIssueCommentsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListIssueCommentsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/ListIssueComments",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "ListIssueComments",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates an issue comment.
+        pub async fn update_issue_comment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateIssueCommentRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/UpdateIssueComment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "UpdateIssueComment",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes an issue comment.
+        pub async fn delete_issue_comment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteIssueCommentRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securesourcemanager.v1.SecureSourceManager/DeleteIssueComment",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.securesourcemanager.v1.SecureSourceManager",
+                        "DeleteIssueComment",
                     ),
                 );
             self.inner.unary(req, path, codec).await

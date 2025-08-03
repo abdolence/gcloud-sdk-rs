@@ -46,7 +46,9 @@ pub struct Instance {
     #[prost(int64, tag = "11")]
     pub per_unit_storage_throughput: i64,
     /// Optional. Indicates whether you want to enable support for GKE clients. By
-    /// default, GKE clients are not supported.
+    /// default, GKE clients are not supported. Deprecated. No longer required for
+    /// GKE instance creation.
+    #[deprecated]
     #[prost(bool, tag = "12")]
     pub gke_support_enabled: bool,
 }
@@ -80,6 +82,8 @@ pub mod instance {
         Repairing = 5,
         /// The instance is stopped.
         Stopped = 6,
+        /// The instance is being updated.
+        Updating = 7,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -95,6 +99,7 @@ pub mod instance {
                 Self::Upgrading => "UPGRADING",
                 Self::Repairing => "REPAIRING",
                 Self::Stopped => "STOPPED",
+                Self::Updating => "UPDATING",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -107,6 +112,7 @@ pub mod instance {
                 "UPGRADING" => Some(Self::Upgrading),
                 "REPAIRING" => Some(Self::Repairing),
                 "STOPPED" => Some(Self::Stopped),
+                "UPDATING" => Some(Self::Updating),
                 _ => None,
             }
         }

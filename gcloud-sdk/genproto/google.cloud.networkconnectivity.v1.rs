@@ -4504,6 +4504,731 @@ pub mod hub_service_client {
         }
     }
 }
+/// The internal range resource for IPAM operations within a VPC network.
+/// Used to represent a private address range along with behavioral
+/// characteristics of that range (its usage and peering behavior).
+/// Networking resources can link to this range if they are created
+/// as belonging to it.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InternalRange {
+    /// Identifier. The name of an internal range.
+    /// Format:
+    /// projects/{project}/locations/{location}/internalRanges/{internal_range}
+    /// See: <https://google.aip.dev/122#fields-representing-resource-names>
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Time when the internal range was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Time when the internal range was updated.
+    #[prost(message, optional, tag = "3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// User-defined labels.
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Optional. A description of this resource.
+    #[prost(string, tag = "5")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. The IP range that this internal range defines.
+    /// NOTE: IPv6 ranges are limited to usage=EXTERNAL_TO_VPC and
+    /// peering=FOR_SELF.
+    /// NOTE: For IPv6 Ranges this field is compulsory, i.e. the address range must
+    /// be specified explicitly.
+    #[prost(string, tag = "6")]
+    pub ip_cidr_range: ::prost::alloc::string::String,
+    /// Immutable. The URL or resource ID of the network in which to reserve the
+    /// internal range. The network cannot be deleted if there are any reserved
+    /// internal ranges referring to it. Legacy networks are not supported. For
+    /// example:
+    ///    <https://www.googleapis.com/compute/v1/projects/{project}/locations/global/networks/{network}>
+    ///    projects/{project}/locations/global/networks/{network}
+    ///    {network}
+    #[prost(string, tag = "7")]
+    pub network: ::prost::alloc::string::String,
+    /// Optional. The type of usage set for this InternalRange.
+    #[prost(enumeration = "internal_range::Usage", tag = "8")]
+    pub usage: i32,
+    /// Optional. The type of peering set for this internal range.
+    #[prost(enumeration = "internal_range::Peering", tag = "9")]
+    pub peering: i32,
+    /// Optional. An alternate to ip_cidr_range. Can be set when trying to create
+    /// an IPv4 reservation that automatically finds a free range of the given
+    /// size. If both ip_cidr_range and prefix_length are set, there is an error if
+    /// the range sizes do not match. Can also be used during updates to change the
+    /// range size.
+    /// NOTE: For IPv6 this field only works if ip_cidr_range is set as well, and
+    /// both fields must match. In other words, with IPv6 this field only works as
+    /// a redundant parameter.
+    #[prost(int32, tag = "10")]
+    pub prefix_length: i32,
+    /// Optional. Can be set to narrow down or pick a different address space while
+    /// searching for a free range. If not set, defaults to the "10.0.0.0/8"
+    /// address space. This can be used to search in other rfc-1918 address
+    /// spaces like "172.16.0.0/12" and "192.168.0.0/16" or non-rfc-1918
+    /// address spaces used in the VPC.
+    #[prost(string, repeated, tag = "11")]
+    pub target_cidr_range: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. The list of resources that refer to this internal range.
+    /// Resources that use the internal range for their range allocation
+    /// are referred to as users of the range. Other resources mark themselves
+    /// as users while doing so by creating a reference to this internal range.
+    /// Having a user, based on this reference, prevents deletion of the
+    /// internal range referred to. Can be empty.
+    #[prost(string, repeated, tag = "12")]
+    pub users: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Types of resources that are allowed to overlap with the current
+    /// internal range.
+    #[prost(
+        enumeration = "internal_range::Overlap",
+        repeated,
+        packed = "false",
+        tag = "13"
+    )]
+    pub overlaps: ::prost::alloc::vec::Vec<i32>,
+    /// Optional. Must be present if usage is set to FOR_MIGRATION.
+    #[prost(message, optional, tag = "14")]
+    pub migration: ::core::option::Option<internal_range::Migration>,
+    /// Optional. Immutable ranges cannot have their fields modified, except for
+    /// labels and description.
+    #[prost(bool, tag = "15")]
+    pub immutable: bool,
+    /// Optional. Range auto-allocation options, may be set only when
+    /// auto-allocation is selected by not setting ip_cidr_range (and setting
+    /// prefix_length).
+    #[prost(message, optional, tag = "16")]
+    pub allocation_options: ::core::option::Option<internal_range::AllocationOptions>,
+    /// Optional. ExcludeCidrRanges flag. Specifies a set of CIDR blocks that
+    /// allows exclusion of particular CIDR ranges from the auto-allocation
+    /// process, without having to reserve these blocks
+    #[prost(string, repeated, tag = "17")]
+    pub exclude_cidr_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `InternalRange`.
+pub mod internal_range {
+    /// Specification for migration with source and target resource names.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Migration {
+        /// Immutable. Resource path as an URI of the source resource, for example a
+        /// subnet. The project for the source resource should match the project for
+        /// the InternalRange. An example:
+        ///    /projects/{project}/regions/{region}/subnetworks/{subnet}
+        #[prost(string, tag = "1")]
+        pub source: ::prost::alloc::string::String,
+        /// Immutable. Resource path of the target resource. The target project can
+        /// be different, as in the cases when migrating to peer networks. For
+        /// example:
+        ///    /projects/{project}/regions/{region}/subnetworks/{subnet}
+        #[prost(string, tag = "2")]
+        pub target: ::prost::alloc::string::String,
+    }
+    /// Range auto-allocation options, to be optionally used when CIDR block is not
+    /// explicitly set.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct AllocationOptions {
+        /// Optional. Allocation strategy Not setting this field when the allocation
+        /// is requested means an implementation defined strategy is used.
+        #[prost(enumeration = "AllocationStrategy", tag = "1")]
+        pub allocation_strategy: i32,
+        /// Optional. This field must be set only when allocation_strategy is set to
+        /// RANDOM_FIRST_N_AVAILABLE.
+        /// The value should be the maximum expected parallelism of range creation
+        /// requests issued to the same space of peered netwroks.
+        #[prost(int32, tag = "2")]
+        pub first_available_ranges_lookup_size: i32,
+    }
+    /// Possible usage of an internal range.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Usage {
+        /// Unspecified usage is allowed in calls which identify the resource by
+        /// other fields and do not need Usage set to complete. These are, i.e.:
+        /// GetInternalRange and DeleteInternalRange.
+        /// Usage needs to be specified explicitly in CreateInternalRange
+        /// or UpdateInternalRange calls.
+        Unspecified = 0,
+        /// A VPC resource can use the reserved CIDR block by associating it with the
+        /// internal range resource if usage is set to FOR_VPC.
+        ForVpc = 1,
+        /// Ranges created with EXTERNAL_TO_VPC cannot be associated with VPC
+        /// resources and are meant to block out address ranges for various use
+        /// cases, like for example, usage on-prem, with dynamic route announcements
+        /// via interconnect.
+        ExternalToVpc = 2,
+        /// Ranges created FOR_MIGRATION can be used to lock a CIDR range between a
+        /// source and target subnet. If usage is set to FOR_MIGRATION, the peering
+        /// value has to be set to FOR_SELF or default to FOR_SELF when unset.
+        ForMigration = 3,
+    }
+    impl Usage {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "USAGE_UNSPECIFIED",
+                Self::ForVpc => "FOR_VPC",
+                Self::ExternalToVpc => "EXTERNAL_TO_VPC",
+                Self::ForMigration => "FOR_MIGRATION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "USAGE_UNSPECIFIED" => Some(Self::Unspecified),
+                "FOR_VPC" => Some(Self::ForVpc),
+                "EXTERNAL_TO_VPC" => Some(Self::ExternalToVpc),
+                "FOR_MIGRATION" => Some(Self::ForMigration),
+                _ => None,
+            }
+        }
+    }
+    /// Peering type.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Peering {
+        /// If Peering is left unspecified in CreateInternalRange or
+        /// UpdateInternalRange, it will be defaulted to FOR_SELF.
+        Unspecified = 0,
+        /// This is the default behavior and represents the case that this
+        /// internal range is intended to be used in the VPC in which it is created
+        /// and is accessible from its peers. This implies that peers or
+        /// peers-of-peers cannot use this range.
+        ForSelf = 1,
+        /// This behavior can be set when the internal range is being reserved for
+        /// usage by peers. This means that no resource within the VPC in which
+        /// it is being created can use this to associate with a VPC resource, but
+        /// one of the peers can. This represents donating a range for peers to
+        /// use.
+        ForPeer = 2,
+        /// This behavior can be set when the internal range is being reserved for
+        /// usage by the VPC in which it is created, but not shared with peers.
+        /// In a sense, it is local to the VPC. This can be used to create internal
+        /// ranges for various purposes like HTTP_INTERNAL_LOAD_BALANCER or for
+        /// Interconnect routes that are not shared with peers. This also implies
+        /// that peers cannot use this range in a way that is visible to this VPC,
+        /// but can re-use this range as long as it is NOT_SHARED from the peer VPC,
+        /// too.
+        NotShared = 3,
+    }
+    impl Peering {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "PEERING_UNSPECIFIED",
+                Self::ForSelf => "FOR_SELF",
+                Self::ForPeer => "FOR_PEER",
+                Self::NotShared => "NOT_SHARED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PEERING_UNSPECIFIED" => Some(Self::Unspecified),
+                "FOR_SELF" => Some(Self::ForSelf),
+                "FOR_PEER" => Some(Self::ForPeer),
+                "NOT_SHARED" => Some(Self::NotShared),
+                _ => None,
+            }
+        }
+    }
+    /// Overlap specifications.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Overlap {
+        /// No overlap overrides.
+        Unspecified = 0,
+        /// Allow creation of static routes more specific that the current
+        /// internal range.
+        RouteRange = 1,
+        /// Allow creation of internal ranges that overlap with existing subnets.
+        ExistingSubnetRange = 2,
+    }
+    impl Overlap {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "OVERLAP_UNSPECIFIED",
+                Self::RouteRange => "OVERLAP_ROUTE_RANGE",
+                Self::ExistingSubnetRange => "OVERLAP_EXISTING_SUBNET_RANGE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OVERLAP_UNSPECIFIED" => Some(Self::Unspecified),
+                "OVERLAP_ROUTE_RANGE" => Some(Self::RouteRange),
+                "OVERLAP_EXISTING_SUBNET_RANGE" => Some(Self::ExistingSubnetRange),
+                _ => None,
+            }
+        }
+    }
+    /// Enumeration of range auto-allocation strategies
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AllocationStrategy {
+        /// Unspecified is the only valid option when the range is specified
+        /// explicitly by ip_cidr_range field. Otherwise unspefified means using the
+        /// default strategy.
+        Unspecified = 0,
+        /// Random strategy, the legacy algorithm, used for backwards compatibility.
+        /// This allocation strategy remains efficient in the case of concurrent
+        /// allocation requests in the same peered network space and doesn't require
+        /// providing the level of concurrency in an explicit parameter, but it is
+        /// prone to fragmenting available address space.
+        Random = 1,
+        /// Pick the first available address range. This strategy is deterministic
+        /// and the result is easy to predict.
+        FirstAvailable = 2,
+        /// Pick an arbitrary range out of the first N available ones. The N will be
+        /// set in the first_available_ranges_lookup_size field. This strategy should
+        /// be used when concurrent allocation requests are made in the same space of
+        /// peered networks while the fragmentation of the addrress space is reduced.
+        RandomFirstNAvailable = 3,
+        /// Pick the smallest but fitting available range. This deterministic
+        /// strategy minimizes fragmentation of the address space.
+        FirstSmallestFitting = 4,
+    }
+    impl AllocationStrategy {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ALLOCATION_STRATEGY_UNSPECIFIED",
+                Self::Random => "RANDOM",
+                Self::FirstAvailable => "FIRST_AVAILABLE",
+                Self::RandomFirstNAvailable => "RANDOM_FIRST_N_AVAILABLE",
+                Self::FirstSmallestFitting => "FIRST_SMALLEST_FITTING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ALLOCATION_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
+                "RANDOM" => Some(Self::Random),
+                "FIRST_AVAILABLE" => Some(Self::FirstAvailable),
+                "RANDOM_FIRST_N_AVAILABLE" => Some(Self::RandomFirstNAvailable),
+                "FIRST_SMALLEST_FITTING" => Some(Self::FirstSmallestFitting),
+                _ => None,
+            }
+        }
+    }
+}
+/// Request for InternalRangeService.ListInternalRanges
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListInternalRangesRequest {
+    /// Required. The parent resource's name.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of results per page that should be returned.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// A filter expression that filters the results listed in the response.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Sort the results by a certain order.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response for InternalRange.ListInternalRanges
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListInternalRangesResponse {
+    /// Internal ranges to be returned.
+    #[prost(message, repeated, tag = "1")]
+    pub internal_ranges: ::prost::alloc::vec::Vec<InternalRange>,
+    /// The next pagination token in the List response. It should be used as
+    /// page_token for the following request. An empty value means no more result.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request for InternalRangeService.GetInternalRange
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetInternalRangeRequest {
+    /// Required. Name of the InternalRange to get.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for InternalRangeService.CreateInternalRange
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateInternalRangeRequest {
+    /// Required. The parent resource's name of the internal range.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Resource ID
+    /// (i.e. 'foo' in '\[...\]/projects/p/locations/l/internalRanges/foo')
+    /// See <https://google.aip.dev/122#resource-id-segments>
+    /// Unique per location.
+    #[prost(string, tag = "2")]
+    pub internal_range_id: ::prost::alloc::string::String,
+    /// Required. Initial values for a new internal range
+    #[prost(message, optional, tag = "3")]
+    pub internal_range: ::core::option::Option<InternalRange>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request for InternalRangeService.UpdateInternalRange
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateInternalRangeRequest {
+    /// Optional. Field mask is used to specify the fields to be overwritten in the
+    /// InternalRange resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then all fields will be overwritten.
+    #[prost(message, optional, tag = "1")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Required. New values to be patched into the resource.
+    #[prost(message, optional, tag = "2")]
+    pub internal_range: ::core::option::Option<InternalRange>,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request for InternalRangeService.DeleteInternalRange
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteInternalRangeRequest {
+    /// Required. The name of the internal range to delete.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes after the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and
+    /// the request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Generated client implementations.
+pub mod internal_range_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// The CLH-based service for internal range resources used to perform IPAM
+    /// operations within a VPC network.
+    #[derive(Debug, Clone)]
+    pub struct InternalRangeServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl InternalRangeServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> InternalRangeServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> InternalRangeServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            InternalRangeServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Lists internal ranges in a given project and location.
+        pub async fn list_internal_ranges(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListInternalRangesRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListInternalRangesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.InternalRangeService/ListInternalRanges",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.InternalRangeService",
+                        "ListInternalRanges",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets details of a single internal range.
+        pub async fn get_internal_range(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetInternalRangeRequest>,
+        ) -> std::result::Result<tonic::Response<super::InternalRange>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.InternalRangeService/GetInternalRange",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.InternalRangeService",
+                        "GetInternalRange",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new internal range in a given project and location.
+        pub async fn create_internal_range(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateInternalRangeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.InternalRangeService/CreateInternalRange",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.InternalRangeService",
+                        "CreateInternalRange",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates the parameters of a single internal range.
+        pub async fn update_internal_range(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateInternalRangeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.InternalRangeService/UpdateInternalRange",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.InternalRangeService",
+                        "UpdateInternalRange",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a single internal range.
+        pub async fn delete_internal_range(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteInternalRangeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.networkconnectivity.v1.InternalRangeService/DeleteInternalRange",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.networkconnectivity.v1.InternalRangeService",
+                        "DeleteInternalRange",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// Policy-based routes route L4 network traffic based on not just destination IP
 /// address, but also source IP address, protocol, and more. If a policy-based
 /// route conflicts with other types of routes, the policy-based route always

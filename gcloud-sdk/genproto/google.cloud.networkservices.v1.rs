@@ -4300,6 +4300,10 @@ pub struct ServiceLbPolicy {
     /// Optional. Configuration related to health based failover.
     #[prost(message, optional, tag = "10")]
     pub failover_config: ::core::option::Option<service_lb_policy::FailoverConfig>,
+    /// Optional. Configuration to provide isolation support for the associated
+    /// Backend Service.
+    #[prost(message, optional, tag = "11")]
+    pub isolation_config: ::core::option::Option<service_lb_policy::IsolationConfig>,
 }
 /// Nested message and enum types in `ServiceLbPolicy`.
 pub mod service_lb_policy {
@@ -4327,6 +4331,17 @@ pub mod service_lb_policy {
         /// (classic) and Proxyless service mesh, and 70 for others.
         #[prost(int32, tag = "1")]
         pub failover_health_threshold: i32,
+    }
+    /// Configuration to provide isolation support for the associated Backend
+    /// Service.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct IsolationConfig {
+        /// Optional. The isolation granularity of the load balancer.
+        #[prost(enumeration = "IsolationGranularity", tag = "1")]
+        pub isolation_granularity: i32,
+        /// Optional. The isolation mode of the load balancer.
+        #[prost(enumeration = "IsolationMode", tag = "2")]
+        pub isolation_mode: i32,
     }
     /// The global load balancing algorithm to be used.
     #[derive(
@@ -4382,6 +4397,91 @@ pub mod service_lb_policy {
                 "SPRAY_TO_REGION" => Some(Self::SprayToRegion),
                 "WATERFALL_BY_REGION" => Some(Self::WaterfallByRegion),
                 "WATERFALL_BY_ZONE" => Some(Self::WaterfallByZone),
+                _ => None,
+            }
+        }
+    }
+    /// The granularity of this isolation restriction.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum IsolationGranularity {
+        /// No isolation is configured for the backend service. Traffic can overflow
+        /// based on the load balancing algorithm.
+        Unspecified = 0,
+        /// Traffic for this service will be isolated at the cloud region level.
+        Region = 1,
+    }
+    impl IsolationGranularity {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ISOLATION_GRANULARITY_UNSPECIFIED",
+                Self::Region => "REGION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ISOLATION_GRANULARITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "REGION" => Some(Self::Region),
+                _ => None,
+            }
+        }
+    }
+    /// The mode of this isolation restriction, defining whether clients in a given
+    /// region are allowed to reach out to another region.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum IsolationMode {
+        /// No isolation mode is configured for the backend service.
+        Unspecified = 0,
+        /// Traffic will be sent to the nearest region.
+        Nearest = 1,
+        /// Traffic will fail if no serving backends are available in the same region
+        /// as the load balancer.
+        Strict = 2,
+    }
+    impl IsolationMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "ISOLATION_MODE_UNSPECIFIED",
+                Self::Nearest => "NEAREST",
+                Self::Strict => "STRICT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ISOLATION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NEAREST" => Some(Self::Nearest),
+                "STRICT" => Some(Self::Strict),
                 _ => None,
             }
         }
