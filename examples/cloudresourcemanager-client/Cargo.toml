@@ -6,3 +6,4 @@ edition = "2021"
 [dependencies]
 gcloud-sdk = { path = "./../../gcloud-sdk", default-features = false, features = ["google-rest-cloudresourcemanager-v3", "tls-webpki-roots"] }
 tokio = { version = "1.20", features = ["full"] }
+rustls = "0.23"
