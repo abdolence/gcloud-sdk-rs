@@ -33,6 +33,9 @@ pub struct Cluster {
     /// Output only. Reserved for future use.
     #[prost(bool, optional, tag = "12")]
     pub satisfies_pzs: ::core::option::Option<bool>,
+    /// Optional. TLS configuration for the Kafka cluster.
+    #[prost(message, optional, tag = "13")]
+    pub tls_config: ::core::option::Option<TlsConfig>,
     /// Platform specific configuration properties for a Kafka cluster.
     #[prost(oneof = "cluster::PlatformConfig", tags = "9")]
     pub platform_config: ::core::option::Option<cluster::PlatformConfig>,
@@ -198,6 +201,49 @@ pub struct GcpConfig {
     /// projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}.
     #[prost(string, tag = "2")]
     pub kms_key: ::prost::alloc::string::String,
+}
+/// The TLS configuration for the Kafka cluster.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TlsConfig {
+    /// Optional. The configuration of the broker truststore. If specified, clients
+    /// can use mTLS for authentication.
+    #[prost(message, optional, tag = "1")]
+    pub trust_config: ::core::option::Option<TrustConfig>,
+    /// Optional. A list of rules for mapping from SSL principal names to
+    /// short names. These are applied in order by Kafka.
+    /// Refer to the Apache Kafka documentation for `ssl.principal.mapping.rules`
+    /// for the precise formatting details and syntax.
+    /// Example: "RULE:^CN=(.*?),OU=ServiceUsers.*$/$1@example.com/,DEFAULT"
+    ///
+    /// This is a static Kafka broker configuration. Setting or modifying this
+    /// field will trigger a rolling restart of the Kafka brokers to apply
+    /// the change. An empty string means no rules are applied (Kafka default).
+    #[prost(string, tag = "2")]
+    pub ssl_principal_mapping_rules: ::prost::alloc::string::String,
+}
+/// Sources of CA certificates to install in the broker's truststore.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrustConfig {
+    /// Optional. Configuration for the Google Certificate Authority Service.
+    /// Maximum 10.
+    #[prost(message, repeated, tag = "1")]
+    pub cas_configs: ::prost::alloc::vec::Vec<
+        trust_config::CertificateAuthorityServiceConfig,
+    >,
+}
+/// Nested message and enum types in `TrustConfig`.
+pub mod trust_config {
+    /// A configuration for the Google Certificate Authority Service.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CertificateAuthorityServiceConfig {
+        /// Required. The name of the CA pool to pull CA certificates from.
+        /// Structured like:
+        /// projects/{project}/locations/{location}/caPools/{ca_pool}.
+        /// The CA pool does not need to be in the same project or location as the
+        /// Kafka cluster.
+        #[prost(string, tag = "1")]
+        pub ca_pool: ::prost::alloc::string::String,
+    }
 }
 /// A Kafka topic in a given cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]

@@ -46,7 +46,9 @@ pub struct Job {
         ::prost::alloc::string::String,
     >,
     /// Output only. An error object that describes the reason for the failure.
-    /// This property is always present when `state` is `FAILED`.
+    /// This property is always present when
+    /// [ProcessingState][google.cloud.video.transcoder.v1.Job.ProcessingState] is
+    /// `FAILED`.
     #[prost(message, optional, tag = "17")]
     pub error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// The processing mode of the job.
@@ -63,7 +65,11 @@ pub struct Job {
     /// `AUTODETECT`.
     #[prost(enumeration = "job::OptimizationStrategy", tag = "22")]
     pub optimization: i32,
-    /// Specify the `job_config` for the transcoding job. If you don't specify the
+    /// Optional. Insert silence and duplicate frames when timestamp gaps are
+    /// detected in a given stream.
+    #[prost(bool, tag = "25")]
+    pub fill_content_gaps: bool,
+    /// Specify the config for the transcoding job. If you don't specify the
     /// `job_config`, the API selects `templateId`; this template ID is set to
     /// `preset/web-hd` by default. When you use a `template_id` to create a job,
     /// the `Job.config` is populated by the `JobTemplate.config`.<br>
@@ -94,8 +100,8 @@ pub mod job {
         Running = 2,
         /// The job has been completed successfully.
         Succeeded = 3,
-        /// The job has failed. For additional information, see `failure_reason` and
-        /// `failure_details`
+        /// The job has failed. For additional information, see
+        /// [Troubleshooting](<https://cloud.google.com/transcoder/docs/troubleshooting>).
         Failed = 4,
     }
     impl ProcessingState {
@@ -213,7 +219,7 @@ pub mod job {
             }
         }
     }
-    /// Specify the `job_config` for the transcoding job. If you don't specify the
+    /// Specify the config for the transcoding job. If you don't specify the
     /// `job_config`, the API selects `templateId`; this template ID is set to
     /// `preset/web-hd` by default. When you use a `template_id` to create a job,
     /// the `Job.config` is populated by the `JobTemplate.config`.<br>
@@ -255,7 +261,7 @@ pub struct JobConfig {
     /// List of input assets stored in Cloud Storage.
     #[prost(message, repeated, tag = "1")]
     pub inputs: ::prost::alloc::vec::Vec<Input>,
-    /// List of `Edit atom`s. Defines the ultimate timeline of the resulting
+    /// List of edit atoms. Defines the ultimate timeline of the resulting
     /// file or manifest.
     #[prost(message, repeated, tag = "2")]
     pub edit_list: ::prost::alloc::vec::Vec<EditAtom>,
@@ -301,7 +307,8 @@ pub struct Input {
     pub key: ::prost::alloc::string::String,
     /// URI of the media. Input files must be at least 5 seconds in duration and
     /// stored in Cloud Storage (for example, `gs://bucket/inputs/file.mp4`).
-    /// If empty, the value is populated from `Job.input_uri`. See
+    /// If empty, the value is populated from
+    /// [Job.input_uri][google.cloud.video.transcoder.v1.Job.input_uri]. See
     /// [Supported input and output
     /// formats](<https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>).
     #[prost(string, tag = "2")]
@@ -313,8 +320,9 @@ pub struct Input {
 /// Location of output file(s) in a Cloud Storage bucket.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Output {
-    /// URI for the output file(s). For example, `gs://my-bucket/outputs/`.
-    /// If empty, the value is populated from `Job.output_uri`. See
+    /// URI for the output file(s). For example, `gs://my-bucket/outputs/`. Must be
+    /// a directory and not a top-level bucket. If empty, the value is populated
+    /// from [Job.output_uri][google.cloud.video.transcoder.v1.Job.output_uri]. See
     /// [Supported input and output
     /// formats](<https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>).
     #[prost(string, tag = "1")]
@@ -327,8 +335,9 @@ pub struct EditAtom {
     /// mapping.
     #[prost(string, tag = "1")]
     pub key: ::prost::alloc::string::String,
-    /// List of `Input.key`s identifying files that should be used in this atom.
-    /// The listed `inputs` must have the same timeline.
+    /// List of [Input.key][google.cloud.video.transcoder.v1.Input.key] values
+    /// identifying files that should be used in this atom. The listed `inputs`
+    /// must have the same timeline.
     #[prost(string, repeated, tag = "2")]
     pub inputs: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// End time in seconds for the atom, relative to the input file timeline.
@@ -380,12 +389,13 @@ pub mod elementary_stream {
 /// Multiplexing settings for output stream.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MuxStream {
-    /// A unique key for this multiplexed stream. HLS media manifests will be
-    /// named `MuxStream.key` with the `.m3u8` extension suffix.
+    /// A unique key for this multiplexed stream.
     #[prost(string, tag = "1")]
     pub key: ::prost::alloc::string::String,
-    /// The name of the generated file. The default is `MuxStream.key` with the
-    /// extension suffix corresponding to the `MuxStream.container`.
+    /// The name of the generated file. The default is
+    /// [MuxStream.key][google.cloud.video.transcoder.v1.MuxStream.key] with the
+    /// extension suffix corresponding to the
+    /// [MuxStream.container][google.cloud.video.transcoder.v1.MuxStream.container].
     ///
     /// Individual segments also have an incremental 10-digit zero-padded suffix
     /// starting from 0 before the extension, such as `mux_stream0000000123.ts`.
@@ -393,11 +403,16 @@ pub struct MuxStream {
     pub file_name: ::prost::alloc::string::String,
     /// The container format. The default is `mp4`
     ///
-    /// Supported container formats:
+    /// Supported streaming formats:
     ///
     /// - `ts`
     /// - `fmp4`- the corresponding file extension is `.m4s`
+    ///
+    /// Supported standalone file formats:
+    ///
     /// - `mp4`
+    /// - `mp3`
+    /// - `ogg`
     /// - `vtt`
     ///
     /// See also:
@@ -405,7 +420,9 @@ pub struct MuxStream {
     /// formats](<https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>)
     #[prost(string, tag = "3")]
     pub container: ::prost::alloc::string::String,
-    /// List of `ElementaryStream.key`s multiplexed in this stream.
+    /// List of
+    /// [ElementaryStream.key][google.cloud.video.transcoder.v1.ElementaryStream.key]
+    /// values multiplexed in this stream.
     #[prost(string, repeated, tag = "4")]
     pub elementary_streams: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Segment settings for `ts`, `fmp4` and `vtt`.
@@ -415,23 +432,52 @@ pub struct MuxStream {
     /// be unencrypted.
     #[prost(string, tag = "7")]
     pub encryption_id: ::prost::alloc::string::String,
+    /// Specifies the container configuration.
+    #[prost(oneof = "mux_stream::ContainerConfig", tags = "8")]
+    pub container_config: ::core::option::Option<mux_stream::ContainerConfig>,
+}
+/// Nested message and enum types in `MuxStream`.
+pub mod mux_stream {
+    /// `fmp4` container configuration.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Fmp4Config {
+        /// Optional. Specify the codec tag string that will be used in the media
+        /// bitstream. When not specified, the codec appropriate value is used.
+        ///
+        /// Supported H265 codec tags:
+        ///
+        /// - `hvc1` (default)
+        /// - `hev1`
+        #[prost(string, tag = "1")]
+        pub codec_tag: ::prost::alloc::string::String,
+    }
+    /// Specifies the container configuration.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ContainerConfig {
+        /// Optional. `fmp4` container configuration.
+        #[prost(message, tag = "8")]
+        Fmp4(Fmp4Config),
+    }
 }
 /// Manifest configuration.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Manifest {
     /// The name of the generated file. The default is `manifest` with the
-    /// extension suffix corresponding to the `Manifest.type`.
+    /// extension suffix corresponding to the
+    /// [Manifest.type][google.cloud.video.transcoder.v1.Manifest.type].
     #[prost(string, tag = "1")]
     pub file_name: ::prost::alloc::string::String,
     /// Required. Type of the manifest.
     #[prost(enumeration = "manifest::ManifestType", tag = "2")]
     pub r#type: i32,
-    /// Required. List of user given `MuxStream.key`s that should appear in this
-    /// manifest.
+    /// Required. List of user supplied
+    /// [MuxStream.key][google.cloud.video.transcoder.v1.MuxStream.key] values that
+    /// should appear in this manifest.
     ///
-    /// When `Manifest.type` is `HLS`, a media manifest with name `MuxStream.key`
-    /// and `.m3u8` extension is generated for each element of the
-    /// `Manifest.mux_streams`.
+    /// When [Manifest.type][google.cloud.video.transcoder.v1.Manifest.type] is
+    /// `HLS`, a media manifest with name
+    /// [MuxStream.key][google.cloud.video.transcoder.v1.MuxStream.key] and `.m3u8`
+    /// extension is generated for each element in this list.
     #[prost(string, repeated, tag = "3")]
     pub mux_streams: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Specifies the manifest configuration.
@@ -466,9 +512,30 @@ pub mod manifest {
         pub enum SegmentReferenceScheme {
             /// The segment reference scheme is not specified.
             Unspecified = 0,
-            /// Lists the URLs of media files for each segment.
+            /// Explicitly lists the URLs of media files for each segment. For example,
+            /// if
+            /// [SegmentSettings.individual_segments][google.cloud.video.transcoder.v1.SegmentSettings.individual_segments]
+            /// is `true`, then the manifest contains fields similar to the following:
+            /// ```xml
+            /// <Initialization sourceURL="my-hd-stream-init.m4s"/>
+            ///    <SegmentList presentationTimeOffset="0" duration="1000"
+            ///    timescale="10000">
+            ///      <SegmentURL media="hd-stream0000000000.m4s"/>
+            ///      <SegmentURL media="hd-stream0000000001.m4s"/>
+            ///      ...
+            /// ```
             SegmentList = 1,
-            /// Lists each segment from a template with $Number$ variable.
+            /// [SegmentSettings.individual_segments][google.cloud.video.transcoder.v1.SegmentSettings.individual_segments]
+            /// must be set to `true` to use this segment reference scheme. Uses the
+            /// DASH specification
+            /// `<SegmentTemplate>` tag to determine the URLs of media files for each
+            /// segment. For example:
+            /// ```xml
+            /// <SegmentTemplate presentationTimeOffset="0" timescale="10000"
+            ///        initialization="my-hd-stream-init.m4s"
+            ///        media="hd-stream$Number%010d$.m4s" startNumber="0">
+            ///    ...
+            /// ```
             SegmentTemplateNumber = 2,
         }
         impl SegmentReferenceScheme {
@@ -647,7 +714,7 @@ pub struct Overlay {
     /// Image overlay.
     #[prost(message, optional, tag = "1")]
     pub image: ::core::option::Option<overlay::Image>,
-    /// List of Animations. The list should be chronological, without any time
+    /// List of animations. The list should be chronological, without any time
     /// overlap.
     #[prost(message, repeated, tag = "2")]
     pub animations: ::prost::alloc::vec::Vec<overlay::Animation>,
@@ -717,7 +784,7 @@ pub mod overlay {
         #[prost(message, optional, tag = "4")]
         pub end_time_offset: ::core::option::Option<::prost_types::Duration>,
     }
-    /// End previous overlay animation from the video. Without AnimationEnd, the
+    /// End previous overlay animation from the video. Without `AnimationEnd`, the
     /// overlay object will keep the state of previous animation until the end of
     /// the video.
     #[derive(Clone, Copy, PartialEq, ::prost::Message)]
@@ -1020,6 +1087,12 @@ pub struct VideoStream {
 }
 /// Nested message and enum types in `VideoStream`.
 pub mod video_stream {
+    /// Convert the input video to a Standard Dynamic Range (SDR) video.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct H264ColorFormatSdr {}
+    /// Convert the input video to a Hybrid Log Gamma (HLG) video.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct H264ColorFormatHlg {}
     /// H264 codec settings.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct H264CodecSettings {
@@ -1044,14 +1117,13 @@ pub mod video_stream {
         #[prost(int32, tag = "2")]
         pub height_pixels: i32,
         /// Required. The target video frame rate in frames per second (FPS). Must be
-        /// less than or equal to 120. Will default to the input frame rate if larger
-        /// than the input frame rate. The API will generate an output FPS that is
-        /// divisible by the input FPS, and smaller or equal to the target FPS. See
-        /// [Calculating frame
-        /// rate](<https://cloud.google.com/transcoder/docs/concepts/frame-rate>) for
-        /// more information.
+        /// less than or equal to 120.
         #[prost(double, tag = "3")]
         pub frame_rate: f64,
+        /// Optional. Frame rate conversion strategy for desired frame rate. The
+        /// default is `DOWNSAMPLE`.
+        #[prost(enumeration = "FrameRateConversionStrategy", tag = "23")]
+        pub frame_rate_conversion_strategy: i32,
         /// Required. The video bitrate in bits per second. The minimum value is
         /// 1,000. The maximum value is 800,000,000.
         #[prost(int32, tag = "4")]
@@ -1071,7 +1143,7 @@ pub mod video_stream {
         /// - `yuv444p12` 12-bit HDR pixel format
         #[prost(string, tag = "5")]
         pub pixel_format: ::prost::alloc::string::String,
-        /// Specify the `rate_control_mode`. The default is `vbr`.
+        /// Specify the mode. The default is `vbr`.
         ///
         /// Supported rate control modes:
         ///
@@ -1088,16 +1160,18 @@ pub mod video_stream {
         #[prost(bool, tag = "8")]
         pub allow_open_gop: bool,
         /// Use two-pass encoding strategy to achieve better video quality.
-        /// `VideoStream.rate_control_mode` must be `vbr`. The default is `false`.
+        /// [H264CodecSettings.rate_control_mode][google.cloud.video.transcoder.v1.VideoStream.H264CodecSettings.rate_control_mode]
+        /// must be `vbr`. The default is `false`.
         #[prost(bool, tag = "11")]
         pub enable_two_pass: bool,
         /// Size of the Video Buffering Verifier (VBV) buffer in bits. Must be
-        /// greater than zero. The default is equal to `VideoStream.bitrate_bps`.
+        /// greater than zero. The default is equal to
+        /// [H264CodecSettings.bitrate_bps][google.cloud.video.transcoder.v1.VideoStream.H264CodecSettings.bitrate_bps].
         #[prost(int32, tag = "12")]
         pub vbv_size_bits: i32,
         /// Initial fullness of the Video Buffering Verifier (VBV) buffer in bits.
         /// Must be greater than zero. The default is equal to 90% of
-        /// `VideoStream.vbv_size_bits`.
+        /// [H264CodecSettings.vbv_size_bits][google.cloud.video.transcoder.v1.VideoStream.H264CodecSettings.vbv_size_bits].
         #[prost(int32, tag = "13")]
         pub vbv_fullness_bits: i32,
         /// The entropy coder to use. The default is `cabac`.
@@ -1113,8 +1187,9 @@ pub mod video_stream {
         #[prost(bool, tag = "15")]
         pub b_pyramid: bool,
         /// The number of consecutive B-frames. Must be greater than or equal to
-        /// zero. Must be less than `VideoStream.gop_frame_count` if set. The default
-        /// is 0.
+        /// zero. Must be less than
+        /// [H264CodecSettings.gop_frame_count][google.cloud.video.transcoder.v1.VideoStream.H264CodecSettings.gop_frame_count]
+        /// if set. The default is 0.
         #[prost(int32, tag = "16")]
         pub b_frame_count: i32,
         /// Specify the intensity of the adaptive quantizer (AQ). Must be between 0
@@ -1154,6 +1229,9 @@ pub mod video_stream {
         /// GOP mode can be either by frame count or duration.
         #[prost(oneof = "h264_codec_settings::GopMode", tags = "9, 10")]
         pub gop_mode: ::core::option::Option<h264_codec_settings::GopMode>,
+        /// Color format can be sdr or hlg.
+        #[prost(oneof = "h264_codec_settings::ColorFormat", tags = "21, 22")]
+        pub color_format: ::core::option::Option<h264_codec_settings::ColorFormat>,
     }
     /// Nested message and enum types in `H264CodecSettings`.
     pub mod h264_codec_settings {
@@ -1172,7 +1250,26 @@ pub mod video_stream {
             #[prost(message, tag = "10")]
             GopDuration(::prost_types::Duration),
         }
+        /// Color format can be sdr or hlg.
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        pub enum ColorFormat {
+            /// Optional. SDR color format setting for H264.
+            #[prost(message, tag = "21")]
+            Sdr(super::H264ColorFormatSdr),
+            /// Optional. HLG color format setting for H264.
+            #[prost(message, tag = "22")]
+            Hlg(super::H264ColorFormatHlg),
+        }
     }
+    /// Convert the input video to a Standard Dynamic Range (SDR) video.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct H265ColorFormatSdr {}
+    /// Convert the input video to a Hybrid Log Gamma (HLG) video.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct H265ColorFormatHlg {}
+    /// Convert the input video to a High Dynamic Range 10 (HDR10) video.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct H265ColorFormatHdr10 {}
     /// H265 codec settings.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct H265CodecSettings {
@@ -1197,14 +1294,13 @@ pub mod video_stream {
         #[prost(int32, tag = "2")]
         pub height_pixels: i32,
         /// Required. The target video frame rate in frames per second (FPS). Must be
-        /// less than or equal to 120. Will default to the input frame rate if larger
-        /// than the input frame rate. The API will generate an output FPS that is
-        /// divisible by the input FPS, and smaller or equal to the target FPS. See
-        /// [Calculating frame
-        /// rate](<https://cloud.google.com/transcoder/docs/concepts/frame-rate>) for
-        /// more information.
+        /// less than or equal to 120.
         #[prost(double, tag = "3")]
         pub frame_rate: f64,
+        /// Optional. Frame rate conversion strategy for desired frame rate. The
+        /// default is `DOWNSAMPLE`.
+        #[prost(enumeration = "FrameRateConversionStrategy", tag = "23")]
+        pub frame_rate_conversion_strategy: i32,
         /// Required. The video bitrate in bits per second. The minimum value is
         /// 1,000. The maximum value is 800,000,000.
         #[prost(int32, tag = "4")]
@@ -1224,7 +1320,7 @@ pub mod video_stream {
         /// - `yuv444p12` 12-bit HDR pixel format
         #[prost(string, tag = "5")]
         pub pixel_format: ::prost::alloc::string::String,
-        /// Specify the `rate_control_mode`. The default is `vbr`.
+        /// Specify the mode. The default is `vbr`.
         ///
         /// Supported rate control modes:
         ///
@@ -1241,7 +1337,8 @@ pub mod video_stream {
         #[prost(bool, tag = "8")]
         pub allow_open_gop: bool,
         /// Use two-pass encoding strategy to achieve better video quality.
-        /// `VideoStream.rate_control_mode` must be `vbr`. The default is `false`.
+        /// [H265CodecSettings.rate_control_mode][google.cloud.video.transcoder.v1.VideoStream.H265CodecSettings.rate_control_mode]
+        /// must be `vbr`. The default is `false`.
         #[prost(bool, tag = "11")]
         pub enable_two_pass: bool,
         /// Size of the Video Buffering Verifier (VBV) buffer in bits. Must be
@@ -1250,7 +1347,7 @@ pub mod video_stream {
         pub vbv_size_bits: i32,
         /// Initial fullness of the Video Buffering Verifier (VBV) buffer in bits.
         /// Must be greater than zero. The default is equal to 90% of
-        /// `VideoStream.vbv_size_bits`.
+        /// [H265CodecSettings.vbv_size_bits][google.cloud.video.transcoder.v1.VideoStream.H265CodecSettings.vbv_size_bits].
         #[prost(int32, tag = "13")]
         pub vbv_fullness_bits: i32,
         /// Allow B-pyramid for reference frame selection. This may not be supported
@@ -1258,8 +1355,9 @@ pub mod video_stream {
         #[prost(bool, tag = "14")]
         pub b_pyramid: bool,
         /// The number of consecutive B-frames. Must be greater than or equal to
-        /// zero. Must be less than `VideoStream.gop_frame_count` if set. The default
-        /// is 0.
+        /// zero. Must be less than
+        /// [H265CodecSettings.gop_frame_count][google.cloud.video.transcoder.v1.VideoStream.H265CodecSettings.gop_frame_count]
+        /// if set. The default is 0.
         #[prost(int32, tag = "15")]
         pub b_frame_count: i32,
         /// Specify the intensity of the adaptive quantizer (AQ). Must be between 0
@@ -1314,6 +1412,9 @@ pub mod video_stream {
         /// GOP mode can be either by frame count or duration.
         #[prost(oneof = "h265_codec_settings::GopMode", tags = "9, 10")]
         pub gop_mode: ::core::option::Option<h265_codec_settings::GopMode>,
+        /// Color format can be sdr, hlg, hdr10.
+        #[prost(oneof = "h265_codec_settings::ColorFormat", tags = "20, 21, 22")]
+        pub color_format: ::core::option::Option<h265_codec_settings::ColorFormat>,
     }
     /// Nested message and enum types in `H265CodecSettings`.
     pub mod h265_codec_settings {
@@ -1332,7 +1433,26 @@ pub mod video_stream {
             #[prost(message, tag = "10")]
             GopDuration(::prost_types::Duration),
         }
+        /// Color format can be sdr, hlg, hdr10.
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        pub enum ColorFormat {
+            /// Optional. SDR color format setting for H265.
+            #[prost(message, tag = "20")]
+            Sdr(super::H265ColorFormatSdr),
+            /// Optional. HLG color format setting for H265.
+            #[prost(message, tag = "21")]
+            Hlg(super::H265ColorFormatHlg),
+            /// Optional. HDR10 color format setting for H265.
+            #[prost(message, tag = "22")]
+            Hdr10(super::H265ColorFormatHdr10),
+        }
     }
+    /// Convert the input video to a Standard Dynamic Range (SDR) video.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct Vp9ColorFormatSdr {}
+    /// Convert the input video to a Hybrid Log Gamma (HLG) video.
+    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    pub struct Vp9ColorFormatHlg {}
     /// VP9 codec settings.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Vp9CodecSettings {
@@ -1357,14 +1477,13 @@ pub mod video_stream {
         #[prost(int32, tag = "2")]
         pub height_pixels: i32,
         /// Required. The target video frame rate in frames per second (FPS). Must be
-        /// less than or equal to 120. Will default to the input frame rate if larger
-        /// than the input frame rate. The API will generate an output FPS that is
-        /// divisible by the input FPS, and smaller or equal to the target FPS. See
-        /// [Calculating frame
-        /// rate](<https://cloud.google.com/transcoder/docs/concepts/frame-rate>) for
-        /// more information.
+        /// less than or equal to 120.
         #[prost(double, tag = "3")]
         pub frame_rate: f64,
+        /// Optional. Frame rate conversion strategy for desired frame rate. The
+        /// default is `DOWNSAMPLE`.
+        #[prost(enumeration = "FrameRateConversionStrategy", tag = "13")]
+        pub frame_rate_conversion_strategy: i32,
         /// Required. The video bitrate in bits per second. The minimum value is
         /// 1,000. The maximum value is 480,000,000.
         #[prost(int32, tag = "4")]
@@ -1384,7 +1503,7 @@ pub mod video_stream {
         /// - `yuv444p12` 12-bit HDR pixel format
         #[prost(string, tag = "5")]
         pub pixel_format: ::prost::alloc::string::String,
-        /// Specify the `rate_control_mode`. The default is `vbr`.
+        /// Specify the mode. The default is `vbr`.
         ///
         /// Supported rate control modes:
         ///
@@ -1415,6 +1534,9 @@ pub mod video_stream {
         /// GOP mode can be either by frame count or duration.
         #[prost(oneof = "vp9_codec_settings::GopMode", tags = "8, 9")]
         pub gop_mode: ::core::option::Option<vp9_codec_settings::GopMode>,
+        /// Color format can be sdr or hlg.
+        #[prost(oneof = "vp9_codec_settings::ColorFormat", tags = "11, 12")]
+        pub color_format: ::core::option::Option<vp9_codec_settings::ColorFormat>,
     }
     /// Nested message and enum types in `Vp9CodecSettings`.
     pub mod vp9_codec_settings {
@@ -1432,6 +1554,66 @@ pub mod video_stream {
             /// `gopDuration`.
             #[prost(message, tag = "9")]
             GopDuration(::prost_types::Duration),
+        }
+        /// Color format can be sdr or hlg.
+        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        pub enum ColorFormat {
+            /// Optional. SDR color format setting for VP9.
+            #[prost(message, tag = "11")]
+            Sdr(super::Vp9ColorFormatSdr),
+            /// Optional. HLG color format setting for VP9.
+            #[prost(message, tag = "12")]
+            Hlg(super::Vp9ColorFormatHlg),
+        }
+    }
+    /// The conversion strategy for desired frame rate.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum FrameRateConversionStrategy {
+        /// Unspecified frame rate conversion strategy.
+        Unspecified = 0,
+        /// Selectively retain frames to reduce the output frame rate.
+        /// Every _n_ th frame is kept, where `n = ceil(input frame rate / target
+        /// frame rate)`. When _n_ = 1 (that is, the target frame rate is greater
+        /// than the input frame rate), the output frame rate matches the input frame
+        /// rate. When _n_ > 1, frames are dropped and the output frame rate is
+        /// equal to `(input frame rate / n)`. For more information, see
+        /// [Calculate frame
+        /// rate](<https://cloud.google.com/transcoder/docs/concepts/frame-rate>).
+        Downsample = 1,
+        /// Drop or duplicate frames to match the specified frame rate.
+        DropDuplicate = 2,
+    }
+    impl FrameRateConversionStrategy {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "FRAME_RATE_CONVERSION_STRATEGY_UNSPECIFIED",
+                Self::Downsample => "DOWNSAMPLE",
+                Self::DropDuplicate => "DROP_DUPLICATE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FRAME_RATE_CONVERSION_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
+                "DOWNSAMPLE" => Some(Self::Downsample),
+                "DROP_DUPLICATE" => Some(Self::DropDuplicate),
+                _ => None,
+            }
         }
     }
     /// Codec settings can be h264, h265, or vp9.
@@ -1461,6 +1643,7 @@ pub struct AudioStream {
     /// - `mp3`
     /// - `ac3`
     /// - `eac3`
+    /// - `vorbis`
     #[prost(string, tag = "1")]
     pub codec: ::prost::alloc::string::String,
     /// Required. Audio bitrate in bits per second. Must be between 1 and
@@ -1484,7 +1667,10 @@ pub struct AudioStream {
     /// - `lfe` - Low frequency
     #[prost(string, repeated, tag = "4")]
     pub channel_layout: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// The mapping for the `Job.edit_list` atoms with audio `EditAtom.inputs`.
+    /// The mapping for the
+    /// [JobConfig.edit_list][google.cloud.video.transcoder.v1.JobConfig.edit_list]
+    /// atoms with audio
+    /// [EditAtom.inputs][google.cloud.video.transcoder.v1.EditAtom.inputs].
     #[prost(message, repeated, tag = "5")]
     pub mapping: ::prost::alloc::vec::Vec<audio_stream::AudioMapping>,
     /// The audio sample rate in Hertz. The default is 48000 Hertz.
@@ -1503,14 +1689,20 @@ pub struct AudioStream {
 }
 /// Nested message and enum types in `AudioStream`.
 pub mod audio_stream {
-    /// The mapping for the `Job.edit_list` atoms with audio `EditAtom.inputs`.
+    /// The mapping for the
+    /// [JobConfig.edit_list][google.cloud.video.transcoder.v1.JobConfig.edit_list]
+    /// atoms with audio
+    /// [EditAtom.inputs][google.cloud.video.transcoder.v1.EditAtom.inputs].
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AudioMapping {
-        /// Required. The `EditAtom.key` that references the atom with audio inputs
-        /// in the `Job.edit_list`.
+        /// Required. The
+        /// [EditAtom.key][google.cloud.video.transcoder.v1.EditAtom.key] that
+        /// references the atom with audio inputs in the
+        /// [JobConfig.edit_list][google.cloud.video.transcoder.v1.JobConfig.edit_list].
         #[prost(string, tag = "1")]
         pub atom_key: ::prost::alloc::string::String,
-        /// Required. The `Input.key` that identifies the input file.
+        /// Required. The [Input.key][google.cloud.video.transcoder.v1.Input.key]
+        /// that identifies the input file.
         #[prost(string, tag = "2")]
         pub input_key: ::prost::alloc::string::String,
         /// Required. The zero-based index of the track in the input file.
@@ -1548,7 +1740,10 @@ pub struct TextStream {
     /// supported in MP4 files.
     #[prost(string, tag = "2")]
     pub language_code: ::prost::alloc::string::String,
-    /// The mapping for the `Job.edit_list` atoms with text `EditAtom.inputs`.
+    /// The mapping for the
+    /// [JobConfig.edit_list][google.cloud.video.transcoder.v1.JobConfig.edit_list]
+    /// atoms with text
+    /// [EditAtom.inputs][google.cloud.video.transcoder.v1.EditAtom.inputs].
     #[prost(message, repeated, tag = "3")]
     pub mapping: ::prost::alloc::vec::Vec<text_stream::TextMapping>,
     /// The name for this particular text stream that
@@ -1558,14 +1753,20 @@ pub struct TextStream {
 }
 /// Nested message and enum types in `TextStream`.
 pub mod text_stream {
-    /// The mapping for the `Job.edit_list` atoms with text `EditAtom.inputs`.
+    /// The mapping for the
+    /// [JobConfig.edit_list][google.cloud.video.transcoder.v1.JobConfig.edit_list]
+    /// atoms with text
+    /// [EditAtom.inputs][google.cloud.video.transcoder.v1.EditAtom.inputs].
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TextMapping {
-        /// Required. The `EditAtom.key` that references atom with text inputs in the
-        /// `Job.edit_list`.
+        /// Required. The
+        /// [EditAtom.key][google.cloud.video.transcoder.v1.EditAtom.key] that
+        /// references atom with text inputs in the
+        /// [JobConfig.edit_list][google.cloud.video.transcoder.v1.JobConfig.edit_list].
         #[prost(string, tag = "1")]
         pub atom_key: ::prost::alloc::string::String,
-        /// Required. The `Input.key` that identifies the input file.
+        /// Required. The [Input.key][google.cloud.video.transcoder.v1.Input.key]
+        /// that identifies the input file.
         #[prost(string, tag = "2")]
         pub input_key: ::prost::alloc::string::String,
         /// Required. The zero-based index of the track in the input file.

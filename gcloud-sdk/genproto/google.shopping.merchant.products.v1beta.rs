@@ -7,8 +7,9 @@ pub struct Attributes {
     /// Defaults to true, if not provided.
     #[prost(bool, optional, tag = "4")]
     pub identifier_exists: ::core::option::Option<bool>,
-    /// Whether the item is a merchant-defined bundle. A bundle is a custom
-    /// grouping of different products sold by a merchant for a single price.
+    /// Whether the item is a business-defined sub-API. A \[sub-API\]
+    /// (<https://support.google.com/merchants/answer/6324449>) is a custom
+    /// grouping of different products sold by a business for a single price.
     #[prost(bool, optional, tag = "5")]
     pub is_bundle: ::core::option::Option<bool>,
     /// Title of the item.
@@ -42,8 +43,9 @@ pub struct Attributes {
     pub expiration_date: ::core::option::Option<::prost_types::Timestamp>,
     /// The date time when an offer becomes visible in search results across
     /// Google’s YouTube surfaces, in [ISO
-    /// 8601](<http://en.wikipedia.org/wiki/ISO_8601>) format. See [Disclosure date](
-    /// <https://support.google.com/merchants/answer/13034208>) for more information.
+    /// 8601](<http://en.wikipedia.org/wiki/ISO_8601>) format.
+    /// See [Disclosure date](<https://support.google.com/merchants/answer/13034208>)
+    /// for more information.
     #[prost(message, optional, tag = "79")]
     pub disclosure_date: ::core::option::Option<::prost_types::Timestamp>,
     /// Set to true if the item is targeted towards adults.
@@ -53,23 +55,28 @@ pub struct Attributes {
     /// the item.
     #[prost(string, optional, tag = "18")]
     pub age_group: ::core::option::Option<::prost::alloc::string::String>,
-    /// Availability status of the item.
+    /// [Availability](<https://support.google.com/merchants/answer/6324448>) status
+    /// of the item. For example, "in_stock" or "out_of_stock".
     #[prost(string, optional, tag = "19")]
     pub availability: ::core::option::Option<::prost::alloc::string::String>,
     /// The day a pre-ordered product becomes available for delivery, in [ISO
     /// 8601](<http://en.wikipedia.org/wiki/ISO_8601>) format.
     #[prost(message, optional, tag = "20")]
     pub availability_date: ::core::option::Option<::prost_types::Timestamp>,
-    /// Brand of the item.
+    /// [Brand](<https://support.google.com/merchants/answer/6324351>) of the item.
+    /// For example, "Google".
     #[prost(string, optional, tag = "21")]
     pub brand: ::core::option::Option<::prost::alloc::string::String>,
-    /// Color of the item.
+    /// [Color](<https://support.google.com/merchants/answer/6324487>) of the item.
+    /// For example, "red".
     #[prost(string, optional, tag = "22")]
     pub color: ::core::option::Option<::prost::alloc::string::String>,
-    /// Condition or state of the item.
+    /// [Condition](<https://support.google.com/merchants/answer/6324469>) or state
+    /// of the item. For example, "new" or "used".
     #[prost(string, optional, tag = "23")]
     pub condition: ::core::option::Option<::prost::alloc::string::String>,
-    /// Target gender of the item.
+    /// Target [gender](<https://support.google.com/merchants/answer/6324479>) of the
+    /// item. For example, "male" or "female".
     #[prost(string, optional, tag = "24")]
     pub gender: ::core::option::Option<::prost::alloc::string::String>,
     /// Google's category of the item (see [Google product
@@ -83,12 +90,22 @@ pub struct Attributes {
     /// ([GTIN](<https://support.google.com/merchants/answer/188494#gtin>)) of the
     /// item.
     /// You can provide up to 10 GTINs.
+    ///
+    /// Deprecated: Use `gtins` instead.
+    #[deprecated]
     #[prost(string, repeated, tag = "26")]
     pub gtin: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Global Trade Item Numbers
+    /// ([GTIN](<https://support.google.com/merchants/answer/188494#gtin>)) of the
+    /// item.
+    /// You can provide up to 10 GTINs.
+    #[prost(string, repeated, tag = "140")]
+    pub gtins: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Shared identifier for all variants of the same product.
     #[prost(string, optional, tag = "27")]
     pub item_group_id: ::core::option::Option<::prost::alloc::string::String>,
-    /// The material of which the item is made.
+    /// The [material](<https://support.google.com/merchants/answer/6324410>) of
+    /// which the item is made. For example, "Leather" or "Cotton".
     #[prost(string, optional, tag = "28")]
     pub material: ::core::option::Option<::prost::alloc::string::String>,
     /// Manufacturer Part Number
@@ -96,12 +113,16 @@ pub struct Attributes {
     /// item.
     #[prost(string, optional, tag = "29")]
     pub mpn: ::core::option::Option<::prost::alloc::string::String>,
-    /// The item's pattern (for example, polka dots).
+    /// The item's [pattern](<https://support.google.com/merchants/answer/6324483>).
+    /// For example, polka dots.
     #[prost(string, optional, tag = "30")]
     pub pattern: ::core::option::Option<::prost::alloc::string::String>,
     /// Price of the item.
     #[prost(message, optional, tag = "31")]
     pub price: ::core::option::Option<super::super::super::r#type::Price>,
+    /// Maximum retail price (MRP) of the item. Applicable to India only.
+    #[prost(message, optional, tag = "139")]
+    pub maximum_retail_price: ::core::option::Option<super::super::super::r#type::Price>,
     /// Number and amount of installments to pay for an item.
     #[prost(message, optional, tag = "32")]
     pub installment: ::core::option::Option<Installment>,
@@ -118,14 +139,14 @@ pub struct Attributes {
     #[prost(message, repeated, tag = "136")]
     pub loyalty_programs: ::prost::alloc::vec::Vec<LoyaltyProgram>,
     /// Categories of the item (formatted as in [product data
-    /// specification](<https://support.google.com/merchants/answer/188494#product_type>)).
+    /// specification](<https://support.google.com/merchants/answer/7052112#product_category>)).
     #[prost(string, repeated, tag = "35")]
     pub product_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Advertised sale price of the item.
     #[prost(message, optional, tag = "36")]
     pub sale_price: ::core::option::Option<super::super::super::r#type::Price>,
-    /// Date range during which the item is on sale (see [product data
-    /// specification](<https://support.google.com/merchants/answer/188494#sale_price_effective_date>)).
+    /// Date range during which the item is on sale, see [product data
+    /// specification](<https://support.google.com/merchants/answer/7052112#price_and_availability>).
     #[prost(message, optional, tag = "37")]
     pub sale_price_effective_date: ::core::option::Option<
         super::super::super::super::r#type::Interval,
@@ -185,22 +206,29 @@ pub struct Attributes {
     pub transit_time_label: ::core::option::Option<::prost::alloc::string::String>,
     /// Size of the item. Only one value is allowed. For variants with different
     /// sizes, insert a separate product for each size with the same
-    /// `itemGroupId` value (see
-    /// [<https://support.google.com/merchants/answer/6324492](size> definition)).
+    /// `itemGroupId` value, see
+    /// [Size](<https://support.google.com/merchants/answer/6324492>).
     #[prost(string, optional, tag = "48")]
     pub size: ::core::option::Option<::prost::alloc::string::String>,
     /// System in which the size is specified. Recommended for apparel items.
+    /// For example, "US", "UK", "DE".
+    /// For more information, see
+    /// [Size system](<https://support.google.com/merchants/answer/6324502>).
     #[prost(string, optional, tag = "49")]
     pub size_system: ::core::option::Option<::prost::alloc::string::String>,
     /// The cut of the item. It can be used to represent combined size types for
-    /// apparel items. Maximum two of size types can be provided (see
-    /// [<https://support.google.com/merchants/answer/6324497](size> type)).
+    /// apparel items. Maximum two of size types can be provided, see
+    /// [Size type](<https://support.google.com/merchants/answer/6324497>).
+    /// For example, "petite", "plus size".
     #[prost(string, repeated, tag = "50")]
     pub size_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Tax information.
+    #[deprecated]
     #[prost(message, repeated, tag = "51")]
     pub taxes: ::prost::alloc::vec::Vec<Tax>,
-    /// The tax category of the product.
+    /// The [tax category](<https://support.google.com/merchants/answer/7569847>) of
+    /// the product.
+    #[deprecated]
     #[prost(string, optional, tag = "52")]
     pub tax_category: ::core::option::Option<::prost::alloc::string::String>,
     /// The energy efficiency class as defined in EU directive 2010/30/EU.
@@ -222,11 +250,13 @@ pub struct Attributes {
     /// The preference of the denominator of the unit price.
     #[prost(message, optional, tag = "57")]
     pub unit_pricing_base_measure: ::core::option::Option<UnitPricingBaseMeasure>,
-    /// The number of identical products in a merchant-defined multipack.
+    /// The number of identical products in a business-defined multipack.
     #[prost(int64, optional, tag = "58")]
     pub multipack: ::core::option::Option<i64>,
     /// Used to group items in an arbitrary way. Only for CPA%, discouraged
-    /// otherwise.
+    /// otherwise. For more information, see
+    /// [Display ads
+    /// attribute](<https://support.google.com/merchants/answer/6069387>).
     #[prost(string, optional, tag = "59")]
     pub ads_grouping: ::core::option::Option<::prost::alloc::string::String>,
     /// Similar to ads_grouping, but only works on CPC.
@@ -242,13 +272,16 @@ pub struct Attributes {
     /// Technical specification or additional product details.
     #[prost(message, repeated, tag = "63")]
     pub product_details: ::prost::alloc::vec::Vec<ProductDetail>,
-    /// Bullet points describing the most relevant highlights of a product.
+    /// Bullet points describing the most relevant [product
+    /// highlights](<https://support.google.com/merchants/answer/9216100>).
     #[prost(string, repeated, tag = "64")]
     pub product_highlights: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// An identifier for an item for dynamic remarketing campaigns.
     #[prost(string, optional, tag = "65")]
     pub display_ads_id: ::core::option::Option<::prost::alloc::string::String>,
-    /// Advertiser-specified recommendations.
+    /// Advertiser-specified recommendations. For more information, see
+    /// [Display ads attribute
+    /// specification](<https://support.google.com/merchants/answer/6069387>).
     #[prost(string, repeated, tag = "66")]
     pub display_ads_similar_ids: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
@@ -260,53 +293,78 @@ pub struct Attributes {
     /// campaigns.
     #[prost(string, optional, tag = "68")]
     pub display_ads_link: ::core::option::Option<::prost::alloc::string::String>,
-    /// Offer margin for dynamic remarketing campaigns.
+    /// Offer margin for dynamic remarketing campaigns. For more information, see
+    /// [Display ads
+    /// attribute](<https://support.google.com/merchants/answer/6069387>).
     #[prost(double, optional, tag = "69")]
     pub display_ads_value: ::core::option::Option<f64>,
     /// The unique ID of a promotion.
     #[prost(string, repeated, tag = "70")]
     pub promotion_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// The pick up option for the item.
+    /// The [pickup](<https://support.google.com/merchants/answer/14634021>) option
+    /// for the item.
     #[prost(string, optional, tag = "80")]
     pub pickup_method: ::core::option::Option<::prost::alloc::string::String>,
-    /// Item store pickup timeline.
+    /// Item store pickup timeline. For more information, see
+    /// [Pickup SLA](<https://support.google.com/merchants/answer/14635400>).
     #[prost(string, optional, tag = "81")]
     pub pickup_sla: ::core::option::Option<::prost::alloc::string::String>,
-    /// Link template for merchant hosted local storefront.
+    /// [Link template](<https://support.google.com/merchants/answer/13871172>) for
+    /// business hosted local storefront.
     #[prost(string, optional, tag = "82")]
     pub link_template: ::core::option::Option<::prost::alloc::string::String>,
-    /// Link template for merchant hosted local storefront optimized for mobile
+    /// [Link template](<https://support.google.com/merchants/answer/13870216>) for
+    /// business hosted local storefront optimized for mobile
     /// devices.
     #[prost(string, optional, tag = "83")]
     pub mobile_link_template: ::core::option::Option<::prost::alloc::string::String>,
-    /// Custom label 0 for custom grouping of items in a Shopping campaign.
+    /// [Custom label 0](<https://support.google.com/merchants/answer/6324473>) for
+    /// custom grouping of items in a Shopping campaign.
     #[prost(string, optional, tag = "71")]
     pub custom_label_0: ::core::option::Option<::prost::alloc::string::String>,
-    /// Custom label 1 for custom grouping of items in a Shopping campaign.
+    /// [Custom label 1](<https://support.google.com/merchants/answer/6324473>)
+    /// for custom grouping of items in a Shopping campaign.
     #[prost(string, optional, tag = "72")]
     pub custom_label_1: ::core::option::Option<::prost::alloc::string::String>,
-    /// Custom label 2 for custom grouping of items in a Shopping campaign.
+    /// [Custom label 2](<https://support.google.com/merchants/answer/6324473>)
+    /// for custom grouping of items in a Shopping campaign.
     #[prost(string, optional, tag = "73")]
     pub custom_label_2: ::core::option::Option<::prost::alloc::string::String>,
-    /// Custom label 3 for custom grouping of items in a Shopping campaign.
+    /// [Custom label 3](<https://support.google.com/merchants/answer/6324473>)
+    /// for custom grouping of items in a Shopping campaign.
     #[prost(string, optional, tag = "74")]
     pub custom_label_3: ::core::option::Option<::prost::alloc::string::String>,
-    /// Custom label 4 for custom grouping of items in a Shopping campaign.
+    /// [Custom label 4](<https://support.google.com/merchants/answer/6324473>) for
+    /// custom grouping of items in a Shopping campaign.
     #[prost(string, optional, tag = "75")]
     pub custom_label_4: ::core::option::Option<::prost::alloc::string::String>,
     /// The list of destinations to include for this target (corresponds to
     /// checked check boxes in Merchant Center). Default destinations are always
     /// included unless provided in `excludedDestinations`.
+    ///
+    /// For more information, see
+    /// [Included
+    /// destination](<https://support.google.com/merchants/answer/7501026>).
+    ///
+    /// Note: We recommend setting destinations on datasources level for most use
+    /// cases. Use this field within products to only setup exceptions.
     #[prost(string, repeated, tag = "76")]
     pub included_destinations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The list of destinations to exclude for this target (corresponds to
     /// unchecked check boxes in Merchant Center).
+    ///
+    /// For more information, see
+    /// [Excluded
+    /// destination](<https://support.google.com/merchants/answer/6324486>).
+    ///
+    /// Note: We recommend setting destinations on datasources level for most use
+    /// cases. Use this field within products to only setup exceptions.
     #[prost(string, repeated, tag = "77")]
     pub excluded_destinations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// List of country codes (ISO 3166-1 alpha-2) to exclude the offer from
-    /// Shopping Ads destination.
-    /// Countries from this list are removed from countries configured
-    /// in data source settings.
+    /// List of country codes [(ISO 3166-1
+    /// alpha-2)](<https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>) to exclude the
+    /// offer from Shopping Ads destination. Countries from this list are removed
+    /// from countries configured in data source settings.
     #[prost(string, repeated, tag = "78")]
     pub shopping_ads_excluded_countries: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
@@ -349,11 +407,11 @@ pub struct Attributes {
     /// Structured description, for algorithmically (AI)-generated descriptions.
     #[prost(message, optional, tag = "133")]
     pub structured_description: ::core::option::Option<ProductStructuredDescription>,
-    /// A safeguard in the "Automated Discounts"
+    /// A safeguard in the \[automated discounts\]
     /// (<https://support.google.com/merchants/answer/10295759>) and
     /// "Dynamic Promotions"
     /// (<https://support.google.com/merchants/answer/13949249>) projects,
-    /// ensuring that discounts on merchants' offers do not fall below this value,
+    /// ensuring that discounts on business offers do not fall below this value,
     /// thereby preserving the offer's value and profitability.
     #[prost(message, optional, tag = "124")]
     pub auto_pricing_min_price: ::core::option::Option<
@@ -491,10 +549,10 @@ pub struct LoyaltyPoints {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoyaltyProgram {
     /// The label of the loyalty program. This is an internal label that uniquely
-    /// identifies the relationship between a merchant entity and a loyalty
+    /// identifies the relationship between a business entity and a loyalty
     /// program entity. The label must be provided so that the system can associate
-    /// the assets below (for example, price and points) with a merchant. The
-    /// corresponding program must be linked to the merchant account.
+    /// the assets below (for example, price and points) with a business. The
+    /// corresponding program must be linked to the Merchant Center account.
     #[prost(string, optional, tag = "1")]
     pub program_label: ::core::option::Option<::prost::alloc::string::String>,
     /// The label of the tier within the loyalty program.
@@ -774,7 +832,7 @@ pub mod product_status {
         /// How this issue affects serving of the offer.
         #[prost(enumeration = "item_level_issue::Severity", tag = "2")]
         pub severity: i32,
-        /// Whether the issue can be resolved by the merchant.
+        /// Whether the issue can be resolved by the business.
         #[prost(string, tag = "3")]
         pub resolution: ::prost::alloc::string::String,
         /// The attribute's name, if the issue is caused by a single attribute.
@@ -1028,7 +1086,8 @@ impl SubscriptionPeriod {
 ///   processed product that you see in Merchant Center, in Shopping ads, or
 ///   across Google surfaces. Product inputs, rules and supplemental data source
 ///   data are combined to create the processed
-///   [Product][google.shopping.merchant.products.v1beta.Product].
+///   [Product][google.shopping.merchant.products.v1beta.Product]. For more
+///   information, see [Manage products](/merchant/api/guides/products/overview).
 ///
 ///   Required product input attributes to pass data validation checks are
 ///   primarily defined in the [Products Data
@@ -1043,21 +1102,24 @@ impl SubscriptionPeriod {
 ///   minutes before the processed product can be retrieved.
 ///
 ///   All fields in the product input and its sub-messages match the English name
-///   of their corresponding attribute in the vertical spec with [some
-///   exceptions](<https://support.google.com/merchants/answer/7052112>).
+///   of their corresponding attribute in the [Products Data
+///   Specification](<https://support.google.com/merchants/answer/188494>) with
+///   [some exceptions](<https://support.google.com/merchants/answer/7052112>).
+///   The following reference documentation lists the field names in the
+///   **camelCase** casing style while the Products Data Specification lists the
+///   names in the **snake_case** casing style.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductInput {
     /// Identifier. The name of the product input.
-    /// Format: accounts/{account}/productInputs/{productinput}
+    /// Format: `accounts/{account}/productInputs/{productinput}`
     /// where the last section `productinput` consists of 4 parts:
-    /// channel~content_language~feed_label~offer_id
+    /// `channel~content_language~feed_label~offer_id`
     /// example for product input name is
-    /// "accounts/123/productInputs/online~en~US~sku123"
+    /// `accounts/123/productInputs/online~en~US~sku123`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The name of the processed product.
-    /// Format:
-    /// `"{product.name=accounts/{account}/products/{product}}"`
+    /// Format: `accounts/{account}/products/{product}`
     #[prost(string, tag = "2")]
     pub product: ::prost::alloc::string::String,
     /// Immutable. The
@@ -1081,14 +1143,16 @@ pub struct ProductInput {
     /// product.
     #[prost(string, tag = "5")]
     pub content_language: ::prost::alloc::string::String,
-    /// Required. Immutable. The [feed
-    /// label](<https://developers.google.com/shopping-content/guides/products/feed-labels>)
-    /// for the product.
+    /// Required. Immutable. The label that lets you categorize and identify your
+    /// products. The maximum allowed characters are 20, and the supported
+    /// characters are `A-Z`, `0-9`, hyphen, and underscore. The feed label must
+    /// not include any spaces. For more information, see [Using feed
+    /// labels](//support.google.com/merchants/answer/14994087).
     #[prost(string, tag = "6")]
     pub feed_label: ::prost::alloc::string::String,
-    /// Optional. Represents the existing version (freshness) of the product, which
-    /// can be used to preserve the right order when multiple updates are done at
-    /// the same time.
+    /// Optional. Immutable. Represents the existing version (freshness) of the
+    /// product, which can be used to preserve the right order when multiple
+    /// updates are done at the same time.
     ///
     /// If set, the insertion is prevented when version number is lower than
     /// the current version number of the existing product. Re-insertion (for
@@ -1096,6 +1160,8 @@ pub struct ProductInput {
     /// `version_number`.
     ///
     /// Only supported for insertions into primary data sources.
+    /// Do not set this field for updates.
+    /// Do not set this field for insertions into supplemental data sources.
     ///
     /// If the operation is prevented, the aborted exception will be
     /// thrown.
@@ -1109,7 +1175,7 @@ pub struct ProductInput {
     /// form (for example,
     /// `{ "name": "size type", "value": "regular" }`).
     /// This is useful for submitting attributes not explicitly exposed by the
-    /// API, such as additional attributes used for Buy on Google.
+    /// API.
     /// Maximum allowed number of characters for each
     /// custom attribute is 10240 (represents sum of characters for name and
     /// value). Maximum 2500 custom attributes can be set per product, with total
@@ -1124,7 +1190,7 @@ pub struct ProductInput {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertProductInputRequest {
     /// Required. The account where this product will be inserted.
-    /// Format: accounts/{account}
+    /// Format: `accounts/{account}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The product input to insert.
@@ -1132,11 +1198,14 @@ pub struct InsertProductInputRequest {
     pub product_input: ::core::option::Option<ProductInput>,
     /// Required. The primary or supplemental product data source name. If the
     /// product already exists and data source provided is different, then the
-    /// product will be moved to a new data source.
+    /// product will be moved to a new data source. For more information, see
+    /// [Overview of Data sources
+    /// sub-API](/merchant/api/guides/data-sources/overview).
     ///
     /// Only API data sources are supported.
     ///
-    /// Format: `accounts/{account}/dataSources/{datasource}`.
+    /// Format: `accounts/{account}/dataSources/{datasource}`. For example,
+    /// `accounts/123456/dataSources/104628`.
     #[prost(string, tag = "3")]
     pub data_source: ::prost::alloc::string::String,
 }
@@ -1172,7 +1241,8 @@ pub struct UpdateProductInputRequest {
     ///
     /// Only API data sources are supported.
     ///
-    /// Format: `accounts/{account}/dataSources/{datasource}`.
+    /// Format: `accounts/{account}/dataSources/{datasource}`. For example,
+    /// `accounts/123456/dataSources/104628`.
     #[prost(string, tag = "3")]
     pub data_source: ::prost::alloc::string::String,
 }
@@ -1180,16 +1250,17 @@ pub struct UpdateProductInputRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteProductInputRequest {
     /// Required. The name of the product input resource to delete.
-    /// Format: accounts/{account}/productInputs/{product}
+    /// Format: `accounts/{account}/productInputs/{product}`
     /// where the last section `product` consists of 4 parts:
-    /// channel~content_language~feed_label~offer_id
+    /// `channel~content_language~feed_label~offer_id`
     /// example for product name is
-    /// "accounts/123/productInputs/online~en~US~sku123"
+    /// `accounts/123/productInputs/online~en~US~sku123`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The primary or supplemental data source from which the product
     /// input should be deleted. Format:
-    /// `accounts/{account}/dataSources/{datasource}`.
+    /// `accounts/{account}/dataSources/{datasource}`. For example,
+    /// `accounts/123456/dataSources/104628`.
     #[prost(string, tag = "2")]
     pub data_source: ::prost::alloc::string::String,
 }
@@ -1286,9 +1357,14 @@ pub mod product_inputs_service_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Uploads a product input to your Merchant Center account. If an input
-        /// with the same contentLanguage, offerId, and dataSource already exists,
-        /// this method replaces that entry.
+        /// [Uploads a product input to your Merchant Center
+        /// account](/merchant/api/guides/products/overview#upload-product-input). You
+        /// must have a products data source to be able to insert a product. The unique
+        /// identifier of the data source is passed as a query parameter in the request
+        /// URL.
+        ///
+        /// If an input with the same contentLanguage, offerId, and dataSource already
+        /// exists, this method replaces that entry.
         ///
         /// After inserting, updating, or deleting a product input, it may take several
         /// minutes before the processed product can be retrieved.
@@ -1424,7 +1500,11 @@ pub struct Product {
     /// product.
     #[prost(string, tag = "4")]
     pub content_language: ::prost::alloc::string::String,
-    /// Output only. The feed label for the product.
+    /// Output only. The feed label lets you categorize and identify your products.
+    /// The maximum allowed characters is 20 and the supported characters are`A-Z`,
+    /// `0-9`, hyphen and underscore. The feed label must not include any spaces.
+    /// For more information, see [Using feed
+    /// labels](//support.google.com/merchants/answer/14994087)
     #[prost(string, tag = "5")]
     pub feed_label: ::prost::alloc::string::String,
     /// Output only. The primary data source of the product.
@@ -1487,7 +1567,7 @@ pub struct ListProductsRequest {
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of products to return. The service may return fewer than
     /// this value.
-    /// The maximum value is 250; values above 250 will be coerced to 250.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
     /// If unspecified, the maximum number of products will be returned.
     #[prost(int32, tag = "2")]
     pub page_size: i32,

@@ -186,6 +186,15 @@ pub struct Database {
     /// Output only. Information about the provenance of this database.
     #[prost(message, optional, tag = "26")]
     pub source_info: ::core::option::Option<database::SourceInfo>,
+    /// Optional. Input only. Immutable. Tag keys/values directly bound to this
+    /// resource. For example:
+    ///    "123/environment": "production",
+    ///    "123/costCenter": "marketing"
+    #[prost(map = "string, string", tag = "29")]
+    pub tags: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Output only. Background: Free tier is the ability of a Firestore database
     /// to use a small amount of resources every day without being charged. Once
     /// usage exceeds the free tier limit further usage is charged.
@@ -1177,6 +1186,24 @@ pub mod field {
         }
     }
 }
+/// A consistent snapshot of a database at a specific point in time.
+/// A PITR (Point-in-time recovery) snapshot with previous versions of a
+/// database's data is available for every minute up to the associated database's
+/// data retention period. If the PITR feature is enabled, the retention period
+/// is 7 days; otherwise, it is one hour.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PitrSnapshot {
+    /// Required. The name of the database that this was a snapshot of. Format:
+    /// `projects/{project}/databases/{database}`.
+    #[prost(string, tag = "1")]
+    pub database: ::prost::alloc::string::String,
+    /// Output only. Public UUID of the database the snapshot was associated with.
+    #[prost(bytes = "vec", tag = "2")]
+    pub database_uid: ::prost::alloc::vec::Vec<u8>,
+    /// Required. Snapshot time of the database.
+    #[prost(message, optional, tag = "3")]
+    pub snapshot_time: ::core::option::Option<::prost_types::Timestamp>,
+}
 /// Metadata for [google.longrunning.Operation][google.longrunning.Operation]
 /// results from
 /// [FirestoreAdmin.CreateIndex][google.firestore.admin.v1.FirestoreAdmin.CreateIndex].
@@ -1485,6 +1512,29 @@ pub struct RestoreDatabaseMetadata {
     pub backup: ::prost::alloc::string::String,
     /// How far along the restore is as an estimated percentage of remaining time.
     #[prost(message, optional, tag = "8")]
+    pub progress_percentage: ::core::option::Option<Progress>,
+}
+/// Metadata for the [long-running operation][google.longrunning.Operation] from
+/// the [CloneDatabase][google.firestore.admin.v1.CloneDatabase] request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloneDatabaseMetadata {
+    /// The time the clone was started.
+    #[prost(message, optional, tag = "1")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time the clone finished, unset for ongoing clones.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The operation state of the clone.
+    #[prost(enumeration = "OperationState", tag = "3")]
+    pub operation_state: i32,
+    /// The name of the database being cloned to.
+    #[prost(string, tag = "4")]
+    pub database: ::prost::alloc::string::String,
+    /// The snapshot from which this database was cloned.
+    #[prost(message, optional, tag = "7")]
+    pub pitr_snapshot: ::core::option::Option<PitrSnapshot>,
+    /// How far along the clone is as an estimated percentage of remaining time.
+    #[prost(message, optional, tag = "6")]
     pub progress_percentage: ::core::option::Option<Progress>,
 }
 /// Describes the progress of the operation.
@@ -2271,6 +2321,58 @@ pub struct RestoreDatabaseRequest {
     /// [use_source_encryption][google.firestore.admin.v1.Database.EncryptionConfig.use_source_encryption].
     #[prost(message, optional, tag = "9")]
     pub encryption_config: ::core::option::Option<database::EncryptionConfig>,
+    /// Optional. Immutable. Tags to be bound to the restored database.
+    ///
+    /// The tags should be provided in the format of
+    /// `tagKeys/{tag_key_id} -> tagValues/{tag_value_id}`.
+    #[prost(map = "string, string", tag = "10")]
+    pub tags: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+}
+/// The request message for
+/// [FirestoreAdmin.CloneDatabase][google.firestore.admin.v1.FirestoreAdmin.CloneDatabase].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloneDatabaseRequest {
+    /// Required. The project to clone the database in. Format is
+    /// `projects/{project_id}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ID to use for the database, which will become the final
+    /// component of the database's resource name. This database ID must not be
+    /// associated with an existing database.
+    ///
+    /// This value should be 4-63 characters. Valid characters are /[a-z][0-9]-/
+    /// with first character a letter and the last a letter or a number. Must not
+    /// be UUID-like /\[0-9a-f\]{8}(-\[0-9a-f\]{4}){3}-\[0-9a-f\]{12}/.
+    ///
+    /// "(default)" database ID is also valid.
+    #[prost(string, tag = "2")]
+    pub database_id: ::prost::alloc::string::String,
+    /// Required. Specification of the PITR data to clone from. The source database
+    /// must exist.
+    ///
+    /// The cloned database will be created in the same location as the source
+    /// database.
+    #[prost(message, optional, tag = "6")]
+    pub pitr_snapshot: ::core::option::Option<PitrSnapshot>,
+    /// Optional. Encryption configuration for the cloned database.
+    ///
+    /// If this field is not specified, the cloned database will use
+    /// the same encryption configuration as the source database, namely
+    /// [use_source_encryption][google.firestore.admin.v1.Database.EncryptionConfig.use_source_encryption].
+    #[prost(message, optional, tag = "4")]
+    pub encryption_config: ::core::option::Option<database::EncryptionConfig>,
+    /// Optional. Immutable. Tags to be bound to the cloned database.
+    ///
+    /// The tags should be provided in the format of
+    /// `tagKeys/{tag_key_id} -> tagValues/{tag_value_id}`.
+    #[prost(map = "string, string", tag = "5")]
+    pub tags: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Generated client implementations.
 pub mod firestore_admin_client {
@@ -3337,6 +3439,52 @@ pub mod firestore_admin_client {
                     GrpcMethod::new(
                         "google.firestore.admin.v1.FirestoreAdmin",
                         "DeleteBackupSchedule",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Creates a new database by cloning an existing one.
+        ///
+        /// The new database must be in the same cloud region or multi-region location
+        /// as the existing database. This behaves similar to
+        /// [FirestoreAdmin.CreateDatabase][google.firestore.admin.v1.FirestoreAdmin.CreateDatabase]
+        /// except instead of creating a new empty database, a new database is created
+        /// with the database type, index configuration, and documents from an existing
+        /// database.
+        ///
+        /// The [long-running operation][google.longrunning.Operation] can be used to
+        /// track the progress of the clone, with the Operation's
+        /// [metadata][google.longrunning.Operation.metadata] field type being the
+        /// [CloneDatabaseMetadata][google.firestore.admin.v1.CloneDatabaseMetadata].
+        /// The [response][google.longrunning.Operation.response] type is the
+        /// [Database][google.firestore.admin.v1.Database] if the clone was
+        /// successful. The new database is not readable or writeable until the LRO has
+        /// completed.
+        pub async fn clone_database(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CloneDatabaseRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.admin.v1.FirestoreAdmin/CloneDatabase",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.firestore.admin.v1.FirestoreAdmin",
+                        "CloneDatabase",
                     ),
                 );
             self.inner.unary(req, path, codec).await

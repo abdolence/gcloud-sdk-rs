@@ -30,6 +30,12 @@ pub struct AdaptMessageResponse {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. Indicates whether this is the last
+    /// [AdaptMessageResponse][google.spanner.adapter.v1.AdaptMessageResponse] in
+    /// the stream. This field may be optionally set by the server. Clients should
+    /// not rely on this field being set in all cases.
+    #[prost(bool, tag = "3")]
+    pub last: bool,
 }
 /// A session in the Cloud Spanner Adapter API.
 #[derive(Clone, PartialEq, ::prost::Message)]

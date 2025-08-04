@@ -4555,22 +4555,16 @@ pub struct SearchRequest {
     /// between /search API calls and /answer API calls.
     ///
     /// Example #1 (multi-turn /search API calls):
-    ///    1. Call /search API with the auto-session mode (see below).
-    ///    2. Call /search API with the session ID generated in the first call.
-    ///       Here, the previous search query gets considered in query
-    ///       standing. I.e., if the first query is "How did Alphabet do in 2022?"
-    ///       and the current query is "How about 2023?", the current query will
-    ///       be interpreted as "How did Alphabet do in 2023?".
+    ///    Call /search API with the session ID generated in the first call.
+    ///    Here, the previous search query gets considered in query
+    ///    standing. I.e., if the first query is "How did Alphabet do in 2022?"
+    ///    and the current query is "How about 2023?", the current query will
+    ///    be interpreted as "How did Alphabet do in 2023?".
     ///
     /// Example #2 (coordination between /search API calls and /answer API calls):
-    ///    1. Call /search API with the auto-session mode (see below).
-    ///    2. Call /answer API with the session ID generated in the first call.
-    ///       Here, the answer generation happens in the context of the search
-    ///       results from the first search call.
-    ///
-    /// Auto-session mode: when `projects/.../sessions/-` is used, a new session
-    /// gets automatically created. Otherwise, users can use the create-session API
-    /// to create a session manually.
+    ///    Call /answer API with the session ID generated in the first call.
+    ///    Here, the answer generation happens in the context of the search
+    ///    results from the first search call.
     ///
     /// Multi-turn Search feature is currently at private GA stage. Please use
     /// v1alpha or v1beta version instead before we launch this feature to public
@@ -6733,6 +6727,12 @@ pub struct Session {
     /// `projects/{project}/locations/global/collections/{collection}/engines/{engine}/sessions/*`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. The display name of the session.
+    ///
+    /// This field is used to identify the session in the UI.
+    /// By default, the display name is the first turn query text in the session.
+    #[prost(string, tag = "7")]
+    pub display_name: ::prost::alloc::string::String,
     /// The state of the session.
     #[prost(enumeration = "session::State", tag = "2")]
     pub state: i32,
@@ -6748,6 +6748,10 @@ pub struct Session {
     /// Output only. The time the session finished.
     #[prost(message, optional, tag = "6")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Whether the session is pinned, pinned session will be displayed
+    /// on the top of the session list.
+    #[prost(bool, tag = "8")]
+    pub is_pinned: bool,
 }
 /// Nested message and enum types in `Session`.
 pub mod session {
@@ -6755,15 +6759,33 @@ pub mod session {
     /// answer from service.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Turn {
-        /// The user query.
+        /// Optional. The user query. May not be set if this turn is merely
+        /// regenerating an answer to a different turn
         #[prost(message, optional, tag = "1")]
         pub query: ::core::option::Option<super::Query>,
-        /// The resource name of the answer to the user query.
+        /// Optional. The resource name of the answer to the user query.
         ///
         /// Only set if the answer generation (/answer API call) happened in this
         /// turn.
         #[prost(string, tag = "2")]
         pub answer: ::prost::alloc::string::String,
+        /// Output only. In
+        /// [ConversationalSearchService.GetSession][google.cloud.discoveryengine.v1beta.ConversationalSearchService.GetSession]
+        /// API, if
+        /// [GetSessionRequest.include_answer_details][google.cloud.discoveryengine.v1beta.GetSessionRequest.include_answer_details]
+        /// is set to true, this field will be populated when getting answer query
+        /// session.
+        #[prost(message, optional, tag = "7")]
+        pub detailed_answer: ::core::option::Option<super::Answer>,
+        /// Optional. Represents metadata related to the query config, for example
+        /// LLM model and version used, model parameters (temperature, grounding
+        /// parameters, etc.). The prefix "google." is reserved for Google-developed
+        /// functionality.
+        #[prost(map = "string, string", tag = "16")]
+        pub query_config: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
     }
     /// Enumeration of the state of the session.
     #[derive(
@@ -6808,7 +6830,7 @@ pub mod session {
 /// Defines a user inputed query.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Query {
-    /// Unique Id for the query.
+    /// Output only. Unique Id for the query.
     #[prost(string, tag = "1")]
     pub query_id: ::prost::alloc::string::String,
     /// Query content.
@@ -7658,6 +7680,10 @@ pub struct GetSessionRequest {
     /// `projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store_id}/sessions/{session_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. If set to true, the full session including all answer details
+    /// will be returned.
+    #[prost(bool, tag = "2")]
+    pub include_answer_details: bool,
 }
 /// Request for ListSessions method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -7674,23 +7700,40 @@ pub struct ListSessionsRequest {
     /// Provide this to retrieve the subsequent page.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// A filter to apply on the list results. The supported features are:
-    /// user_pseudo_id, state.
+    /// A comma-separated list of fields to filter by, in EBNF grammar.
+    /// The supported fields are:
+    /// * `user_pseudo_id`
+    /// * `state`
+    /// * `display_name`
+    /// * `starred`
+    /// * `is_pinned`
+    /// * `labels`
+    /// * `create_time`
+    /// * `update_time`
     ///
-    /// Example:
+    /// Examples:
     /// "user_pseudo_id = some_id"
+    /// "display_name = \"some_name\""
+    /// "starred = true"
+    /// "is_pinned=true AND (NOT labels:hidden)"
+    /// "create_time > \"1970-01-01T12:00:00Z\""
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// A comma-separated list of fields to order by, sorted in ascending order.
     /// Use "desc" after a field name for descending.
     /// Supported fields:
+    ///
     ///    * `update_time`
     ///    * `create_time`
     ///    * `session_name`
+    ///    * `is_pinned`
     ///
     /// Example:
-    /// "update_time desc"
-    /// "create_time"
+    ///
+    /// * "update_time desc"
+    /// * "create_time"
+    /// * "is_pinned desc,update_time desc": list sessions by is_pinned first, then
+    ///     by update_time.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -14848,6 +14891,249 @@ pub mod serving_config_service_client {
                     GrpcMethod::new(
                         "google.cloud.discoveryengine.v1beta.ServingConfigService",
                         "ListServingConfigs",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
+/// Generated client implementations.
+pub mod session_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service for managing Sessions and Session-related resources.
+    #[derive(Debug, Clone)]
+    pub struct SessionServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl SessionServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> SessionServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> SessionServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            SessionServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Creates a Session.
+        ///
+        /// If the [Session][google.cloud.discoveryengine.v1beta.Session] to create
+        /// already exists, an ALREADY_EXISTS error is returned.
+        pub async fn create_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateSessionRequest>,
+        ) -> std::result::Result<tonic::Response<super::Session>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1beta.SessionService/CreateSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1beta.SessionService",
+                        "CreateSession",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Deletes a Session.
+        ///
+        /// If the [Session][google.cloud.discoveryengine.v1beta.Session] to delete
+        /// does not exist, a NOT_FOUND error is returned.
+        pub async fn delete_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteSessionRequest>,
+        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1beta.SessionService/DeleteSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1beta.SessionService",
+                        "DeleteSession",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Updates a Session.
+        ///
+        /// [Session][google.cloud.discoveryengine.v1beta.Session] action type cannot
+        /// be changed. If the [Session][google.cloud.discoveryengine.v1beta.Session]
+        /// to update does not exist, a NOT_FOUND error is returned.
+        pub async fn update_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateSessionRequest>,
+        ) -> std::result::Result<tonic::Response<super::Session>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1beta.SessionService/UpdateSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1beta.SessionService",
+                        "UpdateSession",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Gets a Session.
+        pub async fn get_session(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetSessionRequest>,
+        ) -> std::result::Result<tonic::Response<super::Session>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1beta.SessionService/GetSession",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1beta.SessionService",
+                        "GetSession",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Lists all Sessions by their parent
+        /// [DataStore][google.cloud.discoveryengine.v1beta.DataStore].
+        pub async fn list_sessions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListSessionsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ListSessionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.discoveryengine.v1beta.SessionService/ListSessions",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.discoveryengine.v1beta.SessionService",
+                        "ListSessions",
                     ),
                 );
             self.inner.unary(req, path, codec).await

@@ -43,16 +43,15 @@ pub struct ResourceInfo {
     /// Optional. The identifier of the container of this resource. For Google
     /// Cloud APIs, the resource container must be one of the following formats:
     ///      - `projects/<project-id or project-number>`
-    ///      - `folders/<folder-id>`
-    ///      - `organizations/<organization-id>`
-    /// For the policy enforcement on the container level (VPCSC and Location
-    /// Policy check), this field takes precedence on the container extracted from
-    /// name when presents.
+    ///      - `folders/<folder-number>`
+    ///      - `organizations/<organization-number>`
+    /// Required for the policy enforcement on the container level (e.g. VPCSC,
+    /// Location Policy check, Org Policy check).
     #[prost(string, tag = "4")]
     pub container: ::prost::alloc::string::String,
-    /// Optional. The location of the resource. The value must be a valid zone,
-    /// region or multiregion. For example: "europe-west4" or
-    /// "northamerica-northeast1-a"
+    /// Optional. The location of the resource, it must be a valid zone, region or
+    /// multiregion, for example: "europe-west4", "northamerica-northeast1-a".
+    /// Required for location policy check.
     #[prost(string, tag = "5")]
     pub location: ::prost::alloc::string::String,
 }
@@ -119,8 +118,6 @@ pub mod service_controller_client {
     use tonic::codegen::http::Uri;
     /// [Service Control API
     /// v2](https://cloud.google.com/service-infrastructure/docs/service-control/access-control)
-    ///
-    /// Private Preview. This feature is only available for approved services.
     ///
     /// This API provides admission control and telemetry reporting for services
     /// that are integrated with [Service
@@ -205,8 +202,6 @@ pub mod service_controller_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Private Preview. This feature is only available for approved services.
-        ///
         /// This method provides admission control for services that are integrated
         /// with [Service
         /// Infrastructure](https://cloud.google.com/service-infrastructure). It checks
@@ -253,8 +248,6 @@ pub mod service_controller_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Private Preview. This feature is only available for approved services.
-        ///
         /// This method provides telemetry reporting for services that are integrated
         /// with [Service
         /// Infrastructure](https://cloud.google.com/service-infrastructure). It
@@ -263,9 +256,8 @@ pub mod service_controller_client {
         /// [Telemetry
         /// Reporting](https://cloud.google.com/service-infrastructure/docs/telemetry-reporting).
         ///
-        /// NOTE: The telemetry reporting has a hard limit of 1000 operations and 1MB
-        /// per Report call. It is recommended to have no more than 100 operations per
-        /// call.
+        /// NOTE: The telemetry reporting has a hard limit of 100 operations and 1MB
+        /// per Report call.
         ///
         /// This method requires the `servicemanagement.services.report` permission
         /// on the specified service. For more information, see

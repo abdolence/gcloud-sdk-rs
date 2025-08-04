@@ -4776,6 +4776,10 @@ pub struct SearchEntriesRequest {
     /// `name` is located.
     #[prost(string, tag = "7")]
     pub scope: ::prost::alloc::string::String,
+    /// Optional. Specifies whether the search should understand the meaning and
+    /// intent behind the query, rather than just matching keywords.
+    #[prost(bool, tag = "11")]
+    pub semantic_search: bool,
 }
 /// A single result of a SearchEntries request.
 #[derive(Clone, PartialEq, ::prost::Message)]
