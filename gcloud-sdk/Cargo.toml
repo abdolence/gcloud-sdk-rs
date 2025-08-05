@@ -431,7 +431,7 @@ google-rest-storage-v1 = ["rest"]
 google-rest-fcm-v1 = ["rest"]
 
 [dependencies]
-tonic = { version = "0.13.0" }
+tonic = { version = "0.14.0" }
 tower = "0.5"
 tower-layer = "0.3"
 tower-util = "0.3"
