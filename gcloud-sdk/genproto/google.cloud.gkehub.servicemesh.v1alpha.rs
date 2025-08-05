@@ -17,7 +17,7 @@ pub struct MembershipState {
 }
 /// AnalysisMessageBase describes some common information that is
 /// needed for all messages.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AnalysisMessageBase {
     /// Represents the specific type of a message.
     #[prost(message, optional, tag = "1")]
@@ -37,7 +37,7 @@ pub mod analysis_message_base {
     /// one-to-one mapping between display_name and code. (i.e. do not re-use
     /// display_names or codes between message types.)
     /// See istio.analysis.v1alpha1.AnalysisMessageBase.Type
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Type {
         /// A human-readable name for the message type. e.g. "InternalError",
         /// "PodMissingProxy". This should be the same for all messages of the same
@@ -115,9 +115,10 @@ pub struct AnalysisMessage {
     /// A list of strings specifying the resource identifiers that were the cause
     /// of message generation.
     /// A "path" here may be:
+    ///
     /// * MEMBERSHIP_ID if the cause is a specific member cluster
-    /// * MEMBERSHIP_ID/(NAMESPACE\/)?RESOURCETYPE/NAME if the cause is a resource
-    /// in a cluster
+    /// * MEMBERSHIP_ID/(NAMESPACE/)?RESOURCETYPE/NAME if the cause is a resource
+    ///   in a cluster
     #[prost(string, repeated, tag = "3")]
     pub resource_paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A UI can combine these args with a template (based on message_base.type)

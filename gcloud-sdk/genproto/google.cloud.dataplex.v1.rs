@@ -57,7 +57,7 @@ pub struct Lake {
 /// Nested message and enum types in `Lake`.
 pub mod lake {
     /// Settings to manage association of Dataproc Metastore with a lake.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Metastore {
         /// Optional. A relative reference to the Dataproc Metastore
         /// (<https://cloud.google.com/dataproc-metastore/docs>) service associated
@@ -67,7 +67,7 @@ pub mod lake {
         pub service: ::prost::alloc::string::String,
     }
     /// Status of Lake and Dataproc Metastore service instance association.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct MetastoreStatus {
         /// Current state of association.
         #[prost(enumeration = "metastore_status::State", tag = "1")]
@@ -138,7 +138,7 @@ pub mod lake {
     }
 }
 /// Aggregated status of the underlying assets of a lake or zone.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AssetStatus {
     /// Last update time of the status.
     #[prost(message, optional, tag = "1")]
@@ -204,7 +204,7 @@ pub struct Zone {
 /// Nested message and enum types in `Zone`.
 pub mod zone {
     /// Settings for resources attached as assets within a zone.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ResourceSpec {
         /// Required. Immutable. The location type of the resources that are allowed
         /// to be attached to the assets within this zone.
@@ -258,7 +258,7 @@ pub mod zone {
         }
     }
     /// Settings to manage the metadata discovery and publishing in a zone.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DiscoverySpec {
         /// Required. Whether discovery is enabled.
         #[prost(bool, tag = "1")]
@@ -289,7 +289,7 @@ pub mod zone {
     /// Nested message and enum types in `DiscoverySpec`.
     pub mod discovery_spec {
         /// Describe CSV and similar semi-structured data formats.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct CsvOptions {
             /// Optional. The number of rows to interpret as header rows that should be
             /// skipped when reading data rows.
@@ -308,7 +308,7 @@ pub mod zone {
             pub disable_type_inference: bool,
         }
         /// Describe JSON data format.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct JsonOptions {
             /// Optional. The character encoding of the data. The default is UTF-8.
             #[prost(string, tag = "1")]
@@ -320,7 +320,7 @@ pub mod zone {
             pub disable_type_inference: bool,
         }
         /// Determines when discovery is triggered.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Trigger {
             /// Optional. Cron schedule (<https://en.wikipedia.org/wiki/Cron>) for
             /// running discovery periodically. Successive discovery runs must be
@@ -385,7 +385,7 @@ pub mod zone {
     }
 }
 /// Action represents an issue requiring administrator action for resolution.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Action {
     /// The category of issue associated with the action.
     #[prost(enumeration = "action::Category", tag = "1")]
@@ -428,18 +428,18 @@ pub struct Action {
 /// Nested message and enum types in `Action`.
 pub mod action {
     /// Action details for resource references in assets that cannot be located.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct MissingResource {}
     /// Action details for unauthorized resource issues raised to indicate that the
     /// service account associated with the lake instance is not authorized to
     /// access or manage the resource associated with an asset.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct UnauthorizedResource {}
     /// Failed to apply security policy to the managed resource(s) under a
     /// lake, zone or an asset. For a lake or zone resource, one or more underlying
     /// assets has a failure applying security policy to the associated managed
     /// resource.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct FailedSecurityPolicyApply {
         /// Resource name of one of the assets with failing security policy
         /// application. Populated for a lake or zone resource only.
@@ -447,7 +447,7 @@ pub mod action {
         pub asset: ::prost::alloc::string::String,
     }
     /// Action details for invalid or unsupported data files detected by discovery.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct InvalidDataFormat {
         /// The list of data locations sampled and used for format/schema
         /// inference.
@@ -463,7 +463,7 @@ pub mod action {
         pub new_format: ::prost::alloc::string::String,
     }
     /// Action details for incompatible schemas detected by discovery.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct IncompatibleDataSchema {
         /// The name of the table containing invalid data.
         #[prost(string, tag = "1")]
@@ -534,7 +534,7 @@ pub mod action {
         }
     }
     /// Action details for invalid or unsupported partitions detected by discovery.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct InvalidDataPartition {
         /// The issue type of InvalidDataPartition.
         #[prost(enumeration = "invalid_data_partition::PartitionStructure", tag = "1")]
@@ -587,10 +587,10 @@ pub mod action {
         }
     }
     /// Action details for absence of data detected by discovery.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct MissingData {}
     /// Action details for invalid data arrangement.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct InvalidDataOrganization {}
     /// The category of issues.
     #[derive(
@@ -640,7 +640,7 @@ pub mod action {
         }
     }
     /// Additional details about the action based on the action category.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Details {
         /// Details for issues related to invalid or unsupported data formats.
         #[prost(message, tag = "10")]
@@ -728,7 +728,7 @@ pub struct Asset {
 pub mod asset {
     /// Security policy status of the asset. Data security policy, i.e., readers,
     /// writers & owners, should be specified in the lake/zone/asset IAM policy.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SecurityStatus {
         /// The current state of the security policy applied to the attached
         /// resource.
@@ -794,7 +794,7 @@ pub mod asset {
         }
     }
     /// Settings to manage the metadata discovery and publishing for an asset.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DiscoverySpec {
         /// Optional. Whether discovery is enabled.
         #[prost(bool, tag = "1")]
@@ -825,7 +825,7 @@ pub mod asset {
     /// Nested message and enum types in `DiscoverySpec`.
     pub mod discovery_spec {
         /// Describe CSV and similar semi-structured data formats.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct CsvOptions {
             /// Optional. The number of rows to interpret as header rows that should be
             /// skipped when reading data rows.
@@ -844,7 +844,7 @@ pub mod asset {
             pub disable_type_inference: bool,
         }
         /// Describe JSON data format.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct JsonOptions {
             /// Optional. The character encoding of the data. The default is UTF-8.
             #[prost(string, tag = "1")]
@@ -856,7 +856,7 @@ pub mod asset {
             pub disable_type_inference: bool,
         }
         /// Determines when discovery is triggered.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Trigger {
             /// Optional. Cron schedule (<https://en.wikipedia.org/wiki/Cron>) for
             /// running discovery periodically. Successive discovery runs must be
@@ -873,12 +873,12 @@ pub mod asset {
         }
     }
     /// Identifies the cloud resource that is referenced by this asset.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ResourceSpec {
         /// Immutable. Relative name of the cloud resource that contains the data
         /// that is being managed within a lake. For example:
-        ///    `projects/{project_number}/buckets/{bucket_id}`
-        ///    `projects/{project_number}/datasets/{dataset_id}`
+        /// `projects/{project_number}/buckets/{bucket_id}`
+        /// `projects/{project_number}/datasets/{dataset_id}`
         #[prost(string, tag = "1")]
         pub name: ::prost::alloc::string::String,
         /// Required. Immutable. Type of resource.
@@ -980,7 +980,7 @@ pub mod asset {
         }
     }
     /// Status of the resource referenced by an asset.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ResourceStatus {
         /// The current state of the managed resource.
         #[prost(enumeration = "resource_status::State", tag = "1")]
@@ -1042,7 +1042,7 @@ pub mod asset {
         }
     }
     /// Status of discovery for an asset.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DiscoveryStatus {
         /// The current status of the discovery feature.
         #[prost(enumeration = "discovery_status::State", tag = "1")]
@@ -1066,7 +1066,7 @@ pub mod asset {
     /// Nested message and enum types in `DiscoveryStatus`.
     pub mod discovery_status {
         /// The aggregated data statistics for the asset reported by discovery.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Stats {
             /// The count of data items within the referenced resource.
             #[prost(int64, tag = "1")]
@@ -1239,7 +1239,7 @@ pub mod environment {
     /// Nested message and enum types in `InfrastructureSpec`.
     pub mod infrastructure_spec {
         /// Compute resources associated with the analyze interactive workloads.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct ComputeResources {
             /// Optional. Size in GB of the disk. Default is 100 GB.
             #[prost(int32, tag = "1")]
@@ -1282,7 +1282,7 @@ pub mod environment {
             >,
         }
         /// Hardware config
-        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Resources {
             /// Optional. Compute resources needed for analyze interactive workloads.
             #[prost(message, tag = "50")]
@@ -1298,7 +1298,7 @@ pub mod environment {
         }
     }
     /// Configuration for sessions created for this environment.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SessionSpec {
         /// Optional. The idle time configuration of the session. The session will be
         /// auto-terminated at the end of this period.
@@ -1313,7 +1313,7 @@ pub mod environment {
         pub enable_fast_startup: bool,
     }
     /// Status of sessions created for this environment.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SessionStatus {
         /// Output only. Queries over sessions to mark whether the environment is
         /// currently active or not
@@ -1321,7 +1321,7 @@ pub mod environment {
         pub active: bool,
     }
     /// URI Endpoints to access sessions associated with the Environment.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Endpoints {
         /// Output only. URI to serve notebook APIs
         #[prost(string, tag = "1")]
@@ -1373,7 +1373,7 @@ pub struct Content {
 /// Nested message and enum types in `Content`.
 pub mod content {
     /// Configuration for the Sql Script content.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SqlScript {
         /// Required. Query Engine to be used for the Sql Query.
         #[prost(enumeration = "sql_script::QueryEngine", tag = "1")]
@@ -1422,7 +1422,7 @@ pub mod content {
         }
     }
     /// Configuration for Notebook content.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Notebook {
         /// Required. Kernel Type of the notebook.
         #[prost(enumeration = "notebook::KernelType", tag = "1")]
@@ -1471,14 +1471,14 @@ pub mod content {
         }
     }
     /// Only returned in `GetContent` requests and not in `ListContent` request.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Data {
         /// Required. Content data in string format.
         #[prost(string, tag = "9")]
         DataText(::prost::alloc::string::String),
     }
     /// Types of content
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Content {
         /// Sql Script related configurations.
         #[prost(message, tag = "100")]
@@ -1489,7 +1489,7 @@ pub mod content {
     }
 }
 /// Represents an active analyze session running for a user.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Session {
     /// Output only. The relative resource name of the content, of the form:
     /// projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environment/{environment_id}/sessions/{session_id}
@@ -1569,7 +1569,7 @@ pub mod task {
     /// Nested message and enum types in `InfrastructureSpec`.
     pub mod infrastructure_spec {
         /// Batch compute resources associated with the task.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct BatchComputeResources {
             /// Optional. Total number of job executors.
             /// Executor Count should be between 2 and 100. \[Default=2\]
@@ -1611,7 +1611,7 @@ pub mod task {
             >,
         }
         /// Cloud VPC Network used to run the infrastructure.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct VpcNetwork {
             /// Optional. List of network tags to apply to the job.
             #[prost(string, repeated, tag = "3")]
@@ -1623,7 +1623,7 @@ pub mod task {
         /// Nested message and enum types in `VpcNetwork`.
         pub mod vpc_network {
             /// The Cloud VPC network identifier.
-            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum NetworkName {
                 /// Optional. The Cloud VPC network in which the job is run. By default,
                 /// the Cloud VPC network named Default within the project is used.
@@ -1635,7 +1635,7 @@ pub mod task {
             }
         }
         /// Hardware config.
-        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Resources {
             /// Compute resources needed for a Task when using Dataproc Serverless.
             #[prost(message, tag = "52")]
@@ -1649,7 +1649,7 @@ pub mod task {
             ContainerImage(ContainerImageRuntime),
         }
         /// Networking config.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Network {
             /// Vpc network.
             #[prost(message, tag = "150")]
@@ -1657,7 +1657,7 @@ pub mod task {
         }
     }
     /// Task scheduling and trigger settings.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TriggerSpec {
         /// Required. Immutable. Trigger type of the user-specified Task.
         #[prost(enumeration = "trigger_spec::Type", tag = "5")]
@@ -1726,15 +1726,14 @@ pub mod task {
             }
         }
         /// Trigger only applies for RECURRING tasks.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Trigger {
             /// Optional. Cron schedule (<https://en.wikipedia.org/wiki/Cron>) for
             /// running tasks periodically. To explicitly set a timezone to the cron
             /// tab, apply a prefix in the cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or
             /// "TZ=${IANA_TIME_ZONE}". The ${IANA_TIME_ZONE} may only be a valid
             /// string from IANA time zone database. For example,
-            /// `CRON_TZ=America/New_York 1 * * * *`, or `TZ=America/New_York 1 * * *
-            /// *`. This field is required for RECURRING tasks.
+            /// `CRON_TZ=America/New_York 1 * * * *`, or `TZ=America/New_York 1 * * *  *`. This field is required for RECURRING tasks.
             #[prost(string, tag = "100")]
             Schedule(::prost::alloc::string::String),
         }
@@ -1746,14 +1745,15 @@ pub mod task {
         /// The args can use placeholders of the format ${placeholder} as
         /// part of key/value string. These will be interpolated before passing the
         /// args to the driver. Currently supported placeholders:
-        /// - ${task_id}
-        /// - ${job_time}
-        /// To pass positional args, set the key as TASK_ARGS. The value should be a
-        /// comma-separated string of all the positional arguments. To use a
-        /// delimiter other than comma, refer to
-        /// <https://cloud.google.com/sdk/gcloud/reference/topic/escaping.> In case of
-        /// other keys being present in the args, then TASK_ARGS will be passed as
-        /// the last argument.
+        ///
+        /// * ${task_id}
+        /// * ${job_time}
+        ///   To pass positional args, set the key as TASK_ARGS. The value should be a
+        ///   comma-separated string of all the positional arguments. To use a
+        ///   delimiter other than comma, refer to
+        ///   <https://cloud.google.com/sdk/gcloud/reference/topic/escaping.> In case of
+        ///   other keys being present in the args, then TASK_ARGS will be passed as
+        ///   the last argument.
         #[prost(map = "string, string", tag = "4")]
         pub args: ::std::collections::HashMap<
             ::prost::alloc::string::String,
@@ -1766,7 +1766,7 @@ pub mod task {
         pub service_account: ::prost::alloc::string::String,
         /// Optional. The project in which jobs are run. By default, the project
         /// containing the Lake is used. If a project is provided, the
-        /// [ExecutionSpec.service_account][google.cloud.dataplex.v1.Task.ExecutionSpec.service_account]
+        /// \[ExecutionSpec.service_account\]\[google.cloud.dataplex.v1.Task.ExecutionSpec.service_account\]
         /// must belong to this project.
         #[prost(string, tag = "7")]
         pub project: ::prost::alloc::string::String,
@@ -1804,7 +1804,7 @@ pub mod task {
         /// Required. The specification of the main method to call to drive the
         /// job. Specify either the jar file that contains the main class or the
         /// main class name.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Driver {
             /// The Cloud Storage URI of the jar file that contains the main class.
             /// The execution args are passed in as a sequence of named process
@@ -2078,6 +2078,7 @@ pub struct CreateLakeRequest {
     /// Required. Lake identifier.
     /// This ID will be used to generate names such as database and dataset names
     /// when publishing metadata to Hive Metastore and BigQuery.
+    ///
     /// * Must contain only lowercase letters, numbers and hyphens.
     /// * Must start with a letter.
     /// * Must end with a number or a letter.
@@ -2109,7 +2110,7 @@ pub struct UpdateLakeRequest {
     pub validate_only: bool,
 }
 /// Delete lake request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteLakeRequest {
     /// Required. The resource name of the lake:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
@@ -2117,7 +2118,7 @@ pub struct DeleteLakeRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// List lakes request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListLakesRequest {
     /// Required. The resource name of the lake location, of the form:
     /// `projects/{project_number}/locations/{location_id}`
@@ -2156,7 +2157,7 @@ pub struct ListLakesResponse {
     pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// List lake actions request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListLakeActionsRequest {
     /// Required. The resource name of the parent lake:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
@@ -2186,7 +2187,7 @@ pub struct ListActionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Get lake request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetLakeRequest {
     /// Required. The resource name of the lake:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
@@ -2203,6 +2204,7 @@ pub struct CreateZoneRequest {
     /// Required. Zone identifier.
     /// This ID will be used to generate names such as database and dataset names
     /// when publishing metadata to Hive Metastore and BigQuery.
+    ///
     /// * Must contain only lowercase letters, numbers and hyphens.
     /// * Must start with a letter.
     /// * Must end with a number or a letter.
@@ -2235,7 +2237,7 @@ pub struct UpdateZoneRequest {
     pub validate_only: bool,
 }
 /// Delete zone request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteZoneRequest {
     /// Required. The resource name of the zone:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
@@ -2243,7 +2245,7 @@ pub struct DeleteZoneRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// List zones request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListZonesRequest {
     /// Required. The resource name of the parent lake:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
@@ -2278,7 +2280,7 @@ pub struct ListZonesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// List zone actions request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListZoneActionsRequest {
     /// Required. The resource name of the parent zone:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
@@ -2297,7 +2299,7 @@ pub struct ListZoneActionsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Get zone request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetZoneRequest {
     /// Required. The resource name of the zone:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
@@ -2314,6 +2316,7 @@ pub struct CreateAssetRequest {
     /// Required. Asset identifier.
     /// This ID will be used to generate names such as table names when publishing
     /// metadata to Hive Metastore and BigQuery.
+    ///
     /// * Must contain only lowercase letters, numbers and hyphens.
     /// * Must start with a letter.
     /// * Must end with a number or a letter.
@@ -2345,7 +2348,7 @@ pub struct UpdateAssetRequest {
     pub validate_only: bool,
 }
 /// Delete asset request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAssetRequest {
     /// Required. The resource name of the asset:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/assets/{asset_id}`.
@@ -2353,7 +2356,7 @@ pub struct DeleteAssetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// List assets request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAssetsRequest {
     /// Required. The resource name of the parent zone:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
@@ -2389,7 +2392,7 @@ pub struct ListAssetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// List asset actions request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAssetActionsRequest {
     /// Required. The resource name of the parent asset:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/assets/{asset_id}`.
@@ -2408,7 +2411,7 @@ pub struct ListAssetActionsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Get asset request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAssetRequest {
     /// Required. The resource name of the asset:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/assets/{asset_id}`.
@@ -2416,7 +2419,7 @@ pub struct GetAssetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Represents the metadata of a long-running operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -2435,8 +2438,8 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+    /// have \[Operation.error\]\[\] value with a
+    /// \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -2478,7 +2481,7 @@ pub struct UpdateTaskRequest {
     pub validate_only: bool,
 }
 /// Delete task request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteTaskRequest {
     /// Required. The resource name of the task:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/task/{task_id}`.
@@ -2486,7 +2489,7 @@ pub struct DeleteTaskRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// List tasks request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListTasksRequest {
     /// Required. The resource name of the parent lake:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
@@ -2524,7 +2527,7 @@ pub struct ListTasksResponse {
     pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Get task request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTaskRequest {
     /// Required. The resource name of the task:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{tasks_id}`.
@@ -2532,7 +2535,7 @@ pub struct GetTaskRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Get job request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetJobRequest {
     /// Required. The resource name of the job:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{task_id}/jobs/{job_id}`.
@@ -2577,7 +2580,7 @@ pub struct RunTaskResponse {
     pub job: ::core::option::Option<Job>,
 }
 /// List jobs request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListJobsRequest {
     /// Required. The resource name of the parent environment:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{task_id}`.
@@ -2607,7 +2610,7 @@ pub struct ListJobsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Cancel task jobs.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelJobRequest {
     /// Required. The resource name of the job:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/task/{task_id}/job/{job_id}`.
@@ -2622,6 +2625,7 @@ pub struct CreateEnvironmentRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Environment identifier.
+    ///
     /// * Must contain only lowercase letters, numbers and hyphens.
     /// * Must start with a letter.
     /// * Must be between 1-63 characters.
@@ -2653,7 +2657,7 @@ pub struct UpdateEnvironmentRequest {
     pub validate_only: bool,
 }
 /// Delete environment request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteEnvironmentRequest {
     /// Required. The resource name of the environment:
     /// `projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environments/{environment_id}`.
@@ -2661,7 +2665,7 @@ pub struct DeleteEnvironmentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// List environments request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListEnvironmentsRequest {
     /// Required. The resource name of the parent lake:
     /// `projects/{project_id}/locations/{location_id}/lakes/{lake_id}`.
@@ -2698,7 +2702,7 @@ pub struct ListEnvironmentsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Get environment request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEnvironmentRequest {
     /// Required. The resource name of the environment:
     /// `projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environments/{environment_id}`.
@@ -2706,7 +2710,7 @@ pub struct GetEnvironmentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// List sessions request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSessionsRequest {
     /// Required. The resource name of the parent environment:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/environment/{environment_id}`.
@@ -2858,7 +2862,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/CreateLake",
             );
@@ -2888,7 +2892,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/UpdateLake",
             );
@@ -2919,7 +2923,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/DeleteLake",
             );
@@ -2949,7 +2953,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/ListLakes",
             );
@@ -2976,7 +2980,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/GetLake",
             );
@@ -3006,7 +3010,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/ListLakeActions",
             );
@@ -3036,7 +3040,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/CreateZone",
             );
@@ -3066,7 +3070,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/UpdateZone",
             );
@@ -3097,7 +3101,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/DeleteZone",
             );
@@ -3127,7 +3131,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/ListZones",
             );
@@ -3154,7 +3158,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/GetZone",
             );
@@ -3184,7 +3188,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/ListZoneActions",
             );
@@ -3214,7 +3218,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/CreateAsset",
             );
@@ -3244,7 +3248,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/UpdateAsset",
             );
@@ -3275,7 +3279,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/DeleteAsset",
             );
@@ -3305,7 +3309,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/ListAssets",
             );
@@ -3332,7 +3336,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/GetAsset",
             );
@@ -3362,7 +3366,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/ListAssetActions",
             );
@@ -3392,7 +3396,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/CreateTask",
             );
@@ -3422,7 +3426,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/UpdateTask",
             );
@@ -3452,7 +3456,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/DeleteTask",
             );
@@ -3482,7 +3486,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/ListTasks",
             );
@@ -3509,7 +3513,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/GetTask",
             );
@@ -3539,7 +3543,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/ListJobs",
             );
@@ -3569,7 +3573,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/RunTask",
             );
@@ -3596,7 +3600,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/GetJob",
             );
@@ -3620,7 +3624,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/CancelJob",
             );
@@ -3650,7 +3654,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/CreateEnvironment",
             );
@@ -3680,7 +3684,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/UpdateEnvironment",
             );
@@ -3711,7 +3715,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/DeleteEnvironment",
             );
@@ -3741,7 +3745,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/ListEnvironments",
             );
@@ -3768,7 +3772,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/GetEnvironment",
             );
@@ -3798,7 +3802,7 @@ pub mod dataplex_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataplexService/ListSessions",
             );
@@ -3863,7 +3867,7 @@ pub struct AspectType {
 /// Nested message and enum types in `AspectType`.
 pub mod aspect_type {
     /// Autorization for an AspectType.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Authorization {
         /// Immutable. The IAM permission grantable on the EntryGroup to allow access
         /// to instantiate Aspects of Dataplex owned AspectTypes, only settable for
@@ -3894,7 +3898,7 @@ pub mod aspect_type {
         /// * boolean
         /// * double
         /// * datetime. Must be of the format RFC3339 UTC "Zulu" (Examples:
-        /// "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z").
+        ///   "2014-10-02T15:01:23Z" and "2014-10-02T15:01:23.045123456Z").
         ///
         /// Complex types:
         ///
@@ -3951,7 +3955,7 @@ pub mod aspect_type {
     /// Nested message and enum types in `MetadataTemplate`.
     pub mod metadata_template {
         /// Definition of Enumvalue, to be used for enum fields.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct EnumValue {
             /// Required. Index for the enum value. It can't be modified.
             #[prost(int32, tag = "1")]
@@ -3966,14 +3970,14 @@ pub mod aspect_type {
             pub deprecated: ::prost::alloc::string::String,
         }
         /// Definition of the constraints of a field.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Constraints {
             /// Optional. Marks this field as optional or required.
             #[prost(bool, tag = "1")]
             pub required: bool,
         }
         /// Definition of the annotations of a field.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Annotations {
             /// Optional. Marks a field as deprecated. You can include a deprecation
             /// message.
@@ -4099,14 +4103,14 @@ pub struct EntryType {
 }
 /// Nested message and enum types in `EntryType`.
 pub mod entry_type {
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AspectInfo {
         /// Required aspect type for the entry type.
         #[prost(string, tag = "1")]
         pub r#type: ::prost::alloc::string::String,
     }
     /// Authorization for an Entry Type.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Authorization {
         /// Immutable. The IAM permission grantable on the Entry Group to allow
         /// access to instantiate Entries of Dataplex owned Entry Types, only
@@ -4139,7 +4143,7 @@ pub struct Aspect {
     pub aspect_source: ::core::option::Option<AspectSource>,
 }
 /// Information related to the source system of the aspect.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AspectSource {
     /// The time the aspect was created in the source system.
     #[prost(message, optional, tag = "10")]
@@ -4177,9 +4181,9 @@ pub struct Entry {
     /// the following:
     ///
     /// * If the aspect is attached directly to the entry:
-    /// `{project_id_or_number}.{location_id}.{aspect_type_id}`
+    ///   `{project_id_or_number}.{location_id}.{aspect_type_id}`
     /// * If the aspect is attached to an entry's path:
-    /// `{project_id_or_number}.{location_id}.{aspect_type_id}@{path}`
+    ///   `{project_id_or_number}.{location_id}.{aspect_type_id}@{path}`
     #[prost(map = "string, message", tag = "9")]
     pub aspects: ::std::collections::HashMap<::prost::alloc::string::String, Aspect>,
     /// Optional. Immutable. The resource name of the parent entry, in the format
@@ -4252,7 +4256,7 @@ pub struct EntrySource {
 pub mod entry_source {
     /// Information about individual items in the hierarchy that is associated with
     /// the data resource.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Ancestor {
         /// Optional. The name of the ancestor resource.
         #[prost(string, tag = "1")]
@@ -4296,7 +4300,7 @@ pub struct UpdateEntryGroupRequest {
     pub validate_only: bool,
 }
 /// Delete EntryGroup Request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteEntryGroupRequest {
     /// Required. The resource name of the EntryGroup:
     /// `projects/{project_number}/locations/{location_id}/entryGroups/{entry_group_id}`.
@@ -4309,7 +4313,7 @@ pub struct DeleteEntryGroupRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// List entryGroups request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListEntryGroupsRequest {
     /// Required. The resource name of the entryGroup location, of the form:
     /// `projects/{project_number}/locations/{location_id}`
@@ -4350,7 +4354,7 @@ pub struct ListEntryGroupsResponse {
     pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Get EntryGroup request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEntryGroupRequest {
     /// Required. The resource name of the EntryGroup:
     /// `projects/{project_number}/locations/{location_id}/entryGroups/{entry_group_id}`.
@@ -4391,7 +4395,7 @@ pub struct UpdateEntryTypeRequest {
     pub validate_only: bool,
 }
 /// Delele EntryType Request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteEntryTypeRequest {
     /// Required. The resource name of the EntryType:
     /// `projects/{project_number}/locations/{location_id}/entryTypes/{entry_type_id}`.
@@ -4403,7 +4407,7 @@ pub struct DeleteEntryTypeRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// List EntryTypes request
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListEntryTypesRequest {
     /// Required. The resource name of the EntryType location, of the form:
     /// `projects/{project_number}/locations/{location_id}`
@@ -4452,7 +4456,7 @@ pub struct ListEntryTypesResponse {
     pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Get EntryType request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEntryTypeRequest {
     /// Required. The resource name of the EntryType:
     /// `projects/{project_number}/locations/{location_id}/entryTypes/{entry_type_id}`.
@@ -4493,7 +4497,7 @@ pub struct UpdateAspectTypeRequest {
     pub validate_only: bool,
 }
 /// Delele AspectType Request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAspectTypeRequest {
     /// Required. The resource name of the AspectType:
     /// `projects/{project_number}/locations/{location_id}/aspectTypes/{aspect_type_id}`.
@@ -4506,7 +4510,7 @@ pub struct DeleteAspectTypeRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// List AspectTypes request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAspectTypesRequest {
     /// Required. The resource name of the AspectType location, of the form:
     /// `projects/{project_number}/locations/{location_id}`
@@ -4555,7 +4559,7 @@ pub struct ListAspectTypesResponse {
     pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Get AspectType request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAspectTypeRequest {
     /// Required. The resource name of the AspectType:
     /// `projects/{project_number}/locations/{location_id}/aspectTypes/{aspect_type_id}`.
@@ -4621,13 +4625,13 @@ pub struct UpdateEntryRequest {
     /// supports the following syntaxes:
     ///
     /// * `<aspect_type_reference>` - matches an aspect of the given type and empty
-    /// path.
+    ///   path.
     /// * `<aspect_type_reference>@path` - matches an aspect of the given type and
-    /// specified path. For example, to attach an aspect to a field that is
-    /// specified by the `schema` aspect, the path should have the format
-    /// `Schema.<field_name>`.
+    ///   specified path. For example, to attach an aspect to a field that is
+    ///   specified by the `schema` aspect, the path should have the format
+    ///   `Schema.<field_name>`.
     /// * `<aspect_type_reference>@*` - matches aspects of the given type for all
-    /// paths.
+    ///   paths.
     /// * `*@path` - matches aspects of all types on the given path.
     ///
     /// The service will not remove existing aspects matching the syntax unless
@@ -4639,7 +4643,7 @@ pub struct UpdateEntryRequest {
     pub aspect_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Delete Entry request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteEntryRequest {
     /// Required. The resource name of the Entry:
     /// `projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}`.
@@ -4647,7 +4651,7 @@ pub struct DeleteEntryRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// List Entries request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListEntriesRequest {
     /// Required. The resource name of the parent Entry Group:
     /// `projects/{project}/locations/{location}/entryGroups/{entry_group}`.
@@ -4669,20 +4673,20 @@ pub struct ListEntriesRequest {
     /// * entry_type
     /// * entry_source.display_name
     ///
-    /// The comparison operators are =, !=, <, >, <=, >=. The service compares
+    /// The comparison operators are =, !=, \<, >, \<=, >=. The service compares
     /// strings according to lexical order.
     ///
     /// You can use the logical operators AND, OR, NOT in the filter.
     ///
-    /// You can use Wildcard "*", but for entry_type you need to provide the
+    /// You can use Wildcard "\*", but for entry_type you need to provide the
     /// full project id or number.
     ///
     /// Example filter expressions:
     ///
     /// * "entry_source.display_name=AnExampleDisplayName"
     /// * "entry_type=projects/example-project/locations/global/entryTypes/example-entry_type"
-    /// * "entry_type=projects/example-project/locations/us/entryTypes/a* OR
-    /// entry_type=projects/another-project/locations/*"
+    /// * "entry_type=projects/example-project/locations/us/entryTypes/a\* OR
+    ///   entry_type=projects/another-project/locations/\*"
     /// * "NOT entry_source.display_name=AnotherExampleDisplayName"
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
@@ -4699,7 +4703,7 @@ pub struct ListEntriesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Get Entry request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEntryRequest {
     /// Required. The resource name of the Entry:
     /// `projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}`.
@@ -4719,7 +4723,7 @@ pub struct GetEntryRequest {
     pub paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Lookup Entry request using permissions in the source system.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LookupEntryRequest {
     /// Required. The project to which the request should be attributed in the
     /// following form: `projects/{project}/locations/{location}`.
@@ -4742,7 +4746,7 @@ pub struct LookupEntryRequest {
     #[prost(string, tag = "5")]
     pub entry: ::prost::alloc::string::String,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchEntriesRequest {
     /// Required. The project to which the request should be attributed in the
     /// following form: `projects/{project}/locations/{location}`.
@@ -4753,7 +4757,7 @@ pub struct SearchEntriesRequest {
     /// Catalog](<https://cloud.google.com/dataplex/docs/search-syntax>).
     #[prost(string, tag = "2")]
     pub query: ::prost::alloc::string::String,
-    /// Optional. Number of results in the search page. If <=0, then defaults
+    /// Optional. Number of results in the search page. If \<=0, then defaults
     /// to 10. Max limit for page_size is 1000. Throws an invalid argument for
     /// page_size > 1000.
     #[prost(int32, tag = "3")]
@@ -4828,7 +4832,7 @@ pub struct SearchEntriesResponse {
 /// An object that describes the values that you want to set for an entry and its
 /// attached aspects when you import metadata. Used when you run a metadata
 /// import job. See
-/// [CreateMetadataJob][google.cloud.dataplex.v1.CatalogService.CreateMetadataJob].
+/// \[CreateMetadataJob\]\[google.cloud.dataplex.v1.CatalogService.CreateMetadataJob\].
 ///
 /// You provide a collection of import items in a metadata import file. For more
 /// information about how to create a metadata import file, see [Metadata import
@@ -4853,7 +4857,6 @@ pub struct ImportItem {
     /// In an aspect-only metadata job (when entry sync mode is `NONE`), set this
     /// value to `aspects`.
     ///
-    ///
     /// Dataplex also determines which entries and aspects to modify by comparing
     /// the values and timestamps that you provide in the metadata import file with
     /// the values and timestamps that exist in your project. For more information,
@@ -4864,11 +4867,11 @@ pub struct ImportItem {
     /// The aspects to modify. Supports the following syntaxes:
     ///
     /// * `{aspect_type_reference}`: matches aspects that belong to the specified
-    /// aspect type and are attached directly to the entry.
+    ///   aspect type and are attached directly to the entry.
     /// * `{aspect_type_reference}@{path}`: matches aspects that belong to the
-    /// specified aspect type and path.
+    ///   specified aspect type and path.
     /// * `{aspect_type_reference}@*` : matches aspects of the given type for all
-    /// paths.
+    ///   paths.
     /// * `*@path` : matches aspects of all types on the given path.
     ///
     /// Replace `{aspect_type_reference}` with a reference to the aspect type, in
@@ -4902,7 +4905,7 @@ pub struct CreateMetadataJobRequest {
     pub validate_only: bool,
 }
 /// Get metadata job request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetMetadataJobRequest {
     /// Required. The resource name of the metadata job, in the format
     /// `projects/{project_id_or_number}/locations/{location_id}/metadataJobs/{metadata_job_id}`.
@@ -4910,7 +4913,7 @@ pub struct GetMetadataJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// List metadata jobs request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListMetadataJobsRequest {
     /// Required. The resource name of the parent location, in the format
     /// `projects/{project_id_or_number}/locations/{location_id}`
@@ -4958,7 +4961,7 @@ pub struct ListMetadataJobsResponse {
     pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Cancel metadata job request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelMetadataJobRequest {
     /// Required. The resource name of the job, in the format
     /// `projects/{project_id_or_number}/locations/{location_id}/metadataJobs/{metadata_job_id}`
@@ -5004,7 +5007,7 @@ pub struct MetadataJob {
 /// Nested message and enum types in `MetadataJob`.
 pub mod metadata_job {
     /// Results from a metadata import job.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ImportJobResult {
         /// Output only. The total number of entries that were deleted.
         #[prost(int64, tag = "1")]
@@ -5028,7 +5031,7 @@ pub mod metadata_job {
     /// Summary results from a metadata export job. The results are a snapshot of
     /// the metadata at the time when the job was created. The exported entries are
     /// saved to a Cloud Storage bucket.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ExportJobResult {
         /// Output only. The number of entries that were exported.
         #[prost(int64, tag = "1")]
@@ -5042,12 +5045,12 @@ pub mod metadata_job {
     /// You can run the following kinds of metadata import jobs:
     ///
     /// * Full sync of entries with incremental import of their aspects.
-    /// Supported for custom entries.
+    ///   Supported for custom entries.
     /// * Incremental import of aspects only. Supported for aspects that belong
-    /// to custom entries and system entries. For custom entries, you can modify
-    /// both optional aspects and required aspects. For system entries, you can
-    /// modify optional aspects.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    ///   to custom entries and system entries. For custom entries, you can modify
+    ///   both optional aspects and required aspects. For system entries, you can
+    ///   modify optional aspects.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ImportJobSpec {
         /// Optional. The URI of a Cloud Storage bucket or folder (beginning with
         /// `gs://` and ending with `/`) that contains the metadata import files for
@@ -5098,7 +5101,7 @@ pub mod metadata_job {
     /// Nested message and enum types in `ImportJobSpec`.
     pub mod import_job_spec {
         /// A boundary on the scope of impact that the metadata import job can have.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct ImportJobScope {
             /// Required. The entry group that is in scope for the import job,
             /// specified as a relative resource name in the format
@@ -5258,7 +5261,7 @@ pub mod metadata_job {
         }
     }
     /// Job specification for a metadata export job.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ExportJobSpec {
         /// Required. The scope of the export job.
         #[prost(message, optional, tag = "2")]
@@ -5278,17 +5281,17 @@ pub mod metadata_job {
     /// Nested message and enum types in `ExportJobSpec`.
     pub mod export_job_spec {
         /// The scope of the export job.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct ExportJobScope {
             /// Whether the metadata export job is an organization-level export job.
             ///
-            /// - If `true`, the job exports the entries from the same organization and
-            /// VPC Service Controls perimeter as the job. The project that the job
-            /// belongs to determines the VPC Service Controls perimeter. If you set
-            /// the job scope to be at the organization level, then don't provide a
-            /// list of projects or entry groups.
-            /// - If `false`, you must specify a list of projects or a list of entry
-            /// groups whose entries you want to export.
+            /// * If `true`, the job exports the entries from the same organization and
+            ///   VPC Service Controls perimeter as the job. The project that the job
+            ///   belongs to determines the VPC Service Controls perimeter. If you set
+            ///   the job scope to be at the organization level, then don't provide a
+            ///   list of projects or entry groups.
+            /// * If `false`, you must specify a list of projects or a list of entry
+            ///   groups whose entries you want to export.
             ///
             /// The default is `false`.
             #[prost(bool, tag = "1")]
@@ -5334,7 +5337,7 @@ pub mod metadata_job {
         }
     }
     /// Metadata job status.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Status {
         /// Output only. State of the metadata job.
         #[prost(enumeration = "status::State", tag = "1")]
@@ -5458,7 +5461,7 @@ pub mod metadata_job {
             }
         }
     }
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Spec {
         /// Import job specification.
         #[prost(message, tag = "100")]
@@ -5467,7 +5470,7 @@ pub mod metadata_job {
         #[prost(message, tag = "101")]
         ExportSpec(ExportJobSpec),
     }
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Result {
         /// Output only. Import job result.
         #[prost(message, tag = "200")]
@@ -5671,7 +5674,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/CreateEntryType",
             );
@@ -5701,7 +5704,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/UpdateEntryType",
             );
@@ -5731,7 +5734,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/DeleteEntryType",
             );
@@ -5761,7 +5764,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/ListEntryTypes",
             );
@@ -5788,7 +5791,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/GetEntryType",
             );
@@ -5818,7 +5821,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/CreateAspectType",
             );
@@ -5848,7 +5851,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/UpdateAspectType",
             );
@@ -5878,7 +5881,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/DeleteAspectType",
             );
@@ -5908,7 +5911,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/ListAspectTypes",
             );
@@ -5935,7 +5938,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/GetAspectType",
             );
@@ -5965,7 +5968,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/CreateEntryGroup",
             );
@@ -5995,7 +5998,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/UpdateEntryGroup",
             );
@@ -6025,7 +6028,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/DeleteEntryGroup",
             );
@@ -6055,7 +6058,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/ListEntryGroups",
             );
@@ -6082,7 +6085,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/GetEntryGroup",
             );
@@ -6109,7 +6112,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/CreateEntry",
             );
@@ -6136,7 +6139,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/UpdateEntry",
             );
@@ -6163,7 +6166,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/DeleteEntry",
             );
@@ -6193,7 +6196,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/ListEntries",
             );
@@ -6220,7 +6223,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/GetEntry",
             );
@@ -6247,7 +6250,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/LookupEntry",
             );
@@ -6277,7 +6280,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/SearchEntries",
             );
@@ -6308,7 +6311,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/CreateMetadataJob",
             );
@@ -6335,7 +6338,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/GetMetadataJob",
             );
@@ -6365,7 +6368,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/ListMetadataJobs",
             );
@@ -6397,7 +6400,7 @@ pub mod catalog_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CatalogService/CancelMetadataJob",
             );
@@ -6415,7 +6418,7 @@ pub mod catalog_service_client {
 }
 /// A Resource designed to manage encryption configurations for customers to
 /// support Customer Managed Encryption Keys (CMEK).
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EncryptionConfig {
     /// Identifier. The resource name of the EncryptionConfig.
     /// Format:
@@ -6447,7 +6450,7 @@ pub struct EncryptionConfig {
 /// Nested message and enum types in `EncryptionConfig`.
 pub mod encryption_config {
     /// Details of the failure if anything related to Cmek db fails.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct FailureDetails {
         /// Output only. The error code for the failure.
         #[prost(enumeration = "failure_details::ErrorCode", tag = "1")]
@@ -6557,13 +6560,13 @@ pub mod encryption_config {
     }
 }
 /// Create EncryptionConfig Request
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateEncryptionConfigRequest {
     /// Required. The location at which the EncryptionConfig is to be created.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The ID of the
-    /// [EncryptionConfig][google.cloud.dataplex.v1.EncryptionConfig] to create.
+    /// \[EncryptionConfig\]\[google.cloud.dataplex.v1.EncryptionConfig\] to create.
     /// Currently, only a value of "default" is supported.
     #[prost(string, tag = "2")]
     pub encryption_config_id: ::prost::alloc::string::String,
@@ -6572,14 +6575,14 @@ pub struct CreateEncryptionConfigRequest {
     pub encryption_config: ::core::option::Option<EncryptionConfig>,
 }
 /// Get EncryptionConfig Request
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEncryptionConfigRequest {
     /// Required. The name of the EncryptionConfig to fetch.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Update EncryptionConfig Request
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateEncryptionConfigRequest {
     /// Required. The EncryptionConfig to update.
     #[prost(message, optional, tag = "1")]
@@ -6591,7 +6594,7 @@ pub struct UpdateEncryptionConfigRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Delete EncryptionConfig Request
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteEncryptionConfigRequest {
     /// Required. The name of the EncryptionConfig to delete.
     #[prost(string, tag = "1")]
@@ -6601,7 +6604,7 @@ pub struct DeleteEncryptionConfigRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// List EncryptionConfigs Request
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListEncryptionConfigsRequest {
     /// Required. The location for which the EncryptionConfig is to be listed.
     #[prost(string, tag = "1")]
@@ -6621,17 +6624,18 @@ pub struct ListEncryptionConfigsRequest {
     /// Optional. Filter the EncryptionConfigs to be returned.
     /// Using bare literals: (These values will be matched anywhere it may appear
     /// in the object's field values)
+    ///
     /// * filter=some_value
-    /// Using fields: (These values will be matched only in the specified field)
+    ///   Using fields: (These values will be matched only in the specified field)
     /// * filter=some_field=some_value
-    /// Supported fields:
+    ///   Supported fields:
     /// * name, key, create_time, update_time, encryption_state
-    /// Example:
+    ///   Example:
     /// * filter=name=organizations/123/locations/us-central1/encryptionConfigs/test-config
-    /// conjunctions: (AND, OR, NOT)
+    ///   conjunctions: (AND, OR, NOT)
     /// * filter=name=organizations/123/locations/us-central1/encryptionConfigs/test-config
-    /// AND mode=CMEK
-    /// logical operators: (>, <, >=, <=, !=, =, :),
+    ///   AND mode=CMEK
+    ///   logical operators: (>, \<, >=, \<=, !=, =, :),
     /// * filter=create_time>2024-05-01T00:00:00.000Z
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
@@ -6761,7 +6765,7 @@ pub mod cmek_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CmekService/CreateEncryptionConfig",
             );
@@ -6791,7 +6795,7 @@ pub mod cmek_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CmekService/UpdateEncryptionConfig",
             );
@@ -6821,7 +6825,7 @@ pub mod cmek_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CmekService/DeleteEncryptionConfig",
             );
@@ -6851,7 +6855,7 @@ pub mod cmek_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CmekService/ListEncryptionConfigs",
             );
@@ -6881,7 +6885,7 @@ pub mod cmek_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.CmekService/GetEncryptionConfig",
             );
@@ -6928,7 +6932,7 @@ pub struct UpdateContentRequest {
     pub validate_only: bool,
 }
 /// Delete content request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteContentRequest {
     /// Required. The resource name of the content:
     /// projects/{project_id}/locations/{location_id}/lakes/{lake_id}/content/{content_id}
@@ -6936,7 +6940,7 @@ pub struct DeleteContentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// List content request. Returns the BASIC Content view.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListContentRequest {
     /// Required. The resource name of the parent lake:
     /// projects/{project_id}/locations/{location_id}/lakes/{lake_id}
@@ -6977,7 +6981,7 @@ pub struct ListContentResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Get content request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetContentRequest {
     /// Required. The resource name of the content:
     /// projects/{project_id}/locations/{location_id}/lakes/{lake_id}/content/{content_id}
@@ -7140,7 +7144,7 @@ pub mod content_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.ContentService/CreateContent",
             );
@@ -7167,7 +7171,7 @@ pub mod content_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.ContentService/UpdateContent",
             );
@@ -7194,7 +7198,7 @@ pub mod content_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.ContentService/DeleteContent",
             );
@@ -7221,7 +7225,7 @@ pub mod content_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.ContentService/GetContent",
             );
@@ -7258,7 +7262,7 @@ pub mod content_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.ContentService/GetIamPolicy",
             );
@@ -7294,7 +7298,7 @@ pub mod content_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.ContentService/SetIamPolicy",
             );
@@ -7337,7 +7341,7 @@ pub mod content_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.ContentService/TestIamPermissions",
             );
@@ -7367,7 +7371,7 @@ pub mod content_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.ContentService/ListContent",
             );
@@ -7384,7 +7388,7 @@ pub mod content_service_client {
     }
 }
 /// Spec for a data discovery scan.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataDiscoverySpec {
     /// Optional. Configuration for metadata publishing.
     #[prost(message, optional, tag = "1")]
@@ -7398,7 +7402,7 @@ pub struct DataDiscoverySpec {
 /// Nested message and enum types in `DataDiscoverySpec`.
 pub mod data_discovery_spec {
     /// Describes BigQuery publishing configurations.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct BigQueryPublishingConfig {
         /// Optional. Determines whether to  publish discovered tables as BigLake
         /// external tables or non-BigLake external tables.
@@ -7411,22 +7415,23 @@ pub mod data_discovery_spec {
         pub connection: ::prost::alloc::string::String,
         /// Optional. The location of the BigQuery dataset to publish BigLake
         /// external or non-BigLake external tables to.
+        ///
         /// 1. If the Cloud Storage bucket is located in a multi-region bucket, then
-        /// BigQuery dataset can be in the same multi-region bucket or any single
-        /// region that is included in the same multi-region bucket. The datascan can
-        /// be created in any single region that is included in the same multi-region
-        /// bucket
-        /// 2. If the Cloud Storage bucket is located in a dual-region bucket, then
-        /// BigQuery dataset can be located in regions that are included in the
-        /// dual-region bucket, or in a multi-region that includes the dual-region.
-        /// The datascan can be created in any single region that is included in the
-        /// same dual-region bucket.
-        /// 3. If the Cloud Storage bucket is located in a single region, then
-        /// BigQuery dataset can be in the same single region or any multi-region
-        /// bucket that includes the same single region. The datascan will be created
-        /// in the same single region as the bucket.
-        /// 4. If the BigQuery dataset is in single region, it must be in the same
-        /// single region as the datascan.
+        ///    BigQuery dataset can be in the same multi-region bucket or any single
+        ///    region that is included in the same multi-region bucket. The datascan can
+        ///    be created in any single region that is included in the same multi-region
+        ///    bucket
+        /// 1. If the Cloud Storage bucket is located in a dual-region bucket, then
+        ///    BigQuery dataset can be located in regions that are included in the
+        ///    dual-region bucket, or in a multi-region that includes the dual-region.
+        ///    The datascan can be created in any single region that is included in the
+        ///    same dual-region bucket.
+        /// 1. If the Cloud Storage bucket is located in a single region, then
+        ///    BigQuery dataset can be in the same single region or any multi-region
+        ///    bucket that includes the same single region. The datascan will be created
+        ///    in the same single region as the bucket.
+        /// 1. If the BigQuery dataset is in single region, it must be in the same
+        ///    single region as the datascan.
         ///
         /// For supported values, refer to
         /// <https://cloud.google.com/bigquery/docs/locations#supported_locations.>
@@ -7484,7 +7489,7 @@ pub mod data_discovery_spec {
         }
     }
     /// Configurations related to Cloud Storage as the data source.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct StorageConfig {
         /// Optional. Defines the data to include during discovery when only a subset
         /// of the data should be considered. Provide a list of patterns that
@@ -7511,7 +7516,7 @@ pub mod data_discovery_spec {
     /// Nested message and enum types in `StorageConfig`.
     pub mod storage_config {
         /// Describes CSV and similar semi-structured data formats.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct CsvOptions {
             /// Optional. The number of rows to interpret as header rows that should be
             /// skipped when reading data rows.
@@ -7535,7 +7540,7 @@ pub mod data_discovery_spec {
             pub quote: ::prost::alloc::string::String,
         }
         /// Describes JSON data format.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct JsonOptions {
             /// Optional. The character encoding of the data. The default is UTF-8.
             #[prost(string, tag = "1")]
@@ -7548,7 +7553,7 @@ pub mod data_discovery_spec {
         }
     }
     /// The configurations of the data discovery scan resource.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ResourceConfig {
         /// Cloud Storage related configurations.
         #[prost(message, tag = "100")]
@@ -7556,7 +7561,7 @@ pub mod data_discovery_spec {
     }
 }
 /// The output of a data discovery scan.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataDiscoveryResult {
     /// Output only. Configuration for metadata publishing.
     #[prost(message, optional, tag = "1")]
@@ -7570,7 +7575,7 @@ pub struct DataDiscoveryResult {
 /// Nested message and enum types in `DataDiscoveryResult`.
 pub mod data_discovery_result {
     /// Describes BigQuery publishing configurations.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct BigQueryPublishing {
         /// Output only. The BigQuery dataset the discovered tables are published to.
         #[prost(string, tag = "1")]
@@ -7580,7 +7585,7 @@ pub mod data_discovery_result {
         pub location: ::prost::alloc::string::String,
     }
     /// Describes result statistics of a data scan discovery job.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ScanStatistics {
         /// The number of files scanned.
         #[prost(int32, tag = "1")]
@@ -7612,7 +7617,7 @@ pub mod data_discovery_result {
     }
 }
 /// DataScan scheduling and trigger settings.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Trigger {
     /// DataScan scheduling and trigger settings.
     ///
@@ -7623,10 +7628,10 @@ pub struct Trigger {
 /// Nested message and enum types in `Trigger`.
 pub mod trigger {
     /// The scan runs once via `RunDataScan` API.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct OnDemand {}
     /// The scan is scheduled to run periodically.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Schedule {
         /// Required. [Cron](<https://en.wikipedia.org/wiki/Cron>) schedule for running
         /// scans periodically.
@@ -7646,7 +7651,7 @@ pub mod trigger {
     /// DataScan scheduling and trigger settings.
     ///
     /// If not specified, the default is `onDemand`.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Mode {
         /// The scan runs once via `RunDataScan` API.
         #[prost(message, tag = "100")]
@@ -7657,7 +7662,7 @@ pub mod trigger {
     }
 }
 /// The data source for DataScan.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataSource {
     /// The source is required and immutable. Once it is set, it cannot be change
     /// to others.
@@ -7668,7 +7673,7 @@ pub struct DataSource {
 pub mod data_source {
     /// The source is required and immutable. Once it is set, it cannot be change
     /// to others.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Source {
         /// Immutable. The Dataplex entity that represents the data source (e.g.
         /// BigQuery table) for DataScan, of the form:
@@ -7684,7 +7689,7 @@ pub mod data_source {
     }
 }
 /// The data scanned during processing (e.g. in incremental DataScan)
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ScannedData {
     /// The range of scanned data
     #[prost(oneof = "scanned_data::DataRange", tags = "1")]
@@ -7693,7 +7698,7 @@ pub struct ScannedData {
 /// Nested message and enum types in `ScannedData`.
 pub mod scanned_data {
     /// A data range denoted by a pair of start/end values of a field.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct IncrementalField {
         /// The field that contains values which monotonically increases over time
         /// (e.g. a timestamp column).
@@ -7707,7 +7712,7 @@ pub mod scanned_data {
         pub end: ::prost::alloc::string::String,
     }
     /// The range of scanned data
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum DataRange {
         /// The range denoted by values of an incremental field
         #[prost(message, tag = "1")]
@@ -7721,8 +7726,9 @@ pub struct DataProfileSpec {
     /// DataScan.
     ///
     /// * Value can range between 0.0 and 100.0 with up to 3 significant decimal
-    /// digits.
+    ///   digits.
     /// * Sampling is not applied if `sampling_percent` is not specified, 0 or
+    ///
     /// 100.
     #[prost(float, tag = "2")]
     pub sampling_percent: f32,
@@ -7731,7 +7737,7 @@ pub struct DataProfileSpec {
     /// GoogleSQL
     /// syntax](<https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#where_clause>).
     ///
-    /// Example: col1 >= 0 AND col2 < 10
+    /// Example: col1 >= 0 AND col2 \< 10
     #[prost(string, tag = "3")]
     pub row_filter: ::prost::alloc::string::String,
     /// Optional. Actions to take upon job completion..
@@ -7753,7 +7759,7 @@ pub struct DataProfileSpec {
 /// Nested message and enum types in `DataProfileSpec`.
 pub mod data_profile_spec {
     /// The configuration of post scan actions of DataProfileScan job.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PostScanActions {
         /// Optional. If set, results will be exported to the provided BigQuery
         /// table.
@@ -7763,7 +7769,7 @@ pub mod data_profile_spec {
     /// Nested message and enum types in `PostScanActions`.
     pub mod post_scan_actions {
         /// The configuration of BigQuery export post scan action.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct BigQueryExport {
             /// Optional. The BigQuery table to export DataProfileScan results to.
             /// Format:
@@ -7775,7 +7781,7 @@ pub mod data_profile_spec {
         }
     }
     /// The specification for fields to include or exclude in data profile scan.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SelectedFields {
         /// Optional. Expected input is a list of fully qualified names of fields as
         /// in the schema.
@@ -7981,7 +7987,7 @@ pub mod data_profile_result {
         }
     }
     /// The result of post scan actions of DataProfileScan job.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PostScanActionsResult {
         /// Output only. The result of BigQuery export post scan action.
         #[prost(message, optional, tag = "1")]
@@ -7992,7 +7998,7 @@ pub mod data_profile_result {
     /// Nested message and enum types in `PostScanActionsResult`.
     pub mod post_scan_actions_result {
         /// The result of BigQuery export post scan action.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct BigQueryExportResult {
             /// Output only. Execution state for the BigQuery exporting.
             #[prost(enumeration = "big_query_export_result::State", tag = "1")]
@@ -8065,8 +8071,9 @@ pub struct DataQualitySpec {
     /// DataScan.
     ///
     /// * Value can range between 0.0 and 100.0 with up to 3 significant decimal
-    /// digits.
+    ///   digits.
     /// * Sampling is not applied if `sampling_percent` is not specified, 0 or
+    ///
     /// 100.
     #[prost(float, tag = "4")]
     pub sampling_percent: f32,
@@ -8075,7 +8082,7 @@ pub struct DataQualitySpec {
     /// GoogleSQL
     /// syntax](<https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#where_clause>).
     ///
-    /// Example: col1 >= 0 AND col2 < 10
+    /// Example: col1 >= 0 AND col2 \< 10
     #[prost(string, tag = "5")]
     pub row_filter: ::prost::alloc::string::String,
     /// Optional. Actions to take upon job completion.
@@ -8101,7 +8108,7 @@ pub mod data_quality_spec {
     /// Nested message and enum types in `PostScanActions`.
     pub mod post_scan_actions {
         /// The configuration of BigQuery export post scan action.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct BigQueryExport {
             /// Optional. The BigQuery table to export DataQualityScan results to.
             /// Format:
@@ -8113,7 +8120,7 @@ pub mod data_quality_spec {
         }
         /// The individuals or groups who are designated to receive notifications
         /// upon triggers.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Recipients {
             /// Optional. The email recipients who will receive the DataQualityScan
             /// results report.
@@ -8130,11 +8137,11 @@ pub mod data_quality_spec {
         }
         /// This trigger is triggered when the scan job itself fails, regardless of
         /// the result.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct JobFailureTrigger {}
         /// This trigger is triggered whenever a scan job run ends, regardless
         /// of the result.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct JobEndTrigger {}
         /// The configuration of notification report post scan action.
         #[derive(Clone, PartialEq, ::prost::Message)]
@@ -8195,7 +8202,7 @@ pub struct DataQualityResult {
 /// Nested message and enum types in `DataQualityResult`.
 pub mod data_quality_result {
     /// The result of post scan actions of DataQualityScan job.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PostScanActionsResult {
         /// Output only. The result of BigQuery export post scan action.
         #[prost(message, optional, tag = "1")]
@@ -8206,7 +8213,7 @@ pub mod data_quality_result {
     /// Nested message and enum types in `PostScanActionsResult`.
     pub mod post_scan_actions_result {
         /// The result of BigQuery export post scan action.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct BigQueryExportResult {
             /// Output only. Execution state for the BigQuery exporting.
             #[prost(enumeration = "big_query_export_result::State", tag = "1")]
@@ -8284,9 +8291,9 @@ pub struct DataQualityRuleResult {
     /// Evaluated count can be configured to either
     ///
     /// * include all rows (default) - with `null` rows automatically failing rule
-    /// evaluation, or
+    ///   evaluation, or
     /// * exclude `null` rows from the `evaluated_count`, by setting
-    /// `ignore_nulls = true`.
+    ///   `ignore_nulls = true`.
     ///
     /// This field is not set for rule SqlAssertion.
     #[prost(int64, tag = "9")]
@@ -8338,7 +8345,7 @@ pub struct DataQualityDimensionResult {
 }
 /// A dimension captures data quality intent about a defined subset of the rules
 /// specified.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataQualityDimension {
     /// Optional. The dimension name a rule belongs to. Custom dimension name is
     /// supported with all uppercase letters and maximum length of 30 characters.
@@ -8364,9 +8371,9 @@ pub struct DataQualityRule {
     #[prost(bool, tag = "501")]
     pub ignore_null: bool,
     /// Required. The dimension a rule belongs to. Results are also aggregated at
-    /// the dimension level. Supported dimensions are **["COMPLETENESS",
+    /// the dimension level. Supported dimensions are **\["COMPLETENESS",
     /// "ACCURACY", "CONSISTENCY", "VALIDITY", "UNIQUENESS", "FRESHNESS",
-    /// "VOLUME"]**
+    /// "VOLUME"\]**
     #[prost(string, tag = "502")]
     pub dimension: ::prost::alloc::string::String,
     /// Optional. The minimum ratio of **passing_rows / total_rows** required to
@@ -8380,7 +8387,7 @@ pub struct DataQualityRule {
     /// Optional. A mutable name for the rule.
     ///
     /// * The name must contain only letters (a-z, A-Z), numbers (0-9), or
-    /// hyphens (-).
+    ///   hyphens (-).
     /// * The maximum length is 63 characters.
     /// * Must start with a letter.
     /// * Must end with a number or a letter.
@@ -8405,7 +8412,7 @@ pub struct DataQualityRule {
 /// Nested message and enum types in `DataQualityRule`.
 pub mod data_quality_rule {
     /// Evaluates whether each column value lies between a specified range.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RangeExpectation {
         /// Optional. The minimum column value allowed for a row to pass this
         /// validation. At least one of `min_value` and `max_value` need to be
@@ -8423,7 +8430,7 @@ pub mod data_quality_rule {
         /// Only relevant if a `min_value` has been defined. Default = false.
         #[prost(bool, tag = "3")]
         pub strict_min_enabled: bool,
-        /// Optional. Whether each value needs to be strictly lesser than ('<') the
+        /// Optional. Whether each value needs to be strictly lesser than ('\<') the
         /// maximum, or if equality is allowed.
         ///
         /// Only relevant if a `max_value` has been defined. Default = false.
@@ -8431,28 +8438,28 @@ pub mod data_quality_rule {
         pub strict_max_enabled: bool,
     }
     /// Evaluates whether each column value is null.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct NonNullExpectation {}
     /// Evaluates whether each column value is contained by a specified set.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SetExpectation {
         /// Optional. Expected values for the column value.
         #[prost(string, repeated, tag = "1")]
         pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Evaluates whether each column value matches a specified regex.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RegexExpectation {
         /// Optional. A regular expression the column value is expected to match.
         #[prost(string, tag = "1")]
         pub regex: ::prost::alloc::string::String,
     }
     /// Evaluates whether the column has duplicates.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct UniquenessExpectation {}
     /// Evaluates whether the column aggregate statistic lies between a specified
     /// range.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct StatisticRangeExpectation {
         /// Optional. The aggregate metric to evaluate.
         #[prost(enumeration = "statistic_range_expectation::ColumnStatistic", tag = "1")]
@@ -8475,7 +8482,7 @@ pub mod data_quality_rule {
         /// Only relevant if a `min_value` has been defined. Default = false.
         #[prost(bool, tag = "4")]
         pub strict_min_enabled: bool,
-        /// Optional. Whether column statistic needs to be strictly lesser than ('<')
+        /// Optional. Whether column statistic needs to be strictly lesser than ('\<')
         /// the maximum, or if equality is allowed.
         ///
         /// Only relevant if a `max_value` has been defined. Default = false.
@@ -8538,8 +8545,8 @@ pub mod data_quality_rule {
     /// syntax](<https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax>)
     /// and should produce a boolean value per row as the result.
     ///
-    /// Example: col1 >= 0 AND col2 < 10
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    /// Example: col1 >= 0 AND col2 \< 10
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RowConditionExpectation {
         /// Optional. The SQL expression.
         #[prost(string, tag = "1")]
@@ -8552,7 +8559,7 @@ pub mod data_quality_rule {
     /// and should produce a scalar boolean result.
     ///
     /// Example: MIN(col1) >= 0
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TableConditionExpectation {
         /// Optional. The SQL expression.
         #[prost(string, tag = "1")]
@@ -8572,14 +8579,14 @@ pub mod data_quality_rule {
     /// parameter](<https://cloud.google.com/dataplex/docs/auto-data-quality-overview#data-reference-parameter>).
     ///
     /// Example: `SELECT * FROM ${data()} WHERE price < 0`
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SqlAssertion {
         /// Optional. The SQL statement.
         #[prost(string, tag = "1")]
         pub sql_statement: ::prost::alloc::string::String,
     }
     /// The rule-specific configuration.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum RuleType {
         /// Row-level rule which evaluates whether each column value lies between a
         /// specified range.
@@ -8635,7 +8642,7 @@ pub struct DataQualityColumnResult {
 /// ResourceAccessSpec holds the access control configuration to be enforced
 /// on the resources, for example, Cloud Storage bucket, BigQuery dataset,
 /// BigQuery table.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourceAccessSpec {
     /// Optional. The format of strings follows the pattern followed by IAM in the
     /// bindings. user:{email}, serviceAccount:{email} group:{email}.
@@ -8654,7 +8661,7 @@ pub struct ResourceAccessSpec {
 /// associated with data, the data is only accessible to
 /// principals explicitly granted access through the DataAccessSpec. Principals
 /// with access to the containing resource are not implicitly granted access.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataAccessSpec {
     /// Optional. The format of strings follows the pattern followed by IAM in the
     /// bindings. user:{email}, serviceAccount:{email} group:{email}.
@@ -8711,12 +8718,12 @@ pub struct DataTaxonomy {
 /// DataAttribute resources can be defined in a hierarchy.
 /// A single dataAttribute resource can contain specs of multiple types
 ///
-/// ```
+/// ```text,
 /// PII
-///    - ResourceAccessSpec :
-///                  - readers :foo@bar.com
-///    - DataAccessSpec :
-///                  - readers :bar@foo.com
+///   - ResourceAccessSpec :
+///                 - readers :foo@bar.com
+///   - DataAccessSpec :
+///                 - readers :bar@foo.com
 /// ```
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataAttribute {
@@ -8830,7 +8837,7 @@ pub mod data_attribute_binding {
     /// Represents a subresource of the given resource, and associated bindings
     /// with it. Currently supported subresources are column and partition schema
     /// fields within a table.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Path {
         /// Required. The name identifier of the path.
         /// Nested columns should be of the form: 'address.city'.
@@ -8844,7 +8851,7 @@ pub mod data_attribute_binding {
     }
     /// The reference to the resource that is associated to attributes, or
     /// the query to match resources and associate attributes.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ResourceReference {
         /// Optional. Immutable. The resource name of the resource that is associated
         /// to attributes. Presently, only entity resource is supported in the form:
@@ -8861,6 +8868,7 @@ pub struct CreateDataTaxonomyRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. DataTaxonomy identifier.
+    ///
     /// * Must contain only lowercase letters, numbers and hyphens.
     /// * Must start with a letter.
     /// * Must be between 1-63 characters.
@@ -8891,13 +8899,13 @@ pub struct UpdateDataTaxonomyRequest {
     pub validate_only: bool,
 }
 /// Get DataTaxonomy request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDataTaxonomyRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// List DataTaxonomies request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDataTaxonomiesRequest {
     /// Required. The resource name of the DataTaxonomy location, of the form:
     /// projects/{project_number}/locations/{location_id}
@@ -8938,7 +8946,7 @@ pub struct ListDataTaxonomiesResponse {
     pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Delete DataTaxonomy request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDataTaxonomyRequest {
     /// Required. The resource name of the DataTaxonomy:
     /// projects/{project_number}/locations/{location_id}/dataTaxonomies/{data_taxonomy_id}
@@ -8957,6 +8965,7 @@ pub struct CreateDataAttributeRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. DataAttribute identifier.
+    ///
     /// * Must contain only lowercase letters, numbers and hyphens.
     /// * Must start with a letter.
     /// * Must be between 1-63 characters.
@@ -8987,7 +8996,7 @@ pub struct UpdateDataAttributeRequest {
     pub validate_only: bool,
 }
 /// Get DataAttribute request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDataAttributeRequest {
     /// Required. The resource name of the dataAttribute:
     /// projects/{project_number}/locations/{location_id}/dataTaxonomies/{dataTaxonomy}/attributes/{data_attribute_id}
@@ -8995,7 +9004,7 @@ pub struct GetDataAttributeRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// List DataAttributes request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDataAttributesRequest {
     /// Required. The resource name of the DataTaxonomy:
     /// projects/{project_number}/locations/{location_id}/dataTaxonomies/{data_taxonomy_id}
@@ -9035,7 +9044,7 @@ pub struct ListDataAttributesResponse {
     pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Delete DataAttribute request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDataAttributeRequest {
     /// Required. The resource name of the DataAttribute:
     /// projects/{project_number}/locations/{location_id}/dataTaxonomies/{dataTaxonomy}/attributes/{data_attribute_id}
@@ -9054,6 +9063,7 @@ pub struct CreateDataAttributeBindingRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. DataAttributeBinding identifier.
+    ///
     /// * Must contain only lowercase letters, numbers and hyphens.
     /// * Must start with a letter.
     /// * Must be between 1-63 characters.
@@ -9084,7 +9094,7 @@ pub struct UpdateDataAttributeBindingRequest {
     pub validate_only: bool,
 }
 /// Get DataAttributeBinding request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDataAttributeBindingRequest {
     /// Required. The resource name of the DataAttributeBinding:
     /// projects/{project_number}/locations/{location_id}/dataAttributeBindings/{data_attribute_binding_id}
@@ -9092,7 +9102,7 @@ pub struct GetDataAttributeBindingRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// List DataAttributeBindings request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDataAttributeBindingsRequest {
     /// Required. The resource name of the Location:
     /// projects/{project_number}/locations/{location_id}
@@ -9136,7 +9146,7 @@ pub struct ListDataAttributeBindingsResponse {
     pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Delete DataAttributeBinding request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDataAttributeBindingRequest {
     /// Required. The resource name of the DataAttributeBinding:
     /// projects/{project_number}/locations/{location_id}/dataAttributeBindings/{data_attribute_binding_id}
@@ -9259,7 +9269,7 @@ pub mod data_taxonomy_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataTaxonomyService/CreateDataTaxonomy",
             );
@@ -9290,7 +9300,7 @@ pub mod data_taxonomy_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataTaxonomyService/UpdateDataTaxonomy",
             );
@@ -9322,7 +9332,7 @@ pub mod data_taxonomy_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataTaxonomyService/DeleteDataTaxonomy",
             );
@@ -9353,7 +9363,7 @@ pub mod data_taxonomy_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataTaxonomyService/ListDataTaxonomies",
             );
@@ -9381,7 +9391,7 @@ pub mod data_taxonomy_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataTaxonomyService/GetDataTaxonomy",
             );
@@ -9412,7 +9422,7 @@ pub mod data_taxonomy_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataTaxonomyService/CreateDataAttributeBinding",
             );
@@ -9443,7 +9453,7 @@ pub mod data_taxonomy_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataTaxonomyService/UpdateDataAttributeBinding",
             );
@@ -9476,7 +9486,7 @@ pub mod data_taxonomy_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataTaxonomyService/DeleteDataAttributeBinding",
             );
@@ -9507,7 +9517,7 @@ pub mod data_taxonomy_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataTaxonomyService/ListDataAttributeBindings",
             );
@@ -9538,7 +9548,7 @@ pub mod data_taxonomy_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataTaxonomyService/GetDataAttributeBinding",
             );
@@ -9569,7 +9579,7 @@ pub mod data_taxonomy_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataTaxonomyService/CreateDataAttribute",
             );
@@ -9600,7 +9610,7 @@ pub mod data_taxonomy_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataTaxonomyService/UpdateDataAttribute",
             );
@@ -9631,7 +9641,7 @@ pub mod data_taxonomy_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataTaxonomyService/DeleteDataAttribute",
             );
@@ -9662,7 +9672,7 @@ pub mod data_taxonomy_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataTaxonomyService/ListDataAttributes",
             );
@@ -9690,7 +9700,7 @@ pub mod data_taxonomy_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataTaxonomyService/GetDataAttribute",
             );
@@ -9749,7 +9759,7 @@ pub struct UpdateDataScanRequest {
     pub validate_only: bool,
 }
 /// Delete dataScan request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDataScanRequest {
     /// Required. The resource name of the dataScan:
     /// `projects/{project}/locations/{location_id}/dataScans/{data_scan_id}`
@@ -9764,7 +9774,7 @@ pub struct DeleteDataScanRequest {
     pub force: bool,
 }
 /// Get dataScan request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDataScanRequest {
     /// Required. The resource name of the dataScan:
     /// `projects/{project}/locations/{location_id}/dataScans/{data_scan_id}`
@@ -9823,7 +9833,7 @@ pub mod get_data_scan_request {
     }
 }
 /// List dataScans request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDataScansRequest {
     /// Required. The resource name of the parent location:
     /// `projects/{project}/locations/{location_id}`
@@ -9865,7 +9875,7 @@ pub struct ListDataScansResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Run DataScan Request
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RunDataScanRequest {
     /// Required. The resource name of the DataScan:
     /// `projects/{project}/locations/{location_id}/dataScans/{data_scan_id}`.
@@ -9884,7 +9894,7 @@ pub struct RunDataScanResponse {
     pub job: ::core::option::Option<DataScanJob>,
 }
 /// Get DataScanJob request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDataScanJobRequest {
     /// Required. The resource name of the DataScanJob:
     /// `projects/{project}/locations/{location_id}/dataScans/{data_scan_id}/jobs/{data_scan_job_id}`
@@ -9943,7 +9953,7 @@ pub mod get_data_scan_job_request {
     }
 }
 /// List DataScanJobs request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDataScanJobsRequest {
     /// Required. The resource name of the parent environment:
     /// `projects/{project}/locations/{location_id}/dataScans/{data_scan_id}`
@@ -9971,13 +9981,13 @@ pub struct ListDataScanJobsRequest {
     ///
     /// Allowed fields are:
     ///
-    /// - `start_time`
-    /// - `end_time`
+    /// * `start_time`
+    /// * `end_time`
     ///
     /// `start_time` and `end_time` expect RFC-3339 formatted strings (e.g.
     /// 2018-10-08T18:30:00-07:00).
     ///
-    /// For instance, 'start_time > 2018-10-08T00:00:00.123456789Z AND end_time <
+    /// For instance, 'start_time > 2018-10-08T00:00:00.123456789Z AND end_time \<
     /// 2018-10-09T00:00:00.123456789Z' limits results to DataScanJobs between
     /// specified start and end times.
     #[prost(string, tag = "4")]
@@ -9995,14 +10005,14 @@ pub struct ListDataScanJobsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request details for generating data quality rule recommendations.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateDataQualityRulesRequest {
     /// Required. The name must be one of the following:
     ///
     /// * The name of a data scan with at least one successful, completed data
-    /// profiling job
+    ///   profiling job
     /// * The name of a successful, completed data profiling job (a data scan job
-    /// where the job type is data profiling)
+    ///   where the job type is data profiling)
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -10020,16 +10030,16 @@ pub struct GenerateDataQualityRulesResponse {
 /// For example:
 ///
 /// * Data quality: generates queries based on the rules and runs against the
-///    data to get data quality check results. For more information, see [Auto
-///    data quality
-///    overview](<https://cloud.google.com/dataplex/docs/auto-data-quality-overview>).
+///   data to get data quality check results. For more information, see [Auto
+///   data quality
+///   overview](<https://cloud.google.com/dataplex/docs/auto-data-quality-overview>).
 /// * Data profile: analyzes the data in tables and generates insights about
-///    the structure, content and relationships (such as null percent,
-///    cardinality, min/max/mean, etc). For more information, see [About data
-///    profiling](<https://cloud.google.com/dataplex/docs/data-profiling-overview>).
+///   the structure, content and relationships (such as null percent,
+///   cardinality, min/max/mean, etc). For more information, see [About data
+///   profiling](<https://cloud.google.com/dataplex/docs/data-profiling-overview>).
 /// * Data discovery: scans data in Cloud Storage buckets to extract and then
-///    catalog metadata. For more information, see [Discover and catalog Cloud
-///    Storage data](<https://cloud.google.com/bigquery/docs/automatic-discovery>).
+///   catalog metadata. For more information, see [Discover and catalog Cloud
+///   Storage data](<https://cloud.google.com/bigquery/docs/automatic-discovery>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataScan {
     /// Output only. Identifier. The relative resource name of the scan, of the
@@ -10094,7 +10104,7 @@ pub struct DataScan {
 /// Nested message and enum types in `DataScan`.
 pub mod data_scan {
     /// DataScan execution settings.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ExecutionSpec {
         /// Optional. Spec related to how often and when a scan should be triggered.
         ///
@@ -10117,7 +10127,7 @@ pub mod data_scan {
         /// When an option is selected for incremental scan, it cannot be unset or
         /// changed. If not specified, a data scan will run for all data in the
         /// table.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Incremental {
             /// Immutable. The unnested field (of type *Date* or *Timestamp*) that
             /// contains values which monotonically increase over time.
@@ -10128,7 +10138,7 @@ pub mod data_scan {
         }
     }
     /// Status of the data scan execution.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ExecutionStatus {
         /// Optional. The time when the latest DataScanJob started.
         #[prost(message, optional, tag = "4")]
@@ -10443,7 +10453,7 @@ pub mod data_scan_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataScanService/CreateDataScan",
             );
@@ -10473,7 +10483,7 @@ pub mod data_scan_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataScanService/UpdateDataScan",
             );
@@ -10503,7 +10513,7 @@ pub mod data_scan_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataScanService/DeleteDataScan",
             );
@@ -10530,7 +10540,7 @@ pub mod data_scan_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataScanService/GetDataScan",
             );
@@ -10560,7 +10570,7 @@ pub mod data_scan_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataScanService/ListDataScans",
             );
@@ -10590,7 +10600,7 @@ pub mod data_scan_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataScanService/RunDataScan",
             );
@@ -10617,7 +10627,7 @@ pub mod data_scan_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataScanService/GetDataScanJob",
             );
@@ -10647,7 +10657,7 @@ pub mod data_scan_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataScanService/ListDataScanJobs",
             );
@@ -10680,7 +10690,7 @@ pub mod data_scan_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.DataScanService/GenerateDataQualityRules",
             );
@@ -10740,7 +10750,7 @@ pub mod discovery_event {
         >,
     }
     /// Details about the entity.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct EntityDetails {
         /// The name of the entity resource.
         /// The name is the fully-qualified resource name.
@@ -10751,7 +10761,7 @@ pub mod discovery_event {
         pub r#type: i32,
     }
     /// Details about the published table.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TableDetails {
         /// The fully-qualified resource name of the table resource.
         #[prost(string, tag = "1")]
@@ -10761,7 +10771,7 @@ pub mod discovery_event {
         pub r#type: i32,
     }
     /// Details about the partition.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PartitionDetails {
         /// The name to the partition resource.
         /// The name is the fully-qualified resource name.
@@ -10782,7 +10792,7 @@ pub mod discovery_event {
         >,
     }
     /// Details about the action.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ActionDetails {
         /// The type of action.
         /// Eg. IncompatibleDataSchema, InvalidDataFormat
@@ -10983,7 +10993,7 @@ pub mod discovery_event {
 }
 /// The payload associated with Job logs that contains events describing jobs
 /// that have run within a Lake.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct JobEvent {
     /// The log message.
     #[prost(string, tag = "1")]
@@ -11198,7 +11208,7 @@ pub mod job_event {
 }
 /// These messages contain information about sessions within an environment.
 /// The monitored resource is 'Environment'.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SessionEvent {
     /// The log message.
     #[prost(string, tag = "1")]
@@ -11230,7 +11240,7 @@ pub struct SessionEvent {
 /// Nested message and enum types in `SessionEvent`.
 pub mod session_event {
     /// Execution details of the query.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct QueryDetail {
         /// The unique Query id identifying the query.
         #[prost(string, tag = "1")]
@@ -11350,7 +11360,7 @@ pub mod session_event {
         }
     }
     /// Additional information about the Query metadata.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Detail {
         /// The execution details of the query.
         #[prost(message, tag = "5")]
@@ -11358,7 +11368,7 @@ pub mod session_event {
     }
 }
 /// Payload associated with Governance related log events.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GovernanceEvent {
     /// The log message.
     #[prost(string, tag = "1")]
@@ -11374,7 +11384,7 @@ pub struct GovernanceEvent {
 /// Nested message and enum types in `GovernanceEvent`.
 pub mod governance_event {
     /// Information about Entity resource that the log event is associated with.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Entity {
         /// The Entity resource the log event is associated with.
         /// Format:
@@ -11595,7 +11605,7 @@ pub struct DataScanEvent {
 /// Nested message and enum types in `DataScanEvent`.
 pub mod data_scan_event {
     /// Data profile result for data scan job.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DataProfileResult {
         /// The count of rows processed in the data scan job.
         #[prost(int64, tag = "1")]
@@ -11679,7 +11689,7 @@ pub mod data_scan_event {
         pub row_filter_applied: bool,
     }
     /// Post scan actions result for data scan job.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PostScanActionsResult {
         /// The result of BigQuery export post scan action.
         #[prost(message, optional, tag = "1")]
@@ -11690,7 +11700,7 @@ pub mod data_scan_event {
     /// Nested message and enum types in `PostScanActionsResult`.
     pub mod post_scan_actions_result {
         /// The result of BigQuery export post scan action.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct BigQueryExportResult {
             /// Execution state for the BigQuery exporting.
             #[prost(enumeration = "big_query_export_result::State", tag = "1")]
@@ -12026,31 +12036,31 @@ pub mod data_quality_scan_rule_result {
         /// An unspecified rule type.
         Unspecified = 0,
         /// See
-        /// [DataQualityRule.NonNullExpectation][google.cloud.dataplex.v1.DataQualityRule.NonNullExpectation].
+        /// \[DataQualityRule.NonNullExpectation\]\[google.cloud.dataplex.v1.DataQualityRule.NonNullExpectation\].
         NonNullExpectation = 1,
         /// See
-        /// [DataQualityRule.RangeExpectation][google.cloud.dataplex.v1.DataQualityRule.RangeExpectation].
+        /// \[DataQualityRule.RangeExpectation\]\[google.cloud.dataplex.v1.DataQualityRule.RangeExpectation\].
         RangeExpectation = 2,
         /// See
-        /// [DataQualityRule.RegexExpectation][google.cloud.dataplex.v1.DataQualityRule.RegexExpectation].
+        /// \[DataQualityRule.RegexExpectation\]\[google.cloud.dataplex.v1.DataQualityRule.RegexExpectation\].
         RegexExpectation = 3,
         /// See
-        /// [DataQualityRule.RowConditionExpectation][google.cloud.dataplex.v1.DataQualityRule.RowConditionExpectation].
+        /// \[DataQualityRule.RowConditionExpectation\]\[google.cloud.dataplex.v1.DataQualityRule.RowConditionExpectation\].
         RowConditionExpectation = 4,
         /// See
-        /// [DataQualityRule.SetExpectation][google.cloud.dataplex.v1.DataQualityRule.SetExpectation].
+        /// \[DataQualityRule.SetExpectation\]\[google.cloud.dataplex.v1.DataQualityRule.SetExpectation\].
         SetExpectation = 5,
         /// See
-        /// [DataQualityRule.StatisticRangeExpectation][google.cloud.dataplex.v1.DataQualityRule.StatisticRangeExpectation].
+        /// \[DataQualityRule.StatisticRangeExpectation\]\[google.cloud.dataplex.v1.DataQualityRule.StatisticRangeExpectation\].
         StatisticRangeExpectation = 6,
         /// See
-        /// [DataQualityRule.TableConditionExpectation][google.cloud.dataplex.v1.DataQualityRule.TableConditionExpectation].
+        /// \[DataQualityRule.TableConditionExpectation\]\[google.cloud.dataplex.v1.DataQualityRule.TableConditionExpectation\].
         TableConditionExpectation = 7,
         /// See
-        /// [DataQualityRule.UniquenessExpectation][google.cloud.dataplex.v1.DataQualityRule.UniquenessExpectation].
+        /// \[DataQualityRule.UniquenessExpectation\]\[google.cloud.dataplex.v1.DataQualityRule.UniquenessExpectation\].
         UniquenessExpectation = 8,
         /// See
-        /// [DataQualityRule.SqlAssertion][google.cloud.dataplex.v1.DataQualityRule.SqlAssertion].
+        /// \[DataQualityRule.SqlAssertion\]\[google.cloud.dataplex.v1.DataQualityRule.SqlAssertion\].
         SqlAssertion = 9,
     }
     impl RuleType {
@@ -12177,7 +12187,7 @@ pub mod data_quality_scan_rule_result {
     }
 }
 /// Payload associated with Business Glossary related log events.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BusinessGlossaryEvent {
     /// The log message.
     #[prost(string, tag = "1")]
@@ -12264,7 +12274,7 @@ pub mod business_glossary_event {
     }
 }
 /// Payload associated with Entry related log events.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EntryLinkEvent {
     /// The log message.
     #[prost(string, tag = "1")]
@@ -12352,19 +12362,19 @@ pub struct UpdateEntityRequest {
     pub validate_only: bool,
 }
 /// Delete a metadata entity request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteEntityRequest {
     /// Required. The resource name of the entity:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The etag associated with the entity, which can be retrieved with
-    /// a [GetEntity][] request.
+    /// a \[GetEntity\]\[\] request.
     #[prost(string, tag = "2")]
     pub etag: ::prost::alloc::string::String,
 }
 /// List metadata entities request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListEntitiesRequest {
     /// Required. The resource name of the parent zone:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
@@ -12388,11 +12398,11 @@ pub struct ListEntitiesRequest {
     /// Optional. The following filter parameters can be added to the URL to limit
     /// the entities returned by the API:
     ///
-    /// - Entity ID: ?filter="id=entityID"
-    /// - Asset ID: ?filter="asset=assetID"
-    /// - Data path ?filter="data_path=gs://my-bucket"
-    /// - Is HIVE compatible: ?filter="hive_compatible=true"
-    /// - Is BigQuery compatible: ?filter="bigquery_compatible=true"
+    /// * Entity ID: ?filter="id=entityID"
+    /// * Asset ID: ?filter="asset=assetID"
+    /// * Data path ?filter="data_path=gs://my-bucket"
+    /// * Is HIVE compatible: ?filter="hive_compatible=true"
+    /// * Is BigQuery compatible: ?filter="bigquery_compatible=true"
     #[prost(string, tag = "5")]
     pub filter: ::prost::alloc::string::String,
 }
@@ -12455,7 +12465,7 @@ pub struct ListEntitiesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Get metadata entity request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEntityRequest {
     /// Required. The resource name of the entity:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}.`
@@ -12517,7 +12527,7 @@ pub mod get_entity_request {
     }
 }
 /// List metadata partitions request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPartitionsRequest {
     /// Required. The resource name of the parent entity:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}`.
@@ -12538,27 +12548,27 @@ pub struct ListPartitionsRequest {
     /// Optional. Filter the partitions returned to the caller using a key value
     /// pair expression. Supported operators and syntax:
     ///
-    /// - logic operators: AND, OR
-    /// - comparison operators: <, >, >=, <= ,=, !=
-    /// - LIKE operators:
-    ///    - The right hand of a LIKE operator supports "." and
-    ///      "*" for wildcard searches, for example "value1 LIKE ".*oo.*"
-    /// - parenthetical grouping: ( )
+    /// * logic operators: AND, OR
+    /// * comparison operators: \<, >, >=, \<= ,=, !=
+    /// * LIKE operators:
+    ///   * The right hand of a LIKE operator supports "." and
+    ///     "\*" for wildcard searches, for example "value1 LIKE ".*oo.*"
+    /// * parenthetical grouping: ( )
     ///
-    /// Sample filter expression: `?filter="key1 < value1 OR key2 > value2"
+    /// Sample filter expression: \`?filter="key1 \< value1 OR key2 > value2"
     ///
     /// **Notes:**
     ///
-    /// - Keys to the left of operators are case insensitive.
-    /// - Partition results are sorted first by creation time, then by
-    ///    lexicographic order.
-    /// - Up to 20 key value filter pairs are allowed, but due to performance
-    ///    considerations, only the first 10 will be used as a filter.
+    /// * Keys to the left of operators are case insensitive.
+    /// * Partition results are sorted first by creation time, then by
+    ///   lexicographic order.
+    /// * Up to 20 key value filter pairs are allowed, but due to performance
+    ///   considerations, only the first 10 will be used as a filter.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }
 /// Create metadata partition request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreatePartitionRequest {
     /// Required. The resource name of the parent zone:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}`.
@@ -12573,7 +12583,7 @@ pub struct CreatePartitionRequest {
     pub validate_only: bool,
 }
 /// Delete metadata partition request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeletePartitionRequest {
     /// Required. The resource name of the partition.
     /// format:
@@ -12599,7 +12609,7 @@ pub struct ListPartitionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Get metadata partition request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPartitionRequest {
     /// Required. The resource name of the partition:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}/partitions/{partition_value_path}`.
@@ -12636,7 +12646,7 @@ pub struct Entity {
     #[prost(string, tag = "7")]
     pub id: ::prost::alloc::string::String,
     /// Optional. The etag associated with the entity, which can be retrieved with
-    /// a [GetEntity][] request. Required for update and delete requests.
+    /// a \[GetEntity\]\[\] request. Required for update and delete requests.
     #[prost(string, tag = "8")]
     pub etag: ::prost::alloc::string::String,
     /// Required. Immutable. The type of entity.
@@ -12689,7 +12699,7 @@ pub struct Entity {
 /// Nested message and enum types in `Entity`.
 pub mod entity {
     /// Provides compatibility information for various metadata stores.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CompatibilityStatus {
         /// Output only. Whether this entity is compatible with Hive Metastore.
         #[prost(message, optional, tag = "1")]
@@ -12701,7 +12711,7 @@ pub mod entity {
     /// Nested message and enum types in `CompatibilityStatus`.
     pub mod compatibility_status {
         /// Provides compatibility information for a specific metadata store.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Compatibility {
             /// Output only. Whether the entity is compatible and can be represented in
             /// the metadata store.
@@ -12758,7 +12768,7 @@ pub mod entity {
     }
 }
 /// Represents partition metadata contained within entity instances.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Partition {
     /// Output only. Partition values used in the HTTP URL must be
     /// double encoded. For example, `url_encode(url_encode(value))` can be used
@@ -12787,16 +12797,16 @@ pub struct Schema {
     /// Required. Set to `true` if user-managed or `false` if managed by Dataplex.
     /// The default is `false` (managed by Dataplex).
     ///
-    /// - Set to `false`to enable Dataplex discovery to update the schema.
-    ///    including new data discovery, schema inference, and schema evolution.
-    ///    Users retain the ability to input and edit the schema. Dataplex
-    ///    treats schema input by the user as though produced
-    ///    by a previous Dataplex discovery operation, and it will
-    ///    evolve the schema and take action based on that treatment.
+    /// * Set to `false`to enable Dataplex discovery to update the schema.
+    ///   including new data discovery, schema inference, and schema evolution.
+    ///   Users retain the ability to input and edit the schema. Dataplex
+    ///   treats schema input by the user as though produced
+    ///   by a previous Dataplex discovery operation, and it will
+    ///   evolve the schema and take action based on that treatment.
     ///
-    /// - Set to `true` to fully manage the entity
-    ///    schema. This setting guarantees that Dataplex will not
-    ///    change schema fields.
+    /// * Set to `true` to fully manage the entity
+    ///   schema. This setting guarantees that Dataplex will not
+    ///   change schema fields.
     #[prost(bool, tag = "1")]
     pub user_managed: bool,
     /// Optional. The sequence of fields describing data in table entities.
@@ -12840,7 +12850,7 @@ pub mod schema {
     /// have up to 20 partition fields, but only the first 10 partitions have the
     /// filtering ability due to performance consideration. **Note:**
     /// Partition fields are immutable.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PartitionField {
         /// Required. Partition field name must consist of letters, numbers, and
         /// underscores only, with a maximum of length of 256 characters, and must
@@ -13037,7 +13047,7 @@ pub mod schema {
     }
 }
 /// Describes the format of the data within its storage location.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StorageFormat {
     /// Output only. The data format associated with the stored data, which
     /// represents content type values. The value is inferred from mime type.
@@ -13050,20 +13060,20 @@ pub struct StorageFormat {
     /// Required. The mime type descriptor for the data. Must match the pattern
     /// {type}/{subtype}. Supported values:
     ///
-    /// - application/x-parquet
-    /// - application/x-avro
-    /// - application/x-orc
-    /// - application/x-tfrecord
-    /// - application/x-parquet+iceberg
-    /// - application/x-avro+iceberg
-    /// - application/x-orc+iceberg
-    /// - application/json
-    /// - application/{subtypes}
-    /// - text/csv
-    /// - text/<subtypes>
-    /// - image/{image subtype}
-    /// - video/{video subtype}
-    /// - audio/{audio subtype}
+    /// * application/x-parquet
+    /// * application/x-avro
+    /// * application/x-orc
+    /// * application/x-tfrecord
+    /// * application/x-parquet+iceberg
+    /// * application/x-avro+iceberg
+    /// * application/x-orc+iceberg
+    /// * application/json
+    /// * application/{subtypes}
+    /// * text/csv
+    /// * text/<subtypes>
+    /// * image/{image subtype}
+    /// * video/{video subtype}
+    /// * audio/{audio subtype}
     #[prost(string, tag = "3")]
     pub mime_type: ::prost::alloc::string::String,
     /// Additional format-specific options.
@@ -13073,7 +13083,7 @@ pub struct StorageFormat {
 /// Nested message and enum types in `StorageFormat`.
 pub mod storage_format {
     /// Describes CSV and similar semi-structured data formats.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CsvOptions {
         /// Optional. The character encoding of the data. Accepts "US-ASCII",
         /// "UTF-8", and "ISO-8859-1". Defaults to UTF-8 if unspecified.
@@ -13093,7 +13103,7 @@ pub mod storage_format {
         pub quote: ::prost::alloc::string::String,
     }
     /// Describes JSON data format.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct JsonOptions {
         /// Optional. The character encoding of the data. Accepts "US-ASCII", "UTF-8"
         /// and "ISO-8859-1". Defaults to UTF-8 if not specified.
@@ -13101,7 +13111,7 @@ pub mod storage_format {
         pub encoding: ::prost::alloc::string::String,
     }
     /// Describes Iceberg data format.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct IcebergOptions {
         /// Optional. The location of where the iceberg metadata is present, must be
         /// within the table path
@@ -13235,7 +13245,7 @@ pub mod storage_format {
         }
     }
     /// Additional format-specific options.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Options {
         /// Optional. Additional information about CSV formatted data.
         #[prost(message, tag = "10")]
@@ -13249,7 +13259,7 @@ pub mod storage_format {
     }
 }
 /// Describes the access mechanism of the data within its storage location.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StorageAccess {
     /// Output only. Describes the read access mechanism of the data. Not user
     /// settable.
@@ -13441,7 +13451,7 @@ pub mod metadata_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.MetadataService/CreateEntity",
             );
@@ -13468,7 +13478,7 @@ pub mod metadata_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.MetadataService/UpdateEntity",
             );
@@ -13495,7 +13505,7 @@ pub mod metadata_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.MetadataService/DeleteEntity",
             );
@@ -13522,7 +13532,7 @@ pub mod metadata_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.MetadataService/GetEntity",
             );
@@ -13552,7 +13562,7 @@ pub mod metadata_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.MetadataService/ListEntities",
             );
@@ -13579,7 +13589,7 @@ pub mod metadata_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.MetadataService/CreatePartition",
             );
@@ -13606,7 +13616,7 @@ pub mod metadata_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.MetadataService/DeletePartition",
             );
@@ -13633,7 +13643,7 @@ pub mod metadata_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.MetadataService/GetPartition",
             );
@@ -13663,7 +13673,7 @@ pub mod metadata_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataplex.v1.MetadataService/ListPartitions",
             );

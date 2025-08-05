@@ -14,7 +14,7 @@ pub struct TemporalAsset {
     pub asset: ::core::option::Option<Asset>,
 }
 /// A time window specified by its `start_time` and `end_time`.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TimeWindow {
     /// Start time of the time window (exclusive).
     #[prost(message, optional, tag = "1")]
@@ -158,11 +158,11 @@ pub struct Resource {
     pub data: ::core::option::Option<::prost_types::Struct>,
 }
 /// The export asset response. This message is returned by the
-/// [google.longrunning.Operations.GetOperation][google.longrunning.Operations.GetOperation]
+/// \[google.longrunning.Operations.GetOperation\]\[google.longrunning.Operations.GetOperation\]
 /// method in the returned
-/// [google.longrunning.Operation.response][google.longrunning.Operation.response]
+/// \[google.longrunning.Operation.response\]\[google.longrunning.Operation.response\]
 /// field.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportAssetsResponse {
     /// Time the snapshot was taken.
     #[prost(message, optional, tag = "1")]
@@ -179,7 +179,7 @@ pub struct BatchGetAssetsHistoryResponse {
     pub assets: ::prost::alloc::vec::Vec<TemporalAsset>,
 }
 /// Create asset feed request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateFeedRequest {
     /// Required. The name of the project/folder/organization where this feed
     /// should be created in. It can only be an organization number (such as
@@ -200,7 +200,7 @@ pub struct CreateFeedRequest {
     pub feed: ::core::option::Option<Feed>,
 }
 /// Get asset feed request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFeedRequest {
     /// Required. The name of the Feed and it must be in the format of:
     /// projects/project_number/feeds/feed_id
@@ -210,7 +210,7 @@ pub struct GetFeedRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// List asset feeds request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFeedsRequest {
     /// Required. The parent project/folder/organization whose feeds are to be
     /// listed. It can only be using project/folder/organization number (such as
@@ -225,7 +225,7 @@ pub struct ListFeedsResponse {
     pub feeds: ::prost::alloc::vec::Vec<Feed>,
 }
 /// Update asset feed request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateFeedRequest {
     /// Required. The new values of feed details. It must match an existing feed
     /// and the field `name` must be in the format of:
@@ -240,7 +240,7 @@ pub struct UpdateFeedRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteFeedRequest {
     /// Required. The name of the feed and it must be in the format of:
     /// projects/project_number/feeds/feed_id
@@ -250,7 +250,7 @@ pub struct DeleteFeedRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Output configuration for export assets destination.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OutputConfig {
     /// Asset export destination.
     #[prost(oneof = "output_config::Destination", tags = "1")]
@@ -259,7 +259,7 @@ pub struct OutputConfig {
 /// Nested message and enum types in `OutputConfig`.
 pub mod output_config {
     /// Asset export destination.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Destination {
         /// Destination on Cloud Storage.
         #[prost(message, tag = "1")]
@@ -267,7 +267,7 @@ pub mod output_config {
     }
 }
 /// A Cloud Storage location.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GcsDestination {
     /// Required.
     #[prost(oneof = "gcs_destination::ObjectUri", tags = "1")]
@@ -276,7 +276,7 @@ pub struct GcsDestination {
 /// Nested message and enum types in `GcsDestination`.
 pub mod gcs_destination {
     /// Required.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ObjectUri {
         /// The URI of the Cloud Storage object. It's the same URI that is used by
         /// gsutil. For example: "gs://bucket_name/object_name". See [Viewing and
@@ -288,7 +288,7 @@ pub mod gcs_destination {
     }
 }
 /// A Pub/Sub destination.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PubsubDestination {
     /// The name of the Pub/Sub topic to publish to.
     /// For example: `projects/PROJECT_ID/topics/TOPIC_ID`.
@@ -296,7 +296,7 @@ pub struct PubsubDestination {
     pub topic: ::prost::alloc::string::String,
 }
 /// Output configuration for asset feed destination.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FeedOutputConfig {
     /// Asset feed destination.
     #[prost(oneof = "feed_output_config::Destination", tags = "1")]
@@ -305,7 +305,7 @@ pub struct FeedOutputConfig {
 /// Nested message and enum types in `FeedOutputConfig`.
 pub mod feed_output_config {
     /// Asset feed destination.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Destination {
         /// Destination on Pub/Sub.
         #[prost(message, tag = "1")]
@@ -317,7 +317,7 @@ pub mod feed_output_config {
 /// The asset feed must be created within a project, organization, or
 /// folder. Supported destinations are:
 /// Cloud Pub/Sub topics.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Feed {
     /// Required. The format will be
     /// projects/{project_number}/feeds/{client-assigned_feed_identifier} or
@@ -495,7 +495,7 @@ pub mod asset_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1p2beta1.AssetService/CreateFeed",
             );
@@ -522,7 +522,7 @@ pub mod asset_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1p2beta1.AssetService/GetFeed",
             );
@@ -552,7 +552,7 @@ pub mod asset_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1p2beta1.AssetService/ListFeeds",
             );
@@ -579,7 +579,7 @@ pub mod asset_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1p2beta1.AssetService/UpdateFeed",
             );
@@ -606,7 +606,7 @@ pub mod asset_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1p2beta1.AssetService/DeleteFeed",
             );

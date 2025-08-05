@@ -30,7 +30,7 @@ pub struct StaticCanvasPrompt {
     pub enable_full_screen: bool,
 }
 /// An image displayed in the card.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StaticImagePrompt {
     /// Required. The source url of the image. Images can be JPG, PNG and GIF (animated and
     /// non-animated). For example,`<https://www.agentx.com/logo.png`.>
@@ -106,7 +106,7 @@ pub mod static_image_prompt {
 }
 /// Defines a link which will be displayed as a suggestion chip and can be opened
 /// by the user.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StaticLinkPrompt {
     /// Name of the link
     #[prost(string, tag = "1")]
@@ -116,10 +116,11 @@ pub struct StaticLinkPrompt {
     pub open: ::core::option::Option<OpenUrl>,
 }
 /// Defines behavior when the user opens the link.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OpenUrl {
     /// The url field which could be any of:
-    /// - http/https urls for opening an App-linked App or a webpage
+    ///
+    /// * http/https urls for opening an App-linked App or a webpage
     #[prost(string, tag = "1")]
     pub url: ::prost::alloc::string::String,
     /// Indicates a hint for the url type.
@@ -157,7 +158,7 @@ impl UrlHint {
     }
 }
 /// A basic card for displaying some information, e.g. an image and/or text.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StaticCardPrompt {
     /// Optional. Overall title of the card.
     #[prost(string, tag = "1")]
@@ -183,8 +184,8 @@ pub struct StaticCardPrompt {
 /// may be selected to launch their associated web document in a web viewer.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StaticCollectionBrowsePrompt {
-    /// Items in the browse collection. The list size should be in the range [2,
-    /// 10].
+    /// Items in the browse collection. The list size should be in the range \[2,
+    /// 10\].
     #[prost(message, repeated, tag = "1")]
     pub items: ::prost::alloc::vec::Vec<
         static_collection_browse_prompt::CollectionBrowseItem,
@@ -196,7 +197,7 @@ pub struct StaticCollectionBrowsePrompt {
 /// Nested message and enum types in `StaticCollectionBrowsePrompt`.
 pub mod static_collection_browse_prompt {
     /// Item in the collection.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CollectionBrowseItem {
         /// Required. Title of the collection item.
         #[prost(string, tag = "1")]
@@ -235,7 +236,7 @@ pub struct StaticCollectionPrompt {
 /// Nested message and enum types in `StaticCollectionPrompt`.
 pub mod static_collection_prompt {
     /// An item in the collection.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CollectionItem {
         /// Required. The NLU key that matches the entry key name in the associated
         /// Type. When item tapped, this key will be posted back as a select option
@@ -271,7 +272,7 @@ pub struct StaticListPrompt {
 /// Nested message and enum types in `StaticListPrompt`.
 pub mod static_list_prompt {
     /// An item in the list.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ListItem {
         /// Required. The NLU key that matches the entry key name in the associated type. When
         /// item tapped, this key will be posted back as a select option parameter.
@@ -451,7 +452,7 @@ pub mod static_media_prompt {
     }
 }
 /// Represents a single media object.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MediaObject {
     /// Name of this media object.
     #[prost(string, tag = "1")]
@@ -467,7 +468,7 @@ pub struct MediaObject {
     pub image: ::core::option::Option<MediaImage>,
 }
 /// Image to be shown inside a MediaPrompt.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MediaImage {
     /// Only one type of MediaImage is allowed.
     #[prost(oneof = "media_image::Image", tags = "1, 2")]
@@ -476,7 +477,7 @@ pub struct MediaImage {
 /// Nested message and enum types in `MediaImage`.
 pub mod media_image {
     /// Only one type of MediaImage is allowed.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Image {
         /// A large image, such as the cover of the album, etc.
         #[prost(message, tag = "1")]
@@ -514,7 +515,7 @@ pub struct StaticTablePrompt {
     pub button: ::core::option::Option<StaticLinkPrompt>,
 }
 /// Describes a column in the table.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TableColumn {
     /// Header text for the column.
     #[prost(string, tag = "1")]
@@ -575,7 +576,7 @@ pub mod table_column {
     }
 }
 /// Describes a cell in a row.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TableCell {
     /// Text content of the cell.
     #[prost(string, tag = "1")]
@@ -638,7 +639,7 @@ pub struct StaticSimplePrompt {
 /// Nested message and enum types in `StaticSimplePrompt`.
 pub mod static_simple_prompt {
     /// Represents a variant which is part of the simple prompt.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Variant {
         /// Optional. Represents the speech to be spoken to the user.  Can be SSML or text to
         /// speech.
@@ -658,7 +659,7 @@ pub mod static_simple_prompt {
     }
 }
 /// Represents a suggestion chip, a UI element shown to the user for convenience.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Suggestion {
     /// Required. The text shown in the suggestion chip. When tapped, this text will be
     /// posted back to the conversation verbatim as if the user had typed it.
@@ -668,7 +669,7 @@ pub struct Suggestion {
     pub title: ::prost::alloc::string::String,
 }
 /// Represents the surface the user is using to make a request to the Action.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SurfaceCapabilities {
     /// Required. The capabilities of the surface making a request to the Action.
     #[prost(
@@ -812,7 +813,7 @@ pub mod static_prompt {
         }
     }
     /// Defines the criteria for whether a prompt matches a request.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Selector {
         /// The set of required surface capabilities.
         #[prost(message, optional, tag = "1")]

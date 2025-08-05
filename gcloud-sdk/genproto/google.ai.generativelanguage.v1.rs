@@ -7,7 +7,7 @@ pub struct CitationMetadata {
     pub citation_sources: ::prost::alloc::vec::Vec<CitationSource>,
 }
 /// A citation to a source for a portion of a specific response.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CitationSource {
     /// Optional. Start of segment of the response that is attributed to this
     /// source.
@@ -53,14 +53,14 @@ pub struct Content {
 ///
 /// A `Part` must have a fixed IANA MIME type identifying the type and subtype
 /// of the media if the `inline_data` field is filled with raw bytes.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Part {
     #[prost(oneof = "part::Data", tags = "2, 3")]
     pub data: ::core::option::Option<part::Data>,
 }
 /// Nested message and enum types in `Part`.
 pub mod part {
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Data {
         /// Inline text.
         #[prost(string, tag = "2")]
@@ -73,15 +73,16 @@ pub mod part {
 /// Raw media bytes.
 ///
 /// Text should not be sent as raw bytes, use the 'text' field.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Blob {
     /// The IANA standard MIME type of the source data.
     /// Examples:
-    ///    - image/png
-    ///    - image/jpeg
-    /// If an unsupported MIME type is provided, an error will be returned. For a
-    /// complete list of supported types, see [Supported file
-    /// formats](<https://ai.google.dev/gemini-api/docs/prompting_with_media#supported_file_formats>).
+    ///
+    /// * image/png
+    /// * image/jpeg
+    ///   If an unsupported MIME type is provided, an error will be returned. For a
+    ///   complete list of supported types, see [Supported file
+    ///   formats](<https://ai.google.dev/gemini-api/docs/prompting_with_media#supported_file_formats>).
     #[prost(string, tag = "1")]
     pub mime_type: ::prost::alloc::string::String,
     /// Raw bytes for media formats.
@@ -89,7 +90,7 @@ pub struct Blob {
     pub data: ::prost::alloc::vec::Vec<u8>,
 }
 /// Represents token counting info for a single modality.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ModalityTokenCount {
     /// The modality associated with this token count.
     #[prost(enumeration = "Modality", tag = "1")]
@@ -150,7 +151,7 @@ impl Modality {
 /// Content is classified for safety across a number of
 /// harm categories and the probability of the harm classification is included
 /// here.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SafetyRating {
     /// Required. The category for this rating.
     #[prost(enumeration = "HarmCategory", tag = "3")]
@@ -223,7 +224,7 @@ pub mod safety_rating {
 ///
 /// Passing a safety setting for a category changes the allowed probability that
 /// content is blocked.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SafetySetting {
     /// Required. The category for this setting.
     #[prost(enumeration = "HarmCategory", tag = "3")]
@@ -470,7 +471,7 @@ pub struct GenerationConfig {
     ///
     /// This penalty is binary on/off and not dependant on the number of times the
     /// token is used (after the first). Use
-    /// [frequency_penalty][google.ai.generativelanguage.v1.GenerationConfig.frequency_penalty]
+    /// \[frequency_penalty\]\[google.ai.generativelanguage.v1.GenerationConfig.frequency_penalty\]
     /// for a penalty that increases with each use.
     ///
     /// A positive penalty will discourage the use of tokens that have already
@@ -489,12 +490,12 @@ pub struct GenerationConfig {
     /// The more a token is used, the more difficult it is for the model to use
     /// that token again increasing the vocabulary of responses.
     ///
-    /// Caution: A _negative_ penalty will encourage the model to reuse tokens
+    /// Caution: A *negative* penalty will encourage the model to reuse tokens
     /// proportional to the number of times the token has been used. Small
     /// negative values will reduce the vocabulary of a response. Larger negative
     /// values will cause the model to start repeating a common token  until it
     /// hits the
-    /// [max_output_tokens][google.ai.generativelanguage.v1.GenerationConfig.max_output_tokens]
+    /// \[max_output_tokens\]\[google.ai.generativelanguage.v1.GenerationConfig.max_output_tokens\]
     /// limit.
     #[prost(float, optional, tag = "16")]
     pub frequency_penalty: ::core::option::Option<f32>,
@@ -502,9 +503,9 @@ pub struct GenerationConfig {
     #[prost(bool, optional, tag = "17")]
     pub response_logprobs: ::core::option::Option<bool>,
     /// Optional. Only valid if
-    /// [response_logprobs=True][google.ai.generativelanguage.v1.GenerationConfig.response_logprobs].
+    /// \[response_logprobs=True\]\[google.ai.generativelanguage.v1.GenerationConfig.response_logprobs\].
     /// This sets the number of top logprobs to return at each decoding step in the
-    /// [Candidate.logprobs_result][google.ai.generativelanguage.v1.Candidate.logprobs_result].
+    /// \[Candidate.logprobs_result\]\[google.ai.generativelanguage.v1.Candidate.logprobs_result\].
     #[prost(int32, optional, tag = "18")]
     pub logprobs: ::core::option::Option<i32>,
     /// Optional. Enables enhanced civic answers. It may not be available for all
@@ -517,11 +518,12 @@ pub struct GenerationConfig {
 /// Safety ratings and content filtering are reported for both
 /// prompt in `GenerateContentResponse.prompt_feedback` and for each candidate
 /// in `finish_reason` and in `safety_ratings`. The API:
-///   - Returns either all requested candidates or none of them
-///   - Returns no candidates at all only if there was something wrong with the
-///     prompt (check `prompt_feedback`)
-///   - Reports feedback on each candidate in `finish_reason` and
-///     `safety_ratings`.
+///
+/// * Returns either all requested candidates or none of them
+/// * Returns no candidates at all only if there was something wrong with the
+///   prompt (check `prompt_feedback`)
+/// * Reports feedback on each candidate in `finish_reason` and
+///   `safety_ratings`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateContentResponse {
     /// Candidate responses from the model.
@@ -846,19 +848,19 @@ pub struct GroundingMetadata {
     pub web_search_queries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Google search entry point.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchEntryPoint {
     /// Optional. Web content snippet that can be embedded in a web page or an app
     /// webview.
     #[prost(string, tag = "1")]
     pub rendered_content: ::prost::alloc::string::String,
-    /// Optional. Base64 encoded JSON representing array of <search term, search
+    /// Optional. Base64 encoded JSON representing array of \<search term, search
     /// url> tuple.
     #[prost(bytes = "vec", tag = "2")]
     pub sdk_blob: ::prost::alloc::vec::Vec<u8>,
 }
 /// Grounding chunk.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GroundingChunk {
     /// Chunk type.
     #[prost(oneof = "grounding_chunk::ChunkType", tags = "1")]
@@ -867,7 +869,7 @@ pub struct GroundingChunk {
 /// Nested message and enum types in `GroundingChunk`.
 pub mod grounding_chunk {
     /// Chunk from the web.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Web {
         /// URI reference of the chunk.
         #[prost(string, optional, tag = "1")]
@@ -877,7 +879,7 @@ pub mod grounding_chunk {
         pub title: ::core::option::Option<::prost::alloc::string::String>,
     }
     /// Chunk type.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ChunkType {
         /// Grounding chunk from the web.
         #[prost(message, tag = "1")]
@@ -885,7 +887,7 @@ pub mod grounding_chunk {
     }
 }
 /// Segment of the content.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Segment {
     /// Output only. The index of a Part object within its parent Content object.
     #[prost(int32, tag = "1")]
@@ -1208,7 +1210,7 @@ pub mod generative_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1.GenerativeService/GenerateContent",
             );
@@ -1240,7 +1242,7 @@ pub mod generative_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1.GenerativeService/StreamGenerateContent",
             );
@@ -1272,7 +1274,7 @@ pub mod generative_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1.GenerativeService/EmbedContent",
             );
@@ -1304,7 +1306,7 @@ pub mod generative_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1.GenerativeService/BatchEmbedContents",
             );
@@ -1336,7 +1338,7 @@ pub mod generative_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1.GenerativeService/CountTokens",
             );
@@ -1435,7 +1437,7 @@ pub struct Model {
     pub top_k: ::core::option::Option<i32>,
 }
 /// Request for getting information about a specific Model.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetModelRequest {
     /// Required. The resource name of the model.
     ///
@@ -1446,7 +1448,7 @@ pub struct GetModelRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for listing all Models.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListModelsRequest {
     /// The maximum number of `Models` to return (per page).
     ///
@@ -1587,7 +1589,7 @@ pub mod model_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1.ModelService/GetModel",
             );
@@ -1618,7 +1620,7 @@ pub mod model_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1.ModelService/ListModels",
             );

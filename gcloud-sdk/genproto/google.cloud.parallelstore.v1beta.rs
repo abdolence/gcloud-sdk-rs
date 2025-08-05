@@ -59,20 +59,20 @@ pub struct Instance {
     /// Optional. Immutable. Stripe level for files. Allowed values are:
     ///
     /// * `FILE_STRIPE_LEVEL_MIN`: offers the best performance for small size
-    ///    files.
+    ///   files.
     /// * `FILE_STRIPE_LEVEL_BALANCED`: balances performance for workloads
-    ///    involving a mix of small and large files.
+    ///   involving a mix of small and large files.
     /// * `FILE_STRIPE_LEVEL_MAX`: higher throughput performance for larger files.
     #[prost(enumeration = "FileStripeLevel", tag = "15")]
     pub file_stripe_level: i32,
     /// Optional. Immutable. Stripe level for directories. Allowed values are:
     ///
     /// * `DIRECTORY_STRIPE_LEVEL_MIN`: recommended when directories contain a
-    ///    small number of files.
+    ///   small number of files.
     /// * `DIRECTORY_STRIPE_LEVEL_BALANCED`: balances performance for workloads
-    ///    involving a mix of small and large directories.
+    ///   involving a mix of small and large directories.
     /// * `DIRECTORY_STRIPE_LEVEL_MAX`: recommended for directories with a large
-    ///    number of files.
+    ///   number of files.
     #[prost(enumeration = "DirectoryStripeLevel", tag = "16")]
     pub directory_stripe_level: i32,
     /// Optional. Immutable. The deployment type of the instance. Allowed values
@@ -147,7 +147,7 @@ pub mod instance {
     }
 }
 /// Transfer metadata options for the instance.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TransferMetadataOptions {
     /// Optional. The UID preservation behavior.
     #[prost(enumeration = "transfer_metadata_options::Uid", tag = "1")]
@@ -292,7 +292,7 @@ pub mod transfer_metadata_options {
     }
 }
 /// List instances request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInstancesRequest {
     /// Required. The project and location for which to retrieve instance
     /// information, in the format `projects/{project_id}/locations/{location}`.
@@ -316,7 +316,7 @@ pub struct ListInstancesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response from
-/// [ListInstances][google.cloud.parallelstore.v1beta.Parallelstore.ListInstances].
+/// \[ListInstances\]\[google.cloud.parallelstore.v1beta.Parallelstore.ListInstances\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesResponse {
     /// The list of Parallelstore instances.
@@ -330,7 +330,7 @@ pub struct ListInstancesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Get an instance's details.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInstanceRequest {
     /// Required. The instance resource name, in the format
     /// `projects/{project_id}/locations/{location}/instances/{instance_id}`.
@@ -402,7 +402,7 @@ pub struct UpdateInstanceRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Delete an instance.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteInstanceRequest {
     /// Required. Name of the resource
     #[prost(string, tag = "1")]
@@ -424,7 +424,7 @@ pub struct DeleteInstanceRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Long-running operation metadata.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -443,8 +443,8 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have been cancelled successfully
-    /// have [Operation.error][google.longrunning.Operation.error] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+    /// have \[Operation.error\]\[google.longrunning.Operation.error\] value with a
+    /// \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -453,7 +453,7 @@ pub struct OperationMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// Cloud Storage as the source of a data transfer.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SourceGcsBucket {
     /// Required. URI to a Cloud Storage bucket in the format:
     /// `gs://<bucket_name>/<path_inside_bucket>`. The path inside the bucket is
@@ -462,7 +462,7 @@ pub struct SourceGcsBucket {
     pub uri: ::prost::alloc::string::String,
 }
 /// Cloud Storage as the destination of a data transfer.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DestinationGcsBucket {
     /// Required. URI to a Cloud Storage bucket in the format:
     /// `gs://<bucket_name>/<path_inside_bucket>`. The path inside the bucket is
@@ -471,7 +471,7 @@ pub struct DestinationGcsBucket {
     pub uri: ::prost::alloc::string::String,
 }
 /// Parallelstore as the source of a data transfer.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SourceParallelstore {
     /// Optional. Root directory path to the Paralellstore filesystem, starting
     /// with `/`. Defaults to `/` if unset.
@@ -479,7 +479,7 @@ pub struct SourceParallelstore {
     pub path: ::prost::alloc::string::String,
 }
 /// Parallelstore as the destination of a data transfer.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DestinationParallelstore {
     /// Optional. Root directory path to the Paralellstore filesystem, starting
     /// with `/`. Defaults to `/` if unset.
@@ -487,7 +487,7 @@ pub struct DestinationParallelstore {
     pub path: ::prost::alloc::string::String,
 }
 /// Import data from Cloud Storage into a Parallelstore instance.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportDataRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -533,14 +533,14 @@ pub struct ImportDataRequest {
 /// Nested message and enum types in `ImportDataRequest`.
 pub mod import_data_request {
     /// The source of the data being imported into the Parallelstore instance.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Source {
         /// The Cloud Storage source bucket and, optionally, path inside the bucket.
         #[prost(message, tag = "2")]
         SourceGcsBucket(super::SourceGcsBucket),
     }
     /// The Parallelstore instance into which to import data.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Destination {
         /// Parallelstore destination.
         #[prost(message, tag = "3")]
@@ -548,7 +548,7 @@ pub mod import_data_request {
     }
 }
 /// Export data from Parallelstore to Cloud Storage.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportDataRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -593,14 +593,14 @@ pub struct ExportDataRequest {
 /// Nested message and enum types in `ExportDataRequest`.
 pub mod export_data_request {
     /// The Parallelstore instance to export from.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Source {
         /// Parallelstore source.
         #[prost(message, tag = "2")]
         SourceParallelstore(super::SourceParallelstore),
     }
     /// The Cloud Storage bucket to export to.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Destination {
         /// Cloud Storage destination.
         #[prost(message, tag = "3")]
@@ -608,10 +608,10 @@ pub mod export_data_request {
     }
 }
 /// The response to a request to import data to Parallelstore.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportDataResponse {}
 /// An entry describing an error that has occurred.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TransferErrorLogEntry {
     /// A URL that refers to the target (a data source, a data sink,
     /// or an object) with which the error is associated.
@@ -658,8 +658,8 @@ pub struct ImportDataMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][google.longrunning.Operation.error] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+    /// have \[Operation.error\]\[google.longrunning.Operation.error\] value with a
+    /// \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "7")]
     pub requested_cancellation: bool,
@@ -668,7 +668,7 @@ pub struct ImportDataMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// The response to a request to export data from Parallelstore.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportDataResponse {}
 /// Metadata related to the data export operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -693,8 +693,8 @@ pub struct ExportDataMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][google.longrunning.Operation.error] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+    /// have \[Operation.error\]\[google.longrunning.Operation.error\] value with a
+    /// \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "7")]
     pub requested_cancellation: bool,
@@ -725,7 +725,7 @@ pub struct TransferOperationMetadata {
 /// Nested message and enum types in `TransferOperationMetadata`.
 pub mod transfer_operation_metadata {
     /// The source of transfer operation.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Source {
         /// Output only. Parallelstore source.
         #[prost(message, tag = "7")]
@@ -735,7 +735,7 @@ pub mod transfer_operation_metadata {
         SourceGcsBucket(super::SourceGcsBucket),
     }
     /// The destination of transfer operation.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Destination {
         /// Output only. Cloud Storage destination.
         #[prost(message, tag = "9")]
@@ -746,7 +746,7 @@ pub mod transfer_operation_metadata {
     }
 }
 /// A collection of counters that report the progress of a transfer operation.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TransferCounters {
     /// Objects found in the data source that are scheduled to be transferred,
     /// excluding any that are filtered based on object conditions or skipped due
@@ -938,13 +938,15 @@ pub mod parallelstore_client {
     ///
     /// The `parallelstore.googleapis.com` service implements the parallelstore API
     /// and defines the following resource model for managing instances:
+    ///
     /// * The service works with a collection of cloud projects, named: `/projects/*`
     /// * Each project has a collection of available locations, named: `/locations/*`
     /// * Each location has a collection of instances named `/instances/*`.
     /// * Parallelstore instances are resources of the form:
-    ///   `/projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+    ///  `/projects/{project_id}/locations/{location_id}/instances/{instance_id}`
     ///
     /// Note that location_id must be a Google Cloud `zone`; for example:
+    ///
     /// * `projects/12345/locations/us-central1-c/instances/my-parallelstore-share`
     #[derive(Debug, Clone)]
     pub struct ParallelstoreClient<T> {
@@ -1042,7 +1044,7 @@ pub mod parallelstore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.parallelstore.v1beta.Parallelstore/ListInstances",
             );
@@ -1069,7 +1071,7 @@ pub mod parallelstore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.parallelstore.v1beta.Parallelstore/GetInstance",
             );
@@ -1099,7 +1101,7 @@ pub mod parallelstore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.parallelstore.v1beta.Parallelstore/CreateInstance",
             );
@@ -1129,7 +1131,7 @@ pub mod parallelstore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.parallelstore.v1beta.Parallelstore/UpdateInstance",
             );
@@ -1159,7 +1161,7 @@ pub mod parallelstore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.parallelstore.v1beta.Parallelstore/DeleteInstance",
             );
@@ -1189,7 +1191,7 @@ pub mod parallelstore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.parallelstore.v1beta.Parallelstore/ImportData",
             );
@@ -1219,7 +1221,7 @@ pub mod parallelstore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.parallelstore.v1beta.Parallelstore/ExportData",
             );

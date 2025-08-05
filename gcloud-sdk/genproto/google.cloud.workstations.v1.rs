@@ -71,7 +71,7 @@ pub struct WorkstationCluster {
     /// Output only. Whether this workstation cluster is in degraded mode, in which
     /// case it may require user action to restore full functionality. Details can
     /// be found in
-    /// [conditions][google.cloud.workstations.v1.WorkstationCluster.conditions].
+    /// \[conditions\]\[google.cloud.workstations.v1.WorkstationCluster.conditions\].
     #[prost(bool, tag = "13")]
     pub degraded: bool,
     /// Output only. Status conditions describing the workstation cluster's current
@@ -82,7 +82,7 @@ pub struct WorkstationCluster {
 /// Nested message and enum types in `WorkstationCluster`.
 pub mod workstation_cluster {
     /// Configuration options for private workstation clusters.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PrivateClusterConfig {
         /// Immutable. Whether Workstations endpoint is private.
         #[prost(bool, tag = "1")]
@@ -178,18 +178,18 @@ pub struct WorkstationConfig {
     /// automatically shut down. We recommend that workstations be shut down daily
     /// to reduce costs and so that security updates can be applied upon restart.
     /// The
-    /// [idle_timeout][google.cloud.workstations.v1.WorkstationConfig.idle_timeout]
+    /// \[idle_timeout\]\[google.cloud.workstations.v1.WorkstationConfig.idle_timeout\]
     /// and
-    /// [running_timeout][google.cloud.workstations.v1.WorkstationConfig.running_timeout]
+    /// \[running_timeout\]\[google.cloud.workstations.v1.WorkstationConfig.running_timeout\]
     /// fields are independent of each other. Note that the
-    /// [running_timeout][google.cloud.workstations.v1.WorkstationConfig.running_timeout]
+    /// \[running_timeout\]\[google.cloud.workstations.v1.WorkstationConfig.running_timeout\]
     /// field shuts down VMs after the specified time, regardless of whether or not
     /// the VMs are idle.
     ///
     /// Provide duration terminated by `s` for seconds—for example, `"54000s"`
     /// (15 hours). Defaults to `"43200s"` (12 hours). A value of `"0s"` indicates
     /// that workstations using this configuration should never time out. If
-    /// [encryption_key][google.cloud.workstations.v1.WorkstationConfig.encryption_key]
+    /// \[encryption_key\]\[google.cloud.workstations.v1.WorkstationConfig.encryption_key\]
     /// is set, it must be greater than `"0s"` and less than
     /// `"86400s"` (24 hours).
     ///
@@ -248,7 +248,7 @@ pub struct WorkstationConfig {
     pub replica_zones: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. Whether this resource is degraded, in which case it may
     /// require user action to restore full functionality. See also the
-    /// [conditions][google.cloud.workstations.v1.WorkstationConfig.conditions]
+    /// \[conditions\]\[google.cloud.workstations.v1.WorkstationConfig.conditions\]
     /// field.
     #[prost(bool, tag = "15")]
     pub degraded: bool,
@@ -259,7 +259,7 @@ pub struct WorkstationConfig {
 /// Nested message and enum types in `WorkstationConfig`.
 pub mod workstation_config {
     /// Runtime host for a workstation.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Host {
         /// Type of host that will be used for the workstation's runtime.
         #[prost(oneof = "host::Config", tags = "1")]
@@ -268,7 +268,7 @@ pub mod workstation_config {
     /// Nested message and enum types in `Host`.
     pub mod host {
         /// A runtime using a Compute Engine instance.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct GceInstance {
             /// Optional. The type of machine to use for VM instances—for example,
             /// `"e2-standard-4"`. For more information about machine types that
@@ -297,7 +297,7 @@ pub mod workstation_config {
             #[prost(string, tag = "2")]
             pub service_account: ::prost::alloc::string::String,
             /// Optional. Scopes to grant to the
-            /// [service_account][google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.service_account].
+            /// \[service_account\]\[google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.service_account\].
             /// Various scopes are automatically added based on feature usage. When
             /// specified, users of workstations under this configuration must have
             /// `iam.serviceAccounts.actAs` on the service account.
@@ -342,30 +342,30 @@ pub mod workstation_config {
             /// instances](<https://cloud.google.com/compute/docs/instances/nested-virtualization/overview#restrictions>):
             ///
             /// * **Organization policy**: projects, folders, or
-            /// organizations may be restricted from creating nested VMs if the
-            /// **Disable VM nested virtualization** constraint is enforced in
-            /// the organization policy. For more information, see the
-            /// Compute Engine section,
-            /// [Checking whether nested virtualization is
-            /// allowed](<https://cloud.google.com/compute/docs/instances/nested-virtualization/managing-constraint#checking_whether_nested_virtualization_is_allowed>).
+            ///   organizations may be restricted from creating nested VMs if the
+            ///   **Disable VM nested virtualization** constraint is enforced in
+            ///   the organization policy. For more information, see the
+            ///   Compute Engine section,
+            ///   [Checking whether nested virtualization is
+            ///   allowed](<https://cloud.google.com/compute/docs/instances/nested-virtualization/managing-constraint#checking_whether_nested_virtualization_is_allowed>).
             /// * **Performance**: nested VMs might experience a 10% or greater
-            /// decrease in performance for workloads that are CPU-bound and
-            /// possibly greater than a 10% decrease for workloads that are
-            /// input/output bound.
+            ///   decrease in performance for workloads that are CPU-bound and
+            ///   possibly greater than a 10% decrease for workloads that are
+            ///   input/output bound.
             /// * **Machine Type**: nested virtualization can only be enabled on
-            /// workstation configurations that specify a
-            /// [machine_type][google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.machine_type]
-            /// in the N1 or N2 machine series.
+            ///   workstation configurations that specify a
+            ///   \[machine_type\]\[google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.machine_type\]
+            ///   in the N1 or N2 machine series.
             /// * **GPUs**: nested virtualization may not be enabled on workstation
-            /// configurations with accelerators.
+            ///   configurations with accelerators.
             /// * **Operating System**: Because
-            /// [Container-Optimized
-            /// OS](<https://cloud.google.com/compute/docs/images/os-details#container-optimized_os_cos>)
-            /// does not support nested virtualization, when nested virtualization is
-            /// enabled, the underlying Compute Engine VM instances boot from an
-            /// [Ubuntu
-            /// LTS](<https://cloud.google.com/compute/docs/images/os-details#ubuntu_lts>)
-            /// image.
+            ///   [Container-Optimized
+            ///   OS](<https://cloud.google.com/compute/docs/images/os-details#container-optimized_os_cos>)
+            ///   does not support nested virtualization, when nested virtualization is
+            ///   enabled, the underlying Compute Engine VM instances boot from an
+            ///   [Ubuntu
+            ///   LTS](<https://cloud.google.com/compute/docs/images/os-details#ubuntu_lts>)
+            ///   image.
             #[prost(bool, tag = "7")]
             pub enable_nested_virtualization: bool,
             /// Optional. A set of Compute Engine Shielded instance options.
@@ -386,7 +386,7 @@ pub mod workstation_config {
         /// Nested message and enum types in `GceInstance`.
         pub mod gce_instance {
             /// A set of Compute Engine Shielded instance options.
-            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct GceShieldedInstanceConfig {
                 /// Optional. Whether the instance has Secure Boot enabled.
                 #[prost(bool, tag = "1")]
@@ -399,7 +399,7 @@ pub mod workstation_config {
                 pub enable_integrity_monitoring: bool,
             }
             /// A set of Compute Engine Confidential VM instance options.
-            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct GceConfidentialInstanceConfig {
                 /// Optional. Whether the instance has confidential compute enabled.
                 #[prost(bool, tag = "1")]
@@ -407,7 +407,7 @@ pub mod workstation_config {
             }
         }
         /// Type of host that will be used for the workstation's runtime.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Config {
             /// Specifies a Compute Engine instance as the host.
             #[prost(message, tag = "1")]
@@ -415,7 +415,7 @@ pub mod workstation_config {
         }
     }
     /// A directory to persist across workstation sessions.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PersistentDirectory {
         /// Optional. Location of this directory in the running workstation.
         #[prost(string, tag = "1")]
@@ -428,7 +428,7 @@ pub mod workstation_config {
     pub mod persistent_directory {
         /// A PersistentDirectory backed by a Compute Engine regional persistent
         /// disk. The
-        /// [persistent_directories][google.cloud.workstations.v1.WorkstationConfig.persistent_directories]
+        /// \[persistent_directories\]\[google.cloud.workstations.v1.WorkstationConfig.persistent_directories\]
         /// field is repeated, but it may contain only one entry. It creates a
         /// [persistent
         /// disk](<https://cloud.google.com/compute/docs/disks/persistent-disks>) that
@@ -436,16 +436,16 @@ pub mod workstation_config {
         /// detaches when the session ends. If this field is empty, workstations
         /// created with this configuration do not have a persistent home
         /// directory.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct GceRegionalPersistentDisk {
             /// Optional. The GB capacity of a persistent home directory for each
             /// workstation created with this configuration. Must be empty if
-            /// [source_snapshot][google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.GceRegionalPersistentDisk.source_snapshot]
+            /// \[source_snapshot\]\[google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.GceRegionalPersistentDisk.source_snapshot\]
             /// is set.
             ///
             /// Valid values are `10`, `50`, `100`, `200`, `500`, or `1000`.
             /// Defaults to `200`. If less than `200` GB, the
-            /// [disk_type][google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.GceRegionalPersistentDisk.disk_type]
+            /// \[disk_type\]\[google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.GceRegionalPersistentDisk.disk_type\]
             /// must be
             /// `"pd-balanced"` or `"pd-ssd"`.
             #[prost(int32, tag = "1")]
@@ -453,7 +453,7 @@ pub mod workstation_config {
             /// Optional. Type of file system that the disk should be formatted with.
             /// The workstation image must support this file system type. Must be empty
             /// if
-            /// [source_snapshot][google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.GceRegionalPersistentDisk.source_snapshot]
+            /// \[source_snapshot\]\[google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.GceRegionalPersistentDisk.source_snapshot\]
             /// is set. Defaults to `"ext4"`.
             #[prost(string, tag = "2")]
             pub fs_type: ::prost::alloc::string::String,
@@ -464,9 +464,9 @@ pub mod workstation_config {
             pub disk_type: ::prost::alloc::string::String,
             /// Optional. Name of the snapshot to use as the source for the disk. If
             /// set,
-            /// [size_gb][google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.GceRegionalPersistentDisk.size_gb]
+            /// \[size_gb\]\[google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.GceRegionalPersistentDisk.size_gb\]
             /// and
-            /// [fs_type][google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.GceRegionalPersistentDisk.fs_type]
+            /// \[fs_type\]\[google.cloud.workstations.v1.WorkstationConfig.PersistentDirectory.GceRegionalPersistentDisk.fs_type\]
             /// must be empty.
             #[prost(string, tag = "5")]
             pub source_snapshot: ::prost::alloc::string::String,
@@ -528,7 +528,7 @@ pub mod workstation_config {
             }
         }
         /// How a persistent directory should be implemented.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum DirectoryType {
             /// A PersistentDirectory backed by a Compute Engine persistent disk.
             #[prost(message, tag = "2")]
@@ -579,7 +579,7 @@ pub mod workstation_config {
     /// We recommend that you use a separate service account and follow
     /// [Cloud KMS best
     /// practices](<https://cloud.google.com/kms/docs/separation-of-duties>).
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CustomerEncryptionKey {
         /// Immutable. The name of the Google Cloud KMS encryption key. For example,
         /// `"projects/PROJECT_ID/locations/REGION/keyRings/KEY_RING/cryptoKeys/KEY_NAME"`.
@@ -597,7 +597,7 @@ pub mod workstation_config {
         pub kms_key_service_account: ::prost::alloc::string::String,
     }
     /// A readiness check to be performed on a workstation.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ReadinessCheck {
         /// Optional. Path to which the request should be sent.
         #[prost(string, tag = "1")]
@@ -724,14 +724,14 @@ pub mod workstation {
     }
 }
 /// Request message for GetWorkstationCluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetWorkstationClusterRequest {
     /// Required. Name of the requested resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListWorkstationClusters.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListWorkstationClustersRequest {
     /// Required. Parent resource name.
     #[prost(string, tag = "1")]
@@ -796,7 +796,7 @@ pub struct UpdateWorkstationClusterRequest {
     pub allow_missing: bool,
 }
 /// Message for deleting a workstation cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteWorkstationClusterRequest {
     /// Required. Name of the workstation cluster to delete.
     #[prost(string, tag = "1")]
@@ -816,14 +816,14 @@ pub struct DeleteWorkstationClusterRequest {
     pub force: bool,
 }
 /// Request message for GetWorkstationConfig.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetWorkstationConfigRequest {
     /// Required. Name of the requested resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListWorkstationConfigs.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListWorkstationConfigsRequest {
     /// Required. Parent resource name.
     #[prost(string, tag = "1")]
@@ -851,7 +851,7 @@ pub struct ListWorkstationConfigsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for ListUsableWorkstationConfigs.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListUsableWorkstationConfigsRequest {
     /// Required. Parent resource name.
     #[prost(string, tag = "1")]
@@ -916,7 +916,7 @@ pub struct UpdateWorkstationConfigRequest {
     pub allow_missing: bool,
 }
 /// Message for deleting a workstation configuration.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteWorkstationConfigRequest {
     /// Required. Name of the workstation configuration to delete.
     #[prost(string, tag = "1")]
@@ -936,14 +936,14 @@ pub struct DeleteWorkstationConfigRequest {
     pub force: bool,
 }
 /// Request message for GetWorkstation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetWorkstationRequest {
     /// Required. Name of the requested resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListWorkstations.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListWorkstationsRequest {
     /// Required. Parent resource name.
     #[prost(string, tag = "1")]
@@ -971,7 +971,7 @@ pub struct ListWorkstationsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for ListUsableWorkstations.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListUsableWorkstationsRequest {
     /// Required. Parent resource name.
     #[prost(string, tag = "1")]
@@ -1036,7 +1036,7 @@ pub struct UpdateWorkstationRequest {
     pub allow_missing: bool,
 }
 /// Request message for DeleteWorkstation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteWorkstationRequest {
     /// Required. Name of the workstation to delete.
     #[prost(string, tag = "1")]
@@ -1051,7 +1051,7 @@ pub struct DeleteWorkstationRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request message for StartWorkstation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StartWorkstationRequest {
     /// Required. Name of the workstation to start.
     #[prost(string, tag = "1")]
@@ -1066,7 +1066,7 @@ pub struct StartWorkstationRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request message for StopWorkstation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StopWorkstationRequest {
     /// Required. Name of the workstation to stop.
     #[prost(string, tag = "1")]
@@ -1081,7 +1081,7 @@ pub struct StopWorkstationRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request message for GenerateAccessToken.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateAccessTokenRequest {
     /// Required. Name of the workstation for which the access token should be
     /// generated.
@@ -1094,7 +1094,7 @@ pub struct GenerateAccessTokenRequest {
 /// Nested message and enum types in `GenerateAccessTokenRequest`.
 pub mod generate_access_token_request {
     /// Desired expiration or lifetime of the access token.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Expiration {
         /// Desired expiration time of the access token. This value must
         /// be at most 24 hours in the future. If a value is not specified, the
@@ -1110,12 +1110,11 @@ pub mod generate_access_token_request {
     }
 }
 /// Response message for GenerateAccessToken.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateAccessTokenResponse {
     /// The generated bearer access token. To use this token, include it in an
     /// Authorization header of an HTTP request sent to the associated
-    /// workstation's hostname—for example, `Authorization: Bearer
-    /// <access_token>`.
+    /// workstation's hostname—for example, `Authorization: Bearer  <access_token>`.
     #[prost(string, tag = "1")]
     pub access_token: ::prost::alloc::string::String,
     /// Time at which the generated token will expire.
@@ -1123,7 +1122,7 @@ pub struct GenerateAccessTokenResponse {
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Metadata for long-running operations.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. Time that the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -1256,7 +1255,7 @@ pub mod workstations_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workstations.v1.Workstations/GetWorkstationCluster",
             );
@@ -1286,7 +1285,7 @@ pub mod workstations_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workstations.v1.Workstations/ListWorkstationClusters",
             );
@@ -1316,7 +1315,7 @@ pub mod workstations_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workstations.v1.Workstations/CreateWorkstationCluster",
             );
@@ -1346,7 +1345,7 @@ pub mod workstations_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workstations.v1.Workstations/UpdateWorkstationCluster",
             );
@@ -1376,7 +1375,7 @@ pub mod workstations_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workstations.v1.Workstations/DeleteWorkstationCluster",
             );
@@ -1406,7 +1405,7 @@ pub mod workstations_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workstations.v1.Workstations/GetWorkstationConfig",
             );
@@ -1436,7 +1435,7 @@ pub mod workstations_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workstations.v1.Workstations/ListWorkstationConfigs",
             );
@@ -1467,7 +1466,7 @@ pub mod workstations_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workstations.v1.Workstations/ListUsableWorkstationConfigs",
             );
@@ -1497,7 +1496,7 @@ pub mod workstations_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workstations.v1.Workstations/CreateWorkstationConfig",
             );
@@ -1527,7 +1526,7 @@ pub mod workstations_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workstations.v1.Workstations/UpdateWorkstationConfig",
             );
@@ -1557,7 +1556,7 @@ pub mod workstations_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workstations.v1.Workstations/DeleteWorkstationConfig",
             );
@@ -1584,7 +1583,7 @@ pub mod workstations_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workstations.v1.Workstations/GetWorkstation",
             );
@@ -1614,7 +1613,7 @@ pub mod workstations_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workstations.v1.Workstations/ListWorkstations",
             );
@@ -1645,7 +1644,7 @@ pub mod workstations_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workstations.v1.Workstations/ListUsableWorkstations",
             );
@@ -1675,7 +1674,7 @@ pub mod workstations_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workstations.v1.Workstations/CreateWorkstation",
             );
@@ -1705,7 +1704,7 @@ pub mod workstations_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workstations.v1.Workstations/UpdateWorkstation",
             );
@@ -1735,7 +1734,7 @@ pub mod workstations_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workstations.v1.Workstations/DeleteWorkstation",
             );
@@ -1765,7 +1764,7 @@ pub mod workstations_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workstations.v1.Workstations/StartWorkstation",
             );
@@ -1795,7 +1794,7 @@ pub mod workstations_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workstations.v1.Workstations/StopWorkstation",
             );
@@ -1826,7 +1825,7 @@ pub mod workstations_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workstations.v1.Workstations/GenerateAccessToken",
             );

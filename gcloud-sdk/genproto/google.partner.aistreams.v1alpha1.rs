@@ -27,7 +27,7 @@ pub struct Cluster {
     pub service_endpoint: ::prost::alloc::string::String,
 }
 /// Request message for 'ListClusters'.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListClustersRequest {
     /// Required. The parent that owns the collection of Clusters.
     #[prost(string, tag = "1")]
@@ -63,7 +63,7 @@ pub struct ListClustersResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for 'GetCluster'.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetClusterRequest {
     /// Required. The name of the Cluster resource to get.
     #[prost(string, tag = "1")]
@@ -127,7 +127,7 @@ pub struct UpdateClusterRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for 'DeleteCluster'.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteClusterRequest {
     /// Required. The name of cluster to delete.
     #[prost(string, tag = "1")]
@@ -169,7 +169,7 @@ pub struct Stream {
     >,
 }
 /// Request message for 'ListStreams'.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListStreamsRequest {
     /// Required. The parent that owns the collection of the Streams.
     #[prost(string, tag = "1")]
@@ -205,7 +205,7 @@ pub struct ListStreamsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for 'GetStream'.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetStreamRequest {
     /// Required. The name of the stream.
     #[prost(string, tag = "1")]
@@ -269,7 +269,7 @@ pub struct UpdateStreamRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for 'DeleteStream'.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteStreamRequest {
     /// Required. The name of the stream.
     #[prost(string, tag = "1")]
@@ -291,7 +291,7 @@ pub struct DeleteStreamRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -310,8 +310,8 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+    /// have \[Operation.error\]\[\] value with a
+    /// \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -427,7 +427,7 @@ pub mod ai_streams_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.partner.aistreams.v1alpha1.AIStreams/ListClusters",
             );
@@ -454,7 +454,7 @@ pub mod ai_streams_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.partner.aistreams.v1alpha1.AIStreams/GetCluster",
             );
@@ -484,7 +484,7 @@ pub mod ai_streams_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.partner.aistreams.v1alpha1.AIStreams/CreateCluster",
             );
@@ -514,7 +514,7 @@ pub mod ai_streams_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.partner.aistreams.v1alpha1.AIStreams/UpdateCluster",
             );
@@ -544,7 +544,7 @@ pub mod ai_streams_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.partner.aistreams.v1alpha1.AIStreams/DeleteCluster",
             );
@@ -574,7 +574,7 @@ pub mod ai_streams_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.partner.aistreams.v1alpha1.AIStreams/ListStreams",
             );
@@ -601,7 +601,7 @@ pub mod ai_streams_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.partner.aistreams.v1alpha1.AIStreams/GetStream",
             );
@@ -631,7 +631,7 @@ pub mod ai_streams_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.partner.aistreams.v1alpha1.AIStreams/CreateStream",
             );
@@ -661,7 +661,7 @@ pub mod ai_streams_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.partner.aistreams.v1alpha1.AIStreams/UpdateStream",
             );
@@ -691,7 +691,7 @@ pub mod ai_streams_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.partner.aistreams.v1alpha1.AIStreams/DeleteStream",
             );

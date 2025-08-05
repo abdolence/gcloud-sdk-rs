@@ -28,7 +28,7 @@ pub struct CheckRequest {
     pub flags: ::prost::alloc::string::String,
 }
 /// Describes a resource referenced in the request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourceInfo {
     /// The name of the resource referenced in the request.
     #[prost(string, tag = "1")]
@@ -42,9 +42,9 @@ pub struct ResourceInfo {
     pub permission: ::prost::alloc::string::String,
     /// Optional. The identifier of the container of this resource. For Google
     /// Cloud APIs, the resource container must be one of the following formats:
-    ///      - `projects/<project-id or project-number>`
-    ///      - `folders/<folder-number>`
-    ///      - `organizations/<organization-number>`
+    /// - `projects/<project-id or project-number>`
+    /// - `folders/<folder-number>`
+    /// - `organizations/<organization-number>`
     /// Required for the policy enforcement on the container level (e.g. VPCSC,
     /// Location Policy check, Org Policy check).
     #[prost(string, tag = "4")]
@@ -59,7 +59,7 @@ pub struct ResourceInfo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckResponse {
     /// Operation is allowed when this field is not set. Any non-'OK' status
-    /// indicates a denial; [google.rpc.Status.details][google.rpc.Status.details]
+    /// indicates a denial; \[google.rpc.Status.details\]\[google.rpc.Status.details\]
     /// would contain additional details about the denial.
     #[prost(message, optional, tag = "1")]
     pub status: ::core::option::Option<super::super::super::rpc::Status>,
@@ -96,7 +96,7 @@ pub struct ReportRequest {
 }
 /// Response message for the Report method.
 /// If the request contains any invalid data, the server returns an RPC error.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReportResponse {}
 /// Message containing resource details in a batch mode.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -234,7 +234,7 @@ pub mod service_controller_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.servicecontrol.v2.ServiceController/Check",
             );
@@ -275,7 +275,7 @@ pub mod service_controller_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.servicecontrol.v2.ServiceController/Report",
             );

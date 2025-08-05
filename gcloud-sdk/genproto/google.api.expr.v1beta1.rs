@@ -22,7 +22,7 @@ pub struct SourceInfo {
     pub positions: ::std::collections::HashMap<i32, i32>,
 }
 /// A specific position in source.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SourcePosition {
     /// The soucre location name (e.g. file name).
     #[prost(string, tag = "1")]
@@ -59,13 +59,13 @@ pub struct ParsedExpr {
 /// operators with the exception of the '.' operator are modelled as function
 /// calls. This makes it easy to represent new operators into the existing AST.
 ///
-/// All references within expressions must resolve to a [Decl][google.api.expr.v1beta1.Decl] provided at
+/// All references within expressions must resolve to a \[Decl\]\[google.api.expr.v1beta1.Decl\] provided at
 /// type-check for an expression to be valid. A reference may either be a bare
 /// identifier `name` or a qualified identifier `google.api.name`. References
 /// may either refer to a value or a function declaration.
 ///
 /// For example, the expression `google.api.name.startsWith('expr')` references
-/// the declaration `google.api.name` within a [Expr.Select][google.api.expr.v1beta1.Expr.Select] expression, and
+/// the declaration `google.api.name` within a \[Expr.Select\]\[google.api.expr.v1beta1.Expr.Select\] expression, and
 /// the function declaration `startsWith`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Expr {
@@ -81,12 +81,12 @@ pub struct Expr {
 /// Nested message and enum types in `Expr`.
 pub mod expr {
     /// An identifier expression. e.g. `request`.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Ident {
         /// Required. Holds a single, unqualified identifier, possibly preceded by a
         /// '.'.
         ///
-        /// Qualified names are represented by the [Expr.Select][google.api.expr.v1beta1.Expr.Select] expression.
+        /// Qualified names are represented by the \[Expr.Select\]\[google.api.expr.v1beta1.Expr.Select\] expression.
         #[prost(string, tag = "1")]
         pub name: ::prost::alloc::string::String,
     }
@@ -195,20 +195,18 @@ pub mod expr {
     /// Aggregate type macros may be applied to all elements in a list or all keys
     /// in a map:
     ///
-    /// *  `all`, `exists`, `exists_one` -  test a predicate expression against
-    ///     the inputs and return `true` if the predicate is satisfied for all,
-    ///     any, or only one value `list.all(x, x < 10)`.
-    /// *  `filter` - test a predicate expression against the inputs and return
-    ///     the subset of elements which satisfy the predicate:
-    ///     `payments.filter(p, p > 1000)`.
-    /// *  `map` - apply an expression to all elements in the input and return the
-    ///     output aggregate type: `\[1, 2, 3\].map(i, i * i)`.
+    /// * `all`, `exists`, `exists_one` -  test a predicate expression against
+    ///   the inputs and return `true` if the predicate is satisfied for all,
+    ///   any, or only one value `list.all(x, x < 10)`.
+    /// * `filter` - test a predicate expression against the inputs and return
+    ///   the subset of elements which satisfy the predicate:
+    ///   `payments.filter(p, p > 1000)`.
+    /// * `map` - apply an expression to all elements in the input and return the
+    ///   output aggregate type: `\[1, 2, 3\].map(i, i * i)`.
     ///
     /// The `has(m.x)` macro tests whether the property `x` is present in struct
     /// `m`. The semantics of this macro depend on the type of `m`. For proto2
-    /// messages `has(m.x)` is defined as 'defined, but not set`. For proto3, the
-    /// macro tests whether the property is set to its default. For map and struct
-    /// types, the macro tests whether the property `x` is defined on `m`.
+    /// messages `has(m.x)` is defined as 'defined, but not set`. For proto3, the  macro tests whether the property is set to its default. For map and struct  types, the macro tests whether the property `x`is defined on`m\`.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Comprehension {
         /// The name of the iteration variable.
@@ -275,7 +273,7 @@ pub mod expr {
 /// primitives.
 ///
 /// Lists and structs are not included as constants as these aggregate types may
-/// contain [Expr][google.api.expr.v1beta1.Expr] elements which require evaluation and are thus not constant.
+/// contain \[Expr\]\[google.api.expr.v1beta1.Expr\] elements which require evaluation and are thus not constant.
 ///
 /// Examples of literals include: `"hello"`, `b'bytes'`, `1u`, `4.2`, `-2`,
 /// `true`, `null`.
@@ -436,7 +434,7 @@ pub mod value {
     }
 }
 /// An enum value.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnumValue {
     /// The fully qualified name of the enum type.
     #[prost(string, tag = "1")]
@@ -502,7 +500,7 @@ pub struct EvalState {
 /// Nested message and enum types in `EvalState`.
 pub mod eval_state {
     /// A single evaluation result.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Result {
         /// The expression this result is for.
         #[prost(message, optional, tag = "1")]
@@ -553,22 +551,28 @@ pub mod expr_value {
         /// unknowns *might* be included included when evaluation could result in
         /// different unknowns. For example:
         ///
-        ///      (<unknown\[1\]> || true) && <unknown\[2\]> -> <unknown\[2\]>
-        ///      <unknown\[1\]> || <unknown\[2\]> -> <unknown\[1,2\]>
-        ///      <unknown\[1\]>.foo -> <unknown\[1\]>
-        ///      foo(<unknown\[1\]>) -> <unknown\[1\]>
-        ///      <unknown\[1\]> + <unknown\[2\]> -> <unknown\[1\]> or <unknown[2[>
+        /// ```text
+        /// (<unknown\[1\]> || true) && <unknown\[2\]> -> <unknown\[2\]>
+        /// <unknown\[1\]> || <unknown\[2\]> -> <unknown\[1,2\]>
+        /// <unknown\[1\]>.foo -> <unknown\[1\]>
+        /// foo(<unknown\[1\]>) -> <unknown\[1\]>
+        /// <unknown\[1\]> + <unknown\[2\]> -> <unknown\[1\]> or <unknown[2[>
+        /// ```
         ///
         /// Unknown takes precidence over Error in cases where a `Value` can short
         /// circuit the result:
         ///
-        ///      <error> || <unknown> -> <unknown>
-        ///      <error> && <unknown> -> <unknown>
+        /// ```text
+        /// <error> || <unknown> -> <unknown>
+        /// <error> && <unknown> -> <unknown>
+        /// ```
         ///
         /// Errors take precidence in all other cases:
         ///
-        ///      <unknown> + <error> -> <error>
-        ///      foo(<unknown>, <error>) -> <error>
+        /// ```text
+        /// <unknown> + <error> -> <error>
+        /// foo(<unknown>, <error>) -> <error>
+        /// ```
         #[prost(message, tag = "3")]
         Unknown(super::UnknownSet),
     }
@@ -592,7 +596,7 @@ pub struct UnknownSet {
     pub exprs: ::prost::alloc::vec::Vec<IdRef>,
 }
 /// A reference to an expression id.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IdRef {
     /// The expression id.
     #[prost(int32, tag = "1")]

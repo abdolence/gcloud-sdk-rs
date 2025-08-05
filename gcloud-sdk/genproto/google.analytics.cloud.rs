@@ -2,7 +2,7 @@
 /// ExportStatusLog is used in a log entry to represent the status of a given
 /// BigQuery export job from Google Analytics. Typically, it is sent at the
 /// beginning of the day to indicate the completion of the previous day's export.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportStatusLog {
     /// The date of the export. Usually set to the collection date (YYYYMMDD).
     #[prost(string, tag = "1")]

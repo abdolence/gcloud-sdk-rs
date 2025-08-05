@@ -3,7 +3,7 @@
 /// A Channel is a resource on which event providers publish their events.
 /// The published events are delivered through the transport associated with the
 /// channel. Note that a channel is associated with exactly one event provider.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Channel {
     /// Required. The resource name of the channel. Must be unique within the
     /// location on the project and must be in
@@ -79,8 +79,8 @@ pub mod channel {
         /// permanently. There are two possible cases this state can happen:
         ///
         /// 1. The SaaS provider disconnected from this Channel.
-        /// 2. The Channel activation token has expired but the SaaS provider
-        ///     wasn't connected.
+        /// 1. The Channel activation token has expired but the SaaS provider
+        ///    wasn't connected.
         ///
         /// To re-establish a Connection with a provider, the subscriber
         /// should create a new Channel and give it to the provider.
@@ -110,7 +110,7 @@ pub mod channel {
             }
         }
     }
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Transport {
         /// Output only. The name of the Pub/Sub topic created and managed by
         /// Eventarc system as a transport for the event delivery. Format:
@@ -123,7 +123,7 @@ pub mod channel {
 /// A ChannelConnection is a resource which event providers create during the
 /// activation process to establish a connection between the provider and the
 /// subscriber channel.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ChannelConnection {
     /// Required. The name of the connection.
     #[prost(string, tag = "1")]
@@ -191,7 +191,7 @@ pub struct EventType {
 }
 /// A representation of the FilteringAttribute resource.
 /// Filtering attributes are per event type.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FilteringAttribute {
     /// Output only. Attribute used for filtering the event type.
     #[prost(string, tag = "1")]
@@ -265,7 +265,7 @@ pub struct Enrollment {
 }
 /// The configuration for Platform Telemetry logging for Eventarc Advanced
 /// resources.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LoggingConfig {
     /// Optional. The minimum severity of logs that will be sent to
     /// Stackdriver/Platform Telemetry. Logs at severitiy ≥ this value will be
@@ -414,7 +414,7 @@ pub struct GoogleApiSource {
 /// Once configured, first-party event data will be protected
 /// using the specified custom managed encryption key instead of Google-managed
 /// encryption keys.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GoogleChannelConfig {
     /// Required. The resource name of the config. Must be in the format of,
     /// `projects/{project}/locations/{location}/googleChannelConfig`.
@@ -567,7 +567,7 @@ pub struct Pipeline {
 /// Nested message and enum types in `Pipeline`.
 pub mod pipeline {
     /// Represents the format of message data.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct MessagePayloadFormat {
         /// The kind of message format.
         /// One of Protobuf, Avro, and JSON supported.
@@ -579,17 +579,17 @@ pub mod pipeline {
     /// Nested message and enum types in `MessagePayloadFormat`.
     pub mod message_payload_format {
         /// The format of a JSON message payload.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct JsonFormat {}
         /// The format of a Protobuf message payload.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct ProtobufFormat {
             /// Optional. The entire schema definition is stored in this field.
             #[prost(string, tag = "1")]
             pub schema_definition: ::prost::alloc::string::String,
         }
         /// The format of an AVRO message payload.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct AvroFormat {
             /// Optional. The entire schema definition is stored in this field.
             #[prost(string, tag = "1")]
@@ -599,7 +599,7 @@ pub mod pipeline {
         /// One of Protobuf, Avro, and JSON supported.
         /// This allows specification of what specific format
         /// messages are sent and received.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Kind {
             /// Optional. Protobuf format.
             #[prost(message, tag = "1")]
@@ -613,7 +613,7 @@ pub mod pipeline {
         }
     }
     /// Represents a target of an invocation over HTTP.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Destination {
         /// Optional. Network config is used to configure how Pipeline resolves and
         /// connects to a destination.
@@ -644,7 +644,7 @@ pub mod pipeline {
     pub mod destination {
         /// Represents a network config to be used for destination resolution and
         /// connectivity.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct NetworkConfig {
             /// Required. Name of the NetworkAttachment that allows access to the
             /// consumer VPC. Format:
@@ -653,7 +653,7 @@ pub mod pipeline {
             pub network_attachment: ::prost::alloc::string::String,
         }
         /// Represents a HTTP endpoint destination.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct HttpEndpoint {
             /// Required. The URI of the HTTP enpdoint.
             ///
@@ -674,11 +674,12 @@ pub mod pipeline {
             ///
             /// To construct the HTTP request payload and the value of the content-type
             /// HTTP header, the payload format is defined as follows:
-            /// 1) Use the output_payload_format_type on the Pipeline.Destination if it
-            ///     is set, else:
-            /// 2) Use the input_payload_format_type on the Pipeline if it is set,
-            ///     else:
-            /// 3) Treat the payload as opaque binary data.
+            ///
+            /// 1. Use the output_payload_format_type on the Pipeline.Destination if it
+            ///    is set, else:
+            /// 1. Use the input_payload_format_type on the Pipeline if it is set,
+            ///    else:
+            /// 1. Treat the payload as opaque binary data.
             ///
             /// The `data` field of the message is converted to the payload format or
             /// left as-is for case 3) and then attached as the payload of the HTTP
@@ -697,132 +698,135 @@ pub mod pipeline {
             /// Content representation.
             /// The result of the CEL expression must be a map of key/value pairs
             /// which is used as follows:
-            /// - If a map named `headers` exists on the result of the expression,
-            /// then its key/value pairs are directly mapped to the HTTP request
-            /// headers. The headers values are constructed from the corresponding
-            /// value type’s canonical representation. If the `headers` field doesn’t
-            /// exist then the resulting HTTP request will be the headers of the
-            /// CloudEvent HTTP Binding Binary Content Mode representation of the final
-            /// message. Note: If the specified binding expression, has updated the
-            /// `datacontenttype` field on the message so that it is not the same as
-            /// the payload format type but it is still a prefix of the payload format
-            /// type, then the `content-type` header in the `headers` map is set to
-            /// this `datacontenttype` value.
-            /// - If a field named `body` exists on the result of the expression then
-            /// its value is directly mapped to the body of the request. If the value
-            /// of the `body` field is of type bytes or string then it is used for
-            /// the HTTP request body as-is, with no conversion. If the body field is
-            /// of any other type then it is converted to a JSON string. If the body
-            /// field does not exist then the resulting payload of the HTTP request
-            /// will be data value of the CloudEvent HTTP Binding Binary Content Mode
-            /// representation of the final message as described earlier.
-            /// - Any other fields in the resulting expression will be ignored.
+            ///
+            /// * If a map named `headers` exists on the result of the expression,
+            ///   then its key/value pairs are directly mapped to the HTTP request
+            ///   headers. The headers values are constructed from the corresponding
+            ///   value type’s canonical representation. If the `headers` field doesn’t
+            ///   exist then the resulting HTTP request will be the headers of the
+            ///   CloudEvent HTTP Binding Binary Content Mode representation of the final
+            ///   message. Note: If the specified binding expression, has updated the
+            ///   `datacontenttype` field on the message so that it is not the same as
+            ///   the payload format type but it is still a prefix of the payload format
+            ///   type, then the `content-type` header in the `headers` map is set to
+            ///   this `datacontenttype` value.
+            /// * If a field named `body` exists on the result of the expression then
+            ///   its value is directly mapped to the body of the request. If the value
+            ///   of the `body` field is of type bytes or string then it is used for
+            ///   the HTTP request body as-is, with no conversion. If the body field is
+            ///   of any other type then it is converted to a JSON string. If the body
+            ///   field does not exist then the resulting payload of the HTTP request
+            ///   will be data value of the CloudEvent HTTP Binding Binary Content Mode
+            ///   representation of the final message as described earlier.
+            /// * Any other fields in the resulting expression will be ignored.
             ///
             /// The CEL expression may access the incoming CloudEvent message in its
             /// definition, as follows:
-            /// - The `data` field of the incoming CloudEvent message can be accessed
-            /// using the `message.data` value. Subfields of `message.data` may also be
-            /// accessed if an input_payload_format has been specified on the Pipeline.
-            /// - Each attribute of the incoming CloudEvent message can be accessed
-            /// using the `message.<key>` value, where <key> is replaced with the
-            /// name of the attribute.
-            /// - Existing headers can be accessed in the CEL expression using the
-            /// `headers` variable. The `headers` variable defines a map of key/value
-            /// pairs corresponding to the HTTP headers of the CloudEvent HTTP Binding
-            /// Binary Content Mode representation of the final message as described
-            /// earlier. For example, the following CEL expression can be used to
-            /// construct an HTTP request by adding an additional header to the HTTP
-            /// headers of the CloudEvent HTTP Binding Binary Content Mode
-            /// representation of the final message and by overwriting the body of the
-            /// request:
             ///
-            /// ```
+            /// * The `data` field of the incoming CloudEvent message can be accessed
+            ///   using the `message.data` value. Subfields of `message.data` may also be
+            ///   accessed if an input_payload_format has been specified on the Pipeline.
+            /// * Each attribute of the incoming CloudEvent message can be accessed
+            ///   using the `message.<key>` value, where <key> is replaced with the
+            ///   name of the attribute.
+            /// * Existing headers can be accessed in the CEL expression using the
+            ///   `headers` variable. The `headers` variable defines a map of key/value
+            ///   pairs corresponding to the HTTP headers of the CloudEvent HTTP Binding
+            ///   Binary Content Mode representation of the final message as described
+            ///   earlier. For example, the following CEL expression can be used to
+            ///   construct an HTTP request by adding an additional header to the HTTP
+            ///   headers of the CloudEvent HTTP Binding Binary Content Mode
+            ///   representation of the final message and by overwriting the body of the
+            ///   request:
+            ///
+            /// ```text,
             /// {
-            ///    "headers": headers.merge({"new-header-key": "new-header-value"}),
-            ///    "body": "new-body"
+            ///   "headers": headers.merge({"new-header-key": "new-header-value"}),
+            ///   "body": "new-body"
             /// }
             /// ```
             ///
             /// Additionally, the following CEL extension functions are provided for
             /// use in this CEL expression:
-            /// - toBase64Url:
-            ///    map.toBase64Url() -> string
-            ///      - Converts a CelValue to a base64url encoded string
-            /// - toJsonString: map.toJsonString() -> string
-            ///      - Converts a CelValue to a JSON string
-            /// - merge:
-            ///    map1.merge(map2) -> map3
-            ///      - Merges the passed CEL map with the existing CEL map the
-            ///      function is applied to.
-            ///      - If the same key exists in both maps, if the key's value is type
-            ///      map both maps are merged else the value from the passed map is
-            ///      used.
-            /// - denormalize:
-            ///    map.denormalize() -> map
-            ///      - Denormalizes a CEL map such that every value of type map or key
-            ///      in the map is expanded to return a single level map.
-            ///      - The resulting keys are "." separated indices of the map keys.
-            ///      - For example:
-            ///        {
-            ///          "a": 1,
-            ///          "b": {
-            ///            "c": 2,
-            ///            "d": 3
-            ///          }
-            ///          "e": \[4, 5\]
-            ///        }
-            ///        .denormalize()
-            ///        -> {
-            ///          "a": 1,
-            ///          "b.c": 2,
-            ///          "b.d": 3,
-            ///          "e.0": 4,
-            ///          "e.1": 5
-            ///        }
-            /// - setField:
-            ///    map.setField(key, value) -> message
-            ///      - Sets the field of the message with the given key to the
-            ///      given value.
-            ///      - If the field is not present it will be added.
-            ///      - If the field is present it will be overwritten.
-            ///      - The key can be a dot separated path to set a field in a nested
-            ///      message.
-            ///      - Key must be of type string.
-            ///      - Value may be any valid type.
-            /// - removeFields:
-            ///    map.removeFields(\[key1, key2, ...\]) -> message
-            ///      - Removes the fields of the map with the given keys.
-            ///      - The keys can be a dot separated path to remove a field in a
-            ///      nested message.
-            ///      - If a key is not found it will be ignored.
-            ///      - Keys must be of type string.
-            /// - toMap:
-            ///    \[map1, map2, ...\].toMap() -> map
-            ///      - Converts a CEL list of CEL maps to a single CEL map
-            /// - toDestinationPayloadFormat():
-            ///    message.data.toDestinationPayloadFormat() -> string or bytes
-            ///      - Converts the message data to the destination payload format
-            ///      specified in Pipeline.Destination.output_payload_format
-            ///      - This function is meant to be applied to the message.data field.
-            ///      - If the destination payload format is not set, the function will
-            ///      return the message data unchanged.
-            /// - toCloudEventJsonWithPayloadFormat:
-            ///    message.toCloudEventJsonWithPayloadFormat() -> map
-            ///      - Converts a message to the corresponding structure of JSON
-            ///      format for CloudEvents
-            ///      - This function applies toDestinationPayloadFormat() to the
-            ///      message data. It also sets the corresponding datacontenttype of
-            ///      the CloudEvent, as indicated by
-            ///      Pipeline.Destination.output_payload_format. If no
-            ///      output_payload_format is set it will use the existing
-            ///      datacontenttype on the CloudEvent if present, else leave
-            ///      datacontenttype absent.
-            ///      - This function expects that the content of the message will
-            ///      adhere to the standard CloudEvent format. If it doesn’t then this
-            ///      function will fail.
-            ///      - The result is a CEL map that corresponds to the JSON
-            ///      representation of the CloudEvent. To convert that data to a JSON
-            ///      string it can be chained with the toJsonString function.
+            ///
+            /// * toBase64Url:
+            ///   map.toBase64Url() -> string
+            ///   * Converts a CelValue to a base64url encoded string
+            /// * toJsonString: map.toJsonString() -> string
+            ///   * Converts a CelValue to a JSON string
+            /// * merge:
+            ///   map1.merge(map2) -> map3
+            ///   * Merges the passed CEL map with the existing CEL map the
+            ///     function is applied to.
+            ///   * If the same key exists in both maps, if the key's value is type
+            ///     map both maps are merged else the value from the passed map is
+            ///     used.
+            /// * denormalize:
+            ///   map.denormalize() -> map
+            ///   * Denormalizes a CEL map such that every value of type map or key
+            ///     in the map is expanded to return a single level map.
+            ///   * The resulting keys are "." separated indices of the map keys.
+            ///   * For example:
+            ///     {
+            ///     "a": 1,
+            ///     "b": {
+            ///     "c": 2,
+            ///     "d": 3
+            ///     }
+            ///     "e": \[4, 5\]
+            ///     }
+            ///     .denormalize()
+            ///     -> {
+            ///     "a": 1,
+            ///     "b.c": 2,
+            ///     "b.d": 3,
+            ///     "e.0": 4,
+            ///     "e.1": 5
+            ///     }
+            /// * setField:
+            ///   map.setField(key, value) -> message
+            ///   * Sets the field of the message with the given key to the
+            ///     given value.
+            ///   * If the field is not present it will be added.
+            ///   * If the field is present it will be overwritten.
+            ///   * The key can be a dot separated path to set a field in a nested
+            ///     message.
+            ///   * Key must be of type string.
+            ///   * Value may be any valid type.
+            /// * removeFields:
+            ///   map.removeFields(\[key1, key2, ...\]) -> message
+            ///   * Removes the fields of the map with the given keys.
+            ///   * The keys can be a dot separated path to remove a field in a
+            ///     nested message.
+            ///   * If a key is not found it will be ignored.
+            ///   * Keys must be of type string.
+            /// * toMap:
+            ///   \[map1, map2, ...\].toMap() -> map
+            ///   * Converts a CEL list of CEL maps to a single CEL map
+            /// * toDestinationPayloadFormat():
+            ///   message.data.toDestinationPayloadFormat() -> string or bytes
+            ///   * Converts the message data to the destination payload format
+            ///     specified in Pipeline.Destination.output_payload_format
+            ///   * This function is meant to be applied to the message.data field.
+            ///   * If the destination payload format is not set, the function will
+            ///     return the message data unchanged.
+            /// * toCloudEventJsonWithPayloadFormat:
+            ///   message.toCloudEventJsonWithPayloadFormat() -> map
+            ///   * Converts a message to the corresponding structure of JSON
+            ///     format for CloudEvents
+            ///   * This function applies toDestinationPayloadFormat() to the
+            ///     message data. It also sets the corresponding datacontenttype of
+            ///     the CloudEvent, as indicated by
+            ///     Pipeline.Destination.output_payload_format. If no
+            ///     output_payload_format is set it will use the existing
+            ///     datacontenttype on the CloudEvent if present, else leave
+            ///     datacontenttype absent.
+            ///   * This function expects that the content of the message will
+            ///     adhere to the standard CloudEvent format. If it doesn’t then this
+            ///     function will fail.
+            ///   * The result is a CEL map that corresponds to the JSON
+            ///     representation of the CloudEvent. To convert that data to a JSON
+            ///     string it can be chained with the toJsonString function.
             ///
             /// The Pipeline expects that the message it receives adheres to the
             /// standard CloudEvent format. If it doesn’t then the outgoing message
@@ -831,7 +835,7 @@ pub mod pipeline {
             pub message_binding_template: ::prost::alloc::string::String,
         }
         /// Represents a config used to authenticate message requests.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct AuthenticationConfig {
             /// The type of authentication method.
             #[prost(
@@ -848,7 +852,7 @@ pub mod pipeline {
             /// a GCP service account. Use this authentication method to invoke your
             /// Cloud Run and Cloud Functions destinations or HTTP endpoints that
             /// support Google OIDC.
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct OidcToken {
                 /// Required. Service account email used to generate the OIDC Token.
                 /// The principal who calls this API must have
@@ -868,8 +872,8 @@ pub mod pipeline {
             /// Contains information needed for generating an
             /// [OAuth token](<https://developers.google.com/identity/protocols/OAuth2>).
             /// This type of authorization should generally only be used when calling
-            /// Google APIs hosted on *.googleapis.com.
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            /// Google APIs hosted on \*.googleapis.com.
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct OAuthToken {
                 /// Required. Service account email used to generate the [OAuth
                 /// token](<https://developers.google.com/identity/protocols/OAuth2>).
@@ -888,7 +892,7 @@ pub mod pipeline {
                 pub scope: ::prost::alloc::string::String,
             }
             /// The type of authentication method.
-            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum AuthenticationMethodDescriptor {
                 /// Optional. This authenticate method will apply Google OIDC tokens
                 /// signed by a GCP service account to the requests.
@@ -900,13 +904,13 @@ pub mod pipeline {
                 /// request.
                 ///
                 /// This type of authorization should generally only be used when calling
-                /// Google APIs hosted on *.googleapis.com.
+                /// Google APIs hosted on \*.googleapis.com.
                 #[prost(message, tag = "2")]
                 OauthToken(OAuthToken),
             }
         }
         /// The destination identifier to which the request should be routed to.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum DestinationDescriptor {
             /// Optional. An HTTP endpoint destination described by an URI.
             /// If a DNS FQDN is provided as the endpoint, Pipeline will create a
@@ -935,7 +939,7 @@ pub mod pipeline {
         }
     }
     /// Mediation defines different ways to modify the Pipeline.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Mediation {
         /// The config of mediation.
         #[prost(oneof = "mediation::MediationDescriptor", tags = "1")]
@@ -944,89 +948,90 @@ pub mod pipeline {
     /// Nested message and enum types in `Mediation`.
     pub mod mediation {
         /// Transformation defines the way to transform an incoming message.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Transformation {
             /// Optional. The CEL expression template to apply to transform messages.
             /// The following CEL extension functions are provided for
             /// use in this CEL expression:
-            /// - merge:
-            ///    map1.merge(map2) -> map3
-            ///      - Merges the passed CEL map with the existing CEL map the
-            ///      function is applied to.
-            ///      - If the same key exists in both maps, if the key's value is type
-            ///      map both maps are merged else the value from the passed map is
-            ///      used.
-            /// - denormalize:
-            ///    map.denormalize() -> map
-            ///      - Denormalizes a CEL map such that every value of type map or key
-            ///      in the map is expanded to return a single level map.
-            ///      - The resulting keys are "." separated indices of the map keys.
-            ///      - For example:
-            ///        {
-            ///          "a": 1,
-            ///          "b": {
-            ///            "c": 2,
-            ///            "d": 3
-            ///          }
-            ///          "e": \[4, 5\]
-            ///        }
-            ///        .denormalize()
-            ///        -> {
-            ///          "a": 1,
-            ///          "b.c": 2,
-            ///          "b.d": 3,
-            ///          "e.0": 4,
-            ///          "e.1": 5
-            ///        }
-            /// - setField:
-            ///    map.setField(key, value) -> message
-            ///      - Sets the field of the message with the given key to the
-            ///      given value.
-            ///      - If the field is not present it will be added.
-            ///      - If the field is present it will be overwritten.
-            ///      - The key can be a dot separated path to set a field in a nested
-            ///      message.
-            ///      - Key must be of type string.
-            ///      - Value may be any valid type.
-            /// - removeFields:
-            ///    map.removeFields(\[key1, key2, ...\]) -> message
-            ///      - Removes the fields of the map with the given keys.
-            ///      - The keys can be a dot separated path to remove a field in a
-            ///      nested message.
-            ///      - If a key is not found it will be ignored.
-            ///      - Keys must be of type string.
-            /// - toMap:
-            ///    \[map1, map2, ...\].toMap() -> map
-            ///      - Converts a CEL list of CEL maps to a single CEL map
-            /// - toDestinationPayloadFormat():
-            ///    message.data.toDestinationPayloadFormat() -> string or bytes
-            ///      - Converts the message data to the destination payload format
-            ///      specified in Pipeline.Destination.output_payload_format
-            ///      - This function is meant to be applied to the message.data field.
-            ///      - If the destination payload format is not set, the function will
-            ///      return the message data unchanged.
-            /// - toCloudEventJsonWithPayloadFormat:
-            ///    message.toCloudEventJsonWithPayloadFormat() -> map
-            ///      - Converts a message to the corresponding structure of JSON
-            ///      format for CloudEvents
-            ///      - This function applies toDestinationPayloadFormat() to the
-            ///      message data. It also sets the corresponding datacontenttype of
-            ///      the CloudEvent, as indicated by
-            ///      Pipeline.Destination.output_payload_format. If no
-            ///      output_payload_format is set it will use the existing
-            ///      datacontenttype on the CloudEvent if present, else leave
-            ///      datacontenttype absent.
-            ///      - This function expects that the content of the message will
-            ///      adhere to the standard CloudEvent format. If it doesn’t then this
-            ///      function will fail.
-            ///      - The result is a CEL map that corresponds to the JSON
-            ///      representation of the CloudEvent. To convert that data to a JSON
-            ///      string it can be chained with the toJsonString function.
+            ///
+            /// * merge:
+            ///   map1.merge(map2) -> map3
+            ///   * Merges the passed CEL map with the existing CEL map the
+            ///     function is applied to.
+            ///   * If the same key exists in both maps, if the key's value is type
+            ///     map both maps are merged else the value from the passed map is
+            ///     used.
+            /// * denormalize:
+            ///   map.denormalize() -> map
+            ///   * Denormalizes a CEL map such that every value of type map or key
+            ///     in the map is expanded to return a single level map.
+            ///   * The resulting keys are "." separated indices of the map keys.
+            ///   * For example:
+            ///     {
+            ///     "a": 1,
+            ///     "b": {
+            ///     "c": 2,
+            ///     "d": 3
+            ///     }
+            ///     "e": \[4, 5\]
+            ///     }
+            ///     .denormalize()
+            ///     -> {
+            ///     "a": 1,
+            ///     "b.c": 2,
+            ///     "b.d": 3,
+            ///     "e.0": 4,
+            ///     "e.1": 5
+            ///     }
+            /// * setField:
+            ///   map.setField(key, value) -> message
+            ///   * Sets the field of the message with the given key to the
+            ///     given value.
+            ///   * If the field is not present it will be added.
+            ///   * If the field is present it will be overwritten.
+            ///   * The key can be a dot separated path to set a field in a nested
+            ///     message.
+            ///   * Key must be of type string.
+            ///   * Value may be any valid type.
+            /// * removeFields:
+            ///   map.removeFields(\[key1, key2, ...\]) -> message
+            ///   * Removes the fields of the map with the given keys.
+            ///   * The keys can be a dot separated path to remove a field in a
+            ///     nested message.
+            ///   * If a key is not found it will be ignored.
+            ///   * Keys must be of type string.
+            /// * toMap:
+            ///   \[map1, map2, ...\].toMap() -> map
+            ///   * Converts a CEL list of CEL maps to a single CEL map
+            /// * toDestinationPayloadFormat():
+            ///   message.data.toDestinationPayloadFormat() -> string or bytes
+            ///   * Converts the message data to the destination payload format
+            ///     specified in Pipeline.Destination.output_payload_format
+            ///   * This function is meant to be applied to the message.data field.
+            ///   * If the destination payload format is not set, the function will
+            ///     return the message data unchanged.
+            /// * toCloudEventJsonWithPayloadFormat:
+            ///   message.toCloudEventJsonWithPayloadFormat() -> map
+            ///   * Converts a message to the corresponding structure of JSON
+            ///     format for CloudEvents
+            ///   * This function applies toDestinationPayloadFormat() to the
+            ///     message data. It also sets the corresponding datacontenttype of
+            ///     the CloudEvent, as indicated by
+            ///     Pipeline.Destination.output_payload_format. If no
+            ///     output_payload_format is set it will use the existing
+            ///     datacontenttype on the CloudEvent if present, else leave
+            ///     datacontenttype absent.
+            ///   * This function expects that the content of the message will
+            ///     adhere to the standard CloudEvent format. If it doesn’t then this
+            ///     function will fail.
+            ///   * The result is a CEL map that corresponds to the JSON
+            ///     representation of the CloudEvent. To convert that data to a JSON
+            ///     string it can be chained with the toJsonString function.
             #[prost(string, tag = "1")]
             pub transformation_template: ::prost::alloc::string::String,
         }
         /// The config of mediation.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum MediationDescriptor {
             /// Optional. How the Pipeline is to transform messages
             #[prost(message, tag = "1")]
@@ -1041,7 +1046,7 @@ pub mod pipeline {
     /// The delay is capped at 60 seconds by default.
     /// Please note that if you set the min_retry_delay and max_retry_delay fields
     /// to the same value this will make the duration between retries constant.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RetryPolicy {
         /// Optional. The maximum number of delivery attempts for any message. The
         /// value must be between 1 and 100. The default value for this field is 5.
@@ -1060,7 +1065,7 @@ pub mod pipeline {
     }
 }
 /// Network Configuration that can be inherited by other protos.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkConfig {
     /// Required. Name of the NetworkAttachment that allows access to the
     /// customer's VPC. Format:
@@ -1145,7 +1150,7 @@ pub struct Trigger {
     pub etag: ::prost::alloc::string::String,
 }
 /// Filters events based on exact matches on the CloudEvents attributes.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EventFilter {
     /// Required. The name of a CloudEvents attribute. Currently, only a subset of
     /// attributes are supported for filtering. You can [retrieve a specific
@@ -1167,7 +1172,7 @@ pub struct EventFilter {
     pub operator: ::prost::alloc::string::String,
 }
 /// A condition that is part of the trigger state computation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StateCondition {
     /// The canonical code of the condition.
     #[prost(enumeration = "super::super::super::rpc::Code", tag = "1")]
@@ -1177,7 +1182,7 @@ pub struct StateCondition {
     pub message: ::prost::alloc::string::String,
 }
 /// Represents a target of an invocation over HTTP.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Destination {
     /// Optional. Network config is used to configure how Eventarc resolves and
     /// connect to a destination.
@@ -1189,7 +1194,7 @@ pub struct Destination {
 }
 /// Nested message and enum types in `Destination`.
 pub mod destination {
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Descriptor {
         /// Cloud Run fully-managed resource that receives the events. The resource
         /// should be in the same project as the trigger.
@@ -1221,14 +1226,14 @@ pub mod destination {
 }
 /// Represents the transport intermediaries created for the trigger to
 /// deliver events.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Transport {
     #[prost(oneof = "transport::Intermediary", tags = "1")]
     pub intermediary: ::core::option::Option<transport::Intermediary>,
 }
 /// Nested message and enum types in `Transport`.
 pub mod transport {
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Intermediary {
         /// The Pub/Sub topic and subscription used by Eventarc as a transport
         /// intermediary.
@@ -1237,7 +1242,7 @@ pub mod transport {
     }
 }
 /// Represents a Cloud Run destination.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloudRun {
     /// Required. The name of the Cloud Run service being addressed. See
     /// <https://cloud.google.com/run/docs/reference/rest/v1/namespaces.services.>
@@ -1258,7 +1263,7 @@ pub struct CloudRun {
     pub region: ::prost::alloc::string::String,
 }
 /// Represents a GKE destination.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Gke {
     /// Required. The name of the cluster the GKE service is running in. The
     /// cluster must be running in the same project as the trigger being created.
@@ -1285,7 +1290,7 @@ pub struct Gke {
     pub path: ::prost::alloc::string::String,
 }
 /// Represents a Pub/Sub transport.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Pubsub {
     /// Optional. The name of the Pub/Sub topic created and managed by Eventarc as
     /// a transport for the event delivery. Format:
@@ -1303,7 +1308,7 @@ pub struct Pubsub {
     pub subscription: ::prost::alloc::string::String,
 }
 /// Represents a HTTP endpoint destination.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HttpEndpoint {
     /// Required. The URI of the HTTP enpdoint.
     ///
@@ -1317,14 +1322,14 @@ pub struct HttpEndpoint {
     pub uri: ::prost::alloc::string::String,
 }
 /// The request message for the GetTrigger method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTriggerRequest {
     /// Required. The name of the trigger to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the ListTriggers method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListTriggersRequest {
     /// Required. The parent collection to list triggers on.
     #[prost(string, tag = "1")]
@@ -1392,7 +1397,7 @@ pub struct UpdateTriggerRequest {
     pub trigger: ::core::option::Option<Trigger>,
     /// The fields to be updated; only fields explicitly provided are updated.
     /// If no field mask is provided, all provided fields in the request are
-    /// updated. To update all fields, provide a field mask of "*".
+    /// updated. To update all fields, provide a field mask of "\*".
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// If set to true, and the trigger is not found, a new trigger will be
@@ -1405,7 +1410,7 @@ pub struct UpdateTriggerRequest {
     pub validate_only: bool,
 }
 /// The request message for the DeleteTrigger method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteTriggerRequest {
     /// Required. The name of the trigger to be deleted.
     #[prost(string, tag = "1")]
@@ -1424,14 +1429,14 @@ pub struct DeleteTriggerRequest {
     pub validate_only: bool,
 }
 /// The request message for the GetChannel method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetChannelRequest {
     /// Required. The name of the channel to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the ListChannels method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListChannelsRequest {
     /// Required. The parent collection to list channels on.
     #[prost(string, tag = "1")]
@@ -1470,7 +1475,7 @@ pub struct ListChannelsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request message for the CreateChannel method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateChannelRequest {
     /// Required. The parent collection in which to add this channel.
     #[prost(string, tag = "1")]
@@ -1487,14 +1492,14 @@ pub struct CreateChannelRequest {
     pub validate_only: bool,
 }
 /// The request message for the UpdateChannel method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateChannelRequest {
     /// The channel to be updated.
     #[prost(message, optional, tag = "1")]
     pub channel: ::core::option::Option<Channel>,
     /// The fields to be updated; only fields explicitly provided are updated.
     /// If no field mask is provided, all provided fields in the request are
-    /// updated. To update all fields, provide a field mask of "*".
+    /// updated. To update all fields, provide a field mask of "\*".
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Optional. If set, validate the request and preview the review, but do not
@@ -1503,7 +1508,7 @@ pub struct UpdateChannelRequest {
     pub validate_only: bool,
 }
 /// The request message for the DeleteChannel method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteChannelRequest {
     /// Required. The name of the channel to be deleted.
     #[prost(string, tag = "1")]
@@ -1514,14 +1519,14 @@ pub struct DeleteChannelRequest {
     pub validate_only: bool,
 }
 /// The request message for the GetProvider method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetProviderRequest {
     /// Required. The name of the provider to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the ListProviders method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListProvidersRequest {
     /// Required. The parent of the provider to get.
     #[prost(string, tag = "1")]
@@ -1561,14 +1566,14 @@ pub struct ListProvidersResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request message for the GetChannelConnection method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetChannelConnectionRequest {
     /// Required. The name of the channel connection to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the ListChannelConnections method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListChannelConnectionsRequest {
     /// Required. The parent collection from which to list channel connections.
     #[prost(string, tag = "1")]
@@ -1603,7 +1608,7 @@ pub struct ListChannelConnectionsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request message for the CreateChannelConnection method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateChannelConnectionRequest {
     /// Required. The parent collection in which to add this channel connection.
     #[prost(string, tag = "1")]
@@ -1616,40 +1621,40 @@ pub struct CreateChannelConnectionRequest {
     pub channel_connection_id: ::prost::alloc::string::String,
 }
 /// The request message for the DeleteChannelConnection method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteChannelConnectionRequest {
     /// Required. The name of the channel connection to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the UpdateGoogleChannelConfig method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateGoogleChannelConfigRequest {
     /// Required. The config to be updated.
     #[prost(message, optional, tag = "1")]
     pub google_channel_config: ::core::option::Option<GoogleChannelConfig>,
     /// The fields to be updated; only fields explicitly provided are updated.
     /// If no field mask is provided, all provided fields in the request are
-    /// updated. To update all fields, provide a field mask of "*".
+    /// updated. To update all fields, provide a field mask of "\*".
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request message for the GetGoogleChannelConfig method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetGoogleChannelConfigRequest {
     /// Required. The name of the config to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the GetMessageBus method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetMessageBusRequest {
     /// Required. The name of the message bus to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the ListMessageBuses method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListMessageBusesRequest {
     /// Required. The parent collection to list triggers on.
     #[prost(string, tag = "1")]
@@ -1692,7 +1697,7 @@ pub struct ListMessageBusesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request message for the `ListMessageBusEnrollments` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListMessageBusEnrollmentsRequest {
     /// Required. The parent message bus to list enrollments on.
     #[prost(string, tag = "1")]
@@ -1710,8 +1715,8 @@ pub struct ListMessageBusEnrollmentsRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response message for the `ListMessageBusEnrollments` method.`
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// The response message for the `ListMessageBusEnrollments` method.\`
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListMessageBusEnrollmentsResponse {
     /// The requested enrollments, up to the number specified in `page_size`.
     #[prost(string, repeated, tag = "1")]
@@ -1750,7 +1755,7 @@ pub struct UpdateMessageBusRequest {
     pub message_bus: ::core::option::Option<MessageBus>,
     /// Optional. The fields to be updated; only fields explicitly provided are
     /// updated. If no field mask is provided, all provided fields in the request
-    /// are updated. To update all fields, provide a field mask of "*".
+    /// are updated. To update all fields, provide a field mask of "\*".
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Optional. If set to true, and the MessageBus is not found, a new MessageBus
@@ -1763,7 +1768,7 @@ pub struct UpdateMessageBusRequest {
     pub validate_only: bool,
 }
 /// The request message for the DeleteMessageBus method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteMessageBusRequest {
     /// Required. The name of the MessageBus to be deleted.
     #[prost(string, tag = "1")]
@@ -1782,14 +1787,14 @@ pub struct DeleteMessageBusRequest {
     pub validate_only: bool,
 }
 /// The request message for the GetEnrollment method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEnrollmentRequest {
     /// Required. The name of the Enrollment to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the ListEnrollments method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListEnrollmentsRequest {
     /// Required. The parent collection to list triggers on.
     #[prost(string, tag = "1")]
@@ -1857,7 +1862,7 @@ pub struct UpdateEnrollmentRequest {
     pub enrollment: ::core::option::Option<Enrollment>,
     /// Optional. The fields to be updated; only fields explicitly provided are
     /// updated. If no field mask is provided, all provided fields in the request
-    /// are updated. To update all fields, provide a field mask of "*".
+    /// are updated. To update all fields, provide a field mask of "\*".
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Optional. If set to true, and the Enrollment is not found, a new Enrollment
@@ -1870,7 +1875,7 @@ pub struct UpdateEnrollmentRequest {
     pub validate_only: bool,
 }
 /// The request message for the DeleteEnrollment method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteEnrollmentRequest {
     /// Required. The name of the Enrollment to be deleted.
     #[prost(string, tag = "1")]
@@ -1889,14 +1894,14 @@ pub struct DeleteEnrollmentRequest {
     pub validate_only: bool,
 }
 /// The request message for the GetPipeline method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPipelineRequest {
     /// Required. The name of the pipeline to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the ListPipelines method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPipelinesRequest {
     /// Required. The parent collection to list pipelines on.
     #[prost(string, tag = "1")]
@@ -1963,7 +1968,7 @@ pub struct UpdatePipelineRequest {
     pub pipeline: ::core::option::Option<Pipeline>,
     /// Optional. The fields to be updated; only fields explicitly provided are
     /// updated. If no field mask is provided, all provided fields in the request
-    /// are updated. To update all fields, provide a field mask of "*".
+    /// are updated. To update all fields, provide a field mask of "\*".
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Optional. If set to true, and the Pipeline is not found, a new Pipeline
@@ -1976,7 +1981,7 @@ pub struct UpdatePipelineRequest {
     pub validate_only: bool,
 }
 /// The request message for the DeletePipeline method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeletePipelineRequest {
     /// Required. The name of the Pipeline to be deleted.
     #[prost(string, tag = "1")]
@@ -1995,14 +2000,14 @@ pub struct DeletePipelineRequest {
     pub validate_only: bool,
 }
 /// The request message for the GetGoogleApiSource method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetGoogleApiSourceRequest {
     /// Required. The name of the google api source to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the ListGoogleApiSources method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListGoogleApiSourcesRequest {
     /// Required. The parent collection to list GoogleApiSources on.
     #[prost(string, tag = "1")]
@@ -2070,7 +2075,7 @@ pub struct UpdateGoogleApiSourceRequest {
     pub google_api_source: ::core::option::Option<GoogleApiSource>,
     /// Optional. The fields to be updated; only fields explicitly provided are
     /// updated. If no field mask is provided, all provided fields in the request
-    /// are updated. To update all fields, provide a field mask of "*".
+    /// are updated. To update all fields, provide a field mask of "\*".
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Optional. If set to true, and the GoogleApiSource is not found, a new
@@ -2084,7 +2089,7 @@ pub struct UpdateGoogleApiSourceRequest {
     pub validate_only: bool,
 }
 /// The request message for the DeleteGoogleApiSource method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteGoogleApiSourceRequest {
     /// Required. The name of the GoogleApiSource to be deleted.
     #[prost(string, tag = "1")]
@@ -2103,7 +2108,7 @@ pub struct DeleteGoogleApiSourceRequest {
     pub validate_only: bool,
 }
 /// Represents the metadata of the long-running operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -2122,8 +2127,8 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+    /// have \[Operation.error\]\[\] value with a
+    /// \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -2237,7 +2242,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/GetTrigger",
             );
@@ -2264,7 +2269,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/ListTriggers",
             );
@@ -2291,7 +2296,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/CreateTrigger",
             );
@@ -2318,7 +2323,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/UpdateTrigger",
             );
@@ -2345,7 +2350,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/DeleteTrigger",
             );
@@ -2369,7 +2374,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/GetChannel",
             );
@@ -2396,7 +2401,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/ListChannels",
             );
@@ -2423,7 +2428,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/CreateChannel",
             );
@@ -2450,7 +2455,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/UpdateChannel",
             );
@@ -2477,7 +2482,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/DeleteChannel",
             );
@@ -2501,7 +2506,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/GetProvider",
             );
@@ -2528,7 +2533,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/ListProviders",
             );
@@ -2555,7 +2560,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/GetChannelConnection",
             );
@@ -2585,7 +2590,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/ListChannelConnections",
             );
@@ -2615,7 +2620,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/CreateChannelConnection",
             );
@@ -2645,7 +2650,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/DeleteChannelConnection",
             );
@@ -2675,7 +2680,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/GetGoogleChannelConfig",
             );
@@ -2705,7 +2710,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/UpdateGoogleChannelConfig",
             );
@@ -2732,7 +2737,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/GetMessageBus",
             );
@@ -2759,7 +2764,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/ListMessageBuses",
             );
@@ -2789,7 +2794,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/ListMessageBusEnrollments",
             );
@@ -2819,7 +2824,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/CreateMessageBus",
             );
@@ -2849,7 +2854,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/UpdateMessageBus",
             );
@@ -2879,7 +2884,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/DeleteMessageBus",
             );
@@ -2906,7 +2911,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/GetEnrollment",
             );
@@ -2933,7 +2938,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/ListEnrollments",
             );
@@ -2963,7 +2968,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/CreateEnrollment",
             );
@@ -2993,7 +2998,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/UpdateEnrollment",
             );
@@ -3023,7 +3028,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/DeleteEnrollment",
             );
@@ -3050,7 +3055,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/GetPipeline",
             );
@@ -3077,7 +3082,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/ListPipelines",
             );
@@ -3104,7 +3109,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/CreatePipeline",
             );
@@ -3134,7 +3139,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/UpdatePipeline",
             );
@@ -3164,7 +3169,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/DeletePipeline",
             );
@@ -3194,7 +3199,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/GetGoogleApiSource",
             );
@@ -3224,7 +3229,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/ListGoogleApiSources",
             );
@@ -3254,7 +3259,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/CreateGoogleApiSource",
             );
@@ -3284,7 +3289,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/UpdateGoogleApiSource",
             );
@@ -3314,7 +3319,7 @@ pub mod eventarc_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.v1.Eventarc/DeleteGoogleApiSource",
             );

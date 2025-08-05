@@ -14,14 +14,14 @@ pub struct PersonalProtectiveEquipmentDetectionOutput {
 /// Nested message and enum types in `PersonalProtectiveEquipmentDetectionOutput`.
 pub mod personal_protective_equipment_detection_output {
     /// The entity info for annotations from person detection prediction result.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PersonEntity {
         /// Entity id.
         #[prost(int64, tag = "1")]
         pub person_entity_id: i64,
     }
     /// The entity info for annotations from PPE detection prediction result.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PpeEntity {
         /// Label id.
         #[prost(int64, tag = "1")]
@@ -135,7 +135,7 @@ pub struct ObjectDetectionPredictionResult {
 /// Nested message and enum types in `ObjectDetectionPredictionResult`.
 pub mod object_detection_prediction_result {
     /// The entity info for annotations from object detection prediction result.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Entity {
         /// Label id.
         #[prost(int64, tag = "1")]
@@ -223,7 +223,7 @@ pub struct ClassificationPredictionResult {
     pub confidences: ::prost::alloc::vec::Vec<f32>,
 }
 /// Prediction output format for Image Segmentation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImageSegmentationPredictionResult {
     /// A PNG image where each pixel in the mask represents the category in which
     /// the pixel in the original image was predicted to belong to. The size of
@@ -413,7 +413,7 @@ pub struct OccupancyCountingPredictionResult {
 /// Nested message and enum types in `OccupancyCountingPredictionResult`.
 pub mod occupancy_counting_prediction_result {
     /// The entity info for annotations from occupancy counting operator.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Entity {
         /// Label id.
         #[prost(int64, tag = "1")]
@@ -480,7 +480,7 @@ pub mod occupancy_counting_prediction_result {
     pub mod stats {
         /// The object info and instant count for annotations from occupancy counting
         /// operator.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct ObjectCount {
             /// Entity of this object.
             #[prost(message, optional, tag = "1")]
@@ -491,7 +491,7 @@ pub mod occupancy_counting_prediction_result {
         }
         /// The object info and accumulated count for annotations from occupancy
         /// counting operator.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct AccumulatedObjectCount {
             /// The start time of the accumulated count.
             #[prost(message, optional, tag = "1")]
@@ -535,7 +535,7 @@ pub mod occupancy_counting_prediction_result {
         }
     }
     /// The track info for annotations from occupancy counting operator.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TrackInfo {
         /// An unique id to identify a track. It should be consistent across frames.
         #[prost(string, tag = "1")]
@@ -545,7 +545,7 @@ pub mod occupancy_counting_prediction_result {
         pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// The dwell time info for annotations from occupancy counting operator.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DwellTimeInfo {
         /// An unique id to identify a track. It should be consistent across frames.
         #[prost(string, tag = "1")]
@@ -631,7 +631,7 @@ pub struct NormalizedVertex {
 /// Message of essential metadata of App Platform.
 /// This message is usually attached to a certain processor output annotation for
 /// customer to identify the source of the data.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AppPlatformMetadata {
     /// The application resource name.
     #[prost(string, tag = "1")]
@@ -855,7 +855,7 @@ pub mod cluster {
     }
 }
 /// Represents the metadata of the long-running operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -874,8 +874,8 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+    /// have \[Operation.error\]\[\] value with a
+    /// \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -884,21 +884,21 @@ pub struct OperationMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// The Google Cloud Storage location for the input content.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GcsSource {
     /// Required. References to a Google Cloud Storage paths.
     #[prost(string, repeated, tag = "1")]
     pub uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// HealthCheckRequest is the request message for Check.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HealthCheckRequest {
     /// The parent of the resource.
     #[prost(string, tag = "1")]
     pub cluster: ::prost::alloc::string::String,
 }
 /// HealthCheckResponse is the response message for Check.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HealthCheckResponse {
     /// Indicates whether the cluster is in healthy state or not.
     #[prost(bool, tag = "1")]
@@ -910,7 +910,7 @@ pub struct HealthCheckResponse {
     #[prost(message, optional, tag = "3")]
     pub cluster_info: ::core::option::Option<ClusterInfo>,
 }
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ClusterInfo {
     /// The number of active streams in the cluster.
     #[prost(int32, tag = "1")]
@@ -1028,7 +1028,7 @@ pub mod health_check_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.HealthCheckService/HealthCheck",
             );
@@ -1052,7 +1052,7 @@ pub mod health_check_service_client {
 pub struct OperatorDefinition {
     /// The name of this operator.
     ///
-    /// Tentatively [A-Z][a-zA-Z0-9]*, e.g., BboxCounter, PetDetector,
+    /// Tentatively \[A-Z\]\[a-zA-Z0-9\]\*, e.g., BboxCounter, PetDetector,
     /// PetDetector1.
     #[prost(string, tag = "1")]
     pub operator: ::prost::alloc::string::String,
@@ -1080,7 +1080,7 @@ pub mod operator_definition {
     /// Defines an argument to an operator.
     ///
     /// Used for both inputs and outputs.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ArgumentDefinition {
         /// The name of the argument.
         ///
@@ -1119,7 +1119,7 @@ pub mod operator_definition {
 /// Note: Highly experimental as this can be runtime dependent.
 /// Can use the "extras" field to experiment first before trying
 /// to abstract it.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourceSpecification {
     /// CPU specification.
     ///
@@ -1209,7 +1209,7 @@ pub mod attribute_value {
 pub struct AnalyzerDefinition {
     /// The name of this analyzer.
     ///
-    /// Tentatively [a-z][a-z0-9]*(_\[a-z0-9\]+)*.
+    /// Tentatively \[a-z\]\[a-z0-9\]*(\_\[a-z0-9\]+)*.
     #[prost(string, tag = "1")]
     pub analyzer: ::prost::alloc::string::String,
     /// The name of the operator that this analyzer runs.
@@ -1257,7 +1257,7 @@ pub mod analyzer_definition {
     /// output as its first input and "some-analyzer"'s "bar" output as its
     /// second input, you can set this field to the following:
     /// input = \["some-analyzer:foo", "some-analyzer:bar"\]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct StreamInput {
         /// The name of the stream input (as discussed above).
         #[prost(string, tag = "1")]
@@ -1274,7 +1274,7 @@ pub mod analyzer_definition {
         >,
     }
     /// Option related to the operator.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct OperatorOption {
         /// Tag of the operator.
         #[prost(string, tag = "1")]
@@ -1299,7 +1299,7 @@ pub struct AnalysisDefinition {
     pub analyzers: ::prost::alloc::vec::Vec<AnalyzerDefinition>,
 }
 /// Message describing the status of the Process.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RunStatus {
     /// The state of the Process.
     #[prost(enumeration = "run_status::State", tag = "1")]
@@ -1475,7 +1475,7 @@ pub struct Analysis {
     pub disable_event_watch: bool,
 }
 /// Message describing the Process object.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Process {
     /// The name of resource.
     #[prost(string, tag = "1")]
@@ -1515,7 +1515,7 @@ pub struct Process {
     pub retry_count: i32,
 }
 /// Message for requesting list of Operators.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListOperatorsRequest {
     /// Required. Parent value for ListOperatorsRequest.
     #[prost(string, tag = "1")]
@@ -1548,7 +1548,7 @@ pub struct ListOperatorsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Operator.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetOperatorRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -1612,7 +1612,7 @@ pub struct UpdateOperatorRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting a Operator
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteOperatorRequest {
     /// Required. Name of the resource
     #[prost(string, tag = "1")]
@@ -1634,7 +1634,7 @@ pub struct DeleteOperatorRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for requesting list of Analyses
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAnalysesRequest {
     /// Required. Parent value for ListAnalysesRequest
     #[prost(string, tag = "1")]
@@ -1667,7 +1667,7 @@ pub struct ListAnalysesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting an Analysis.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAnalysisRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -1731,7 +1731,7 @@ pub struct UpdateAnalysisRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting an Analysis.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAnalysisRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -1753,7 +1753,7 @@ pub struct DeleteAnalysisRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for requesting list of Processes.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListProcessesRequest {
     /// Required. Parent value for ListProcessesRequest.
     #[prost(string, tag = "1")]
@@ -1786,14 +1786,14 @@ pub struct ListProcessesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Process.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetProcessRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message for creating a Process.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateProcessRequest {
     /// Required. Value for parent.
     #[prost(string, tag = "1")]
@@ -1821,7 +1821,7 @@ pub struct CreateProcessRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for updating a Process.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateProcessRequest {
     /// Required. Field mask is used to specify the fields to be overwritten in the
     /// Process resource by the update.
@@ -1850,7 +1850,7 @@ pub struct UpdateProcessRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting a Process.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteProcessRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -1892,7 +1892,7 @@ pub struct BatchRunProcessRequest {
 /// Nested message and enum types in `BatchRunProcessRequest`.
 pub mod batch_run_process_request {
     /// Options for batch processes.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct BatchRunProcessOptions {
         /// The retry counts per process. Default: 3.
         #[prost(int32, tag = "1")]
@@ -1923,7 +1923,7 @@ pub struct ResolveOperatorInfoRequest {
     pub queries: ::prost::alloc::vec::Vec<OperatorQuery>,
 }
 /// OperatorQuery represents one query to a Operator.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperatorQuery {
     /// Required. The canonical Name of the operator. e.g. OccupancyCounting.
     #[prost(string, tag = "1")]
@@ -1943,7 +1943,7 @@ pub struct ResolveOperatorInfoResponse {
     pub operators: ::prost::alloc::vec::Vec<Operator>,
 }
 /// Request message of ListPublicOperatorsRequest API.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPublicOperatorsRequest {
     /// Required. Parent value for ListPublicOperatorsRequest.
     #[prost(string, tag = "1")]
@@ -2114,7 +2114,7 @@ pub mod live_video_analytics_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.LiveVideoAnalytics/ListPublicOperators",
             );
@@ -2144,7 +2144,7 @@ pub mod live_video_analytics_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.LiveVideoAnalytics/ResolveOperatorInfo",
             );
@@ -2174,7 +2174,7 @@ pub mod live_video_analytics_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.LiveVideoAnalytics/ListOperators",
             );
@@ -2201,7 +2201,7 @@ pub mod live_video_analytics_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.LiveVideoAnalytics/GetOperator",
             );
@@ -2231,7 +2231,7 @@ pub mod live_video_analytics_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.LiveVideoAnalytics/CreateOperator",
             );
@@ -2261,7 +2261,7 @@ pub mod live_video_analytics_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.LiveVideoAnalytics/UpdateOperator",
             );
@@ -2291,7 +2291,7 @@ pub mod live_video_analytics_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.LiveVideoAnalytics/DeleteOperator",
             );
@@ -2321,7 +2321,7 @@ pub mod live_video_analytics_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.LiveVideoAnalytics/ListAnalyses",
             );
@@ -2348,7 +2348,7 @@ pub mod live_video_analytics_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.LiveVideoAnalytics/GetAnalysis",
             );
@@ -2378,7 +2378,7 @@ pub mod live_video_analytics_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.LiveVideoAnalytics/CreateAnalysis",
             );
@@ -2408,7 +2408,7 @@ pub mod live_video_analytics_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.LiveVideoAnalytics/UpdateAnalysis",
             );
@@ -2438,7 +2438,7 @@ pub mod live_video_analytics_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.LiveVideoAnalytics/DeleteAnalysis",
             );
@@ -2468,7 +2468,7 @@ pub mod live_video_analytics_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.LiveVideoAnalytics/ListProcesses",
             );
@@ -2495,7 +2495,7 @@ pub mod live_video_analytics_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.LiveVideoAnalytics/GetProcess",
             );
@@ -2525,7 +2525,7 @@ pub mod live_video_analytics_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.LiveVideoAnalytics/CreateProcess",
             );
@@ -2555,7 +2555,7 @@ pub mod live_video_analytics_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.LiveVideoAnalytics/UpdateProcess",
             );
@@ -2585,7 +2585,7 @@ pub mod live_video_analytics_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.LiveVideoAnalytics/DeleteProcess",
             );
@@ -2616,7 +2616,7 @@ pub mod live_video_analytics_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.LiveVideoAnalytics/BatchRunProcess",
             );
@@ -2633,13 +2633,13 @@ pub mod live_video_analytics_client {
     }
 }
 /// Message for DeleteApplicationInstance Response.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteApplicationInstancesResponse {}
 /// Message for CreateApplicationInstance Response.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateApplicationInstancesResponse {}
 /// Message for UpdateApplicationInstances Response.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateApplicationInstancesResponse {}
 /// Message for adding stream input to an Application.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2669,7 +2669,7 @@ pub struct CreateApplicationInstancesRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for removing stream input from an Application.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteApplicationInstancesRequest {
     /// Required. the name of the application to retrieve.
     /// Format:
@@ -2697,22 +2697,22 @@ pub struct DeleteApplicationInstancesRequest {
 }
 /// RPC Request Messages.
 /// Message for DeployApplication Response.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeployApplicationResponse {}
 /// Message for UndeployApplication Response.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UndeployApplicationResponse {}
 /// Message for RemoveApplicationStreamInput Response.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveApplicationStreamInputResponse {}
 /// Message for AddApplicationStreamInput Response.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddApplicationStreamInputResponse {}
 /// Message for AddApplicationStreamInput Response.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateApplicationStreamInputResponse {}
 /// Message for requesting list of Applications.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListApplicationsRequest {
     /// Required. Parent value for ListApplicationsRequest.
     #[prost(string, tag = "1")]
@@ -2745,7 +2745,7 @@ pub struct ListApplicationsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Application.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetApplicationRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -2809,7 +2809,7 @@ pub struct UpdateApplicationRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting an Application.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteApplicationRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -2836,7 +2836,7 @@ pub struct DeleteApplicationRequest {
     pub force: bool,
 }
 /// Message for deploying an Application.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeployApplicationRequest {
     /// Required. the name of the application to retrieve.
     /// Format:
@@ -2868,7 +2868,7 @@ pub struct DeployApplicationRequest {
     pub enable_monitoring: bool,
 }
 /// Message for undeploying an Application.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UndeployApplicationRequest {
     /// Required. the name of the application to retrieve.
     /// Format:
@@ -2989,14 +2989,14 @@ pub struct RemoveApplicationStreamInputRequest {
 /// Nested message and enum types in `RemoveApplicationStreamInputRequest`.
 pub mod remove_application_stream_input_request {
     /// Message about target streamInput to remove.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TargetStreamInput {
         #[prost(string, tag = "1")]
         pub stream: ::prost::alloc::string::String,
     }
 }
 /// Message for requesting list of Instances.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInstancesRequest {
     /// Required. Parent value for ListInstancesRequest.
     #[prost(string, tag = "1")]
@@ -3029,14 +3029,14 @@ pub struct ListInstancesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Instance.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInstanceRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message for requesting list of Drafts.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDraftsRequest {
     /// Required. Parent value for ListDraftsRequest.
     #[prost(string, tag = "1")]
@@ -3069,7 +3069,7 @@ pub struct ListDraftsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Draft.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDraftRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -3188,7 +3188,7 @@ pub mod update_application_instances_request {
     }
 }
 /// Message for deleting a Draft.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDraftRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -3210,7 +3210,7 @@ pub struct DeleteDraftRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for requesting list of Processors.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListProcessorsRequest {
     /// Required. Parent value for ListProcessorsRequest.
     #[prost(string, tag = "1")]
@@ -3243,7 +3243,7 @@ pub struct ListProcessorsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request Message for listing Prebuilt Processors.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPrebuiltProcessorsRequest {
     /// Required. Parent path.
     #[prost(string, tag = "1")]
@@ -3257,7 +3257,7 @@ pub struct ListPrebuiltProcessorsResponse {
     pub processors: ::prost::alloc::vec::Vec<Processor>,
 }
 /// Message for getting a Processor.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetProcessorRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -3321,7 +3321,7 @@ pub struct UpdateProcessorRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting a Processor.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteProcessorRequest {
     /// Required. Name of the resource
     #[prost(string, tag = "1")]
@@ -3402,7 +3402,7 @@ pub mod application {
     /// Nested message and enum types in `ApplicationRuntimeInfo`.
     pub mod application_runtime_info {
         /// Message about output resources from application.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct GlobalOutputResource {
             /// The full resource name of the outputted resources.
             #[prost(string, tag = "1")]
@@ -3421,7 +3421,7 @@ pub mod application {
             pub key: ::prost::alloc::string::String,
         }
         /// Monitoring-related configuration for an application.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct MonitoringConfig {
             /// Whether this application has monitoring enabled.
             #[prost(bool, tag = "1")]
@@ -3562,7 +3562,7 @@ pub struct ApplicationConfigs {
 /// Nested message and enum types in `ApplicationConfigs`.
 pub mod application_configs {
     /// message storing the config for event delivery
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct EventDeliveryConfig {
         /// The delivery channel for the event notification, only pub/sub topic is
         /// supported now.
@@ -3573,7 +3573,7 @@ pub mod application_configs {
         /// The expected delivery interval for the same event. The same event won't
         /// be notified multiple times during this internal event that it is
         /// happening multiple times during the period of time.The same event is
-        /// identified by <event_id, app_platform_metadata>.
+        /// identified by \<event_id, app_platform_metadata>.
         #[prost(message, optional, tag = "2")]
         pub minimal_delivery_interval: ::core::option::Option<::prost_types::Duration>,
     }
@@ -3604,7 +3604,7 @@ pub struct Node {
 /// Nested message and enum types in `Node`.
 pub mod node {
     /// Message describing one edge pointing into a node.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct InputEdge {
         /// The name of the parent node.
         #[prost(string, tag = "1")]
@@ -3618,7 +3618,7 @@ pub mod node {
         #[prost(string, tag = "3")]
         pub connected_input_channel: ::prost::alloc::string::String,
     }
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum StreamOutputConfig {
         /// By default, the output of the node will only be available to downstream
         /// nodes. To consume the direct output from the application node, the output
@@ -3758,7 +3758,7 @@ pub mod instance {
         }
     }
     /// Message of output resource used in one application instance.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct OutputResource {
         /// The output resource name for the current application instance.
         #[prost(string, tag = "1")]
@@ -4125,7 +4125,7 @@ pub struct ProcessorIoSpec {
 /// Nested message and enum types in `ProcessorIOSpec`.
 pub mod processor_io_spec {
     /// Message for input channel specification.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct GraphInputChannelSpec {
         /// The name of the current input channel.
         #[prost(string, tag = "1")]
@@ -4154,7 +4154,7 @@ pub mod processor_io_spec {
         pub max_connection_allowed: i64,
     }
     /// Message for output channel specification.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct GraphOutputChannelSpec {
         /// The name of the current output channel.
         #[prost(string, tag = "1")]
@@ -4169,7 +4169,7 @@ pub mod processor_io_spec {
     /// External resources are virtual nodes which are not expressed in the
     /// application graph. Each processor expresses its out-graph spec, so customer
     /// is able to override the external source or destinations to the
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct InstanceResourceInputBindingSpec {
         /// Name of the input binding, unique within the processor.
         #[prost(string, tag = "1")]
@@ -4184,7 +4184,7 @@ pub mod processor_io_spec {
     }
     /// Nested message and enum types in `InstanceResourceInputBindingSpec`.
     pub mod instance_resource_input_binding_spec {
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum ResourceType {
             /// The configuration proto that includes the Googleapis resources. I.e.
             /// type.googleapis.com/google.cloud.vision.v1.StreamWithAnnotation
@@ -4196,7 +4196,7 @@ pub mod processor_io_spec {
             ResourceTypeUri(::prost::alloc::string::String),
         }
     }
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct InstanceResourceOutputBindingSpec {
         /// Name of the output binding, unique within the processor.
         #[prost(string, tag = "1")]
@@ -4239,7 +4239,7 @@ pub struct CustomProcessorSourceInfo {
 /// Nested message and enum types in `CustomProcessorSourceInfo`.
 pub mod custom_processor_source_info {
     /// Message describes product recognizer artifact.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ProductRecognizerArtifact {
         /// Required. Resource name of RetailProductRecognitionIndex.
         /// Format is
@@ -4253,7 +4253,7 @@ pub mod custom_processor_source_info {
     }
     /// The schema is defined as an OpenAPI 3.0.2 [Schema
     /// Object](<https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#schemaObject>).
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ModelSchema {
         /// Cloud Storage location to a YAML file that defines the format of a single
         /// instance used in prediction and explanation requests.
@@ -4316,7 +4316,7 @@ pub mod custom_processor_source_info {
         }
     }
     /// The path where App Platform loads the artifacts for the custom processor.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ArtifactPath {
         /// The resource name original model hosted in the vertex AI platform.
         #[prost(string, tag = "2")]
@@ -4473,10 +4473,10 @@ pub struct VideoStreamInputConfig {
     pub streams_with_annotation: ::prost::alloc::vec::Vec<StreamWithAnnotation>,
 }
 /// Message describing AI-enabled Devices Input Config.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AiEnabledDevicesInputConfig {}
 /// Message describing MediaWarehouseConfig.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MediaWarehouseConfig {
     /// Resource name of the Media Warehouse corpus.
     /// Format:
@@ -4493,7 +4493,7 @@ pub struct MediaWarehouseConfig {
     pub ttl: ::core::option::Option<::prost_types::Duration>,
 }
 /// Message describing FaceBlurConfig.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PersonBlurConfig {
     /// Person blur type.
     #[prost(enumeration = "person_blur_config::PersonBlurType", tag = "1")]
@@ -4549,7 +4549,7 @@ pub mod person_blur_config {
     }
 }
 /// Message describing OccupancyCountConfig.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OccupancyCountConfig {
     /// Whether to count the appearances of people, output counts have 'people' as
     /// the key.
@@ -4565,7 +4565,7 @@ pub struct OccupancyCountConfig {
     pub enable_dwelling_time_tracking: bool,
 }
 /// Message describing PersonVehicleDetectionConfig.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PersonVehicleDetectionConfig {
     /// At least one of enable_people_counting and enable_vehicle_counting fields
     /// must be set to true.
@@ -4579,7 +4579,7 @@ pub struct PersonVehicleDetectionConfig {
     pub enable_vehicle_counting: bool,
 }
 /// Message describing PersonalProtectiveEquipmentDetectionConfig.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PersonalProtectiveEquipmentDetectionConfig {
     /// Whether to enable face coverage detection.
     #[prost(bool, tag = "1")]
@@ -4592,7 +4592,7 @@ pub struct PersonalProtectiveEquipmentDetectionConfig {
     pub enable_hands_coverage_detection: bool,
 }
 /// Message of configurations for General Object Detection processor.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GeneralObjectDetectionConfig {}
 /// Message of configurations for BigQuery processor.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4629,12 +4629,13 @@ pub struct BigQueryConfig {
     /// If the default table schema doesn't fit, customer is able to transform the
     /// annotation output from Vision AI Application to arbitrary BigQuery table
     /// schema with CloudFunction.
+    ///
     /// * The cloud function will receive AppPlatformCloudFunctionRequest where
-    /// the annotations field will be the json format of Vision AI annotation.
+    ///   the annotations field will be the json format of Vision AI annotation.
     /// * The cloud function should return AppPlatformCloudFunctionResponse with
-    /// AppendRowsRequest stored in the annotations field.
+    ///   AppendRowsRequest stored in the annotations field.
     /// * To drop the annotation, simply clear the annotations field in the
-    /// returned AppPlatformCloudFunctionResponse.
+    ///   returned AppPlatformCloudFunctionResponse.
     #[prost(map = "string, string", tag = "2")]
     pub cloud_function_mapping: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -4695,23 +4696,24 @@ pub struct VertexCustomConfig {
     pub dedicated_resources: ::core::option::Option<DedicatedResources>,
     /// If not empty, the prediction result will be sent to the specified cloud
     /// function for post processing.
+    ///
     /// * The cloud function will receive AppPlatformCloudFunctionRequest where
-    /// the annotations field will be the json format of proto PredictResponse.
+    ///   the annotations field will be the json format of proto PredictResponse.
     /// * The cloud function should return AppPlatformCloudFunctionResponse with
-    /// PredictResponse stored in the annotations field.
+    ///   PredictResponse stored in the annotations field.
     /// * To drop the prediction output, simply clear the payload field in the
-    /// returned AppPlatformCloudFunctionResponse.
+    ///   returned AppPlatformCloudFunctionResponse.
     #[prost(string, tag = "3")]
     pub post_processing_cloud_function: ::prost::alloc::string::String,
     /// If true, the prediction request received by custom model will also contain
     /// metadata with the following schema:
     /// 'appPlatformMetadata': {
-    ///        'ingestionTime': DOUBLE; (UNIX timestamp)
-    ///        'application': STRING;
-    ///        'instanceId': STRING;
-    ///        'node': STRING;
-    ///        'processor': STRING;
-    ///   }
+    /// 'ingestionTime': DOUBLE; (UNIX timestamp)
+    /// 'application': STRING;
+    /// 'instanceId': STRING;
+    /// 'node': STRING;
+    /// 'processor': STRING;
+    /// }
     #[prost(bool, tag = "4")]
     pub attach_application_metadata: bool,
     /// Optional. By setting the configuration_input_topic, processor will
@@ -4734,17 +4736,17 @@ pub struct VertexCustomConfig {
     >,
 }
 /// Message describing GcsOutputConfig.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GcsOutputConfig {
     /// The Cloud Storage path for Vision AI Platform to ingest annotations to.
     #[prost(string, tag = "1")]
     pub gcs_path: ::prost::alloc::string::String,
 }
 /// Message describing UniversalInputConfig.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UniversalInputConfig {}
 /// Specification of a single machine.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MachineSpec {
     /// Immutable. The type of the machine.
     ///
@@ -4754,14 +4756,14 @@ pub struct MachineSpec {
     /// See the [list of machine types supported for custom
     /// training](<https://cloud.google.com/vertex-ai/docs/training/configure-compute#machine-types>).
     ///
-    /// For [DeployedModel][] this field is optional, and the default
-    /// value is `n1-standard-2`. For [BatchPredictionJob][] or as part of
-    /// [WorkerPoolSpec][] this field is required.
+    /// For \[DeployedModel\]\[\] this field is optional, and the default
+    /// value is `n1-standard-2`. For \[BatchPredictionJob\]\[\] or as part of
+    /// \[WorkerPoolSpec\]\[\] this field is required.
     #[prost(string, tag = "1")]
     pub machine_type: ::prost::alloc::string::String,
     /// Immutable. The type of accelerator(s) that may be attached to the machine
     /// as per
-    /// [accelerator_count][google.cloud.visionai.v1.MachineSpec.accelerator_count].
+    /// \[accelerator_count\]\[google.cloud.visionai.v1.MachineSpec.accelerator_count\].
     #[prost(enumeration = "AcceleratorType", tag = "2")]
     pub accelerator_type: i32,
     /// The number of accelerators to attach to the machine.
@@ -4771,7 +4773,7 @@ pub struct MachineSpec {
 /// The metric specification that defines the target resource utilization
 /// (CPU utilization, accelerator's duty cycle, and so on) for calculating the
 /// desired replica count.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AutoscalingMetricSpec {
     /// Required. The resource metric name.
     /// Supported metrics:
@@ -4812,7 +4814,7 @@ pub struct DedicatedResources {
     /// service outages). If traffic against the DeployedModel increases beyond
     /// what its replicas at maximum may handle, a portion of the traffic will be
     /// dropped. If this value is not provided, will use
-    /// [min_replica_count][google.cloud.visionai.v1.DedicatedResources.min_replica_count]
+    /// \[min_replica_count\]\[google.cloud.visionai.v1.DedicatedResources.min_replica_count\]
     /// as the default value.
     ///
     /// The value of this field impacts the charge against Vertex CPU and GPU
@@ -4827,22 +4829,22 @@ pub struct DedicatedResources {
     /// metric.
     ///
     /// If
-    /// [machine_spec.accelerator_count][google.cloud.visionai.v1.MachineSpec.accelerator_count]
+    /// \[machine_spec.accelerator_count\]\[google.cloud.visionai.v1.MachineSpec.accelerator_count\]
     /// is above 0, the autoscaling will be based on both CPU utilization and
     /// accelerator's duty cycle metrics and scale up when either metrics exceeds
     /// its target value while scale down if both metrics are under their target
     /// value. The default target value is 60 for both metrics.
     ///
     /// If
-    /// [machine_spec.accelerator_count][google.cloud.visionai.v1.MachineSpec.accelerator_count]
+    /// \[machine_spec.accelerator_count\]\[google.cloud.visionai.v1.MachineSpec.accelerator_count\]
     /// is 0, the autoscaling will be based on CPU utilization metric only with
     /// default target value 60 if not explicitly set.
     ///
     /// For example, in the case of Online Prediction, if you want to override
     /// target CPU utilization to 80, you should set
-    /// [autoscaling_metric_specs.metric_name][google.cloud.visionai.v1.AutoscalingMetricSpec.metric_name]
+    /// \[autoscaling_metric_specs.metric_name\]\[google.cloud.visionai.v1.AutoscalingMetricSpec.metric_name\]
     /// to `aiplatform.googleapis.com/prediction/online/cpu/utilization` and
-    /// [autoscaling_metric_specs.target][google.cloud.visionai.v1.AutoscalingMetricSpec.target]
+    /// \[autoscaling_metric_specs.target\]\[google.cloud.visionai.v1.AutoscalingMetricSpec.target\]
     /// to `80`.
     #[prost(message, repeated, tag = "4")]
     pub autoscaling_metric_specs: ::prost::alloc::vec::Vec<AutoscalingMetricSpec>,
@@ -4882,7 +4884,7 @@ pub struct TagParsingConfig {
 /// Nested message and enum types in `TagParsingConfig`.
 pub mod tag_parsing_config {
     /// Configuration for parsing a tag entity class.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct EntityParsingConfig {
         /// Required. The tag entity class name. This should match the class name
         /// produced by the tag entity detection model.
@@ -5223,7 +5225,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/ListApplications",
             );
@@ -5250,7 +5252,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/GetApplication",
             );
@@ -5280,7 +5282,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/CreateApplication",
             );
@@ -5310,7 +5312,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/UpdateApplication",
             );
@@ -5340,7 +5342,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/DeleteApplication",
             );
@@ -5370,7 +5372,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/DeployApplication",
             );
@@ -5400,7 +5402,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/UndeployApplication",
             );
@@ -5433,7 +5435,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/AddApplicationStreamInput",
             );
@@ -5465,7 +5467,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/RemoveApplicationStreamInput",
             );
@@ -5497,7 +5499,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/UpdateApplicationStreamInput",
             );
@@ -5527,7 +5529,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/ListInstances",
             );
@@ -5554,7 +5556,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/GetInstance",
             );
@@ -5587,7 +5589,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/CreateApplicationInstances",
             );
@@ -5619,7 +5621,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/DeleteApplicationInstances",
             );
@@ -5652,7 +5654,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/UpdateApplicationInstances",
             );
@@ -5682,7 +5684,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/ListDrafts",
             );
@@ -5706,7 +5708,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/GetDraft",
             );
@@ -5733,7 +5735,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/CreateDraft",
             );
@@ -5763,7 +5765,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/UpdateDraft",
             );
@@ -5793,7 +5795,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/DeleteDraft",
             );
@@ -5823,7 +5825,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/ListProcessors",
             );
@@ -5854,7 +5856,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/ListPrebuiltProcessors",
             );
@@ -5881,7 +5883,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/GetProcessor",
             );
@@ -5911,7 +5913,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/CreateProcessor",
             );
@@ -5941,7 +5943,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/UpdateProcessor",
             );
@@ -5971,7 +5973,7 @@ pub mod app_platform_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.AppPlatform/DeleteProcessor",
             );
@@ -5988,7 +5990,7 @@ pub mod app_platform_client {
     }
 }
 /// The descriptor for a gstreamer buffer payload.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GstreamerBufferDescriptor {
     /// The caps string of the payload.
     #[prost(string, tag = "1")]
@@ -6007,7 +6009,7 @@ pub struct GstreamerBufferDescriptor {
     pub duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// The descriptor for a raw image.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RawImageDescriptor {
     /// Raw image format. Its possible values are: "srgb".
     #[prost(string, tag = "1")]
@@ -6020,7 +6022,7 @@ pub struct RawImageDescriptor {
     pub width: i32,
 }
 /// The message that represents the data type of a packet.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PacketType {
     /// The type class of the packet. Its possible values are:
     /// "gst", "protobuf", and "string".
@@ -6033,7 +6035,7 @@ pub struct PacketType {
 /// Nested message and enum types in `PacketType`.
 pub mod packet_type {
     /// The message that fully specifies the type of the packet.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TypeDescriptor {
         /// The type of the packet. Its possible values is codec dependent.
         ///
@@ -6060,7 +6062,7 @@ pub mod packet_type {
         ///
         /// It is non-empty only for specific type class codecs. Needed only when the
         /// type string alone is not enough to disambiguate the specific type.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum TypeDetails {
             /// GstreamerBufferDescriptor is the descriptor for gstreamer buffer type.
             #[prost(message, tag = "2")]
@@ -6072,7 +6074,7 @@ pub mod packet_type {
     }
 }
 /// The message that represents server metadata.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServerMetadata {
     /// The offset position for the packet in its stream.
     #[prost(int64, tag = "1")]
@@ -6087,7 +6089,7 @@ pub struct ServerMetadata {
     pub ingest_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The message that represents series metadata.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SeriesMetadata {
     /// Series name. It's in the format of
     /// "projects/{project}/locations/{location}/clusters/{cluster}/series/{stream}".
@@ -6122,13 +6124,14 @@ pub struct PacketHeader {
     /// the packet is first arrived in the stream server.
     ///
     /// The input format is a lowercase hex string:
-    ///    - version_id: 1 byte, currently must be zero - hex encoded (2 characters)
-    ///    - trace_id: 16 bytes (opaque blob) - hex encoded (32 characters)
-    ///    - span_id: 8 bytes (opaque blob) - hex encoded (16 characters)
-    ///    - trace_options: 1 byte (LSB means tracing enabled) - hex encoded (2
-    ///    characters)
-    /// Example: "00-404142434445464748494a4b4c4d4e4f-6162636465666768-01"
-    ///            v  trace_id                         span_id          options
+    ///
+    /// * version_id: 1 byte, currently must be zero - hex encoded (2 characters)
+    /// * trace_id: 16 bytes (opaque blob) - hex encoded (32 characters)
+    /// * span_id: 8 bytes (opaque blob) - hex encoded (16 characters)
+    /// * trace_options: 1 byte (LSB means tracing enabled) - hex encoded (2
+    ///   characters)
+    ///   Example: "00-404142434445464748494a4b4c4d4e4f-6162636465666768-01"
+    ///   v  trace_id                         span_id          options
     #[prost(string, tag = "7")]
     pub trace_context: ::prost::alloc::string::String,
 }
@@ -6143,7 +6146,7 @@ pub struct Packet {
     pub payload: ::prost::alloc::vec::Vec<u8>,
 }
 /// Request message for ReceiveEvents.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReceiveEventsRequest {
     #[prost(oneof = "receive_events_request::Request", tags = "1, 2")]
     pub request: ::core::option::Option<receive_events_request::Request>,
@@ -6152,7 +6155,7 @@ pub struct ReceiveEventsRequest {
 pub mod receive_events_request {
     /// SetupRequest is the first message sent to the service to setup the RPC
     /// connection.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SetupRequest {
         /// The cluster name.
         #[prost(string, tag = "1")]
@@ -6185,7 +6188,7 @@ pub mod receive_events_request {
         #[prost(message, optional, tag = "6")]
         pub writes_done_grace_period: ::core::option::Option<::prost_types::Duration>,
     }
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Request {
         /// The setup request to setup the RPC connection.
         #[prost(message, tag = "1")]
@@ -6196,7 +6199,7 @@ pub mod receive_events_request {
     }
 }
 /// The event update message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EventUpdate {
     /// The name of the stream that the event is attached to.
     #[prost(string, tag = "1")]
@@ -6216,7 +6219,7 @@ pub struct EventUpdate {
     pub offset: i64,
 }
 /// Control message for a ReceiveEventsResponse.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReceiveEventsControlResponse {
     /// Possible control messages.
     #[prost(oneof = "receive_events_control_response::Control", tags = "1, 2")]
@@ -6225,7 +6228,7 @@ pub struct ReceiveEventsControlResponse {
 /// Nested message and enum types in `ReceiveEventsControlResponse`.
 pub mod receive_events_control_response {
     /// Possible control messages.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Control {
         /// A server heartbeat.
         #[prost(bool, tag = "1")]
@@ -6244,7 +6247,7 @@ pub mod receive_events_control_response {
     }
 }
 /// Response message for the ReceiveEvents.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReceiveEventsResponse {
     /// Possible response types.
     #[prost(oneof = "receive_events_response::Response", tags = "1, 2")]
@@ -6253,7 +6256,7 @@ pub struct ReceiveEventsResponse {
 /// Nested message and enum types in `ReceiveEventsResponse`.
 pub mod receive_events_response {
     /// Possible response types.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Response {
         /// The event update message.
         #[prost(message, tag = "1")]
@@ -6264,7 +6267,7 @@ pub mod receive_events_response {
     }
 }
 /// The lease message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Lease {
     /// The lease id.
     #[prost(string, tag = "1")]
@@ -6283,7 +6286,7 @@ pub struct Lease {
     pub lease_type: i32,
 }
 /// Request message for acquiring a lease.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AcquireLeaseRequest {
     /// The series name.
     #[prost(string, tag = "1")]
@@ -6299,7 +6302,7 @@ pub struct AcquireLeaseRequest {
     pub lease_type: i32,
 }
 /// Request message for renewing a lease.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RenewLeaseRequest {
     /// Lease id.
     #[prost(string, tag = "1")]
@@ -6315,7 +6318,7 @@ pub struct RenewLeaseRequest {
     pub term: ::core::option::Option<::prost_types::Duration>,
 }
 /// Request message for releasing lease.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReleaseLeaseRequest {
     /// Lease id.
     #[prost(string, tag = "1")]
@@ -6328,10 +6331,10 @@ pub struct ReleaseLeaseRequest {
     pub owner: ::prost::alloc::string::String,
 }
 /// Response message for release lease.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReleaseLeaseResponse {}
 /// RequestMetadata is the metadata message for the request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RequestMetadata {
     /// Stream name.
     #[prost(string, tag = "1")]
@@ -6374,10 +6377,10 @@ pub mod send_packets_request {
     }
 }
 /// Response message for sending packets.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SendPacketsResponse {}
 /// Request message for receiving packets.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReceivePacketsRequest {
     /// Possible request types from the client.
     #[prost(oneof = "receive_packets_request::Request", tags = "6, 7")]
@@ -6386,7 +6389,7 @@ pub struct ReceivePacketsRequest {
 /// Nested message and enum types in `ReceivePacketsRequest`.
 pub mod receive_packets_request {
     /// The message specifying the initial settings for the ReceivePackets session.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SetupRequest {
         /// The configurations that specify where packets are retrieved.
         #[prost(message, optional, tag = "1")]
@@ -6419,7 +6422,7 @@ pub mod receive_packets_request {
     /// Nested message and enum types in `SetupRequest`.
     pub mod setup_request {
         /// The mode in which the consumer reads messages.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum ConsumerMode {
             /// Options for configuring eager mode.
             #[prost(message, tag = "3")]
@@ -6430,7 +6433,7 @@ pub mod receive_packets_request {
         }
     }
     /// Possible request types from the client.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Request {
         /// The request to setup the initial state of session.
         ///
@@ -6443,7 +6446,7 @@ pub mod receive_packets_request {
     }
 }
 /// Control message for a ReceivePacketsResponse.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReceivePacketsControlResponse {
     /// Possible control messages.
     #[prost(oneof = "receive_packets_control_response::Control", tags = "1, 2")]
@@ -6452,7 +6455,7 @@ pub struct ReceivePacketsControlResponse {
 /// Nested message and enum types in `ReceivePacketsControlResponse`.
 pub mod receive_packets_control_response {
     /// Possible control messages.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Control {
         /// A server heartbeat.
         #[prost(bool, tag = "1")]
@@ -6491,10 +6494,10 @@ pub mod receive_packets_response {
     }
 }
 /// The options for receiver under the eager mode.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EagerMode {}
 /// The options for receiver under the controlled mode.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ControlledMode {
     /// This is the logical starting point to fallback upon should the
     /// specified starting offset be unavailable.
@@ -6513,7 +6516,7 @@ pub struct ControlledMode {
 /// Nested message and enum types in `ControlledMode`.
 pub mod controlled_mode {
     /// This is the offset from which to start receiveing.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum StartingOffset {
         /// This can be set to the following logical starting points:
         ///
@@ -6524,8 +6527,8 @@ pub mod controlled_mode {
         /// "end": This will read only future messages.
         ///
         /// "stored": This will resume reads one past the last committed offset.
-        ///            It is the only option that resumes progress; all others
-        ///            jump unilaterally.
+        /// It is the only option that resumes progress; all others
+        /// jump unilaterally.
         #[prost(string, tag = "1")]
         StartingLogicalOffset(::prost::alloc::string::String),
     }
@@ -6534,7 +6537,7 @@ pub mod controlled_mode {
 ///
 /// This may only be used when `ReceivePacketsControlledMode` is set in the
 /// initial setup request.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CommitRequest {
     /// The offset to commit.
     #[prost(int64, tag = "1")]
@@ -6683,7 +6686,7 @@ pub mod streaming_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamingService/SendPackets",
             );
@@ -6715,7 +6718,7 @@ pub mod streaming_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamingService/ReceivePackets",
             );
@@ -6747,7 +6750,7 @@ pub mod streaming_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamingService/ReceiveEvents",
             );
@@ -6774,7 +6777,7 @@ pub mod streaming_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamingService/AcquireLease",
             );
@@ -6801,7 +6804,7 @@ pub mod streaming_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamingService/RenewLease",
             );
@@ -6831,7 +6834,7 @@ pub mod streaming_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamingService/ReleaseLease",
             );
@@ -7029,7 +7032,7 @@ pub struct Channel {
     pub event: ::prost::alloc::string::String,
 }
 /// Message for requesting list of Clusters.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListClustersRequest {
     /// Required. Parent value for ListClustersRequest.
     #[prost(string, tag = "1")]
@@ -7062,7 +7065,7 @@ pub struct ListClustersResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetClusterRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -7126,7 +7129,7 @@ pub struct UpdateClusterRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting a Cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteClusterRequest {
     /// Required. Name of the resource
     #[prost(string, tag = "1")]
@@ -7148,7 +7151,7 @@ pub struct DeleteClusterRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for requesting list of Streams.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListStreamsRequest {
     /// Required. Parent value for ListStreamsRequest.
     #[prost(string, tag = "1")]
@@ -7181,7 +7184,7 @@ pub struct ListStreamsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Stream.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetStreamRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -7245,7 +7248,7 @@ pub struct UpdateStreamRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting a Stream.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteStreamRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -7267,7 +7270,7 @@ pub struct DeleteStreamRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for getting the thumbnail of a Stream.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetStreamThumbnailRequest {
     /// Required. The name of the stream for to get the thumbnail from.
     #[prost(string, tag = "1")]
@@ -7297,24 +7300,24 @@ pub struct GetStreamThumbnailRequest {
 }
 /// Message for the response of GetStreamThumbnail. The empty response message
 /// indicates the thumbnail image has been uploaded to GCS successfully.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetStreamThumbnailResponse {}
 /// Request message for getting the auth token to access the stream HLS contents.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateStreamHlsTokenRequest {
     /// Required. The name of the stream.
     #[prost(string, tag = "1")]
     pub stream: ::prost::alloc::string::String,
 }
 /// Response message for GenerateStreamHlsToken.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateStreamHlsTokenResponse {
     /// The generated JWT token.
     ///
     /// The caller should insert this token to the authorization header of the HTTP
     /// requests to get the HLS playlist manifest and the video chunks.
     /// eg: curl -H "Authorization: Bearer $TOKEN"
-    ///      <https://domain.com/test-stream.playback/master.m3u8>
+    /// <https://domain.com/test-stream.playback/master.m3u8>
     #[prost(string, tag = "1")]
     pub token: ::prost::alloc::string::String,
     /// The expiration time of the token.
@@ -7322,7 +7325,7 @@ pub struct GenerateStreamHlsTokenResponse {
     pub expiration_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Message for requesting list of Events.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListEventsRequest {
     /// Required. Parent value for ListEventsRequest.
     #[prost(string, tag = "1")]
@@ -7355,7 +7358,7 @@ pub struct ListEventsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Event.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEventRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -7419,7 +7422,7 @@ pub struct UpdateEventRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting a Event.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteEventRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -7441,7 +7444,7 @@ pub struct DeleteEventRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for requesting list of Series.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSeriesRequest {
     /// Required. Parent value for ListSeriesRequest.
     #[prost(string, tag = "1")]
@@ -7474,7 +7477,7 @@ pub struct ListSeriesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Series.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSeriesRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -7538,7 +7541,7 @@ pub struct UpdateSeriesRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting a Series.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSeriesRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -7698,7 +7701,7 @@ pub mod streams_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamsService/ListClusters",
             );
@@ -7725,7 +7728,7 @@ pub mod streams_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamsService/GetCluster",
             );
@@ -7755,7 +7758,7 @@ pub mod streams_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamsService/CreateCluster",
             );
@@ -7785,7 +7788,7 @@ pub mod streams_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamsService/UpdateCluster",
             );
@@ -7815,7 +7818,7 @@ pub mod streams_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamsService/DeleteCluster",
             );
@@ -7845,7 +7848,7 @@ pub mod streams_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamsService/ListStreams",
             );
@@ -7872,7 +7875,7 @@ pub mod streams_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamsService/GetStream",
             );
@@ -7902,7 +7905,7 @@ pub mod streams_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamsService/CreateStream",
             );
@@ -7932,7 +7935,7 @@ pub mod streams_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamsService/UpdateStream",
             );
@@ -7962,7 +7965,7 @@ pub mod streams_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamsService/DeleteStream",
             );
@@ -7992,7 +7995,7 @@ pub mod streams_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamsService/GetStreamThumbnail",
             );
@@ -8022,7 +8025,7 @@ pub mod streams_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamsService/GenerateStreamHlsToken",
             );
@@ -8052,7 +8055,7 @@ pub mod streams_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamsService/ListEvents",
             );
@@ -8079,7 +8082,7 @@ pub mod streams_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamsService/GetEvent",
             );
@@ -8109,7 +8112,7 @@ pub mod streams_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamsService/CreateEvent",
             );
@@ -8139,7 +8142,7 @@ pub mod streams_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamsService/UpdateEvent",
             );
@@ -8169,7 +8172,7 @@ pub mod streams_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamsService/DeleteEvent",
             );
@@ -8199,7 +8202,7 @@ pub mod streams_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamsService/ListSeries",
             );
@@ -8226,7 +8229,7 @@ pub mod streams_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamsService/GetSeries",
             );
@@ -8256,7 +8259,7 @@ pub mod streams_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamsService/CreateSeries",
             );
@@ -8286,7 +8289,7 @@ pub mod streams_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamsService/UpdateSeries",
             );
@@ -8316,7 +8319,7 @@ pub mod streams_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamsService/DeleteSeries",
             );
@@ -8346,7 +8349,7 @@ pub mod streams_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.StreamsService/MaterializeChannel",
             );
@@ -8363,7 +8366,7 @@ pub mod streams_service_client {
     }
 }
 /// Request message for CreateAssetRequest.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateAssetRequest {
     /// Required. The parent resource where this asset will be created.
     /// Format:
@@ -8378,13 +8381,13 @@ pub struct CreateAssetRequest {
     /// Otherwise, asset id will be generated by system.
     ///
     /// This value should be up to 63 characters, and valid characters
-    /// are /[a-z][0-9]-/. The first character must be a letter, the last could be
+    /// are /\[a-z\]\[0-9\]-/. The first character must be a letter, the last could be
     /// a letter or a number.
     #[prost(string, optional, tag = "3")]
     pub asset_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Request message for GetAsset.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAssetRequest {
     /// Required. The name of the asset to retrieve.
     /// Format:
@@ -8393,7 +8396,7 @@ pub struct GetAssetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListAssets.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAssetsRequest {
     /// Required. The parent, which owns this collection of assets.
     /// Format:
@@ -8432,7 +8435,7 @@ pub struct ListAssetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for UpdateAsset.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateAssetRequest {
     /// Required. The asset to update.
     ///
@@ -8446,7 +8449,7 @@ pub struct UpdateAssetRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteAsset.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAssetRequest {
     /// Required. The name of the asset to delete.
     /// Format:
@@ -8455,7 +8458,7 @@ pub struct DeleteAssetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The source of the asset.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AssetSource {
     #[prost(oneof = "asset_source::SourceForm", tags = "1, 2")]
     pub source_form: ::core::option::Option<asset_source::SourceForm>,
@@ -8463,19 +8466,19 @@ pub struct AssetSource {
 /// Nested message and enum types in `AssetSource`.
 pub mod asset_source {
     /// The asset source is from Cloud Storage.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AssetGcsSource {
         /// Cloud storage uri.
         #[prost(string, tag = "1")]
         pub gcs_uri: ::prost::alloc::string::String,
     }
     /// The content of the asset.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AssetContentData {
         #[prost(bytes = "vec", tag = "1")]
         pub asset_content_data: ::prost::alloc::vec::Vec<u8>,
     }
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum SourceForm {
         /// The source of the asset is from Cloud Storage.
         #[prost(message, tag = "1")]
@@ -8486,7 +8489,7 @@ pub mod asset_source {
     }
 }
 /// Request message for UploadAsset.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UploadAssetRequest {
     /// Required. The resource name of the asset to upload.
     /// Format:
@@ -8498,10 +8501,10 @@ pub struct UploadAssetRequest {
     pub asset_source: ::core::option::Option<AssetSource>,
 }
 /// Response message for UploadAsset.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UploadAssetResponse {}
 /// Metadata for UploadAsset.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UploadAssetMetadata {
     /// The start time of the operation.
     #[prost(message, optional, tag = "1")]
@@ -8511,7 +8514,7 @@ pub struct UploadAssetMetadata {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request message for GenerateRetrievalUrl API.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateRetrievalUrlRequest {
     /// Required. The resource name of the asset to request signed url for.
     /// Format:
@@ -8520,7 +8523,7 @@ pub struct GenerateRetrievalUrlRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Response message for GenerateRetrievalUrl API.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateRetrievalUrlResponse {
     /// A signed url to download the content of the asset.
     #[prost(string, tag = "1")]
@@ -8530,7 +8533,7 @@ pub struct GenerateRetrievalUrlResponse {
 /// contains metadata and another resource annotation. Different feature could be
 /// applied to the asset to generate annotations. User could specified annotation
 /// related to the target asset.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Asset {
     /// Resource name of the asset.
     /// Format:
@@ -8548,7 +8551,7 @@ pub struct Asset {
     pub asset_gcs_source: ::core::option::Option<asset_source::AssetGcsSource>,
 }
 /// Request message for AnalyzeAsset.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AnalyzeAssetRequest {
     /// Required. The resource name of the asset to analyze.
     /// Format:
@@ -8574,7 +8577,7 @@ pub struct AnalyzeAssetMetadata {
 /// Nested message and enum types in `AnalyzeAssetMetadata`.
 pub mod analyze_asset_metadata {
     /// The status of analysis on each search capability.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AnalysisStatus {
         #[prost(enumeration = "analysis_status::State", tag = "2")]
         pub state: i32,
@@ -8636,10 +8639,10 @@ pub mod analyze_asset_metadata {
     }
 }
 /// Response message for AnalyzeAsset.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AnalyzeAssetResponse {}
 /// The status of indexing for the asset.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IndexingStatus {
     /// Output only. State of this asset's indexing.
     #[prost(enumeration = "indexing_status::State", tag = "2")]
@@ -8699,7 +8702,7 @@ pub mod indexing_status {
     }
 }
 /// Request message for IndexAsset.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IndexAssetRequest {
     /// Required. The resource name of the asset to index.
     /// Format:
@@ -8713,7 +8716,7 @@ pub struct IndexAssetRequest {
     pub index: ::prost::alloc::string::String,
 }
 /// Metadata for IndexAsset.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IndexAssetMetadata {
     /// The status of indexing this asset.
     #[prost(message, optional, tag = "4")]
@@ -8726,10 +8729,10 @@ pub struct IndexAssetMetadata {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Response message for IndexAsset.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IndexAssetResponse {}
 /// Request message for RemoveIndexAsset.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveIndexAssetRequest {
     /// Required. The resource name of the asset to index.
     /// Format:
@@ -8743,7 +8746,7 @@ pub struct RemoveIndexAssetRequest {
     pub index: ::prost::alloc::string::String,
 }
 /// Metadata for RemoveIndexAsset.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveIndexAssetMetadata {
     /// The status of indexing this asset.
     #[prost(message, optional, tag = "1")]
@@ -8756,10 +8759,10 @@ pub struct RemoveIndexAssetMetadata {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Response message for RemoveIndexAsset.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveIndexAssetResponse {}
 /// An IndexedAsset is an asset that the index is built upon.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IndexedAsset {
     /// Required. The index that this indexed asset belongs to.
     /// Format:
@@ -8779,7 +8782,7 @@ pub struct IndexedAsset {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request message for ViewIndexedAssets.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ViewIndexedAssetsRequest {
     /// Required. The index that owns this collection of assets.
     /// Format:
@@ -8828,7 +8831,7 @@ pub struct CreateCorpusRequest {
     pub corpus: ::core::option::Option<Corpus>,
 }
 /// Metadata for CreateCorpus API.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateCorpusMetadata {
     /// The create time of the create corpus operation.
     #[prost(message, optional, tag = "2")]
@@ -8838,7 +8841,7 @@ pub struct CreateCorpusMetadata {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The capability and metadata of search capability.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchCapability {
     /// The search capability to enable.
     #[prost(enumeration = "search_capability::Type", tag = "1")]
@@ -8894,14 +8897,14 @@ pub struct SearchCapabilitySetting {
     pub search_capabilities: ::prost::alloc::vec::Vec<SearchCapability>,
 }
 /// Metadata message for CreateCollectionRequest
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateCollectionMetadata {
     /// Common metadata of the long-running operation.
     #[prost(message, optional, tag = "1")]
     pub operation_metadata: ::core::option::Option<OperationMetadata>,
 }
 /// Request message for CreateCollection.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateCollectionRequest {
     /// Required. The parent resource where this collection will be created.
     /// Format: `projects/{project_number}/locations/{location}/corpora/{corpus}`
@@ -8915,20 +8918,20 @@ pub struct CreateCollectionRequest {
     /// collection id will be generated by system.
     ///
     /// This value should be up to 55 characters, and valid characters
-    /// are /[a-z][0-9]-/. The first character must be a letter, the last could be
+    /// are /\[a-z\]\[0-9\]-/. The first character must be a letter, the last could be
     /// a letter or a number.
     #[prost(string, optional, tag = "3")]
     pub collection_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Metadata message for DeleteCollectionRequest
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteCollectionMetadata {
     /// Common metadata of the long-running operation.
     #[prost(message, optional, tag = "1")]
     pub operation_metadata: ::core::option::Option<OperationMetadata>,
 }
 /// Request message for DeleteCollectionRequest.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteCollectionRequest {
     /// Required. The name of the collection to delete. Format:
     /// `projects/{project_number}/locations/{location}/corpora/{corpus}/collections/{collection}`
@@ -8936,7 +8939,7 @@ pub struct DeleteCollectionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for GetCollectionRequest.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCollectionRequest {
     /// Required. The name of the collection to retrieve. Format:
     /// `projects/{project_number}/locations/{location}/corpora/{corpus}/collections/{collection}`
@@ -8944,7 +8947,7 @@ pub struct GetCollectionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateCollectionRequest.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateCollectionRequest {
     /// Required. The collection to update.
     ///
@@ -8954,17 +8957,18 @@ pub struct UpdateCollectionRequest {
     #[prost(message, optional, tag = "1")]
     pub collection: ::core::option::Option<Collection>,
     /// The list of fields to be updated.
-    /// - Unset `update_mask` or set `update_mask` to be a single "*" only will
-    ///    update all updatable fields with the value provided in `collection`.
-    /// - To update `display_name` value to empty string, set it in the
-    /// `collection`
-    ///    to empty string, and set `update_mask` with "display_name". Same applies
-    ///    to other updatable string fields in the `collection`.
+    ///
+    /// * Unset `update_mask` or set `update_mask` to be a single "\*" only will
+    ///   update all updatable fields with the value provided in `collection`.
+    /// * To update `display_name` value to empty string, set it in the
+    ///   `collection`
+    ///   to empty string, and set `update_mask` with "display_name". Same applies
+    ///   to other updatable string fields in the `collection`.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for ListCollections.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCollectionsRequest {
     /// Required. The parent corpus. Format:
     /// `projects/{project_number}/locations/{location}/corpora/{corpus}`
@@ -8995,35 +8999,35 @@ pub struct ListCollectionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for AddCollectionItem.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddCollectionItemRequest {
     /// Required. The item to be added.
     #[prost(message, optional, tag = "1")]
     pub item: ::core::option::Option<CollectionItem>,
 }
 /// Response message for AddCollectionItem.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddCollectionItemResponse {
     /// The item that has already been added.
     #[prost(message, optional, tag = "1")]
     pub item: ::core::option::Option<CollectionItem>,
 }
 /// Request message for RemoveCollectionItem.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveCollectionItemRequest {
     /// Required. The item to be removed.
     #[prost(message, optional, tag = "1")]
     pub item: ::core::option::Option<CollectionItem>,
 }
 /// Request message for RemoveCollectionItem.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveCollectionItemResponse {
     /// The item that has already been removed.
     #[prost(message, optional, tag = "1")]
     pub item: ::core::option::Option<CollectionItem>,
 }
 /// Request message for ViewCollectionItems.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ViewCollectionItemsRequest {
     /// Required. The collection to view. Format:
     /// `projects/{project_number}/locations/{location}/corpora/{corpus}/collections/{collection}`
@@ -9056,7 +9060,7 @@ pub struct ViewCollectionItemsResponse {
 }
 /// A collection is a resource in a corpus. It serves as a container of
 /// references to original resources.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Collection {
     /// Output only. Resource name of the collection. Format:
     /// `projects/{project_number}/locations/{location}/corpora/{corpus}/collections/{collection}`
@@ -9073,7 +9077,7 @@ pub struct Collection {
 }
 /// A CollectionItem is an item in a collection.
 /// Each item is a reference to the original resource in a collection.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CollectionItem {
     /// Required. The collection name that this item belongs to. Format:
     /// `projects/{project_number}/locations/{location}/corpora/{corpus}/collections/{collection}`
@@ -9143,7 +9147,7 @@ pub struct CreateIndexRequest {
     /// generated by system.
     ///
     /// This value should be up to 63 characters, and valid characters
-    /// are /[a-z][0-9]-/. The first character must be a letter, the last could be
+    /// are /\[a-z\]\[0-9\]-/. The first character must be a letter, the last could be
     /// a letter or a number.
     #[prost(string, tag = "2")]
     pub index_id: ::prost::alloc::string::String,
@@ -9152,7 +9156,7 @@ pub struct CreateIndexRequest {
     pub index: ::core::option::Option<Index>,
 }
 /// Metadata message for CreateIndexRequest
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateIndexMetadata {
     /// Common metadata of the long-running operation.
     #[prost(message, optional, tag = "1")]
@@ -9168,20 +9172,20 @@ pub struct UpdateIndexRequest {
     /// Index resource by the update. The fields specified in the update_mask are
     /// relative to the resource, not the full request. A field of the resource
     /// will be overwritten if it is in the mask. Empty field mask is not allowed.
-    /// If the mask is "*", it triggers a full update of the index, and also a
+    /// If the mask is "\*", it triggers a full update of the index, and also a
     /// whole rebuild of index data.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Metadata message for UpdateIndexRequest
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateIndexMetadata {
     /// Common metadata of the long-running operation.
     #[prost(message, optional, tag = "1")]
     pub operation_metadata: ::core::option::Option<OperationMetadata>,
 }
 /// Request message for getting an Index.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIndexRequest {
     /// Required. Name of the Index resource.
     /// Format:
@@ -9190,7 +9194,7 @@ pub struct GetIndexRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for listing Indexes.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListIndexesRequest {
     /// Required. The parent corpus that owns this collection of indexes.
     /// Format:
@@ -9223,7 +9227,7 @@ pub struct ListIndexesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for DeleteIndex.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteIndexRequest {
     /// Required. The name of the index to delete.
     /// Format:
@@ -9232,7 +9236,7 @@ pub struct DeleteIndexRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Metadata message for DeleteIndexRequest
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteIndexMetadata {}
 /// An Index is a resource in Corpus. It contains an indexed version of the
 /// assets and annotations. When deployed to an endpoint, it will allow users to
@@ -9335,7 +9339,7 @@ pub mod index {
     /// entire_corpus if unspecified. Behavior in UpdateIndex: if update_mask
     /// includes one of the asset_filter field paths, the index will be rebuilt
     /// with latest assets, including their analyzed data and annotations.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum AssetFilter {
         /// Include all assets under the corpus.
         #[prost(bool, tag = "9")]
@@ -9343,7 +9347,7 @@ pub mod index {
     }
 }
 /// Points to a DeployedIndex.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeployedIndexReference {
     /// Immutable. A resource name of the IndexEndpoint.
     #[prost(string, tag = "1")]
@@ -9369,7 +9373,7 @@ pub struct Corpus {
     /// Optional. The default TTL value for all assets under the corpus without a
     /// asset level user-defined TTL. For STREAM_VIDEO type corpora, this is
     /// required and the maximum allowed
-    ///    default_ttl is 10 years.
+    /// default_ttl is 10 years.
     #[prost(message, optional, tag = "5")]
     pub default_ttl: ::core::option::Option<::prost_types::Duration>,
     /// Optional. Type of the asset inside corpus.
@@ -9441,7 +9445,7 @@ pub mod corpus {
     }
 }
 /// Request message for GetCorpus.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCorpusRequest {
     /// Required. The resource name of the corpus to retrieve.
     #[prost(string, tag = "1")]
@@ -9458,7 +9462,7 @@ pub struct UpdateCorpusRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for ListCorpora.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCorporaRequest {
     /// Required. The resource name of the project from which to list corpora.
     #[prost(string, tag = "1")]
@@ -9472,9 +9476,9 @@ pub struct ListCorporaRequest {
     pub page_size: i32,
     /// A token identifying a page of results for the server to return.
     /// Typically obtained via
-    /// [ListCorporaResponse.next_page_token][google.cloud.visionai.v1.ListCorporaResponse.next_page_token]
+    /// \[ListCorporaResponse.next_page_token\]\[google.cloud.visionai.v1.ListCorporaResponse.next_page_token\]
     /// of the previous
-    /// [Warehouse.ListCorpora][google.cloud.visionai.v1.Warehouse.ListCorpora]
+    /// \[Warehouse.ListCorpora\]\[google.cloud.visionai.v1.Warehouse.ListCorpora\]
     /// call.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
@@ -9493,20 +9497,20 @@ pub struct ListCorporaResponse {
     pub corpora: ::prost::alloc::vec::Vec<Corpus>,
     /// A token to retrieve next page of results.
     /// Pass to
-    /// [ListCorporaRequest.page_token][google.cloud.visionai.v1.ListCorporaRequest.page_token]
+    /// \[ListCorporaRequest.page_token\]\[google.cloud.visionai.v1.ListCorporaRequest.page_token\]
     /// to obtain that page.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for DeleteCorpus.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteCorpusRequest {
     /// Required. The resource name of the corpus to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for AnalyzeCorpus.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AnalyzeCorpusRequest {
     /// Required. The parent corpus resource where the assets will be analyzed.
     /// Format:
@@ -9515,14 +9519,14 @@ pub struct AnalyzeCorpusRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The metadata message for AnalyzeCorpus LRO.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AnalyzeCorpusMetadata {
     /// The metadata of the operation.
     #[prost(message, optional, tag = "1")]
     pub metadata: ::core::option::Option<OperationMetadata>,
 }
 /// The response message for AnalyzeCorpus LRO.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AnalyzeCorpusResponse {}
 /// Request message for CreateDataSchema.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -9547,7 +9551,7 @@ pub struct DataSchema {
     pub name: ::prost::alloc::string::String,
     /// Required. The key of this data schema. This key should be matching the key
     /// of user specified annotation and unique inside corpus. This value can be up
-    /// to 63 characters, and valid characters are /[a-z][0-9]-/. The first
+    /// to 63 characters, and valid characters are /\[a-z\]\[0-9\]-/. The first
     /// character must be a letter, the last could be a letter or a number.
     #[prost(string, tag = "2")]
     pub key: ::prost::alloc::string::String,
@@ -9585,7 +9589,7 @@ pub struct DataSchemaDetails {
 /// Nested message and enum types in `DataSchemaDetails`.
 pub mod data_schema_details {
     /// The configuration for `PROTO_ANY` data type.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ProtoAnyConfig {
         /// The type URI of the proto message.
         #[prost(string, tag = "1")]
@@ -9642,60 +9646,60 @@ pub mod data_schema_details {
         /// type: CUSTOMIZED_STRUCT
         /// granularity: GRANULARITY_PARTITION_LEVEL
         /// customized_struct_config {
-        ///    field_schemas {
-        ///      key: "name"
-        ///      type: STRING
-        ///      granularity: GRANULARITY_PARTITION_LEVEL
-        ///      search_strategy {
-        ///        search_strategy_type: SMART_SEARCH
-        ///        confidence_score_index_config {
-        ///          field_path: "name-confidence-pair.score"
-        ///          threshold: 0.6
-        ///        }
-        ///      }
-        ///    }
-        ///    field_schemas {
-        ///      key: "score"
-        ///      type: FLOAT
-        ///      granularity: GRANULARITY_PARTITION_LEVEL
-        ///    }
+        /// field_schemas {
+        /// key: "name"
+        /// type: STRING
+        /// granularity: GRANULARITY_PARTITION_LEVEL
+        /// search_strategy {
+        /// search_strategy_type: SMART_SEARCH
+        /// confidence_score_index_config {
+        /// field_path: "name-confidence-pair.score"
+        /// threshold: 0.6
+        /// }
+        /// }
+        /// }
+        /// field_schemas {
+        /// key: "score"
+        /// type: FLOAT
+        /// granularity: GRANULARITY_PARTITION_LEVEL
+        /// }
         /// }
         /// This means only "name" with score > 0.6 will be indexed.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ConfidenceScoreIndexConfig {
             /// Required. The path to the confidence score field. It is a string that
             /// concatenates all the data schema keys along the path. See the example
-            /// above. If the data schema contains LIST, use '_ENTRIES' to concatenate.
+            /// above. If the data schema contains LIST, use '\_ENTRIES' to concatenate.
             /// Example data schema contains a list:
             /// "key": "list-name-score",
             /// "schemaDetails": {
-            ///    "type": "LIST",
-            ///    "granularity": "GRANULARITY_PARTITION_LEVEL",
-            ///    "listConfig": {
-            ///      "valueSchema": {
-            ///        "type": "CUSTOMIZED_STRUCT",
-            ///        "granularity": "GRANULARITY_PARTITION_LEVEL",
-            ///        "customizedStructConfig": {
-            ///          "fieldSchemas": {
-            ///            "name": {
-            ///              "type": "STRING",
-            ///              "granularity": "GRANULARITY_PARTITION_LEVEL",
-            ///              "searchStrategy": {
-            ///                "searchStrategyType": "SMART_SEARCH"
-            ///                "confidence_score_index_config": {
-            ///                  "field_path": "list-name-score._ENTRIES.score",
-            ///                  "threshold": "0.9",
-            ///                }
-            ///              }
-            ///            },
-            ///            "score": {
-            ///              "type": "FLOAT",
-            ///              "granularity": "GRANULARITY_PARTITION_LEVEL",
-            ///            }
-            ///          }
-            ///        }
-            ///      }
-            ///    }
+            /// "type": "LIST",
+            /// "granularity": "GRANULARITY_PARTITION_LEVEL",
+            /// "listConfig": {
+            /// "valueSchema": {
+            /// "type": "CUSTOMIZED_STRUCT",
+            /// "granularity": "GRANULARITY_PARTITION_LEVEL",
+            /// "customizedStructConfig": {
+            /// "fieldSchemas": {
+            /// "name": {
+            /// "type": "STRING",
+            /// "granularity": "GRANULARITY_PARTITION_LEVEL",
+            /// "searchStrategy": {
+            /// "searchStrategyType": "SMART_SEARCH"
+            /// "confidence_score_index_config": {
+            /// "field_path": "list-name-score.\_ENTRIES.score",
+            /// "threshold": "0.9",
+            /// }
+            /// }
+            /// },
+            /// "score": {
+            /// "type": "FLOAT",
+            /// "granularity": "GRANULARITY_PARTITION_LEVEL",
+            /// }
+            /// }
+            /// }
+            /// }
+            /// }
             /// }
             #[prost(string, tag = "1")]
             pub field_path: ::prost::alloc::string::String,
@@ -9767,21 +9771,24 @@ pub mod data_schema_details {
         Unspecified = 0,
         /// Integer type.
         /// Allowed search strategies:
-        /// - DataSchema.SearchStrategy.NO_SEARCH,
-        /// - DataSchema.SearchStrategy.EXACT_SEARCH.
-        ///    Supports query by IntRangeArray.
+        ///
+        /// * DataSchema.SearchStrategy.NO_SEARCH,
+        /// * DataSchema.SearchStrategy.EXACT_SEARCH.
+        ///   Supports query by IntRangeArray.
         Integer = 1,
         /// Float type.
         /// Allowed search strategies:
-        /// - DataSchema.SearchStrategy.NO_SEARCH,
-        /// - DataSchema.SearchStrategy.EXACT_SEARCH.
-        ///    Supports query by FloatRangeArray.
+        ///
+        /// * DataSchema.SearchStrategy.NO_SEARCH,
+        /// * DataSchema.SearchStrategy.EXACT_SEARCH.
+        ///   Supports query by FloatRangeArray.
         Float = 2,
         /// String type.
         /// Allowed search strategies:
-        /// - DataSchema.SearchStrategy.NO_SEARCH,
-        /// - DataSchema.SearchStrategy.EXACT_SEARCH,
-        /// - DataSchema.SearchStrategy.SMART_SEARCH.
+        ///
+        /// * DataSchema.SearchStrategy.NO_SEARCH,
+        /// * DataSchema.SearchStrategy.EXACT_SEARCH,
+        /// * DataSchema.SearchStrategy.SMART_SEARCH.
         String = 3,
         /// Supported formats:
         /// %Y-%m-%dT%H:%M:%E*S%E*z (absl::RFC3339_full)
@@ -9795,55 +9802,61 @@ pub mod data_schema_details {
         /// %Y-%m
         /// %Y
         /// Allowed search strategies:
-        /// - DataSchema.SearchStrategy.NO_SEARCH,
-        /// - DataSchema.SearchStrategy.EXACT_SEARCH.
-        ///    Supports query by DateTimeRangeArray.
+        ///
+        /// * DataSchema.SearchStrategy.NO_SEARCH,
+        /// * DataSchema.SearchStrategy.EXACT_SEARCH.
+        ///   Supports query by DateTimeRangeArray.
         Datetime = 5,
         /// Geo coordinate type.
         /// Allowed search strategies:
-        /// - DataSchema.SearchStrategy.NO_SEARCH,
-        /// - DataSchema.SearchStrategy.EXACT_SEARCH.
-        ///    Supports query by GeoLocationArray.
+        ///
+        /// * DataSchema.SearchStrategy.NO_SEARCH,
+        /// * DataSchema.SearchStrategy.EXACT_SEARCH.
+        ///   Supports query by GeoLocationArray.
         GeoCoordinate = 7,
         /// Type to pass any proto as available in annotations.proto. Only use
         /// internally.
         /// Available proto types and its corresponding search behavior:
-        /// - ImageObjectDetectionPredictionResult, allows SMART_SEARCH on
-        ///    display_names and NO_SEARCH.
-        /// - ClassificationPredictionResult, allows SMART_SEARCH on display_names
-        ///    and NO_SEARCH.
-        /// - ImageSegmentationPredictionResult, allows NO_SEARCH.
-        /// - VideoActionRecognitionPredictionResult, allows SMART_SEARCH on
-        ///    display_name and NO_SEARCH.
-        /// - VideoObjectTrackingPredictionResult, allows SMART_SEARCH on
-        ///    display_name and NO_SEARCH.
-        /// - VideoClassificationPredictionResult, allows SMART_SEARCH on
-        ///    display_name and NO_SEARCH.
-        /// - OccupancyCountingPredictionResult, allows EXACT_SEARCH on
-        ///    stats.full_frame_count.count and NO_SEARCH.
-        /// - ObjectDetectionPredictionResult, allows SMART_SEARCH on
-        ///    identified_boxes.entity.label_string and NO_SEARCH.
+        ///
+        /// * ImageObjectDetectionPredictionResult, allows SMART_SEARCH on
+        ///   display_names and NO_SEARCH.
+        /// * ClassificationPredictionResult, allows SMART_SEARCH on display_names
+        ///   and NO_SEARCH.
+        /// * ImageSegmentationPredictionResult, allows NO_SEARCH.
+        /// * VideoActionRecognitionPredictionResult, allows SMART_SEARCH on
+        ///   display_name and NO_SEARCH.
+        /// * VideoObjectTrackingPredictionResult, allows SMART_SEARCH on
+        ///   display_name and NO_SEARCH.
+        /// * VideoClassificationPredictionResult, allows SMART_SEARCH on
+        ///   display_name and NO_SEARCH.
+        /// * OccupancyCountingPredictionResult, allows EXACT_SEARCH on
+        ///   stats.full_frame_count.count and NO_SEARCH.
+        /// * ObjectDetectionPredictionResult, allows SMART_SEARCH on
+        ///   identified_boxes.entity.label_string and NO_SEARCH.
         ProtoAny = 8,
         /// Boolean type.
         /// Allowed search strategies:
-        /// - DataSchema.SearchStrategy.NO_SEARCH,
-        /// - DataSchema.SearchStrategy.EXACT_SEARCH.
+        ///
+        /// * DataSchema.SearchStrategy.NO_SEARCH,
+        /// * DataSchema.SearchStrategy.EXACT_SEARCH.
         Boolean = 9,
         /// List type.
-        ///   - Each element in the list must be of the exact same data schema;
-        ///     otherwise, they are invalid arguments.
-        ///   - List level cannot set search strategy. Leaf node level can do.
-        ///   - Elements cannot be another list (no list of list).
-        ///   - Elements can be CUSTOMIZED_STRUCT, and max number of layers is 10.
+        ///
+        /// * Each element in the list must be of the exact same data schema;
+        ///   otherwise, they are invalid arguments.
+        /// * List level cannot set search strategy. Leaf node level can do.
+        /// * Elements cannot be another list (no list of list).
+        /// * Elements can be CUSTOMIZED_STRUCT, and max number of layers is 10.
         List = 10,
         /// Struct type.
-        /// - SearchStrategy:
-        ///    * Data Schema that's CUSTOMIZED_STRUCT cannot set search strategy.
-        ///    * Leaf-node elements allow setting search strategy based on element's
-        ///      SearchStrategy restriction.
-        /// - Nested layer restrictions:
-        ///    * Data Schema that's CUSTOMIZED_STRUCT allows its fields to be of
-        ///      CUSTOMIZED_STRUCT as well, but the overall layers restriction is 10.
+        ///
+        /// * SearchStrategy:
+        ///   * Data Schema that's CUSTOMIZED_STRUCT cannot set search strategy.
+        ///   * Leaf-node elements allow setting search strategy based on element's
+        ///     SearchStrategy restriction.
+        /// * Nested layer restrictions:
+        ///   * Data Schema that's CUSTOMIZED_STRUCT allows its fields to be of
+        ///     CUSTOMIZED_STRUCT as well, but the overall layers restriction is 10.
         CustomizedStruct = 6,
     }
     impl DataType {
@@ -9939,7 +9952,7 @@ pub struct UpdateDataSchemaRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetDataSchema.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDataSchemaRequest {
     /// Required. The name of the data schema to retrieve.
     /// Format:
@@ -9948,7 +9961,7 @@ pub struct GetDataSchemaRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for DeleteDataSchema.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDataSchemaRequest {
     /// Required. The name of the data schema to delete.
     /// Format:
@@ -9957,7 +9970,7 @@ pub struct DeleteDataSchemaRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListDataSchemas.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDataSchemasRequest {
     /// Required. The parent, which owns this collection of data schemas.
     /// Format:
@@ -10004,7 +10017,7 @@ pub struct CreateAnnotationRequest {
     /// Otherwise, annotation id will be generated by system.
     ///
     /// This value should be up to 63 characters, and valid characters
-    /// are /[a-z][0-9]-/. The first character must be a letter, the last could be
+    /// are /\[a-z\]\[0-9\]-/. The first character must be a letter, the last could be
     /// a letter or a number.
     #[prost(string, optional, tag = "3")]
     pub annotation_id: ::core::option::Option<::prost::alloc::string::String>,
@@ -10108,7 +10121,7 @@ pub struct AnnotationCustomizedStruct {
     >,
 }
 /// Request message for GetAnnotation API.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAnnotationsRequest {
     /// The parent, which owns this collection of annotations.
     /// Format:
@@ -10140,7 +10153,7 @@ pub struct ListAnnotationsRequest {
     /// may be applied per field, joined by conjunctions.
     /// Format:
     /// "partition.temporal_partition.start_time > "2012-04-21T11:30:00-04:00" AND
-    /// partition.temporal_partition.end_time < "2012-04-22T11:30:00-04:00" AND
+    /// partition.temporal_partition.end_time \< "2012-04-22T11:30:00-04:00" AND
     /// key = "example_key""
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
@@ -10157,7 +10170,7 @@ pub struct ListAnnotationsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetAnnotation API.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAnnotationRequest {
     /// Required. The name of the annotation to retrieve.
     /// Format:
@@ -10179,7 +10192,7 @@ pub struct UpdateAnnotationRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteAnnotation API.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAnnotationRequest {
     /// Required. The name of the annotation to delete.
     /// Format:
@@ -10188,7 +10201,7 @@ pub struct DeleteAnnotationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for ImportAssets.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportAssetsRequest {
     /// Required. The parent corpus resource where the assets will be imported.
     /// Format:
@@ -10202,9 +10215,10 @@ pub struct ImportAssetsRequest {
 /// Nested message and enum types in `ImportAssetsRequest`.
 pub mod import_assets_request {
     /// The source.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Source {
         /// The file contains all assets information to be imported.
+        ///
         /// * The file is in JSONL format.
         /// * Each line corresponding to one asset.
         /// * Each line will be converted into InputImageAsset proto.
@@ -10213,7 +10227,7 @@ pub mod import_assets_request {
     }
 }
 /// The metadata message for ImportAssets LRO.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportAssetsMetadata {
     /// The metadata of the operation.
     #[prost(message, optional, tag = "1")]
@@ -10224,7 +10238,7 @@ pub struct ImportAssetsMetadata {
     pub status: ::core::option::Option<BatchOperationStatus>,
 }
 /// The batch operation status.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BatchOperationStatus {
     /// The count of assets (together with their annotations if any) successfully
     /// ingested.
@@ -10236,7 +10250,7 @@ pub struct BatchOperationStatus {
     pub failure_count: i32,
 }
 /// The response message for ImportAssets LRO.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportAssetsResponse {}
 /// Request message for CreateSearchConfig.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -10251,7 +10265,7 @@ pub struct CreateSearchConfigRequest {
     pub search_config: ::core::option::Option<SearchConfig>,
     /// Required. ID to use for the new search config. Will become the final
     /// component of the SearchConfig's resource name. This value should be up to
-    /// 63 characters, and valid characters are /[a-z][0-9]-_/. The first character
+    /// 63 characters, and valid characters are /\[a-z\]\[0-9\]-\_/. The first character
     /// must be a letter, the last could be a letter or a number.
     #[prost(string, tag = "3")]
     pub search_config_id: ::prost::alloc::string::String,
@@ -10272,7 +10286,7 @@ pub struct UpdateSearchConfigRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetSearchConfig.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSearchConfigRequest {
     /// Required. The name of the search configuration to retrieve.
     /// Format:
@@ -10281,7 +10295,7 @@ pub struct GetSearchConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for DeleteSearchConfig.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSearchConfigRequest {
     /// Required. The name of the search configuration to delete.
     /// Format:
@@ -10290,7 +10304,7 @@ pub struct DeleteSearchConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListSearchConfigs.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSearchConfigsRequest {
     /// Required. The parent, which owns this collection of search configurations.
     /// Format:
@@ -10369,13 +10383,13 @@ pub struct IndexEndpoint {
     /// * Each resource can have multiple labels, up to a maximum of 64.
     /// * Each label must be a key-value pair.
     /// * Keys have a minimum length of 1 character and a maximum length of 63
-    ///    characters and cannot be empty. Values can be empty and have a maximum
-    ///    length of 63 characters.
+    ///   characters and cannot be empty. Values can be empty and have a maximum
+    ///   length of 63 characters.
     /// * Keys and values can contain only lowercase letters, numeric characters,
-    ///    underscores, and dashes. All characters must use UTF-8 encoding, and
-    ///    international characters are allowed.
+    ///   underscores, and dashes. All characters must use UTF-8 encoding, and
+    ///   international characters are allowed.
     /// * The key portion of a label must be unique. However, you can use the same
-    ///    key with multiple resources.
+    ///   key with multiple resources.
     /// * Keys must start with a lowercase letter or international character.
     ///
     /// See [Google Cloud
@@ -10479,21 +10493,21 @@ pub struct CreateIndexEndpointRequest {
     pub index_endpoint: ::core::option::Option<IndexEndpoint>,
 }
 /// Metadata message for CreateIndexEndpoint.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateIndexEndpointMetadata {
     /// Common metadata of the long-running operation.
     #[prost(message, optional, tag = "1")]
     pub operation_metadata: ::core::option::Option<OperationMetadata>,
 }
 /// Request message for GetIndexEndpoint.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIndexEndpointRequest {
     /// Required. Name of the IndexEndpoint resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListIndexEndpoints.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListIndexEndpointsRequest {
     /// Required. Format: `projects/{project}/locations/{location}`
     #[prost(string, tag = "1")]
@@ -10513,11 +10527,11 @@ pub struct ListIndexEndpointsRequest {
     /// `deployed_image_index.corpus`, which will return all endpoints with
     /// `deployed_image_index.image_index` inside of the given corpus.
     /// A basic filter on image index would look like:
-    ///    deployed_image_index.image_index =
-    ///      "projects/123/locations/us-central1/corpora/my_corpus/imageIndexes/my_image_index"
+    /// deployed_image_index.image_index =
+    /// "projects/123/locations/us-central1/corpora/my_corpus/imageIndexes/my_image_index"
     /// A basic filter on corpus would look like:
-    ///    deployed_image_index.corpus =
-    ///      "projects/123/locations/us-central1/corpora/my_corpus"
+    /// deployed_image_index.corpus =
+    /// "projects/123/locations/us-central1/corpora/my_corpus"
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }
@@ -10543,33 +10557,33 @@ pub struct UpdateIndexEndpointRequest {
     /// the full request.
     /// A field of the resource will be overwritten if it is in the mask.
     /// Empty field mask is not allowed.
-    /// If the mask is "*", then this is a full replacement of the resource.
+    /// If the mask is "\*", then this is a full replacement of the resource.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Metadata message for UpdateIndexEndpoint.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateIndexEndpointMetadata {
     /// Common metadata of the long-running operation.
     #[prost(message, optional, tag = "1")]
     pub operation_metadata: ::core::option::Option<OperationMetadata>,
 }
 /// Request message for DeleteIndexEndpoint.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteIndexEndpointRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Metadata message for DeleteIndexEndpoint.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteIndexEndpointMetadata {
     /// Common metadata of the long-running operation.
     #[prost(message, optional, tag = "1")]
     pub operation_metadata: ::core::option::Option<OperationMetadata>,
 }
 /// Request message for DeployIndex.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeployIndexRequest {
     /// Required. IndexEndpoint the index is deployed to.
     /// Format:
@@ -10581,10 +10595,10 @@ pub struct DeployIndexRequest {
     pub deployed_index: ::core::option::Option<DeployedIndex>,
 }
 /// DeployIndex response once the operation is done.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeployIndexResponse {}
 /// Metadata message for DeployIndex.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeployIndexMetadata {
     /// Common metadata of the long-running operation.
     #[prost(message, optional, tag = "1")]
@@ -10594,7 +10608,7 @@ pub struct DeployIndexMetadata {
     pub deployed_index: ::prost::alloc::string::String,
 }
 /// Metadata message for UndeployIndex.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UndeployIndexMetadata {
     /// Common metadata of the long-running operation.
     #[prost(message, optional, tag = "1")]
@@ -10604,7 +10618,7 @@ pub struct UndeployIndexMetadata {
     pub deployed_index: ::prost::alloc::string::String,
 }
 /// Request message for UndeployIndexEndpoint.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UndeployIndexRequest {
     /// Required. Resource name of the IndexEndpoint resource on which the
     /// undeployment will act. Format:
@@ -10613,10 +10627,10 @@ pub struct UndeployIndexRequest {
     pub index_endpoint: ::prost::alloc::string::String,
 }
 /// UndeployIndex response once the operation is done.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UndeployIndexResponse {}
 /// A deployment of an Index.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeployedIndex {
     /// Required. Name of the deployed Index.
     /// Format:
@@ -10647,7 +10661,7 @@ pub struct FacetProperty {
     pub display_name: ::prost::alloc::string::String,
     /// Maximum number of unique bucket to return for one facet. Bucket number can
     /// be large for high-cardinality facet such as "player". We only return top-n
-    /// most related ones to user. If it's <= 0, the server will decide the
+    /// most related ones to user. If it's \<= 0, the server will decide the
     /// appropriate result_size.
     #[prost(int64, tag = "3")]
     pub result_size: i64,
@@ -10664,9 +10678,9 @@ pub mod facet_property {
     /// granularities. Using integer bucket value as an example, when
     /// bucket_start = 0, bucket_granularity = 10, bucket_count = 5, this facet
     /// will be aggregated via the following buckets:
-    /// [-inf, 0), [0, 10), [10, 20), [20, 30), [30, inf).
-    /// Notably, bucket_count <= 1 is an invalid spec.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    /// \[-inf, 0), \[0, 10), \[10, 20), \[20, 30), \[30, inf).
+    /// Notably, bucket_count \<= 1 is an invalid spec.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct FixedRangeBucketSpec {
         /// Lower bound of the bucket. NOTE: Only integer type is currently supported
         /// for this field.
@@ -10683,11 +10697,12 @@ pub mod facet_property {
     /// If bucket type is CUSTOM_RANGE, specify how values are bucketized. Use
     /// integer bucket value as an example, when the endpoints are 0, 10, 100, and
     /// 1000, we will generate the following facets:
-    /// [-inf, 0), [0, 10), [10, 100), [100, 1000), [1000, inf).
+    /// \[-inf, 0), \[0, 10), \[10, 100), \[100, 1000), \[1000, inf).
     /// Notably:
-    /// - endpoints must be listed in ascending order. Otherwise, the SearchConfig
-    ///    API will reject the facet config.
-    /// - < 1 endpoints is an invalid spec.
+    ///
+    /// * endpoints must be listed in ascending order. Otherwise, the SearchConfig
+    ///   API will reject the facet config.
+    /// * \< 1 endpoints is an invalid spec.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CustomRangeBucketSpec {
         /// Currently, only integer type is supported for this field.
@@ -10695,7 +10710,7 @@ pub mod facet_property {
         pub endpoints: ::prost::alloc::vec::Vec<super::FacetValue>,
     }
     /// If bucket type is DATE, specify how date values are bucketized.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DateTimeBucketSpec {
         /// Granularity of date type facet.
         #[prost(enumeration = "date_time_bucket_spec::Granularity", tag = "1")]
@@ -10767,10 +10782,10 @@ pub mod facet_property {
 /// Search resource: SearchHypernym.
 /// For example,
 /// { hypernym: "vehicle"
-///    hyponyms: \["sedan", "truck"\] }
+/// hyponyms: \["sedan", "truck"\] }
 /// This means in SMART_SEARCH mode, searching for "vehicle" will also return
 /// results with "sedan" or "truck" as annotations.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchHypernym {
     /// Resource name of the SearchHypernym.
     /// Format:
@@ -10785,7 +10800,7 @@ pub struct SearchHypernym {
     pub hyponyms: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for creating SearchHypernym.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateSearchHypernymRequest {
     /// Required. The parent resource where this SearchHypernym will be created.
     /// Format: `projects/{project_number}/locations/{location}/corpora/{corpus}`
@@ -10800,7 +10815,7 @@ pub struct CreateSearchHypernymRequest {
     pub search_hypernym_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Request message for updating SearchHypernym.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateSearchHypernymRequest {
     /// Required. The SearchHypernym to update.
     /// The search hypernym's `name` field is used to identify the search hypernym
@@ -10814,7 +10829,7 @@ pub struct UpdateSearchHypernymRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for getting SearchHypernym.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSearchHypernymRequest {
     /// Required. The name of the SearchHypernym to retrieve.
     /// Format:
@@ -10823,7 +10838,7 @@ pub struct GetSearchHypernymRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for deleting SearchHypernym.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSearchHypernymRequest {
     /// Required. The name of the SearchHypernym to delete.
     /// Format:
@@ -10832,7 +10847,7 @@ pub struct DeleteSearchHypernymRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for listing SearchHypernyms.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSearchHypernymsRequest {
     /// Required. The parent, which owns this collection of SearchHypernyms.
     /// Format:
@@ -10865,27 +10880,27 @@ pub struct ListSearchHypernymsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Central configuration for custom search criteria.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchCriteriaProperty {
     /// Each mapped_field corresponds to a UGA key. To understand how this property
     /// works, take the following example. In the SearchConfig table, the
     /// user adds this entry:
-    ///    search_config {
-    ///      name: "person"
-    ///      search_criteria_property {
-    ///        mapped_fields: "player"
-    ///        mapped_fields: "coach"
-    ///      }
-    ///    }
+    /// search_config {
+    /// name: "person"
+    /// search_criteria_property {
+    /// mapped_fields: "player"
+    /// mapped_fields: "coach"
+    /// }
+    /// }
     ///
     /// Now, when a user issues a query like:
-    ///    criteria {
-    ///      field: "person"
-    ///      text_array {
-    ///        txt_values: "Tom Brady"
-    ///        txt_values: "Bill Belichick"
-    ///      }
-    ///    }
+    /// criteria {
+    /// field: "person"
+    /// text_array {
+    /// txt_values: "Tom Brady"
+    /// txt_values: "Bill Belichick"
+    /// }
+    /// }
     ///
     /// MWH search will return search documents where (player=Tom Brady ||
     /// coach=Tom Brady || player=Bill Belichick || coach=Bill Belichick).
@@ -10893,14 +10908,14 @@ pub struct SearchCriteriaProperty {
     pub mapped_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Definition of a single value with generic type.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FacetValue {
     #[prost(oneof = "facet_value::Value", tags = "1, 2, 3")]
     pub value: ::core::option::Option<facet_value::Value>,
 }
 /// Nested message and enum types in `FacetValue`.
 pub mod facet_value {
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Value {
         /// String type value.
         #[prost(string, tag = "1")]
@@ -10914,7 +10929,7 @@ pub mod facet_value {
     }
 }
 /// Holds the facet value, selections state, and metadata.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FacetBucket {
     /// Whether one facet bucket is selected. This field represents user's facet
     /// selection. It is set by frontend in SearchVideosRequest.
@@ -10928,8 +10943,8 @@ pub struct FacetBucket {
 }
 /// Nested message and enum types in `FacetBucket`.
 pub mod facet_bucket {
-    /// The range of values [start, end) for which faceting is applied.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    /// The range of values \[start, end) for which faceting is applied.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Range {
         /// Start of the range. Non-existence indicates some bound (e.g. -inf).
         #[prost(message, optional, tag = "1")]
@@ -10941,7 +10956,7 @@ pub mod facet_bucket {
     /// Bucket associated with a facet. For example, bucket of facet “team”
     /// can be "49ers", "patriots", etc; bucket of facet "player" can be "tom
     /// brady", "drew brees", etc.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum BucketValue {
         /// Singular value.
         #[prost(message, tag = "2")]
@@ -10971,13 +10986,14 @@ pub struct FacetGroup {
     /// If true, return query matched annotations for this facet group's selection.
     /// This option is only applicable for facets based on partition level
     /// annotations. It supports the following facet values:
-    ///   - INTEGER
-    ///   - STRING (DataSchema.SearchStrategy.EXACT_SEARCH only)
+    ///
+    /// * INTEGER
+    /// * STRING (DataSchema.SearchStrategy.EXACT_SEARCH only)
     #[prost(bool, tag = "5")]
     pub fetch_matched_annotations: bool,
 }
 /// Request message for IngestAsset API.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IngestAssetRequest {
     #[prost(oneof = "ingest_asset_request::StreamingRequest", tags = "1, 2")]
     pub streaming_request: ::core::option::Option<
@@ -10987,7 +11003,7 @@ pub struct IngestAssetRequest {
 /// Nested message and enum types in `IngestAssetRequest`.
 pub mod ingest_asset_request {
     /// Configuration for the data.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Config {
         /// Required. The resource name of the asset that the ingested data belongs
         /// to.
@@ -10999,7 +11015,7 @@ pub mod ingest_asset_request {
     /// Nested message and enum types in `Config`.
     pub mod config {
         /// Type information for video data.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct VideoType {
             /// Container format of the video data.
             #[prost(enumeration = "video_type::ContainerFormat", tag = "1")]
@@ -11047,7 +11063,7 @@ pub mod ingest_asset_request {
                 }
             }
         }
-        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum DataType {
             /// Type information for video data.
             #[prost(message, tag = "2")]
@@ -11055,7 +11071,7 @@ pub mod ingest_asset_request {
         }
     }
     /// Contains the data and the corresponding time range this data is for.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TimeIndexedData {
         /// Data to be ingested.
         #[prost(bytes = "vec", tag = "1")]
@@ -11066,7 +11082,7 @@ pub mod ingest_asset_request {
             super::partition::TemporalPartition,
         >,
     }
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum StreamingRequest {
         /// Provides information for the data and the asset resource name that the
         /// data belongs to. The first `IngestAssetRequest` message must only contain
@@ -11079,7 +11095,7 @@ pub mod ingest_asset_request {
     }
 }
 /// Response message for IngestAsset API.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IngestAssetResponse {
     /// Time range of the data that has been successfully ingested.
     #[prost(message, optional, tag = "1")]
@@ -11088,7 +11104,7 @@ pub struct IngestAssetResponse {
     >,
 }
 /// Request message for ClipAsset API.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ClipAssetRequest {
     /// Required. The resource name of the asset to request clips for.
     /// Format:
@@ -11110,7 +11126,7 @@ pub struct ClipAssetResponse {
 /// Nested message and enum types in `ClipAssetResponse`.
 pub mod clip_asset_response {
     /// Signed uri with corresponding time range.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TimeIndexedUri {
         /// Time range of the video that the uri is for.
         #[prost(message, optional, tag = "1")]
@@ -11155,7 +11171,7 @@ pub struct GenerateHlsUriResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAssetsRequest {
     /// Required. The parent corpus to search.
-    /// Format: `projects/{project_id}/locations/{location_id}/corpora/{corpus_id}'
+    /// Format: \`projects/{project_id}/locations/{location_id}/corpora/{corpus_id}'
     #[prost(string, tag = "1")]
     pub corpus: ::prost::alloc::string::String,
     /// The number of results to be returned in this page. If it's 0, the server
@@ -11192,14 +11208,16 @@ pub struct SearchAssetsRequest {
     #[prost(string, tag = "10")]
     pub search_query: ::prost::alloc::string::String,
     /// Sorting specification. If this field is not specified, by default:
-    /// - STREAM_VIDEO: search results are sorted by the start time.
+    ///
+    /// * STREAM_VIDEO: search results are sorted by the start time.
     #[prost(oneof = "search_assets_request::SortSpec", tags = "9")]
     pub sort_spec: ::core::option::Option<search_assets_request::SortSpec>,
 }
 /// Nested message and enum types in `SearchAssetsRequest`.
 pub mod search_assets_request {
     /// Sorting specification. If this field is not specified, by default:
-    /// - STREAM_VIDEO: search results are sorted by the start time.
+    ///
+    /// * STREAM_VIDEO: search results are sorted by the start time.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SortSpec {
         /// Sort by the value under the data schema key.
@@ -11212,7 +11230,7 @@ pub mod search_assets_request {
 pub struct SearchIndexEndpointRequest {
     /// Required. The index endpoint to search.
     /// Format:
-    /// `projects/{project_id}/locations/{location_id}/indexEndpoints/{index_endpoint_id}'
+    /// \`projects/{project_id}/locations/{location_id}/indexEndpoints/{index_endpoint_id}'
     #[prost(string, tag = "1")]
     pub index_endpoint: ::prost::alloc::string::String,
     /// Criteria applied to search results.
@@ -11240,7 +11258,7 @@ pub struct SearchIndexEndpointRequest {
 /// Nested message and enum types in `SearchIndexEndpointRequest`.
 pub mod search_index_endpoint_request {
     /// The oneof global search query.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Query {
         /// An image-only query.
         #[prost(message, tag = "2")]
@@ -11251,14 +11269,14 @@ pub mod search_index_endpoint_request {
     }
 }
 /// Image query for search endpoint request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImageQuery {
     #[prost(oneof = "image_query::Image", tags = "1, 2")]
     pub image: ::core::option::Option<image_query::Image>,
 }
 /// Nested message and enum types in `ImageQuery`.
 pub mod image_query {
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Image {
         /// Input image in raw bytes.
         #[prost(bytes, tag = "1")]
@@ -11280,7 +11298,7 @@ pub struct SchemaKeySortingStrategy {
 /// Nested message and enum types in `SchemaKeySortingStrategy`.
 pub mod schema_key_sorting_strategy {
     /// Option for one data schema key.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Option {
         /// The data used to sort.
         #[prost(string, tag = "1")]
@@ -11346,8 +11364,8 @@ pub mod schema_key_sorting_strategy {
     }
 }
 /// The metadata for DeleteAsset API that embeds in
-/// [metadata][google.longrunning.Operation.metadata] field.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+/// \[metadata\]\[google.longrunning.Operation.metadata\] field.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAssetMetadata {}
 /// Stores the criteria-annotation matching results for each search result item.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -11426,7 +11444,7 @@ pub struct SearchIndexEndpointResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Integer range type.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IntRange {
     /// Start of the int range.
     #[prost(int64, optional, tag = "1")]
@@ -11446,7 +11464,7 @@ pub struct FloatRange {
     pub end: ::core::option::Option<f32>,
 }
 /// A list of string-type values.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StringArray {
     /// String type values.
     #[prost(string, repeated, tag = "1")]
@@ -11467,7 +11485,7 @@ pub struct FloatRangeArray {
     pub float_ranges: ::prost::alloc::vec::Vec<FloatRange>,
 }
 /// Datetime range type.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DateTimeRange {
     /// Start date time.
     #[prost(message, optional, tag = "1")]
@@ -11503,7 +11521,7 @@ pub struct GeoLocationArray {
     #[prost(message, repeated, tag = "1")]
     pub circle_areas: ::prost::alloc::vec::Vec<CircleArea>,
 }
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BoolValue {
     #[prost(bool, tag = "1")]
     pub value: bool,
@@ -11518,10 +11536,11 @@ pub struct Criteria {
     /// This option is only applicable for inclusion criteria, i.e., not exclusion
     /// criteria, with partition level annotations.  It supports the following data
     /// types:
-    ///   - INTEGER
-    ///   - FLOAT
-    ///   - STRING (DataSchema.SearchStrategy.EXACT_SEARCH only)
-    ///   - BOOLEAN
+    ///
+    /// * INTEGER
+    /// * FLOAT
+    /// * STRING (DataSchema.SearchStrategy.EXACT_SEARCH only)
+    /// * BOOLEAN
     #[prost(bool, tag = "8")]
     pub fetch_matched_annotations: bool,
     #[prost(oneof = "criteria::Value", tags = "2, 3, 4, 5, 6, 7")]
@@ -11553,7 +11572,7 @@ pub mod criteria {
 }
 /// Partition to specify the partition in time and space for sub-asset level
 /// annotation.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Partition {
     /// Partition of asset in time.
     #[prost(message, optional, tag = "1")]
@@ -11571,7 +11590,7 @@ pub struct Partition {
 pub mod partition {
     /// Partition of asset in UTC Epoch time. Supported by STREAM_VIDEO corpus
     /// type.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TemporalPartition {
         /// Start time of the partition.
         #[prost(message, optional, tag = "1")]
@@ -11581,7 +11600,7 @@ pub mod partition {
         pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// Partition of asset in space.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SpatialPartition {
         /// The minimum x coordinate value.
         #[prost(int64, optional, tag = "1")]
@@ -11598,7 +11617,7 @@ pub mod partition {
     }
     /// Partition of asset in relative time. Supported by VIDEO_ON_DEMAND corpus
     /// type.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RelativeTemporalPartition {
         /// Start time offset of the partition.
         #[prost(message, optional, tag = "1")]
@@ -11754,7 +11773,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/CreateAsset",
             );
@@ -11778,7 +11797,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/UpdateAsset",
             );
@@ -11802,7 +11821,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/GetAsset",
             );
@@ -11829,7 +11848,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/ListAssets",
             );
@@ -11856,7 +11875,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/DeleteAsset",
             );
@@ -11892,7 +11911,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/UploadAsset",
             );
@@ -11921,7 +11940,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/GenerateRetrievalUrl",
             );
@@ -11951,7 +11970,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/AnalyzeAsset",
             );
@@ -11979,7 +11998,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/IndexAsset",
             );
@@ -12007,7 +12026,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/RemoveIndexAsset",
             );
@@ -12037,7 +12056,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/ViewIndexedAssets",
             );
@@ -12067,7 +12086,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/CreateIndex",
             );
@@ -12096,7 +12115,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/UpdateIndex",
             );
@@ -12120,7 +12139,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/GetIndex",
             );
@@ -12147,7 +12166,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/ListIndexes",
             );
@@ -12175,7 +12194,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/DeleteIndex",
             );
@@ -12202,7 +12221,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/CreateCorpus",
             );
@@ -12226,7 +12245,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/GetCorpus",
             );
@@ -12250,7 +12269,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/UpdateCorpus",
             );
@@ -12277,7 +12296,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/ListCorpora",
             );
@@ -12302,7 +12321,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/DeleteCorpus",
             );
@@ -12329,7 +12348,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/AnalyzeCorpus",
             );
@@ -12356,7 +12375,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/CreateDataSchema",
             );
@@ -12383,7 +12402,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/UpdateDataSchema",
             );
@@ -12410,7 +12429,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/GetDataSchema",
             );
@@ -12437,7 +12456,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/DeleteDataSchema",
             );
@@ -12467,7 +12486,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/ListDataSchemas",
             );
@@ -12494,7 +12513,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/CreateAnnotation",
             );
@@ -12521,7 +12540,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/GetAnnotation",
             );
@@ -12551,7 +12570,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/ListAnnotations",
             );
@@ -12578,7 +12597,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/UpdateAnnotation",
             );
@@ -12605,7 +12624,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/DeleteAnnotation",
             );
@@ -12640,7 +12659,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/IngestAsset",
             );
@@ -12672,7 +12691,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/ClipAsset",
             );
@@ -12701,7 +12720,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/GenerateHlsUri",
             );
@@ -12733,7 +12752,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/ImportAssets",
             );
@@ -12748,17 +12767,18 @@ pub mod warehouse_client {
         ///
         /// Please follow the rules below to create a valid CreateSearchConfigRequest.
         /// --- General Rules ---
+        ///
         /// 1. Request.search_config_id must not be associated with an existing
-        ///    SearchConfig.
-        /// 2. Request must contain at least one non-empty search_criteria_property or
-        ///    facet_property.
-        /// 3. mapped_fields must not be empty, and must map to existing UGA keys.
-        /// 4. All mapped_fields must be of the same type.
-        /// 5. All mapped_fields must share the same granularity.
-        /// 6. All mapped_fields must share the same semantic SearchConfig match
-        ///    options.
-        /// For property-specific rules, please reference the comments for
-        /// FacetProperty and SearchCriteriaProperty.
+        ///   SearchConfig.
+        /// 1. Request must contain at least one non-empty search_criteria_property or
+        ///   facet_property.
+        /// 1. mapped_fields must not be empty, and must map to existing UGA keys.
+        /// 1. All mapped_fields must be of the same type.
+        /// 1. All mapped_fields must share the same granularity.
+        /// 1. All mapped_fields must share the same semantic SearchConfig match
+        ///   options.
+        ///   For property-specific rules, please reference the comments for
+        ///   FacetProperty and SearchCriteriaProperty.
         pub async fn create_search_config(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateSearchConfigRequest>,
@@ -12771,7 +12791,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/CreateSearchConfig",
             );
@@ -12789,16 +12809,17 @@ pub mod warehouse_client {
         ///
         /// Please follow the rules below to create a valid UpdateSearchConfigRequest.
         /// --- General Rules ---
+        ///
         /// 1. Request.search_configuration.name must already exist.
-        /// 2. Request must contain at least one non-empty search_criteria_property or
-        /// facet_property.
-        /// 3. mapped_fields must not be empty, and must map to existing UGA keys.
-        /// 4. All mapped_fields must be of the same type.
-        /// 5. All mapped_fields must share the same granularity.
-        /// 6. All mapped_fields must share the same semantic SearchConfig match
-        ///    options.
-        /// For property-specific rules, please reference the comments for
-        /// FacetProperty and SearchCriteriaProperty.
+        /// 1. Request must contain at least one non-empty search_criteria_property or
+        ///   facet_property.
+        /// 1. mapped_fields must not be empty, and must map to existing UGA keys.
+        /// 1. All mapped_fields must be of the same type.
+        /// 1. All mapped_fields must share the same granularity.
+        /// 1. All mapped_fields must share the same semantic SearchConfig match
+        ///   options.
+        ///   For property-specific rules, please reference the comments for
+        ///   FacetProperty and SearchCriteriaProperty.
         pub async fn update_search_config(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateSearchConfigRequest>,
@@ -12811,7 +12832,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/UpdateSearchConfig",
             );
@@ -12838,7 +12859,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/GetSearchConfig",
             );
@@ -12868,7 +12889,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/DeleteSearchConfig",
             );
@@ -12898,7 +12919,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/ListSearchConfigs",
             );
@@ -12925,7 +12946,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/CreateSearchHypernym",
             );
@@ -12952,7 +12973,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/UpdateSearchHypernym",
             );
@@ -12979,7 +13000,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/GetSearchHypernym",
             );
@@ -13006,7 +13027,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/DeleteSearchHypernym",
             );
@@ -13036,7 +13057,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/ListSearchHypernyms",
             );
@@ -13066,7 +13087,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/SearchAssets",
             );
@@ -13093,7 +13114,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/SearchIndexEndpoint",
             );
@@ -13123,7 +13144,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/CreateIndexEndpoint",
             );
@@ -13150,7 +13171,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/GetIndexEndpoint",
             );
@@ -13180,7 +13201,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/ListIndexEndpoints",
             );
@@ -13210,7 +13231,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/UpdateIndexEndpoint",
             );
@@ -13240,7 +13261,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/DeleteIndexEndpoint",
             );
@@ -13270,7 +13291,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/DeployIndex",
             );
@@ -13297,7 +13318,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/UndeployIndex",
             );
@@ -13327,7 +13348,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/CreateCollection",
             );
@@ -13357,7 +13378,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/DeleteCollection",
             );
@@ -13384,7 +13405,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/GetCollection",
             );
@@ -13411,7 +13432,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/UpdateCollection",
             );
@@ -13441,7 +13462,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/ListCollections",
             );
@@ -13471,7 +13492,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/AddCollectionItem",
             );
@@ -13501,7 +13522,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/RemoveCollectionItem",
             );
@@ -13531,7 +13552,7 @@ pub mod warehouse_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.visionai.v1.Warehouse/ViewCollectionItems",
             );

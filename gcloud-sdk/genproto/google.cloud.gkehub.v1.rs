@@ -24,7 +24,9 @@ pub struct Feature {
     ///
     /// The keys indicate which Membership the configuration is for, in the form:
     ///
-    ///      projects/{p}/locations/{l}/memberships/{m}
+    /// ```text
+    /// projects/{p}/locations/{l}/memberships/{m}
+    /// ```
     ///
     /// Where {p} is the project, {l} is a valid location and {m} is a valid
     /// Membership in this project at that location. {p} WILL match the Feature's
@@ -49,7 +51,9 @@ pub struct Feature {
     ///
     /// The keys indicate which Membership the state is for, in the form:
     ///
-    ///      projects/{p}/locations/{l}/memberships/{m}
+    /// ```text
+    /// projects/{p}/locations/{l}/memberships/{m}
+    /// ```
     ///
     /// Where {p} is the project number, {l} is a valid location and {m} is a valid
     /// Membership in this project at that location. {p} MUST match the Feature's
@@ -72,7 +76,7 @@ pub struct Feature {
 /// FeatureResourceState describes the state of a Feature *resource* in the
 /// GkeHub API. See `FeatureState` for the "running state" of the Feature in the
 /// Hub and across Memberships.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FeatureResourceState {
     /// The current state of the Feature resource in the Hub API.
     #[prost(enumeration = "feature_resource_state::State", tag = "1")]
@@ -142,7 +146,7 @@ pub mod feature_resource_state {
 /// FeatureState describes the high-level state of a Feature. It may be used to
 /// describe a Feature's state at the environ-level, or per-membershop, depending
 /// on the context.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FeatureState {
     /// The high-level, machine-readable status of this Feature.
     #[prost(enumeration = "feature_state::Code", tag = "1")]
@@ -211,14 +215,14 @@ pub mod feature_state {
     }
 }
 /// CommonFeatureSpec contains Hub-wide configuration information
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CommonFeatureSpec {
     #[prost(oneof = "common_feature_spec::FeatureSpec", tags = "102")]
     pub feature_spec: ::core::option::Option<common_feature_spec::FeatureSpec>,
 }
 /// Nested message and enum types in `CommonFeatureSpec`.
 pub mod common_feature_spec {
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum FeatureSpec {
         /// Multicluster Ingress-specific spec.
         #[prost(message, tag = "102")]
@@ -226,7 +230,7 @@ pub mod common_feature_spec {
     }
 }
 /// CommonFeatureState contains Hub-wide Feature status information.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CommonFeatureState {
     /// Output only. The "running state" of the Feature in this Hub.
     #[prost(message, optional, tag = "1")]
@@ -234,14 +238,14 @@ pub struct CommonFeatureState {
 }
 /// MembershipFeatureSpec contains configuration information for a single
 /// Membership.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MembershipFeatureSpec {
     #[prost(oneof = "membership_feature_spec::FeatureSpec", tags = "106")]
     pub feature_spec: ::core::option::Option<membership_feature_spec::FeatureSpec>,
 }
 /// Nested message and enum types in `MembershipFeatureSpec`.
 pub mod membership_feature_spec {
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum FeatureSpec {
         /// Config Management-specific spec.
         #[prost(message, tag = "106")]
@@ -276,9 +280,9 @@ pub struct Membership {
     ///
     /// `membership_id` must be a valid RFC 1123 compliant DNS label:
     ///
-    ///    1. At most 63 characters in length
-    ///    2. It must consist of lower case alphanumeric characters or `-`
-    ///    3. It must start and end with an alphanumeric character
+    /// 1. At most 63 characters in length
+    /// 1. It must consist of lower case alphanumeric characters or `-`
+    /// 1. It must start and end with an alphanumeric character
     ///
     /// Which can be expressed as the regex: `[a-z0-9](\[-a-z0-9\]*[a-z0-9])?`,
     /// with a maximum length of 63 characters.
@@ -364,11 +368,11 @@ pub struct MembershipEndpoint {
     /// Optional. The in-cluster Kubernetes Resources that should be applied for a
     /// correctly registered cluster, in the steady state. These resources:
     ///
-    ///    * Ensure that the cluster is exclusively registered to one and only one
-    ///      Hub Membership.
-    ///    * Propagate Workload Pool Information available in the Membership
-    ///      Authority field.
-    ///    * Ensure proper initial configuration of default Hub Features.
+    /// * Ensure that the cluster is exclusively registered to one and only one
+    ///   Hub Membership.
+    /// * Propagate Workload Pool Information available in the Membership
+    ///   Authority field.
+    /// * Ensure proper initial configuration of default Hub Features.
     #[prost(message, optional, tag = "3")]
     pub kubernetes_resource: ::core::option::Option<KubernetesResource>,
     /// Output only. Whether the lifecycle of this membership is managed by a
@@ -414,7 +418,7 @@ pub struct KubernetesResource {
     pub resource_options: ::core::option::Option<ResourceOptions>,
 }
 /// ResourceOptions represent options for Kubernetes resource generation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourceOptions {
     /// Optional. The Connect agent version to use for connect_resources. Defaults
     /// to the latest GKE Connect version. The version must be a currently
@@ -424,7 +428,7 @@ pub struct ResourceOptions {
     /// Optional. Use `apiextensions/v1beta1` instead of `apiextensions/v1` for
     /// CustomResourceDefinition resources.
     /// This option should be set for clusters with Kubernetes apiserver versions
-    /// <1.16.
+    /// \<1.16.
     #[prost(bool, tag = "2")]
     pub v1beta1_crd: bool,
     /// Optional. Major version of the Kubernetes cluster. This is only used to
@@ -435,7 +439,7 @@ pub struct ResourceOptions {
 }
 /// ResourceManifest represents a single Kubernetes resource to be applied to
 /// the cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourceManifest {
     /// YAML manifest of the resource.
     #[prost(string, tag = "1")]
@@ -449,7 +453,7 @@ pub struct ResourceManifest {
     pub cluster_scoped: bool,
 }
 /// GkeCluster contains information specific to GKE clusters.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GkeCluster {
     /// Immutable. Self-link of the Google Cloud resource for the GKE cluster. For
     /// example:
@@ -466,7 +470,7 @@ pub struct GkeCluster {
 }
 /// KubernetesMetadata provides informational metadata for Memberships
 /// representing Kubernetes clusters.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct KubernetesMetadata {
     /// Output only. Kubernetes API server version string as reported by
     /// `/version`.
@@ -496,7 +500,7 @@ pub struct KubernetesMetadata {
 }
 /// This field informs Fleet-based applications/services/UIs with the necessary
 /// information for where each underlying Cluster reports its metrics.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MonitoringConfig {
     /// Immutable. Project used to report Metrics
     #[prost(string, tag = "1")]
@@ -525,7 +529,7 @@ pub struct MonitoringConfig {
     pub cluster_hash: ::prost::alloc::string::String,
 }
 /// MembershipState describes the state of a Membership resource.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MembershipState {
     /// Output only. The current state of the Membership resource.
     #[prost(enumeration = "membership_state::Code", tag = "1")]
@@ -592,10 +596,10 @@ pub mod membership_state {
 /// Authority encodes how Google will recognize identities from this Membership.
 /// See the workload identity documentation for more details:
 /// <https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity>
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Authority {
     /// Optional. A JSON Web Token (JWT) issuer URI. `issuer` must start with
-    /// `<https://`> and be a valid URL with length <2000 characters.
+    /// `<https://`> and be a valid URL with length \<2000 characters.
     ///
     /// If set, then Google will allow valid OIDC tokens from this issuer to
     /// authenticate within the workload_identity_pool. OIDC discovery will be
@@ -628,7 +632,7 @@ pub struct Authority {
     pub oidc_jwks: ::prost::alloc::vec::Vec<u8>,
 }
 /// Request message for `GkeHub.ListMemberships` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListMembershipsRequest {
     /// Required. The parent (project and location) where the Memberships will be
     /// listed. Specified in the format `projects/*/locations/*`.
@@ -650,21 +654,21 @@ pub struct ListMembershipsRequest {
     ///
     /// Examples:
     ///
-    ///    - Name is `bar` in project `foo-proj` and location `global`:
+    /// * Name is `bar` in project `foo-proj` and location `global`:
     ///
-    ///        name = "projects/foo-proj/locations/global/membership/bar"
+    ///   name = "projects/foo-proj/locations/global/membership/bar"
     ///
-    ///    - Memberships that have a label called `foo`:
+    /// * Memberships that have a label called `foo`:
     ///
-    ///        labels.foo:*
+    ///   labels.foo:\*
     ///
-    ///    - Memberships that have a label called `foo` whose value is `bar`:
+    /// * Memberships that have a label called `foo` whose value is `bar`:
     ///
-    ///        labels.foo = bar
+    ///   labels.foo = bar
     ///
-    ///    - Memberships in the CREATING state:
+    /// * Memberships in the CREATING state:
     ///
-    ///        state = CREATING
+    ///   state = CREATING
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. One or more fields to compare and use to sort the output.
@@ -688,7 +692,7 @@ pub struct ListMembershipsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for `GkeHub.GetMembership` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetMembershipRequest {
     /// Required. The Membership resource name in the format
     /// `projects/*/locations/*/memberships/*`.
@@ -705,9 +709,9 @@ pub struct CreateMembershipRequest {
     /// Required. Client chosen ID for the membership. `membership_id` must be a
     /// valid RFC 1123 compliant DNS label:
     ///
-    ///    1. At most 63 characters in length
-    ///    2. It must consist of lower case alphanumeric characters or `-`
-    ///    3. It must start and end with an alphanumeric character
+    /// 1. At most 63 characters in length
+    /// 1. It must consist of lower case alphanumeric characters or `-`
+    /// 1. It must start and end with an alphanumeric character
     ///
     /// Which can be expressed as the regex: `[a-z0-9](\[-a-z0-9\]*[a-z0-9])?`,
     /// with a maximum length of 63 characters.
@@ -733,7 +737,7 @@ pub struct CreateMembershipRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for `GkeHub.DeleteMembership` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteMembershipRequest {
     /// Required. The Membership resource name in the format
     /// `projects/*/locations/*/memberships/*`.
@@ -776,7 +780,7 @@ pub struct UpdateMembershipRequest {
     /// If you are updating a map field, set the value of a key to null or empty
     /// string to delete the key from the map. It's not possible to update a key's
     /// value to the empty string.
-    /// If you specify the update_mask to be a special path "*", fully replaces all
+    /// If you specify the update_mask to be a special path "\*", fully replaces all
     /// user-modifiable fields to match `resource`.
     #[prost(message, optional, tag = "3")]
     pub resource: ::core::option::Option<Membership>,
@@ -799,7 +803,7 @@ pub struct UpdateMembershipRequest {
 /// Request message for `GkeHub.GenerateConnectManifest`
 /// method.
 /// .
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateConnectManifestRequest {
     /// Required. The Membership resource name the Agent will associate with, in
     /// the format `projects/*/locations/*/memberships/*`.
@@ -847,7 +851,7 @@ pub struct GenerateConnectManifestResponse {
 }
 /// ConnectAgentResource represents a Kubernetes resource manifest for Connect
 /// Agent deployment.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ConnectAgentResource {
     /// Kubernetes type of the resource.
     #[prost(message, optional, tag = "1")]
@@ -858,7 +862,7 @@ pub struct ConnectAgentResource {
 }
 /// TypeMeta is the type information needed for content unmarshalling of
 /// Kubernetes resources in the manifest.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TypeMeta {
     /// Kind of the resource (e.g. Deployment).
     #[prost(string, tag = "1")]
@@ -868,7 +872,7 @@ pub struct TypeMeta {
     pub api_version: ::prost::alloc::string::String,
 }
 /// Request message for `GkeHub.ListFeatures` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFeaturesRequest {
     /// Required. The parent (project and location) where the Features will be listed.
     /// Specified in the format `projects/*/locations/*`.
@@ -889,17 +893,17 @@ pub struct ListFeaturesRequest {
     ///
     /// Examples:
     ///
-    ///    - Feature with the name "servicemesh" in project "foo-proj":
+    /// * Feature with the name "servicemesh" in project "foo-proj":
     ///
-    ///        name = "projects/foo-proj/locations/global/features/servicemesh"
+    ///   name = "projects/foo-proj/locations/global/features/servicemesh"
     ///
-    ///    - Features that have a label called `foo`:
+    /// * Features that have a label called `foo`:
     ///
-    ///        labels.foo:*
+    ///   labels.foo:\*
     ///
-    ///    - Features that have a label called `foo` whose value is `bar`:
+    /// * Features that have a label called `foo` whose value is `bar`:
     ///
-    ///        labels.foo = bar
+    ///   labels.foo = bar
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// One or more fields to compare and use to sort the output.
@@ -920,7 +924,7 @@ pub struct ListFeaturesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for `GkeHub.GetFeature` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFeatureRequest {
     /// Required. The Feature resource name in the format
     /// `projects/*/locations/*/features/*`
@@ -957,7 +961,7 @@ pub struct CreateFeatureRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for `GkeHub.DeleteFeature` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteFeatureRequest {
     /// Required. The Feature resource name in the format
     /// `projects/*/locations/*/features/*`.
@@ -1000,7 +1004,7 @@ pub struct UpdateFeatureRequest {
     /// If you are updating a map field, set the value of a key to null or empty
     /// string to delete the key from the map. It's not possible to update a key's
     /// value to the empty string.
-    /// If you specify the update_mask to be a special path "*", fully replaces all
+    /// If you specify the update_mask to be a special path "\*", fully replaces all
     /// user-modifiable fields to match `resource`.
     #[prost(message, optional, tag = "3")]
     pub resource: ::core::option::Option<Feature>,
@@ -1021,7 +1025,7 @@ pub struct UpdateFeatureRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -1040,7 +1044,7 @@ pub struct OperationMetadata {
     pub status_detail: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// have \[Operation.error\]\[\] value with a \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub cancel_requested: bool,
@@ -1065,8 +1069,8 @@ pub mod gke_hub_client {
     ///
     /// The GKE Hub service operates on the following resources:
     ///
-    /// * [Membership][google.cloud.gkehub.v1.Membership]
-    /// * [Feature][google.cloud.gkehub.v1.Feature]
+    /// * \[Membership\]\[google.cloud.gkehub.v1.Membership\]
+    /// * \[Feature\]\[google.cloud.gkehub.v1.Feature\]
     ///
     /// GKE Hub is currently available in the global region and all regions in
     /// https://cloud.google.com/compute/docs/regions-zones. Feature is only
@@ -1172,7 +1176,7 @@ pub mod gke_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkehub.v1.GkeHub/ListMemberships",
             );
@@ -1199,7 +1203,7 @@ pub mod gke_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkehub.v1.GkeHub/ListFeatures",
             );
@@ -1223,7 +1227,7 @@ pub mod gke_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkehub.v1.GkeHub/GetMembership",
             );
@@ -1247,7 +1251,7 @@ pub mod gke_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkehub.v1.GkeHub/GetFeature",
             );
@@ -1276,7 +1280,7 @@ pub mod gke_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkehub.v1.GkeHub/CreateMembership",
             );
@@ -1303,7 +1307,7 @@ pub mod gke_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkehub.v1.GkeHub/CreateFeature",
             );
@@ -1334,7 +1338,7 @@ pub mod gke_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkehub.v1.GkeHub/DeleteMembership",
             );
@@ -1361,7 +1365,7 @@ pub mod gke_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkehub.v1.GkeHub/DeleteFeature",
             );
@@ -1388,7 +1392,7 @@ pub mod gke_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkehub.v1.GkeHub/UpdateMembership",
             );
@@ -1415,7 +1419,7 @@ pub mod gke_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkehub.v1.GkeHub/UpdateFeature",
             );
@@ -1445,7 +1449,7 @@ pub mod gke_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkehub.v1.GkeHub/GenerateConnectManifest",
             );

@@ -118,7 +118,7 @@ pub struct TableUpdateResponse {
     pub resource: ::core::option::Option<Table>,
 }
 /// Dataset list request.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DatasetListRequest {
     /// Whether to list all datasets, including hidden ones.
     #[prost(bool, tag = "1")]
@@ -167,7 +167,7 @@ pub struct JobInsertResponse {
     pub resource: ::core::option::Option<Job>,
 }
 /// Job query request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct JobQueryRequest {
     /// The query.
     #[prost(string, tag = "1")]
@@ -196,7 +196,7 @@ pub struct JobQueryResponse {
     pub job: ::core::option::Option<Job>,
 }
 /// Job getQueryResults request.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct JobGetQueryResultsRequest {
     /// Maximum number of results to return.
     #[prost(uint32, tag = "1")]
@@ -237,7 +237,7 @@ pub struct JobCompletedEvent {
 }
 /// Table data read event. Only present for tables, not views, and is only
 /// included in the log record for the project that owns the table.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TableDataReadEvent {
     /// Name of the accessed table.
     #[prost(message, optional, tag = "1")]
@@ -249,7 +249,7 @@ pub struct TableDataReadEvent {
     pub referenced_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Table data-list request.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TableDataListRequest {
     /// Starting row offset.
     #[prost(uint64, tag = "1")]
@@ -315,7 +315,7 @@ pub struct TableInfo {
     >,
 }
 /// Describes a virtual table defined by a SQL query.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TableViewDefinition {
     /// SQL query defining the view.
     #[prost(string, tag = "1")]
@@ -375,7 +375,7 @@ pub struct BigQueryAcl {
 /// Nested message and enum types in `BigQueryAcl`.
 pub mod big_query_acl {
     /// Access control entry.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Entry {
         /// The granted role, which can be `READER`, `WRITER`, or `OWNER`.
         #[prost(string, tag = "1")]
@@ -472,7 +472,7 @@ pub mod job_configuration {
     }
     /// Describes a load job, which loads data from an external source via
     /// the  import pipeline.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Load {
         /// URIs for the data to be imported. Only Google Cloud Storage URIs are
         /// supported.
@@ -499,7 +499,7 @@ pub mod job_configuration {
     }
     /// Describes an extract job, which exports data to an external source
     /// via the  export pipeline.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Extract {
         /// Google Cloud Storage URIs where extracted data should be written.
         #[prost(string, repeated, tag = "1")]
@@ -548,7 +548,7 @@ pub mod job_configuration {
     }
 }
 /// Describes an external data source used in a query.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TableDefinition {
     /// Name of the table, used in queries.
     #[prost(string, tag = "1")]
@@ -639,7 +639,7 @@ pub struct JobStatistics {
 /// Nested message and enum types in `JobStatistics`.
 pub mod job_statistics {
     /// Job resource usage breakdown by reservation.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ReservationResourceUsage {
         /// Reservation name or "unreserved" for on-demand resources usage.
         #[prost(string, tag = "1")]
@@ -650,7 +650,7 @@ pub mod job_statistics {
     }
 }
 /// The fully-qualified name for a dataset.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DatasetName {
     /// The project ID.
     #[prost(string, tag = "1")]
@@ -660,7 +660,7 @@ pub struct DatasetName {
     pub dataset_id: ::prost::alloc::string::String,
 }
 /// The fully-qualified name for a table.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TableName {
     /// The project ID.
     #[prost(string, tag = "1")]
@@ -673,7 +673,7 @@ pub struct TableName {
     pub table_id: ::prost::alloc::string::String,
 }
 /// The fully-qualified name for a job.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct JobName {
     /// The project ID.
     #[prost(string, tag = "1")]
@@ -686,7 +686,7 @@ pub struct JobName {
     pub location: ::prost::alloc::string::String,
 }
 /// Describes encryption properties for a table or a job
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EncryptionInfo {
     /// unique identifier for cloud kms key
     #[prost(string, tag = "1")]

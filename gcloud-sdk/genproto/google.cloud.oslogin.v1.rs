@@ -17,7 +17,7 @@ pub struct LoginProfile {
     >,
 }
 /// A request message for creating an SSH public key.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateSshPublicKeyRequest {
     /// Required. The unique ID for the user in format `users/{user}`.
     #[prost(string, tag = "1")]
@@ -27,7 +27,7 @@ pub struct CreateSshPublicKeyRequest {
     pub ssh_public_key: ::core::option::Option<super::common::SshPublicKey>,
 }
 /// A request message for deleting a POSIX account entry.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeletePosixAccountRequest {
     /// Required. A reference to the POSIX account to update. POSIX accounts are
     /// identified by the project ID they are associated with. A reference to the
@@ -36,7 +36,7 @@ pub struct DeletePosixAccountRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A request message for deleting an SSH public key.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSshPublicKeyRequest {
     /// Required. The fingerprint of the public key to update. Public keys are
     /// identified by their SHA-256 fingerprint. The fingerprint of the public key
@@ -45,7 +45,7 @@ pub struct DeleteSshPublicKeyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A request message for retrieving the login profile information for a user.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetLoginProfileRequest {
     /// Required. The unique ID for the user in format `users/{user}`.
     #[prost(string, tag = "1")]
@@ -58,7 +58,7 @@ pub struct GetLoginProfileRequest {
     pub system_id: ::prost::alloc::string::String,
 }
 /// A request message for retrieving an SSH public key.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSshPublicKeyRequest {
     /// Required. The fingerprint of the public key to retrieve. Public keys are
     /// identified by their SHA-256 fingerprint. The fingerprint of the public key
@@ -67,7 +67,7 @@ pub struct GetSshPublicKeyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A request message for importing an SSH public key.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportSshPublicKeyRequest {
     /// Required. The unique ID for the user in format `users/{user}`.
     #[prost(string, tag = "1")]
@@ -95,7 +95,7 @@ pub struct ImportSshPublicKeyResponse {
     pub details: ::prost::alloc::string::String,
 }
 /// A request message for updating an SSH public key.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateSshPublicKeyRequest {
     /// Required. The fingerprint of the public key to update. Public keys are
     /// identified by their SHA-256 fingerprint. The fingerprint of the public key
@@ -220,7 +220,7 @@ pub mod os_login_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.oslogin.v1.OsLoginService/CreateSshPublicKey",
             );
@@ -247,7 +247,7 @@ pub mod os_login_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.oslogin.v1.OsLoginService/DeletePosixAccount",
             );
@@ -274,7 +274,7 @@ pub mod os_login_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.oslogin.v1.OsLoginService/DeleteSshPublicKey",
             );
@@ -302,7 +302,7 @@ pub mod os_login_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.oslogin.v1.OsLoginService/GetLoginProfile",
             );
@@ -332,7 +332,7 @@ pub mod os_login_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.oslogin.v1.OsLoginService/GetSshPublicKey",
             );
@@ -364,7 +364,7 @@ pub mod os_login_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.oslogin.v1.OsLoginService/ImportSshPublicKey",
             );
@@ -395,7 +395,7 @@ pub mod os_login_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.oslogin.v1.OsLoginService/UpdateSshPublicKey",
             );

@@ -119,7 +119,7 @@ pub mod instance {
     }
 }
 /// Message for requesting list of Instances
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInstancesRequest {
     /// Required. The project and location for which to retrieve a list of
     /// instances, in the format `projects/{projectId}/locations/{location}`.
@@ -145,7 +145,7 @@ pub struct ListInstancesRequest {
 /// Message for response to listing Instances
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesResponse {
-    /// Response from [ListInstances][google.cloud.lustre.v1.Lustre.ListInstances].
+    /// Response from \[ListInstances\]\[google.cloud.lustre.v1.Lustre.ListInstances\].
     #[prost(message, repeated, tag = "1")]
     pub instances: ::prost::alloc::vec::Vec<Instance>,
     /// A token identifying a page of results the server should return.
@@ -156,7 +156,7 @@ pub struct ListInstancesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Instance
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInstanceRequest {
     /// Required. The instance resource name, in the format
     /// `projects/{projectId}/locations/{location}/instances/{instanceId}`.
@@ -231,7 +231,7 @@ pub struct UpdateInstanceRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting a Instance
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteInstanceRequest {
     /// Required. The resource name of the instance to delete, in the format
     /// `projects/{projectId}/locations/{location}/instances/{instanceId}`.
@@ -254,7 +254,7 @@ pub struct DeleteInstanceRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Represents the metadata of a long-running operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -273,8 +273,8 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have been cancelled successfully
-    /// have [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+    /// have \[Operation.error\]\[\] value with a
+    /// \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -283,7 +283,7 @@ pub struct OperationMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// Message for importing data to Lustre.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportDataRequest {
     /// Required. The name of the Managed Lustre instance in the format
     /// `projects/{project}/locations/{location}/instances/{instance}`.
@@ -308,7 +308,7 @@ pub struct ImportDataRequest {
 pub mod import_data_request {
     /// A Cloud Storage URI of a folder to import file data from, in the
     /// form of `gs://<bucket_name>/<path_inside_bucket>/`.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Source {
         /// The Cloud Storage source bucket and, optionally, path inside the bucket.
         /// If a path inside the bucket is specified, it must end with a forward
@@ -317,7 +317,7 @@ pub mod import_data_request {
         GcsPath(super::GcsPath),
     }
     /// The destination of the data transfer.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Destination {
         /// Lustre path destination.
         #[prost(message, tag = "3")]
@@ -325,7 +325,7 @@ pub mod import_data_request {
     }
 }
 /// Export data from Managed Lustre to a Cloud Storage bucket.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportDataRequest {
     /// Required. The name of the Managed Lustre instance in the format
     /// `projects/{project}/locations/{location}/instances/{instance}`.
@@ -348,7 +348,7 @@ pub struct ExportDataRequest {
 /// Nested message and enum types in `ExportDataRequest`.
 pub mod export_data_request {
     /// The source of the data transfer.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Source {
         /// The root directory path to the Managed Lustre file system. Must start
         /// with `/`. Default is `/`.
@@ -356,7 +356,7 @@ pub mod export_data_request {
         LustrePath(super::LustrePath),
     }
     /// The destination of the data transfer.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Destination {
         /// The URI to a Cloud Storage bucket, or a path within a bucket, using
         /// the format `gs://<bucket_name>/<optional_path_inside_bucket>/`. If a
@@ -367,10 +367,10 @@ pub mod export_data_request {
     }
 }
 /// Response message for ExportData.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportDataResponse {}
 /// Response message for ImportData.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportDataResponse {}
 /// Metadata of the export data operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -396,8 +396,8 @@ pub struct ExportDataMetadata {
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
     /// have
-    /// [google.longrunning.Operation.error][google.longrunning.Operation.error]
-    /// value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// \[google.longrunning.Operation.error\]\[google.longrunning.Operation.error\]
+    /// value with a \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "7")]
     pub requested_cancellation: bool,
@@ -426,8 +426,8 @@ pub struct ImportDataMetadata {
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
     /// have
-    /// [google.longrunning.Operation.error][google.longrunning.Operation.error]
-    /// value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// \[google.longrunning.Operation.error\]\[google.longrunning.Operation.error\]
+    /// value with a \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "7")]
     pub requested_cancellation: bool,
@@ -436,7 +436,7 @@ pub struct ImportDataMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// Specifies a Cloud Storage bucket and, optionally, a path inside the bucket.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GcsPath {
     /// Required. The URI to a Cloud Storage bucket, or a path within a bucket,
     /// using the format `gs://<bucket_name>/<optional_path_inside_bucket>/`. If a
@@ -446,7 +446,7 @@ pub struct GcsPath {
     pub uri: ::prost::alloc::string::String,
 }
 /// The root directory path to the Lustre file system.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LustrePath {
     /// Optional. The root directory path to the Managed Lustre file system. Must
     /// start with
@@ -456,7 +456,7 @@ pub struct LustrePath {
     pub path: ::prost::alloc::string::String,
 }
 /// A collection of counters that report the progress of a transfer operation.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TransferCounters {
     /// Objects found in the data source that are scheduled to be transferred,
     /// excluding any that are filtered based on object conditions or skipped due
@@ -490,7 +490,7 @@ pub struct TransferCounters {
     pub bytes_failed_count: i64,
 }
 /// An entry describing an error that has occurred.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ErrorLogEntry {
     /// Required. A URL that refers to the target (a data source, a data sink,
     /// or an object) with which the error is associated.
@@ -539,7 +539,7 @@ pub struct TransferOperationMetadata {
 /// Nested message and enum types in `TransferOperationMetadata`.
 pub mod transfer_operation_metadata {
     /// The source of transfer operation.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Source {
         /// Output only. Lustre source.
         #[prost(message, tag = "3")]
@@ -549,7 +549,7 @@ pub mod transfer_operation_metadata {
         SourceGcsPath(super::GcsPath),
     }
     /// The destination of transfer operation.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Destination {
         /// Output only. Cloud Storage destination.
         #[prost(message, tag = "5")]
@@ -700,7 +700,7 @@ pub mod lustre_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.lustre.v1.Lustre/ListInstances",
             );
@@ -724,7 +724,7 @@ pub mod lustre_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.lustre.v1.Lustre/GetInstance",
             );
@@ -749,7 +749,7 @@ pub mod lustre_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.lustre.v1.Lustre/CreateInstance",
             );
@@ -776,7 +776,7 @@ pub mod lustre_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.lustre.v1.Lustre/UpdateInstance",
             );
@@ -803,7 +803,7 @@ pub mod lustre_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.lustre.v1.Lustre/DeleteInstance",
             );
@@ -830,7 +830,7 @@ pub mod lustre_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.lustre.v1.Lustre/ImportData",
             );
@@ -855,7 +855,7 @@ pub mod lustre_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.lustre.v1.Lustre/ExportData",
             );

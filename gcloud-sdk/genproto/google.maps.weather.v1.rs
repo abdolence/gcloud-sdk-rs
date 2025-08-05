@@ -7,7 +7,7 @@ pub struct AirPressure {
     pub mean_sea_level_millibars: ::core::option::Option<f32>,
 }
 /// Represents the events related to the sun (e.g. sunrise, sunset).
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SunEvents {
     /// The time when the sun rises.
     ///
@@ -190,7 +190,7 @@ pub struct Precipitation {
     pub qpf: ::core::option::Option<QuantitativePrecipitationForecast>,
 }
 /// Represents the probability of precipitation at a given location.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PrecipitationProbability {
     /// A percentage from 0 to 100 that indicates the chances of precipitation.
     #[prost(int32, optional, tag = "1")]
@@ -368,7 +368,7 @@ impl TemperatureUnit {
 /// may introduce new codes and icons or update existing ones as needed. We
 /// encourage you to refer to this documentation regularly for the most
 /// up-to-date information.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WeatherCondition {
     /// The base URI for the icon not including the file type extension. To display
     /// the icon, append a theme if desired and the file type extension (`.png` or
@@ -602,7 +602,7 @@ pub struct Wind {
     pub gust: ::core::option::Option<WindSpeed>,
 }
 /// Represents the direction from which the wind originates.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WindDirection {
     /// The direction of the wind in degrees (values from 0 to 360).
     #[prost(int32, optional, tag = "1")]
@@ -1202,8 +1202,9 @@ pub struct LookupForecastHoursRequest {
     #[prost(string, optional, tag = "4")]
     pub language_code: ::core::option::Option<::prost::alloc::string::String>,
     /// Optional. The maximum number of hourly forecast records to return per page
-    /// - a value from 1 to 24 (inclusive). The default is the maximum allowed
-    /// value of 24.
+    ///
+    /// * a value from 1 to 24 (inclusive). The default is the maximum allowed
+    ///   value of 24.
     #[prost(int32, tag = "5")]
     pub page_size: i32,
     /// Optional. A page token received from a previous request. It is used to
@@ -1319,14 +1320,14 @@ pub struct LookupHistoryHoursResponse {
 /// Reason: We want to parallelize our work and creating a simple proto for
 /// quick approval could help us do other tasks while the larger proto is
 /// being approved. --)
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LookupPublicAlertsRequest {}
 /// (-- Response for the LookupPublicAlerts RPC. --)
 /// (-- TODO(418938868): mikesky - Add public weather alert records to the
 /// response. Reason: We want to parallelize our work and creating a simple proto
 /// for quick approval could help us do other tasks while the larger proto is
 /// being approved. --)
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LookupPublicAlertsResponse {}
 /// Generated client implementations.
 pub mod weather_client {
@@ -1436,7 +1437,7 @@ pub mod weather_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.weather.v1.Weather/LookupCurrentConditions",
             );
@@ -1467,7 +1468,7 @@ pub mod weather_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.weather.v1.Weather/LookupForecastHours",
             );
@@ -1498,7 +1499,7 @@ pub mod weather_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.weather.v1.Weather/LookupForecastDays",
             );
@@ -1529,7 +1530,7 @@ pub mod weather_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.weather.v1.Weather/LookupHistoryHours",
             );
@@ -1559,7 +1560,7 @@ pub mod weather_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.weather.v1.Weather/LookupPublicAlerts",
             );

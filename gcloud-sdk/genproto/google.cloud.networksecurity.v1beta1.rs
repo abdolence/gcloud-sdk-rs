@@ -59,12 +59,12 @@ pub mod authorization_policy {
     /// Nested message and enum types in `Rule`.
     pub mod rule {
         /// Specification of traffic source attributes.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Source {
             /// Optional. List of peer identities to match for authorization. At least
             /// one principal should match. Each peer can be an exact match, or a
             /// prefix match (example, "namespace/*") or a suffix match (example,
-            /// "*/service-account") or a presence match "*". Authorization based on
+            /// "*/service-account") or a presence match "\*". Authorization based on
             /// the principal name without certificate validation (configured by
             /// ServerTlsPolicy resource) is considered insecure.
             #[prost(string, repeated, tag = "1")]
@@ -78,12 +78,12 @@ pub mod authorization_policy {
             pub ip_blocks: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
         /// Specification of traffic destination attributes.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Destination {
             /// Required. List of host names to match. Matched against the ":authority"
             /// header in http requests. At least one host should match. Each host can
             /// be an exact match, or a prefix match (example "mydomain.*") or a suffix
-            /// match (example "*.myorg.com") or a presence (any) match "*".
+            /// match (example "*.myorg.com") or a presence (any) match "\*".
             #[prost(string, repeated, tag = "1")]
             pub hosts: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
             /// Required. List of destination ports to match. At least one port should
@@ -105,7 +105,7 @@ pub mod authorization_policy {
         /// Nested message and enum types in `Destination`.
         pub mod destination {
             /// Specification of HTTP header match attributes.
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct HttpHeaderMatch {
                 /// Required. The name of the HTTP header to match. For matching
                 /// against the HTTP request's authority, use a headerMatch
@@ -118,7 +118,7 @@ pub mod authorization_policy {
             }
             /// Nested message and enum types in `HttpHeaderMatch`.
             pub mod http_header_match {
-                #[derive(Clone, PartialEq, ::prost::Oneof)]
+                #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
                 pub enum Type {
                     /// Required. The value of the header must match the regular expression
                     /// specified in regexMatch. For regular expression grammar,
@@ -180,7 +180,7 @@ pub mod authorization_policy {
     }
 }
 /// Request used with the ListAuthorizationPolicies method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAuthorizationPoliciesRequest {
     /// Required. The project and location from which the AuthorizationPolicies
     /// should be listed, specified in the format
@@ -210,7 +210,7 @@ pub struct ListAuthorizationPoliciesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request used by the GetAuthorizationPolicy method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAuthorizationPolicyRequest {
     /// Required. A name of the AuthorizationPolicy to get. Must be in the format
     /// `projects/{project}/locations/{location}/authorizationPolicies/*`.
@@ -249,7 +249,7 @@ pub struct UpdateAuthorizationPolicyRequest {
     pub authorization_policy: ::core::option::Option<AuthorizationPolicy>,
 }
 /// Request used by the DeleteAuthorizationPolicy method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAuthorizationPolicyRequest {
     /// Required. A name of the AuthorizationPolicy to delete. Must be in the
     /// format `projects/{project}/locations/{location}/authorizationPolicies/*`.
@@ -257,7 +257,7 @@ pub struct DeleteAuthorizationPolicyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Specification of the GRPC Endpoint.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GrpcEndpoint {
     /// Required. The target URI of the gRPC endpoint. Only UDS path is supported,
     /// and should start with "unix:".
@@ -266,7 +266,7 @@ pub struct GrpcEndpoint {
 }
 /// Specification of ValidationCA. Defines the mechanism to obtain the
 /// Certificate Authority certificate to validate the peer certificate.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ValidationCa {
     /// The type of certificate provider which provides the CA certificate.
     #[prost(oneof = "validation_ca::Type", tags = "2, 3")]
@@ -275,7 +275,7 @@ pub struct ValidationCa {
 /// Nested message and enum types in `ValidationCA`.
 pub mod validation_ca {
     /// The type of certificate provider which provides the CA certificate.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Type {
         /// gRPC specific configuration to access the gRPC server to
         /// obtain the CA certificate.
@@ -292,7 +292,7 @@ pub mod validation_ca {
 /// or more CertificateProvider instances (plugins) and one of them is enabled
 /// and configured by specifying this message. Workloads use the values from this
 /// message to locate and load the CertificateProvider instance configuration.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CertificateProviderInstance {
     /// Required. Plugin instance name, used to locate and load CertificateProvider
     /// instance configuration. Set to "google_cloud_private_spiffe" to use
@@ -302,7 +302,7 @@ pub struct CertificateProviderInstance {
 }
 /// Specification of certificate provider. Defines the mechanism to obtain the
 /// certificate and private key for peer to peer authentication.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CertificateProvider {
     /// The type of certificate provider which provides the certificates and
     /// private keys.
@@ -313,7 +313,7 @@ pub struct CertificateProvider {
 pub mod certificate_provider {
     /// The type of certificate provider which provides the certificates and
     /// private keys.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Type {
         /// gRPC specific configuration to access the gRPC server to
         /// obtain the cert and private key.
@@ -366,7 +366,7 @@ pub struct ClientTlsPolicy {
     pub server_validation_ca: ::prost::alloc::vec::Vec<ValidationCa>,
 }
 /// Request used by the ListClientTlsPolicies method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListClientTlsPoliciesRequest {
     /// Required. The project and location from which the ClientTlsPolicies should
     /// be listed, specified in the format `projects/*/locations/{location}`.
@@ -395,7 +395,7 @@ pub struct ListClientTlsPoliciesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request used by the GetClientTlsPolicy method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetClientTlsPolicyRequest {
     /// Required. A name of the ClientTlsPolicy to get. Must be in the format
     /// `projects/*/locations/{location}/clientTlsPolicies/*`.
@@ -435,7 +435,7 @@ pub struct UpdateClientTlsPolicyRequest {
     pub client_tls_policy: ::core::option::Option<ClientTlsPolicy>,
 }
 /// Request used by the DeleteClientTlsPolicy method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteClientTlsPolicyRequest {
     /// Required. A name of the ClientTlsPolicy to delete. Must be in
     /// the format `projects/*/locations/{location}/clientTlsPolicies/*`.
@@ -443,7 +443,7 @@ pub struct DeleteClientTlsPolicyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -462,8 +462,8 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+    /// have \[Operation.error\]\[\] value with a
+    /// \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -495,7 +495,6 @@ pub struct ServerTlsPolicy {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    ///
     /// Determines if server allows plaintext connections. If set to true, server
     /// allows plain text connections. By default, it is set to false. This setting
     /// is not exclusive of other encryption modes. For example, if `allow_open`
@@ -507,13 +506,11 @@ pub struct ServerTlsPolicy {
     /// while having mixed TLS and non-TLS traffic reaching port :80.
     #[prost(bool, tag = "6")]
     pub allow_open: bool,
-    ///
     /// Defines a mechanism to provision server identity (public and private keys).
     /// Cannot be combined with `allow_open` as a permissive mode that allows both
     /// plain text and TLS is not supported.
     #[prost(message, optional, tag = "7")]
     pub server_certificate: ::core::option::Option<CertificateProvider>,
-    ///
     /// Defines a mechanism to provision peer validation certificates for peer to
     /// peer authentication (Mutual TLS - mTLS). If not specified, client
     /// certificate will not be requested. The connection is treated as TLS and not
@@ -527,7 +524,6 @@ pub mod server_tls_policy {
     /// Specification of the MTLSPolicy.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MtlsPolicy {
-        ///
         /// Defines the mechanism to obtain the Certificate Authority certificate to
         /// validate the client certificate.
         #[prost(message, repeated, tag = "1")]
@@ -535,7 +531,7 @@ pub mod server_tls_policy {
     }
 }
 /// Request used by the ListServerTlsPolicies method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListServerTlsPoliciesRequest {
     /// Required. The project and location from which the ServerTlsPolicies should
     /// be listed, specified in the format `projects/*/locations/{location}`.
@@ -564,7 +560,7 @@ pub struct ListServerTlsPoliciesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request used by the GetServerTlsPolicy method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetServerTlsPolicyRequest {
     /// Required. A name of the ServerTlsPolicy to get. Must be in the format
     /// `projects/*/locations/{location}/serverTlsPolicies/*`.
@@ -604,7 +600,7 @@ pub struct UpdateServerTlsPolicyRequest {
     pub server_tls_policy: ::core::option::Option<ServerTlsPolicy>,
 }
 /// Request used by the DeleteServerTlsPolicy method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteServerTlsPolicyRequest {
     /// Required. A name of the ServerTlsPolicy to delete. Must be in
     /// the format `projects/*/locations/{location}/serverTlsPolicies/*`.
@@ -721,7 +717,7 @@ pub mod network_security_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1beta1.NetworkSecurity/ListAuthorizationPolicies",
             );
@@ -751,7 +747,7 @@ pub mod network_security_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1beta1.NetworkSecurity/GetAuthorizationPolicy",
             );
@@ -781,7 +777,7 @@ pub mod network_security_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1beta1.NetworkSecurity/CreateAuthorizationPolicy",
             );
@@ -811,7 +807,7 @@ pub mod network_security_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1beta1.NetworkSecurity/UpdateAuthorizationPolicy",
             );
@@ -841,7 +837,7 @@ pub mod network_security_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1beta1.NetworkSecurity/DeleteAuthorizationPolicy",
             );
@@ -871,7 +867,7 @@ pub mod network_security_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1beta1.NetworkSecurity/ListServerTlsPolicies",
             );
@@ -901,7 +897,7 @@ pub mod network_security_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1beta1.NetworkSecurity/GetServerTlsPolicy",
             );
@@ -931,7 +927,7 @@ pub mod network_security_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1beta1.NetworkSecurity/CreateServerTlsPolicy",
             );
@@ -961,7 +957,7 @@ pub mod network_security_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1beta1.NetworkSecurity/UpdateServerTlsPolicy",
             );
@@ -991,7 +987,7 @@ pub mod network_security_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1beta1.NetworkSecurity/DeleteServerTlsPolicy",
             );
@@ -1021,7 +1017,7 @@ pub mod network_security_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1beta1.NetworkSecurity/ListClientTlsPolicies",
             );
@@ -1051,7 +1047,7 @@ pub mod network_security_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1beta1.NetworkSecurity/GetClientTlsPolicy",
             );
@@ -1081,7 +1077,7 @@ pub mod network_security_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1beta1.NetworkSecurity/CreateClientTlsPolicy",
             );
@@ -1111,7 +1107,7 @@ pub mod network_security_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1beta1.NetworkSecurity/UpdateClientTlsPolicy",
             );
@@ -1141,7 +1137,7 @@ pub mod network_security_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.networksecurity.v1beta1.NetworkSecurity/DeleteClientTlsPolicy",
             );

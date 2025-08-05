@@ -25,7 +25,7 @@ pub struct QuotaGroup {
     pub method_details: ::prost::alloc::vec::Vec<MethodDetails>,
 }
 /// The method details per method in the Merchant API.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MethodDetails {
     /// Output only. The name of the method for example `products.list`.
     #[prost(string, tag = "1")]
@@ -42,7 +42,7 @@ pub struct MethodDetails {
     pub path: ::prost::alloc::string::String,
 }
 /// Request message for the ListQuotaGroups method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListQuotaGroupsRequest {
     /// Required. The merchant account who owns the collection of method quotas
     /// Format: accounts/{account}
@@ -63,7 +63,7 @@ pub struct ListQuotaGroupsResponse {
     /// The methods, current quota usage and limits per each group. The quota is
     /// shared between all methods in the group. The groups are sorted in
     /// descending order based on
-    /// [quotaUsage][google.shopping.merchant.quota.v1main.QuotaGroup.quota_usage].
+    /// \[quotaUsage\]\[google.shopping.merchant.quota.v1main.QuotaGroup.quota_usage\].
     #[prost(message, repeated, tag = "1")]
     pub quota_groups: ::prost::alloc::vec::Vec<QuotaGroup>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
@@ -180,7 +180,7 @@ pub mod quota_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.quota.v1beta.QuotaService/ListQuotaGroups",
             );

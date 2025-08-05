@@ -20,7 +20,7 @@ pub struct Attributes {
     pub business_owners: ::prost::alloc::vec::Vec<ContactInfo>,
 }
 /// Criticality of the Application, Service, or Workload
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Criticality {
     /// Required. Criticality Type.
     #[prost(enumeration = "criticality::Type", tag = "3")]
@@ -81,7 +81,7 @@ pub mod criticality {
     }
 }
 /// Environment of the Application, Service, or Workload
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Environment {
     /// Required. Environment Type.
     #[prost(enumeration = "environment::Type", tag = "2")]
@@ -142,7 +142,7 @@ pub mod environment {
     }
 }
 /// Contact information of stakeholders.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ContactInfo {
     /// Optional. Contact's name.
     /// Can have a maximum length of 63 characters.
@@ -242,7 +242,7 @@ pub mod application {
     }
 }
 /// Scope of an application.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Scope {
     /// Required. Scope Type.
     #[prost(enumeration = "scope::Type", tag = "1")]
@@ -394,7 +394,7 @@ pub mod service {
     }
 }
 /// Reference to an underlying networking resource that can comprise a Service.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServiceReference {
     /// Output only. The underlying resource URI. For example, URI of Forwarding
     /// Rule, URL Map, and Backend Service.
@@ -402,7 +402,7 @@ pub struct ServiceReference {
     pub uri: ::prost::alloc::string::String,
 }
 /// Properties of an underlying cloud resource that can comprise a Service.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServiceProperties {
     /// Output only. The service project identifier that the underlying cloud
     /// resource resides in.
@@ -420,7 +420,7 @@ pub struct ServiceProperties {
 /// DiscoveredService is a network or API interface that exposes some
 /// functionality to clients for consumption over the network. A discovered
 /// service can be registered to a App Hub service.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DiscoveredService {
     /// Identifier. The resource name of the discovered service. Format:
     /// `"projects/{host-project-id}/locations/{location}/discoveredServices/{uuid}"`
@@ -440,7 +440,7 @@ pub struct DiscoveredService {
 /// infrastructure resources, and expose these resources to the host project
 /// through a ServiceProjectAttachment. With the attachments, the host project
 /// can provide an aggregated view of resources across all service projects.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServiceProjectAttachment {
     /// Identifier. The resource name of a ServiceProjectAttachment. Format:
     /// `"projects/{host-project-id}/locations/global/serviceProjectAttachments/{service-project-id}."`
@@ -615,14 +615,14 @@ pub mod workload {
     }
 }
 /// Reference of an underlying compute resource represented by the Workload.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WorkloadReference {
     /// Output only. The underlying compute resource uri.
     #[prost(string, tag = "1")]
     pub uri: ::prost::alloc::string::String,
 }
 /// Properties of an underlying compute resource represented by the Workload.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WorkloadProperties {
     /// Output only. The service project identifier that the underlying cloud
     /// resource resides in. Empty for non-cloud resources.
@@ -641,7 +641,7 @@ pub struct WorkloadProperties {
 /// (MIGs) and GKE deployments) that performs the smallest logical subset of
 /// business functionality. A discovered workload can be registered to an App Hub
 /// Workload.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DiscoveredWorkload {
     /// Identifier. The resource name of the discovered workload. Format:
     /// `"projects/{host-project-id}/locations/{location}/discoveredWorkloads/{uuid}"`
@@ -657,7 +657,7 @@ pub struct DiscoveredWorkload {
     pub workload_properties: ::core::option::Option<WorkloadProperties>,
 }
 /// Request for LookupServiceProjectAttachment.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LookupServiceProjectAttachmentRequest {
     /// Required. Service project ID and location to lookup service project
     /// attachment for. Only global location is supported. Expected format:
@@ -666,14 +666,14 @@ pub struct LookupServiceProjectAttachmentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Response for LookupServiceProjectAttachment.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LookupServiceProjectAttachmentResponse {
     /// Service project attachment for a project if exists, empty otherwise.
     #[prost(message, optional, tag = "1")]
     pub service_project_attachment: ::core::option::Option<ServiceProjectAttachment>,
 }
 /// Request for ListServiceProjectAttachments.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListServiceProjectAttachmentsRequest {
     /// Required. Host project ID and location to list service project attachments.
     /// Only global location is supported. Expected format:
@@ -708,7 +708,7 @@ pub struct ListServiceProjectAttachmentsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for CreateServiceProjectAttachment.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateServiceProjectAttachmentRequest {
     /// Required. Host project ID and location to which service project is being
     /// attached. Only global location is supported. Expected format:
@@ -740,7 +740,7 @@ pub struct CreateServiceProjectAttachmentRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for GetServiceProjectAttachment.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetServiceProjectAttachmentRequest {
     /// Required. Fully qualified name of the service project attachment to
     /// retrieve. Expected format:
@@ -749,7 +749,7 @@ pub struct GetServiceProjectAttachmentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for DeleteServiceProjectAttachment.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteServiceProjectAttachmentRequest {
     /// Required. Fully qualified name of the service project attachment to delete.
     /// Expected format:
@@ -773,7 +773,7 @@ pub struct DeleteServiceProjectAttachmentRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for DetachServiceProjectAttachment.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DetachServiceProjectAttachmentRequest {
     /// Required. Service project id and location to detach from a host project.
     /// Only global location is supported. Expected format:
@@ -782,10 +782,10 @@ pub struct DetachServiceProjectAttachmentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Response for DetachServiceProjectAttachment.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DetachServiceProjectAttachmentResponse {}
 /// Request for ListServices.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListServicesRequest {
     /// Required. Fully qualified name of the parent Application to list Services
     /// for. Expected format:
@@ -820,7 +820,7 @@ pub struct ListServicesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for ListDiscoveredServices.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDiscoveredServicesRequest {
     /// Required. Project and location to list Discovered Services on.
     /// Expected format: `projects/{project}/locations/{location}`.
@@ -887,7 +887,7 @@ pub struct CreateServiceRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for GetService.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetServiceRequest {
     /// Required. Fully qualified name of the Service to fetch.
     /// Expected format:
@@ -896,7 +896,7 @@ pub struct GetServiceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for GetDiscoveredService.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDiscoveredServiceRequest {
     /// Required. Fully qualified name of the Discovered Service to fetch.
     /// Expected format:
@@ -905,7 +905,7 @@ pub struct GetDiscoveredServiceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for LookupDiscoveredService.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LookupDiscoveredServiceRequest {
     /// Required. Host project ID and location to lookup Discovered Service in.
     /// Expected format: `projects/{project}/locations/{location}`.
@@ -918,7 +918,7 @@ pub struct LookupDiscoveredServiceRequest {
     pub uri: ::prost::alloc::string::String,
 }
 /// Response for LookupDiscoveredService.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LookupDiscoveredServiceResponse {
     /// Discovered Service if exists, empty otherwise.
     #[prost(message, optional, tag = "1")]
@@ -958,7 +958,7 @@ pub struct UpdateServiceRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for DeleteService.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteServiceRequest {
     /// Required. Fully qualified name of the Service to delete from an
     /// Application. Expected format:
@@ -982,7 +982,7 @@ pub struct DeleteServiceRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for ListApplications.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListApplicationsRequest {
     /// Required. Project and location to list Applications on.
     /// Expected format: `projects/{project}/locations/{location}`.
@@ -1048,7 +1048,7 @@ pub struct CreateApplicationRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for GetApplication.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetApplicationRequest {
     /// Required. Fully qualified name of the Application to fetch.
     /// Expected format:
@@ -1090,7 +1090,7 @@ pub struct UpdateApplicationRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for DeleteApplication.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteApplicationRequest {
     /// Required. Fully qualified name of the Application to delete.
     /// Expected format:
@@ -1114,7 +1114,7 @@ pub struct DeleteApplicationRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for ListWorkloads.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListWorkloadsRequest {
     /// Required. Fully qualified name of the parent Application to list Workloads
     /// for. Expected format:
@@ -1149,7 +1149,7 @@ pub struct ListWorkloadsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for ListDiscoveredWorkloads.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDiscoveredWorkloadsRequest {
     /// Required. Project and location to list Discovered Workloads on.
     /// Expected format: `projects/{project}/locations/{location}`.
@@ -1216,7 +1216,7 @@ pub struct CreateWorkloadRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for GetWorkload.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetWorkloadRequest {
     /// Required. Fully qualified name of the Workload to fetch.
     /// Expected format:
@@ -1225,7 +1225,7 @@ pub struct GetWorkloadRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for GetDiscoveredWorkload.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDiscoveredWorkloadRequest {
     /// Required. Fully qualified name of the Discovered Workload to fetch.
     /// Expected format:
@@ -1234,7 +1234,7 @@ pub struct GetDiscoveredWorkloadRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for LookupDiscoveredWorkload.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LookupDiscoveredWorkloadRequest {
     /// Required. Host project ID and location to lookup Discovered Workload in.
     /// Expected format: `projects/{project}/locations/{location}`.
@@ -1247,7 +1247,7 @@ pub struct LookupDiscoveredWorkloadRequest {
     pub uri: ::prost::alloc::string::String,
 }
 /// Response for LookupDiscoveredWorkload.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LookupDiscoveredWorkloadResponse {
     /// Discovered Workload if exists, empty otherwise.
     #[prost(message, optional, tag = "1")]
@@ -1287,7 +1287,7 @@ pub struct UpdateWorkloadRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for DeleteWorkload.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteWorkloadRequest {
     /// Required. Fully qualified name of the Workload to delete from an
     /// Application. Expected format:
@@ -1311,7 +1311,7 @@ pub struct DeleteWorkloadRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -1331,8 +1331,8 @@ pub struct OperationMetadata {
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have been cancelled successfully
     /// have
-    /// [google.longrunning.Operation.error][google.longrunning.Operation.error]
-    /// value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// \[google.longrunning.Operation.error\]\[google.longrunning.Operation.error\]
+    /// value with a \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -1451,7 +1451,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/LookupServiceProjectAttachment",
             );
@@ -1481,7 +1481,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/ListServiceProjectAttachments",
             );
@@ -1513,7 +1513,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/CreateServiceProjectAttachment",
             );
@@ -1543,7 +1543,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/GetServiceProjectAttachment",
             );
@@ -1575,7 +1575,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/DeleteServiceProjectAttachment",
             );
@@ -1609,7 +1609,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/DetachServiceProjectAttachment",
             );
@@ -1640,7 +1640,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/ListDiscoveredServices",
             );
@@ -1670,7 +1670,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/GetDiscoveredService",
             );
@@ -1701,7 +1701,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/LookupDiscoveredService",
             );
@@ -1731,7 +1731,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/ListServices",
             );
@@ -1758,7 +1758,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/CreateService",
             );
@@ -1782,7 +1782,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/GetService",
             );
@@ -1807,7 +1807,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/UpdateService",
             );
@@ -1834,7 +1834,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/DeleteService",
             );
@@ -1862,7 +1862,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/ListDiscoveredWorkloads",
             );
@@ -1892,7 +1892,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/GetDiscoveredWorkload",
             );
@@ -1923,7 +1923,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/LookupDiscoveredWorkload",
             );
@@ -1953,7 +1953,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/ListWorkloads",
             );
@@ -1980,7 +1980,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/CreateWorkload",
             );
@@ -2004,7 +2004,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/GetWorkload",
             );
@@ -2029,7 +2029,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/UpdateWorkload",
             );
@@ -2056,7 +2056,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/DeleteWorkload",
             );
@@ -2083,7 +2083,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/ListApplications",
             );
@@ -2110,7 +2110,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/CreateApplication",
             );
@@ -2134,7 +2134,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/GetApplication",
             );
@@ -2161,7 +2161,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/UpdateApplication",
             );
@@ -2188,7 +2188,7 @@ pub mod app_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apphub.v1.AppHub/DeleteApplication",
             );

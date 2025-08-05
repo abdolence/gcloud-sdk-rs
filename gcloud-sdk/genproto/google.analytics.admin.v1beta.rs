@@ -2,7 +2,7 @@
 /// Dimensions are attributes of your data. For example, the dimension
 /// `userEmail` indicates the email of the user that accessed reporting data.
 /// Dimension values in report responses are strings.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessDimension {
     /// The API name of the dimension. See [Data Access
     /// Schema](<https://developers.google.com/analytics/devguides/config/admin/v1/access-api-schema>)
@@ -14,7 +14,7 @@ pub struct AccessDimension {
 }
 /// The quantitative measurements of a report. For example, the metric
 /// `accessCount` is the total number of data access records.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessMetric {
     /// The API name of the metric. See [Data Access
     /// Schema](<https://developers.google.com/analytics/devguides/config/admin/v1/access-api-schema>)
@@ -25,7 +25,7 @@ pub struct AccessMetric {
     pub metric_name: ::prost::alloc::string::String,
 }
 /// A contiguous range of days: startDate, startDate + 1, ..., endDate.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessDateRange {
     /// The inclusive start date for the query in the format `YYYY-MM-DD`. Cannot
     /// be after `endDate`. The format `NdaysAgo`, `yesterday`, or `today` is also
@@ -105,7 +105,7 @@ pub mod access_filter {
     }
 }
 /// The filter for strings.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessStringFilter {
     /// The match type for this filter.
     #[prost(enumeration = "access_string_filter::MatchType", tag = "1")]
@@ -180,7 +180,7 @@ pub mod access_string_filter {
     }
 }
 /// The result needs to be in a list of string values.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessInListFilter {
     /// The list of string values. Must be non-empty.
     #[prost(string, repeated, tag = "1")]
@@ -290,7 +290,7 @@ pub mod numeric_value {
 /// Order bys define how rows will be sorted in the response. For example,
 /// ordering rows by descending access count is one ordering, and ordering rows
 /// by the country string is a different ordering.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessOrderBy {
     /// If true, sorts by descending order. If false or unspecified, sorts in
     /// ascending order.
@@ -303,14 +303,14 @@ pub struct AccessOrderBy {
 /// Nested message and enum types in `AccessOrderBy`.
 pub mod access_order_by {
     /// Sorts by metric values.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct MetricOrderBy {
         /// A metric name in the request to order by.
         #[prost(string, tag = "1")]
         pub metric_name: ::prost::alloc::string::String,
     }
     /// Sorts by dimension values.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DimensionOrderBy {
         /// A dimension name in the request to order by.
         #[prost(string, tag = "1")]
@@ -337,14 +337,14 @@ pub mod access_order_by {
         pub enum OrderType {
             /// Unspecified.
             Unspecified = 0,
-            /// Alphanumeric sort by Unicode code point. For example, "2" < "A" < "X" <
-            /// "b" < "z".
+            /// Alphanumeric sort by Unicode code point. For example, "2" \< "A" \< "X" \<
+            /// "b" \< "z".
             Alphanumeric = 1,
             /// Case insensitive alphanumeric sort by lower case Unicode code point.
-            /// For example, "2" < "A" < "b" < "X" < "z".
+            /// For example, "2" \< "A" \< "b" \< "X" \< "z".
             CaseInsensitiveAlphanumeric = 2,
             /// Dimension values are converted to numbers before sorting. For example
-            /// in NUMERIC sort, "25" < "100", and in `ALPHANUMERIC` sort, "100" <
+            /// in NUMERIC sort, "25" \< "100", and in `ALPHANUMERIC` sort, "100" \<
             /// "25". Non-numeric dimension values all have equal ordering value below
             /// all numeric values.
             Numeric = 3,
@@ -377,7 +377,7 @@ pub mod access_order_by {
         }
     }
     /// Specify one type of order by for `OrderBy`.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum OneOrderBy {
         /// Sorts results by a metric's values.
         #[prost(message, tag = "1")]
@@ -391,7 +391,7 @@ pub mod access_order_by {
 /// produce column entries within rows and DimensionHeaders. However, dimensions
 /// used exclusively within filters or expressions do not produce columns in a
 /// report; correspondingly, those dimensions do not produce headers.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessDimensionHeader {
     /// The dimension's name; for example 'userEmail'.
     #[prost(string, tag = "1")]
@@ -401,7 +401,7 @@ pub struct AccessDimensionHeader {
 /// report produce column entries within rows and MetricHeaders. However,
 /// metrics used exclusively within filters or expressions do not produce columns
 /// in a report; correspondingly, those metrics do not produce headers.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessMetricHeader {
     /// The metric's name; for example 'accessCount'.
     #[prost(string, tag = "1")]
@@ -420,7 +420,7 @@ pub struct AccessRow {
     pub metric_values: ::prost::alloc::vec::Vec<AccessMetricValue>,
 }
 /// The value of a dimension.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessDimensionValue {
     /// The dimension value. For example, this value may be 'France' for the
     /// 'country' dimension.
@@ -428,7 +428,7 @@ pub struct AccessDimensionValue {
     pub value: ::prost::alloc::string::String,
 }
 /// The value of a metric.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessMetricValue {
     /// The measurement value. For example, this value may be '13'.
     #[prost(string, tag = "1")]
@@ -437,7 +437,7 @@ pub struct AccessMetricValue {
 /// Current state of all quotas for this Analytics property. If any quota for a
 /// property is exhausted, all requests to that property will return Resource
 /// Exhausted errors.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessQuota {
     /// Properties can use 250,000 tokens per day. Most requests consume fewer than
     /// 10 tokens.
@@ -463,7 +463,7 @@ pub struct AccessQuota {
     pub tokens_per_project_per_hour: ::core::option::Option<AccessQuotaStatus>,
 }
 /// Current state for a particular quota group.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessQuotaStatus {
     /// Quota consumed by this request.
     #[prost(int32, tag = "1")]
@@ -473,7 +473,7 @@ pub struct AccessQuotaStatus {
     pub remaining: i32,
 }
 /// A resource message representing a Google Analytics account.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Account {
     /// Output only. Resource name of this account.
     /// Format: accounts/{account}
@@ -503,7 +503,7 @@ pub struct Account {
     pub gmp_organization: ::prost::alloc::string::String,
 }
 /// A resource message representing a Google Analytics property.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Property {
     /// Output only. Resource name of this property.
     /// Format: properties/{property_id}
@@ -550,7 +550,6 @@ pub struct Property {
     pub time_zone: ::prost::alloc::string::String,
     /// The currency type used in reports involving monetary values.
     ///
-    ///
     /// Format: <https://en.wikipedia.org/wiki/ISO_4217>
     /// Examples: "USD", "EUR", "JPY"
     #[prost(string, tag = "8")]
@@ -575,7 +574,7 @@ pub struct Property {
     pub account: ::prost::alloc::string::String,
 }
 /// A resource message representing a data stream.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataStream {
     /// Output only. Resource name of this Data Stream.
     /// Format: properties/{property_id}/dataStreams/{stream_id}
@@ -606,7 +605,7 @@ pub struct DataStream {
 /// Nested message and enum types in `DataStream`.
 pub mod data_stream {
     /// Data specific to web streams.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct WebStreamData {
         /// Output only. Analytics Measurement ID.
         ///
@@ -623,7 +622,7 @@ pub mod data_stream {
         pub default_uri: ::prost::alloc::string::String,
     }
     /// Data specific to Android app streams.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AndroidAppStreamData {
         /// Output only. ID of the corresponding Android app in Firebase, if any.
         /// This ID can change if the Android app is deleted and recreated.
@@ -635,7 +634,7 @@ pub mod data_stream {
         pub package_name: ::prost::alloc::string::String,
     }
     /// Data specific to iOS app streams.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct IosAppStreamData {
         /// Output only. ID of the corresponding iOS app in Firebase, if any.
         /// This ID can change if the iOS app is deleted and recreated.
@@ -695,7 +694,7 @@ pub mod data_stream {
     }
     /// Data for specific data stream types. The message that will be
     /// set corresponds to the type of this stream.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum StreamData {
         /// Data specific to web streams. Must be populated if type is
         /// WEB_DATA_STREAM.
@@ -712,7 +711,7 @@ pub mod data_stream {
     }
 }
 /// A link between a Google Analytics property and a Firebase project.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FirebaseLink {
     /// Output only. Example format: properties/1234/firebaseLinks/5678
     #[prost(string, tag = "1")]
@@ -731,7 +730,7 @@ pub struct FirebaseLink {
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// A link between a Google Analytics property and a Google Ads account.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GoogleAdsLink {
     /// Output only. Format:
     /// properties/{propertyId}/googleAdsLinks/{googleAdsLinkId}
@@ -764,7 +763,7 @@ pub struct GoogleAdsLink {
 }
 /// A resource message representing data sharing settings of a Google Analytics
 /// account.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataSharingSettings {
     /// Output only. Resource name.
     /// Format: accounts/{account}/dataSharingSettings
@@ -813,7 +812,7 @@ pub struct AccountSummary {
     pub property_summaries: ::prost::alloc::vec::Vec<PropertySummary>,
 }
 /// A virtual resource representing metadata for a Google Analytics property.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PropertySummary {
     /// Resource name of property referred to by this property summary
     /// Format: properties/{property_id}
@@ -835,7 +834,7 @@ pub struct PropertySummary {
     pub parent: ::prost::alloc::string::String,
 }
 /// A secret value used for sending hits to Measurement Protocol.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MeasurementProtocolSecret {
     /// Output only. Resource name of this secret. This secret may be a child of
     /// any type of stream. Format:
@@ -1143,7 +1142,7 @@ pub mod key_event {
     }
 }
 /// A definition for a CustomDimension.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomDimension {
     /// Output only. Resource name for this CustomDimension resource.
     /// Format: properties/{property}/customDimensions/{customDimension}
@@ -1235,7 +1234,7 @@ pub mod custom_dimension {
     }
 }
 /// A definition for a custom metric.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomMetric {
     /// Output only. Resource name for this CustomMetric resource.
     /// Format: properties/{property}/customMetrics/{customMetric}
@@ -1443,7 +1442,7 @@ pub mod custom_metric {
     }
 }
 /// Settings values for data retention. This is a singleton resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataRetentionSettings {
     /// Output only. Resource name for this DataRetentionSetting resource.
     /// Format: properties/{property}/dataRetentionSettings
@@ -2008,7 +2007,7 @@ pub struct RunAccessReportResponse {
     pub quota: ::core::option::Option<AccessQuota>,
 }
 /// Request message for GetAccount RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAccountRequest {
     /// Required. The name of the account to lookup.
     /// Format: accounts/{account}
@@ -2017,7 +2016,7 @@ pub struct GetAccountRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListAccounts RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAccountsRequest {
     /// The maximum number of resources to return. The service may return
     /// fewer than this value, even if there are additional pages.
@@ -2049,7 +2048,7 @@ pub struct ListAccountsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for DeleteAccount RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAccountRequest {
     /// Required. The name of the Account to soft-delete.
     /// Format: accounts/{account}
@@ -2058,7 +2057,7 @@ pub struct DeleteAccountRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateAccount RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateAccountRequest {
     /// Required. The account to update.
     /// The account's `name` field is used to identify the account.
@@ -2066,13 +2065,13 @@ pub struct UpdateAccountRequest {
     pub account: ::core::option::Option<Account>,
     /// Required. The list of fields to be updated. Field names must be in snake
     /// case (for example, "field_to_update"). Omitted fields will not be updated.
-    /// To replace the entire entity, use one path with the string "*" to match all
+    /// To replace the entire entity, use one path with the string "\*" to match all
     /// fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for ProvisionAccountTicket RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProvisionAccountTicketRequest {
     /// The account to create.
     #[prost(message, optional, tag = "1")]
@@ -2083,14 +2082,14 @@ pub struct ProvisionAccountTicketRequest {
     pub redirect_uri: ::prost::alloc::string::String,
 }
 /// Response message for ProvisionAccountTicket RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProvisionAccountTicketResponse {
     /// The param to be passed in the ToS link.
     #[prost(string, tag = "1")]
     pub account_ticket_id: ::prost::alloc::string::String,
 }
 /// Request message for GetProperty RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPropertyRequest {
     /// Required. The name of the property to lookup.
     /// Format: properties/{property_id}
@@ -2099,7 +2098,7 @@ pub struct GetPropertyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListProperties RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPropertiesRequest {
     /// Required. An expression for filtering the results of the request.
     /// Fields eligible for filtering are:
@@ -2108,7 +2107,7 @@ pub struct ListPropertiesRequest {
     /// `firebase_project:`(The id or number of the linked firebase project).
     /// Some examples of filters:
     ///
-    /// ```
+    /// ```text,
     /// | Filter                      | Description                               |
     /// |-----------------------------|-------------------------------------------|
     /// | parent:accounts/123         | The account with account id: 123.       |
@@ -2149,7 +2148,7 @@ pub struct ListPropertiesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for UpdateProperty RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdatePropertyRequest {
     /// Required. The property to update.
     /// The property's `name` field is used to identify the property to be
@@ -2158,13 +2157,13 @@ pub struct UpdatePropertyRequest {
     pub property: ::core::option::Option<Property>,
     /// Required. The list of fields to be updated. Field names must be in snake
     /// case (e.g., "field_to_update"). Omitted fields will not be updated. To
-    /// replace the entire entity, use one path with the string "*" to match all
+    /// replace the entire entity, use one path with the string "\*" to match all
     /// fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for CreateProperty RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreatePropertyRequest {
     /// Required. The property to create.
     /// Note: the supplied property must specify its parent.
@@ -2172,7 +2171,7 @@ pub struct CreatePropertyRequest {
     pub property: ::core::option::Option<Property>,
 }
 /// Request message for DeleteProperty RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeletePropertyRequest {
     /// Required. The name of the Property to soft-delete.
     /// Format: properties/{property_id}
@@ -2181,7 +2180,7 @@ pub struct DeletePropertyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateFirebaseLink RPC
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateFirebaseLinkRequest {
     /// Required. Format: properties/{property_id}
     ///
@@ -2193,7 +2192,7 @@ pub struct CreateFirebaseLinkRequest {
     pub firebase_link: ::core::option::Option<FirebaseLink>,
 }
 /// Request message for DeleteFirebaseLink RPC
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteFirebaseLinkRequest {
     /// Required. Format: properties/{property_id}/firebaseLinks/{firebase_link_id}
     ///
@@ -2202,7 +2201,7 @@ pub struct DeleteFirebaseLinkRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListFirebaseLinks RPC
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFirebaseLinksRequest {
     /// Required. Format: properties/{property_id}
     ///
@@ -2236,7 +2235,7 @@ pub struct ListFirebaseLinksResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for CreateGoogleAdsLink RPC
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateGoogleAdsLinkRequest {
     /// Required. Example format: properties/1234
     #[prost(string, tag = "1")]
@@ -2246,27 +2245,27 @@ pub struct CreateGoogleAdsLinkRequest {
     pub google_ads_link: ::core::option::Option<GoogleAdsLink>,
 }
 /// Request message for UpdateGoogleAdsLink RPC
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateGoogleAdsLinkRequest {
     /// The GoogleAdsLink to update
     #[prost(message, optional, tag = "1")]
     pub google_ads_link: ::core::option::Option<GoogleAdsLink>,
     /// Required. The list of fields to be updated. Field names must be in snake
     /// case (e.g., "field_to_update"). Omitted fields will not be updated. To
-    /// replace the entire entity, use one path with the string "*" to match all
+    /// replace the entire entity, use one path with the string "\*" to match all
     /// fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteGoogleAdsLink RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteGoogleAdsLinkRequest {
     /// Required. Example format: properties/1234/googleAdsLinks/5678
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListGoogleAdsLinks RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListGoogleAdsLinksRequest {
     /// Required. Example format: properties/1234
     #[prost(string, tag = "1")]
@@ -2296,7 +2295,7 @@ pub struct ListGoogleAdsLinksResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetDataSharingSettings RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDataSharingSettingsRequest {
     /// Required. The name of the settings to lookup.
     /// Format: accounts/{account}/dataSharingSettings
@@ -2306,7 +2305,7 @@ pub struct GetDataSharingSettingsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListAccountSummaries RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAccountSummariesRequest {
     /// The maximum number of AccountSummary resources to return. The service may
     /// return fewer than this value, even if there are additional pages.
@@ -2333,7 +2332,7 @@ pub struct ListAccountSummariesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for AcknowledgeUserDataCollection RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AcknowledgeUserDataCollectionRequest {
     /// Required. The property for which to acknowledge user data collection.
     #[prost(string, tag = "1")]
@@ -2350,10 +2349,10 @@ pub struct AcknowledgeUserDataCollectionRequest {
     pub acknowledgement: ::prost::alloc::string::String,
 }
 /// Response message for AcknowledgeUserDataCollection RPC.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AcknowledgeUserDataCollectionResponse {}
 /// Request message for SearchChangeHistoryEvents RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchChangeHistoryEventsRequest {
     /// Required. The account resource for which to return change history
     /// resources. Format: accounts/{account}
@@ -2422,7 +2421,7 @@ pub struct SearchChangeHistoryEventsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetMeasurementProtocolSecret RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetMeasurementProtocolSecretRequest {
     /// Required. The name of the measurement protocol secret to lookup.
     /// Format:
@@ -2431,7 +2430,7 @@ pub struct GetMeasurementProtocolSecretRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateMeasurementProtocolSecret RPC
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateMeasurementProtocolSecretRequest {
     /// Required. The parent resource where this secret will be created.
     /// Format: properties/{property}/dataStreams/{dataStream}
@@ -2442,7 +2441,7 @@ pub struct CreateMeasurementProtocolSecretRequest {
     pub measurement_protocol_secret: ::core::option::Option<MeasurementProtocolSecret>,
 }
 /// Request message for DeleteMeasurementProtocolSecret RPC
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteMeasurementProtocolSecretRequest {
     /// Required. The name of the MeasurementProtocolSecret to delete.
     /// Format:
@@ -2451,7 +2450,7 @@ pub struct DeleteMeasurementProtocolSecretRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateMeasurementProtocolSecret RPC
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateMeasurementProtocolSecretRequest {
     /// Required. The measurement protocol secret to update.
     #[prost(message, optional, tag = "1")]
@@ -2462,7 +2461,7 @@ pub struct UpdateMeasurementProtocolSecretRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for ListMeasurementProtocolSecret RPC
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListMeasurementProtocolSecretsRequest {
     /// Required. The resource name of the parent stream.
     /// Format:
@@ -2514,13 +2513,13 @@ pub struct UpdateConversionEventRequest {
     pub conversion_event: ::core::option::Option<ConversionEvent>,
     /// Required. The list of fields to be updated. Field names must be in snake
     /// case (e.g., "field_to_update"). Omitted fields will not be updated. To
-    /// replace the entire entity, use one path with the string "*" to match all
+    /// replace the entire entity, use one path with the string "\*" to match all
     /// fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetConversionEvent RPC
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetConversionEventRequest {
     /// Required. The resource name of the conversion event to retrieve.
     /// Format: properties/{property}/conversionEvents/{conversion_event}
@@ -2529,7 +2528,7 @@ pub struct GetConversionEventRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for DeleteConversionEvent RPC
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteConversionEventRequest {
     /// Required. The resource name of the conversion event to delete.
     /// Format: properties/{property}/conversionEvents/{conversion_event}
@@ -2538,7 +2537,7 @@ pub struct DeleteConversionEventRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListConversionEvents RPC
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListConversionEventsRequest {
     /// Required. The resource name of the parent property.
     /// Example: 'properties/123'
@@ -2587,13 +2586,13 @@ pub struct UpdateKeyEventRequest {
     pub key_event: ::core::option::Option<KeyEvent>,
     /// Required. The list of fields to be updated. Field names must be in snake
     /// case (e.g., "field_to_update"). Omitted fields will not be updated. To
-    /// replace the entire entity, use one path with the string "*" to match all
+    /// replace the entire entity, use one path with the string "\*" to match all
     /// fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetKeyEvent RPC
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetKeyEventRequest {
     /// Required. The resource name of the Key Event to retrieve.
     /// Format: properties/{property}/keyEvents/{key_event}
@@ -2602,7 +2601,7 @@ pub struct GetKeyEventRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for DeleteKeyEvent RPC
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteKeyEventRequest {
     /// Required. The resource name of the Key Event to delete.
     /// Format: properties/{property}/keyEvents/{key_event}
@@ -2611,7 +2610,7 @@ pub struct DeleteKeyEventRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListKeyEvents RPC
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListKeyEventsRequest {
     /// Required. The resource name of the parent property.
     /// Example: 'properties/123'
@@ -2641,7 +2640,7 @@ pub struct ListKeyEventsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for CreateCustomDimension RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateCustomDimensionRequest {
     /// Required. Example format: properties/1234
     #[prost(string, tag = "1")]
@@ -2651,19 +2650,19 @@ pub struct CreateCustomDimensionRequest {
     pub custom_dimension: ::core::option::Option<CustomDimension>,
 }
 /// Request message for UpdateCustomDimension RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateCustomDimensionRequest {
     /// The CustomDimension to update
     #[prost(message, optional, tag = "1")]
     pub custom_dimension: ::core::option::Option<CustomDimension>,
     /// Required. The list of fields to be updated. Omitted fields will not be
-    /// updated. To replace the entire entity, use one path with the string "*" to
+    /// updated. To replace the entire entity, use one path with the string "\*" to
     /// match all fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for ListCustomDimensions RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCustomDimensionsRequest {
     /// Required. Example format: properties/1234
     #[prost(string, tag = "1")]
@@ -2693,7 +2692,7 @@ pub struct ListCustomDimensionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for ArchiveCustomDimension RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ArchiveCustomDimensionRequest {
     /// Required. The name of the CustomDimension to archive.
     /// Example format: properties/1234/customDimensions/5678
@@ -2701,7 +2700,7 @@ pub struct ArchiveCustomDimensionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for GetCustomDimension RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCustomDimensionRequest {
     /// Required. The name of the CustomDimension to get.
     /// Example format: properties/1234/customDimensions/5678
@@ -2709,7 +2708,7 @@ pub struct GetCustomDimensionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateCustomMetric RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateCustomMetricRequest {
     /// Required. Example format: properties/1234
     #[prost(string, tag = "1")]
@@ -2719,19 +2718,19 @@ pub struct CreateCustomMetricRequest {
     pub custom_metric: ::core::option::Option<CustomMetric>,
 }
 /// Request message for UpdateCustomMetric RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateCustomMetricRequest {
     /// The CustomMetric to update
     #[prost(message, optional, tag = "1")]
     pub custom_metric: ::core::option::Option<CustomMetric>,
     /// Required. The list of fields to be updated. Omitted fields will not be
-    /// updated. To replace the entire entity, use one path with the string "*" to
+    /// updated. To replace the entire entity, use one path with the string "\*" to
     /// match all fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for ListCustomMetrics RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCustomMetricsRequest {
     /// Required. Example format: properties/1234
     #[prost(string, tag = "1")]
@@ -2761,7 +2760,7 @@ pub struct ListCustomMetricsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for ArchiveCustomMetric RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ArchiveCustomMetricRequest {
     /// Required. The name of the CustomMetric to archive.
     /// Example format: properties/1234/customMetrics/5678
@@ -2769,7 +2768,7 @@ pub struct ArchiveCustomMetricRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for GetCustomMetric RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCustomMetricRequest {
     /// Required. The name of the CustomMetric to get.
     /// Example format: properties/1234/customMetrics/5678
@@ -2777,7 +2776,7 @@ pub struct GetCustomMetricRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for GetDataRetentionSettings RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDataRetentionSettingsRequest {
     /// Required. The name of the settings to lookup.
     /// Format:
@@ -2787,7 +2786,7 @@ pub struct GetDataRetentionSettingsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateDataRetentionSettings RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateDataRetentionSettingsRequest {
     /// Required. The settings to update.
     /// The `name` field is used to identify the settings to be updated.
@@ -2795,13 +2794,13 @@ pub struct UpdateDataRetentionSettingsRequest {
     pub data_retention_settings: ::core::option::Option<DataRetentionSettings>,
     /// Required. The list of fields to be updated. Field names must be in snake
     /// case (e.g., "field_to_update"). Omitted fields will not be updated. To
-    /// replace the entire entity, use one path with the string "*" to match all
+    /// replace the entire entity, use one path with the string "\*" to match all
     /// fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for CreateDataStream RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateDataStreamRequest {
     /// Required. Example format: properties/1234
     #[prost(string, tag = "1")]
@@ -2811,7 +2810,7 @@ pub struct CreateDataStreamRequest {
     pub data_stream: ::core::option::Option<DataStream>,
 }
 /// Request message for DeleteDataStream RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDataStreamRequest {
     /// Required. The name of the DataStream to delete.
     /// Example format: properties/1234/dataStreams/5678
@@ -2819,19 +2818,19 @@ pub struct DeleteDataStreamRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateDataStream RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateDataStreamRequest {
     /// The DataStream to update
     #[prost(message, optional, tag = "1")]
     pub data_stream: ::core::option::Option<DataStream>,
     /// Required. The list of fields to be updated. Omitted fields will not be
-    /// updated. To replace the entire entity, use one path with the string "*" to
+    /// updated. To replace the entire entity, use one path with the string "\*" to
     /// match all fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for ListDataStreams RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDataStreamsRequest {
     /// Required. Example format: properties/1234
     #[prost(string, tag = "1")]
@@ -2861,7 +2860,7 @@ pub struct ListDataStreamsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetDataStream RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDataStreamRequest {
     /// Required. The name of the DataStream to get.
     /// Example format: properties/1234/dataStreams/5678
@@ -2973,7 +2972,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/GetAccount",
             );
@@ -3007,7 +3006,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/ListAccounts",
             );
@@ -3044,7 +3043,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/DeleteAccount",
             );
@@ -3071,7 +3070,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/UpdateAccount",
             );
@@ -3101,7 +3100,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/ProvisionAccountTicket",
             );
@@ -3131,7 +3130,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/ListAccountSummaries",
             );
@@ -3158,7 +3157,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/GetProperty",
             );
@@ -3192,7 +3191,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/ListProperties",
             );
@@ -3220,7 +3219,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/CreateProperty",
             );
@@ -3257,7 +3256,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/DeleteProperty",
             );
@@ -3284,7 +3283,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/UpdateProperty",
             );
@@ -3313,7 +3312,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/CreateFirebaseLink",
             );
@@ -3340,7 +3339,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/DeleteFirebaseLink",
             );
@@ -3371,7 +3370,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/ListFirebaseLinks",
             );
@@ -3398,7 +3397,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/CreateGoogleAdsLink",
             );
@@ -3425,7 +3424,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/UpdateGoogleAdsLink",
             );
@@ -3452,7 +3451,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/DeleteGoogleAdsLink",
             );
@@ -3482,7 +3481,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/ListGoogleAdsLinks",
             );
@@ -3513,7 +3512,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/GetDataSharingSettings",
             );
@@ -3543,7 +3542,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/GetMeasurementProtocolSecret",
             );
@@ -3576,7 +3575,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/ListMeasurementProtocolSecrets",
             );
@@ -3608,7 +3607,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/CreateMeasurementProtocolSecret",
             );
@@ -3637,7 +3636,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/DeleteMeasurementProtocolSecret",
             );
@@ -3669,7 +3668,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/UpdateMeasurementProtocolSecret",
             );
@@ -3703,7 +3702,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/AcknowledgeUserDataCollection",
             );
@@ -3737,7 +3736,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/SearchChangeHistoryEvents",
             );
@@ -3769,7 +3768,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/CreateConversionEvent",
             );
@@ -3801,7 +3800,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/UpdateConversionEvent",
             );
@@ -3833,7 +3832,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/GetConversionEvent",
             );
@@ -3862,7 +3861,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/DeleteConversionEvent",
             );
@@ -3896,7 +3895,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/ListConversionEvents",
             );
@@ -3923,7 +3922,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/CreateKeyEvent",
             );
@@ -3950,7 +3949,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/UpdateKeyEvent",
             );
@@ -3977,7 +3976,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/GetKeyEvent",
             );
@@ -4004,7 +4003,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/DeleteKeyEvent",
             );
@@ -4035,7 +4034,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/ListKeyEvents",
             );
@@ -4065,7 +4064,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/CreateCustomDimension",
             );
@@ -4095,7 +4094,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/UpdateCustomDimension",
             );
@@ -4125,7 +4124,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/ListCustomDimensions",
             );
@@ -4152,7 +4151,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/ArchiveCustomDimension",
             );
@@ -4182,7 +4181,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/GetCustomDimension",
             );
@@ -4209,7 +4208,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/CreateCustomMetric",
             );
@@ -4236,7 +4235,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/UpdateCustomMetric",
             );
@@ -4266,7 +4265,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/ListCustomMetrics",
             );
@@ -4293,7 +4292,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/ArchiveCustomMetric",
             );
@@ -4320,7 +4319,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/GetCustomMetric",
             );
@@ -4350,7 +4349,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/GetDataRetentionSettings",
             );
@@ -4380,7 +4379,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/UpdateDataRetentionSettings",
             );
@@ -4407,7 +4406,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/CreateDataStream",
             );
@@ -4434,7 +4433,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/DeleteDataStream",
             );
@@ -4461,7 +4460,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/UpdateDataStream",
             );
@@ -4491,7 +4490,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/ListDataStreams",
             );
@@ -4518,7 +4517,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/GetDataStream",
             );
@@ -4567,7 +4566,7 @@ pub mod analytics_admin_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1beta.AnalyticsAdminService/RunAccessReport",
             );

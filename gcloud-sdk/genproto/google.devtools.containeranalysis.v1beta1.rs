@@ -2,7 +2,7 @@
 /// GeneratePackagesSummaryRequest is the request body for the
 /// GeneratePackagesSummary API method. It just takes a single name argument,
 /// referring to the resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GeneratePackagesSummaryRequest {
     /// Required. The name of the resource to get a packages summary for in the
     /// form of `projects/\[PROJECT_ID\]/resources/\[RESOURCE_URL\]`.
@@ -25,7 +25,7 @@ pub struct PackagesSummaryResponse {
 /// Nested message and enum types in `PackagesSummaryResponse`.
 pub mod packages_summary_response {
     /// Per license count
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct LicensesSummary {
         /// The license of the package. Note that the format of this value is not
         /// guaranteed. It may be nil, an empty string, a boolean value (A | B), a
@@ -38,7 +38,7 @@ pub mod packages_summary_response {
     }
 }
 /// The request to a call of ExportSBOM
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportSbomRequest {
     /// Required. The name of the resource in the form of
     /// `projects/\[PROJECT_ID\]/resources/\[RESOURCE_URL\]`.
@@ -46,7 +46,7 @@ pub struct ExportSbomRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The response from a call to ExportSBOM
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportSbomResponse {
     /// The name of the discovery occurrence in the form
     /// "projects/{project_id}/occurrences/{OCCURRENCE_ID}
@@ -185,7 +185,7 @@ pub mod container_analysis_v1_beta1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.containeranalysis.v1beta1.ContainerAnalysisV1Beta1/SetIamPolicy",
             );
@@ -224,7 +224,7 @@ pub mod container_analysis_v1_beta1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.containeranalysis.v1beta1.ContainerAnalysisV1Beta1/GetIamPolicy",
             );
@@ -264,7 +264,7 @@ pub mod container_analysis_v1_beta1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.containeranalysis.v1beta1.ContainerAnalysisV1Beta1/TestIamPermissions",
             );
@@ -294,7 +294,7 @@ pub mod container_analysis_v1_beta1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.containeranalysis.v1beta1.ContainerAnalysisV1Beta1/GeneratePackagesSummary",
             );
@@ -324,7 +324,7 @@ pub mod container_analysis_v1_beta1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.containeranalysis.v1beta1.ContainerAnalysisV1Beta1/ExportSBOM",
             );

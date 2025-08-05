@@ -88,7 +88,7 @@ pub struct FileHashes {
     pub file_hash: ::prost::alloc::vec::Vec<Hash>,
 }
 /// Container message for hash values.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Hash {
     /// Required. The type of hash that was performed.
     #[prost(enumeration = "hash::HashType", tag = "1")]
@@ -140,7 +140,7 @@ pub mod hash {
     }
 }
 /// Command describes a step performed as part of the build pipeline.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Command {
     /// Required. Name of the command, as presented on the command line, or if the
     /// command is packaged as a Docker container, as presented to `docker pull`.
@@ -165,7 +165,7 @@ pub struct Command {
     pub wait_for: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Artifact describes a build product.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Artifact {
     /// Hash or checksum value of a binary, or Docker Registry 2.0 digest of a
     /// container.

@@ -23,7 +23,7 @@ pub struct Notification {
     pub notification_type: i32,
 }
 /// A text object containing the English text and its localized copies.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Text {
     /// The English copy.
     #[prost(string, tag = "1")]
@@ -36,7 +36,7 @@ pub struct Text {
     pub localization_state: i32,
 }
 /// A subject line of a notification.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Subject {
     /// The text content.
     #[prost(message, optional, tag = "1")]
@@ -61,7 +61,7 @@ pub struct Message {
 /// Nested message and enum types in `Message`.
 pub mod message {
     /// A message body containing text.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Body {
         /// The text content of the message body.
         #[prost(message, optional, tag = "1")]
@@ -103,7 +103,7 @@ pub struct Csv {
 /// Nested message and enum types in `Csv`.
 pub mod csv {
     /// A representation of a single data row in a CSV file.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CsvRow {
         /// The data entries in a CSV file row, as a string array rather than a
         /// single comma-separated string.
@@ -112,7 +112,7 @@ pub mod csv {
     }
 }
 /// Request for fetching all notifications for a given parent.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNotificationsRequest {
     /// Required. The parent, which owns this collection of notifications.
     /// Must be of the form "organizations/{organization}/locations/{location}"
@@ -157,7 +157,7 @@ pub struct ListNotificationsResponse {
     pub total_size: i32,
 }
 /// Request for fetching a notification.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetNotificationRequest {
     /// Required. A name of the notification to retrieve.
     /// Format:
@@ -198,14 +198,14 @@ pub struct Settings {
     pub etag: ::prost::alloc::string::String,
 }
 /// Settings for each NotificationType.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NotificationSettings {
     /// Whether the associated NotificationType is enabled.
     #[prost(bool, tag = "1")]
     pub enabled: bool,
 }
 /// Request of GetSettings endpoint.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSettingsRequest {
     /// Required. The resource name of the settings to retrieve.
     /// Format:
@@ -264,10 +264,11 @@ pub enum LocalizationState {
     Unspecified = 0,
     /// Localization is not applicable for requested language. This can happen
     /// when:
-    /// - The requested language was not supported by Advisory Notifications at the
-    /// time of localization (including notifications created before the
-    /// localization feature was launched).
-    /// - The requested language is English, so only the English text is returned.
+    ///
+    /// * The requested language was not supported by Advisory Notifications at the
+    ///   time of localization (including notifications created before the
+    ///   localization feature was launched).
+    /// * The requested language is English, so only the English text is returned.
     NotApplicable = 1,
     /// Localization for requested language is in progress, and not ready yet.
     Pending = 2,
@@ -453,7 +454,7 @@ pub mod advisory_notifications_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.advisorynotifications.v1.AdvisoryNotificationsService/ListNotifications",
             );
@@ -480,7 +481,7 @@ pub mod advisory_notifications_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.advisorynotifications.v1.AdvisoryNotificationsService/GetNotification",
             );
@@ -507,7 +508,7 @@ pub mod advisory_notifications_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.advisorynotifications.v1.AdvisoryNotificationsService/GetSettings",
             );
@@ -534,7 +535,7 @@ pub mod advisory_notifications_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.advisorynotifications.v1.AdvisoryNotificationsService/UpdateSettings",
             );

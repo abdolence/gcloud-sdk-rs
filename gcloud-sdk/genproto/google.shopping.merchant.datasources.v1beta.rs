@@ -93,7 +93,7 @@ pub mod primary_product_data_source {
     }
     /// Destinations also known as [Marketing
     /// methods](<https://support.google.com/merchants/answer/15130232>) selections.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Destination {
         /// [Marketing methods](<https://support.google.com/merchants/answer/15130232>)
         /// (also known as destination) selections.
@@ -222,10 +222,10 @@ pub struct SupplementalProductDataSource {
     /// `feedLabel` and `contentLanguage` must be either both set or unset for data
     /// sources with product content type.
     ///
-    /// They must be set for data sources with a [file
-    /// input][google.shopping.merchant.datasources.v1main.FileInput].
-    /// The fields must be unset for data sources without [file
-    /// input][google.shopping.merchant.datasources.v1main.FileInput].
+    /// They must be set for data sources with a \[file
+    /// input\]\[google.shopping.merchant.datasources.v1main.FileInput\].
+    /// The fields must be unset for data sources without \[file
+    /// input\]\[google.shopping.merchant.datasources.v1main.FileInput\].
     ///
     /// If set, the data source will only accept products matching this
     /// combination. If unset, the data source will accept produts without that
@@ -250,7 +250,7 @@ pub struct SupplementalProductDataSource {
     pub referencing_primary_data_sources: ::prost::alloc::vec::Vec<DataSourceReference>,
 }
 /// The local inventory data source.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LocalInventoryDataSource {
     /// Required. Immutable. The feed label of the offers to which the local
     /// inventory is provided.
@@ -268,7 +268,7 @@ pub struct LocalInventoryDataSource {
     pub content_language: ::prost::alloc::string::String,
 }
 /// The regional inventory data source.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegionalInventoryDataSource {
     /// Required. Immutable. The feed label of the offers to which the regional
     /// inventory is provided.
@@ -286,7 +286,7 @@ pub struct RegionalInventoryDataSource {
     pub content_language: ::prost::alloc::string::String,
 }
 /// The promotion data source.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PromotionDataSource {
     /// Required. Immutable. The target country used as part of the unique
     /// identifier. Represented as a [CLDR territory
@@ -302,21 +302,21 @@ pub struct PromotionDataSource {
     pub content_language: ::prost::alloc::string::String,
 }
 /// The product review data source.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProductReviewDataSource {}
 /// The merchant review data source.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MerchantReviewDataSource {}
 /// Data source reference can be used to manage related data sources within the
 /// data source service.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataSourceReference {
     #[prost(oneof = "data_source_reference::DataSourceId", tags = "1, 3, 2")]
     pub data_source_id: ::core::option::Option<data_source_reference::DataSourceId>,
 }
 /// Nested message and enum types in `DataSourceReference`.
 pub mod data_source_reference {
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum DataSourceId {
         /// Self should be used to reference the primary data source itself.
         #[prost(bool, tag = "1")]
@@ -335,7 +335,7 @@ pub mod data_source_reference {
 }
 /// The data specific for file data sources. This field is empty for other
 /// data source inputs.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FileInput {
     /// Optional. Fetch details to deliver the data source. It contains settings
     /// for `FETCH` and `GOOGLE_SHEETS` file input types. The required fields vary
@@ -353,7 +353,7 @@ pub struct FileInput {
 /// Nested message and enum types in `FileInput`.
 pub mod file_input {
     /// Fetch details to deliver the data source.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct FetchSettings {
         /// Optional. Enables or pauses the fetch schedule.
         #[prost(bool, tag = "1")]
@@ -389,13 +389,13 @@ pub mod file_input {
         #[prost(string, tag = "7")]
         pub fetch_uri: ::prost::alloc::string::String,
         /// Optional. An optional user name for
-        /// [fetch_uri][google.shopping.merchant.datasources.v1beta.FileInput.FetchSettings.fetch_uri].
+        /// \[fetch_uri\]\[google.shopping.merchant.datasources.v1beta.FileInput.FetchSettings.fetch_uri\].
         /// Used for [submitting data sources through
         /// SFTP](<https://support.google.com/merchants/answer/13813117>).
         #[prost(string, tag = "8")]
         pub username: ::prost::alloc::string::String,
         /// Optional. An optional password for
-        /// [fetch_uri][google.shopping.merchant.datasources.v1beta.FileInput.FetchSettings.fetch_uri].
+        /// \[fetch_uri\]\[google.shopping.merchant.datasources.v1beta.FileInput.FetchSettings.fetch_uri\].
         /// Used for [submitting data sources through
         /// SFTP](<https://support.google.com/merchants/answer/13813117>).
         #[prost(string, tag = "9")]
@@ -406,18 +406,18 @@ pub mod file_input {
         /// The required fields vary based on the frequency of fetching. For a
         /// monthly
         /// fetch schedule,
-        /// [day of
-        /// month][google.shopping.content.bundles.DataSources.FileInput.FetchSchedule.day_of_month]
+        /// \[day of
+        /// month\]\[google.shopping.content.bundles.DataSources.FileInput.FetchSchedule.day_of_month\]
         /// and
-        /// [hour of
-        /// day][google.shopping.content.bundles.DataSources.FileInput.FetchSchedule.time_of_day]
+        /// \[hour of
+        /// day\]\[google.shopping.content.bundles.DataSources.FileInput.FetchSchedule.time_of_day\]
         /// are required. For a weekly fetch schedule,
-        /// [day of
-        /// week][google.shopping.content.bundles.DataSources.FileInput.FetchSchedule.day_of_week]
-        /// and [hour of
-        /// day][google.shopping.content.bundles.DataSources.FileInput.FetchSchedule.time_of_day]
-        /// are required. For a daily fetch schedule, only an [hour of
-        /// day][google.shopping.content.bundles.DataSources.FileInput.FetchSchedule.time_of_day]
+        /// \[day of
+        /// week\]\[google.shopping.content.bundles.DataSources.FileInput.FetchSchedule.day_of_week\]
+        /// and \[hour of
+        /// day\]\[google.shopping.content.bundles.DataSources.FileInput.FetchSchedule.time_of_day\]
+        /// are required. For a daily fetch schedule, only an \[hour of
+        /// day\]\[google.shopping.content.bundles.DataSources.FileInput.FetchSchedule.time_of_day\]
         /// is required.
         #[derive(
             Clone,
@@ -486,10 +486,10 @@ pub mod file_input {
         /// the Merchant Center.
         Upload = 1,
         /// The file is fetched from the configured
-        /// [fetch_uri][google.shopping.merchant.datasources.v1beta.FileInput.FetchSettings.fetch_uri].
+        /// \[fetch_uri\]\[google.shopping.merchant.datasources.v1beta.FileInput.FetchSettings.fetch_uri\].
         Fetch = 2,
         /// The file is fetched from Google Sheets specified in the
-        /// [fetch_uri][google.shopping.merchant.datasources.v1beta.FileInput.FetchSettings.fetch_uri].
+        /// \[fetch_uri\]\[google.shopping.merchant.datasources.v1beta.FileInput.FetchSettings.fetch_uri\].
         GoogleSheets = 3,
     }
     impl FileInputType {
@@ -648,7 +648,7 @@ pub mod data_source {
     }
 }
 /// Request message for the GetDataSource method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDataSourceRequest {
     /// Required. The name of the data source to retrieve.
     /// Format: `accounts/{account}/dataSources/{datasource}`
@@ -656,7 +656,7 @@ pub struct GetDataSourceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the ListDataSources method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDataSourcesRequest {
     /// Required. The account to list data sources for.
     /// Format: `accounts/{account}`
@@ -709,13 +709,13 @@ pub struct UpdateDataSourceRequest {
     /// Fields specified in the update mask without a value specified in the
     /// body will be deleted from the data source.
     ///
-    /// Providing special "*" value for full data source replacement is not
+    /// Providing special "\*" value for full data source replacement is not
     /// supported.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for the FetchDataSource method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FetchDataSourceRequest {
     /// Required. The name of the data source resource to fetch.
     /// Format: `accounts/{account}/dataSources/{datasource}`
@@ -723,7 +723,7 @@ pub struct FetchDataSourceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the DeleteDataSource method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDataSourceRequest {
     /// Required. The name of the data source to delete.
     /// Format: `accounts/{account}/dataSources/{datasource}`
@@ -837,7 +837,7 @@ pub mod data_sources_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.datasources.v1beta.DataSourcesService/GetDataSource",
             );
@@ -867,7 +867,7 @@ pub mod data_sources_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.datasources.v1beta.DataSourcesService/ListDataSources",
             );
@@ -894,7 +894,7 @@ pub mod data_sources_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.datasources.v1beta.DataSourcesService/CreateDataSource",
             );
@@ -922,7 +922,7 @@ pub mod data_sources_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.datasources.v1beta.DataSourcesService/UpdateDataSource",
             );
@@ -949,7 +949,7 @@ pub mod data_sources_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.datasources.v1beta.DataSourcesService/DeleteDataSource",
             );
@@ -980,7 +980,7 @@ pub mod data_sources_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.datasources.v1beta.DataSourcesService/FetchDataSource",
             );
@@ -1032,7 +1032,7 @@ pub struct FileUpload {
 /// Nested message and enum types in `FileUpload`.
 pub mod file_upload {
     /// An error occurring in the data source, like "invalid price".
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Issue {
         /// Output only. The title of the issue, for example, "Item too big".
         #[prost(string, tag = "1")]
@@ -1154,7 +1154,7 @@ pub mod file_upload {
     }
 }
 /// Request message for the GetFileUploadRequest method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFileUploadRequest {
     /// Required. The name of the data source file upload to retrieve.
     /// Format:
@@ -1268,7 +1268,7 @@ pub mod file_uploads_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.datasources.v1beta.FileUploadsService/GetFileUpload",
             );

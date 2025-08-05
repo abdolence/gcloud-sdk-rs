@@ -7,7 +7,7 @@ pub struct CitationMetadata {
     pub citation_sources: ::prost::alloc::vec::Vec<CitationSource>,
 }
 /// A citation to a source for a portion of a specific response.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CitationSource {
     /// Optional. Start of segment of the response that is attributed to this
     /// source.
@@ -32,7 +32,7 @@ pub struct CitationSource {
 ///
 /// ContentFilter contains a reason and an optional supporting string. The reason
 /// may be unspecified.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ContentFilter {
     /// The reason content was blocked during request processing.
     #[prost(enumeration = "content_filter::BlockedReason", tag = "1")]
@@ -94,7 +94,7 @@ pub mod content_filter {
 /// Each SafetyFeedback will return the safety settings used by the request as
 /// well as the lowest HarmProbability that should be allowed in order to return
 /// a result.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SafetyFeedback {
     /// Safety rating evaluated from content.
     #[prost(message, optional, tag = "1")]
@@ -110,7 +110,7 @@ pub struct SafetyFeedback {
 /// Content is classified for safety across a number of
 /// harm categories and the probability of the harm classification is included
 /// here.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SafetyRating {
     /// Required. The category for this rating.
     #[prost(enumeration = "HarmCategory", tag = "3")]
@@ -180,7 +180,7 @@ pub mod safety_rating {
 ///
 /// Passing a safety setting for a category changes the allowed proability that
 /// content is blocked.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SafetySetting {
     /// Required. The category for this setting.
     #[prost(enumeration = "HarmCategory", tag = "3")]
@@ -472,7 +472,7 @@ pub struct CountMessageTokensRequest {
 /// A response from `CountMessageTokens`.
 ///
 /// It returns the model's `token_count` for the `prompt`.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CountMessageTokensResponse {
     /// The number of tokens that the `model` tokenizes the `prompt` into.
     ///
@@ -591,7 +591,7 @@ pub mod discuss_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1beta3.DiscussService/GenerateMessage",
             );
@@ -621,7 +621,7 @@ pub mod discuss_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1beta3.DiscussService/CountMessageTokens",
             );
@@ -719,8 +719,8 @@ pub struct TunedModel {
     /// create, the id portion of the name will be set by concatenating the words
     /// of the display_name with hyphens and adding a random portion for
     /// uniqueness. Example:
-    ///      display_name = "Sentence Translator"
-    ///      name = "tunedModels/sentence-translator-u3b7m"
+    /// display_name = "Sentence Translator"
+    /// name = "tunedModels/sentence-translator-u3b7m"
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. The name to display for this model in user interfaces.
@@ -825,7 +825,7 @@ pub mod tuned_model {
         }
     }
     /// The model used as the starting point for tuning.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum SourceModel {
         /// Optional. TunedModel to use as the starting point for training the new
         /// model.
@@ -838,7 +838,7 @@ pub mod tuned_model {
     }
 }
 /// Tuned model as a source for training a new model.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TunedModelSource {
     /// Immutable. The name of the `TunedModel` to use as the starting point for
     /// training the new model.
@@ -914,7 +914,7 @@ pub struct TuningExamples {
     pub examples: ::prost::alloc::vec::Vec<TuningExample>,
 }
 /// A single example for tuning.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TuningExample {
     /// Required. The expected model output.
     #[prost(string, tag = "3")]
@@ -926,7 +926,7 @@ pub struct TuningExample {
 /// Nested message and enum types in `TuningExample`.
 pub mod tuning_example {
     /// The input to the model for this example.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ModelInput {
         /// Optional. Text model input.
         #[prost(string, tag = "1")]
@@ -950,7 +950,7 @@ pub struct TuningSnapshot {
     pub compute_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request for getting information about a specific Model.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetModelRequest {
     /// Required. The resource name of the model.
     ///
@@ -961,7 +961,7 @@ pub struct GetModelRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for listing all Models.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListModelsRequest {
     /// The maximum number of `Models` to return (per page).
     ///
@@ -994,7 +994,7 @@ pub struct ListModelsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for getting information about a specific Model.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTunedModelRequest {
     /// Required. The resource name of the model.
     ///
@@ -1003,7 +1003,7 @@ pub struct GetTunedModelRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for listing TunedModels.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListTunedModelsRequest {
     /// Optional. The maximum number of `TunedModels` to return (per page).
     /// The service may return fewer tuned models.
@@ -1079,7 +1079,7 @@ pub struct UpdateTunedModelRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request to delete a TunedModel.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteTunedModelRequest {
     /// Required. The resource name of the model.
     /// Format: `tunedModels/my-model-id`
@@ -1191,7 +1191,7 @@ pub mod model_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1beta3.ModelService/GetModel",
             );
@@ -1221,7 +1221,7 @@ pub mod model_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1beta3.ModelService/ListModels",
             );
@@ -1248,7 +1248,7 @@ pub mod model_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1beta3.ModelService/GetTunedModel",
             );
@@ -1278,7 +1278,7 @@ pub mod model_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1beta3.ModelService/ListTunedModels",
             );
@@ -1294,11 +1294,11 @@ pub mod model_service_client {
         }
         /// Creates a tuned model.
         /// Intermediate tuning progress (if any) is accessed through the
-        /// [google.longrunning.Operations] service.
+        /// \[google.longrunning.Operations\] service.
         ///
         /// Status and results can be accessed through the Operations service.
         /// Example:
-        ///   GET /v1/tunedModels/az2mb0bpw6i/operations/000-111-222
+        /// GET /v1/tunedModels/az2mb0bpw6i/operations/000-111-222
         pub async fn create_tuned_model(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateTunedModelRequest>,
@@ -1314,7 +1314,7 @@ pub mod model_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1beta3.ModelService/CreateTunedModel",
             );
@@ -1341,7 +1341,7 @@ pub mod model_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1beta3.ModelService/UpdateTunedModel",
             );
@@ -1368,7 +1368,7 @@ pub mod model_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1beta3.ModelService/DeleteTunedModel",
             );
@@ -1394,10 +1394,11 @@ pub mod model_service_client {
 ///
 /// There are three concentric roles. Each role is a superset of the previous
 /// role's permitted operations:
-///   - reader can use the resource (e.g. tuned model) for inference
-///   - writer has reader's permissions and additionally can edit and share
-///   - owner has writer's permissions and additionally can delete
-#[derive(Clone, PartialEq, ::prost::Message)]
+///
+/// * reader can use the resource (e.g. tuned model) for inference
+/// * writer has reader's permissions and additionally can edit and share
+/// * owner has writer's permissions and additionally can delete
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Permission {
     /// Output only. The permission name. A unique name will be generated on
     /// create. Example: tunedModels/{tuned_model}permssions/{permission} Output
@@ -1515,7 +1516,7 @@ pub mod permission {
     }
 }
 /// Request to create a `Permission`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreatePermissionRequest {
     /// Required. The parent resource of the `Permission`.
     /// Format: tunedModels/{tuned_model}
@@ -1526,7 +1527,7 @@ pub struct CreatePermissionRequest {
     pub permission: ::core::option::Option<Permission>,
 }
 /// Request for getting information about a specific `Permission`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPermissionRequest {
     /// Required. The resource name of the permission.
     ///
@@ -1535,7 +1536,7 @@ pub struct GetPermissionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for listing permissions.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPermissionsRequest {
     /// Required. The parent resource of the permissions.
     /// Format: tunedModels/{tuned_model}
@@ -1573,7 +1574,7 @@ pub struct ListPermissionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to update the `Permission`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdatePermissionRequest {
     /// Required. The permission to update.
     ///
@@ -1581,12 +1582,13 @@ pub struct UpdatePermissionRequest {
     #[prost(message, optional, tag = "1")]
     pub permission: ::core::option::Option<Permission>,
     /// Required. The list of fields to update. Accepted ones:
-    ///   - role (`Permission.role` field)
+    ///
+    /// * role (`Permission.role` field)
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request to delete the `Permission`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeletePermissionRequest {
     /// Required. The resource name of the permission.
     /// Format: `tunedModels/{tuned_model}/permissions/{permission}`
@@ -1594,7 +1596,7 @@ pub struct DeletePermissionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to transfer the ownership of the tuned model.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TransferOwnershipRequest {
     /// Required. The resource name of the tuned model to transfer ownership .
     ///
@@ -1607,7 +1609,7 @@ pub struct TransferOwnershipRequest {
     pub email_address: ::prost::alloc::string::String,
 }
 /// Response from `TransferOwnership`.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TransferOwnershipResponse {}
 /// Generated client implementations.
 pub mod permission_service_client {
@@ -1714,7 +1716,7 @@ pub mod permission_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1beta3.PermissionService/CreatePermission",
             );
@@ -1741,7 +1743,7 @@ pub mod permission_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1beta3.PermissionService/GetPermission",
             );
@@ -1771,7 +1773,7 @@ pub mod permission_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1beta3.PermissionService/ListPermissions",
             );
@@ -1798,7 +1800,7 @@ pub mod permission_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1beta3.PermissionService/UpdatePermission",
             );
@@ -1825,7 +1827,7 @@ pub mod permission_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1beta3.PermissionService/DeletePermission",
             );
@@ -1857,7 +1859,7 @@ pub mod permission_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1beta3.PermissionService/TransferOwnership",
             );
@@ -1879,8 +1881,8 @@ pub struct GenerateTextRequest {
     /// Required. The name of the `Model` or `TunedModel` to use for generating the
     /// completion.
     /// Examples:
-    ///   models/text-bison-001
-    ///   tunedModels/sentence-translator-u3b7m
+    /// models/text-bison-001
+    /// tunedModels/sentence-translator-u3b7m
     #[prost(string, tag = "1")]
     pub model: ::prost::alloc::string::String,
     /// Required. The free-form input text given to the model as a prompt.
@@ -1980,7 +1982,7 @@ pub struct GenerateTextResponse {
 /// Text given to the model as a prompt.
 ///
 /// The Model will use this TextPrompt to Generate a text completion.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TextPrompt {
     /// Required. The prompt text.
     #[prost(string, tag = "1")]
@@ -2006,7 +2008,7 @@ pub struct TextCompletion {
     pub citation_metadata: ::core::option::Option<CitationMetadata>,
 }
 /// Request to get a text embedding from the model.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EmbedTextRequest {
     /// Required. The model name to use with the format model=models/{model}.
     #[prost(string, tag = "1")]
@@ -2024,11 +2026,11 @@ pub struct EmbedTextResponse {
     pub embedding: ::core::option::Option<Embedding>,
 }
 /// Batch request to get a text embedding from the model.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BatchEmbedTextRequest {
     /// Required. The name of the `Model` to use for generating the embedding.
     /// Examples:
-    ///   models/embedding-gecko-001
+    /// models/embedding-gecko-001
     #[prost(string, tag = "1")]
     pub model: ::prost::alloc::string::String,
     /// Required. The free-form input texts that the model will turn into an
@@ -2055,7 +2057,7 @@ pub struct Embedding {
 ///
 /// Models may tokenize text differently, so each model may return a different
 /// `token_count`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CountTextTokensRequest {
     /// Required. The model's resource name. This serves as an ID for the Model to
     /// use.
@@ -2072,7 +2074,7 @@ pub struct CountTextTokensRequest {
 /// A response from `CountTextTokens`.
 ///
 /// It returns the model's `token_count` for the `prompt`.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CountTextTokensResponse {
     /// The number of tokens that the `model` tokenizes the `prompt` into.
     ///
@@ -2191,7 +2193,7 @@ pub mod text_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1beta3.TextService/GenerateText",
             );
@@ -2221,7 +2223,7 @@ pub mod text_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1beta3.TextService/EmbedText",
             );
@@ -2252,7 +2254,7 @@ pub mod text_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1beta3.TextService/BatchEmbedText",
             );
@@ -2282,7 +2284,7 @@ pub mod text_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ai.generativelanguage.v1beta3.TextService/CountTextTokens",
             );

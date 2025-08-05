@@ -198,7 +198,7 @@ pub mod registration {
     }
 }
 /// Defines renewal, billing, and transfer settings for a `Registration`.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ManagementSettings {
     /// Output only. The renewal method for this `Registration`.
     #[prost(enumeration = "management_settings::RenewalMethod", tag = "3")]
@@ -313,7 +313,7 @@ pub mod dns_settings {
     /// Defines a Delegation Signer (DS) record, which is needed to enable DNSSEC
     /// for a domain. It contains a digest (hash) of a DNSKEY record that must be
     /// present in the domain's DNS zone.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DsRecord {
         /// The key tag of the record. Must be set in range 0 -- 65535.
         #[prost(int32, tag = "1")]
@@ -493,7 +493,7 @@ pub mod dns_settings {
     /// For example, when `ns.example.com` is a name server for `example.com`, the
     /// host `ns.example.com` must have a glue record to break the circular DNS
     /// reference.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct GlueRecord {
         /// Required. Domain name of the host in Punycode format.
         #[prost(string, tag = "1")]
@@ -573,7 +573,7 @@ pub mod dns_settings {
 /// [ICANN](<https://icann.org/>) requires all domain names to have associated
 /// contact information. The `registrant_contact` is considered the
 /// domain's legal owner, and often the other contacts are identical.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ContactSettings {
     /// Required. Privacy setting for the contacts associated with the `Registration`.
     #[prost(enumeration = "ContactPrivacy", tag = "1")]
@@ -598,7 +598,7 @@ pub struct ContactSettings {
 /// Nested message and enum types in `ContactSettings`.
 pub mod contact_settings {
     /// Details required for a contact associated with a `Registration`.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Contact {
         /// Required. Postal address of the contact.
         #[prost(message, optional, tag = "1")]
@@ -619,7 +619,7 @@ pub mod contact_settings {
     }
 }
 /// Request for the `SearchDomains` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchDomainsRequest {
     /// Required. String used to search for available domain names.
     #[prost(string, tag = "1")]
@@ -636,7 +636,7 @@ pub struct SearchDomainsResponse {
     pub register_parameters: ::prost::alloc::vec::Vec<RegisterParameters>,
 }
 /// Request for the `RetrieveRegisterParameters` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RetrieveRegisterParametersRequest {
     /// Required. The domain name. Unicode domain names must be expressed in Punycode format.
     #[prost(string, tag = "1")]
@@ -646,7 +646,7 @@ pub struct RetrieveRegisterParametersRequest {
     pub location: ::prost::alloc::string::String,
 }
 /// Response for the `RetrieveRegisterParameters` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RetrieveRegisterParametersResponse {
     /// Parameters to use when calling the `RegisterDomain` method.
     #[prost(message, optional, tag = "1")]
@@ -683,7 +683,7 @@ pub struct RegisterDomainRequest {
     pub validate_only: bool,
 }
 /// Request for the `RetrieveTransferParameters` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RetrieveTransferParametersRequest {
     /// Required. The domain name. Unicode domain names must be expressed in Punycode format.
     #[prost(string, tag = "1")]
@@ -693,7 +693,7 @@ pub struct RetrieveTransferParametersRequest {
     pub location: ::prost::alloc::string::String,
 }
 /// Response for the `RetrieveTransferParameters` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RetrieveTransferParametersResponse {
     /// Parameters to use when calling the `TransferDomain` method.
     #[prost(message, optional, tag = "1")]
@@ -734,7 +734,7 @@ pub struct TransferDomainRequest {
     pub validate_only: bool,
 }
 /// Request for the `ListRegistrations` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegistrationsRequest {
     /// Required. The project and location from which to list `Registration`s, specified in
     /// the format `projects/*/locations/*`.
@@ -752,7 +752,7 @@ pub struct ListRegistrationsRequest {
     /// The expression must specify the field name, a comparison operator, and the
     /// value that you want to use for filtering. The value must be a string, a
     /// number, a boolean, or an enum value. The comparison operator should be one
-    /// of =, !=, >, <, >=, <=, or : for prefix or wildcard matches.
+    /// of =, !=, >, \<, >=, \<=, or : for prefix or wildcard matches.
     ///
     /// For example, to filter to a specific domain name, use an expression like
     /// `domainName="example.com"`. You can also check for the existence of a
@@ -778,7 +778,7 @@ pub struct ListRegistrationsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for the `GetRegistration` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegistrationRequest {
     /// Required. The name of the `Registration` to get, in the format
     /// `projects/*/locations/*/registrations/*`.
@@ -798,7 +798,7 @@ pub struct UpdateRegistrationRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for the `ConfigureManagementSettings` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ConfigureManagementSettingsRequest {
     /// Required. The name of the `Registration` whose management settings are being updated,
     /// in the format `projects/*/locations/*/registrations/*`.
@@ -839,7 +839,7 @@ pub struct ConfigureDnsSettingsRequest {
     pub validate_only: bool,
 }
 /// Request for the `ConfigureContactSettings` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ConfigureContactSettingsRequest {
     /// Required. The name of the `Registration` whose contact settings are being updated,
     /// in the format `projects/*/locations/*/registrations/*`.
@@ -862,7 +862,7 @@ pub struct ConfigureContactSettingsRequest {
     pub validate_only: bool,
 }
 /// Request for the `ExportRegistration` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportRegistrationRequest {
     /// Required. The name of the `Registration` to export,
     /// in the format `projects/*/locations/*/registrations/*`.
@@ -870,7 +870,7 @@ pub struct ExportRegistrationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `DeleteRegistration` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegistrationRequest {
     /// Required. The name of the `Registration` to delete,
     /// in the format `projects/*/locations/*/registrations/*`.
@@ -878,7 +878,7 @@ pub struct DeleteRegistrationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `RetrieveAuthorizationCode` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RetrieveAuthorizationCodeRequest {
     /// Required. The name of the `Registration` whose authorization code is being retrieved,
     /// in the format `projects/*/locations/*/registrations/*`.
@@ -886,7 +886,7 @@ pub struct RetrieveAuthorizationCodeRequest {
     pub registration: ::prost::alloc::string::String,
 }
 /// Request for the `ResetAuthorizationCode` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResetAuthorizationCodeRequest {
     /// Required. The name of the `Registration` whose authorization code is being reset,
     /// in the format `projects/*/locations/*/registrations/*`.
@@ -894,7 +894,7 @@ pub struct ResetAuthorizationCodeRequest {
     pub registration: ::prost::alloc::string::String,
 }
 /// Parameters required to register a new domain.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegisterParameters {
     /// The domain name. Unicode domain names are expressed in Punycode format.
     #[prost(string, tag = "1")]
@@ -972,7 +972,7 @@ pub mod register_parameters {
     }
 }
 /// Parameters required to transfer a domain from another registrar.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TransferParameters {
     /// The domain name. Unicode domain names are expressed in Punycode format.
     #[prost(string, tag = "1")]
@@ -996,7 +996,7 @@ pub struct TransferParameters {
     pub yearly_price: ::core::option::Option<super::super::super::r#type::Money>,
 }
 /// Defines an authorization code.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AuthorizationCode {
     /// The Authorization Code in ASCII. It can be used to transfer the domain
     /// to or from another registrar.
@@ -1004,7 +1004,7 @@ pub struct AuthorizationCode {
     pub code: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation. Output only.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -1288,7 +1288,7 @@ pub mod domains_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.domains.v1.Domains/SearchDomains",
             );
@@ -1316,7 +1316,7 @@ pub mod domains_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.domains.v1.Domains/RetrieveRegisterParameters",
             );
@@ -1358,7 +1358,7 @@ pub mod domains_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.domains.v1.Domains/RegisterDomain",
             );
@@ -1372,7 +1372,6 @@ pub mod domains_client {
         /// Gets parameters needed to transfer a domain name from another registrar to
         /// Cloud Domains. For domains managed by Google Domains, transferring to Cloud
         /// Domains is not supported.
-        ///
         ///
         /// Use the returned values to call `TransferDomain`.
         pub async fn retrieve_transfer_parameters(
@@ -1390,7 +1389,7 @@ pub mod domains_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.domains.v1.Domains/RetrieveTransferParameters",
             );
@@ -1407,7 +1406,6 @@ pub mod domains_client {
         /// Transfers a domain name from another registrar to Cloud Domains.  For
         /// domains managed by Google Domains, transferring to Cloud Domains is not
         /// supported.
-        ///
         ///
         /// Before calling this method, go to the domain's current registrar to unlock
         /// the domain for transfer and retrieve the domain's transfer authorization
@@ -1440,7 +1438,7 @@ pub mod domains_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.domains.v1.Domains/TransferDomain",
             );
@@ -1467,7 +1465,7 @@ pub mod domains_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.domains.v1.Domains/ListRegistrations",
             );
@@ -1494,7 +1492,7 @@ pub mod domains_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.domains.v1.Domains/GetRegistration",
             );
@@ -1526,7 +1524,7 @@ pub mod domains_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.domains.v1.Domains/UpdateRegistration",
             );
@@ -1556,7 +1554,7 @@ pub mod domains_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.domains.v1.Domains/ConfigureManagementSettings",
             );
@@ -1586,7 +1584,7 @@ pub mod domains_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.domains.v1.Domains/ConfigureDnsSettings",
             );
@@ -1617,7 +1615,7 @@ pub mod domains_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.domains.v1.Domains/ConfigureContactSettings",
             );
@@ -1655,7 +1653,7 @@ pub mod domains_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.domains.v1.Domains/ExportRegistration",
             );
@@ -1703,7 +1701,7 @@ pub mod domains_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.domains.v1.Domains/DeleteRegistration",
             );
@@ -1737,7 +1735,7 @@ pub mod domains_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.domains.v1.Domains/RetrieveAuthorizationCode",
             );
@@ -1770,7 +1768,7 @@ pub mod domains_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.domains.v1.Domains/ResetAuthorizationCode",
             );

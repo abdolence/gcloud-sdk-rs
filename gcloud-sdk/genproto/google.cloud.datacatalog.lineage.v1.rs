@@ -145,7 +145,7 @@ pub struct LineageEvent {
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// A lineage between source and target entities.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EventLink {
     /// Required. Reference to the source entity
     #[prost(message, optional, tag = "1")]
@@ -155,7 +155,7 @@ pub struct EventLink {
     pub target: ::core::option::Option<EntityReference>,
 }
 /// The soft reference to everything you can attach a lineage event to.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EntityReference {
     /// Required. [Fully Qualified Name
     /// (FQN)](<https://cloud.google.com/data-catalog/docs/fully-qualified-names>)
@@ -164,7 +164,7 @@ pub struct EntityReference {
     pub fully_qualified_name: ::prost::alloc::string::String,
 }
 /// Metadata describing the operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The current operation state.
     #[prost(enumeration = "operation_metadata::State", tag = "1")]
@@ -286,7 +286,7 @@ pub mod operation_metadata {
     }
 }
 /// Request message for
-/// [ProcessOpenLineageRunEvent][google.cloud.datacatalog.lineage.v1.ProcessOpenLineageRunEvent].
+/// \[ProcessOpenLineageRunEvent\]\[google.cloud.datacatalog.lineage.v1.ProcessOpenLineageRunEvent\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProcessOpenLineageRunEventRequest {
     /// Required. The name of the project and its location that should own the
@@ -304,8 +304,8 @@ pub struct ProcessOpenLineageRunEventRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [ProcessOpenLineageRunEvent][google.cloud.datacatalog.lineage.v1.ProcessOpenLineageRunEvent].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[ProcessOpenLineageRunEvent\]\[google.cloud.datacatalog.lineage.v1.ProcessOpenLineageRunEvent\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProcessOpenLineageRunEventResponse {
     /// Created process name.
     /// Format: `projects/{project}/locations/{location}/processes/{process}`.
@@ -323,7 +323,7 @@ pub struct ProcessOpenLineageRunEventResponse {
     pub lineage_events: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for
-/// [CreateProcess][google.cloud.datacatalog.lineage.v1.CreateProcess].
+/// \[CreateProcess\]\[google.cloud.datacatalog.lineage.v1.CreateProcess\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateProcessRequest {
     /// Required. The name of the project and its location that should own the
@@ -340,7 +340,7 @@ pub struct CreateProcessRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [UpdateProcess][google.cloud.datacatalog.lineage.v1.UpdateProcess].
+/// \[UpdateProcess\]\[google.cloud.datacatalog.lineage.v1.UpdateProcess\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateProcessRequest {
     /// Required. The lineage process to update.
@@ -357,16 +357,16 @@ pub struct UpdateProcessRequest {
     pub allow_missing: bool,
 }
 /// Request message for
-/// [GetProcess][google.cloud.datacatalog.lineage.v1.GetProcess].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[GetProcess\]\[google.cloud.datacatalog.lineage.v1.GetProcess\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetProcessRequest {
     /// Required. The name of the process to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [ListProcesses][google.cloud.datacatalog.lineage.v1.ListProcesses].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[ListProcesses\]\[google.cloud.datacatalog.lineage.v1.ListProcesses\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListProcessesRequest {
     /// Required. The name of the project and its location that owns this
     /// collection of processes.
@@ -387,7 +387,7 @@ pub struct ListProcessesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [ListProcesses][google.cloud.datacatalog.lineage.v1.ListProcesses].
+/// \[ListProcesses\]\[google.cloud.datacatalog.lineage.v1.ListProcesses\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProcessesResponse {
     /// The processes from the specified project and location.
@@ -399,8 +399,8 @@ pub struct ListProcessesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [DeleteProcess][google.cloud.datacatalog.lineage.v1.DeleteProcess].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[DeleteProcess\]\[google.cloud.datacatalog.lineage.v1.DeleteProcess\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteProcessRequest {
     /// Required. The name of the process to delete.
     #[prost(string, tag = "1")]
@@ -411,7 +411,7 @@ pub struct DeleteProcessRequest {
     pub allow_missing: bool,
 }
 /// Request message for
-/// [CreateRun][google.cloud.datacatalog.lineage.v1.CreateRun].
+/// \[CreateRun\]\[google.cloud.datacatalog.lineage.v1.CreateRun\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRunRequest {
     /// Required. The name of the process that should own the run.
@@ -427,7 +427,7 @@ pub struct CreateRunRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [UpdateRun][google.cloud.datacatalog.lineage.v1.UpdateRun].
+/// \[UpdateRun\]\[google.cloud.datacatalog.lineage.v1.UpdateRun\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRunRequest {
     /// Required. The lineage run to update.
@@ -447,16 +447,16 @@ pub struct UpdateRunRequest {
     pub allow_missing: bool,
 }
 /// Request message for
-/// [GetRun][google.cloud.datacatalog.lineage.v1.GetRun].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[GetRun\]\[google.cloud.datacatalog.lineage.v1.GetRun\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRunRequest {
     /// Required. The name of the run to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [ListRuns][google.cloud.datacatalog.lineage.v1.ListRuns].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[ListRuns\]\[google.cloud.datacatalog.lineage.v1.ListRuns\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRunsRequest {
     /// Required. The name of process that owns this collection of runs.
     #[prost(string, tag = "1")]
@@ -476,7 +476,7 @@ pub struct ListRunsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [ListRuns][google.cloud.datacatalog.lineage.v1.ListRuns].
+/// \[ListRuns\]\[google.cloud.datacatalog.lineage.v1.ListRuns\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRunsResponse {
     /// The runs from the specified project and location.
@@ -488,8 +488,8 @@ pub struct ListRunsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [DeleteRun][google.cloud.datacatalog.lineage.v1.DeleteRun].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[DeleteRun\]\[google.cloud.datacatalog.lineage.v1.DeleteRun\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRunRequest {
     /// Required. The name of the run to delete.
     #[prost(string, tag = "1")]
@@ -500,7 +500,7 @@ pub struct DeleteRunRequest {
     pub allow_missing: bool,
 }
 /// Request message for
-/// [CreateLineageEvent][google.cloud.datacatalog.lineage.v1.CreateLineageEvent].
+/// \[CreateLineageEvent\]\[google.cloud.datacatalog.lineage.v1.CreateLineageEvent\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateLineageEventRequest {
     /// Required. The name of the run that should own the lineage event.
@@ -516,16 +516,16 @@ pub struct CreateLineageEventRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [GetLineageEvent][google.cloud.datacatalog.lineage.v1.GetLineageEvent].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[GetLineageEvent\]\[google.cloud.datacatalog.lineage.v1.GetLineageEvent\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetLineageEventRequest {
     /// Required. The name of the lineage event to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [ListLineageEvents][google.cloud.datacatalog.lineage.v1.ListLineageEvents].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[ListLineageEvents\]\[google.cloud.datacatalog.lineage.v1.ListLineageEvents\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListLineageEventsRequest {
     /// Required. The name of the run that owns the collection of lineage events to
     /// get.
@@ -547,7 +547,7 @@ pub struct ListLineageEventsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [ListLineageEvents][google.cloud.datacatalog.lineage.v1.ListLineageEvents].
+/// \[ListLineageEvents\]\[google.cloud.datacatalog.lineage.v1.ListLineageEvents\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLineageEventsResponse {
     /// Lineage events from the specified project and location.
@@ -559,8 +559,8 @@ pub struct ListLineageEventsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [DeleteLineageEvent][google.cloud.datacatalog.lineage.v1.DeleteLineageEvent].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[DeleteLineageEvent\]\[google.cloud.datacatalog.lineage.v1.DeleteLineageEvent\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteLineageEventRequest {
     /// Required. The name of the lineage event to delete.
     #[prost(string, tag = "1")]
@@ -571,8 +571,8 @@ pub struct DeleteLineageEventRequest {
     pub allow_missing: bool,
 }
 /// Request message for
-/// [SearchLinks][google.cloud.datacatalog.lineage.v1.Lineage.SearchLinks].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[SearchLinks\]\[google.cloud.datacatalog.lineage.v1.Lineage.SearchLinks\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchLinksRequest {
     /// Required. The project and location you want search in.
     #[prost(string, tag = "1")]
@@ -599,7 +599,7 @@ pub struct SearchLinksRequest {
 /// Nested message and enum types in `SearchLinksRequest`.
 pub mod search_links_request {
     /// The asset for which you want to retrieve links.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Criteria {
         /// Optional. Send asset information in the **source** field to retrieve all
         /// links that lead from the specified asset to downstream assets.
@@ -612,7 +612,7 @@ pub mod search_links_request {
     }
 }
 /// Response message for
-/// [SearchLinks][google.cloud.datacatalog.lineage.v1.Lineage.SearchLinks].
+/// \[SearchLinks\]\[google.cloud.datacatalog.lineage.v1.Lineage.SearchLinks\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchLinksResponse {
     /// The list of links for a given asset. Can be empty if the asset has no
@@ -629,7 +629,7 @@ pub struct SearchLinksResponse {
 ///
 /// Links are created when LineageEvents record data transformation between
 /// related assets.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Link {
     /// Output only. Immutable. The name of the link. Format:
     /// `projects/{project}/locations/{location}/links/{link}`.
@@ -649,8 +649,8 @@ pub struct Link {
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request message for
-/// [BatchSearchLinkProcesses][google.cloud.datacatalog.lineage.v1.Lineage.BatchSearchLinkProcesses].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[BatchSearchLinkProcesses\]\[google.cloud.datacatalog.lineage.v1.Lineage.BatchSearchLinkProcesses\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BatchSearchLinkProcessesRequest {
     /// Required. The project and location where you want to search.
     #[prost(string, tag = "1")]
@@ -678,7 +678,7 @@ pub struct BatchSearchLinkProcessesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [BatchSearchLinkProcesses][google.cloud.datacatalog.lineage.v1.Lineage.BatchSearchLinkProcesses].
+/// \[BatchSearchLinkProcesses\]\[google.cloud.datacatalog.lineage.v1.Lineage.BatchSearchLinkProcesses\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchSearchLinkProcessesResponse {
     /// An array of processes associated with the specified links.
@@ -706,7 +706,7 @@ pub struct ProcessLinks {
     pub links: ::prost::alloc::vec::Vec<ProcessLinkInfo>,
 }
 /// Link details.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProcessLinkInfo {
     /// The name of the link in the format of
     /// `projects/{project}/locations/{location}/links/{link}`.
@@ -720,7 +720,7 @@ pub struct ProcessLinkInfo {
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Origin of a process.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Origin {
     /// Type of the source.
     ///
@@ -734,10 +734,9 @@ pub struct Origin {
     /// location parts of the resource name must match the project and location of
     /// the lineage resource being created. Examples:
     ///
-    /// - `{source_type: COMPOSER, name:
-    ///    "projects/foo/locations/us/environments/bar"}`
-    /// - `{source_type: BIGQUERY, name: "projects/foo/locations/eu"}`
-    /// - `{source_type: CUSTOM,   name: "myCustomIntegration"}`
+    /// * `{source_type: COMPOSER, name: "projects/foo/locations/us/environments/bar"}`
+    /// * `{source_type: BIGQUERY, name: "projects/foo/locations/eu"}`
+    /// * `{source_type: CUSTOM,   name: "myCustomIntegration"}`
     #[prost(string, tag = "2")]
     pub name: ::prost::alloc::string::String,
 }
@@ -815,7 +814,7 @@ pub mod lineage_client {
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Lineage is used to track data flows between assets over time. You can
-    /// create [LineageEvents][google.cloud.datacatalog.lineage.v1.LineageEvent]
+    /// create \[LineageEvents\]\[google.cloud.datacatalog.lineage.v1.LineageEvent\]
     /// to record lineage between multiple sources and a single target, for
     /// example, when table data is based on data from multiple tables.
     #[derive(Debug, Clone)]
@@ -917,7 +916,7 @@ pub mod lineage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/ProcessOpenLineageRunEvent",
             );
@@ -944,7 +943,7 @@ pub mod lineage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/CreateProcess",
             );
@@ -971,7 +970,7 @@ pub mod lineage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/UpdateProcess",
             );
@@ -998,7 +997,7 @@ pub mod lineage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/GetProcess",
             );
@@ -1029,7 +1028,7 @@ pub mod lineage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/ListProcesses",
             );
@@ -1059,7 +1058,7 @@ pub mod lineage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/DeleteProcess",
             );
@@ -1086,7 +1085,7 @@ pub mod lineage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/CreateRun",
             );
@@ -1113,7 +1112,7 @@ pub mod lineage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/UpdateRun",
             );
@@ -1140,7 +1139,7 @@ pub mod lineage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/GetRun",
             );
@@ -1171,7 +1170,7 @@ pub mod lineage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/ListRuns",
             );
@@ -1201,7 +1200,7 @@ pub mod lineage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/DeleteRun",
             );
@@ -1228,7 +1227,7 @@ pub mod lineage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/CreateLineageEvent",
             );
@@ -1255,7 +1254,7 @@ pub mod lineage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/GetLineageEvent",
             );
@@ -1286,7 +1285,7 @@ pub mod lineage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/ListLineageEvents",
             );
@@ -1313,7 +1312,7 @@ pub mod lineage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/DeleteLineageEvent",
             );
@@ -1351,7 +1350,7 @@ pub mod lineage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/SearchLinks",
             );
@@ -1373,7 +1372,7 @@ pub mod lineage_client {
         /// If you have specific link names, you can use this method to
         /// verify which LineageProcesses contribute to creating those links.
         /// See the
-        /// [SearchLinks][google.cloud.datacatalog.lineage.v1.Lineage.SearchLinks]
+        /// \[SearchLinks\]\[google.cloud.datacatalog.lineage.v1.Lineage.SearchLinks\]
         /// method for more information on how to retrieve link name.
         ///
         /// You can retrieve the LineageProcess information in every project where you
@@ -1394,7 +1393,7 @@ pub mod lineage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.lineage.v1.Lineage/BatchSearchLinkProcesses",
             );

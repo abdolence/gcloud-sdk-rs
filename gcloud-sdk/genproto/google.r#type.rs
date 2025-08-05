@@ -22,11 +22,11 @@ pub struct LatLng {
 /// * A month and day value, with a zero year, such as an anniversary
 /// * A year on its own, with zero month and day values
 /// * A year and month value, with a zero day, such as a credit card expiration
-/// date
+///   date
 ///
-/// Related types are [google.type.TimeOfDay][google.type.TimeOfDay] and
+/// Related types are \[google.type.TimeOfDay\]\[google.type.TimeOfDay\] and
 /// `google.protobuf.Timestamp`.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Date {
     /// Year of the date. Must be from 1 to 9999, or 0 to specify a date without
     /// a year.
@@ -46,12 +46,12 @@ pub struct Date {
 ///
 /// This type can represent a civil time in one of a few possible ways:
 ///
-///   * When utc_offset is set and time_zone is unset: a civil time on a calendar
-///     day with a particular offset from UTC.
-///   * When time_zone is set and utc_offset is unset: a civil time on a calendar
-///     day in a particular time zone.
-///   * When neither time_zone nor utc_offset is set: a civil time on a calendar
-///     day in local time.
+/// * When utc_offset is set and time_zone is unset: a civil time on a calendar
+///   day with a particular offset from UTC.
+/// * When time_zone is set and utc_offset is unset: a civil time on a calendar
+///   day in a particular time zone.
+/// * When neither time_zone nor utc_offset is set: a civil time on a calendar
+///   day in local time.
 ///
 /// The date is relative to the Proleptic Gregorian Calendar.
 ///
@@ -66,7 +66,7 @@ pub struct Date {
 ///
 /// This type is more flexible than some applications may want. Make sure to
 /// document and validate your application's limitations.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DateTime {
     /// Optional. Year of date. Must be from 1 to 9999, or 0 if specifying a
     /// datetime without a year.
@@ -110,7 +110,7 @@ pub mod date_time {
     /// in the future (for example, a country modifies their DST start/end dates,
     /// and future DateTimes in the affected range had already been stored).
     /// If omitted, the DateTime is considered to be in local time.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum TimeOffset {
         /// UTC offset. Must be whole seconds, between -18 hours and +18 hours.
         /// For example, a UTC offset of -4:00 would be represented as
@@ -124,7 +124,7 @@ pub mod date_time {
 }
 /// Represents a time zone from the
 /// [IANA Time Zone Database](<https://www.iana.org/time-zones>).
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TimeZone {
     /// IANA Time Zone Database time zone, e.g. "America/New_York".
     #[prost(string, tag = "1")]
@@ -134,7 +134,7 @@ pub struct TimeZone {
     pub version: ::prost::alloc::string::String,
 }
 /// Represents an amount of money with its currency type.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Money {
     /// The three-letter currency code defined in ISO 4217.
     #[prost(string, tag = "1")]
@@ -207,9 +207,9 @@ impl DayOfWeek {
 }
 /// Represents a time of day. The date and time zone are either not significant
 /// or are specified elsewhere. An API may choose to allow leap seconds. Related
-/// types are [google.type.Date][google.type.Date] and
+/// types are \[google.type.Date\]\[google.type.Date\] and
 /// `google.protobuf.Timestamp`.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TimeOfDay {
     /// Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
     /// to allow the value "24:00:00" for scenarios like business closing time.
@@ -246,110 +246,116 @@ pub struct TimeOfDay {
 ///
 /// Example (Java):
 ///
-///       import com.google.type.Color;
+/// ```text
+///   import com.google.type.Color;
 ///
-///       // ...
-///       public static java.awt.Color fromProto(Color protocolor) {
-///         float alpha = protocolor.hasAlpha()
-///             ? protocolor.getAlpha().getValue()
-///             : 1.0;
+///   // ...
+///   public static java.awt.Color fromProto(Color protocolor) {
+///     float alpha = protocolor.hasAlpha()
+///         ? protocolor.getAlpha().getValue()
+///         : 1.0;
 ///
-///         return new java.awt.Color(
-///             protocolor.getRed(),
-///             protocolor.getGreen(),
-///             protocolor.getBlue(),
-///             alpha);
-///       }
+///     return new java.awt.Color(
+///         protocolor.getRed(),
+///         protocolor.getGreen(),
+///         protocolor.getBlue(),
+///         alpha);
+///   }
 ///
-///       public static Color toProto(java.awt.Color color) {
-///         float red = (float) color.getRed();
-///         float green = (float) color.getGreen();
-///         float blue = (float) color.getBlue();
-///         float denominator = 255.0;
-///         Color.Builder resultBuilder =
-///             Color
-///                 .newBuilder()
-///                 .setRed(red / denominator)
-///                 .setGreen(green / denominator)
-///                 .setBlue(blue / denominator);
-///         int alpha = color.getAlpha();
-///         if (alpha != 255) {
-///           result.setAlpha(
-///               FloatValue
-///                   .newBuilder()
-///                   .setValue(((float) alpha) / denominator)
-///                   .build());
-///         }
-///         return resultBuilder.build();
-///       }
-///       // ...
+///   public static Color toProto(java.awt.Color color) {
+///     float red = (float) color.getRed();
+///     float green = (float) color.getGreen();
+///     float blue = (float) color.getBlue();
+///     float denominator = 255.0;
+///     Color.Builder resultBuilder =
+///         Color
+///             .newBuilder()
+///             .setRed(red / denominator)
+///             .setGreen(green / denominator)
+///             .setBlue(blue / denominator);
+///     int alpha = color.getAlpha();
+///     if (alpha != 255) {
+///       result.setAlpha(
+///           FloatValue
+///               .newBuilder()
+///               .setValue(((float) alpha) / denominator)
+///               .build());
+///     }
+///     return resultBuilder.build();
+///   }
+///   // ...
+/// ```
 ///
 /// Example (iOS / Obj-C):
 ///
-///       // ...
-///       static UIColor* fromProto(Color* protocolor) {
-///          float red = \[protocolor red\];
-///          float green = \[protocolor green\];
-///          float blue = \[protocolor blue\];
-///          FloatValue* alpha_wrapper = \[protocolor alpha\];
-///          float alpha = 1.0;
-///          if (alpha_wrapper != nil) {
-///            alpha = \[alpha_wrapper value\];
-///          }
-///          return \[UIColor colorWithRed:red green:green blue:blue alpha:alpha\];
-///       }
-///
-///       static Color* toProto(UIColor* color) {
-///           CGFloat red, green, blue, alpha;
-///           if (!\[color getRed:&red green:&green blue:&blue alpha:&alpha\]) {
-///             return nil;
-///           }
-///           Color* result = \[[Color alloc\] init];
-///           \[result setRed:red\];
-///           \[result setGreen:green\];
-///           \[result setBlue:blue\];
-///           if (alpha <= 0.9999) {
-///             \[result setAlpha:floatWrapperWithValue(alpha)\];
-///           }
-///           \[result autorelease\];
-///           return result;
+/// ```text
+///   // ...
+///   static UIColor* fromProto(Color* protocolor) {
+///      float red = \[protocolor red\];
+///      float green = \[protocolor green\];
+///      float blue = \[protocolor blue\];
+///      FloatValue* alpha_wrapper = \[protocolor alpha\];
+///      float alpha = 1.0;
+///      if (alpha_wrapper != nil) {
+///        alpha = \[alpha_wrapper value\];
 ///      }
-///      // ...
+///      return \[UIColor colorWithRed:red green:green blue:blue alpha:alpha\];
+///   }
 ///
-///   Example (JavaScript):
+///   static Color* toProto(UIColor* color) {
+///       CGFloat red, green, blue, alpha;
+///       if (!\[color getRed:&red green:&green blue:&blue alpha:&alpha\]) {
+///         return nil;
+///       }
+///       Color* result = \[[Color alloc\] init];
+///       \[result setRed:red\];
+///       \[result setGreen:green\];
+///       \[result setBlue:blue\];
+///       if (alpha <= 0.9999) {
+///         \[result setAlpha:floatWrapperWithValue(alpha)\];
+///       }
+///       \[result autorelease\];
+///       return result;
+/// }
+/// // ...
+/// ```
 ///
-///      // ...
+/// Example (JavaScript):
 ///
-///      var protoToCssColor = function(rgb_color) {
-///         var redFrac = rgb_color.red || 0.0;
-///         var greenFrac = rgb_color.green || 0.0;
-///         var blueFrac = rgb_color.blue || 0.0;
-///         var red = Math.floor(redFrac * 255);
-///         var green = Math.floor(greenFrac * 255);
-///         var blue = Math.floor(blueFrac * 255);
+/// ```text
+/// // ...
 ///
-///         if (!('alpha' in rgb_color)) {
-///            return rgbToCssColor(red, green, blue);
-///         }
+/// var protoToCssColor = function(rgb_color) {
+///     var redFrac = rgb_color.red || 0.0;
+///     var greenFrac = rgb_color.green || 0.0;
+///     var blueFrac = rgb_color.blue || 0.0;
+///     var red = Math.floor(redFrac * 255);
+///     var green = Math.floor(greenFrac * 255);
+///     var blue = Math.floor(blueFrac * 255);
 ///
-///         var alphaFrac = rgb_color.alpha.value || 0.0;
-///         var rgbParams = \[red, green, blue\].join(',');
-///         return \['rgba(', rgbParams, ',', alphaFrac, ')'\].join('');
-///      };
+///     if (!('alpha' in rgb_color)) {
+///        return rgbToCssColor(red, green, blue);
+///     }
 ///
-///      var rgbToCssColor = function(red, green, blue) {
-///        var rgbNumber = new Number((red << 16) | (green << 8) | blue);
-///        var hexString = rgbNumber.toString(16);
-///        var missingZeros = 6 - hexString.length;
-///        var resultBuilder = \['#'\];
-///        for (var i = 0; i < missingZeros; i++) {
-///           resultBuilder.push('0');
-///        }
-///        resultBuilder.push(hexString);
-///        return resultBuilder.join('');
-///      };
+///     var alphaFrac = rgb_color.alpha.value || 0.0;
+///     var rgbParams = \[red, green, blue\].join(',');
+///     return \['rgba(', rgbParams, ',', alphaFrac, ')'\].join('');
+/// };
 ///
-///      // ...
+/// var rgbToCssColor = function(red, green, blue) {
+///    var rgbNumber = new Number((red << 16) | (green << 8) | blue);
+///    var hexString = rgbNumber.toString(16);
+///    var missingZeros = 6 - hexString.length;
+///    var resultBuilder = \['#'\];
+///    for (var i = 0; i < missingZeros; i++) {
+///       resultBuilder.push('0');
+///    }
+///    resultBuilder.push(hexString);
+///    return resultBuilder.join('');
+/// };
+///
+/// // ...
+/// ```
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Color {
     /// The amount of red in the color as a value in the interval \[0, 1\].
@@ -364,7 +370,7 @@ pub struct Color {
     /// The fraction of this color that should be applied to the pixel. That is,
     /// the final pixel color is defined by the equation:
     ///
-    ///    `pixel color = alpha * (this color) + (1.0 - alpha) * (background color)`
+    /// `pixel color = alpha * (this color) + (1.0 - alpha) * (background color)`
     ///
     /// This means that a value of 1.0 corresponds to a solid color, whereas
     /// a value of 0.0 corresponds to a completely transparent color. This
@@ -381,32 +387,40 @@ pub struct Color {
 ///
 /// Example (Comparison):
 ///
-///      title: "Summary size limit"
-///      description: "Determines if a summary is less than 100 chars"
-///      expression: "document.summary.size() < 100"
+/// ```text
+/// title: "Summary size limit"
+/// description: "Determines if a summary is less than 100 chars"
+/// expression: "document.summary.size() < 100"
+/// ```
 ///
 /// Example (Equality):
 ///
-///      title: "Requestor is owner"
-///      description: "Determines if requestor is the document owner"
-///      expression: "document.owner == request.auth.claims.email"
+/// ```text
+/// title: "Requestor is owner"
+/// description: "Determines if requestor is the document owner"
+/// expression: "document.owner == request.auth.claims.email"
+/// ```
 ///
 /// Example (Logic):
 ///
-///      title: "Public documents"
-///      description: "Determine whether the document should be publicly visible"
-///      expression: "document.type != 'private' && document.type != 'internal'"
+/// ```text
+/// title: "Public documents"
+/// description: "Determine whether the document should be publicly visible"
+/// expression: "document.type != 'private' && document.type != 'internal'"
+/// ```
 ///
 /// Example (Data Manipulation):
 ///
-///      title: "Notification string"
-///      description: "Create a notification string with a timestamp."
-///      expression: "'New message received at ' + string(document.create_time)"
+/// ```text
+/// title: "Notification string"
+/// description: "Create a notification string with a timestamp."
+/// expression: "'New message received at ' + string(document.create_time)"
+/// ```
 ///
 /// The exact variables and functions that may be referenced within an expression
 /// are determined by the service that evaluates it. See the service
 /// documentation for additional information.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Expr {
     /// Textual representation of an expression in Common Expression Language
     /// syntax.
@@ -432,7 +446,7 @@ pub struct Expr {
 /// The start must be less than or equal to the end.
 /// When the start equals the end, the interval is empty (matches no time).
 /// When both start and end are unspecified, the interval matches any time.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Interval {
     /// Optional. Inclusive start of the interval.
     ///
@@ -530,14 +544,15 @@ impl Month {
 /// existing data, depending on the type of process.
 ///
 /// Advice on address input / editing:
-///   - Use an i18n-ready address widget such as
-///     <https://github.com/google/libaddressinput>)
-/// - Users should not be presented with UI elements for input or editing of
-///    fields outside countries where that field is used.
+///
+/// * Use an i18n-ready address widget such as
+///   <https://github.com/google/libaddressinput>)
+/// * Users should not be presented with UI elements for input or editing of
+///   fields outside countries where that field is used.
 ///
 /// For more guidance on how to use this schema, please see:
 /// <https://support.google.com/business/answer/6397478>
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PostalAddress {
     /// The schema revision of the `PostalAddress`. This must be set to 0, which is
     /// the latest revision.
@@ -635,10 +650,9 @@ pub struct PostalAddress {
 /// into language-native decimal formats, such as Java's [BigDecimal][] or
 /// Python's [decimal.Decimal][].
 ///
-/// \[BigDecimal\]:
-/// <https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/math/BigDecimal.html>
+/// \[BigDecimal\]: <https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/math/BigDecimal.html>
 /// \[decimal.Decimal\]: <https://docs.python.org/3/library/decimal.html>
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Decimal {
     /// The decimal value, as a string.
     ///
@@ -657,14 +671,14 @@ pub struct Decimal {
     ///
     /// Services **should** normalize decimal values before storing them by:
     ///
-    ///    - Removing an explicitly-provided `+` sign (`+2.5` -> `2.5`).
-    ///    - Replacing a zero-length integer value with `0` (`.5` -> `0.5`).
-    ///    - Coercing the exponent character to lower-case (`2.5E8` -> `2.5e8`).
-    ///    - Removing an explicitly-provided zero exponent (`2.5e0` -> `2.5`).
+    /// * Removing an explicitly-provided `+` sign (`+2.5` -> `2.5`).
+    /// * Replacing a zero-length integer value with `0` (`.5` -> `0.5`).
+    /// * Coercing the exponent character to lower-case (`2.5E8` -> `2.5e8`).
+    /// * Removing an explicitly-provided zero exponent (`2.5e0` -> `2.5`).
     ///
     /// Services **may** perform additional normalization based on its own needs
     /// and the internal decimal implementation selected, such as shifting the
-    /// decimal point and exponent value together (example: `2.5e-1` <-> `0.25`).
+    /// decimal point and exponent value together (example: `2.5e-1` \<-> `0.25`).
     /// Additionally, services **may** preserve trailing zeroes in the fraction
     /// to indicate increased precision, but are not required to do so.
     ///
@@ -675,17 +689,19 @@ pub struct Decimal {
     ///
     /// The ENBF grammar is:
     ///
-    ///      DecimalString =
-    ///        \[Sign\] Significand \[Exponent\];
+    /// ```text
+    /// DecimalString =
+    ///    \[Sign\] Significand \[Exponent\];
     ///
-    ///      Sign = '+' | '-';
+    /// Sign = '+' | '-';
     ///
-    ///      Significand =
-    ///        Digits \['.'\] [Digits] | \[Digits\] '.' Digits;
+    /// Significand =
+    ///    Digits \['.'\] [Digits] | \[Digits\] '.' Digits;
     ///
-    ///      Exponent = ('e' | 'E') \[Sign\] Digits;
+    /// Exponent = ('e' | 'E') \[Sign\] Digits;
     ///
-    ///      Digits = { '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' };
+    /// Digits = { '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' };
+    /// ```
     ///
     /// Services **should** clearly document the range of supported values, the
     /// maximum supported precision (total number of digits), and, if applicable,
@@ -704,9 +720,9 @@ pub struct Decimal {
     pub value: ::prost::alloc::string::String,
 }
 /// Localized variant of a text in a particular language.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LocalizedText {
-    /// Localized string in the language corresponding to `language_code' below.
+    /// Localized string in the language corresponding to \`language_code' below.
     #[prost(string, tag = "1")]
     pub text: ::prost::alloc::string::String,
     /// The text's BCP-47 language code, such as "en-US" or "sr-Latn".
@@ -779,29 +795,33 @@ impl CalendarPeriod {
 ///
 /// This representation:
 ///
-///   - should not be used for locale-specific formatting of a phone number, such
-///     as "+1 (650) 253-0000 ext. 123"
+/// * should not be used for locale-specific formatting of a phone number, such
+///   as "+1 (650) 253-0000 ext. 123"
 ///
-///   - is not designed for efficient storage
-///   - may not be suitable for dialing - specialized libraries (see references)
-///     should be used to parse the number for that purpose
+/// * is not designed for efficient storage
+///
+/// * may not be suitable for dialing - specialized libraries (see references)
+///   should be used to parse the number for that purpose
 ///
 /// To do something meaningful with this number, such as format it for various
 /// use-cases, convert it to an `i18n.phonenumbers.PhoneNumber` object first.
 ///
 /// For instance, in Java this would be:
 ///
-///     com.google.type.PhoneNumber wireProto =
-///         com.google.type.PhoneNumber.newBuilder().build();
-///     com.google.i18n.phonenumbers.Phonenumber.PhoneNumber phoneNumber =
-///         PhoneNumberUtil.getInstance().parse(wireProto.getE164Number(), "ZZ");
-///     if (!wireProto.getExtension().isEmpty()) {
-///       phoneNumber.setExtension(wireProto.getExtension());
-///     }
+/// ```text
+/// com.google.type.PhoneNumber wireProto =
+///     com.google.type.PhoneNumber.newBuilder().build();
+/// com.google.i18n.phonenumbers.Phonenumber.PhoneNumber phoneNumber =
+///     PhoneNumberUtil.getInstance().parse(wireProto.getE164Number(), "ZZ");
+/// if (!wireProto.getExtension().isEmpty()) {
+///   phoneNumber.setExtension(wireProto.getExtension());
+/// }
+/// ```
 ///
-///   Reference(s):
-///    - <https://github.com/google/libphonenumber>
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Reference(s):
+///
+/// * <https://github.com/google/libphonenumber>
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PhoneNumber {
     /// The phone number's extension. The extension is not standardized in ITU
     /// recommendations, except for being defined as a series of numbers with a
@@ -831,13 +851,14 @@ pub mod phone_number {
     /// dialable, which means the same short code can exist in different regions,
     /// with different usage and pricing, even if those regions share the same
     /// country calling code (e.g. US and CA).
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ShortCode {
         /// Required. The BCP-47 region code of the location where calls to this
         /// short code can be made, such as "US" and "BB".
         ///
         /// Reference(s):
-        ///   - <http://www.unicode.org/reports/tr35/#unicode_region_subtag>
+        ///
+        /// * <http://www.unicode.org/reports/tr35/#unicode_region_subtag>
         #[prost(string, tag = "1")]
         pub region_code: ::prost::alloc::string::String,
         /// Required. The short code digits, without a leading plus ('+') or country
@@ -848,35 +869,38 @@ pub mod phone_number {
     /// Required.  Either a regular number, or a short code.  New fields may be
     /// added to the oneof below in the future, so clients should ignore phone
     /// numbers for which none of the fields they coded against are set.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Kind {
         /// The phone number, represented as a leading plus sign ('+'), followed by a
         /// phone number that uses a relaxed ITU E.164 format consisting of the
         /// country calling code (1 to 3 digits) and the subscriber number, with no
         /// additional spaces or formatting, e.g.:
-        ///   - correct: "+15552220123"
-        ///   - incorrect: "+1 (555) 222-01234 x123".
+        ///
+        /// * correct: "+15552220123"
+        /// * incorrect: "+1 (555) 222-01234 x123".
         ///
         /// The ITU E.164 format limits the latter to 12 digits, but in practice not
         /// all countries respect that, so we relax that restriction here.
         /// National-only numbers are not allowed.
         ///
         /// References:
-        ///   - <https://www.itu.int/rec/T-REC-E.164-201011-I>
-        ///   - <https://en.wikipedia.org/wiki/E.164.>
-        ///   - <https://en.wikipedia.org/wiki/List_of_country_calling_codes>
+        ///
+        /// * <https://www.itu.int/rec/T-REC-E.164-201011-I>
+        /// * <https://en.wikipedia.org/wiki/E.164.>
+        /// * <https://en.wikipedia.org/wiki/List_of_country_calling_codes>
         #[prost(string, tag = "1")]
         E164Number(::prost::alloc::string::String),
         /// A short code.
         ///
         /// Reference(s):
-        ///   - <https://en.wikipedia.org/wiki/Short_code>
+        ///
+        /// * <https://en.wikipedia.org/wiki/Short_code>
         #[prost(message, tag = "2")]
         ShortCode(ShortCode),
     }
 }
 /// Represents a fraction in terms of a numerator divided by a denominator.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Fraction {
     /// The numerator in the fraction, e.g. 2 in 2/3.
     #[prost(int64, tag = "1")]
@@ -898,7 +922,9 @@ pub struct Fraction {
 ///
 /// Quaternions are generally represented in this form:
 ///
-///      w + xi + yj + zk
+/// ```text
+/// w + xi + yj + zk
+/// ```
 ///
 /// where x, y, z, and w are real numbers, and i, j, and k are three imaginary
 /// numbers.
@@ -914,21 +940,23 @@ pub struct Fraction {
 /// buffer below *must* follow the Hamilton convention, which defines `ij = k`
 /// (i.e. a right-handed algebra), and therefore:
 ///
-///      i^2 = j^2 = k^2 = ijk = −1
-///      ij = −ji = k
-///      jk = −kj = i
-///      ki = −ik = j
+/// ```text
+/// i^2 = j^2 = k^2 = ijk = −1
+/// ij = −ji = k
+/// jk = −kj = i
+/// ki = −ik = j
+/// ```
 ///
 /// Please DO NOT use this to represent quaternions that follow the JPL
 /// convention, or any of the other quaternion flavors out there.
 ///
 /// Definitions:
 ///
-///    - Quaternion norm (or magnitude): `sqrt(x^2 + y^2 + z^2 + w^2)`.
-///    - Unit (or normalized) quaternion: a quaternion whose norm is 1.
-///    - Pure quaternion: a quaternion whose scalar component (`w`) is 0.
-///    - Rotation quaternion: a unit quaternion used to represent rotation.
-///    - Orientation quaternion: a unit quaternion used to represent orientation.
+/// * Quaternion norm (or magnitude): `sqrt(x^2 + y^2 + z^2 + w^2)`.
+/// * Unit (or normalized) quaternion: a quaternion whose norm is 1.
+/// * Pure quaternion: a quaternion whose scalar component (`w`) is 0.
+/// * Rotation quaternion: a unit quaternion used to represent rotation.
+/// * Orientation quaternion: a unit quaternion used to represent orientation.
 ///
 /// A quaternion can be normalized by dividing it by its norm. The resulting
 /// quaternion maintains the same direction, but has a norm of 1, i.e. it moves
@@ -941,7 +969,6 @@ pub struct Fraction {
 /// it would produce a unique representation. It is thus recommended that `w` be
 /// kept positive, which can be achieved by changing all the signs when `w` is
 /// negative.
-///
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct Quaternion {
     /// The x component.

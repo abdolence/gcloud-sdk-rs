@@ -13,6 +13,7 @@ pub struct ClientConnectorService {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. User-provided name.
     /// The display name should follow certain format.
+    ///
     /// * Must be 6 to 30 characters in length.
     /// * Can only contain lowercase letters, numbers, and hyphens.
     /// * Must start with a letter.
@@ -55,7 +56,7 @@ pub mod client_connector_service {
             /// The setting used to configure ClientGateways.
             /// It is adding routes to the client's routing table
             /// after the connection is established.
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct DestinationRoute {
                 /// Required. The network address of the subnet
                 /// for which the packet is routed to the ClientGateway.
@@ -114,7 +115,7 @@ pub mod client_connector_service {
         }
     }
     /// The details of the egress info. One of the following options should be set.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Egress {
         #[prost(oneof = "egress::DestinationType", tags = "1")]
         pub destination_type: ::core::option::Option<egress::DestinationType>,
@@ -122,13 +123,13 @@ pub mod client_connector_service {
     /// Nested message and enum types in `Egress`.
     pub mod egress {
         /// The peered VPC owned by the consumer project.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct PeeredVpc {
             /// Required. The name of the peered VPC owned by the consumer project.
             #[prost(string, tag = "1")]
             pub network_vpc: ::prost::alloc::string::String,
         }
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum DestinationType {
             /// A VPC from the consumer project.
             #[prost(message, tag = "1")]
@@ -198,7 +199,7 @@ pub mod client_connector_service {
     }
 }
 /// Message for requesting list of ClientConnectorServices.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListClientConnectorServicesRequest {
     /// Required. Parent value for ListClientConnectorServicesRequest.
     #[prost(string, tag = "1")]
@@ -231,7 +232,7 @@ pub struct ListClientConnectorServicesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a ClientConnectorService.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetClientConnectorServiceRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -244,9 +245,10 @@ pub struct CreateClientConnectorServiceRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. User-settable client connector service resource ID.
-    ///   * Must start with a letter.
-    ///   * Must contain between 4-63 characters from `/[a-z][0-9]-/`.
-    ///   * Must end with a number or a letter.
+    ///
+    /// * Must start with a letter.
+    /// * Must contain between 4-63 characters from `/[a-z][0-9]-/`.
+    /// * Must end with a number or a letter.
     ///
     /// A random system generated name will be assigned
     /// if not specified by the user.
@@ -314,7 +316,7 @@ pub struct UpdateClientConnectorServiceRequest {
     pub allow_missing: bool,
 }
 /// Message for deleting a ClientConnectorService.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteClientConnectorServiceRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -340,7 +342,7 @@ pub struct DeleteClientConnectorServiceRequest {
     pub validate_only: bool,
 }
 /// Represents the metadata of the long-running operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ClientConnectorServiceOperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -359,8 +361,8 @@ pub struct ClientConnectorServiceOperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+    /// have \[Operation.error\]\[\] value with a
+    /// \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -389,7 +391,7 @@ pub mod client_connector_services_service_client {
     /// The ClientConnectorServicesService exposes the following resources:
     ///
     /// * Client Connector Services, named as follows:
-    ///   `projects/{project_id}/locations/{location_id}/client_connector_services/{client_connector_service_id}`.
+    ///  `projects/{project_id}/locations/{location_id}/client_connector_services/{client_connector_service_id}`.
     #[derive(Debug, Clone)]
     pub struct ClientConnectorServicesServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -488,7 +490,7 @@ pub mod client_connector_services_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorServicesService/ListClientConnectorServices",
             );
@@ -518,7 +520,7 @@ pub mod client_connector_services_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorServicesService/GetClientConnectorService",
             );
@@ -548,7 +550,7 @@ pub mod client_connector_services_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorServicesService/CreateClientConnectorService",
             );
@@ -578,7 +580,7 @@ pub mod client_connector_services_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorServicesService/UpdateClientConnectorService",
             );
@@ -608,7 +610,7 @@ pub mod client_connector_services_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.beyondcorp.clientconnectorservices.v1.ClientConnectorServicesService/DeleteClientConnectorService",
             );

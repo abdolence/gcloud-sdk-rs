@@ -382,10 +382,10 @@ pub mod annotate_assessment_request {
     }
 }
 /// Empty response for AnnotateAssessment.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AnnotateAssessmentResponse {}
 /// Information about a verification endpoint that can be used for 2FA.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EndpointVerificationInfo {
     /// Output only. Token to provide to the client to trigger endpoint
     /// verification. It must be used within 15 minutes.
@@ -400,7 +400,7 @@ pub struct EndpointVerificationInfo {
 }
 /// Nested message and enum types in `EndpointVerificationInfo`.
 pub mod endpoint_verification_info {
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Endpoint {
         /// Email address for which to trigger a verification request.
         #[prost(string, tag = "1")]
@@ -523,7 +523,7 @@ pub mod account_verification_info {
     }
 }
 /// Private password leak verification info.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PrivatePasswordLeakVerification {
     /// Required. Exactly 26-bit prefix of the SHA-256 hash of the canonicalized
     /// username. It is used to look up password leaks associated with that hash
@@ -740,9 +740,9 @@ pub struct TransactionData {
     /// * debit-card
     /// * gift-card
     /// * processor-{name} (If a third-party is used, for example,
-    /// processor-paypal)
+    ///   processor-paypal)
     /// * custom-{name} (If an alternative method is used, for example,
-    /// custom-crypto)
+    ///   custom-crypto)
     #[prost(string, tag = "1")]
     pub payment_method: ::prost::alloc::string::String,
     /// Optional. The Bank Identification Number - generally the first 6 or 8
@@ -786,7 +786,7 @@ pub struct TransactionData {
 /// Nested message and enum types in `TransactionData`.
 pub mod transaction_data {
     /// Structured address format for billing and shipping addresses.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Address {
         /// Optional. The recipient name, potentially including information such as
         /// "care of".
@@ -812,7 +812,7 @@ pub mod transaction_data {
         pub postal_code: ::prost::alloc::string::String,
     }
     /// Details about a user's account involved in the transaction.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct User {
         /// Optional. Unique account identifier for this user. If using account
         /// defender, this should match the hashed_account_id field. Otherwise, a
@@ -856,7 +856,7 @@ pub mod transaction_data {
         pub merchant_account_id: ::prost::alloc::string::String,
     }
     /// Details about the transaction from the gateway.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct GatewayInfo {
         /// Optional. Name of the gateway service (for example, stripe, square,
         /// paypal).
@@ -895,14 +895,14 @@ pub struct UserInfo {
     pub user_ids: ::prost::alloc::vec::Vec<UserId>,
 }
 /// An identifier associated with a user.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UserId {
     #[prost(oneof = "user_id::IdOneof", tags = "1, 2, 3")]
     pub id_oneof: ::core::option::Option<user_id::IdOneof>,
 }
 /// Nested message and enum types in `UserId`.
 pub mod user_id {
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum IdOneof {
         /// Optional. An email address.
         #[prost(string, tag = "1")]
@@ -1061,7 +1061,7 @@ pub mod risk_analysis {
     }
 }
 /// Properties of the provided event token.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TokenProperties {
     /// Output only. Whether the provided user response token is valid. When valid
     /// = false, the reason could be specified in invalid_reason or it could also
@@ -1238,7 +1238,7 @@ pub mod fraud_signals {
         pub synthetic_risk: f32,
     }
     /// Signals describing the payment card used in this transaction.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CardSignals {
         /// Output only. The labels for the payment card in this transaction.
         #[prost(
@@ -1369,7 +1369,7 @@ pub struct PhoneFraudAssessment {
     pub sms_toll_fraud_verdict: ::core::option::Option<SmsTollFraudVerdict>,
 }
 /// Account defender risk assessment.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccountDefenderAssessment {
     /// Output only. Labels for this request.
     #[prost(
@@ -1450,7 +1450,7 @@ pub struct CreateKeyRequest {
     pub key: ::core::option::Option<Key>,
 }
 /// The list keys request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListKeysRequest {
     /// Required. The name of the project that contains the keys that is
     /// listed, in the format `projects/{project}`.
@@ -1477,7 +1477,7 @@ pub struct ListKeysResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The retrieve legacy secret key request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RetrieveLegacySecretKeyRequest {
     /// Required. The public key name linked to the requested secret key in the
     /// format `projects/{project}/keys/{key}`.
@@ -1485,7 +1485,7 @@ pub struct RetrieveLegacySecretKeyRequest {
     pub key: ::prost::alloc::string::String,
 }
 /// The get key request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetKeyRequest {
     /// Required. The name of the requested key, in the format
     /// `projects/{project}/keys/{key}`.
@@ -1504,7 +1504,7 @@ pub struct UpdateKeyRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The delete key request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteKeyRequest {
     /// Required. The name of the key to be deleted, in the format
     /// `projects/{project}/keys/{key}`.
@@ -1523,7 +1523,7 @@ pub struct CreateFirewallPolicyRequest {
     pub firewall_policy: ::core::option::Option<FirewallPolicy>,
 }
 /// The list firewall policies request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFirewallPoliciesRequest {
     /// Required. The name of the project to list the policies for, in the format
     /// `projects/{project}`.
@@ -1550,7 +1550,7 @@ pub struct ListFirewallPoliciesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The get firewall policy request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFirewallPolicyRequest {
     /// Required. The name of the requested policy, in the format
     /// `projects/{project}/firewallpolicies/{firewallpolicy}`.
@@ -1569,7 +1569,7 @@ pub struct UpdateFirewallPolicyRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The delete firewall policy request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteFirewallPolicyRequest {
     /// Required. The name of the policy to be deleted, in the format
     /// `projects/{project}/firewallpolicies/{firewallpolicy}`.
@@ -1577,7 +1577,7 @@ pub struct DeleteFirewallPolicyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The reorder firewall policies request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReorderFirewallPoliciesRequest {
     /// Required. The name of the project to list the policies for, in the format
     /// `projects/{project}`.
@@ -1589,10 +1589,10 @@ pub struct ReorderFirewallPoliciesRequest {
     pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The reorder firewall policies response message.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReorderFirewallPoliciesResponse {}
 /// The migrate key request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MigrateKeyRequest {
     /// Required. The name of the key to be migrated, in the format
     /// `projects/{project}/keys/{key}`.
@@ -1610,7 +1610,7 @@ pub struct MigrateKeyRequest {
     pub skip_billing_check: bool,
 }
 /// The get metrics request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetMetricsRequest {
     /// Required. The name of the requested metrics, in the format
     /// `projects/{project}/keys/{key}/metrics`.
@@ -1640,7 +1640,7 @@ pub struct Metrics {
 }
 /// Secret key is used only in legacy reCAPTCHA. It must be used in a 3rd party
 /// integration with legacy reCAPTCHA.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RetrieveLegacySecretKeyResponse {
     /// The secret key (also known as shared secret) authorizes communication
     /// between your application backend and the reCAPTCHA Enterprise server to
@@ -1685,7 +1685,7 @@ pub struct Key {
 pub mod key {
     /// Platform-specific settings for this key. The key can only be used on a
     /// platform for which the settings are enabled.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum PlatformSettings {
         /// Settings for keys that can be used by websites.
         #[prost(message, tag = "3")]
@@ -1765,7 +1765,7 @@ pub mod testing_options {
     }
 }
 /// Settings specific to keys that can be used by websites.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WebKeySettings {
     /// Optional. If set to true, it means allowed_domains are not enforced.
     #[prost(bool, tag = "3")]
@@ -1893,7 +1893,7 @@ pub mod web_key_settings {
     }
 }
 /// Settings specific to keys that can be used by Android apps.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AndroidKeySettings {
     /// Optional. If set to true, allowed_package_names are not enforced.
     #[prost(bool, tag = "2")]
@@ -1909,7 +1909,7 @@ pub struct AndroidKeySettings {
     pub support_non_google_app_store_distribution: bool,
 }
 /// Settings specific to keys that can be used by iOS apps.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IosKeySettings {
     /// Optional. If set to true, allowed_bundle_ids are not enforced.
     #[prost(bool, tag = "2")]
@@ -1927,10 +1927,10 @@ pub struct IosKeySettings {
     pub apple_developer_id: ::core::option::Option<AppleDeveloperId>,
 }
 /// Settings specific to keys that can be used for reCAPTCHA Express.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExpressKeySettings {}
 /// Contains fields that are required to perform Apple-specific integrity checks.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AppleDeveloperId {
     /// Required. Input only. A private key (downloaded as a text file with a .p8
     /// file extension) generated for your Apple Developer account. Ensure that
@@ -1969,7 +1969,7 @@ pub struct ScoreMetrics {
     >,
 }
 /// Metrics related to challenges.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ChallengeMetrics {
     /// Count of reCAPTCHA checkboxes or badges rendered. This is mostly equivalent
     /// to a count of pageloads for pages that include reCAPTCHA.
@@ -2003,7 +2003,7 @@ pub struct FirewallPolicyAssessment {
 }
 /// An individual action. Each action represents what to do if a policy
 /// matches.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FirewallAction {
     #[prost(oneof = "firewall_action::FirewallActionOneof", tags = "1, 2, 6, 5, 3, 4")]
     pub firewall_action_oneof: ::core::option::Option<
@@ -2013,26 +2013,26 @@ pub struct FirewallAction {
 /// Nested message and enum types in `FirewallAction`.
 pub mod firewall_action {
     /// An allow action continues processing a request unimpeded.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AllowAction {}
     /// A block action serves an HTTP error code a prevents the request from
     /// hitting the backend.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct BlockAction {}
     /// An include reCAPTCHA script action involves injecting reCAPTCHA JavaScript
     /// code into the HTML returned by the site backend. This reCAPTCHA
     /// script is tasked with collecting user signals on the requested web page,
     /// issuing tokens as a cookie within the site domain, and enabling their
     /// utilization in subsequent page requests.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct IncludeRecaptchaScriptAction {}
     /// A redirect action returns a 307 (temporary redirect) response, pointing
     /// the user to a reCAPTCHA interstitial page to attach a token.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RedirectAction {}
     /// A substitute action transparently serves a different page than the one
     /// requested.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SubstituteAction {
         /// Optional. The address to redirect to. The target is a relative path in
         /// the current host. Example: "/blog/404.html".
@@ -2042,7 +2042,7 @@ pub mod firewall_action {
     /// A set header action sets a header and forwards the request to the
     /// backend. This can be used to trigger custom protection implemented on the
     /// backend.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SetHeaderAction {
         /// Optional. The header key to set in the request to the backend server.
         #[prost(string, tag = "1")]
@@ -2051,7 +2051,7 @@ pub mod firewall_action {
         #[prost(string, tag = "2")]
         pub value: ::prost::alloc::string::String,
     }
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum FirewallActionOneof {
         /// The user request did not match any policy and should be allowed
         /// access to the requested resource.
@@ -2119,7 +2119,7 @@ pub struct FirewallPolicy {
     pub actions: ::prost::alloc::vec::Vec<FirewallAction>,
 }
 /// The request message to list memberships in a related account group.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRelatedAccountGroupMembershipsRequest {
     /// Required. The resource name for the related account group in the format
     /// `projects/{project}/relatedaccountgroups/{relatedaccountgroup}`.
@@ -2153,7 +2153,7 @@ pub struct ListRelatedAccountGroupMembershipsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message to list related account groups.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRelatedAccountGroupsRequest {
     /// Required. The name of the project to list related account groups from, in
     /// the format `projects/{project}`.
@@ -2185,7 +2185,7 @@ pub struct ListRelatedAccountGroupsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message to search related account group memberships.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchRelatedAccountGroupMembershipsRequest {
     /// Required. The name of the project to search related account group
     /// memberships from. Specify the project name in the following format:
@@ -2235,7 +2235,7 @@ pub struct SearchRelatedAccountGroupMembershipsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The AddIpOverride request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddIpOverrideRequest {
     /// Required. The name of the key to which the IP override is added, in the
     /// format `projects/{project}/keys/{key}`.
@@ -2246,10 +2246,10 @@ pub struct AddIpOverrideRequest {
     pub ip_override_data: ::core::option::Option<IpOverrideData>,
 }
 /// Response for AddIpOverride.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddIpOverrideResponse {}
 /// The RemoveIpOverride request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveIpOverrideRequest {
     /// Required. The name of the key from which the IP override is removed, in the
     /// format `projects/{project}/keys/{key}`.
@@ -2260,10 +2260,10 @@ pub struct RemoveIpOverrideRequest {
     pub ip_override_data: ::core::option::Option<IpOverrideData>,
 }
 /// Response for RemoveIpOverride.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveIpOverrideResponse {}
 /// The ListIpOverrides request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListIpOverridesRequest {
     /// Required. The parent key for which the IP overrides are listed, in the
     /// format `projects/{project}/keys/{key}`.
@@ -2292,7 +2292,7 @@ pub struct ListIpOverridesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// A membership in a group of related accounts.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RelatedAccountGroupMembership {
     /// Required. Identifier. The resource name for this membership in the format
     /// `projects/{project}/relatedaccountgroups/{relatedaccountgroup}/memberships/{membership}`.
@@ -2312,7 +2312,7 @@ pub struct RelatedAccountGroupMembership {
     pub hashed_account_id: ::prost::alloc::vec::Vec<u8>,
 }
 /// A group of related accounts.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RelatedAccountGroup {
     /// Required. Identifier. The resource name for the related account group in
     /// the format
@@ -2322,7 +2322,7 @@ pub struct RelatedAccountGroup {
 }
 /// Settings specific to keys that can be used for WAF (Web Application
 /// Firewall).
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WafSettings {
     /// Required. The WAF service that uses this key.
     #[prost(enumeration = "waf_settings::WafService", tag = "1")]
@@ -2441,15 +2441,16 @@ pub mod waf_settings {
 }
 /// The environment creating the assessment. This describes your environment
 /// (the system invoking CreateAssessment), NOT the environment of your user.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AssessmentEnvironment {
     /// Optional. Identifies the client module initiating the CreateAssessment
     /// request. This can be the link to the client module's project. Examples
     /// include:
-    /// - "github.com/GoogleCloudPlatform/recaptcha-enterprise-google-tag-manager"
-    /// - "cloud.google.com/recaptcha/docs/implement-waf-akamai"
-    /// - "cloud.google.com/recaptcha/docs/implement-waf-cloudflare"
-    /// - "wordpress.org/plugins/recaptcha-something"
+    ///
+    /// * "github.com/GoogleCloudPlatform/recaptcha-enterprise-google-tag-manager"
+    /// * "cloud.google.com/recaptcha/docs/implement-waf-akamai"
+    /// * "cloud.google.com/recaptcha/docs/implement-waf-cloudflare"
+    /// * "wordpress.org/plugins/recaptcha-something"
     #[prost(string, tag = "1")]
     pub client: ::prost::alloc::string::String,
     /// Optional. The version of the client module. For example, "1.0.0".
@@ -2457,7 +2458,7 @@ pub struct AssessmentEnvironment {
     pub version: ::prost::alloc::string::String,
 }
 /// Information about the IP or IP range override.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IpOverrideData {
     /// Required. The IP address to override (can be IPv4, IPv6 or CIDR).
     /// The IP override must be a valid IPv4 or IPv6 address, or a CIDR range.
@@ -2622,7 +2623,7 @@ pub mod recaptcha_enterprise_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/CreateAssessment",
             );
@@ -2653,7 +2654,7 @@ pub mod recaptcha_enterprise_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/AnnotateAssessment",
             );
@@ -2680,7 +2681,7 @@ pub mod recaptcha_enterprise_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/CreateKey",
             );
@@ -2710,7 +2711,7 @@ pub mod recaptcha_enterprise_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ListKeys",
             );
@@ -2742,7 +2743,7 @@ pub mod recaptcha_enterprise_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/RetrieveLegacySecretKey",
             );
@@ -2769,7 +2770,7 @@ pub mod recaptcha_enterprise_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey",
             );
@@ -2796,7 +2797,7 @@ pub mod recaptcha_enterprise_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/UpdateKey",
             );
@@ -2823,7 +2824,7 @@ pub mod recaptcha_enterprise_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/DeleteKey",
             );
@@ -2855,7 +2856,7 @@ pub mod recaptcha_enterprise_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/MigrateKey",
             );
@@ -2870,9 +2871,10 @@ pub mod recaptcha_enterprise_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Adds an IP override to a key. The following restrictions hold:
+        ///
         /// * The maximum number of IP overrides per key is 100.
         /// * For any conflict (such as IP already exists or IP part of an existing
-        ///   IP range), an error is returned.
+        ///  IP range), an error is returned.
         pub async fn add_ip_override(
             &mut self,
             request: impl tonic::IntoRequest<super::AddIpOverrideRequest>,
@@ -2888,7 +2890,7 @@ pub mod recaptcha_enterprise_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/AddIpOverride",
             );
@@ -2903,10 +2905,11 @@ pub mod recaptcha_enterprise_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Removes an IP override from a key. The following restrictions hold:
+        ///
         /// * If the IP isn't found in an existing IP override, a `NOT_FOUND` error
-        /// is returned.
+        ///  is returned.
         /// * If the IP is found in an existing IP override, but the
-        /// override type does not match, a `NOT_FOUND` error is returned.
+        ///  override type does not match, a `NOT_FOUND` error is returned.
         pub async fn remove_ip_override(
             &mut self,
             request: impl tonic::IntoRequest<super::RemoveIpOverrideRequest>,
@@ -2922,7 +2925,7 @@ pub mod recaptcha_enterprise_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/RemoveIpOverride",
             );
@@ -2952,7 +2955,7 @@ pub mod recaptcha_enterprise_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ListIpOverrides",
             );
@@ -2980,7 +2983,7 @@ pub mod recaptcha_enterprise_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetMetrics",
             );
@@ -3009,7 +3012,7 @@ pub mod recaptcha_enterprise_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/CreateFirewallPolicy",
             );
@@ -3039,7 +3042,7 @@ pub mod recaptcha_enterprise_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ListFirewallPolicies",
             );
@@ -3066,7 +3069,7 @@ pub mod recaptcha_enterprise_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetFirewallPolicy",
             );
@@ -3093,7 +3096,7 @@ pub mod recaptcha_enterprise_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/UpdateFirewallPolicy",
             );
@@ -3120,7 +3123,7 @@ pub mod recaptcha_enterprise_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/DeleteFirewallPolicy",
             );
@@ -3150,7 +3153,7 @@ pub mod recaptcha_enterprise_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ReorderFirewallPolicies",
             );
@@ -3180,7 +3183,7 @@ pub mod recaptcha_enterprise_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ListRelatedAccountGroups",
             );
@@ -3212,7 +3215,7 @@ pub mod recaptcha_enterprise_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ListRelatedAccountGroupMemberships",
             );
@@ -3244,7 +3247,7 @@ pub mod recaptcha_enterprise_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/SearchRelatedAccountGroupMemberships",
             );

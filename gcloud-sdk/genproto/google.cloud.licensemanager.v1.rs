@@ -87,7 +87,7 @@ pub mod configuration {
     }
 }
 /// Billing Information.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BillingInfo {
     /// Output only. When the billing starts.
     #[prost(message, optional, tag = "2")]
@@ -100,7 +100,7 @@ pub struct BillingInfo {
 }
 /// Nested message and enum types in `BillingInfo`.
 pub mod billing_info {
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum CurrentBillingInfo {
         /// Required. This type of billing uses user count for computing total
         /// charge.
@@ -109,7 +109,7 @@ pub mod billing_info {
     }
 }
 /// This approach uses total unique user count for billing.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UserCountBillingInfo {
     /// Required. Number of users to bill for.
     #[prost(int32, tag = "1")]
@@ -117,14 +117,14 @@ pub struct UserCountBillingInfo {
 }
 /// Message representing usage for license configurations which use user-count
 /// billing.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UserCountUsage {
     /// Required. Unique number of licensed users.
     #[prost(int32, tag = "1")]
     pub unique_user_count: i32,
 }
 /// Products for Google SPLA.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Product {
     /// Identifier. Full name of the product resource.
     /// ex "projects/1/locations/us-central1/products/office-2021"
@@ -310,7 +310,7 @@ pub mod instance {
     }
 }
 /// Message describing total counts of users who accessed a VM.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Usage {
     /// LiMa Instance resource name, i.e.
     /// projects/{project}/locations/{location}/instances/{instance}
@@ -403,7 +403,7 @@ impl ActivationState {
     }
 }
 /// Message for requesting list of Configurations
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListConfigurationsRequest {
     /// Required. Parent value for ListConfigurationsRequest
     #[prost(string, tag = "1")]
@@ -436,7 +436,7 @@ pub struct ListConfigurationsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Configuration
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetConfigurationRequest {
     /// Required. Name of the resource
     #[prost(string, tag = "1")]
@@ -500,7 +500,7 @@ pub struct UpdateConfigurationRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting a Configuration
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteConfigurationRequest {
     /// Required. Name of the resource
     #[prost(string, tag = "1")]
@@ -522,7 +522,7 @@ pub struct DeleteConfigurationRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for requesting list of Instances
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInstancesRequest {
     /// Required. Parent value for ListInstancesRequest
     #[prost(string, tag = "1")]
@@ -555,14 +555,14 @@ pub struct ListInstancesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Instance
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInstanceRequest {
     /// Required. Name of the resource
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message for requesting license usage per configuration.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct QueryConfigurationLicenseUsageRequest {
     /// Required. The resource path of the Configuration.
     #[prost(string, tag = "1")]
@@ -577,7 +577,7 @@ pub struct QueryConfigurationLicenseUsageRequest {
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Message for response to get the license usage per configuration.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct QueryConfigurationLicenseUsageResponse {
     /// Depending on the type of the configuration, one of the following
     /// will be populated.
@@ -590,7 +590,7 @@ pub struct QueryConfigurationLicenseUsageResponse {
 pub mod query_configuration_license_usage_response {
     /// Depending on the type of the configuration, one of the following
     /// will be populated.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Details {
         /// Usage information for license types which use user-count billing.
         #[prost(message, tag = "1")]
@@ -598,7 +598,7 @@ pub mod query_configuration_license_usage_response {
     }
 }
 /// Message for deactivating a Configuration.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeactivateConfigurationRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -620,7 +620,7 @@ pub struct DeactivateConfigurationRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for resuming a Configuration.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReactivateConfigurationRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -642,7 +642,7 @@ pub struct ReactivateConfigurationRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for requesting aggregate of Usage per configuration.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AggregateUsageRequest {
     /// Required. Parent value for AggregateUsageRequest
     #[prost(string, tag = "1")]
@@ -683,7 +683,7 @@ pub struct AggregateUsageResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for requesting list of Products
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListProductsRequest {
     /// Required. Parent value for ListProductsRequest
     #[prost(string, tag = "1")]
@@ -716,14 +716,14 @@ pub struct ListProductsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Product
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetProductRequest {
     /// Required. Name of the resource
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -743,8 +743,8 @@ pub struct OperationMetadata {
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have been cancelled successfully
     /// have
-    /// [google.longrunning.Operation.error][google.longrunning.Operation.error]
-    /// value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// \[google.longrunning.Operation.error\]\[google.longrunning.Operation.error\]
+    /// value with a \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -860,7 +860,7 @@ pub mod license_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.licensemanager.v1.LicenseManager/ListConfigurations",
             );
@@ -887,7 +887,7 @@ pub mod license_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.licensemanager.v1.LicenseManager/GetConfiguration",
             );
@@ -917,7 +917,7 @@ pub mod license_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.licensemanager.v1.LicenseManager/CreateConfiguration",
             );
@@ -947,7 +947,7 @@ pub mod license_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.licensemanager.v1.LicenseManager/UpdateConfiguration",
             );
@@ -977,7 +977,7 @@ pub mod license_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.licensemanager.v1.LicenseManager/DeleteConfiguration",
             );
@@ -1007,7 +1007,7 @@ pub mod license_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.licensemanager.v1.LicenseManager/ListInstances",
             );
@@ -1034,7 +1034,7 @@ pub mod license_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.licensemanager.v1.LicenseManager/GetInstance",
             );
@@ -1064,7 +1064,7 @@ pub mod license_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.licensemanager.v1.LicenseManager/DeactivateConfiguration",
             );
@@ -1094,7 +1094,7 @@ pub mod license_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.licensemanager.v1.LicenseManager/ReactivateConfiguration",
             );
@@ -1126,7 +1126,7 @@ pub mod license_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.licensemanager.v1.LicenseManager/QueryConfigurationLicenseUsage",
             );
@@ -1156,7 +1156,7 @@ pub mod license_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.licensemanager.v1.LicenseManager/AggregateUsage",
             );
@@ -1186,7 +1186,7 @@ pub mod license_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.licensemanager.v1.LicenseManager/ListProducts",
             );
@@ -1213,7 +1213,7 @@ pub mod license_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.licensemanager.v1.LicenseManager/GetProduct",
             );

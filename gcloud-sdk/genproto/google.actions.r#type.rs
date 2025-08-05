@@ -8,7 +8,7 @@
 /// * A range beginning in a year, e.g. the Common Era
 /// * A range ending on a specific date, e.g. the period of time before an event
 ///
-/// While [google.type.Date][google.type.Date] allows zero years, DateRange does not. Year must
+/// While \[google.type.Date\]\[google.type.Date\] allows zero years, DateRange does not. Year must
 /// always be non-zero.
 ///
 /// End cannot be chronologically before start. For example, if start has year
@@ -29,22 +29,22 @@
 /// the rules for evaluating whether that date is inside the date range are as
 /// follows:
 ///
-///   * When comparing the date to the start of the date range, unspecified months
-///     should be replaced with 1, and unspecified days should be replaced with 1.
-///     For example, the year 2000 is within the date range with start equal to
-///     January 1, 2000 and no end. And the date January 1, 2000 is within the
-///     date range with start equal to the year 2000 and no end.
+/// * When comparing the date to the start of the date range, unspecified months
+///   should be replaced with 1, and unspecified days should be replaced with 1.
+///   For example, the year 2000 is within the date range with start equal to
+///   January 1, 2000 and no end. And the date January 1, 2000 is within the
+///   date range with start equal to the year 2000 and no end.
 ///
-///   * When comparing the date to the end of the date range, unspecified months
-///     should be replaced with 12, and unspecified days should be replaced with
-///     the last valid day for the month/year. For example, the year 2000 is
-///     within the date range with start equal to January 1, 1999 and end equal to
-///     December 31, 2000. And the date December 31, 2001 is within the date range
-///     with start equal to the year 2000 and end equal to the year 2001.
+/// * When comparing the date to the end of the date range, unspecified months
+///   should be replaced with 12, and unspecified days should be replaced with
+///   the last valid day for the month/year. For example, the year 2000 is
+///   within the date range with start equal to January 1, 1999 and end equal to
+///   December 31, 2000. And the date December 31, 2001 is within the date range
+///   with start equal to the year 2000 and end equal to the year 2001.
 ///
-/// The semantics of start and end are the same as those of [google.type.Date][google.type.Date],
+/// The semantics of start and end are the same as those of \[google.type.Date\]\[google.type.Date\],
 /// except that year must always be non-zero in DateRange.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DateRange {
     /// Date at which the date range begins. If unset, the date range has no
     /// beginning bound.
@@ -58,20 +58,20 @@ pub struct DateRange {
 /// Represents a date and time range. This can represent:
 ///
 /// * A range between points in time with time zone or offset, e.g. the duration
-///    of a flight which starts in the "America/New_York" time zone and ends in
-///    the "Australia/Sydney" time zone
+///   of a flight which starts in the "America/New_York" time zone and ends in
+///   the "Australia/Sydney" time zone
 /// * A range between points in time without time zone/offset info, e.g. an
-///    appointment in local time
+///   appointment in local time
 /// * A range starting at a specific date and time, e.g. the range of time which
-///    can be measured in milliseconds since the Unix epoch (period starting with
-///    1970-01-01T00:00:00Z)
+///   can be measured in milliseconds since the Unix epoch (period starting with
+///   1970-01-01T00:00:00Z)
 /// * A range ending at a specific date and time, e.g. range of time before
-///    a deadline
+///   a deadline
 ///
 /// When considering whether a DateTime falls within a DateTimeRange, the start
 /// of the range is inclusive and the end is exclusive.
 ///
-/// While [google.type.DateTime][google.type.DateTime] allows zero years, DateTimeRange does not.
+/// While \[google.type.DateTime\]\[google.type.DateTime\] allows zero years, DateTimeRange does not.
 /// Year must always be non-zero.
 ///
 /// When both start and end are set, either both or neither must have a
@@ -84,8 +84,8 @@ pub struct DateRange {
 /// equal to end. When start and end are equal, the range is empty.
 ///
 /// The semantics of start and end are the same as those of
-/// [google.type.DateTime][google.type.DateTime].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[google.type.DateTime\]\[google.type.DateTime\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DateTimeRange {
     /// DateTime at which the date range begins. If unset, the range has no
     /// beginning bound.

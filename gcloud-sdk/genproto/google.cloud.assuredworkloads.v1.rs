@@ -30,7 +30,7 @@ pub struct UpdateWorkloadRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for deleting a Workload.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteWorkloadRequest {
     /// Required. The `name` field is used to identify the workload.
     /// Format:
@@ -43,7 +43,7 @@ pub struct DeleteWorkloadRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request for fetching a workload.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetWorkloadRequest {
     /// Required. The resource name of the Workload to fetch. This is the workload's
     /// relative path in the API, formatted as
@@ -54,7 +54,7 @@ pub struct GetWorkloadRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for fetching workloads in an organization.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListWorkloadsRequest {
     /// Required. Parent Resource to list workloads from.
     /// Must be of the form `organizations/{org_id}/locations/{location}`.
@@ -182,7 +182,7 @@ pub struct Workload {
 /// Nested message and enum types in `Workload`.
 pub mod workload {
     /// Represent the resources that are children of this Workload.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ResourceInfo {
         /// Resource identifier.
         /// For a project this represents project_number.
@@ -254,7 +254,7 @@ pub mod workload {
     /// This message is deprecated.
     /// In order to create a Keyring, callers should specify,
     /// ENCRYPTION_KEYS_PROJECT or KEYRING in ResourceSettings.resource_type field.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct KmsSettings {
         /// Required. Input only. Immutable. The time at which the Key Management Service will automatically create a
         /// new version of the crypto key and mark it as the primary.
@@ -267,7 +267,7 @@ pub mod workload {
         pub rotation_period: ::core::option::Option<::prost_types::Duration>,
     }
     /// Represent the custom settings for the resources to be created.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ResourceSettings {
         /// Resource identifier.
         /// For a project this represents project_id. If the project is already
@@ -288,7 +288,7 @@ pub mod workload {
         pub display_name: ::prost::alloc::string::String,
     }
     /// Signed Access Approvals (SAA) enrollment response.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SaaEnrollmentResponse {
         /// Indicates SAA enrollment status of a given workload.
         #[prost(
@@ -584,7 +584,7 @@ pub mod workload {
     }
 }
 /// Operation metadata to give request details of CreateWorkload.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateWorkloadOperationMetadata {
     /// Optional. Time when the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -601,7 +601,7 @@ pub struct CreateWorkloadOperationMetadata {
     pub compliance_regime: i32,
 }
 /// Request for restricting list of available resources in Workload environment.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RestrictAllowedResourcesRequest {
     /// Required. The resource name of the Workload. This is the workloads's
     /// relative path in the API, formatted as
@@ -668,11 +668,11 @@ pub mod restrict_allowed_resources_request {
     }
 }
 /// Response for restricting the list of allowed resources.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RestrictAllowedResourcesResponse {}
 /// Request for acknowledging the violation
 /// Next Id: 4
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AcknowledgeViolationRequest {
     /// Required. The resource name of the Violation to acknowledge.
     /// Format:
@@ -694,10 +694,10 @@ pub struct AcknowledgeViolationRequest {
     pub non_compliant_org_policy: ::prost::alloc::string::String,
 }
 /// Response for violation acknowledgement
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AcknowledgeViolationResponse {}
 /// Interval defining a time window.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TimeWindow {
     /// The start of the time window.
     #[prost(message, optional, tag = "1")]
@@ -707,7 +707,7 @@ pub struct TimeWindow {
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request for fetching violations in an organization.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListViolationsRequest {
     /// Required. The Workload name.
     /// Format `organizations/{org_id}/locations/{location}/workloads/{workload}`.
@@ -739,7 +739,7 @@ pub struct ListViolationsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for fetching a Workload Violation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetViolationRequest {
     /// Required. The resource name of the Violation to fetch (ie. Violation.name).
     /// Format:
@@ -748,7 +748,7 @@ pub struct GetViolationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Workload monitoring Violation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Violation {
     /// Output only. Immutable. Name of the Violation.
     /// Format:
@@ -787,10 +787,10 @@ pub struct Violation {
     pub audit_log_link: ::prost::alloc::string::String,
     /// Output only. Immutable. Name of the OrgPolicy which was modified with non-compliant change and
     /// resulted this violation.
-    ///   Format:
-    ///   projects/{project_number}/policies/{constraint_name}
-    ///   folders/{folder_id}/policies/{constraint_name}
-    ///   organizations/{organization_id}/policies/{constraint_name}
+    /// Format:
+    /// projects/{project_number}/policies/{constraint_name}
+    /// folders/{folder_id}/policies/{constraint_name}
+    /// organizations/{organization_id}/policies/{constraint_name}
     #[prost(string, tag = "12")]
     pub non_compliant_org_policy: ::prost::alloc::string::String,
     /// Output only. Compliance violation remediation
@@ -813,7 +813,7 @@ pub struct Violation {
 pub mod violation {
     /// Represents remediation guidance to resolve compliance violation for
     /// AssuredWorkload
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Remediation {
         /// Required. Remediation instructions to resolve violations
         #[prost(message, optional, tag = "1")]
@@ -830,7 +830,7 @@ pub mod violation {
     /// Nested message and enum types in `Remediation`.
     pub mod remediation {
         /// Instructions to remediate violation
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Instructions {
             /// Remediation instructions to resolve violation via gcloud cli
             #[prost(message, optional, tag = "1")]
@@ -842,7 +842,7 @@ pub mod violation {
         /// Nested message and enum types in `Instructions`.
         pub mod instructions {
             /// Remediation instructions to resolve violation via gcloud cli
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct Gcloud {
                 /// Gcloud command to resolve violation
                 #[prost(string, repeated, tag = "1")]
@@ -859,7 +859,7 @@ pub mod violation {
                 >,
             }
             /// Remediation instructions to resolve violation via cloud console
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct Console {
                 /// Link to console page where violations can be resolved
                 #[prost(string, repeated, tag = "1")]
@@ -1109,7 +1109,7 @@ pub mod assured_workloads_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.assuredworkloads.v1.AssuredWorkloadsService/CreateWorkload",
             );
@@ -1139,7 +1139,7 @@ pub mod assured_workloads_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.assuredworkloads.v1.AssuredWorkloadsService/UpdateWorkload",
             );
@@ -1174,7 +1174,7 @@ pub mod assured_workloads_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.assuredworkloads.v1.AssuredWorkloadsService/RestrictAllowedResources",
             );
@@ -1203,7 +1203,7 @@ pub mod assured_workloads_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.assuredworkloads.v1.AssuredWorkloadsService/DeleteWorkload",
             );
@@ -1230,7 +1230,7 @@ pub mod assured_workloads_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.assuredworkloads.v1.AssuredWorkloadsService/GetWorkload",
             );
@@ -1260,7 +1260,7 @@ pub mod assured_workloads_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.assuredworkloads.v1.AssuredWorkloadsService/ListWorkloads",
             );
@@ -1294,7 +1294,7 @@ pub mod assured_workloads_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.assuredworkloads.v1.AssuredWorkloadsService/ListViolations",
             );
@@ -1321,7 +1321,7 @@ pub mod assured_workloads_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.assuredworkloads.v1.AssuredWorkloadsService/GetViolation",
             );
@@ -1354,7 +1354,7 @@ pub mod assured_workloads_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.assuredworkloads.v1.AssuredWorkloadsService/AcknowledgeViolation",
             );

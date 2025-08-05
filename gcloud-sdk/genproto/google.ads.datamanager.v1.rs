@@ -2,7 +2,7 @@
 /// [Digital Markets Act
 /// (DMA)](//digital-markets-act.ec.europa.eu/index_en) consent settings
 /// for the user.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Consent {
     /// Optional. Represents if the user consents to ad user data.
     #[prost(enumeration = "ConsentStatus", tag = "1")]
@@ -51,13 +51,13 @@ pub struct UserData {
     /// instances of the same type of data (for example, multiple email addresses).
     /// To increase the likelihood of a match, provide as many identifiers as
     /// possible. At most 10 `userIdentifiers` can be provided in a single
-    /// [AudienceMember][google.ads.datamanager.v1.AudienceMember] or
-    /// [Event][google.ads.datamanager.v1.Event].
+    /// \[AudienceMember\]\[google.ads.datamanager.v1.AudienceMember\] or
+    /// \[Event\]\[google.ads.datamanager.v1.Event\].
     #[prost(message, repeated, tag = "1")]
     pub user_identifiers: ::prost::alloc::vec::Vec<UserIdentifier>,
 }
 /// A single identifier for the user.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UserIdentifier {
     /// Exactly one must be specified.
     #[prost(oneof = "user_identifier::Identifier", tags = "1, 2, 3")]
@@ -66,7 +66,7 @@ pub struct UserIdentifier {
 /// Nested message and enum types in `UserIdentifier`.
 pub mod user_identifier {
     /// Exactly one must be specified.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Identifier {
         /// Hashed email address using SHA-256 hash function after normalization.
         #[prost(string, tag = "1")]
@@ -82,7 +82,7 @@ pub mod user_identifier {
     }
 }
 /// Address information for the user.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddressInfo {
     /// Required. Given (first) name of the user, all lowercase, with no
     /// punctuation, no leading or trailing whitespace, and hashed as SHA-256.
@@ -129,22 +129,22 @@ pub mod audience_member {
 }
 /// [PAIR](//support.google.com/admanager/answer/15067908) IDs for the audience.
 /// At least one PAIR ID is required.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PairData {
     /// Required. Cleanroom-provided PII data, hashed with SHA256, and encrypted
     /// with an EC commutative cipher using publisher key for the
     /// [PAIR]((//support.google.com/admanager/answer/15067908)) user list. At most
     /// 10 `pairIds` can be provided in a single
-    /// [AudienceMember][google.ads.datamanager.v1.AudienceMember].
+    /// \[AudienceMember\]\[google.ads.datamanager.v1.AudienceMember\].
     #[prost(string, repeated, tag = "1")]
     pub pair_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Mobile IDs for the audience. At least one mobile ID is required.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MobileData {
     /// Required. The list of mobile device IDs (advertising ID/IDFA). At most 10
     /// `mobileIds` can be provided in a single
-    /// [AudienceMember][google.ads.datamanager.v1.AudienceMember].
+    /// \[AudienceMember\]\[google.ads.datamanager.v1.AudienceMember\].
     #[prost(string, repeated, tag = "1")]
     pub mobile_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -185,28 +185,28 @@ pub struct Item {
 }
 /// The Google product you're sending data to. For example, a Google
 /// Ads account.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Destination {
     /// Optional. ID for this `Destination` resource, unique within the request.
     /// Use to reference this `Destination` in  the
-    /// [IngestEventsRequest][google.ads.datamanager.v1.IngestEventsRequest].
+    /// \[IngestEventsRequest\]\[google.ads.datamanager.v1.IngestEventsRequest\].
     #[prost(string, tag = "1")]
     pub reference: ::prost::alloc::string::String,
     /// Optional. The account used to make this API call. To add or remove data
     /// from the
-    /// [`operating_account`][google.ads.datamanager.v1.Destination.operating_account],
+    /// \[`operating_account`\]\[google.ads.datamanager.v1.Destination.operating_account\],
     /// this `login_account` must have write access to the `operating_account`. For
     /// example, a manager account of the `operating_account`, or an account with
     /// an established link to the `operating_account`.
     #[prost(message, optional, tag = "2")]
     pub login_account: ::core::option::Option<ProductAccount>,
     /// Optional. An account that the calling user's
-    /// [`login_account`][google.ads.datamanager.v1.Destination.login_account] has
+    /// \[`login_account`\]\[google.ads.datamanager.v1.Destination.login_account\] has
     /// access to, through an established account link. For example, a data
     /// partner's `login_account` might have access to a client's `linked_account`.
     /// The partner might use this field to send data from the `linked_account` to
     /// another
-    /// [`operating_account`][google.ads.datamanager.v1.Destination.operating_account].
+    /// \[`operating_account`\]\[google.ads.datamanager.v1.Destination.operating_account\].
     #[prost(message, optional, tag = "3")]
     pub linked_account: ::core::option::Option<ProductAccount>,
     /// Required. The account to send the data to or remove the data from.
@@ -218,7 +218,7 @@ pub struct Destination {
     pub product_destination_id: ::prost::alloc::string::String,
 }
 /// Represents a specific account.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProductAccount {
     /// Required. The product the account belongs to. For example, `GOOGLE_ADS`.
     #[prost(enumeration = "Product", tag = "1")]
@@ -270,7 +270,7 @@ impl Product {
     }
 }
 /// Information about the device being used (if any) when the event happened.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeviceInfo {
     /// Optional. The user-agent string of the device for the given context.
     #[prost(string, tag = "1")]
@@ -280,7 +280,7 @@ pub struct DeviceInfo {
     pub ip_address: ::prost::alloc::string::String,
 }
 /// Encryption information for the data being ingested.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EncryptionInfo {
     /// The [wrapped key](//cloud.google.com/kms/docs/key-wrapping) used to encrypt
     /// the data.
@@ -291,7 +291,7 @@ pub struct EncryptionInfo {
 pub mod encryption_info {
     /// The [wrapped key](//cloud.google.com/kms/docs/key-wrapping) used to encrypt
     /// the data.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum WrappedKey {
         /// Google Cloud Platform wrapped key information.
         #[prost(message, tag = "1")]
@@ -300,7 +300,7 @@ pub mod encryption_info {
 }
 /// Information about the Google Cloud Platform wrapped
 /// key.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GcpWrappedKeyInfo {
     /// Required. The type of algorithm used to encrypt the data.
     #[prost(enumeration = "gcp_wrapped_key_info::KeyType", tag = "1")]
@@ -361,7 +361,7 @@ pub mod gcp_wrapped_key_info {
     }
 }
 /// Experimental field representing unofficial fields.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExperimentalField {
     /// Optional. The name of the field to use.
     #[prost(string, tag = "1")]
@@ -427,7 +427,7 @@ pub struct Event {
 }
 /// Identifiers and other information used to match the conversion event with
 /// other online activity (such as ad clicks).
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AdIdentifiers {
     /// Optional. Session attributes for event attribution and modeling.
     #[prost(string, tag = "1")]
@@ -449,7 +449,7 @@ pub struct AdIdentifiers {
     pub landing_page_device_info: ::core::option::Option<DeviceInfo>,
 }
 /// Custom variable for ads conversions.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomVariable {
     /// Optional. The name of the custom variable to set. If the variable is not
     /// found for the given destination, it will be ignored.
@@ -489,7 +489,7 @@ impl EventSource {
     }
 }
 /// The terms of service that the user has accepted/rejected.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TermsOfService {
     /// Optional. The Customer Match terms of service:
     /// <https://support.google.com/adspolicy/answer/6299717.> This must be
@@ -531,27 +531,27 @@ impl TermsOfServiceStatus {
     }
 }
 /// Request to upload audience members to the provided destinations. Returns an
-/// [IngestAudienceMembersResponse][google.ads.datamanager.v1.IngestAudienceMembersResponse].
+/// \[IngestAudienceMembersResponse\]\[google.ads.datamanager.v1.IngestAudienceMembersResponse\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IngestAudienceMembersRequest {
     /// Required. The list of destinations to send the audience members to.
     #[prost(message, repeated, tag = "1")]
     pub destinations: ::prost::alloc::vec::Vec<Destination>,
     /// Required. The list of users to send to the specified destinations. At most
-    /// 10000 [AudienceMember][google.ads.datamanager.v1.AudienceMember] resources
+    /// 10000 \[AudienceMember\]\[google.ads.datamanager.v1.AudienceMember\] resources
     /// can be sent in a single request.
     #[prost(message, repeated, tag = "2")]
     pub audience_members: ::prost::alloc::vec::Vec<AudienceMember>,
     /// Optional. Request-level consent to apply to all users in the request.
     /// User-level consent overrides request-level consent, and can be specified in
-    /// each [AudienceMember][google.ads.datamanager.v1.AudienceMember].
+    /// each \[AudienceMember\]\[google.ads.datamanager.v1.AudienceMember\].
     #[prost(message, optional, tag = "3")]
     pub consent: ::core::option::Option<Consent>,
     /// Optional. For testing purposes. If `true`, the request is validated but not
     /// executed. Only errors are returned, not results.
     #[prost(bool, tag = "4")]
     pub validate_only: bool,
-    /// Optional. Required for [UserData][google.ads.datamanager.v1.UserData]
+    /// Optional. Required for \[UserData\]\[google.ads.datamanager.v1.UserData\]
     /// uploads. The encoding type of the user identifiers. For hashed user
     /// identifiers, this is the encoding type of the hashed string. For encrypted
     /// hashed user identifiers, this is the encoding type of the outer encrypted
@@ -561,7 +561,7 @@ pub struct IngestAudienceMembersRequest {
     #[prost(enumeration = "Encoding", tag = "5")]
     pub encoding: i32,
     /// Optional. Encryption information for
-    /// [UserData][google.ads.datamanager.v1.UserData] uploads. If not set, it's
+    /// \[UserData\]\[google.ads.datamanager.v1.UserData\] uploads. If not set, it's
     /// assumed that uploaded identifying information is hashed but not encrypted.
     /// For non `UserData` uploads, this field is ignored.
     #[prost(message, optional, tag = "6")]
@@ -571,8 +571,8 @@ pub struct IngestAudienceMembersRequest {
     pub terms_of_service: ::core::option::Option<TermsOfService>,
 }
 /// Response from the
-/// [IngestAudienceMembersRequest][google.ads.datamanager.v1.IngestAudienceMembersRequest].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[IngestAudienceMembersRequest\]\[google.ads.datamanager.v1.IngestAudienceMembersRequest\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IngestAudienceMembersResponse {
     /// The auto-generated ID of the request.
     #[prost(string, tag = "1")]
@@ -580,7 +580,7 @@ pub struct IngestAudienceMembersResponse {
 }
 /// Request to remove users from an audience in the provided destinations.
 /// Returns a
-/// [RemoveAudienceMembersResponse][google.ads.datamanager.v1.RemoveAudienceMembersResponse].
+/// \[RemoveAudienceMembersResponse\]\[google.ads.datamanager.v1.RemoveAudienceMembersResponse\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveAudienceMembersRequest {
     /// Required. The list of destinations to remove the users from.
@@ -593,49 +593,49 @@ pub struct RemoveAudienceMembersRequest {
     /// executed. Only errors are returned, not results.
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
-    /// Optional. Required for [UserData][google.ads.datamanager.v1.UserData]
+    /// Optional. Required for \[UserData\]\[google.ads.datamanager.v1.UserData\]
     /// uploads. The encoding type of the user identifiers. Applies to only the
     /// outer encoding for encrypted user identifiers. For non `UserData` uploads,
     /// this field is ignored.
     #[prost(enumeration = "Encoding", tag = "4")]
     pub encoding: i32,
     /// Optional. Encryption information for
-    /// [UserData][google.ads.datamanager.v1.UserData] uploads. If not set, it's
+    /// \[UserData\]\[google.ads.datamanager.v1.UserData\] uploads. If not set, it's
     /// assumed that uploaded identifying information is hashed but not encrypted.
     /// For non `UserData` uploads, this field is ignored.
     #[prost(message, optional, tag = "5")]
     pub encryption_info: ::core::option::Option<EncryptionInfo>,
 }
 /// Response from the
-/// [RemoveAudienceMembersRequest][google.ads.datamanager.v1.RemoveAudienceMembersRequest].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[RemoveAudienceMembersRequest\]\[google.ads.datamanager.v1.RemoveAudienceMembersRequest\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveAudienceMembersResponse {
     /// The auto-generated ID of the request.
     #[prost(string, tag = "1")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request to upload audience members to the provided destinations. Returns an
-/// [IngestEventsResponse][google.ads.datamanager.v1.IngestEventsResponse].
+/// \[IngestEventsResponse\]\[google.ads.datamanager.v1.IngestEventsResponse\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IngestEventsRequest {
     /// Required. The list of destinations to send the events to.
     #[prost(message, repeated, tag = "1")]
     pub destinations: ::prost::alloc::vec::Vec<Destination>,
     /// Required. The list of events to send to the specified destinations. At most
-    /// 2000 [Event][google.ads.datamanager.v1.Event] resources
+    /// 2000 \[Event\]\[google.ads.datamanager.v1.Event\] resources
     /// can be sent in a single request.
     #[prost(message, repeated, tag = "2")]
     pub events: ::prost::alloc::vec::Vec<Event>,
     /// Optional. Request-level consent to apply to all users in the request.
     /// User-level consent overrides request-level consent, and can be specified in
-    /// each [Event][google.ads.datamanager.v1.Event].
+    /// each \[Event\]\[google.ads.datamanager.v1.Event\].
     #[prost(message, optional, tag = "3")]
     pub consent: ::core::option::Option<Consent>,
     /// Optional. For testing purposes. If `true`, the request is validated but not
     /// executed. Only errors are returned, not results.
     #[prost(bool, tag = "4")]
     pub validate_only: bool,
-    /// Optional. Required for [UserData][google.ads.datamanager.v1.UserData]
+    /// Optional. Required for \[UserData\]\[google.ads.datamanager.v1.UserData\]
     /// uploads. The encoding type of the user identifiers. For hashed user
     /// identifiers, this is the encoding type of the hashed string. For encrypted
     /// hashed user identifiers, this is the encoding type of the outer encrypted
@@ -645,15 +645,15 @@ pub struct IngestEventsRequest {
     #[prost(enumeration = "Encoding", tag = "5")]
     pub encoding: i32,
     /// Optional. Encryption information for
-    /// [UserData][google.ads.datamanager.v1.UserData] uploads. If not set, it's
+    /// \[UserData\]\[google.ads.datamanager.v1.UserData\] uploads. If not set, it's
     /// assumed that uploaded identifying information is hashed but not encrypted.
     /// For non `UserData` uploads, this field is ignored.
     #[prost(message, optional, tag = "6")]
     pub encryption_info: ::core::option::Option<EncryptionInfo>,
 }
 /// Response from the
-/// [IngestEventsRequest][google.ads.datamanager.v1.IngestEventsRequest].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[IngestEventsRequest\]\[google.ads.datamanager.v1.IngestEventsRequest\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IngestEventsResponse {
     /// The auto-generated ID of the request.
     #[prost(string, tag = "1")]
@@ -785,8 +785,8 @@ pub mod ingestion_service_client {
             self
         }
         /// Uploads a list of
-        /// [AudienceMember][google.ads.datamanager.v1.AudienceMember] resources to the
-        /// provided [Destination][google.ads.datamanager.v1.Destination].
+        /// \[AudienceMember\]\[google.ads.datamanager.v1.AudienceMember\] resources to the
+        /// provided \[Destination\]\[google.ads.datamanager.v1.Destination\].
         pub async fn ingest_audience_members(
             &mut self,
             request: impl tonic::IntoRequest<super::IngestAudienceMembersRequest>,
@@ -802,7 +802,7 @@ pub mod ingestion_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.datamanager.v1.IngestionService/IngestAudienceMembers",
             );
@@ -817,8 +817,8 @@ pub mod ingestion_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Removes a list of
-        /// [AudienceMember][google.ads.datamanager.v1.AudienceMember] resources from
-        /// the provided [Destination][google.ads.datamanager.v1.Destination].
+        /// \[AudienceMember\]\[google.ads.datamanager.v1.AudienceMember\] resources from
+        /// the provided \[Destination\]\[google.ads.datamanager.v1.Destination\].
         pub async fn remove_audience_members(
             &mut self,
             request: impl tonic::IntoRequest<super::RemoveAudienceMembersRequest>,
@@ -834,7 +834,7 @@ pub mod ingestion_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.datamanager.v1.IngestionService/RemoveAudienceMembers",
             );
@@ -849,8 +849,8 @@ pub mod ingestion_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Uploads a list of
-        /// [Event][google.ads.datamanager.v1.Event] resources from
-        /// the provided [Destination][google.ads.datamanager.v1.Destination].
+        /// \[Event\]\[google.ads.datamanager.v1.Event\] resources from
+        /// the provided \[Destination\]\[google.ads.datamanager.v1.Destination\].
         pub async fn ingest_events(
             &mut self,
             request: impl tonic::IntoRequest<super::IngestEventsRequest>,
@@ -866,7 +866,7 @@ pub mod ingestion_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.datamanager.v1.IngestionService/IngestEvents",
             );

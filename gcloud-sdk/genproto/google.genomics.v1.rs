@@ -25,7 +25,7 @@ pub struct AnnotationSet {
     #[prost(enumeration = "AnnotationType", tag = "6")]
     pub r#type: i32,
     /// A map of additional read alignment information. This must be of the form
-    /// map<string, string\[\]> (string key mapping to a list of string values).
+    /// map\<string, string\[\]\> (string key mapping to a list of string values).
     #[prost(map = "string, message", tag = "17")]
     pub info: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -72,7 +72,7 @@ pub struct Annotation {
     #[prost(enumeration = "AnnotationType", tag = "9")]
     pub r#type: i32,
     /// A map of additional read alignment information. This must be of the form
-    /// map<string, string\[\]> (string key mapping to a list of string values).
+    /// map\<string, string\[\]\> (string key mapping to a list of string values).
     #[prost(map = "string, message", tag = "12")]
     pub info: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -166,7 +166,7 @@ pub mod variant_annotation {
         Unspecified = 0,
         /// `TYPE_OTHER` should be used when no other Type will suffice.
         /// Further explanation of the variant type may be included in the
-        /// [info][google.genomics.v1.Annotation.info] field.
+        /// \[info\]\[google.genomics.v1.Annotation.info\] field.
         Other = 1,
         /// `INSERTION` indicates an insertion.
         Insertion = 2,
@@ -386,7 +386,7 @@ pub struct Transcript {
     ///
     /// Exonic sequences do not necessarily code for a translational product
     /// (amino acids). Only the regions of exons bounded by the
-    /// [codingSequence][google.genomics.v1.Transcript.coding_sequence] correspond
+    /// \[codingSequence\]\[google.genomics.v1.Transcript.coding_sequence\] correspond
     /// to coding DNA sequence.
     ///
     /// Exons are ordered by start position and may not overlap.
@@ -394,15 +394,15 @@ pub struct Transcript {
     pub exons: ::prost::alloc::vec::Vec<transcript::Exon>,
     /// The range of the coding sequence for this transcript, if any. To determine
     /// the exact ranges of coding sequence, intersect this range with those of the
-    /// [exons][google.genomics.v1.Transcript.exons], if any. If there are any
-    /// [exons][google.genomics.v1.Transcript.exons], the
-    /// [codingSequence][google.genomics.v1.Transcript.coding_sequence] must start
+    /// \[exons\]\[google.genomics.v1.Transcript.exons\], if any. If there are any
+    /// \[exons\]\[google.genomics.v1.Transcript.exons\], the
+    /// \[codingSequence\]\[google.genomics.v1.Transcript.coding_sequence\] must start
     /// and end within them.
     ///
     /// Note that in some cases, the reference genome will not exactly match the
     /// observed mRNA transcript e.g. due to variance in the source genome from
     /// reference. In these cases,
-    /// [exon.frame][google.genomics.v1.Transcript.Exon.frame] will not necessarily
+    /// \[exon.frame\]\[google.genomics.v1.Transcript.Exon.frame\] will not necessarily
     /// match the expected reference reading frame and coding exon reference bases
     /// cannot necessarily be concatenated to produce the original transcript mRNA.
     #[prost(message, optional, tag = "3")]
@@ -410,7 +410,7 @@ pub struct Transcript {
 }
 /// Nested message and enum types in `Transcript`.
 pub mod transcript {
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Exon {
         /// The start position of the exon on this annotation's reference sequence,
         /// 0-based inclusive. Note that this is relative to the reference start, and
@@ -426,11 +426,11 @@ pub mod transcript {
         /// the offset of the first coding base of the exon within the reading frame
         /// of the coding DNA sequence, if any. This field is dependent on the
         /// strandedness of this annotation (see
-        /// [Annotation.reverse_strand][google.genomics.v1.Annotation.reverse_strand]).
+        /// \[Annotation.reverse_strand\]\[google.genomics.v1.Annotation.reverse_strand\]).
         /// For forward stranded annotations, this offset is relative to the
-        /// [exon.start][google.genomics.v1.Transcript.Exon.start]. For reverse
+        /// \[exon.start\]\[google.genomics.v1.Transcript.Exon.start\]. For reverse
         /// strand annotations, this offset is relative to the
-        /// [exon.end][google.genomics.v1.Transcript.Exon.end] `- 1`.
+        /// \[exon.end\]\[google.genomics.v1.Transcript.Exon.end\] `- 1`.
         ///
         /// Unset if this exon does not intersect the coding sequence. Upon creation
         /// of a transcript, the frame must be populated for all or none of the
@@ -438,7 +438,7 @@ pub mod transcript {
         #[prost(message, optional, tag = "3")]
         pub frame: ::core::option::Option<i32>,
     }
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CodingSequence {
         /// The start of the coding sequence on this annotation's reference sequence,
         /// 0-based inclusive. Note that this position is relative to the reference
@@ -452,7 +452,7 @@ pub mod transcript {
         pub end: i64,
     }
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExternalId {
     /// The name of the source of this data.
     #[prost(string, tag = "1")]
@@ -467,7 +467,7 @@ pub struct CreateAnnotationSetRequest {
     #[prost(message, optional, tag = "1")]
     pub annotation_set: ::core::option::Option<AnnotationSet>,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAnnotationSetRequest {
     /// The ID of the annotation set to be retrieved.
     #[prost(string, tag = "1")]
@@ -482,20 +482,20 @@ pub struct UpdateAnnotationSetRequest {
     #[prost(message, optional, tag = "2")]
     pub annotation_set: ::core::option::Option<AnnotationSet>,
     /// An optional mask specifying which fields to update. Mutable fields are
-    /// [name][google.genomics.v1.AnnotationSet.name],
-    /// [source_uri][google.genomics.v1.AnnotationSet.source_uri], and
-    /// [info][google.genomics.v1.AnnotationSet.info]. If unspecified, all
+    /// \[name\]\[google.genomics.v1.AnnotationSet.name\],
+    /// \[source_uri\]\[google.genomics.v1.AnnotationSet.source_uri\], and
+    /// \[info\]\[google.genomics.v1.AnnotationSet.info\]. If unspecified, all
     /// mutable fields will be updated.
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAnnotationSetRequest {
     /// The ID of the annotation set to be deleted.
     #[prost(string, tag = "1")]
     pub annotation_set_id: ::prost::alloc::string::String,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchAnnotationSetsRequest {
     /// Required. The dataset IDs to search within. Caller must have `READ` access
     /// to these datasets.
@@ -575,7 +575,7 @@ pub mod batch_create_annotations_response {
         pub annotation: ::core::option::Option<super::Annotation>,
     }
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAnnotationRequest {
     /// The ID of the annotation to be retrieved.
     #[prost(string, tag = "1")]
@@ -590,21 +590,21 @@ pub struct UpdateAnnotationRequest {
     #[prost(message, optional, tag = "2")]
     pub annotation: ::core::option::Option<Annotation>,
     /// An optional mask specifying which fields to update. Mutable fields are
-    /// [name][google.genomics.v1.Annotation.name],
-    /// [variant][google.genomics.v1.Annotation.variant],
-    /// [transcript][google.genomics.v1.Annotation.transcript], and
-    /// [info][google.genomics.v1.Annotation.info]. If unspecified, all mutable
+    /// \[name\]\[google.genomics.v1.Annotation.name\],
+    /// \[variant\]\[google.genomics.v1.Annotation.variant\],
+    /// \[transcript\]\[google.genomics.v1.Annotation.transcript\], and
+    /// \[info\]\[google.genomics.v1.Annotation.info\]. If unspecified, all mutable
     /// fields will be updated.
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAnnotationRequest {
     /// The ID of the annotation to be deleted.
     #[prost(string, tag = "1")]
     pub annotation_id: ::prost::alloc::string::String,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchAnnotationsRequest {
     /// Required. The annotation sets to search within. The caller must have
     /// `READ` access to these annotation sets.
@@ -613,14 +613,14 @@ pub struct SearchAnnotationsRequest {
     pub annotation_set_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The start position of the range on the reference, 0-based inclusive. If
     /// specified,
-    /// [referenceId][google.genomics.v1.SearchAnnotationsRequest.reference_id] or
-    /// [referenceName][google.genomics.v1.SearchAnnotationsRequest.reference_name]
+    /// \[referenceId\]\[google.genomics.v1.SearchAnnotationsRequest.reference_id\] or
+    /// \[referenceName\]\[google.genomics.v1.SearchAnnotationsRequest.reference_name\]
     /// must be specified. Defaults to 0.
     #[prost(int64, tag = "4")]
     pub start: i64,
     /// The end position of the range on the reference, 0-based exclusive. If
-    /// [referenceId][google.genomics.v1.SearchAnnotationsRequest.reference_id] or
-    /// [referenceName][google.genomics.v1.SearchAnnotationsRequest.reference_name]
+    /// \[referenceId\]\[google.genomics.v1.SearchAnnotationsRequest.reference_id\] or
+    /// \[referenceName\]\[google.genomics.v1.SearchAnnotationsRequest.reference_name\]
     /// must be specified, Defaults to the length of the reference.
     #[prost(int64, tag = "5")]
     pub end: i64,
@@ -640,7 +640,7 @@ pub struct SearchAnnotationsRequest {
 /// Nested message and enum types in `SearchAnnotationsRequest`.
 pub mod search_annotations_request {
     /// Required. `reference_id` or `reference_name` must be set.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Reference {
         /// The ID of the reference to query.
         #[prost(string, tag = "2")]
@@ -662,8 +662,8 @@ pub struct SearchAnnotationsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// When an [Annotation][google.genomics.v1.Annotation] or
-/// [AnnotationSet][google.genomics.v1.AnnotationSet] is created, if `type` is
+/// When an \[Annotation\]\[google.genomics.v1.Annotation\] or
+/// \[AnnotationSet\]\[google.genomics.v1.AnnotationSet\] is created, if `type` is
 /// not specified it will be set to `GENERIC`.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -808,8 +808,8 @@ pub mod annotation_service_v1_client {
         ///
         /// The following fields are required:
         ///
-        ///   * [datasetId][google.genomics.v1.AnnotationSet.dataset_id]
-        ///   * [referenceSetId][google.genomics.v1.AnnotationSet.reference_set_id]
+        /// * \[datasetId\]\[google.genomics.v1.AnnotationSet.dataset_id\]
+        /// * \[referenceSetId\]\[google.genomics.v1.AnnotationSet.reference_set_id\]
         ///
         /// All other fields may be optionally specified, unless documented as being
         /// server-generated (for example, the `id` field).
@@ -825,7 +825,7 @@ pub mod annotation_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.AnnotationServiceV1/CreateAnnotationSet",
             );
@@ -853,7 +853,7 @@ pub mod annotation_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.AnnotationServiceV1/GetAnnotationSet",
             );
@@ -882,7 +882,7 @@ pub mod annotation_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.AnnotationServiceV1/UpdateAnnotationSet",
             );
@@ -910,7 +910,7 @@ pub mod annotation_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.AnnotationServiceV1/DeleteAnnotationSet",
             );
@@ -944,7 +944,7 @@ pub mod annotation_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.AnnotationServiceV1/SearchAnnotationSets",
             );
@@ -963,22 +963,22 @@ pub mod annotation_service_v1_client {
         ///
         /// The following fields are required:
         ///
-        /// * [annotationSetId][google.genomics.v1.Annotation.annotation_set_id]
-        /// * [referenceName][google.genomics.v1.Annotation.reference_name] or
-        ///   [referenceId][google.genomics.v1.Annotation.reference_id]
+        /// * \[annotationSetId\]\[google.genomics.v1.Annotation.annotation_set_id\]
+        /// * \[referenceName\]\[google.genomics.v1.Annotation.reference_name\] or
+        ///  \[referenceId\]\[google.genomics.v1.Annotation.reference_id\]
         ///
         /// ### Transcripts
         ///
         /// For annotations of type TRANSCRIPT, the following fields of
-        /// [transcript][google.genomics.v1.Annotation.transcript] must be provided:
+        /// \[transcript\]\[google.genomics.v1.Annotation.transcript\] must be provided:
         ///
-        /// * [exons.start][google.genomics.v1.Transcript.Exon.start]
-        /// * [exons.end][google.genomics.v1.Transcript.Exon.end]
+        /// * \[exons.start\]\[google.genomics.v1.Transcript.Exon.start\]
+        /// * \[exons.end\]\[google.genomics.v1.Transcript.Exon.end\]
         ///
         /// All other fields may be optionally specified, unless documented as being
         /// server-generated (for example, the `id` field). The annotated
         /// range must be no longer than 100Mbp (mega base pairs). See the
-        /// [Annotation resource][google.genomics.v1.Annotation]
+        /// \[Annotation resource\]\[google.genomics.v1.Annotation\]
         /// for additional restrictions on each field.
         pub async fn create_annotation(
             &mut self,
@@ -992,7 +992,7 @@ pub mod annotation_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.AnnotationServiceV1/CreateAnnotation",
             );
@@ -1019,7 +1019,7 @@ pub mod annotation_service_v1_client {
         ///
         /// For details on the requirements for each individual annotation resource,
         /// see
-        /// [CreateAnnotation][google.genomics.v1.AnnotationServiceV1.CreateAnnotation].
+        /// \[CreateAnnotation\]\[google.genomics.v1.AnnotationServiceV1.CreateAnnotation\].
         pub async fn batch_create_annotations(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchCreateAnnotationsRequest>,
@@ -1035,7 +1035,7 @@ pub mod annotation_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.AnnotationServiceV1/BatchCreateAnnotations",
             );
@@ -1063,7 +1063,7 @@ pub mod annotation_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.AnnotationServiceV1/GetAnnotation",
             );
@@ -1091,7 +1091,7 @@ pub mod annotation_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.AnnotationServiceV1/UpdateAnnotation",
             );
@@ -1119,7 +1119,7 @@ pub mod annotation_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.AnnotationServiceV1/DeleteAnnotation",
             );
@@ -1155,7 +1155,7 @@ pub mod annotation_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.AnnotationServiceV1/SearchAnnotations",
             );
@@ -1172,7 +1172,7 @@ pub mod annotation_service_v1_client {
     }
 }
 /// A single CIGAR operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CigarUnit {
     #[prost(enumeration = "cigar_unit::Operation", tag = "1")]
     pub operation: i32,
@@ -1290,7 +1290,7 @@ pub mod cigar_unit {
 ///
 /// For more genomics resource definitions, see [Fundamentals of Google
 /// Genomics](<https://cloud.google.com/genomics/fundamentals-of-google-genomics>)
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Dataset {
     /// The server-generated dataset ID, unique across all datasets.
     #[prost(string, tag = "1")]
@@ -1306,7 +1306,7 @@ pub struct Dataset {
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The dataset list request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDatasetsRequest {
     /// Required. The Google Cloud project ID to list datasets for.
     #[prost(string, tag = "1")]
@@ -1333,13 +1333,13 @@ pub struct ListDatasetsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateDatasetRequest {
     /// The dataset to be created. Must contain projectId and name.
     #[prost(message, optional, tag = "1")]
     pub dataset: ::core::option::Option<Dataset>,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateDatasetRequest {
     /// The ID of the dataset to be updated.
     #[prost(string, tag = "1")]
@@ -1348,25 +1348,25 @@ pub struct UpdateDatasetRequest {
     #[prost(message, optional, tag = "2")]
     pub dataset: ::core::option::Option<Dataset>,
     /// An optional mask specifying which fields to update. At this time, the only
-    /// mutable field is [name][google.genomics.v1.Dataset.name]. The only
+    /// mutable field is \[name\]\[google.genomics.v1.Dataset.name\]. The only
     /// acceptable value is "name". If unspecified, all mutable fields will be
     /// updated.
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDatasetRequest {
     /// The ID of the dataset to be deleted.
     #[prost(string, tag = "1")]
     pub dataset_id: ::prost::alloc::string::String,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UndeleteDatasetRequest {
     /// The ID of the dataset to be undeleted.
     #[prost(string, tag = "1")]
     pub dataset_id: ::prost::alloc::string::String,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDatasetRequest {
     /// The ID of the dataset.
     #[prost(string, tag = "1")]
@@ -1484,7 +1484,7 @@ pub mod dataset_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.DatasetServiceV1/ListDatasets",
             );
@@ -1515,7 +1515,7 @@ pub mod dataset_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.DatasetServiceV1/CreateDataset",
             );
@@ -1546,7 +1546,7 @@ pub mod dataset_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.DatasetServiceV1/GetDataset",
             );
@@ -1576,7 +1576,7 @@ pub mod dataset_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.DatasetServiceV1/UpdateDataset",
             );
@@ -1594,7 +1594,7 @@ pub mod dataset_service_v1_client {
         /// reference sets, variant sets, call sets, annotation sets, etc.)
         /// This is reversible (up to one week after the deletion) via
         /// the
-        /// [datasets.undelete][google.genomics.v1.DatasetServiceV1.UndeleteDataset]
+        /// \[datasets.undelete\]\[google.genomics.v1.DatasetServiceV1.UndeleteDataset\]
         /// operation.
         ///
         /// For the definitions of datasets and other genomics resources, see
@@ -1612,7 +1612,7 @@ pub mod dataset_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.DatasetServiceV1/DeleteDataset",
             );
@@ -1645,7 +1645,7 @@ pub mod dataset_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.DatasetServiceV1/UndeleteDataset",
             );
@@ -1685,7 +1685,7 @@ pub mod dataset_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.DatasetServiceV1/SetIamPolicy",
             );
@@ -1725,7 +1725,7 @@ pub mod dataset_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.DatasetServiceV1/GetIamPolicy",
             );
@@ -1763,7 +1763,7 @@ pub mod dataset_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.DatasetServiceV1/TestIamPermissions",
             );
@@ -1779,7 +1779,7 @@ pub mod dataset_service_v1_client {
         }
     }
 }
-/// Metadata describing an [Operation][google.longrunning.Operation].
+/// Metadata describing an \[Operation\]\[google.longrunning.Operation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// The Google Cloud Project in which the job is scoped.
@@ -1819,8 +1819,8 @@ pub struct OperationMetadata {
         ::prost::alloc::string::String,
     >,
 }
-/// An event that occurred during an [Operation][google.longrunning.Operation].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// An event that occurred during an \[Operation\]\[google.longrunning.Operation\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationEvent {
     /// Optional time of when event started.
     #[prost(message, optional, tag = "1")]
@@ -1837,7 +1837,7 @@ pub struct OperationEvent {
 /// already known reference. For now, represents a genomic position as a
 /// reference name, a base number on that reference (0-based), and a
 /// determination of forward or reverse strand.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Position {
     /// The name of the reference in whatever reference set is being used.
     #[prost(string, tag = "1")]
@@ -1851,7 +1851,7 @@ pub struct Position {
     pub reverse_strand: bool,
 }
 /// A 0-based half-open genomic coordinate range for search requests.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Range {
     /// The reference sequence name, for example `chr1`,
     /// `1`, or `chrX`.
@@ -1884,11 +1884,11 @@ pub struct LinearAlignment {
     pub cigar: ::prost::alloc::vec::Vec<CigarUnit>,
 }
 /// A read alignment describes a linear alignment of a string of DNA to a
-/// [reference sequence][google.genomics.v1.Reference], in addition to metadata
+/// \[reference sequence\]\[google.genomics.v1.Reference\], in addition to metadata
 /// about the fragment (the molecule of DNA sequenced) and the read (the bases
 /// which were read by the sequencer). A read is equivalent to a line in a SAM
 /// file. A read belongs to exactly one read group and exactly one
-/// [read group set][google.genomics.v1.ReadGroupSet].
+/// \[read group set\]\[google.genomics.v1.ReadGroupSet\].
 ///
 /// For more genomics resource definitions, see [Fundamentals of Google
 /// Genomics](<https://cloud.google.com/genomics/fundamentals-of-google-genomics>)
@@ -1917,31 +1917,33 @@ pub struct LinearAlignment {
 /// representing the local alignment of the read to reference. The following
 /// pseudocode demonstrates one way of doing this:
 ///
-///      out = ""
-///      offset = 0
-///      for c in read.alignment.cigar {
-///        switch c.operation {
-///        case "ALIGNMENT_MATCH", "SEQUENCE_MATCH", "SEQUENCE_MISMATCH":
-///          out += read.alignedSequence\[offset:offset+c.operationLength\]
-///          offset += c.operationLength
-///          break
-///        case "CLIP_SOFT", "INSERT":
-///          offset += c.operationLength
-///          break
-///        case "PAD":
-///          out += repeat("*", c.operationLength)
-///          break
-///        case "DELETE":
-///          out += repeat("-", c.operationLength)
-///          break
-///        case "SKIP":
-///          out += repeat(" ", c.operationLength)
-///          break
-///        case "CLIP_HARD":
-///          break
-///        }
-///      }
-///      return out
+/// ```text
+/// out = ""
+/// offset = 0
+/// for c in read.alignment.cigar {
+///    switch c.operation {
+///    case "ALIGNMENT_MATCH", "SEQUENCE_MATCH", "SEQUENCE_MISMATCH":
+///      out += read.alignedSequence\[offset:offset+c.operationLength\]
+///      offset += c.operationLength
+///      break
+///    case "CLIP_SOFT", "INSERT":
+///      offset += c.operationLength
+///      break
+///    case "PAD":
+///      out += repeat("*", c.operationLength)
+///      break
+///    case "DELETE":
+///      out += repeat("-", c.operationLength)
+///      break
+///    case "SKIP":
+///      out += repeat(" ", c.operationLength)
+///      break
+///    case "CLIP_HARD":
+///      break
+///    }
+/// }
+/// return out
+/// ```
 ///
 /// ### Converting to SAM's CIGAR string
 ///
@@ -1949,22 +1951,24 @@ pub struct LinearAlignment {
 /// `cigar` field. Note that this is a lossy conversion
 /// (`cigar.referenceSequence` is lost).
 ///
-///      cigarMap = {
-///        "ALIGNMENT_MATCH": "M",
-///        "INSERT": "I",
-///        "DELETE": "D",
-///        "SKIP": "N",
-///        "CLIP_SOFT": "S",
-///        "CLIP_HARD": "H",
-///        "PAD": "P",
-///        "SEQUENCE_MATCH": "=",
-///        "SEQUENCE_MISMATCH": "X",
-///      }
-///      cigarStr = ""
-///      for c in read.alignment.cigar {
-///        cigarStr += c.operationLength + cigarMap\[c.operation\]
-///      }
-///      return cigarStr
+/// ```text
+/// cigarMap = {
+///    "ALIGNMENT_MATCH": "M",
+///    "INSERT": "I",
+///    "DELETE": "D",
+///    "SKIP": "N",
+///    "CLIP_SOFT": "S",
+///    "CLIP_HARD": "H",
+///    "PAD": "P",
+///    "SEQUENCE_MATCH": "=",
+///    "SEQUENCE_MISMATCH": "X",
+/// }
+/// cigarStr = ""
+/// for c in read.alignment.cigar {
+///    cigarStr += c.operationLength + cigarMap\[c.operation\]
+/// }
+/// return cigarStr
+/// ```
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Read {
     /// The server-generated read ID, unique across all reads. This is different
@@ -1974,7 +1978,7 @@ pub struct Read {
     /// The ID of the read group this read belongs to. A read belongs to exactly
     /// one read group. This is a server-generated ID which is distinct from SAM's
     /// RG tag (for that value, see
-    /// [ReadGroup.name][google.genomics.v1.ReadGroup.name]).
+    /// \[ReadGroup.name\]\[google.genomics.v1.ReadGroup.name\]).
     #[prost(string, tag = "2")]
     pub read_group_id: ::prost::alloc::string::String,
     /// The ID of the read group set this read belongs to. A read belongs to
@@ -2054,7 +2058,7 @@ pub struct Read {
     #[prost(message, optional, tag = "16")]
     pub next_mate_position: ::core::option::Option<Position>,
     /// A map of additional read alignment information. This must be of the form
-    /// map<string, string\[\]> (string key mapping to a list of string values).
+    /// map\<string, string\[\]\> (string key mapping to a list of string values).
     #[prost(map = "string, message", tag = "17")]
     pub info: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -2066,7 +2070,7 @@ pub struct Read {
 pub struct ReadGroup {
     /// The server-generated read group ID, unique for all read groups.
     /// Note: This is different than the @RG ID field in the SAM spec. For that
-    /// value, see [name][google.genomics.v1.ReadGroup.name].
+    /// value, see \[name\]\[google.genomics.v1.ReadGroup.name\].
     #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
     /// The dataset to which this read group belongs.
@@ -2098,7 +2102,7 @@ pub struct ReadGroup {
     #[prost(string, tag = "11")]
     pub reference_set_id: ::prost::alloc::string::String,
     /// A map of additional read group information. This must be of the form
-    /// map<string, string\[\]> (string key mapping to a list of string values).
+    /// map\<string, string\[\]\> (string key mapping to a list of string values).
     #[prost(map = "string, message", tag = "12")]
     pub info: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -2107,7 +2111,7 @@ pub struct ReadGroup {
 }
 /// Nested message and enum types in `ReadGroup`.
 pub mod read_group {
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Experiment {
         /// A client-supplied library identifier; a library is a collection of DNA
         /// fragments which have been prepared for sequencing from a sample. This
@@ -2128,7 +2132,7 @@ pub mod read_group {
         #[prost(string, tag = "4")]
         pub instrument_model: ::prost::alloc::string::String,
     }
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Program {
         /// The command line used to run this program.
         #[prost(string, tag = "1")]
@@ -2190,7 +2194,7 @@ pub struct ReadGroupSet {
     >,
 }
 /// The read group set search request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchReadGroupSetsRequest {
     /// Restricts this query to read group sets within the given datasets. At least
     /// one ID must be provided.
@@ -2223,7 +2227,7 @@ pub struct SearchReadGroupSetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The read group set import request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportReadGroupSetsRequest {
     /// Required. The ID of the dataset these read group sets will belong to. The
     /// caller must have WRITE permissions to this dataset.
@@ -2238,7 +2242,7 @@ pub struct ImportReadGroupSetsRequest {
     /// A list of URIs pointing at [BAM
     /// files](<https://samtools.github.io/hts-specs/SAMv1.pdf>)
     /// in Google Cloud Storage.
-    /// Those URIs can include wildcards (*), but do not add or remove
+    /// Those URIs can include wildcards (\*), but do not add or remove
     /// matching files before import has completed.
     ///
     /// Note that Google Cloud Storage object listing is only eventually
@@ -2309,14 +2313,14 @@ pub mod import_read_group_sets_request {
     }
 }
 /// The read group set import response.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportReadGroupSetsResponse {
     /// IDs of the read group sets that were created.
     #[prost(string, repeated, tag = "1")]
     pub read_group_set_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The read group set export request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportReadGroupSetRequest {
     /// Required. The Google Cloud project ID that owns this
     /// export. The caller must have WRITE access to this project.
@@ -2349,28 +2353,28 @@ pub struct UpdateReadGroupSetRequest {
     pub read_group_set: ::core::option::Option<ReadGroupSet>,
     /// An optional mask specifying which fields to update. Supported fields:
     ///
-    /// * [name][google.genomics.v1.ReadGroupSet.name].
-    /// * [referenceSetId][google.genomics.v1.ReadGroupSet.reference_set_id].
+    /// * \[name\]\[google.genomics.v1.ReadGroupSet.name\].
+    /// * \[referenceSetId\]\[google.genomics.v1.ReadGroupSet.reference_set_id\].
     ///
     /// Leaving `updateMask` unset is equivalent to specifying all mutable
     /// fields.
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteReadGroupSetRequest {
     /// The ID of the read group set to be deleted. The caller must have WRITE
     /// permissions to the dataset associated with this read group set.
     #[prost(string, tag = "1")]
     pub read_group_set_id: ::prost::alloc::string::String,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetReadGroupSetRequest {
     /// The ID of the read group set.
     #[prost(string, tag = "1")]
     pub read_group_set_id: ::prost::alloc::string::String,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCoverageBucketsRequest {
     /// Required. The ID of the read group set over which coverage is requested.
     #[prost(string, tag = "1")]
@@ -2440,7 +2444,7 @@ pub struct ListCoverageBucketsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The read search request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchReadsRequest {
     /// The IDs of the read groups sets within which to search for reads. All
     /// specified read group sets must be aligned against a common set of reference
@@ -2492,7 +2496,7 @@ pub struct SearchReadsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The stream reads request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamReadsRequest {
     /// The Google Cloud project ID which will be billed
     /// for this access. The caller must have WRITE access to this project.
@@ -2503,7 +2507,7 @@ pub struct StreamReadsRequest {
     #[prost(string, tag = "2")]
     pub read_group_set_id: ::prost::alloc::string::String,
     /// The reference sequence name, for example `chr1`,
-    /// `1`, or `chrX`. If set to *, only unmapped reads are
+    /// `1`, or `chrX`. If set to \*, only unmapped reads are
     /// returned.
     #[prost(string, tag = "3")]
     pub reference_name: ::prost::alloc::string::String,
@@ -2652,7 +2656,7 @@ pub mod streaming_read_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.StreamingReadService/StreamReads",
             );
@@ -2771,13 +2775,13 @@ pub mod read_service_v1_client {
         ///
         /// ## Notes on [BAM](https://samtools.github.io/hts-specs/SAMv1.pdf) import
         ///
-        /// - Tags will be converted to strings - tag types are not preserved
-        /// - Comments (`@CO`) in the input file header will not be preserved
-        /// - Original header order of references (`@SQ`) will not be preserved
-        /// - Any reverse stranded unmapped reads will be reverse complemented, and
-        /// their qualities (also the "BQ" and "OQ" tags, if any) will be reversed
-        /// - Unmapped reads will be stripped of positional information (reference name
-        /// and position)
+        /// * Tags will be converted to strings - tag types are not preserved
+        /// * Comments (`@CO`) in the input file header will not be preserved
+        /// * Original header order of references (`@SQ`) will not be preserved
+        /// * Any reverse stranded unmapped reads will be reverse complemented, and
+        ///  their qualities (also the "BQ" and "OQ" tags, if any) will be reversed
+        /// * Unmapped reads will be stripped of positional information (reference name
+        ///  and position)
         pub async fn import_read_group_sets(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportReadGroupSetsRequest>,
@@ -2793,7 +2797,7 @@ pub mod read_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReadServiceV1/ImportReadGroupSets",
             );
@@ -2815,7 +2819,7 @@ pub mod read_service_v1_client {
         ///
         /// Note that currently there may be some differences between exported BAM
         /// files and the original BAM file at the time of import. See
-        /// [ImportReadGroupSets][google.genomics.v1.ReadServiceV1.ImportReadGroupSets]
+        /// \[ImportReadGroupSets\]\[google.genomics.v1.ReadServiceV1.ImportReadGroupSets\]
         /// for caveats.
         pub async fn export_read_group_set(
             &mut self,
@@ -2832,7 +2836,7 @@ pub mod read_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReadServiceV1/ExportReadGroupSet",
             );
@@ -2869,7 +2873,7 @@ pub mod read_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReadServiceV1/SearchReadGroupSets",
             );
@@ -2902,7 +2906,7 @@ pub mod read_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReadServiceV1/UpdateReadGroupSet",
             );
@@ -2933,7 +2937,7 @@ pub mod read_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReadServiceV1/DeleteReadGroupSet",
             );
@@ -2964,7 +2968,7 @@ pub mod read_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReadServiceV1/GetReadGroupSet",
             );
@@ -3006,7 +3010,7 @@ pub mod read_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReadServiceV1/ListCoverageBuckets",
             );
@@ -3059,7 +3063,7 @@ pub mod read_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReadServiceV1/SearchReads",
             );
@@ -3079,7 +3083,7 @@ pub mod read_service_v1_client {
 ///
 /// For more genomics resource definitions, see [Fundamentals of Google
 /// Genomics](<https://cloud.google.com/genomics/fundamentals-of-google-genomics>)
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Reference {
     /// The server-generated reference ID, unique across all references.
     #[prost(string, tag = "1")]
@@ -3115,7 +3119,7 @@ pub struct Reference {
 ///
 /// For more genomics resource definitions, see [Fundamentals of Google
 /// Genomics](<https://cloud.google.com/genomics/fundamentals-of-google-genomics>)
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReferenceSet {
     /// The server-generated reference set ID, unique across all reference sets.
     #[prost(string, tag = "1")]
@@ -3152,14 +3156,14 @@ pub struct ReferenceSet {
     #[prost(string, repeated, tag = "8")]
     pub source_accessions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchReferenceSetsRequest {
     /// If present, return reference sets for which the
-    /// [md5checksum][google.genomics.v1.ReferenceSet.md5checksum] matches exactly.
+    /// \[md5checksum\]\[google.genomics.v1.ReferenceSet.md5checksum\] matches exactly.
     #[prost(string, repeated, tag = "1")]
     pub md5checksums: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// If present, return reference sets for which a prefix of any of
-    /// [sourceAccessions][google.genomics.v1.ReferenceSet.source_accessions]
+    /// \[sourceAccessions\]\[google.genomics.v1.ReferenceSet.source_accessions\]
     /// match any of these strings. Accession numbers typically have a main number
     /// and a version, for example `NC_000001.11`.
     #[prost(string, repeated, tag = "2")]
@@ -3189,20 +3193,20 @@ pub struct SearchReferenceSetsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetReferenceSetRequest {
     /// The ID of the reference set.
     #[prost(string, tag = "1")]
     pub reference_set_id: ::prost::alloc::string::String,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchReferencesRequest {
     /// If present, return references for which the
-    /// [md5checksum][google.genomics.v1.Reference.md5checksum] matches exactly.
+    /// \[md5checksum\]\[google.genomics.v1.Reference.md5checksum\] matches exactly.
     #[prost(string, repeated, tag = "1")]
     pub md5checksums: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// If present, return references for which a prefix of any of
-    /// [sourceAccessions][google.genomics.v1.Reference.source_accessions] match
+    /// \[sourceAccessions\]\[google.genomics.v1.Reference.source_accessions\] match
     /// any of these strings. Accession numbers typically have a main number and a
     /// version, for example `GCF_000001405.26`.
     #[prost(string, repeated, tag = "2")]
@@ -3231,13 +3235,13 @@ pub struct SearchReferencesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetReferenceRequest {
     /// The ID of the reference.
     #[prost(string, tag = "1")]
     pub reference_id: ::prost::alloc::string::String,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListBasesRequest {
     /// The ID of the reference.
     #[prost(string, tag = "1")]
@@ -3260,7 +3264,7 @@ pub struct ListBasesRequest {
     #[prost(int32, tag = "5")]
     pub page_size: i32,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListBasesResponse {
     /// The offset position (0-based) of the given `sequence` from the
     /// start of this `Reference`. This value will differ for each page
@@ -3390,7 +3394,7 @@ pub mod reference_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReferenceServiceV1/SearchReferenceSets",
             );
@@ -3424,7 +3428,7 @@ pub mod reference_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReferenceServiceV1/GetReferenceSet",
             );
@@ -3461,7 +3465,7 @@ pub mod reference_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReferenceServiceV1/SearchReferences",
             );
@@ -3495,7 +3499,7 @@ pub mod reference_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReferenceServiceV1/GetReference",
             );
@@ -3532,7 +3536,7 @@ pub mod reference_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.ReferenceServiceV1/ListBases",
             );
@@ -3574,7 +3578,7 @@ pub struct VariantSetMetadata {
     #[prost(string, tag = "7")]
     pub description: ::prost::alloc::string::String,
     /// Remaining structured metadata key-value pairs. This must be of the form
-    /// map<string, string\[\]> (string key mapping to a list of string values).
+    /// map\<string, string\[\]\> (string key mapping to a list of string values).
     #[prost(map = "string, message", tag = "3")]
     pub info: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -3727,7 +3731,7 @@ pub struct Variant {
     #[prost(string, repeated, tag = "9")]
     pub filter: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A map of additional variant information. This must be of the form
-    /// map<string, string\[\]> (string key mapping to a list of string values).
+    /// map\<string, string\[\]\> (string key mapping to a list of string values).
     #[prost(map = "string, message", tag = "10")]
     pub info: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -3780,7 +3784,7 @@ pub struct VariantCall {
     #[prost(double, repeated, tag = "6")]
     pub genotype_likelihood: ::prost::alloc::vec::Vec<f64>,
     /// A map of additional variant call information. This must be of the form
-    /// map<string, string\[\]> (string key mapping to a list of string values).
+    /// map\<string, string\[\]\> (string key mapping to a list of string values).
     #[prost(map = "string, message", tag = "2")]
     pub info: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -3814,7 +3818,7 @@ pub struct CallSet {
     #[prost(int64, tag = "5")]
     pub created: i64,
     /// A map of additional call set information. This must be of the form
-    /// map<string, string\[\]> (string key mapping to a list of string values).
+    /// map\<string, string\[\]\> (string key mapping to a list of string values).
     #[prost(map = "string, message", tag = "4")]
     pub info: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -3823,7 +3827,7 @@ pub struct CallSet {
 }
 /// ReferenceBound records an upper bound for the starting coordinate of
 /// variants in a particular reference.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReferenceBound {
     /// The name of the reference associated with this reference bound.
     #[prost(string, tag = "1")]
@@ -3842,7 +3846,7 @@ pub struct ImportVariantsRequest {
     /// A list of URIs referencing variant files in Google Cloud Storage. URIs can
     /// include wildcards [as described
     /// here](<https://cloud.google.com/storage/docs/gsutil/addlhelp/WildcardNames>).
-    /// Note that recursive wildcards ('**') are not supported.
+    /// Note that recursive wildcards ('\*\*') are not supported.
     #[prost(string, repeated, tag = "2")]
     pub source_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The format of the variant data being imported. If unspecified, defaults to
@@ -3850,7 +3854,7 @@ pub struct ImportVariantsRequest {
     #[prost(enumeration = "import_variants_request::Format", tag = "3")]
     pub format: i32,
     /// Convert reference names to the canonical representation.
-    /// hg19 haploytypes (those reference names containing "_hap")
+    /// hg19 haploytypes (those reference names containing "\_hap")
     /// are not modified in any way.
     /// All other reference names are modified according to the following rules:
     /// The reference name is capitalized.
@@ -3915,7 +3919,7 @@ pub mod import_variants_request {
     }
 }
 /// The variant data import response.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportVariantsResponse {
     /// IDs of the call sets created during the import.
     #[prost(string, repeated, tag = "1")]
@@ -3929,7 +3933,7 @@ pub struct CreateVariantSetRequest {
     pub variant_set: ::core::option::Option<VariantSet>,
 }
 /// The variant data export request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportVariantSetRequest {
     /// Required. The ID of the variant set that contains variant data which
     /// should be exported. The caller must have READ access to this variant set.
@@ -3998,14 +4002,14 @@ pub mod export_variant_set_request {
     }
 }
 /// The variant set request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetVariantSetRequest {
     /// Required. The ID of the variant set.
     #[prost(string, tag = "1")]
     pub variant_set_id: ::prost::alloc::string::String,
 }
 /// The search variant sets request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchVariantSetsRequest {
     /// Exactly one dataset ID must be provided here. Only variant sets which
     /// belong to this dataset will be returned.
@@ -4034,7 +4038,7 @@ pub struct SearchVariantSetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The delete variant set request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteVariantSetRequest {
     /// The ID of the variant set to be deleted.
     #[prost(string, tag = "1")]
@@ -4051,9 +4055,9 @@ pub struct UpdateVariantSetRequest {
     pub variant_set: ::core::option::Option<VariantSet>,
     /// An optional mask specifying which fields to update. Supported fields:
     ///
-    /// * [metadata][google.genomics.v1.VariantSet.metadata].
-    /// * [name][google.genomics.v1.VariantSet.name].
-    /// * [description][google.genomics.v1.VariantSet.description].
+    /// * \[metadata\]\[google.genomics.v1.VariantSet.metadata\].
+    /// * \[name\]\[google.genomics.v1.VariantSet.name\].
+    /// * \[description\]\[google.genomics.v1.VariantSet.description\].
     ///
     /// Leaving `updateMask` unset is equivalent to specifying all mutable
     /// fields.
@@ -4061,7 +4065,7 @@ pub struct UpdateVariantSetRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The variant search request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchVariantsRequest {
     /// At most one variant set ID must be provided. Only variants from this
     /// variant set will be returned. If omitted, a call set id must be included in
@@ -4130,19 +4134,19 @@ pub struct UpdateVariantRequest {
     #[prost(message, optional, tag = "2")]
     pub variant: ::core::option::Option<Variant>,
     /// An optional mask specifying which fields to update. At this time, mutable
-    /// fields are [names][google.genomics.v1.Variant.names] and
-    /// [info][google.genomics.v1.Variant.info]. Acceptable values are "names" and
+    /// fields are \[names\]\[google.genomics.v1.Variant.names\] and
+    /// \[info\]\[google.genomics.v1.Variant.info\]. Acceptable values are "names" and
     /// "info". If unspecified, all mutable fields will be updated.
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteVariantRequest {
     /// The ID of the variant to be deleted.
     #[prost(string, tag = "1")]
     pub variant_id: ::prost::alloc::string::String,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetVariantRequest {
     /// The ID of the variant.
     #[prost(string, tag = "1")]
@@ -4165,7 +4169,7 @@ pub struct MergeVariantsRequest {
     >,
 }
 /// The call set search request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchCallSetsRequest {
     /// Restrict the query to call sets within the given variant sets. At least one
     /// ID must be provided.
@@ -4212,26 +4216,26 @@ pub struct UpdateCallSetRequest {
     #[prost(message, optional, tag = "2")]
     pub call_set: ::core::option::Option<CallSet>,
     /// An optional mask specifying which fields to update. At this time, the only
-    /// mutable field is [name][google.genomics.v1.CallSet.name]. The only
+    /// mutable field is \[name\]\[google.genomics.v1.CallSet.name\]. The only
     /// acceptable value is "name". If unspecified, all mutable fields will be
     /// updated.
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteCallSetRequest {
     /// The ID of the call set to be deleted.
     #[prost(string, tag = "1")]
     pub call_set_id: ::prost::alloc::string::String,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCallSetRequest {
     /// The ID of the call set.
     #[prost(string, tag = "1")]
     pub call_set_id: ::prost::alloc::string::String,
 }
 /// The stream variants request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamVariantsRequest {
     /// The Google Cloud project ID which will be billed
     /// for this access. The caller must have WRITE access to this project.
@@ -4411,7 +4415,7 @@ pub mod streaming_variant_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.StreamingVariantService/StreamVariants",
             );
@@ -4531,7 +4535,7 @@ pub mod variant_service_v1_client {
         /// When variants are merged, the call information from the new variant
         /// is added to the existing variant, and Variant info fields are merged
         /// as specified in
-        /// [infoMergeConfig][google.genomics.v1.ImportVariantsRequest.info_merge_config].
+        /// \[infoMergeConfig\]\[google.genomics.v1.ImportVariantsRequest.info_merge_config\].
         /// As a special case, for single-sample VCF files, QUAL and FILTER fields will
         /// be moved to the call level; these are sometimes interpreted in a
         /// call-specific context.
@@ -4551,7 +4555,7 @@ pub mod variant_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/ImportVariants",
             );
@@ -4586,7 +4590,7 @@ pub mod variant_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/CreateVariantSet",
             );
@@ -4620,7 +4624,7 @@ pub mod variant_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/ExportVariantSet",
             );
@@ -4651,7 +4655,7 @@ pub mod variant_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/GetVariantSet",
             );
@@ -4688,7 +4692,7 @@ pub mod variant_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/SearchVariantSets",
             );
@@ -4720,7 +4724,7 @@ pub mod variant_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/DeleteVariantSet",
             );
@@ -4751,7 +4755,7 @@ pub mod variant_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/UpdateVariantSet",
             );
@@ -4788,7 +4792,7 @@ pub mod variant_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/SearchVariants",
             );
@@ -4819,7 +4823,7 @@ pub mod variant_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/CreateVariant",
             );
@@ -4853,7 +4857,7 @@ pub mod variant_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/UpdateVariant",
             );
@@ -4884,7 +4888,7 @@ pub mod variant_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/DeleteVariant",
             );
@@ -4915,7 +4919,7 @@ pub mod variant_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/GetVariant",
             );
@@ -4940,7 +4944,7 @@ pub mod variant_service_v1_client {
         /// When variants are merged, the call information from the new variant
         /// is added to the existing variant. Variant info fields are merged as
         /// specified in the
-        /// [infoMergeConfig][google.genomics.v1.MergeVariantsRequest.info_merge_config]
+        /// \[infoMergeConfig\]\[google.genomics.v1.MergeVariantsRequest.info_merge_config\]
         /// field of the MergeVariantsRequest.
         ///
         /// Please exercise caution when using this method!  It is easy to introduce
@@ -4950,70 +4954,74 @@ pub mod variant_service_v1_client {
         /// both
         /// variants contain calls that belong to callsets with the same callset ID.
         ///
-        ///     // Existing variant - irrelevant fields trimmed for clarity
-        ///     {
-        ///         "variantSetId": "10473108253681171589",
-        ///         "referenceName": "1",
-        ///         "start": "10582",
-        ///         "referenceBases": "G",
-        ///         "alternateBases": [
-        ///             "A"
-        ///         ],
-        ///         "calls": [
-        ///             {
-        ///                 "callSetId": "10473108253681171589-0",
-        ///                 "callSetName": "CALLSET0",
-        ///                 "genotype": [
-        ///                     0,
-        ///                     1
-        ///                 ],
-        ///             }
-        ///         ]
-        ///     }
+        /// ```text
+        /// // Existing variant - irrelevant fields trimmed for clarity
+        /// {
+        ///     "variantSetId": "10473108253681171589",
+        ///     "referenceName": "1",
+        ///     "start": "10582",
+        ///     "referenceBases": "G",
+        ///     "alternateBases": [
+        ///         "A"
+        ///     ],
+        ///     "calls": [
+        ///         {
+        ///             "callSetId": "10473108253681171589-0",
+        ///             "callSetName": "CALLSET0",
+        ///             "genotype": [
+        ///                 0,
+        ///                 1
+        ///             ],
+        ///         }
+        ///     ]
+        /// }
         ///
-        ///     // New variant with conflicting call information
-        ///     {
-        ///         "variantSetId": "10473108253681171589",
-        ///         "referenceName": "1",
-        ///         "start": "10582",
-        ///         "referenceBases": "G",
-        ///         "alternateBases": [
-        ///             "A"
-        ///         ],
-        ///         "calls": [
-        ///             {
-        ///                 "callSetId": "10473108253681171589-0",
-        ///                 "callSetName": "CALLSET0",
-        ///                 "genotype": [
-        ///                     1,
-        ///                     1
-        ///                 ],
-        ///             }
-        ///         ]
-        ///     }
+        /// // New variant with conflicting call information
+        /// {
+        ///     "variantSetId": "10473108253681171589",
+        ///     "referenceName": "1",
+        ///     "start": "10582",
+        ///     "referenceBases": "G",
+        ///     "alternateBases": [
+        ///         "A"
+        ///     ],
+        ///     "calls": [
+        ///         {
+        ///             "callSetId": "10473108253681171589-0",
+        ///             "callSetName": "CALLSET0",
+        ///             "genotype": [
+        ///                 1,
+        ///                 1
+        ///             ],
+        ///         }
+        ///     ]
+        /// }
+        /// ```
         ///
         /// The resulting merged variant would overwrite the existing calls with those
         /// from the new variant:
         ///
-        ///     {
-        ///         "variantSetId": "10473108253681171589",
-        ///         "referenceName": "1",
-        ///         "start": "10582",
-        ///         "referenceBases": "G",
-        ///         "alternateBases": [
-        ///             "A"
-        ///         ],
-        ///         "calls": [
-        ///             {
-        ///                 "callSetId": "10473108253681171589-0",
-        ///                 "callSetName": "CALLSET0",
-        ///                 "genotype": [
-        ///                     1,
-        ///                     1
-        ///                 ],
-        ///             }
-        ///         ]
-        ///     }
+        /// ```text
+        /// {
+        ///     "variantSetId": "10473108253681171589",
+        ///     "referenceName": "1",
+        ///     "start": "10582",
+        ///     "referenceBases": "G",
+        ///     "alternateBases": [
+        ///         "A"
+        ///     ],
+        ///     "calls": [
+        ///         {
+        ///             "callSetId": "10473108253681171589-0",
+        ///             "callSetName": "CALLSET0",
+        ///             "genotype": [
+        ///                 1,
+        ///                 1
+        ///             ],
+        ///         }
+        ///     ]
+        /// }
+        /// ```
         ///
         /// This may be the desired outcome, but it is up to the user to determine if
         /// if that is indeed the case.
@@ -5029,7 +5037,7 @@ pub mod variant_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/MergeVariants",
             );
@@ -5066,7 +5074,7 @@ pub mod variant_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/SearchCallSets",
             );
@@ -5097,7 +5105,7 @@ pub mod variant_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/CreateCallSet",
             );
@@ -5130,7 +5138,7 @@ pub mod variant_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/UpdateCallSet",
             );
@@ -5161,7 +5169,7 @@ pub mod variant_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/DeleteCallSet",
             );
@@ -5192,7 +5200,7 @@ pub mod variant_service_v1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.VariantServiceV1/GetCallSet",
             );

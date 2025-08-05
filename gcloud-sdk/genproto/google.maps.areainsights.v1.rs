@@ -21,7 +21,7 @@ pub struct ComputeInsightsResponse {
     pub place_insights: ::prost::alloc::vec::Vec<PlaceInsight>,
 }
 /// Holds information about a place
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PlaceInsight {
     /// The unique identifier of the place. This resource name can be used to
     /// retrieve details about the place using the [Places
@@ -93,7 +93,7 @@ pub mod location_filter {
     }
     /// A region is a geographic boundary such as: cities, postal codes, counties,
     /// states, etc.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Region {
         /// Defines a geographic region. Only one type of region (e.g. place) can
         /// specified at a time.
@@ -104,7 +104,7 @@ pub mod location_filter {
     pub mod region {
         /// Defines a geographic region. Only one type of region (e.g. place) can
         /// specified at a time.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Region {
             /// The unique identifier of a specific geographic region.
             #[prost(string, tag = "1")]
@@ -178,7 +178,7 @@ pub mod location_filter {
 /// excluded_primary_types, an INVALID_ARGUMENT error is returned.
 ///
 /// One of included_types or included_primary_types must be set.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TypeFilter {
     /// Optional. Included Place types.
     #[prost(string, repeated, tag = "1")]
@@ -217,34 +217,36 @@ pub enum Insight {
     /// places that match the specified filter criteria.
     ///
     /// Example request:
-    /// ```
+    ///
+    /// ```text,
     /// {
-    ///    "insights": \["INSIGHT_COUNT"\],
-    ///    "filter": {
-    ///      "locationFilter": {
-    ///        "region": {
-    ///          "place": "places/ChIJPV4oX_65j4ARVW8IJ6IJUYs"
-    ///        }
-    ///      },
-    ///      "typeFilter": {
-    ///        "includedTypes": \["restaurant"\]
-    ///      },
-    ///      "operatingStatus": \["OPERATING_STATUS_OPERATIONAL"\],
-    ///      "priceLevels": [
-    ///        "PRICE_LEVEL_FREE",
-    ///        "PRICE_LEVEL_INEXPENSIVE"
-    ///      ],
-    ///      "ratingFilter": {
-    ///        "minRating": 4.0
-    ///      }
-    ///    }
+    ///   "insights": \["INSIGHT_COUNT"\],
+    ///   "filter": {
+    ///     "locationFilter": {
+    ///       "region": {
+    ///         "place": "places/ChIJPV4oX_65j4ARVW8IJ6IJUYs"
+    ///       }
+    ///     },
+    ///     "typeFilter": {
+    ///       "includedTypes": \["restaurant"\]
+    ///     },
+    ///     "operatingStatus": \["OPERATING_STATUS_OPERATIONAL"\],
+    ///     "priceLevels": [
+    ///       "PRICE_LEVEL_FREE",
+    ///       "PRICE_LEVEL_INEXPENSIVE"
+    ///     ],
+    ///     "ratingFilter": {
+    ///       "minRating": 4.0
+    ///     }
+    ///   }
     /// }
     /// ```
     ///
     /// Example response:
-    /// ```
+    ///
+    /// ```text,
     /// {
-    ///    "count": 1234
+    ///   "count": 1234
     /// }
     /// ```
     Count = 1,
@@ -254,38 +256,40 @@ pub enum Insight {
     /// that match the specified filter criteria.
     ///
     /// Example request:
-    /// ```
+    ///
+    /// ```text,
     /// {
-    ///    "insights": \["INSIGHT_PLACES"\],
-    ///    "filter": {
-    ///      "locationFilter": {
-    ///        "region": {
-    ///          "place": "places/ChIJPV4oX_65j4ARVW8IJ6IJUYs"
-    ///        }
-    ///      },
-    ///      "typeFilter": {
-    ///        "includedTypes": \["restaurant"\]
-    ///      },
-    ///      "operatingStatus": \["OPERATING_STATUS_OPERATIONAL"\],
-    ///      "priceLevels": [
-    ///        "PRICE_LEVEL_FREE",
-    ///        "PRICE_LEVEL_INEXPENSIVE"
-    ///      ],
-    ///      "ratingFilter": {
-    ///        "minRating": 4.0
-    ///      }
-    ///    }
+    ///   "insights": \["INSIGHT_PLACES"\],
+    ///   "filter": {
+    ///     "locationFilter": {
+    ///       "region": {
+    ///         "place": "places/ChIJPV4oX_65j4ARVW8IJ6IJUYs"
+    ///       }
+    ///     },
+    ///     "typeFilter": {
+    ///       "includedTypes": \["restaurant"\]
+    ///     },
+    ///     "operatingStatus": \["OPERATING_STATUS_OPERATIONAL"\],
+    ///     "priceLevels": [
+    ///       "PRICE_LEVEL_FREE",
+    ///       "PRICE_LEVEL_INEXPENSIVE"
+    ///     ],
+    ///     "ratingFilter": {
+    ///       "minRating": 4.0
+    ///     }
+    ///   }
     /// }
     /// ```
     ///
     /// Example response:
-    /// ```
+    ///
+    /// ```text,
     /// {
-    ///    "placeInsights": [
-    ///      {"place": "places/ABC"},
-    ///      {"place": "places/PQR"},
-    ///      {"place": "places/XYZ"}
-    ///    ]
+    ///   "placeInsights": [
+    ///     {"place": "places/ABC"},
+    ///     {"place": "places/PQR"},
+    ///     {"place": "places/XYZ"}
+    ///   ]
     /// }
     /// ```
     Places = 2,
@@ -510,7 +514,7 @@ pub mod area_insights_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.areainsights.v1.AreaInsights/ComputeInsights",
             );

@@ -50,7 +50,7 @@ pub mod detection_request {
     }
 }
 /// Metadata about the client test and test device.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestMetadata {
     /// Name of the calling test. For example, 'tast.uidetection.BasicDetections'.
     #[prost(string, tag = "1")]
@@ -67,7 +67,7 @@ pub struct TestMetadata {
     pub cros_build: ::prost::alloc::string::String,
 }
 /// Detection type for word detection.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WordDetectionRequest {
     /// Required. The word to locate in the image.
     #[prost(string, tag = "1")]
@@ -84,7 +84,7 @@ pub struct WordDetectionRequest {
     pub max_edit_distance: ::core::option::Option<i32>,
 }
 /// Detection type for text block detection.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TextBlockDetectionRequest {
     /// Required. The text block consisting a list of words to locate in the image.
     #[prost(string, repeated, tag = "1")]
@@ -136,7 +136,7 @@ pub struct UiDetectionResponse {
 /// The location of a UI element.
 /// A bounding box is reprensented by its top-left point \[left, top\]
 /// and its bottom-right point \[right, bottom\].
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BoundingBox {
     /// The text found in the bounding box.
     #[prost(string, tag = "1")]
@@ -262,7 +262,7 @@ pub mod ui_detection_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.chromeos.uidetection.v1.UiDetectionService/ExecuteDetection",
             );

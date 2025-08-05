@@ -220,11 +220,11 @@ pub mod event {
         Merged = 4,
         /// The incident was automatically closed because of the following reasons:
         ///
-        ///   * The impact of the incident could not be confirmed.
-        ///   * The incident was intermittent or resolved itself.
+        /// * The impact of the incident could not be confirmed.
+        /// * The incident was intermittent or resolved itself.
         ///
-        ///   The incident does not have a resolution because no action or
-        ///   investigation happened. If it is intermittent, the incident may reopen.
+        /// The incident does not have a resolution because no action or
+        /// investigation happened. If it is intermittent, the incident may reopen.
         AutoClosed = 9,
         /// Upon investigation, Google engineers concluded that the incident is not
         /// affecting a Google Cloud product. This state can change if the incident
@@ -548,11 +548,11 @@ pub mod organization_event {
         Merged = 4,
         /// The incident was automatically closed because of the following reasons:
         ///
-        ///   * The impact of the incident could not be confirmed.
-        ///   * The incident was intermittent or resolved itself.
+        /// * The impact of the incident could not be confirmed.
+        /// * The incident was intermittent or resolved itself.
         ///
-        ///   The incident does not have a resolution because no action or
-        ///   investigation happened. If it is intermittent, the incident may reopen.
+        /// The incident does not have a resolution because no action or
+        /// investigation happened. If it is intermittent, the incident may reopen.
         AutoClosed = 9,
         /// Upon investigation, Google engineers concluded that the incident is not
         /// affecting a Google Cloud product. This state can change if the incident
@@ -591,7 +591,7 @@ pub mod organization_event {
     }
 }
 /// Records an update made to the event.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EventUpdate {
     /// Output only. The time the update was posted.
     #[prost(message, optional, tag = "1")]
@@ -610,14 +610,14 @@ pub struct EventUpdate {
     pub workaround: ::prost::alloc::string::String,
 }
 /// Represents the locations impacted by the event.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Location {
     /// Location impacted by the event. Example: `"us-central1"`
     #[prost(string, tag = "1")]
     pub location_name: ::prost::alloc::string::String,
 }
 /// Represents the Google Cloud product impacted by the event.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Product {
     /// Google Cloud product impacted by the event. Example: `"Google Cloud SQL"`
     #[prost(string, tag = "1")]
@@ -627,7 +627,7 @@ pub struct Product {
     pub id: ::prost::alloc::string::String,
 }
 /// Represents the Google Cloud products and locations impacted by the event.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EventImpact {
     /// Google Cloud product impacted by the event.
     #[prost(message, optional, tag = "1")]
@@ -638,7 +638,7 @@ pub struct EventImpact {
 }
 /// Represents impact to assets at organizational level. It is a read-only view
 /// and does not allow any modifications.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OrganizationImpact {
     /// Output only. Identifier. Unique name of the organization impact in this
     /// scope including organization and location using the form
@@ -663,7 +663,7 @@ pub struct OrganizationImpact {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Represents the asset impacted by the events.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Asset {
     /// Output only. Full name of the resource as defined in
     /// [Resource
@@ -676,7 +676,7 @@ pub struct Asset {
     pub asset_type: ::prost::alloc::string::String,
 }
 /// Requests list of events.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListEventsRequest {
     /// Required. Parent value using the form
     /// `projects/{project_id}/locations/{location}/events`.
@@ -703,11 +703,12 @@ pub struct ListEventsRequest {
     pub page_token: ::prost::alloc::string::String,
     /// Optional. A filter expression that filters resources listed in the
     /// response. The expression takes the following forms: <br>
-    /// *   field=value for `category` and `state`<br>
-    /// *   field &lt;, >, &lt;=, or >= value for `update_time` <br>
-    /// Examples: `category=INCIDENT`, `update_time>="2000-01-01T11:30:00-04:00"`,
-    /// `event_impacts.product.product_name:"Eventarc"`
-    /// <br>
+    ///
+    /// * field=value for `category` and `state`<br>
+    /// * field \<, >, \<=, or >= value for `update_time` <br>
+    ///   Examples: `category=INCIDENT`, `update_time>="2000-01-01T11:30:00-04:00"`,
+    ///   `event_impacts.product.product_name:"Eventarc"`
+    ///   <br>
     ///
     /// Multiple filter queries are separated by spaces. Example:
     /// `category=INCIDENT state=ACTIVE`.
@@ -741,7 +742,7 @@ pub struct ListEventsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Gets information about a specific event.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEventRequest {
     /// Required. Unique name of the event in this scope including project
     /// and location using the form
@@ -754,7 +755,7 @@ pub struct GetEventRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Requests list of events that affect an organization.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListOrganizationEventsRequest {
     /// Required. Parent value using the form
     /// `organizations/{organization_id}/locations/{location}/organizationEvents`.
@@ -787,8 +788,8 @@ pub struct ListOrganizationEventsRequest {
     /// Optional. A filter expression that filters resources listed in the
     /// response. The expression takes the following forms:
     ///
-    /// *   field=value for `category` and `state`
-    /// *   field &lt;, >, &lt;=, or >= value for `update_time`
+    /// * field=value for `category` and `state`
+    /// * field \<, >, \<=, or >= value for `update_time`
     ///
     /// Examples: `category=INCIDENT`, `update_time>="2000-01-01T11:30:00-04:00"`
     ///
@@ -824,7 +825,7 @@ pub struct ListOrganizationEventsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Gets information about a specific event affecting an organization.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetOrganizationEventRequest {
     /// Required. Unique name of the event in this scope including organization and
     /// event ID using the form
@@ -839,7 +840,7 @@ pub struct GetOrganizationEventRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Requests list of projects under an organization affected by an event.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListOrganizationImpactsRequest {
     /// Required. Parent value using the form
     /// `organizations/{organization_id}/locations/{location}/organizationImpacts`.
@@ -853,7 +854,7 @@ pub struct ListOrganizationImpactsRequest {
     /// Optional. The maximum number of events that should be returned. Acceptable
     /// values are `1` to `100`, inclusive. The default value is `10`.
     ///
-    ///   If more results are available, the service returns a
+    /// If more results are available, the service returns a
     /// `next_page_token` that can be used to get the next page of results in
     /// subsequent list requests. The service may return fewer
     /// [impacts](/service-health/docs/reference/rest/v1beta/organizations.locations.organizationImpacts#OrganizationImpact)
@@ -909,7 +910,7 @@ pub struct ListOrganizationImpactsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Gets information about an event that affects a project under an organization.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetOrganizationImpactRequest {
     /// Required. Name of the resource using the form
     /// `organizations/{organization_id}/locations/global/organizationImpacts/{organization_impact_id}`.
@@ -1101,7 +1102,7 @@ pub mod service_health_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicehealth.v1.ServiceHealth/ListEvents",
             );
@@ -1128,7 +1129,7 @@ pub mod service_health_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicehealth.v1.ServiceHealth/GetEvent",
             );
@@ -1158,7 +1159,7 @@ pub mod service_health_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicehealth.v1.ServiceHealth/ListOrganizationEvents",
             );
@@ -1189,7 +1190,7 @@ pub mod service_health_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicehealth.v1.ServiceHealth/GetOrganizationEvent",
             );
@@ -1220,7 +1221,7 @@ pub mod service_health_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicehealth.v1.ServiceHealth/ListOrganizationImpacts",
             );
@@ -1251,7 +1252,7 @@ pub mod service_health_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicehealth.v1.ServiceHealth/GetOrganizationImpact",
             );

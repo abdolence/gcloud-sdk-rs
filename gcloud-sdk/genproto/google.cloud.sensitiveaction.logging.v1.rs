@@ -25,7 +25,7 @@ pub struct SensitiveAction {
 /// Nested message and enum types in `SensitiveAction`.
 pub mod sensitive_action {
     /// Used to reference a specific Cloud Logging LogEntry.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SourceLogId {
         /// The GCP resource (organization, folder, or project) that the LogEntry
         /// came from.

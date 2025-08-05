@@ -23,8 +23,7 @@ pub struct Deployment {
     #[prost(enumeration = "deployment::State", tag = "5")]
     pub state: i32,
     /// Output only. Revision name that was most recently applied.
-    /// Format: `projects/{project}/locations/{location}/deployments/{deployment}/
-    /// revisions/{revision}`
+    /// Format: `projects/{project}/locations/{location}/deployments/{deployment}/  revisions/{revision}`
     #[prost(string, tag = "7")]
     pub latest_revision: ::prost::alloc::string::String,
     /// Output only. Additional information regarding the current state.
@@ -59,9 +58,10 @@ pub struct Deployment {
     /// A default bucket will be bootstrapped if the field is not set or empty.
     /// Default bucket format: `gs://<project number>-<region>-blueprint-config`
     /// Constraints:
-    /// - The bucket needs to be in the same project as the deployment
-    /// - The path cannot be within the path of `gcs_source`
-    /// - The field cannot be updated, including changing its presence
+    ///
+    /// * The bucket needs to be in the same project as the deployment
+    /// * The path cannot be within the path of `gcs_source`
+    /// * The field cannot be updated, including changing its presence
     #[prost(string, optional, tag = "15")]
     pub artifacts_gcs_bucket: ::core::option::Option<::prost::alloc::string::String>,
     /// Required. User-specified Service Account (SA) credentials to be used when
@@ -333,7 +333,7 @@ pub struct TerraformBlueprint {
 pub mod terraform_blueprint {
     /// Location of the source configs.
     /// Required.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Source {
         /// URI of an object in Google Cloud Storage.
         /// Format: `gs://{bucket}/{object}`
@@ -383,7 +383,7 @@ pub struct TerraformOutput {
     #[prost(message, optional, tag = "2")]
     pub value: ::core::option::Option<::prost_types::Value>,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDeploymentsRequest {
     /// Required. The parent in whose context the Deployments are listed. The
     /// parent value is in the format:
@@ -401,25 +401,27 @@ pub struct ListDeploymentsRequest {
     pub page_token: ::prost::alloc::string::String,
     /// Lists the Deployments that match the filter expression. A filter
     /// expression filters the resources listed in the response. The expression
-    /// must be of the form '{field} {operator} {value}' where operators: '<', '>',
-    /// '<=', '>=', '!=', '=', ':' are supported (colon ':' represents a HAS
+    /// must be of the form '{field} {operator} {value}' where operators: '\<', '>',
+    /// '\<=', '>=', '!=', '=', ':' are supported (colon ':' represents a HAS
     /// operator which is roughly synonymous with equality). {field} can refer to a
     /// proto or JSON field, or a synthetic field. Field names can be camelCase or
     /// snake_case.
     ///
     /// Examples:
-    /// - Filter by name:
-    ///    name = "projects/foo/locations/us-central1/deployments/bar
     ///
-    /// - Filter by labels:
-    ///    - Resources that have a key called 'foo'
-    ///      labels.foo:*
-    ///    - Resources that have a key called 'foo' whose value is 'bar'
-    ///      labels.foo = bar
+    /// * Filter by name:
+    ///   name = "projects/foo/locations/us-central1/deployments/bar
     ///
-    /// - Filter by state:
-    ///    - Deployments in CREATING state.
-    ///      state=CREATING
+    /// * Filter by labels:
+    ///
+    ///   * Resources that have a key called 'foo'
+    ///     labels.foo:\*
+    ///   * Resources that have a key called 'foo' whose value is 'bar'
+    ///     labels.foo = bar
+    /// * Filter by state:
+    ///
+    ///   * Deployments in CREATING state.
+    ///     state=CREATING
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Field to use to sort the list.
@@ -428,7 +430,7 @@ pub struct ListDeploymentsRequest {
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDeploymentsResponse {
-    /// List of [Deployment][google.cloud.config.v1.Deployment]s.
+    /// List of \[Deployment\]\[google.cloud.config.v1.Deployment\]s.
     #[prost(message, repeated, tag = "1")]
     pub deployments: ::prost::alloc::vec::Vec<Deployment>,
     /// Token to be supplied to the next ListDeployments request via `page_token`
@@ -439,7 +441,7 @@ pub struct ListDeploymentsResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDeploymentRequest {
     /// Required. The name of the deployment. Format:
     /// 'projects/{project_id}/locations/{location}/deployments/{deployment}'.
@@ -447,7 +449,7 @@ pub struct GetDeploymentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A request to list Revisions passed to a 'ListRevisions' call.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRevisionsRequest {
     /// Required. The parent in whose context the Revisions are listed. The parent
     /// value is in the format:
@@ -465,25 +467,27 @@ pub struct ListRevisionsRequest {
     pub page_token: ::prost::alloc::string::String,
     /// Lists the Revisions that match the filter expression. A filter
     /// expression filters the resources listed in the response. The expression
-    /// must be of the form '{field} {operator} {value}' where operators: '<', '>',
-    /// '<=', '>=', '!=', '=', ':' are supported (colon ':' represents a HAS
+    /// must be of the form '{field} {operator} {value}' where operators: '\<', '>',
+    /// '\<=', '>=', '!=', '=', ':' are supported (colon ':' represents a HAS
     /// operator which is roughly synonymous with equality). {field} can refer to a
     /// proto or JSON field, or a synthetic field. Field names can be camelCase or
     /// snake_case.
     ///
     /// Examples:
-    /// - Filter by name:
-    ///    name = "projects/foo/locations/us-central1/deployments/dep/revisions/bar
     ///
-    /// - Filter by labels:
-    ///    - Resources that have a key called 'foo'
-    ///      labels.foo:*
-    ///    - Resources that have a key called 'foo' whose value is 'bar'
-    ///      labels.foo = bar
+    /// * Filter by name:
+    ///   name = "projects/foo/locations/us-central1/deployments/dep/revisions/bar
     ///
-    /// - Filter by state:
-    ///    - Revisions in CREATING state.
-    ///      state=CREATING
+    /// * Filter by labels:
+    ///
+    ///   * Resources that have a key called 'foo'
+    ///     labels.foo:\*
+    ///   * Resources that have a key called 'foo' whose value is 'bar'
+    ///     labels.foo = bar
+    /// * Filter by state:
+    ///
+    ///   * Revisions in CREATING state.
+    ///     state=CREATING
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Field to use to sort the list.
@@ -493,7 +497,7 @@ pub struct ListRevisionsRequest {
 /// A response to a 'ListRevisions' call. Contains a list of Revisions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRevisionsResponse {
-    /// List of [Revision][google.cloud.config.v1.Revision]s.
+    /// List of \[Revision\]\[google.cloud.config.v1.Revision\]s.
     #[prost(message, repeated, tag = "1")]
     pub revisions: ::prost::alloc::vec::Vec<Revision>,
     /// A token to request the next page of resources from the 'ListRevisions'
@@ -506,7 +510,7 @@ pub struct ListRevisionsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A request to get a Revision from a 'GetRevision' call.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRevisionRequest {
     /// Required. The name of the Revision in the format:
     /// 'projects/{project_id}/locations/{location}/deployments/{deployment}/revisions/{revision}'.
@@ -522,7 +526,7 @@ pub struct CreateDeploymentRequest {
     /// Required. The Deployment ID.
     #[prost(string, tag = "2")]
     pub deployment_id: ::prost::alloc::string::String,
-    /// Required. [Deployment][google.cloud.config.v1.Deployment] resource to be
+    /// Required. \[Deployment\]\[google.cloud.config.v1.Deployment\] resource to be
     /// created.
     #[prost(message, optional, tag = "3")]
     pub deployment: ::core::option::Option<Deployment>,
@@ -552,7 +556,7 @@ pub struct UpdateDeploymentRequest {
     /// user does not provide a mask then all fields will be overwritten.
     #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    /// Required. [Deployment][google.cloud.config.v1.Deployment] to update.
+    /// Required. \[Deployment\]\[google.cloud.config.v1.Deployment\] to update.
     ///
     /// The deployment's `name` field is used to identify the resource to be
     /// updated. Format:
@@ -575,7 +579,7 @@ pub struct UpdateDeploymentRequest {
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDeploymentRequest {
     /// Required. The name of the Deployment in the format:
     /// 'projects/{project_id}/locations/{location}/deployments/{deployment}'.
@@ -673,8 +677,8 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation of the
     /// operation. Operations that have successfully been cancelled have
-    /// [google.longrunning.Operation.error][google.longrunning.Operation.error]
-    /// value with a [google.rpc.Status.code][google.rpc.Status.code] of `1`,
+    /// \[google.longrunning.Operation.error\]\[google.longrunning.Operation.error\]
+    /// value with a \[google.rpc.Status.code\]\[google.rpc.Status.code\] of `1`,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -706,8 +710,7 @@ pub mod operation_metadata {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Revision {
     /// Revision name. Format:
-    /// `projects/{project}/locations/{location}/deployments/{deployment}/
-    /// revisions/{revision}`
+    /// `projects/{project}/locations/{location}/deployments/{deployment}/  revisions/{revision}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Time when the revision was created.
@@ -970,7 +973,7 @@ pub struct TerraformError {
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
 }
 /// A set of files in a Git repository.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GitSource {
     /// Optional. Repository URL.
     /// Example: '<https://github.com/kubernetes/examples.git'>
@@ -1226,7 +1229,7 @@ pub mod resource {
     }
 }
 /// Terraform info of a Resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourceTerraformInfo {
     /// TF resource address that uniquely identifies this resource within this
     /// deployment.
@@ -1240,7 +1243,7 @@ pub struct ResourceTerraformInfo {
     pub id: ::prost::alloc::string::String,
 }
 /// CAI info of a Resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourceCaiInfo {
     /// CAI resource name in the format following
     /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
@@ -1248,7 +1251,7 @@ pub struct ResourceCaiInfo {
     pub full_resource_name: ::prost::alloc::string::String,
 }
 /// A request to get a Resource from a 'GetResource' call.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetResourceRequest {
     /// Required. The name of the Resource in the format:
     /// 'projects/{project_id}/locations/{location}/deployments/{deployment}/revisions/{revision}/resource/{resource}'.
@@ -1256,7 +1259,7 @@ pub struct GetResourceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A request to list Resources passed to a 'ListResources' call.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListResourcesRequest {
     /// Required. The parent in whose context the Resources are listed. The parent
     /// value is in the format:
@@ -1274,17 +1277,18 @@ pub struct ListResourcesRequest {
     pub page_token: ::prost::alloc::string::String,
     /// Lists the Resources that match the filter expression. A filter
     /// expression filters the resources listed in the response. The expression
-    /// must be of the form '{field} {operator} {value}' where operators: '<', '>',
-    /// '<=',
+    /// must be of the form '{field} {operator} {value}' where operators: '\<', '>',
+    /// '\<=',
     /// '>=',
     /// '!=', '=', ':' are supported (colon ':' represents a HAS operator which is
     /// roughly synonymous with equality). {field} can refer to a proto or JSON
     /// field, or a synthetic field. Field names can be camelCase or snake_case.
     ///
     /// Examples:
-    /// - Filter by name:
-    ///    name =
-    ///    "projects/foo/locations/us-central1/deployments/dep/revisions/bar/resources/baz
+    ///
+    /// * Filter by name:
+    ///   name =
+    ///   "projects/foo/locations/us-central1/deployments/dep/revisions/bar/resources/baz
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Field to use to sort the list.
@@ -1294,7 +1298,7 @@ pub struct ListResourcesRequest {
 /// A response to a 'ListResources' call. Contains a list of Resources.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListResourcesResponse {
-    /// List of [Resources][google.cloud.config.v1.Resource].
+    /// List of \[Resources\]\[google.cloud.config.v1.Resource\].
     #[prost(message, repeated, tag = "1")]
     pub resources: ::prost::alloc::vec::Vec<Resource>,
     /// A token to request the next page of resources from the 'ListResources'
@@ -1307,7 +1311,7 @@ pub struct ListResourcesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Contains info about a Terraform state file
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Statefile {
     /// Output only. Cloud Storage signed URI used for downloading or uploading the
     /// state file.
@@ -1316,7 +1320,7 @@ pub struct Statefile {
 }
 /// A request to export a state file passed to a 'ExportDeploymentStatefile'
 /// call.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportDeploymentStatefileRequest {
     /// Required. The parent in whose context the statefile is listed. The parent
     /// value is in the format:
@@ -1331,7 +1335,7 @@ pub struct ExportDeploymentStatefileRequest {
 }
 /// A request to export a state file passed to a 'ExportRevisionStatefile'
 /// call.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportRevisionStatefileRequest {
     /// Required. The parent in whose context the statefile is listed. The parent
     /// value is in the format:
@@ -1340,7 +1344,7 @@ pub struct ExportRevisionStatefileRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// A request to import a state file passed to a 'ImportStatefile' call.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportStatefileRequest {
     /// Required. The parent in whose context the statefile is listed. The parent
     /// value is in the format:
@@ -1356,7 +1360,7 @@ pub struct ImportStatefileRequest {
     pub skip_draft: bool,
 }
 /// A request to delete a state file passed to a 'DeleteStatefile' call.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteStatefileRequest {
     /// Required. The name of the deployment in the format:
     /// 'projects/{project_id}/locations/{location}/deployments/{deployment}'.
@@ -1368,7 +1372,7 @@ pub struct DeleteStatefileRequest {
     pub lock_id: i64,
 }
 /// A request to lock a deployment passed to a 'LockDeployment' call.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LockDeploymentRequest {
     /// Required. The name of the deployment in the format:
     /// 'projects/{project_id}/locations/{location}/deployments/{deployment}'.
@@ -1376,7 +1380,7 @@ pub struct LockDeploymentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A request to unlock a state file passed to a 'UnlockDeployment' call.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UnlockDeploymentRequest {
     /// Required. The name of the deployment in the format:
     /// 'projects/{project_id}/locations/{location}/deployments/{deployment}'.
@@ -1387,7 +1391,7 @@ pub struct UnlockDeploymentRequest {
     pub lock_id: i64,
 }
 /// A request to get a state file lock info passed to a 'ExportLockInfo' call.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportLockInfoRequest {
     /// Required. The name of the deployment in the format:
     /// 'projects/{project_id}/locations/{location}/deployments/{deployment}'.
@@ -1395,7 +1399,7 @@ pub struct ExportLockInfoRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Details about the lock which locked the deployment.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LockInfo {
     /// Unique ID for the lock to be overridden with generation ID in the backend.
     #[prost(int64, tag = "1")]
@@ -1458,10 +1462,11 @@ pub struct Preview {
     /// A default bucket will be bootstrapped if the field is not set or empty
     /// Default Bucket Format: `gs://<project number>-<region>-blueprint-config`
     /// Constraints:
-    /// - The bucket needs to be in the same project as the deployment
-    /// - The path cannot be within the path of `gcs_source`
-    /// If omitted and deployment resource ref provided has artifacts_gcs_bucket
-    /// defined, that artifact bucket is used.
+    ///
+    /// * The bucket needs to be in the same project as the deployment
+    /// * The path cannot be within the path of `gcs_source`
+    ///   If omitted and deployment resource ref provided has artifacts_gcs_bucket
+    ///   defined, that artifact bucket is used.
     #[prost(string, optional, tag = "8")]
     pub artifacts_gcs_bucket: ::core::option::Option<::prost::alloc::string::String>,
     /// Optional. The user-specified Worker Pool resource in which the Cloud Build
@@ -1701,7 +1706,7 @@ pub mod preview {
     }
 }
 /// Ephemeral metadata content describing the state of a preview operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PreviewOperationMetadata {
     /// The current step the preview operation is running.
     #[prost(enumeration = "preview_operation_metadata::PreviewStep", tag = "1")]
@@ -1796,7 +1801,7 @@ pub mod preview_operation_metadata {
     }
 }
 /// Artifacts created by preview.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PreviewArtifacts {
     /// Output only. Location of a blueprint copy and other content in Google Cloud
     /// Storage. Format: `gs://{bucket}/{object}`
@@ -1817,7 +1822,7 @@ pub struct CreatePreviewRequest {
     /// Optional. The preview ID.
     #[prost(string, tag = "2")]
     pub preview_id: ::prost::alloc::string::String,
-    /// Required. [Preview][google.cloud.config.v1.Preview] resource to be created.
+    /// Required. \[Preview\]\[google.cloud.config.v1.Preview\] resource to be created.
     #[prost(message, optional, tag = "3")]
     pub preview: ::core::option::Option<Preview>,
     /// Optional. An optional request ID to identify requests. Specify a unique
@@ -1837,7 +1842,7 @@ pub struct CreatePreviewRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// A request to get details about a preview.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPreviewRequest {
     /// Required. The name of the preview. Format:
     /// 'projects/{project_id}/locations/{location}/previews/{preview}'.
@@ -1845,7 +1850,7 @@ pub struct GetPreviewRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A request to list all previews for a given project and location.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPreviewsRequest {
     /// Required. The parent in whose context the Previews are listed. The parent
     /// value is in the format: 'projects/{project_id}/locations/{location}'.
@@ -1863,25 +1868,27 @@ pub struct ListPreviewsRequest {
     pub page_token: ::prost::alloc::string::String,
     /// Optional. Lists the Deployments that match the filter expression. A filter
     /// expression filters the resources listed in the response. The expression
-    /// must be of the form '{field} {operator} {value}' where operators: '<', '>',
-    /// '<=', '>=', '!=', '=', ':' are supported (colon ':' represents a HAS
+    /// must be of the form '{field} {operator} {value}' where operators: '\<', '>',
+    /// '\<=', '>=', '!=', '=', ':' are supported (colon ':' represents a HAS
     /// operator which is roughly synonymous with equality). {field} can refer to a
     /// proto or JSON field, or a synthetic field. Field names can be camelCase or
     /// snake_case.
     ///
     /// Examples:
-    /// - Filter by name:
-    ///    name = "projects/foo/locations/us-central1/deployments/bar
     ///
-    /// - Filter by labels:
-    ///    - Resources that have a key called 'foo'
-    ///      labels.foo:*
-    ///    - Resources that have a key called 'foo' whose value is 'bar'
-    ///      labels.foo = bar
+    /// * Filter by name:
+    ///   name = "projects/foo/locations/us-central1/deployments/bar
     ///
-    /// - Filter by state:
-    ///    - Deployments in CREATING state.
-    ///      state=CREATING
+    /// * Filter by labels:
+    ///
+    ///   * Resources that have a key called 'foo'
+    ///     labels.foo:\*
+    ///   * Resources that have a key called 'foo' whose value is 'bar'
+    ///     labels.foo = bar
+    /// * Filter by state:
+    ///
+    ///   * Deployments in CREATING state.
+    ///     state=CREATING
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Field to use to sort the list.
@@ -1891,7 +1898,7 @@ pub struct ListPreviewsRequest {
 /// A response to a `ListPreviews` call. Contains a list of Previews.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPreviewsResponse {
-    /// List of [Previews][google.cloud.config.v1.Preview].
+    /// List of \[Previews\]\[google.cloud.config.v1.Preview\].
     #[prost(message, repeated, tag = "1")]
     pub previews: ::prost::alloc::vec::Vec<Preview>,
     /// Token to be supplied to the next ListPreviews request via `page_token`
@@ -1903,7 +1910,7 @@ pub struct ListPreviewsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A request to delete a preview.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeletePreviewRequest {
     /// Required. The name of the Preview in the format:
     /// 'projects/{project_id}/locations/{location}/previews/{preview}'.
@@ -1926,7 +1933,7 @@ pub struct DeletePreviewRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// A request to export preview results.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportPreviewResultRequest {
     /// Required. The preview whose results should be exported. The preview value
     /// is in the format:
@@ -1935,14 +1942,14 @@ pub struct ExportPreviewResultRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// A response to `ExportPreviewResult` call. Contains preview results.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportPreviewResultResponse {
     /// Output only. Signed URLs for accessing the plan files.
     #[prost(message, optional, tag = "1")]
     pub result: ::core::option::Option<PreviewResult>,
 }
 /// Contains a signed Cloud Storage URLs.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PreviewResult {
     /// Output only. Plan binary signed URL
     #[prost(string, tag = "1")]
@@ -1952,7 +1959,7 @@ pub struct PreviewResult {
     pub json_signed_uri: ::prost::alloc::string::String,
 }
 /// The request message for the GetTerraformVersion method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTerraformVersionRequest {
     /// Required. The name of the TerraformVersion. Format:
     /// 'projects/{project_id}/locations/{location}/terraformVersions/{terraform_version}'
@@ -1960,7 +1967,7 @@ pub struct GetTerraformVersionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the ListTerraformVersions method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListTerraformVersionsRequest {
     /// Required. The parent in whose context the TerraformVersions are listed. The
     /// parent value is in the format:
@@ -1980,8 +1987,8 @@ pub struct ListTerraformVersionsRequest {
     /// Optional. Lists the TerraformVersions that match the filter expression. A
     /// filter expression filters the resources listed in the response. The
     /// expression must be of the form '{field} {operator} {value}' where
-    /// operators: '<', '>',
-    /// '<=', '>=', '!=', '=', ':' are supported (colon ':' represents a HAS
+    /// operators: '\<', '>',
+    /// '\<=', '>=', '!=', '=', ':' are supported (colon ':' represents a HAS
     /// operator which is roughly synonymous with equality). {field} can refer to a
     /// proto or JSON field, or a synthetic field. Field names can be camelCase or
     /// snake_case.
@@ -1994,7 +2001,7 @@ pub struct ListTerraformVersionsRequest {
 /// The response message for the `ListTerraformVersions` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTerraformVersionsResponse {
-    /// List of [TerraformVersion][google.cloud.config.v1.TerraformVersion]s.
+    /// List of \[TerraformVersion\]\[google.cloud.config.v1.TerraformVersion\]s.
     #[prost(message, repeated, tag = "1")]
     pub terraform_versions: ::prost::alloc::vec::Vec<TerraformVersion>,
     /// Token to be supplied to the next ListTerraformVersions request via
@@ -2007,7 +2014,7 @@ pub struct ListTerraformVersionsResponse {
 }
 /// A TerraformVersion represents the support state the corresponding
 /// Terraform version.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TerraformVersion {
     /// Identifier. The version name is in the format:
     /// 'projects/{project_id}/locations/{location}/terraformVersions/{terraform_version}'.
@@ -2077,7 +2084,7 @@ pub mod terraform_version {
     }
 }
 /// Terraform info of a ResourceChange.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourceChangeTerraformInfo {
     /// Output only. TF resource address that uniquely identifies the resource.
     #[prost(string, tag = "1")]
@@ -2193,7 +2200,7 @@ pub struct PropertyChange {
     pub after: ::core::option::Option<::prost_types::Value>,
 }
 /// The request message for the ListResourceChanges method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListResourceChangesRequest {
     /// Required. The parent in whose context the ResourceChanges are listed. The
     /// parent value is in the format:
@@ -2213,17 +2220,18 @@ pub struct ListResourceChangesRequest {
     /// Optional. Lists the resource changes that match the filter expression. A
     /// filter expression filters the resource changes listed in the response. The
     /// expression must be of the form '{field} {operator} {value}' where
-    /// operators: '<', '>',
-    /// '<=',
+    /// operators: '\<', '>',
+    /// '\<=',
     /// '>=',
     /// '!=', '=', ':' are supported (colon ':' represents a HAS operator which is
     /// roughly synonymous with equality). {field} can refer to a proto or JSON
     /// field, or a synthetic field. Field names can be camelCase or snake_case.
     ///
     /// Examples:
-    /// - Filter by name:
-    ///    name =
-    ///    "projects/foo/locations/us-central1/previews/dep/resourceChanges/baz
+    ///
+    /// * Filter by name:
+    ///   name =
+    ///   "projects/foo/locations/us-central1/previews/dep/resourceChanges/baz
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Field to use to sort the list.
@@ -2239,7 +2247,7 @@ pub struct ListResourceChangesResponse {
     pub resource_changes: ::prost::alloc::vec::Vec<ResourceChange>,
     /// A token to request the next page of resources from the
     /// 'ListResourceChanges' method. The value of an empty string means that
-    ///   there are no more resources to return.
+    /// there are no more resources to return.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Unreachable resources, if any.
@@ -2247,7 +2255,7 @@ pub struct ListResourceChangesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request message for the GetResourceChange method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetResourceChangeRequest {
     /// Required. The name of the resource change to retrieve.
     /// Format:
@@ -2256,7 +2264,7 @@ pub struct GetResourceChangeRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Terraform info of a ResourceChange.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourceDriftTerraformInfo {
     /// Output only. The address of the drifted resource.
     #[prost(string, tag = "1")]
@@ -2308,7 +2316,7 @@ pub struct PropertyDrift {
     pub after: ::core::option::Option<::prost_types::Value>,
 }
 /// The request message for the ListResourceDrifts method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListResourceDriftsRequest {
     /// Required. The parent in whose context the ResourceDrifts are listed. The
     /// parent value is in the format:
@@ -2328,17 +2336,18 @@ pub struct ListResourceDriftsRequest {
     /// Optional. Lists the resource drifts that match the filter expression. A
     /// filter expression filters the resource drifts listed in the response. The
     /// expression must be of the form '{field} {operator} {value}' where
-    /// operators: '<', '>',
-    /// '<=',
+    /// operators: '\<', '>',
+    /// '\<=',
     /// '>=',
     /// '!=', '=', ':' are supported (colon ':' represents a HAS operator which is
     /// roughly synonymous with equality). {field} can refer to a proto or JSON
     /// field, or a synthetic field. Field names can be camelCase or snake_case.
     ///
     /// Examples:
-    /// - Filter by name:
-    ///    name =
-    ///    "projects/foo/locations/us-central1/previews/dep/resourceDrifts/baz
+    ///
+    /// * Filter by name:
+    ///   name =
+    ///   "projects/foo/locations/us-central1/previews/dep/resourceDrifts/baz
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Field to use to sort the list.
@@ -2361,7 +2370,7 @@ pub struct ListResourceDriftsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request message for the GetResourceDrift method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetResourceDriftRequest {
     /// Required. The name of the resource drift to retrieve.
     /// Format:
@@ -2500,7 +2509,7 @@ pub mod config_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Lists [Deployment][google.cloud.config.v1.Deployment]s in a given project
+        /// Lists \[Deployment\]\[google.cloud.config.v1.Deployment\]s in a given project
         /// and location.
         pub async fn list_deployments(
             &mut self,
@@ -2517,7 +2526,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/ListDeployments",
             );
@@ -2528,7 +2537,7 @@ pub mod config_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Gets details about a [Deployment][google.cloud.config.v1.Deployment].
+        /// Gets details about a \[Deployment\]\[google.cloud.config.v1.Deployment\].
         pub async fn get_deployment(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDeploymentRequest>,
@@ -2541,7 +2550,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/GetDeployment",
             );
@@ -2552,7 +2561,7 @@ pub mod config_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Creates a [Deployment][google.cloud.config.v1.Deployment].
+        /// Creates a \[Deployment\]\[google.cloud.config.v1.Deployment\].
         pub async fn create_deployment(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDeploymentRequest>,
@@ -2568,7 +2577,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/CreateDeployment",
             );
@@ -2579,7 +2588,7 @@ pub mod config_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Updates a [Deployment][google.cloud.config.v1.Deployment].
+        /// Updates a \[Deployment\]\[google.cloud.config.v1.Deployment\].
         pub async fn update_deployment(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDeploymentRequest>,
@@ -2595,7 +2604,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/UpdateDeployment",
             );
@@ -2606,7 +2615,7 @@ pub mod config_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Deletes a [Deployment][google.cloud.config.v1.Deployment].
+        /// Deletes a \[Deployment\]\[google.cloud.config.v1.Deployment\].
         pub async fn delete_deployment(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDeploymentRequest>,
@@ -2622,7 +2631,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/DeleteDeployment",
             );
@@ -2633,7 +2642,7 @@ pub mod config_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists [Revision][google.cloud.config.v1.Revision]s of a deployment.
+        /// Lists \[Revision\]\[google.cloud.config.v1.Revision\]s of a deployment.
         pub async fn list_revisions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRevisionsRequest>,
@@ -2649,7 +2658,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/ListRevisions",
             );
@@ -2660,7 +2669,7 @@ pub mod config_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Gets details about a [Revision][google.cloud.config.v1.Revision].
+        /// Gets details about a \[Revision\]\[google.cloud.config.v1.Revision\].
         pub async fn get_revision(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRevisionRequest>,
@@ -2673,7 +2682,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/GetRevision",
             );
@@ -2682,7 +2691,7 @@ pub mod config_client {
                 .insert(GrpcMethod::new("google.cloud.config.v1.Config", "GetRevision"));
             self.inner.unary(req, path, codec).await
         }
-        /// Gets details about a [Resource][google.cloud.config.v1.Resource] deployed
+        /// Gets details about a \[Resource\]\[google.cloud.config.v1.Resource\] deployed
         /// by Infra Manager.
         pub async fn get_resource(
             &mut self,
@@ -2696,7 +2705,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/GetResource",
             );
@@ -2705,7 +2714,7 @@ pub mod config_client {
                 .insert(GrpcMethod::new("google.cloud.config.v1.Config", "GetResource"));
             self.inner.unary(req, path, codec).await
         }
-        /// Lists [Resources][google.cloud.config.v1.Resource] in a given revision.
+        /// Lists \[Resources\]\[google.cloud.config.v1.Resource\] in a given revision.
         pub async fn list_resources(
             &mut self,
             request: impl tonic::IntoRequest<super::ListResourcesRequest>,
@@ -2721,7 +2730,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/ListResources",
             );
@@ -2745,7 +2754,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/ExportDeploymentStatefile",
             );
@@ -2772,7 +2781,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/ExportRevisionStatefile",
             );
@@ -2800,7 +2809,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/ImportStatefile",
             );
@@ -2824,7 +2833,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/DeleteStatefile",
             );
@@ -2851,7 +2860,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/LockDeployment",
             );
@@ -2878,7 +2887,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/UnlockDeployment",
             );
@@ -2902,7 +2911,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/ExportLockInfo",
             );
@@ -2913,7 +2922,7 @@ pub mod config_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Creates a [Preview][google.cloud.config.v1.Preview].
+        /// Creates a \[Preview\]\[google.cloud.config.v1.Preview\].
         pub async fn create_preview(
             &mut self,
             request: impl tonic::IntoRequest<super::CreatePreviewRequest>,
@@ -2929,7 +2938,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/CreatePreview",
             );
@@ -2940,7 +2949,7 @@ pub mod config_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Gets details about a [Preview][google.cloud.config.v1.Preview].
+        /// Gets details about a \[Preview\]\[google.cloud.config.v1.Preview\].
         pub async fn get_preview(
             &mut self,
             request: impl tonic::IntoRequest<super::GetPreviewRequest>,
@@ -2953,7 +2962,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/GetPreview",
             );
@@ -2962,7 +2971,7 @@ pub mod config_client {
                 .insert(GrpcMethod::new("google.cloud.config.v1.Config", "GetPreview"));
             self.inner.unary(req, path, codec).await
         }
-        /// Lists [Preview][google.cloud.config.v1.Preview]s in a given project and
+        /// Lists \[Preview\]\[google.cloud.config.v1.Preview\]s in a given project and
         /// location.
         pub async fn list_previews(
             &mut self,
@@ -2979,7 +2988,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/ListPreviews",
             );
@@ -2990,7 +2999,7 @@ pub mod config_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Deletes a [Preview][google.cloud.config.v1.Preview].
+        /// Deletes a \[Preview\]\[google.cloud.config.v1.Preview\].
         pub async fn delete_preview(
             &mut self,
             request: impl tonic::IntoRequest<super::DeletePreviewRequest>,
@@ -3006,7 +3015,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/DeletePreview",
             );
@@ -3017,7 +3026,7 @@ pub mod config_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Export [Preview][google.cloud.config.v1.Preview] results.
+        /// Export \[Preview\]\[google.cloud.config.v1.Preview\] results.
         pub async fn export_preview_result(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportPreviewResultRequest>,
@@ -3033,7 +3042,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/ExportPreviewResult",
             );
@@ -3047,7 +3056,7 @@ pub mod config_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists [TerraformVersion][google.cloud.config.v1.TerraformVersion]s in a
+        /// Lists \[TerraformVersion\]\[google.cloud.config.v1.TerraformVersion\]s in a
         /// given project and location.
         pub async fn list_terraform_versions(
             &mut self,
@@ -3064,7 +3073,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/ListTerraformVersions",
             );
@@ -3079,7 +3088,7 @@ pub mod config_client {
             self.inner.unary(req, path, codec).await
         }
         /// Gets details about a
-        /// [TerraformVersion][google.cloud.config.v1.TerraformVersion].
+        /// \[TerraformVersion\]\[google.cloud.config.v1.TerraformVersion\].
         pub async fn get_terraform_version(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTerraformVersionRequest>,
@@ -3095,7 +3104,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/GetTerraformVersion",
             );
@@ -3125,7 +3134,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/ListResourceChanges",
             );
@@ -3152,7 +3161,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/GetResourceChange",
             );
@@ -3179,7 +3188,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/ListResourceDrifts",
             );
@@ -3206,7 +3215,7 @@ pub mod config_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.config.v1.Config/GetResourceDrift",
             );

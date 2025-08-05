@@ -9,12 +9,12 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Status {
     /// The status code, which should be an enum value of
-    /// [google.rpc.Code][google.rpc.Code].
+    /// \[google.rpc.Code\]\[google.rpc.Code\].
     #[prost(int32, tag = "1")]
     pub code: i32,
     /// A developer-facing error message, which should be in English. Any
     /// user-facing error message should be localized and sent in the
-    /// [google.rpc.Status.details][google.rpc.Status.details] field, or localized
+    /// \[google.rpc.Status.details\]\[google.rpc.Status.details\] field, or localized
     /// by the client.
     #[prost(string, tag = "2")]
     pub message: ::prost::alloc::string::String,
@@ -24,7 +24,6 @@ pub struct Status {
     pub details: ::prost::alloc::vec::Vec<::prost_types::Any>,
 }
 /// The canonical error codes for gRPC APIs.
-///
 ///
 /// Sometimes multiple error codes may apply.  Services should return
 /// the most specific error code that applies.  For example, prefer
@@ -107,15 +106,15 @@ pub enum Code {
     ///
     /// Service implementors can use the following guidelines to decide
     /// between `FAILED_PRECONDITION`, `ABORTED`, and `UNAVAILABLE`:
-    ///   (a) Use `UNAVAILABLE` if the client can retry just the failing call.
-    ///   (b) Use `ABORTED` if the client should retry at a higher level. For
-    ///       example, when a client-specified test-and-set fails, indicating the
-    ///       client should restart a read-modify-write sequence.
-    ///   (c) Use `FAILED_PRECONDITION` if the client should not retry until
-    ///       the system state has been explicitly fixed. For example, if an "rmdir"
-    ///       fails because the directory is non-empty, `FAILED_PRECONDITION`
-    ///       should be returned since the client should not retry unless
-    ///       the files are deleted from the directory.
+    /// (a) Use `UNAVAILABLE` if the client can retry just the failing call.
+    /// (b) Use `ABORTED` if the client should retry at a higher level. For
+    /// example, when a client-specified test-and-set fails, indicating the
+    /// client should restart a read-modify-write sequence.
+    /// (c) Use `FAILED_PRECONDITION` if the client should not retry until
+    /// the system state has been explicitly fixed. For example, if an "rmdir"
+    /// fails because the directory is non-empty, `FAILED_PRECONDITION`
+    /// should be returned since the client should not retry unless
+    /// the files are deleted from the directory.
     ///
     /// HTTP Mapping: 400 Bad Request
     FailedPrecondition = 9,
@@ -226,25 +225,29 @@ impl Code {
 /// Example of an error when contacting the "pubsub.googleapis.com" API when it
 /// is not enabled:
 ///
-///      { "reason": "API_DISABLED"
-///        "domain": "googleapis.com"
-///        "metadata": {
-///          "resource": "projects/123",
-///          "service": "pubsub.googleapis.com"
-///        }
-///      }
+/// ```text
+/// { "reason": "API_DISABLED"
+///    "domain": "googleapis.com"
+///    "metadata": {
+///      "resource": "projects/123",
+///      "service": "pubsub.googleapis.com"
+///    }
+/// }
+/// ```
 ///
 /// This response indicates that the pubsub.googleapis.com API is not enabled.
 ///
 /// Example of an error that is returned when attempting to create a Spanner
 /// instance in a region that is out of stock:
 ///
-///      { "reason": "STOCKOUT"
-///        "domain": "spanner.googleapis.com",
-///        "metadata": {
-///          "availableRegions": "us-central1,us-east2"
-///        }
-///      }
+/// ```text
+/// { "reason": "STOCKOUT"
+///    "domain": "spanner.googleapis.com",
+///    "metadata": {
+///      "availableRegions": "us-central1,us-east2"
+///    }
+/// }
+/// ```
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ErrorInfo {
     /// The reason of the error. This is a constant value that identifies the
@@ -290,14 +293,14 @@ pub struct ErrorInfo {
 /// the delay between retries based on `retry_delay`, until either a maximum
 /// number of retries have been reached or a maximum retry delay cap has been
 /// reached.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RetryInfo {
     /// Clients should wait at least this long between retrying the same request.
     #[prost(message, optional, tag = "1")]
     pub retry_delay: ::core::option::Option<::prost_types::Duration>,
 }
 /// Describes additional debugging info.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DebugInfo {
     /// The stack trace entries indicating where the error occurred.
     #[prost(string, repeated, tag = "1")]
@@ -383,8 +386,8 @@ pub mod quota_failure {
         /// "us-central1" and for VM family "n1", the quota_dimensions would be,
         ///
         /// {
-        ///    "region": "us-central1",
-        ///    "vm_family": "n1",
+        /// "region": "us-central1",
+        /// "vm_family": "n1",
         /// }
         ///
         /// When a quota is enforced globally, the quota_dimensions would always be
@@ -427,7 +430,7 @@ pub struct PreconditionFailure {
 /// Nested message and enum types in `PreconditionFailure`.
 pub mod precondition_failure {
     /// A message type used to describe a single precondition failure.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Violation {
         /// The type of PreconditionFailure. We recommend using a service-specific
         /// enum type to define the supported precondition violation subjects. For
@@ -458,7 +461,7 @@ pub struct BadRequest {
 /// Nested message and enum types in `BadRequest`.
 pub mod bad_request {
     /// A message type used to describe a single bad request field.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct FieldViolation {
         /// A path that leads to a field in the request body. The value will be a
         /// sequence of dot-separated identifiers that identify a protocol buffer
@@ -466,37 +469,39 @@ pub mod bad_request {
         ///
         /// Consider the following:
         ///
-        ///      message CreateContactRequest {
-        ///        message EmailAddress {
-        ///          enum Type {
-        ///            TYPE_UNSPECIFIED = 0;
-        ///            HOME = 1;
-        ///            WORK = 2;
-        ///          }
-        ///
-        ///          optional string email = 1;
-        ///          repeated EmailType type = 2;
-        ///        }
-        ///
-        ///        string full_name = 1;
-        ///        repeated EmailAddress email_addresses = 2;
+        /// ```text
+        /// message CreateContactRequest {
+        ///    message EmailAddress {
+        ///      enum Type {
+        ///        TYPE_UNSPECIFIED = 0;
+        ///        HOME = 1;
+        ///        WORK = 2;
         ///      }
+        ///
+        ///      optional string email = 1;
+        ///      repeated EmailType type = 2;
+        ///    }
+        ///
+        ///    string full_name = 1;
+        ///    repeated EmailAddress email_addresses = 2;
+        /// }
+        /// ```
         ///
         /// In this example, in proto `field` could take one of the following values:
         ///
         /// * `full_name` for a violation in the `full_name` value
         /// * `email_addresses\[1\].email` for a violation in the `email` field of the
-        ///    first `email_addresses` message
+        ///   first `email_addresses` message
         /// * `email_addresses\[3\].type\[2\]` for a violation in the second `type`
-        ///    value in the third `email_addresses` message.
+        ///   value in the third `email_addresses` message.
         ///
         /// In JSON, the same values are represented as:
         ///
         /// * `fullName` for a violation in the `fullName` value
         /// * `emailAddresses\[1\].email` for a violation in the `email` field of the
-        ///    first `emailAddresses` message
+        ///   first `emailAddresses` message
         /// * `emailAddresses\[3\].type\[2\]` for a violation in the second `type`
-        ///    value in the third `emailAddresses` message.
+        ///   value in the third `emailAddresses` message.
         #[prost(string, tag = "1")]
         pub field: ::prost::alloc::string::String,
         /// A description of why the request element is bad.
@@ -518,7 +523,7 @@ pub mod bad_request {
 }
 /// Contains metadata about the request that clients can attach when filing a bug
 /// or providing other forms of feedback.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RequestInfo {
     /// An opaque string that should only be interpreted by the service generating
     /// it. For example, it can be used to identify requests in the service's logs.
@@ -530,7 +535,7 @@ pub struct RequestInfo {
     pub serving_data: ::prost::alloc::string::String,
 }
 /// Describes the resource that is being accessed.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourceInfo {
     /// A name for the type of resource being accessed, e.g. "sql table",
     /// "cloud storage bucket", "file", "Google calendar"; or the type URL
@@ -540,7 +545,7 @@ pub struct ResourceInfo {
     /// The name of the resource being accessed.  For example, a shared calendar
     /// name: "example.com_4fghdhgsrgh@group.calendar.google.com", if the current
     /// error is
-    /// [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED].
+    /// \[google.rpc.Code.PERMISSION_DENIED\]\[google.rpc.Code.PERMISSION_DENIED\].
     #[prost(string, tag = "2")]
     pub resource_name: ::prost::alloc::string::String,
     /// The owner of the resource (optional).
@@ -568,7 +573,7 @@ pub struct Help {
 /// Nested message and enum types in `Help`.
 pub mod help {
     /// Describes a URL link.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Link {
         /// Describes what the link offers.
         #[prost(string, tag = "1")]
@@ -580,7 +585,7 @@ pub mod help {
 }
 /// Provides a localized error message that is safe to return to the user
 /// which can be attached to an RPC error.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LocalizedMessage {
     /// The locale used following the specification defined at
     /// <https://www.rfc-editor.org/rfc/bcp/bcp47.txt.>
@@ -626,7 +631,7 @@ pub struct HttpResponse {
     pub body: ::prost::alloc::vec::Vec<u8>,
 }
 /// Represents an HTTP header.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HttpHeader {
     /// The HTTP header key. It is case insensitive.
     #[prost(string, tag = "1")]

@@ -123,7 +123,7 @@ pub mod address_descriptor {
     ///
     /// Areas includes precise sublocality, neighborhoods, and large compounds that
     /// are useful for describing a location.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Area {
         /// The area's resource name.
         #[prost(string, tag = "1")]
@@ -195,21 +195,21 @@ pub mod address_descriptor {
     }
 }
 /// Information about the author of the UGC data. Used in
-/// [Photo][google.maps.places.v1.Photo], and
-/// [Review][google.maps.places.v1.Review].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[Photo\]\[google.maps.places.v1.Photo\], and
+/// \[Review\]\[google.maps.places.v1.Review\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AuthorAttribution {
-    /// Name of the author of the [Photo][google.maps.places.v1.Photo] or
-    /// [Review][google.maps.places.v1.Review].
+    /// Name of the author of the \[Photo\]\[google.maps.places.v1.Photo\] or
+    /// \[Review\]\[google.maps.places.v1.Review\].
     #[prost(string, tag = "1")]
     pub display_name: ::prost::alloc::string::String,
-    /// URI of the author of the [Photo][google.maps.places.v1.Photo] or
-    /// [Review][google.maps.places.v1.Review].
+    /// URI of the author of the \[Photo\]\[google.maps.places.v1.Photo\] or
+    /// \[Review\]\[google.maps.places.v1.Review\].
     #[prost(string, tag = "2")]
     pub uri: ::prost::alloc::string::String,
     /// Profile photo URI of the author of the
-    /// [Photo][google.maps.places.v1.Photo] or
-    /// [Review][google.maps.places.v1.Review].
+    /// \[Photo\]\[google.maps.places.v1.Photo\] or
+    /// \[Review\]\[google.maps.places.v1.Review\].
     #[prost(string, tag = "3")]
     pub photo_uri: ::prost::alloc::string::String,
 }
@@ -379,7 +379,7 @@ pub mod contextual_content {
             /// Nested message and enum types in `HighlightedText`.
             pub mod highlighted_text {
                 /// The range of highlighted text.
-                #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+                #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
                 pub struct HighlightedTextRange {
                     #[prost(int32, tag = "1")]
                     pub start_index: i32,
@@ -393,7 +393,7 @@ pub mod contextual_content {
         /// for more details.
         /// BusinessAvailabilityAttributes justifications. This shows some attributes
         /// a business has that could interest an end user.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct BusinessAvailabilityAttributesJustification {
             /// If a place provides takeout.
             #[prost(bool, tag = "1")]
@@ -489,7 +489,7 @@ pub enum EvConnectorType {
     /// CHAdeMO type connector.
     Chademo = 4,
     /// Combined Charging System (AC and DC). Based on SAE.
-    ///   Type-1 J-1772 connector
+    /// Type-1 J-1772 connector
     CcsCombo1 = 5,
     /// Combined Charging System (AC and DC). Based on Type-2
     /// Mennekes connector
@@ -560,7 +560,7 @@ pub struct FuelOptions {
 /// Nested message and enum types in `FuelOptions`.
 pub mod fuel_options {
     /// Fuel price information for a given type.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct FuelPrice {
         /// The type of fuel.
         #[prost(enumeration = "fuel_price::FuelType", tag = "1")]
@@ -700,14 +700,14 @@ pub struct Circle {
     /// longitude must be within \[-180.0, 180.0\].
     #[prost(message, optional, tag = "1")]
     pub center: ::core::option::Option<super::super::super::r#type::LatLng>,
-    /// Required. Radius measured in meters. The radius must be within [0.0,
-    /// 50000.0].
+    /// Required. Radius measured in meters. The radius must be within \[0.0,
+    /// 50000.0\].
     #[prost(double, tag = "2")]
     pub radius: f64,
 }
 /// The price range associated with a Place. `end_price` could be unset, which
 /// indicates a range without upper bound (e.g. "More than $100").
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PriceRange {
     /// The low end of the price range (inclusive). Price should be at or above
     /// this amount.
@@ -777,18 +777,19 @@ pub struct Place {
     >,
     /// Repeated components for each locality level.
     /// Note the following facts about the address_components\[\] array:
-    /// - The array of address components may contain more components than the
-    /// formatted_address.
-    /// - The array does not necessarily include all the political entities that
-    /// contain an address, apart from those included in the formatted_address. To
-    /// retrieve all the political entities that contain a specific address, you
-    /// should use reverse geocoding, passing the latitude/longitude of the address
-    /// as a parameter to the request.
-    /// - The format of the response is not guaranteed to remain the same between
-    /// requests. In particular, the number of address_components varies based on
-    /// the address requested and can change over time for the same address. A
-    /// component can change position in the array. The type of the component can
-    /// change. A particular component may be missing in a later response.
+    ///
+    /// * The array of address components may contain more components than the
+    ///   formatted_address.
+    /// * The array does not necessarily include all the political entities that
+    ///   contain an address, apart from those included in the formatted_address. To
+    ///   retrieve all the political entities that contain a specific address, you
+    ///   should use reverse geocoding, passing the latitude/longitude of the address
+    ///   as a parameter to the request.
+    /// * The format of the response is not guaranteed to remain the same between
+    ///   requests. In particular, the number of address_components varies based on
+    ///   the address requested and can change over time for the same address. A
+    ///   component can change position in the array. The type of the component can
+    ///   change. A particular component may be missing in a later response.
     #[prost(message, repeated, tag = "10")]
     pub address_components: ::prost::alloc::vec::Vec<place::AddressComponent>,
     /// Plus code of the place location lat/long.
@@ -1021,7 +1022,7 @@ pub struct Place {
 pub mod place {
     /// The structured components that form the formatted address, if this
     /// information is available.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AddressComponent {
         /// The full text description or name of the address component. For example,
         /// an address component for the country Australia may have a long_name of
@@ -1043,7 +1044,7 @@ pub mod place {
     /// Plus code (<http://plus.codes>) is a location reference with two formats:
     /// global code defining a 14mx14m (1/8000th of a degree) or smaller rectangle,
     /// and compound code, replacing the prefix with a reference location.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PlusCode {
         /// Place's global (full) code, such as "9FWM33GV+HQ", representing an
         /// 1/8000 by 1/8000 degree area (~14 by 14 meters).
@@ -1118,7 +1119,7 @@ pub mod place {
     /// Nested message and enum types in `OpeningHours`.
     pub mod opening_hours {
         /// A period the place remains in open_now status.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Period {
             /// The time that the place starts to be open.
             #[prost(message, optional, tag = "1")]
@@ -1130,7 +1131,7 @@ pub mod place {
         /// Nested message and enum types in `Period`.
         pub mod period {
             /// Status changing points.
-            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct Point {
                 /// A day of the week, as an integer in the range 0-6.  0 is Sunday, 1 is
                 /// Monday, etc.
@@ -1159,7 +1160,7 @@ pub mod place {
         /// Structured information for special days that fall within the period that
         /// the returned opening hours cover. Special days are days that could impact
         /// the business hours of a place, e.g. Christmas day.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct SpecialDay {
             /// The date of this special day.
             #[prost(message, optional, tag = "1")]
@@ -1256,7 +1257,7 @@ pub mod place {
         }
     }
     /// Information about data providers of this place.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Attribution {
         /// Name of the Place's data provider.
         #[prost(string, tag = "1")]
@@ -1266,7 +1267,7 @@ pub mod place {
         pub provider_uri: ::prost::alloc::string::String,
     }
     /// Payment options the place accepts.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PaymentOptions {
         /// Place accepts credit cards as payment.
         #[prost(bool, optional, tag = "1")]
@@ -1284,7 +1285,7 @@ pub mod place {
     }
     /// Information about parking options for the place. A parking lot could
     /// support more than one option at the same time.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ParkingOptions {
         /// Place offers free parking lots.
         #[prost(bool, optional, tag = "1")]
@@ -1316,7 +1317,7 @@ pub mod place {
     /// and place resource name, which can be used in subsequent Place Details
     /// (New) requests to fetch richer details, including the sub-destination's
     /// display name and location.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SubDestination {
         /// The resource name of the sub-destination.
         #[prost(string, tag = "1")]
@@ -1326,7 +1327,7 @@ pub mod place {
         pub id: ::prost::alloc::string::String,
     }
     /// Information about the accessibility options a place offers.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AccessibilityOptions {
         /// Place offers wheelchair accessible parking.
         #[prost(bool, optional, tag = "1")]
@@ -1342,7 +1343,7 @@ pub mod place {
         pub wheelchair_accessible_seating: ::core::option::Option<bool>,
     }
     /// AI-generated summary of the place.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct GenerativeSummary {
         /// The overview of the place.
         #[prost(message, optional, tag = "1")]
@@ -1361,7 +1362,7 @@ pub mod place {
         >,
     }
     /// Info about the place in which this place is located.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ContainingPlace {
         /// The resource name of the place in which this place is located.
         #[prost(string, tag = "1")]
@@ -1371,7 +1372,7 @@ pub mod place {
         pub id: ::prost::alloc::string::String,
     }
     /// AI-generated summary of the place using user reviews.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ReviewSummary {
         /// The summary of user reviews.
         #[prost(message, optional, tag = "1")]
@@ -1535,7 +1536,7 @@ impl PriceLevel {
 /// polyline](<https://developers.google.com/maps/documentation/utilities/polylinealgorithm>),
 /// which can be passed as a string and includes compression with minimal
 /// lossiness. This is the Routes API default output.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Polyline {
     /// Encapsulates the type of polyline. Routes API output defaults to
     /// `encoded_polyline`.
@@ -1546,7 +1547,7 @@ pub struct Polyline {
 pub mod polyline {
     /// Encapsulates the type of polyline. Routes API output defaults to
     /// `encoded_polyline`.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum PolylineType {
         /// An [encoded
         /// polyline](<https://developers.google.com/maps/documentation/utilities/polylinealgorithm>),
@@ -1563,26 +1564,26 @@ pub mod polyline {
 }
 /// Encapsulates a set of optional conditions to satisfy when calculating the
 /// routes.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RouteModifiers {
     /// Optional. When set to true, avoids toll roads where reasonable, giving
     /// preference to routes not containing toll roads. Applies only to the `DRIVE`
-    /// and `TWO_WHEELER` [`TravelMode`][google.maps.places.v1.TravelMode].
+    /// and `TWO_WHEELER` \[`TravelMode`\]\[google.maps.places.v1.TravelMode\].
     #[prost(bool, tag = "1")]
     pub avoid_tolls: bool,
     /// Optional. When set to true, avoids highways where reasonable, giving
     /// preference to routes not containing highways. Applies only to the `DRIVE`
-    /// and `TWO_WHEELER` [`TravelMode`][google.maps.places.v1.TravelMode].
+    /// and `TWO_WHEELER` \[`TravelMode`\]\[google.maps.places.v1.TravelMode\].
     #[prost(bool, tag = "2")]
     pub avoid_highways: bool,
     /// Optional. When set to true, avoids ferries where reasonable, giving
     /// preference to routes not containing ferries. Applies only to the `DRIVE`
-    /// and `TWO_WHEELER` [`TravelMode`][google.maps.places.v1.TravelMode].
+    /// and `TWO_WHEELER` \[`TravelMode`\]\[google.maps.places.v1.TravelMode\].
     #[prost(bool, tag = "3")]
     pub avoid_ferries: bool,
     /// Optional. When set to true, avoids navigating indoors where reasonable,
     /// giving preference to routes not containing indoor navigation. Applies only
-    /// to the `WALK` [`TravelMode`][google.maps.places.v1.TravelMode].
+    /// to the `WALK` \[`TravelMode`\]\[google.maps.places.v1.TravelMode\].
     #[prost(bool, tag = "4")]
     pub avoid_indoor: bool,
 }
@@ -1596,7 +1597,7 @@ pub enum RoutingPreference {
     /// Computes routes without taking live traffic conditions into consideration.
     /// Suitable when traffic conditions don't matter or are not applicable.
     /// Using this value produces the lowest latency.
-    /// Note: For [`TravelMode`][google.maps.places.v1.TravelMode]
+    /// Note: For \[`TravelMode`\]\[google.maps.places.v1.TravelMode\]
     /// `DRIVE` and `TWO_WHEELER`, the route and duration chosen are based on road
     /// network and average time-independent traffic conditions, not current road
     /// conditions. Consequently, routes may include roads that are temporarily
@@ -1668,7 +1669,7 @@ pub struct RoutingSummary {
 /// Nested message and enum types in `RoutingSummary`.
 pub mod routing_summary {
     /// A leg is a single portion of a journey from one location to another.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Leg {
         /// The time it takes to complete this leg of the trip.
         #[prost(message, optional, tag = "1")]
@@ -1749,8 +1750,6 @@ pub struct RoutingParameters {
     pub routing_preference: i32,
 }
 /// Request proto for Search Nearby.
-///
-///
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchNearbyRequest {
     /// Place details will be displayed with the preferred language if available.
@@ -1769,7 +1768,6 @@ pub struct SearchNearbyRequest {
     ///
     /// For more information, see
     /// <https://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html.>
-    ///
     ///
     /// Note that 3-digit region codes are not currently supported.
     #[prost(string, tag = "2")]
@@ -1932,7 +1930,6 @@ pub mod search_nearby_request {
     }
 }
 /// Response proto for Search Nearby.
-///
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchNearbyResponse {
     /// A list of places that meets user's requirements like places
@@ -1948,8 +1945,6 @@ pub struct SearchNearbyResponse {
     pub routing_summaries: ::prost::alloc::vec::Vec<RoutingSummary>,
 }
 /// Request proto for SearchText.
-///
-///
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchTextRequest {
     /// Required. The text query for textual search.
@@ -1971,7 +1966,6 @@ pub struct SearchTextRequest {
     ///
     /// For more information, see
     /// <https://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html.>
-    ///
     ///
     /// Note that 3-digit region codes are not currently supported.
     #[prost(string, tag = "3")]
@@ -2121,7 +2115,7 @@ pub mod search_text_request {
     /// from origin to destination. The results might be along an alternate route,
     /// especially if the provided polyline does not define an optimal route from
     /// origin to destination.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SearchAlongRouteParameters {
         /// Required. The route polyline.
         #[prost(message, optional, tag = "1")]
@@ -2175,7 +2169,6 @@ pub mod search_text_request {
     }
 }
 /// Response proto for SearchText.
-///
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchTextResponse {
     /// A list of places that meet the user's text search criteria.
@@ -2203,7 +2196,7 @@ pub struct SearchTextResponse {
     pub contextual_contents: ::prost::alloc::vec::Vec<ContextualContent>,
 }
 /// Request for fetching a photo of a place using a photo resource name.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPhotoMediaRequest {
     /// Required. The resource name of a photo media in the format:
     /// `places/{place_id}/photos/{photo_reference}/media`.
@@ -2248,7 +2241,7 @@ pub struct GetPhotoMediaRequest {
     pub skip_http_redirect: bool,
 }
 /// A photo media from Places API.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PhotoMedia {
     /// The resource name of a photo media in the format:
     /// `places/{place_id}/photos/{photo_reference}/media`.
@@ -2260,7 +2253,7 @@ pub struct PhotoMedia {
 }
 /// Request for fetching a Place based on its resource name, which is a string in
 /// the `places/{place_id}` format.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPlaceRequest {
     /// Required. The resource name of a place, in the `places/{place_id}` format.
     #[prost(string, tag = "1")]
@@ -2278,7 +2271,6 @@ pub struct GetPlaceRequest {
     /// affect results based on applicable law.
     /// For more information, see
     /// <https://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html.>
-    ///
     ///
     /// Note that 3-digit region codes are not currently supported.
     #[prost(string, tag = "3")]
@@ -2302,13 +2294,13 @@ pub struct GetPlaceRequest {
     ///
     /// * Use session tokens for all Place Autocomplete calls.
     /// * Generate a fresh token for each session. Using a version 4 UUID is
-    ///    recommended.
+    ///   recommended.
     /// * Ensure that the credentials used for all Place Autocomplete, Place
-    ///    Details, and Address Validation requests within a session belong to the
-    ///    same Cloud Console project.
+    ///   Details, and Address Validation requests within a session belong to the
+    ///   same Cloud Console project.
     /// * Be sure to pass a unique session token for each new session. Using the
-    ///    same token for more than one session will result in each request being
-    ///    billed individually.
+    ///   same token for more than one session will result in each request being
+    ///   billed individually.
     #[prost(string, tag = "4")]
     pub session_token: ::prost::alloc::string::String,
 }
@@ -2397,13 +2389,13 @@ pub struct AutocompletePlacesRequest {
     ///
     /// * Use session tokens for all Place Autocomplete calls.
     /// * Generate a fresh token for each session. Using a version 4 UUID is
-    ///    recommended.
+    ///   recommended.
     /// * Ensure that the credentials used for all Place Autocomplete, Place
-    ///    Details, and Address Validation requests within a session belong to the
-    ///    same Cloud Console project.
+    ///   Details, and Address Validation requests within a session belong to the
+    ///   same Cloud Console project.
     /// * Be sure to pass a unique session token for each new session. Using the
-    ///    same token for more than one session will result in each request being
-    ///    billed individually.
+    ///   same token for more than one session will result in each request being
+    ///   billed individually.
     #[prost(string, tag = "11")]
     pub session_token: ::prost::alloc::string::String,
     /// Optional. Include pure service area businesses if the field is set to true.
@@ -2475,7 +2467,7 @@ pub mod autocomplete_places_response {
     /// Nested message and enum types in `Suggestion`.
     pub mod suggestion {
         /// Identifies a substring within a given text.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct StringRange {
             /// Zero-based offset of the first Unicode character of the string
             /// (inclusive).
@@ -2727,7 +2719,7 @@ pub mod places_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.places.v1.Places/SearchNearby",
             );
@@ -2752,7 +2744,7 @@ pub mod places_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.places.v1.Places/SearchText",
             );
@@ -2774,7 +2766,7 @@ pub mod places_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.places.v1.Places/GetPhotoMedia",
             );
@@ -2799,7 +2791,7 @@ pub mod places_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.places.v1.Places/GetPlace",
             );
@@ -2824,7 +2816,7 @@ pub mod places_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.places.v1.Places/AutocompletePlaces",
             );

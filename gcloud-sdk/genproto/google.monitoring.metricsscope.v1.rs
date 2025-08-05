@@ -26,7 +26,7 @@ pub struct MetricsScope {
 /// A [project being
 /// monitored](<https://cloud.google.com/monitoring/settings/multiple-projects#create-multi>)
 /// by a `Metrics Scope`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MonitoredProject {
     /// Immutable. The resource name of the `MonitoredProject`. On input, the resource name
     /// includes the scoping project ID and monitored project ID. On output, it
@@ -40,7 +40,7 @@ pub struct MonitoredProject {
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request for the `GetMetricsScope` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetMetricsScopeRequest {
     /// Required. The resource name of the `Metrics Scope`.
     /// Example:
@@ -49,7 +49,7 @@ pub struct GetMetricsScopeRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `ListMetricsScopesByMonitoredProject` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListMetricsScopesByMonitoredProjectRequest {
     /// Required. The resource name of the `Monitored Project` being requested.
     /// Example:
@@ -66,7 +66,7 @@ pub struct ListMetricsScopesByMonitoredProjectResponse {
     pub metrics_scopes: ::prost::alloc::vec::Vec<MetricsScope>,
 }
 /// Request for the `CreateMonitoredProject` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateMonitoredProjectRequest {
     /// Required. The resource name of the existing `Metrics Scope` that will monitor this
     /// project.
@@ -82,7 +82,7 @@ pub struct CreateMonitoredProjectRequest {
     pub monitored_project: ::core::option::Option<MonitoredProject>,
 }
 /// Request for the `DeleteMonitoredProject` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteMonitoredProjectRequest {
     /// Required. The resource name of the `MonitoredProject`.
     /// Example:
@@ -96,7 +96,7 @@ pub struct DeleteMonitoredProjectRequest {
 }
 /// Contains metadata for longrunning operation for the edit Metrics Scope
 /// endpoints.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Current state of the batch operation.
     #[prost(enumeration = "operation_metadata::State", tag = "1")]
@@ -268,7 +268,7 @@ pub mod metrics_scopes_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.monitoring.metricsscope.v1.MetricsScopes/GetMetricsScope",
             );
@@ -302,7 +302,7 @@ pub mod metrics_scopes_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.monitoring.metricsscope.v1.MetricsScopes/ListMetricsScopesByMonitoredProject",
             );
@@ -333,7 +333,7 @@ pub mod metrics_scopes_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.monitoring.metricsscope.v1.MetricsScopes/CreateMonitoredProject",
             );
@@ -363,7 +363,7 @@ pub mod metrics_scopes_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.monitoring.metricsscope.v1.MetricsScopes/DeleteMonitoredProject",
             );

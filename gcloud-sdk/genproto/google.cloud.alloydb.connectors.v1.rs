@@ -5,7 +5,7 @@
 /// The sole purpose of this message is for the use of AlloyDB connectors.
 /// Clients should not rely on this message directly as there can be breaking
 /// changes in the future.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MetadataExchangeRequest {
     /// Optional. Connector information.
     #[prost(string, tag = "1")]
@@ -67,7 +67,7 @@ pub mod metadata_exchange_request {
 /// Message for response to metadata exchange request. The sole purpose of this
 /// message is for the use of AlloyDB connectors. Clients should not rely on this
 /// message directly as there can be breaking changes in the future.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MetadataExchangeResponse {
     /// Response code.
     #[prost(enumeration = "metadata_exchange_response::ResponseCode", tag = "1")]

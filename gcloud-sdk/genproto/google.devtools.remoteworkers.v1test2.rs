@@ -15,9 +15,9 @@
 /// This message (and all its submessages) can be used in two contexts:
 ///
 /// * Status: sent by the bot to report the current capabilities of the device to
-/// allow reservation matching.
+///   allow reservation matching.
 /// * Request: sent by a client to request a device with certain capabilities in
-/// a reservation.
+///   a reservation.
 ///
 /// Several of the fields in this message have different semantics depending on
 /// which of which of these contexts it is used. These semantics are described
@@ -71,18 +71,18 @@ pub struct Worker {
 /// Nested message and enum types in `Worker`.
 pub mod worker {
     /// A global property; see the `properties` field for more information.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Property {
         /// For general information on keys, see the documentation to `Worker`.
         ///
         /// The current set of standard keys are:
         ///
         /// * pool: different workers can be reserved for different purposes. For
-        /// example, an admin might want to segregate long-running integration tests
-        /// from short-running unit tests, so unit tests will always get some
-        /// throughput. To support this, the server can assign different values for
-        /// `pool` (such as "itest" and "utest") to different workers, and then have
-        /// jobs request workers from those pools.
+        ///   example, an admin might want to segregate long-running integration tests
+        ///   from short-running unit tests, so unit tests will always get some
+        ///   throughput. To support this, the server can assign different values for
+        ///   `pool` (such as "itest" and "utest") to different workers, and then have
+        ///   jobs request workers from those pools.
         #[prost(string, tag = "1")]
         pub key: ::prost::alloc::string::String,
         /// The property's value.
@@ -91,17 +91,17 @@ pub mod worker {
     }
     /// A configuration request or report; see the `configs` field for more
     /// information.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Config {
         /// For general information on keys, see the documentation to `Worker`.
         ///
         /// The current set of standard keys are:
         ///
         /// * DockerImage: the image of the container. When being reported by the
-        /// bot, the empty value should always be included if the bot is able to pull
-        /// its own images; the bot may optionally *also* report images that are
-        /// present in its cache. When being requested in a lease, the value is the
-        /// URI of the image (eg `gcr.io/user/image@sha256:hash`).
+        ///   bot, the empty value should always be included if the bot is able to pull
+        ///   its own images; the bot may optionally *also* report images that are
+        ///   present in its cache. When being requested in a lease, the value is the
+        ///   URI of the image (eg `gcr.io/user/image@sha256:hash`).
         #[prost(string, tag = "1")]
         pub key: ::prost::alloc::string::String,
         /// The configuration's value.
@@ -130,29 +130,31 @@ pub struct Device {
     ///
     /// Keys may be repeated, and have the following interpretation:
     ///
-    ///     * Status context: the device can support *any* the listed values. For
-    ///     example, an "ISA" property might include "x86", "x86-64" and "sse4".
+    /// ```text
+    /// * Status context: the device can support *any* the listed values. For
+    /// example, an "ISA" property might include "x86", "x86-64" and "sse4".
     ///
-    ///     * Request context: the device *must* support *all* of the listed values.
+    /// * Request context: the device *must* support *all* of the listed values.
+    /// ```
     #[prost(message, repeated, tag = "2")]
     pub properties: ::prost::alloc::vec::Vec<device::Property>,
 }
 /// Nested message and enum types in `Device`.
 pub mod device {
     /// A device property; see `properties` for more information.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Property {
         /// For general information on keys, see the documentation to `Worker`.
         ///
         /// The current set of standard keys are:
         ///
         /// * os: a human-readable description of the OS. Examples include `linux`,
-        /// `ubuntu` and `ubuntu 14.04` (note that a bot may advertise itself as more
-        /// than one). This will be replaced in the future by more well-structured
-        /// keys and values to represent OS variants.
+        ///   `ubuntu` and `ubuntu 14.04` (note that a bot may advertise itself as more
+        ///   than one). This will be replaced in the future by more well-structured
+        ///   keys and values to represent OS variants.
         ///
         /// * has-docker: "true" if the bot has Docker installed. This will be
-        /// replaced in the future by a more structured message for Docker support.
+        ///   replaced in the future by a more structured message for Docker support.
         #[prost(string, tag = "1")]
         pub key: ::prost::alloc::string::String,
         /// The property's value.
@@ -176,7 +178,7 @@ pub struct BotSession {
     /// A unique bot ID within the farm used to persistently identify this bot over
     /// time (i.e., over multiple sessions). This ID must be unique within a
     /// farm. Typically, the bot ID will be the same as the name of the primary
-    /// device in the worker (e.g., what you'd get from typing `uname -n` on *nix),
+    /// device in the worker (e.g., what you'd get from typing `uname -n` on \*nix),
     /// but this is not required since a single device may allow multiple bots to
     /// run on it, each with access to different resources. What is important is
     /// that this ID is meaningful to humans, who might need to hunt a physical
@@ -295,7 +297,7 @@ pub struct Lease {
 ///
 /// This message is heavily based on Swarming administration tasks from the LUCI
 /// project (<http://github.com/luci/luci-py/appengine/swarming>).
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AdminTemp {
     /// The admin action; see `Command` for legal values.
     #[prost(enumeration = "admin_temp::Command", tag = "1")]
@@ -624,7 +626,7 @@ pub mod bots_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.remoteworkers.v1test2.Bots/CreateBotSession",
             );
@@ -653,7 +655,7 @@ pub mod bots_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.remoteworkers.v1test2.Bots/UpdateBotSession",
             );
@@ -693,7 +695,7 @@ pub mod command_task {
         /// This field should be passed directly to the underlying operating system,
         /// and so it must be sensible to that operating system. For example, on
         /// Windows, the first argument might be "C:\Windows\System32\ping.exe" -
-        /// that is, using drive letters and backslashes. A command for a *nix
+        /// that is, using drive letters and backslashes. A command for a \*nix
         /// system, on the other hand, would use forward slashes.
         ///
         /// All other fields in the RWAPI must consistently use forward slashes,
@@ -732,7 +734,7 @@ pub mod command_task {
     /// Nested message and enum types in `Inputs`.
     pub mod inputs {
         /// An environment variable required by this task.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct EnvironmentVariable {
             /// The envvar name.
             #[prost(string, tag = "1")]
@@ -743,7 +745,7 @@ pub mod command_task {
         }
     }
     /// Describes the expected outputs of the command.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Outputs {
         /// A list of expected files, relative to the execution root. All paths
         /// MUST be delimited by forward slashes.
@@ -769,7 +771,7 @@ pub mod command_task {
         pub stderr_destination: ::prost::alloc::string::String,
     }
     /// Describes the timeouts associated with this task.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Timeouts {
         /// This specifies the maximum time that the task can run, excluding the
         /// time required to download inputs or upload outputs. That is, the worker
@@ -787,14 +789,14 @@ pub mod command_task {
         /// tasks may be hard-frozen in which case this process will fail. This
         /// timeout specifies how long to wait for a terminated task to shut down
         /// gracefully (e.g. via SIGTERM) before we bring down the hammer (e.g.
-        /// SIGKILL on *nix, CTRL_BREAK_EVENT on Windows).
+        /// SIGKILL on \*nix, CTRL_BREAK_EVENT on Windows).
         #[prost(message, optional, tag = "3")]
         pub shutdown: ::core::option::Option<::prost_types::Duration>,
     }
 }
 /// DEPRECATED - use CommandResult instead.
 /// Describes the actual outputs from the task.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CommandOutputs {
     /// exit_code is only fully reliable if the status' code is OK. If the task
     /// exceeded its deadline or was cancelled, the process may still produce an
@@ -804,15 +806,15 @@ pub struct CommandOutputs {
     pub exit_code: i32,
     /// The output files. The blob referenced by the digest should contain
     /// one of the following (implementation-dependent):
-    ///     * A marshalled DirectoryMetadata of the returned filesystem
-    ///     * A LUCI-style .isolated file
+    /// \* A marshalled DirectoryMetadata of the returned filesystem
+    /// \* A LUCI-style .isolated file
     #[prost(message, optional, tag = "2")]
     pub outputs: ::core::option::Option<Digest>,
 }
 /// DEPRECATED - use CommandResult instead.
 /// Can be used as part of CompleteRequest.metadata, or are part of a more
 /// sophisticated message.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CommandOverhead {
     /// The elapsed time between calling Accept and Complete. The server will also
     /// have its own idea of what this should be, but this excludes the overhead of
@@ -839,8 +841,8 @@ pub struct CommandResult {
     pub exit_code: i32,
     /// The output files. The blob referenced by the digest should contain
     /// one of the following (implementation-dependent):
-    ///     * A marshalled DirectoryMetadata of the returned filesystem
-    ///     * A LUCI-style .isolated file
+    /// \* A marshalled DirectoryMetadata of the returned filesystem
+    /// \* A LUCI-style .isolated file
     #[prost(message, optional, tag = "3")]
     pub outputs: ::core::option::Option<Digest>,
     /// The elapsed time between calling Accept and Complete. The server will also
@@ -865,7 +867,7 @@ pub struct CommandResult {
 }
 /// The metadata for a file. Similar to the equivalent message in the Remote
 /// Execution API.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FileMetadata {
     /// The path of this file. If this message is part of the
     /// CommandOutputs.outputs fields, the path is relative to the execution root
@@ -888,10 +890,10 @@ pub struct FileMetadata {
 }
 /// The metadata for a directory. Similar to the equivalent message in the Remote
 /// Execution API.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DirectoryMetadata {
     /// The path of the directory, as in
-    /// [FileMetadata.path][google.devtools.remoteworkers.v1test2.FileMetadata.path].
+    /// \[FileMetadata.path\]\[google.devtools.remoteworkers.v1test2.FileMetadata.path\].
     #[prost(string, tag = "1")]
     pub path: ::prost::alloc::string::String,
     /// A pointer to the contents of the directory, in the form of a marshalled
@@ -908,7 +910,7 @@ pub struct DirectoryMetadata {
 /// In the context of the RWAPI, a Digest will virtually always refer to the
 /// contents of a file or a directory. The latter is represented by the
 /// byte-encoded Directory message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Digest {
     /// A string-encoded hash (eg "1a2b3c", not the byte array \[0x1a, 0x2b, 0x3c\])
     /// using an implementation-defined hash algorithm (eg SHA-256).
@@ -922,7 +924,7 @@ pub struct Digest {
     pub size_bytes: i64,
 }
 /// Describes a blob of binary content with its digest.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Blob {
     /// The digest of the blob. This should be verified by the receiver.
     #[prost(message, optional, tag = "1")]

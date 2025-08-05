@@ -20,7 +20,7 @@ pub struct OperationEventLog {
 }
 /// OperationArtifact contains the information about the artifact created as
 /// result of the operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationArtifact {
     /// Type of the artifact.
     #[prost(string, tag = "1")]
@@ -33,7 +33,7 @@ pub struct OperationArtifact {
 /// to serve the end consumer. Internally, these logs represent events in the
 /// data plane streamer instance as a result of end consumer interacting with the
 /// stream resources.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SessionEventLog {
     /// Enum for type of event being logged.
     #[prost(enumeration = "SessionEventType", tag = "1")]

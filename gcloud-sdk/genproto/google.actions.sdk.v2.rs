@@ -12,7 +12,7 @@
 /// must provide a username and password for a test account in
 /// Settings.testing_instructions for the review team to review the app (they
 /// will not be visible to users).
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccountLinking {
     /// Required. If `true`, users are allowed to sign up for new accounts via voice.
     /// If `false`, account creation is only allowed on your website. Select this
@@ -170,7 +170,7 @@ pub mod account_linking {
 }
 /// Information about the encrypted OAuth client secret used in account linking
 /// flows (for AUTH_CODE grant type).
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccountLinkingSecret {
     /// Encrypted account linking client secret ciphertext.
     #[prost(bytes = "vec", tag = "1")]
@@ -200,7 +200,7 @@ pub struct Actions {
 pub mod actions {
     /// Defines the engagement mechanisms associated with this action. This
     /// allows end users to subscribe to push notification and daily update.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Engagement {
         /// The title of the engagement that will be sent to end users asking for
         /// their permission to receive updates. The prompt sent to end users for
@@ -232,16 +232,16 @@ pub mod actions {
     /// Nested message and enum types in `Engagement`.
     pub mod engagement {
         /// Defines push notification settings that this engagement supports.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct PushNotification {}
         /// Defines daily update settings that this engagement supports.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct DailyUpdate {}
         /// Indicates whether sharing links is enabled for this action and the
         /// corresponding settings. Action links are used to deep link a user into a
         /// specific action.
         /// ActionLink is deprecated. Use AssistantLink instead.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct ActionLink {
             /// User friendly display title for the link.
             #[prost(string, tag = "1")]
@@ -250,14 +250,14 @@ pub mod actions {
         /// Indicates whether sharing links is enabled for this action and the
         /// corresponding settings. Assistant links are used to deep link a user into
         /// a specific action.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct AssistantLink {
             /// User friendly display title for the link.
             #[prost(string, tag = "1")]
             pub title: ::prost::alloc::string::String,
         }
         /// Recurring update settings that this engagement supports.
-        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum RecurringUpdate {
             /// Daily update settings that this engagement supports.
             #[prost(message, tag = "3")]
@@ -265,7 +265,7 @@ pub mod actions {
         }
     }
     /// Details regarding a custom action.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CustomAction {
         /// Engagement mechanisms associated with the action to help end users
         /// subscribe to push notifications and daily updates.
@@ -278,7 +278,7 @@ pub mod actions {
 }
 /// Contains information that's "transportable" i.e. not specific to any given
 /// project and can be moved between projects.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Manifest {
     /// Version of the file format. The current file format version is 1.0
     /// Example: "1.0"
@@ -286,7 +286,7 @@ pub struct Manifest {
     pub version: ::prost::alloc::string::String,
 }
 /// Styles applied to cards that are presented to users
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ThemeCustomization {
     /// Background color of cards. Acts as a fallback if `background_image` is
     /// not provided by developers or `background_image` doesn't fit for certain
@@ -301,17 +301,18 @@ pub struct ThemeCustomization {
     pub primary_color: ::prost::alloc::string::String,
     /// The font family that will be used for title of cards.
     /// Supported fonts:
-    /// - Sans Serif
-    /// - Sans Serif Medium
-    /// - Sans Serif Bold
-    /// - Sans Serif Black
-    /// - Sans Serif Condensed
-    /// - Sans Serif Condensed Medium
-    /// - Serif
-    /// - Serif Bold
-    /// - Monospace
-    /// - Cursive
-    /// - Sans Serif Smallcaps
+    ///
+    /// * Sans Serif
+    /// * Sans Serif Medium
+    /// * Sans Serif Bold
+    /// * Sans Serif Black
+    /// * Sans Serif Condensed
+    /// * Sans Serif Condensed Medium
+    /// * Serif
+    /// * Serif Bold
+    /// * Monospace
+    /// * Cursive
+    /// * Sans Serif Smallcaps
     #[prost(string, tag = "3")]
     pub font_family: ::prost::alloc::string::String,
     /// Border style of foreground image of cards. For example, can be applied on
@@ -384,7 +385,7 @@ pub mod theme_customization {
 /// Represents settings of an Actions project that are specific to a user locale.
 /// In this instance, user means the end user who invokes your Actions.
 /// **This message is localizable.**
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LocalizedSettings {
     /// Required. The default display name for this Actions project (if there is no
     /// translation available)
@@ -460,7 +461,7 @@ pub struct SurfaceRequirements {
     pub minimum_requirements: ::prost::alloc::vec::Vec<CapabilityRequirement>,
 }
 /// Represents a requirement about the availability of a given capability.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CapabilityRequirement {
     /// The type of capability.
     #[prost(enumeration = "capability_requirement::SurfaceCapability", tag = "1")]
@@ -551,14 +552,15 @@ pub struct Settings {
     /// region is represented using the Canonical Name of Adwords geotargets. See
     /// <https://developers.google.com/adwords/api/docs/appendix/geotargeting>
     /// Examples include:
-    /// - "Germany"
-    /// - "Ghana"
-    /// - "Greece"
-    /// - "Grenada"
-    /// - "United Kingdom"
-    /// - "United States"
-    /// - "United States Minor Outlying Islands"
-    /// - "Uruguay"
+    ///
+    /// * "Germany"
+    /// * "Ghana"
+    /// * "Greece"
+    /// * "Grenada"
+    /// * "United Kingdom"
+    /// * "United States"
+    /// * "United States Minor Outlying Islands"
+    /// * "Uruguay"
     #[prost(string, repeated, tag = "3")]
     pub enabled_regions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Represents the regions where your Actions are blocked, based on the user's
@@ -566,14 +568,15 @@ pub struct Settings {
     /// Each region is represented using the Canonical Name of Adwords geotargets.
     /// See <https://developers.google.com/adwords/api/docs/appendix/geotargeting>
     /// Examples include:
-    /// - "Germany"
-    /// - "Ghana"
-    /// - "Greece"
-    /// - "Grenada"
-    /// - "United Kingdom"
-    /// - "United States"
-    /// - "United States Minor Outlying Islands"
-    /// - "Uruguay"
+    ///
+    /// * "Germany"
+    /// * "Ghana"
+    /// * "Greece"
+    /// * "Grenada"
+    /// * "United Kingdom"
+    /// * "United States"
+    /// * "United States Minor Outlying Islands"
+    /// * "Uruguay"
     #[prost(string, repeated, tag = "4")]
     pub disabled_regions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The category for this Actions project.
@@ -750,9 +753,10 @@ pub mod settings {
 /// name as the value for the `executeFunction` key.
 /// For example, a value of `my_webhook` for the`executeFunction` key would have
 /// a code structure like this:
-///   - `/webhooks/my_webhook.yaml`
-///   - `/webhooks/my_webhook/index.js`
-///   - `/webhooks/my_webhook/package.json`
+///
+/// * `/webhooks/my_webhook.yaml`
+/// * `/webhooks/my_webhook/index.js`
+/// * `/webhooks/my_webhook/package.json`
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Webhook {
     /// List of handlers for this webhook.
@@ -767,7 +771,7 @@ pub mod webhook {
     /// Declares the name of the webhoook handler. A webhook can have
     /// multiple handlers registered. These handlers can be called from multiple
     /// places in your Actions project.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Handler {
         /// Required. Name of the handler. Must be unique across all handlers the Actions
         /// project. You can check the name of this handler to invoke the correct
@@ -799,7 +803,7 @@ pub mod webhook {
     }
     /// Holds the metadata of an inline Cloud Function deployed from the
     /// webhooks folder.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct InlineCloudFunction {
         /// The name of the Cloud Function entry point. The value of this field
         /// should match the name of the method exported from the source code.
@@ -900,8 +904,7 @@ pub mod config_file {
         /// Single resource bundle, which is a map from a string to a string or list
         /// of strings. Resource bundles could be used for localizing strings in
         /// static prompts.
-        /// Allowed file paths: `resources/strings/{language}?/{multiple
-        /// directories}?/{BundleName}.yaml`
+        /// Allowed file paths: `resources/strings/{language}?/{multiple  directories}?/{BundleName}.yaml`
         #[prost(message, tag = "12")]
         ResourceBundle(::prost_types::Struct),
     }
@@ -915,20 +918,18 @@ pub struct DataFiles {
 }
 /// Represents a single file which contains unstructured data. Examples include
 /// image files, audio files, and cloud function source code.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataFile {
     /// Relative path of the data file from the project root in the SDK file
     /// structure.
     /// Allowed file paths:
-    ///      - Images: `resources/images/{multiple
-    ///      directories}?/{ImageName}.{extension}`
-    ///      - Audio: `resources/audio/{multiple
-    ///      directories}?/{AudioFileName}.{extension}`
-    ///      - Inline Cloud Function Code: `webhooks/{WebhookName}.zip`
+    /// - Images: `resources/images/{multiple      directories}?/{ImageName}.{extension}`
+    /// - Audio: `resources/audio/{multiple      directories}?/{AudioFileName}.{extension}`
+    /// - Inline Cloud Function Code: `webhooks/{WebhookName}.zip`
     /// Allowed extensions:
-    ///      - Images: `png`, `jpg`, `jpeg`
-    ///      - Audio: `mp3`, `mpeg`
-    ///      - Inline Cloud Functions: `zip`
+    /// - Images: `png`, `jpg`, `jpeg`
+    /// - Audio: `mp3`, `mpeg`
+    /// - Inline Cloud Functions: `zip`
     #[prost(string, tag = "1")]
     pub file_path: ::prost::alloc::string::String,
     /// Required. The content type of this asset. Example: `text/html`. The content
@@ -970,7 +971,7 @@ pub mod files {
     }
 }
 /// Definition of release channel resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReleaseChannel {
     /// The unique name of the release channel in the following format.
     /// `projects/{project}/releaseChannels/{release_channel}`.
@@ -993,7 +994,7 @@ pub struct ValidationResults {
     pub results: ::prost::alloc::vec::Vec<ValidationResult>,
 }
 /// Represents a validation result associated with the app content.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ValidationResult {
     /// Holds the validation message.
     #[prost(string, tag = "1")]
@@ -1005,7 +1006,7 @@ pub struct ValidationResult {
 /// Nested message and enum types in `ValidationResult`.
 pub mod validation_result {
     /// Context to identify the resource the validation message relates to.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ValidationContext {
         /// Language code of the lozalized resource.
         /// Empty if the error is for non-localized resource.
@@ -1016,7 +1017,7 @@ pub mod validation_result {
     }
 }
 /// Definition of version resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Version {
     /// The unique identifier of the version in the following format.
     /// `projects/{project}/versions/{version}`.
@@ -1035,7 +1036,7 @@ pub struct Version {
 /// Nested message and enum types in `Version`.
 pub mod version {
     /// Represents the current state of the version.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct VersionState {
         /// The current state of the version.
         #[prost(enumeration = "version_state::State", tag = "1")]
@@ -1131,11 +1132,12 @@ pub struct WriteDraftRequest {
     pub parent: ::prost::alloc::string::String,
     /// Required. List of files sent to the server at a time. This is a list of config files
     /// or data files.
+    ///
     /// 1. The first request must be a ConfigFiles.
-    /// 2. The first request must have a ConfigFile with 'settings'.
-    /// 3. The first request must have a ConfigFile with 'manifest'.
-    /// 4. The webhook ConfigFile corresponding to inline cloud function must be
-    ///     streamed before the DataFile corresponding to its source code.
+    /// 1. The first request must have a ConfigFile with 'settings'.
+    /// 1. The first request must have a ConfigFile with 'manifest'.
+    /// 1. The webhook ConfigFile corresponding to inline cloud function must be
+    ///    streamed before the DataFile corresponding to its source code.
     #[prost(message, optional, tag = "4")]
     pub files: ::core::option::Option<Files>,
 }
@@ -1169,10 +1171,10 @@ pub struct WritePreviewRequest {
 /// Nested message and enum types in `WritePreviewRequest`.
 pub mod write_preview_request {
     /// Indicates the preview content will be coming from the Draft.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ContentFromDraft {}
     /// Indicates the preview content will be coming from an exiting version.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ContentFromSubmittedVersion {
         /// Required. Submitted version of the project to be used to create a preview.
         /// Format: `projects/{project}/versions/{version}`
@@ -1180,7 +1182,7 @@ pub mod write_preview_request {
         pub version: ::prost::alloc::string::String,
     }
     /// Settings for updating the preview.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PreviewSettings {
         /// Indicates whether or not to run certain operations, such as transactions,
         /// in sandbox mode. By default, preview requests run these operations in
@@ -1193,11 +1195,12 @@ pub mod write_preview_request {
     pub enum Source {
         /// List of files sent to the server at a time. This is a list of config
         /// files or data files.
+        ///
         /// 1. The first request must be a ConfigFiles.
-        /// 2. The first request must have a ConfigFile with 'settings'.
-        /// 3. The first request must have a ConfigFile with 'manifest'.
-        /// 4. The webhook ConfigFile corresponding to inline cloud function must be
-        ///     streamed before the DataFile corresponding to its source code.
+        /// 1. The first request must have a ConfigFile with 'settings'.
+        /// 1. The first request must have a ConfigFile with 'manifest'.
+        /// 1. The webhook ConfigFile corresponding to inline cloud function must be
+        ///    streamed before the DataFile corresponding to its source code.
         #[prost(message, tag = "5")]
         Files(super::Files),
         /// Content sourced from the project draft.
@@ -1231,11 +1234,12 @@ pub struct CreateVersionRequest {
     pub parent: ::prost::alloc::string::String,
     /// Required. List of files sent to the server at a time. This is a list of config files
     /// or data files.
+    ///
     /// 1. The first request must be a ConfigFiles.
-    /// 2. The first request must have a ConfigFile with 'settings'.
-    /// 3. The first request must have a ConfigFile with 'manifest'.
-    /// 4. The webhook ConfigFile corresponding to inline cloud function must be
-    ///     streamed before the DataFile corresponding to its source code.
+    /// 1. The first request must have a ConfigFile with 'settings'.
+    /// 1. The first request must have a ConfigFile with 'manifest'.
+    /// 1. The webhook ConfigFile corresponding to inline cloud function must be
+    ///    streamed before the DataFile corresponding to its source code.
     #[prost(message, optional, tag = "5")]
     pub files: ::core::option::Option<Files>,
     /// Optional. The release channel to deploy the version, if specified. The supported
@@ -1246,7 +1250,7 @@ pub struct CreateVersionRequest {
     pub release_channel: ::prost::alloc::string::String,
 }
 /// RPC request for ReadDraft.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReadDraftRequest {
     /// Required. The name of the resource in the format `projects/{project}/draft`. The
     /// `{project}` is the cloud project ID associated with the project.
@@ -1267,7 +1271,7 @@ pub struct ReadDraftResponse {
     pub files: ::core::option::Option<Files>,
 }
 /// RPC request for ReadVersion.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReadVersionRequest {
     /// Required. The name of the version resource in the format
     /// `projects/{project}/versions/{version}`. `{project}` is the
@@ -1290,14 +1294,14 @@ pub struct ReadVersionResponse {
     pub files: ::core::option::Option<Files>,
 }
 /// RPC request for EncryptSecret.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EncryptSecretRequest {
     /// Required. The account linking client secret plaintext.
     #[prost(string, tag = "1")]
     pub client_secret: ::prost::alloc::string::String,
 }
 /// RPC response for EncryptSecret.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EncryptSecretResponse {
     /// Contains the encrypted account linking client secret and the key version
     /// used to encrypt the secret.
@@ -1305,21 +1309,21 @@ pub struct EncryptSecretResponse {
     pub account_linking_secret: ::core::option::Option<AccountLinkingSecret>,
 }
 /// RPC request for DecryptSecret.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DecryptSecretRequest {
     /// Required. The account linking client secret ciphertext.
     #[prost(bytes = "vec", tag = "1")]
     pub encrypted_client_secret: ::prost::alloc::vec::Vec<u8>,
 }
 /// RPC response for DecryptSecret.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DecryptSecretResponse {
     /// The account linking client secret plaintext.
     #[prost(string, tag = "1")]
     pub client_secret: ::prost::alloc::string::String,
 }
 /// RPC request for ListSampleProjects.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSampleProjectsRequest {
     /// Optional. The maximum number of sample projects to return. The service may return
     /// fewer than this value.
@@ -1344,7 +1348,7 @@ pub struct ListSampleProjectsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Definition of sample project resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SampleProject {
     /// The name of the sample project.
     /// Format: `sampleProjects/{sample_project}`
@@ -1358,7 +1362,7 @@ pub struct SampleProject {
     pub description: ::prost::alloc::string::String,
 }
 /// RPC request for listing release channels
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListReleaseChannelsRequest {
     /// Required. The name of the resource in the format `projects/{project}`. The
     /// `{project}` is the cloud project ID associated with the project.
@@ -1388,7 +1392,7 @@ pub struct ListReleaseChannelsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// RPC request for listing versions
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListVersionsRequest {
     /// Required. The name of the resource in the format `projects/{project}`. The
     /// `{project}` is the cloud project ID associated with the project.
@@ -1522,7 +1526,7 @@ pub mod actions_sdk_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.actions.sdk.v2.ActionsSdk/WriteDraft",
             );
@@ -1548,7 +1552,7 @@ pub mod actions_sdk_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.actions.sdk.v2.ActionsSdk/WritePreview",
             );
@@ -1575,7 +1579,7 @@ pub mod actions_sdk_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.actions.sdk.v2.ActionsSdk/CreateVersion",
             );
@@ -1602,7 +1606,7 @@ pub mod actions_sdk_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.actions.sdk.v2.ActionsSdk/ReadDraft",
             );
@@ -1629,7 +1633,7 @@ pub mod actions_sdk_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.actions.sdk.v2.ActionsSdk/ReadVersion",
             );
@@ -1660,7 +1664,7 @@ pub mod actions_sdk_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.actions.sdk.v2.ActionsSdk/EncryptSecret",
             );
@@ -1688,7 +1692,7 @@ pub mod actions_sdk_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.actions.sdk.v2.ActionsSdk/DecryptSecret",
             );
@@ -1715,7 +1719,7 @@ pub mod actions_sdk_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.actions.sdk.v2.ActionsSdk/ListSampleProjects",
             );
@@ -1745,7 +1749,7 @@ pub mod actions_sdk_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.actions.sdk.v2.ActionsSdk/ListReleaseChannels",
             );
@@ -1775,7 +1779,7 @@ pub mod actions_sdk_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.actions.sdk.v2.ActionsSdk/ListVersions",
             );
@@ -1909,7 +1913,7 @@ pub struct Slots {
     >,
 }
 /// Information related to user input.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UserConversationInput {
     /// Type of user input. E.g. keyboard, voice, touch, etc.
     #[prost(string, tag = "1")]
@@ -1950,7 +1954,7 @@ pub struct ConditionsEvaluated {
     pub success_condition: ::core::option::Option<Condition>,
 }
 /// Evaluated condition.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Condition {
     /// Expression specified in this condition.
     #[prost(string, tag = "1")]
@@ -1964,7 +1968,7 @@ pub struct Condition {
 }
 /// Information about execution of onSceneEnter stage:
 /// <https://developers.google.com/assistant/conversational/scenes#on_enter>
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OnSceneEnter {
     /// Handler name specified in onSceneEnter event.
     #[prost(string, tag = "1")]
@@ -1972,7 +1976,7 @@ pub struct OnSceneEnter {
 }
 /// Event triggered by destination scene returned from webhook:
 /// <https://developers.google.com/assistant/conversational/webhooks#transition_scenes>
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WebhookInitiatedTransition {
     /// ID of the scene the transition is leading to.
     #[prost(string, tag = "1")]
@@ -1980,7 +1984,7 @@ pub struct WebhookInitiatedTransition {
 }
 /// Information about a request dispatched to the Action webhook:
 /// <https://developers.google.com/assistant/conversational/webhooks#payloads>
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WebhookRequest {
     /// Payload of the webhook request.
     #[prost(string, tag = "1")]
@@ -1988,7 +1992,7 @@ pub struct WebhookRequest {
 }
 /// Information about a response received from the Action webhook:
 /// <https://developers.google.com/assistant/conversational/webhooks#payloads>
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WebhookResponse {
     /// Payload of the webhook response.
     #[prost(string, tag = "1")]
@@ -2018,18 +2022,18 @@ pub struct SlotRequested {
 }
 /// Event which happens after webhook validation was finished for slot(s):
 /// <https://developers.google.com/assistant/conversational/scenes#slot_filling>
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SlotValidated {}
 /// Event which happens when form is fully filled:
 /// <https://developers.google.com/assistant/conversational/scenes#slot_filling>
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FormFilled {}
 /// Event which happens when system needs user input:
 /// <https://developers.google.com/assistant/conversational/scenes#input>
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WaitingForUserInput {}
 /// Event which informs that conversation with agent was ended.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EndConversation {}
 /// Request for playing a round of the conversation.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2052,7 +2056,7 @@ pub struct SendInteractionRequest {
     pub conversation_token: ::prost::alloc::string::String,
 }
 /// User input provided on a conversation round.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UserInput {
     /// Content of the input sent by the user.
     #[prost(string, tag = "1")]
@@ -2266,7 +2270,7 @@ pub struct Diagnostics {
     pub actions_builder_events: ::prost::alloc::vec::Vec<ExecutionEvent>,
 }
 /// Request for finding matching intents.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MatchIntentsRequest {
     /// Required. The project being tested, indicated by the Project ID.
     /// Format: projects/{project}
@@ -2291,7 +2295,7 @@ pub struct MatchIntentsResponse {
     pub matched_intents: ::prost::alloc::vec::Vec<conversation::Intent>,
 }
 /// Request for setting Web & App Activity preferences.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetWebAndAppActivityControlRequest {
     /// Whether the setting should be set to an enabled or disabled state.
     #[prost(bool, tag = "1")]
@@ -2405,7 +2409,7 @@ pub mod actions_testing_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.actions.sdk.v2.ActionsTesting/SendInteraction",
             );
@@ -2435,7 +2439,7 @@ pub mod actions_testing_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.actions.sdk.v2.ActionsTesting/MatchIntents",
             );
@@ -2472,7 +2476,7 @@ pub mod actions_testing_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.actions.sdk.v2.ActionsTesting/SetWebAndAppActivityControl",
             );

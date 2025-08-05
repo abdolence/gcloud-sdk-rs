@@ -28,7 +28,7 @@ pub struct ErrorDetail {
     pub error_info: ::core::option::Option<super::super::super::super::rpc::ErrorInfo>,
 }
 /// Holds information about where the error is located.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ErrorLocation {
     /// Optional. If applicable, denotes the line where the error occurred. A zero
     /// value means that there is no line information.
@@ -96,7 +96,7 @@ pub struct Point {
 /// A time interval extending just after a start time through an end time.
 /// If the start time is the same as the end time, then the interval
 /// represents a single point in time.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TimeInterval {
     /// Optional. The beginning of the time interval.  The default value
     /// for the start time is the end time. The start time must not be
@@ -180,14 +180,14 @@ pub struct TranslationConfigDetails {
 /// Nested message and enum types in `TranslationConfigDetails`.
 pub mod translation_config_details {
     /// The chosen path where the source for input files will be found.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum SourceLocation {
         /// The Cloud Storage path for a directory of files to translate in a task.
         #[prost(string, tag = "1")]
         GcsSourcePath(::prost::alloc::string::String),
     }
     /// The chosen path where the destination for output files will be found.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum TargetLocation {
         /// The Cloud Storage path to write back the corresponding input files to.
         #[prost(string, tag = "2")]
@@ -203,7 +203,7 @@ pub mod translation_config_details {
     }
 }
 /// The possible dialect options for translation.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Dialect {
     /// The possible dialect options that this message represents.
     #[prost(
@@ -215,7 +215,7 @@ pub struct Dialect {
 /// Nested message and enum types in `Dialect`.
 pub mod dialect {
     /// The possible dialect options that this message represents.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum DialectValue {
         /// The BigQuery dialect
         #[prost(message, tag = "1")]
@@ -271,16 +271,16 @@ pub mod dialect {
     }
 }
 /// The dialect definition for BigQuery.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BigQueryDialect {}
 /// The dialect definition for HiveQL.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HiveQlDialect {}
 /// The dialect definition for Redshift.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RedshiftDialect {}
 /// The dialect definition for Teradata.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TeradataDialect {
     /// Which Teradata sub-dialect mode the user specifies.
     #[prost(enumeration = "teradata_dialect::Mode", tag = "1")]
@@ -333,43 +333,43 @@ pub mod teradata_dialect {
     }
 }
 /// The dialect definition for Oracle.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OracleDialect {}
 /// The dialect definition for SparkSQL.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SparkSqlDialect {}
 /// The dialect definition for Snowflake.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SnowflakeDialect {}
 /// The dialect definition for Netezza.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetezzaDialect {}
 /// The dialect definition for Azure Synapse.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AzureSynapseDialect {}
 /// The dialect definition for Vertica.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VerticaDialect {}
 /// The dialect definition for SQL Server.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SqlServerDialect {}
 /// The dialect definition for Postgresql.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PostgresqlDialect {}
 /// The dialect definition for Presto.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PrestoDialect {}
 /// The dialect definition for MySQL.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MySqlDialect {}
 /// The dialect definition for DB2.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Db2Dialect {}
 /// The dialect definition for SQLite.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SqLiteDialect {}
 /// The dialect definition for Greenplum.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GreenplumDialect {}
 /// Represents a map of name mappings using a list of key:value proto messages of
 /// existing name to desired output name.
@@ -381,7 +381,7 @@ pub struct ObjectNameMappingList {
 }
 /// Represents a key-value pair of NameMappingKey to NameMappingValue to
 /// represent the mapping of SQL names from the input value to desired output.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ObjectNameMapping {
     /// The name of the object in source that is being mapped.
     #[prost(message, optional, tag = "1")]
@@ -392,7 +392,7 @@ pub struct ObjectNameMapping {
 }
 /// The potential components of a full name mapping that will be mapped
 /// during translation in the source data warehouse.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NameMappingKey {
     /// The type of object that is being mapped.
     #[prost(enumeration = "name_mapping_key::Type", tag = "1")]
@@ -481,7 +481,7 @@ pub mod name_mapping_key {
 }
 /// The potential components of a full name mapping that will be mapped
 /// during translation in the target data warehouse.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NameMappingValue {
     /// The database name (BigQuery project ID equivalent in the target data
     /// warehouse).
@@ -500,7 +500,7 @@ pub struct NameMappingValue {
     pub attribute: ::prost::alloc::string::String,
 }
 /// Represents the default source environment values for the translation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SourceEnv {
     /// The default database name to fully qualify SQL objects when their database
     /// name is missing.
@@ -545,7 +545,7 @@ pub struct TranslationDetails {
     pub target_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Represents one mapping from a source SQL to a target SQL.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SourceTargetMapping {
     /// The source SQL or the path to it.
     #[prost(message, optional, tag = "1")]
@@ -555,7 +555,7 @@ pub struct SourceTargetMapping {
     pub target_spec: ::core::option::Option<TargetSpec>,
 }
 /// Represents one path to the location that holds source data.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SourceSpec {
     /// Optional. The optional field to specify the encoding of the sql bytes.
     #[prost(string, tag = "3")]
@@ -567,7 +567,7 @@ pub struct SourceSpec {
 /// Nested message and enum types in `SourceSpec`.
 pub mod source_spec {
     /// The specific source SQL.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Source {
         /// The base URI for all files to be read in as sources for translation.
         #[prost(string, tag = "1")]
@@ -578,7 +578,7 @@ pub mod source_spec {
     }
 }
 /// Represents one path to the location that holds target data.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TargetSpec {
     /// The relative path for the target data. Given source file
     /// `base_uri/input/sql`, the output would be
@@ -587,7 +587,7 @@ pub struct TargetSpec {
     pub relative_path: ::prost::alloc::string::String,
 }
 /// Literal data.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Literal {
     /// Required. The identifier of the literal entry.
     #[prost(string, tag = "1")]
@@ -599,7 +599,7 @@ pub struct Literal {
 /// Nested message and enum types in `Literal`.
 pub mod literal {
     /// The literal SQL contents.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum LiteralData {
         /// Literal string data.
         #[prost(string, tag = "2")]
@@ -610,7 +610,7 @@ pub mod literal {
     }
 }
 /// Represents the default source environment values for the translation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SourceEnvironment {
     /// The default database name to fully qualify SQL objects when their database
     /// name is missing.
@@ -630,7 +630,7 @@ pub struct SourceEnvironment {
     pub metadata_store_dataset: ::prost::alloc::string::String,
 }
 /// A record in the aggregate CSV report for a migration workflow
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GcsReportLogMessage {
     /// Severity of the translation record.
     #[prost(string, tag = "1")]
@@ -1043,7 +1043,7 @@ pub struct CreateMigrationWorkflowRequest {
     pub migration_workflow: ::core::option::Option<MigrationWorkflow>,
 }
 /// A request to get a previously created migration workflow.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetMigrationWorkflowRequest {
     /// Required. The unique identifier for the migration workflow.
     /// Example: `projects/123/locations/us/workflows/1234`
@@ -1054,7 +1054,7 @@ pub struct GetMigrationWorkflowRequest {
     pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// A request to list previously created migration workflows.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListMigrationWorkflowsRequest {
     /// Required. The project and location of the migration workflows to list.
     /// Example: `projects/123/locations/us`
@@ -1087,7 +1087,7 @@ pub struct ListMigrationWorkflowsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// A request to delete a previously created migration workflow.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteMigrationWorkflowRequest {
     /// Required. The unique identifier for the migration workflow.
     /// Example: `projects/123/locations/us/workflows/1234`
@@ -1095,7 +1095,7 @@ pub struct DeleteMigrationWorkflowRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A request to start a previously created migration workflow.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StartMigrationWorkflowRequest {
     /// Required. The unique identifier for the migration workflow.
     /// Example: `projects/123/locations/us/workflows/1234`
@@ -1103,7 +1103,7 @@ pub struct StartMigrationWorkflowRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A request to get a previously created migration subtasks.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetMigrationSubtaskRequest {
     /// Required. The unique identifier for the migration subtask.
     /// Example: `projects/123/locations/us/workflows/1234/subtasks/543`
@@ -1114,7 +1114,7 @@ pub struct GetMigrationSubtaskRequest {
     pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// A request to list previously created migration subtasks.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListMigrationSubtasksRequest {
     /// Required. The migration task of the subtasks to list.
     /// Example: `projects/123/locations/us/workflows/1234`
@@ -1259,7 +1259,7 @@ pub mod migration_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.migration.v2.MigrationService/CreateMigrationWorkflow",
             );
@@ -1289,7 +1289,7 @@ pub mod migration_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.migration.v2.MigrationService/GetMigrationWorkflow",
             );
@@ -1319,7 +1319,7 @@ pub mod migration_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.migration.v2.MigrationService/ListMigrationWorkflows",
             );
@@ -1346,7 +1346,7 @@ pub mod migration_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.migration.v2.MigrationService/DeleteMigrationWorkflow",
             );
@@ -1376,7 +1376,7 @@ pub mod migration_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.migration.v2.MigrationService/StartMigrationWorkflow",
             );
@@ -1406,7 +1406,7 @@ pub mod migration_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.migration.v2.MigrationService/GetMigrationSubtask",
             );
@@ -1436,7 +1436,7 @@ pub mod migration_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.migration.v2.MigrationService/ListMigrationSubtasks",
             );
@@ -1453,7 +1453,7 @@ pub mod migration_service_client {
     }
 }
 /// Details about a record.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TranslationReportRecord {
     /// Severity of the translation record.
     #[prost(enumeration = "translation_report_record::Severity", tag = "1")]

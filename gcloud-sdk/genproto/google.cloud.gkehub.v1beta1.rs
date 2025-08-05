@@ -8,9 +8,9 @@ pub struct Membership {
     ///
     /// `membership_id` must be a valid RFC 1123 compliant DNS label:
     ///
-    ///    1. At most 63 characters in length
-    ///    2. It must consist of lower case alphanumeric characters or `-`
-    ///    3. It must start and end with an alphanumeric character
+    /// 1. At most 63 characters in length
+    /// 1. It must consist of lower case alphanumeric characters or `-`
+    /// 1. It must start and end with an alphanumeric character
     ///
     /// Which can be expressed as the regex: `[a-z0-9](\[-a-z0-9\]*[a-z0-9])?`,
     /// with a maximum length of 63 characters.
@@ -146,11 +146,11 @@ pub struct MembershipEndpoint {
     /// Optional. The in-cluster Kubernetes Resources that should be applied for a
     /// correctly registered cluster, in the steady state. These resources:
     ///
-    ///    * Ensure that the cluster is exclusively registered to one and only one
-    ///      Hub Membership.
-    ///    * Propagate Workload Pool Information available in the Membership
-    ///      Authority field.
-    ///    * Ensure proper initial configuration of default Hub Features.
+    /// * Ensure that the cluster is exclusively registered to one and only one
+    ///   Hub Membership.
+    /// * Propagate Workload Pool Information available in the Membership
+    ///   Authority field.
+    /// * Ensure proper initial configuration of default Hub Features.
     #[prost(message, optional, tag = "6")]
     pub kubernetes_resource: ::core::option::Option<KubernetesResource>,
     /// Cluster information of the registered cluster.
@@ -160,7 +160,7 @@ pub struct MembershipEndpoint {
 /// Nested message and enum types in `MembershipEndpoint`.
 pub mod membership_endpoint {
     /// Cluster information of the registered cluster.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Type {
         /// Optional. Specific information for a GKE-on-GCP cluster.
         #[prost(message, tag = "4")]
@@ -219,7 +219,7 @@ pub struct KubernetesResource {
     pub resource_options: ::core::option::Option<ResourceOptions>,
 }
 /// ResourceOptions represent options for Kubernetes resource generation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourceOptions {
     /// Optional. The Connect agent version to use for connect_resources. Defaults
     /// to the latest GKE Connect version. The version must be a currently
@@ -229,7 +229,7 @@ pub struct ResourceOptions {
     /// Optional. Use `apiextensions/v1beta1` instead of `apiextensions/v1` for
     /// CustomResourceDefinition resources.
     /// This option should be set for clusters with Kubernetes apiserver versions
-    /// <1.16.
+    /// \<1.16.
     #[prost(bool, tag = "2")]
     pub v1beta1_crd: bool,
     /// Optional. Major version of the Kubernetes cluster. This is only used to
@@ -240,7 +240,7 @@ pub struct ResourceOptions {
 }
 /// ResourceManifest represents a single Kubernetes resource to be applied to
 /// the cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourceManifest {
     /// YAML manifest of the resource.
     #[prost(string, tag = "1")]
@@ -254,11 +254,13 @@ pub struct ResourceManifest {
     pub cluster_scoped: bool,
 }
 /// GkeCluster contains information specific to GKE clusters.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GkeCluster {
     /// Immutable. Self-link of the GCP resource for the GKE cluster. For example:
     ///
-    ///      //container.googleapis.com/projects/my-project/locations/us-west1-a/clusters/my-cluster
+    /// ```text
+    /// //container.googleapis.com/projects/my-project/locations/us-west1-a/clusters/my-cluster
+    /// ```
     ///
     /// Zonal clusters are also supported.
     #[prost(string, tag = "1")]
@@ -269,13 +271,13 @@ pub struct GkeCluster {
     pub cluster_missing: bool,
 }
 /// OnPremCluster contains information specific to GKE On-Prem clusters.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OnPremCluster {
     /// Immutable. Self-link of the GCP resource for the GKE On-Prem cluster. For
     /// example:
     ///
-    ///   //gkeonprem.googleapis.com/projects/my-project/locations/us-west1-a/vmwareClusters/my-cluster
-    ///   //gkeonprem.googleapis.com/projects/my-project/locations/us-west1-a/bareMetalClusters/my-cluster
+    /// //gkeonprem.googleapis.com/projects/my-project/locations/us-west1-a/vmwareClusters/my-cluster
+    /// //gkeonprem.googleapis.com/projects/my-project/locations/us-west1-a/bareMetalClusters/my-cluster
     #[prost(string, tag = "1")]
     pub resource_link: ::prost::alloc::string::String,
     /// Output only. If cluster_missing is set then it denotes that
@@ -345,14 +347,14 @@ pub mod on_prem_cluster {
     }
 }
 /// MultiCloudCluster contains information specific to GKE Multi-Cloud clusters.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MultiCloudCluster {
     /// Immutable. Self-link of the GCP resource for the GKE Multi-Cloud cluster.
     /// For example:
     ///
-    ///   //gkemulticloud.googleapis.com/projects/my-project/locations/us-west1-a/awsClusters/my-cluster
-    ///   //gkemulticloud.googleapis.com/projects/my-project/locations/us-west1-a/azureClusters/my-cluster
-    ///   //gkemulticloud.googleapis.com/projects/my-project/locations/us-west1-a/attachedClusters/my-cluster
+    /// //gkemulticloud.googleapis.com/projects/my-project/locations/us-west1-a/awsClusters/my-cluster
+    /// //gkemulticloud.googleapis.com/projects/my-project/locations/us-west1-a/azureClusters/my-cluster
+    /// //gkemulticloud.googleapis.com/projects/my-project/locations/us-west1-a/attachedClusters/my-cluster
     #[prost(string, tag = "1")]
     pub resource_link: ::prost::alloc::string::String,
     /// Output only. If cluster_missing is set then it denotes that
@@ -362,7 +364,7 @@ pub struct MultiCloudCluster {
     pub cluster_missing: bool,
 }
 /// EdgeCluster contains information specific to Google Edge Clusters.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EdgeCluster {
     /// Immutable. Self-link of the GCP resource for the Edge Cluster. For
     /// example:
@@ -373,7 +375,7 @@ pub struct EdgeCluster {
 }
 /// ApplianceCluster contains information specific to GDC Edge Appliance
 /// Clusters.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ApplianceCluster {
     /// Immutable. Self-link of the GCP resource for the Appliance Cluster. For
     /// example:
@@ -384,7 +386,7 @@ pub struct ApplianceCluster {
 }
 /// KubernetesMetadata provides informational metadata for Memberships
 /// representing Kubernetes clusters.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct KubernetesMetadata {
     /// Output only. Kubernetes API server version string as reported by
     /// '/version'.
@@ -415,10 +417,10 @@ pub struct KubernetesMetadata {
 /// Authority encodes how Google will recognize identities from this Membership.
 /// See the workload identity documentation for more details:
 /// <https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity>
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Authority {
     /// Optional. A JSON Web Token (JWT) issuer URI. `issuer` must start with
-    /// `<https://`> and be a valid URL with length <2000 characters.
+    /// `<https://`> and be a valid URL with length \<2000 characters.
     ///
     /// If set, then Google will allow valid OIDC tokens from this issuer to
     /// authenticate within the workload_identity_pool. OIDC discovery will be
@@ -452,7 +454,7 @@ pub struct Authority {
 }
 /// This field informs Fleet-based applications/services/UIs with the necessary
 /// information for where each underlying Cluster reports its metrics.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MonitoringConfig {
     /// Immutable. Project used to report Metrics
     #[prost(string, tag = "1")]
@@ -481,7 +483,7 @@ pub struct MonitoringConfig {
     pub cluster_hash: ::prost::alloc::string::String,
 }
 /// State of the Membership resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MembershipState {
     /// Output only. The current state of the Membership resource.
     #[prost(enumeration = "membership_state::Code", tag = "1")]
@@ -554,7 +556,7 @@ pub mod membership_state {
     }
 }
 /// Request message for `GkeHubMembershipService.ListMemberships` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListMembershipsRequest {
     /// Required. The parent (project and location) where the Memberships will be
     /// listed. Specified in the format `projects/*/locations/*`.
@@ -576,21 +578,21 @@ pub struct ListMembershipsRequest {
     ///
     /// Examples:
     ///
-    ///    - Name is `bar` in project `foo-proj` and location `global`:
+    /// * Name is `bar` in project `foo-proj` and location `global`:
     ///
-    ///        name = "projects/foo-proj/locations/global/membership/bar"
+    ///   name = "projects/foo-proj/locations/global/membership/bar"
     ///
-    ///    - Memberships that have a label called `foo`:
+    /// * Memberships that have a label called `foo`:
     ///
-    ///        labels.foo:*
+    ///   labels.foo:\*
     ///
-    ///    - Memberships that have a label called `foo` whose value is `bar`:
+    /// * Memberships that have a label called `foo` whose value is `bar`:
     ///
-    ///        labels.foo = bar
+    ///   labels.foo = bar
     ///
-    ///    - Memberships in the CREATING state:
+    /// * Memberships in the CREATING state:
     ///
-    ///        state = CREATING
+    ///   state = CREATING
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. One or more fields to compare and use to sort the output.
@@ -614,7 +616,7 @@ pub struct ListMembershipsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for `GkeHubMembershipService.GetMembership` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetMembershipRequest {
     /// Required. The Membership resource name in the format
     /// `projects/*/locations/*/memberships/*`.
@@ -631,9 +633,9 @@ pub struct CreateMembershipRequest {
     /// Required. Client chosen ID for the membership. `membership_id` must be a
     /// valid RFC 1123 compliant DNS label:
     ///
-    ///    1. At most 63 characters in length
-    ///    2. It must consist of lower case alphanumeric characters or `-`
-    ///    3. It must start and end with an alphanumeric character
+    /// 1. At most 63 characters in length
+    /// 1. It must consist of lower case alphanumeric characters or `-`
+    /// 1. It must start and end with an alphanumeric character
     ///
     /// Which can be expressed as the regex: `[a-z0-9](\[-a-z0-9\]*[a-z0-9])?`,
     /// with a maximum length of 63 characters.
@@ -659,7 +661,7 @@ pub struct CreateMembershipRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for `GkeHubMembershipService.DeleteMembership` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteMembershipRequest {
     /// Required. The Membership resource name in the format
     /// `projects/*/locations/*/memberships/*`.
@@ -703,7 +705,7 @@ pub struct UpdateMembershipRequest {
     /// If you are updating a map field, set the value of a key to null or empty
     /// string to delete the key from the map. It's not possible to update a key's
     /// value to the empty string.
-    /// If you specify the update_mask to be a special path "*", fully replaces all
+    /// If you specify the update_mask to be a special path "\*", fully replaces all
     /// user-modifiable fields to match `resource`.
     #[prost(message, optional, tag = "3")]
     pub resource: ::core::option::Option<Membership>,
@@ -725,7 +727,7 @@ pub struct UpdateMembershipRequest {
 }
 /// Request message for `GkeHubMembershipService.GenerateConnectManifest`
 /// method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateConnectManifestRequest {
     /// Required. The Membership resource name the Agent will associate with, in
     /// the format `projects/*/locations/*/memberships/*`.
@@ -761,7 +763,7 @@ pub struct GenerateConnectManifestResponse {
 }
 /// ConnectAgentResource represents a Kubernetes resource manifest for Connect
 /// Agent deployment.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ConnectAgentResource {
     /// Kubernetes type of the resource.
     #[prost(message, optional, tag = "1")]
@@ -772,7 +774,7 @@ pub struct ConnectAgentResource {
 }
 /// TypeMeta is the type information needed for content unmarshalling of
 /// Kubernetes resources in the manifest.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TypeMeta {
     /// Kind of the resource (e.g. Deployment).
     #[prost(string, tag = "1")]
@@ -782,7 +784,7 @@ pub struct TypeMeta {
     pub api_version: ::prost::alloc::string::String,
 }
 /// The information required from end users to use GKE Connect.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ConnectAgent {
     /// Do not set.
     #[deprecated]
@@ -806,7 +808,7 @@ pub struct ConnectAgent {
 }
 /// The request to validate the existing state of the membership CR in the
 /// cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ValidateExclusivityRequest {
     /// Required. The parent (project and location) where the Memberships will be
     /// created. Specified in the format `projects/*/locations/*`.
@@ -828,14 +830,14 @@ pub struct ValidateExclusivityResponse {
     /// The validation result.
     ///
     /// * `OK` means that exclusivity is validated, assuming the manifest produced
-    ///     by GenerateExclusivityManifest is successfully applied.
+    ///   by GenerateExclusivityManifest is successfully applied.
     /// * `ALREADY_EXISTS` means that the Membership CRD is already owned by
-    ///     another Hub. See `status.message` for more information.
+    ///   another Hub. See `status.message` for more information.
     #[prost(message, optional, tag = "1")]
     pub status: ::core::option::Option<super::super::super::rpc::Status>,
 }
 /// The request to generate the manifests for exclusivity artifacts.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateExclusivityManifestRequest {
     /// Required. The Membership resource name in the format
     /// `projects/*/locations/*/memberships/*`.
@@ -853,7 +855,7 @@ pub struct GenerateExclusivityManifestRequest {
     pub cr_manifest: ::prost::alloc::string::String,
 }
 /// The response of the exclusivity artifacts manifests for the client to apply.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateExclusivityManifestResponse {
     /// The YAML manifest of the membership CRD to apply if a newer version of the
     /// CRD is available. Empty if no update needs to be applied.
@@ -865,7 +867,7 @@ pub struct GenerateExclusivityManifestResponse {
     pub cr_manifest: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -884,8 +886,8 @@ pub struct OperationMetadata {
     pub status_detail: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+    /// have \[Operation.error\]\[\] value with a
+    /// \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub cancel_requested: bool,
@@ -906,7 +908,7 @@ pub mod gke_hub_membership_service_client {
     use tonic::codegen::http::Uri;
     /// The GKE Hub MembershipService handles the registration of many Kubernetes
     /// clusters to Google Cloud, represented with the
-    /// [Membership][google.cloud.gkehub.v1beta1.Membership] resource.
+    /// \[Membership\]\[google.cloud.gkehub.v1beta1.Membership\] resource.
     ///
     /// GKE Hub is currently available in the global region and all regions in
     /// https://cloud.google.com/compute/docs/regions-zones.
@@ -1012,7 +1014,7 @@ pub mod gke_hub_membership_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkehub.v1beta1.GkeHubMembershipService/ListMemberships",
             );
@@ -1039,7 +1041,7 @@ pub mod gke_hub_membership_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkehub.v1beta1.GkeHubMembershipService/GetMembership",
             );
@@ -1073,7 +1075,7 @@ pub mod gke_hub_membership_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkehub.v1beta1.GkeHubMembershipService/CreateMembership",
             );
@@ -1107,7 +1109,7 @@ pub mod gke_hub_membership_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkehub.v1beta1.GkeHubMembershipService/DeleteMembership",
             );
@@ -1137,7 +1139,7 @@ pub mod gke_hub_membership_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkehub.v1beta1.GkeHubMembershipService/UpdateMembership",
             );
@@ -1170,7 +1172,7 @@ pub mod gke_hub_membership_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkehub.v1beta1.GkeHubMembershipService/GenerateConnectManifest",
             );
@@ -1201,7 +1203,7 @@ pub mod gke_hub_membership_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkehub.v1beta1.GkeHubMembershipService/ValidateExclusivity",
             );
@@ -1242,7 +1244,7 @@ pub mod gke_hub_membership_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.gkehub.v1beta1.GkeHubMembershipService/GenerateExclusivityManifest",
             );

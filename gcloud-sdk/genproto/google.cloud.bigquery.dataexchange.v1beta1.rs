@@ -2,14 +2,14 @@
 /// A data exchange is a container that lets you share data. Along with the
 /// descriptive information about the data exchange, it contains listings that
 /// reference shared datasets.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataExchange {
     /// Output only. The resource name of the data exchange.
     /// e.g. `projects/myproject/locations/US/dataExchanges/123`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Human-readable display name of the data exchange. The display name must
-    /// contain only Unicode letters, numbers (0-9), underscores (_), dashes (-),
+    /// contain only Unicode letters, numbers (0-9), underscores (\_), dashes (-),
     /// spaces ( ), ampersands (&) and must not start or end with spaces.
     /// Default value is an empty string.
     /// Max length: 63 bytes.
@@ -41,7 +41,7 @@ pub struct DataExchange {
     pub icon: ::prost::alloc::vec::Vec<u8>,
 }
 /// Contains details of the data provider.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataProvider {
     /// Optional. Name of the data provider.
     #[prost(string, tag = "1")]
@@ -52,7 +52,7 @@ pub struct DataProvider {
     pub primary_contact: ::prost::alloc::string::String,
 }
 /// Contains details of the listing publisher.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Publisher {
     /// Optional. Name of the listing publisher.
     #[prost(string, tag = "1")]
@@ -63,10 +63,10 @@ pub struct Publisher {
     pub primary_contact: ::prost::alloc::string::String,
 }
 /// Contains the reference that identifies a destination bigquery dataset.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DestinationDatasetReference {
     /// Required. A unique ID for this dataset, without the project name. The ID
-    /// must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_).
+    /// must contain only letters (a-z, A-Z), numbers (0-9), or underscores (\_).
     /// The maximum length is 1,024 characters.
     #[prost(string, tag = "1")]
     pub dataset_id: ::prost::alloc::string::String,
@@ -106,14 +106,14 @@ pub struct DestinationDataset {
 /// subscribe to. It contains a reference to the data source along with
 /// descriptive information that will help subscribers find and subscribe the
 /// data.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Listing {
     /// Output only. The resource name of the listing.
     /// e.g. `projects/myproject/locations/US/dataExchanges/123/listings/456`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Human-readable display name of the listing. The display name must contain
-    /// only Unicode letters, numbers (0-9), underscores (_), dashes (-), spaces
+    /// only Unicode letters, numbers (0-9), underscores (\_), dashes (-), spaces
     /// ( ), ampersands (&) and can't start or end with spaces.
     /// Default value is an empty string.
     /// Max length: 63 bytes.
@@ -170,8 +170,8 @@ pub mod listing {
     /// When subscriber's subscribe to a listing, Analytics Hub creates a linked
     /// dataset in
     /// the subscriber's project. A Linked dataset is an opaque, read-only BigQuery
-    /// dataset that serves as a _symbolic link_ to a shared dataset.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    /// dataset that serves as a *symbolic link* to a shared dataset.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct BigQueryDatasetSource {
         /// Resource name of the dataset source for this listing.
         /// e.g. `projects/myproject/datasets/123`
@@ -318,7 +318,7 @@ pub mod listing {
         }
     }
     /// Listing source.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Source {
         /// Required. Shared dataset i.e. BigQuery dataset source.
         #[prost(message, tag = "6")]
@@ -326,7 +326,7 @@ pub mod listing {
     }
 }
 /// Message for requesting the list of data exchanges.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDataExchangesRequest {
     /// Required. The parent resource path of the data exchanges.
     /// e.g. `projects/myproject/locations/US`.
@@ -353,7 +353,7 @@ pub struct ListDataExchangesResponse {
 }
 /// Message for requesting the list of data exchanges from projects in an
 /// organization and location.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListOrgDataExchangesRequest {
     /// Required. The organization resource path of the projects containing DataExchanges.
     /// e.g. `organizations/myorg/locations/US`.
@@ -380,7 +380,7 @@ pub struct ListOrgDataExchangesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Message for getting a data exchange.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDataExchangeRequest {
     /// Required. The resource name of the data exchange.
     /// e.g. `projects/myproject/locations/US/dataExchanges/123`.
@@ -388,14 +388,14 @@ pub struct GetDataExchangeRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Message for creating a data exchange.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateDataExchangeRequest {
     /// Required. The parent resource path of the data exchange.
     /// e.g. `projects/myproject/locations/US`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The ID of the data exchange.
-    /// Must contain only Unicode letters, numbers (0-9), underscores (_).
+    /// Must contain only Unicode letters, numbers (0-9), underscores (\_).
     /// Should not use characters that require URL-escaping, or characters
     /// outside of ASCII, spaces.
     /// Max length: 100 bytes.
@@ -406,7 +406,7 @@ pub struct CreateDataExchangeRequest {
     pub data_exchange: ::core::option::Option<DataExchange>,
 }
 /// Message for updating a data exchange.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateDataExchangeRequest {
     /// Required. Field mask specifies the fields to update in the data exchange
     /// resource. The fields specified in the
@@ -418,7 +418,7 @@ pub struct UpdateDataExchangeRequest {
     pub data_exchange: ::core::option::Option<DataExchange>,
 }
 /// Message for deleting a data exchange.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDataExchangeRequest {
     /// Required. The full name of the data exchange resource that you want to delete.
     /// For example, `projects/myproject/locations/US/dataExchanges/123`.
@@ -426,7 +426,7 @@ pub struct DeleteDataExchangeRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Message for requesting the list of listings.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListListingsRequest {
     /// Required. The parent resource path of the listing.
     /// e.g. `projects/myproject/locations/US/dataExchanges/123`.
@@ -452,7 +452,7 @@ pub struct ListListingsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Message for getting a listing.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetListingRequest {
     /// Required. The resource name of the listing.
     /// e.g. `projects/myproject/locations/US/dataExchanges/123/listings/456`.
@@ -460,14 +460,14 @@ pub struct GetListingRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Message for creating a listing.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateListingRequest {
     /// Required. The parent resource path of the listing.
     /// e.g. `projects/myproject/locations/US/dataExchanges/123`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The ID of the listing to create.
-    /// Must contain only Unicode letters, numbers (0-9), underscores (_).
+    /// Must contain only Unicode letters, numbers (0-9), underscores (\_).
     /// Should not use characters that require URL-escaping, or characters
     /// outside of ASCII, spaces.
     /// Max length: 100 bytes.
@@ -478,7 +478,7 @@ pub struct CreateListingRequest {
     pub listing: ::core::option::Option<Listing>,
 }
 /// Message for updating a Listing.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateListingRequest {
     /// Required. Field mask specifies the fields to update in the listing resource. The
     /// fields specified in the `updateMask` are relative to the resource and are
@@ -490,7 +490,7 @@ pub struct UpdateListingRequest {
     pub listing: ::core::option::Option<Listing>,
 }
 /// Message for deleting a listing.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteListingRequest {
     /// Required. Resource name of the listing to delete.
     /// e.g. `projects/myproject/locations/US/dataExchanges/123/listings/456`.
@@ -519,7 +519,7 @@ pub mod subscribe_listing_request {
     }
 }
 /// Message for response when you subscribe to a listing.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SubscribeListingResponse {}
 /// Generated client implementations.
 pub mod analytics_hub_service_client {
@@ -634,7 +634,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/ListDataExchanges",
             );
@@ -665,7 +665,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/ListOrgDataExchanges",
             );
@@ -692,7 +692,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/GetDataExchange",
             );
@@ -719,7 +719,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/CreateDataExchange",
             );
@@ -746,7 +746,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/UpdateDataExchange",
             );
@@ -773,7 +773,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/DeleteDataExchange",
             );
@@ -803,7 +803,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/ListListings",
             );
@@ -830,7 +830,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/GetListing",
             );
@@ -857,7 +857,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/CreateListing",
             );
@@ -884,7 +884,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/UpdateListing",
             );
@@ -911,7 +911,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/DeleteListing",
             );
@@ -946,7 +946,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/SubscribeListing",
             );
@@ -978,7 +978,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/GetIamPolicy",
             );
@@ -1010,7 +1010,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/SetIamPolicy",
             );
@@ -1044,7 +1044,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.dataexchange.v1beta1.AnalyticsHubService/TestIamPermissions",
             );

@@ -4,12 +4,12 @@
 pub struct Instance {
     /// Required. Unique name of the resource in this scope including project and
     /// location using the form:
-    ///      `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+    /// `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
     ///
     /// Note: Memcached instances are managed and addressed at the regional level
     /// so `location_id` here refers to a Google Cloud region; however, users may
     /// choose which zones Memcached nodes should be provisioned in within an
-    /// instance. Refer to [zones][google.cloud.memcache.v1beta2.Instance.zones] field for more details.
+    /// instance. Refer to \[zones\]\[google.cloud.memcache.v1beta2.Instance.zones\] field for more details.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// User provided name for the instance, which is only used for display
@@ -54,7 +54,7 @@ pub struct Instance {
     #[prost(message, optional, tag = "11")]
     pub parameters: ::core::option::Option<MemcacheParameters>,
     /// Output only. List of Memcached nodes.
-    /// Refer to [Node][google.cloud.memcache.v1beta2.Instance.Node] message for more details.
+    /// Refer to \[Node\]\[google.cloud.memcache.v1beta2.Instance.Node\] message for more details.
     #[prost(message, repeated, tag = "12")]
     pub memcache_nodes: ::prost::alloc::vec::Vec<instance::Node>,
     /// Output only. The time the instance was created.
@@ -93,7 +93,7 @@ pub struct Instance {
 /// Nested message and enum types in `Instance`.
 pub mod instance {
     /// Configuration for a Memcached Node.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct NodeConfig {
         /// Required. Number of cpus per Memcached node.
         #[prost(int32, tag = "1")]
@@ -182,7 +182,7 @@ pub mod instance {
             }
         }
     }
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct InstanceMessage {
         /// A code that correspond to one type of user-facing message.
         #[prost(enumeration = "instance_message::Code", tag = "1")]
@@ -311,7 +311,7 @@ pub struct MaintenancePolicy {
     pub weekly_maintenance_window: ::prost::alloc::vec::Vec<WeeklyMaintenanceWindow>,
 }
 /// Time window specified for weekly operations.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WeeklyMaintenanceWindow {
     /// Required. Allows to define schedule that runs specified day of the week.
     #[prost(enumeration = "super::super::super::r#type::DayOfWeek", tag = "1")]
@@ -324,7 +324,7 @@ pub struct WeeklyMaintenanceWindow {
     pub duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Upcoming maintenance schedule.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MaintenanceSchedule {
     /// Output only. The start time of any upcoming scheduled maintenance for this instance.
     #[prost(message, optional, tag = "1")]
@@ -337,11 +337,11 @@ pub struct MaintenanceSchedule {
     #[prost(message, optional, tag = "4")]
     pub schedule_deadline_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-/// Request for [ListInstances][google.cloud.memcache.v1beta2.CloudMemcache.ListInstances].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Request for \[ListInstances\]\[google.cloud.memcache.v1beta2.CloudMemcache.ListInstances\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInstancesRequest {
     /// Required. The resource name of the instance location using the form:
-    ///      `projects/{project_id}/locations/{location_id}`
+    /// `projects/{project_id}/locations/{location_id}`
     /// where `location_id` refers to a GCP region
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -350,7 +350,7 @@ pub struct ListInstancesRequest {
     /// If not specified, a default value of 1000 will be used by the service.
     /// Regardless of the `page_size` value, the response may include a partial
     /// list and a caller should only rely on response's
-    /// [`next_page_token`][google.cloud.memcache.v1beta2.ListInstancesResponse.next_page_token]
+    /// \[`next_page_token`\]\[google.cloud.memcache.v1beta2.ListInstancesResponse.next_page_token\]
     /// to determine if there are more instances left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -365,7 +365,7 @@ pub struct ListInstancesRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// Response for [ListInstances][google.cloud.memcache.v1beta2.CloudMemcache.ListInstances].
+/// Response for \[ListInstances\]\[google.cloud.memcache.v1beta2.CloudMemcache.ListInstances\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesResponse {
     /// A list of Memcached instances in the project in the specified location,
@@ -383,20 +383,20 @@ pub struct ListInstancesResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Request for [GetInstance][google.cloud.memcache.v1beta2.CloudMemcache.GetInstance].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Request for \[GetInstance\]\[google.cloud.memcache.v1beta2.CloudMemcache.GetInstance\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInstanceRequest {
     /// Required. Memcached instance resource name in the format:
-    ///      `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+    /// `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
     /// where `location_id` refers to a GCP region
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for [CreateInstance][google.cloud.memcache.v1beta2.CloudMemcache.CreateInstance].
+/// Request for \[CreateInstance\]\[google.cloud.memcache.v1beta2.CloudMemcache.CreateInstance\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstanceRequest {
     /// Required. The resource name of the instance location using the form:
-    ///      `projects/{project_id}/locations/{location_id}`
+    /// `projects/{project_id}/locations/{location_id}`
     /// where `location_id` refers to a GCP region
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -416,12 +416,12 @@ pub struct CreateInstanceRequest {
     #[prost(message, optional, tag = "3")]
     pub resource: ::core::option::Option<Instance>,
 }
-/// Request for [UpdateInstance][google.cloud.memcache.v1beta2.CloudMemcache.UpdateInstance].
+/// Request for \[UpdateInstance\]\[google.cloud.memcache.v1beta2.CloudMemcache.UpdateInstance\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInstanceRequest {
     /// Required. Mask of fields to update.
     ///
-    ///   *  `displayName`
+    /// * `displayName`
     #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. A Memcached \[Instance\] resource.
@@ -429,20 +429,20 @@ pub struct UpdateInstanceRequest {
     #[prost(message, optional, tag = "2")]
     pub resource: ::core::option::Option<Instance>,
 }
-/// Request for [DeleteInstance][google.cloud.memcache.v1beta2.CloudMemcache.DeleteInstance].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Request for \[DeleteInstance\]\[google.cloud.memcache.v1beta2.CloudMemcache.DeleteInstance\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteInstanceRequest {
     /// Required. Memcached instance resource name in the format:
-    ///      `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+    /// `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
     /// where `location_id` refers to a GCP region
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for [RescheduleMaintenance][google.cloud.memcache.v1beta2.CloudMemcache.RescheduleMaintenance].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Request for \[RescheduleMaintenance\]\[google.cloud.memcache.v1beta2.CloudMemcache.RescheduleMaintenance\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RescheduleMaintenanceRequest {
     /// Required. Memcache instance resource name using the form:
-    ///      `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+    /// `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
     /// where `location_id` refers to a GCP region.
     #[prost(string, tag = "1")]
     pub instance: ::prost::alloc::string::String,
@@ -506,8 +506,8 @@ pub mod reschedule_maintenance_request {
         }
     }
 }
-/// Request for [ApplyParameters][google.cloud.memcache.v1beta2.CloudMemcache.ApplyParameters].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Request for \[ApplyParameters\]\[google.cloud.memcache.v1beta2.CloudMemcache.ApplyParameters\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ApplyParametersRequest {
     /// Required. Resource name of the Memcached instance for which parameter group updates
     /// should be applied.
@@ -522,7 +522,7 @@ pub struct ApplyParametersRequest {
     #[prost(bool, tag = "3")]
     pub apply_all: bool,
 }
-/// Request for [UpdateParameters][google.cloud.memcache.v1beta2.CloudMemcache.UpdateParameters].
+/// Request for \[UpdateParameters\]\[google.cloud.memcache.v1beta2.CloudMemcache.UpdateParameters\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateParametersRequest {
     /// Required. Resource name of the Memcached instance for which the parameters should be
@@ -536,8 +536,8 @@ pub struct UpdateParametersRequest {
     #[prost(message, optional, tag = "3")]
     pub parameters: ::core::option::Option<MemcacheParameters>,
 }
-/// Request for [ApplySoftwareUpdate][google.cloud.memcache.v1beta2.CloudMemcache.ApplySoftwareUpdate].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Request for \[ApplySoftwareUpdate\]\[google.cloud.memcache.v1beta2.CloudMemcache.ApplySoftwareUpdate\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ApplySoftwareUpdateRequest {
     /// Required. Resource name of the Memcached instance for which software update should be
     /// applied.
@@ -570,7 +570,7 @@ pub struct MemcacheParameters {
     >,
 }
 /// Represents the metadata of a long-running operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. Time when the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -589,7 +589,7 @@ pub struct OperationMetadata {
     pub status_detail: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// have \[Operation.error\]\[\] value with a \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub cancel_requested: bool,
@@ -597,7 +597,7 @@ pub struct OperationMetadata {
     #[prost(string, tag = "7")]
     pub api_version: ::prost::alloc::string::String,
 }
-/// Metadata for the given [google.cloud.location.Location][google.cloud.location.Location].
+/// Metadata for the given \[google.cloud.location.Location\]\[google.cloud.location.Location\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationMetadata {
     /// Output only. The set of available zones in the location. The map is keyed
@@ -609,7 +609,7 @@ pub struct LocationMetadata {
         ZoneMetadata,
     >,
 }
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ZoneMetadata {}
 /// Memcached versions supported by our service.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -652,18 +652,19 @@ pub mod cloud_memcache_client {
     use tonic::codegen::http::Uri;
     /// Configures and manages Cloud Memorystore for Memcached instances.
     ///
-    ///
     /// The `memcache.googleapis.com` service implements the Google Cloud Memorystore
     /// for Memcached API and defines the following resource model for managing
     /// Memorystore Memcached (also called Memcached below) instances:
+    ///
     /// * The service works with a collection of cloud projects, named: `/projects/*`
     /// * Each project has a collection of available locations, named: `/locations/*`
     /// * Each location has a collection of Memcached instances, named:
-    /// `/instances/*`
+    ///  `/instances/*`
     /// * As such, Memcached instances are resources of the form:
-    ///   `/projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+    ///  `/projects/{project_id}/locations/{location_id}/instances/{instance_id}`
     ///
     /// Note that location_id must be a GCP `region`; for example:
+    ///
     /// * `projects/my-memcached-project/locations/us-central1/instances/my-memcached`
     #[derive(Debug, Clone)]
     pub struct CloudMemcacheClient<T> {
@@ -761,7 +762,7 @@ pub mod cloud_memcache_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memcache.v1beta2.CloudMemcache/ListInstances",
             );
@@ -788,7 +789,7 @@ pub mod cloud_memcache_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memcache.v1beta2.CloudMemcache/GetInstance",
             );
@@ -818,7 +819,7 @@ pub mod cloud_memcache_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memcache.v1beta2.CloudMemcache/CreateInstance",
             );
@@ -848,7 +849,7 @@ pub mod cloud_memcache_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memcache.v1beta2.CloudMemcache/UpdateInstance",
             );
@@ -881,7 +882,7 @@ pub mod cloud_memcache_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memcache.v1beta2.CloudMemcache/UpdateParameters",
             );
@@ -911,7 +912,7 @@ pub mod cloud_memcache_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memcache.v1beta2.CloudMemcache/DeleteInstance",
             );
@@ -942,7 +943,7 @@ pub mod cloud_memcache_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memcache.v1beta2.CloudMemcache/ApplyParameters",
             );
@@ -972,7 +973,7 @@ pub mod cloud_memcache_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memcache.v1beta2.CloudMemcache/ApplySoftwareUpdate",
             );
@@ -1002,7 +1003,7 @@ pub mod cloud_memcache_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memcache.v1beta2.CloudMemcache/RescheduleMaintenance",
             );

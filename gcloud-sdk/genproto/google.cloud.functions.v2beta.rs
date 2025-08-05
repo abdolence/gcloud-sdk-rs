@@ -118,7 +118,7 @@ pub mod function {
     }
 }
 /// Informational messages about the state of the Cloud Function or Operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StateMessage {
     /// Severity of the state message.
     #[prost(enumeration = "state_message::Severity", tag = "1")]
@@ -181,7 +181,7 @@ pub mod state_message {
     }
 }
 /// Location of the source in an archive file in Google Cloud Storage.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StorageSource {
     /// Google Cloud Storage bucket containing the source (see
     /// [Bucket Name
@@ -205,7 +205,7 @@ pub struct StorageSource {
     pub source_upload_url: ::prost::alloc::string::String,
 }
 /// Location of the source in a Google Cloud Source Repository.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RepoSource {
     /// ID of the project that owns the Cloud Source Repository. If omitted, the
     /// project ID requesting the build is assumed.
@@ -234,7 +234,7 @@ pub struct RepoSource {
 pub mod repo_source {
     /// A revision within the Cloud Source Repository must be specified in
     /// one of these ways.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Revision {
         /// Regex matching branches to build.
         ///
@@ -254,7 +254,7 @@ pub mod repo_source {
     }
 }
 /// The location of the function source code.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Source {
     /// Location of the source.
     /// At least one source needs to be provided for the deployment to succeed.
@@ -265,7 +265,7 @@ pub struct Source {
 pub mod source {
     /// Location of the source.
     /// At least one source needs to be provided for the deployment to succeed.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Source {
         /// If provided, get the source from this location in Google Cloud Storage.
         #[prost(message, tag = "1")]
@@ -283,7 +283,7 @@ pub mod source {
 }
 /// Provenance of the source. Ways to find the original source, or verify that
 /// some source was used for this build.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SourceProvenance {
     /// A copy of the build's `source.storage_source`, if exists, with any
     /// generations resolved.
@@ -336,7 +336,7 @@ pub struct BuildConfig {
     ///
     /// If the project id is not the same as the function, then the Cloud
     /// Functions Service Agent
-    /// (service-<project_number>@gcf-admin-robot.iam.gserviceaccount.com) must be
+    /// (service-\<project_number>@gcf-admin-robot.iam.gserviceaccount.com) must be
     /// granted the role Cloud Build Custom Workers Builder
     /// (roles/cloudbuild.customworkers.builder) in the project.
     #[prost(string, tag = "5")]
@@ -429,7 +429,7 @@ pub mod build_config {
         }
     }
     /// This controls when security patches are applied to the runtime environment.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum RuntimeUpdatePolicy {
         #[prost(message, tag = "40")]
         AutomaticUpdatePolicy(super::AutomaticUpdatePolicy),
@@ -703,7 +703,7 @@ pub mod service_config {
 /// Configuration for a secret environment variable. It has the information
 /// necessary to fetch the secret value from secret manager and expose it as an
 /// environment variable.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SecretEnvVar {
     /// Name of the environment variable.
     #[prost(string, tag = "1")]
@@ -752,7 +752,7 @@ pub struct SecretVolume {
 /// Nested message and enum types in `SecretVolume`.
 pub mod secret_volume {
     /// Configuration for a single version.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SecretVersion {
         /// Version of the secret (version number or the string 'latest'). It is
         /// preferable to use `latest` version with secret volumes as secret value
@@ -874,7 +874,7 @@ pub mod event_trigger {
     }
 }
 /// Filters events based on exact matches on the CloudEvents attributes.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EventFilter {
     /// Required. The name of a CloudEvents attribute.
     #[prost(string, tag = "1")]
@@ -890,7 +890,7 @@ pub struct EventFilter {
     pub operator: ::prost::alloc::string::String,
 }
 /// Request for the `GetFunction` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFunctionRequest {
     /// Required. The name of the function which details should be obtained.
     #[prost(string, tag = "1")]
@@ -905,7 +905,7 @@ pub struct GetFunctionRequest {
     pub revision: ::prost::alloc::string::String,
 }
 /// Request for the `ListFunctions` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFunctionsRequest {
     /// Required. The project and location from which the function should be
     /// listed, specified in the format `projects/*/locations/*` If you want to
@@ -966,7 +966,7 @@ pub struct CreateFunctionRequest {
     /// the function's resource name.
     ///
     /// This value should be 4-63 characters, and valid characters
-    /// are /[a-z][0-9]-/.
+    /// are /\[a-z\]\[0-9\]-/.
     #[prost(string, tag = "3")]
     pub function_id: ::prost::alloc::string::String,
 }
@@ -982,14 +982,14 @@ pub struct UpdateFunctionRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for the `DeleteFunction` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteFunctionRequest {
     /// Required. The name of the function which should be deleted.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request of `GenerateSourceUploadUrl` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateUploadUrlRequest {
     /// Required. The project and location in which the Google Cloud Storage signed
     /// URL should be generated, specified in the format `projects/*/locations/*`.
@@ -1020,7 +1020,7 @@ pub struct GenerateUploadUrlRequest {
     pub environment: i32,
 }
 /// Response of `GenerateSourceUploadUrl` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateUploadUrlResponse {
     /// The generated Google Cloud Storage signed URL that should be used for a
     /// function source code upload. The uploaded file should be a zip archive
@@ -1039,7 +1039,7 @@ pub struct GenerateUploadUrlResponse {
     pub storage_source: ::core::option::Option<StorageSource>,
 }
 /// Request of `GenerateDownloadUrl` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateDownloadUrlRequest {
     /// Required. The name of function for which source code Google Cloud Storage
     /// signed URL should be generated.
@@ -1047,7 +1047,7 @@ pub struct GenerateDownloadUrlRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Response of `GenerateDownloadUrl` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateDownloadUrlResponse {
     /// The generated Google Cloud Storage signed URL that should be used for
     /// function source code download.
@@ -1055,7 +1055,7 @@ pub struct GenerateDownloadUrlResponse {
     pub download_url: ::prost::alloc::string::String,
 }
 /// Request for the `ListRuntimes` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRuntimesRequest {
     /// Required. The project and location from which the runtimes should be
     /// listed, specified in the format `projects/*/locations/*`
@@ -1077,7 +1077,7 @@ pub struct ListRuntimesResponse {
 pub mod list_runtimes_response {
     /// Describes a runtime and any special information (e.g., deprecation status)
     /// related to it.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Runtime {
         /// The name of the runtime, e.g., 'go113', 'nodejs12', etc.
         #[prost(string, tag = "1")]
@@ -1167,10 +1167,10 @@ pub mod list_runtimes_response {
 }
 /// Security patches are applied automatically to the runtime without requiring
 /// the function to be redeployed.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AutomaticUpdatePolicy {}
 /// Security patches are only applied when a function is redeployed.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OnDeployUpdatePolicy {
     /// Output only. contains the runtime version which was used during latest
     /// function deployment.
@@ -1198,8 +1198,8 @@ pub struct OperationMetadata {
     /// Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
     /// have
-    /// [google.longrunning.Operation.error][google.longrunning.Operation.error]
-    /// value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// \[google.longrunning.Operation.error\]\[google.longrunning.Operation.error\]
+    /// value with a \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub cancel_requested: bool,
@@ -1220,7 +1220,7 @@ pub struct OperationMetadata {
     pub operation_type: i32,
 }
 /// Extra GCF specific location information.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LocationMetadata {
     /// The Cloud Function environments this location supports.
     #[prost(enumeration = "Environment", repeated, tag = "1")]
@@ -1537,7 +1537,7 @@ pub mod function_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.functions.v2beta.FunctionService/GetFunction",
             );
@@ -1567,7 +1567,7 @@ pub mod function_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.functions.v2beta.FunctionService/ListFunctions",
             );
@@ -1599,7 +1599,7 @@ pub mod function_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.functions.v2beta.FunctionService/CreateFunction",
             );
@@ -1629,7 +1629,7 @@ pub mod function_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.functions.v2beta.FunctionService/UpdateFunction",
             );
@@ -1661,7 +1661,7 @@ pub mod function_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.functions.v2beta.FunctionService/DeleteFunction",
             );
@@ -1687,9 +1687,9 @@ pub mod function_service_client {
         ///
         /// * Source file type should be a zip file.
         /// * No credentials should be attached - the signed URLs provide access to the
-        ///   target bucket using internal service identity; if credentials were
-        ///   attached, the identity from the credentials would be used, but that
-        ///   identity does not have permissions to upload files to the URL.
+        ///  target bucket using internal service identity; if credentials were
+        ///  attached, the identity from the credentials would be used, but that
+        ///  identity does not have permissions to upload files to the URL.
         ///
         /// When making a HTTP PUT request, specify this header:
         ///
@@ -1713,7 +1713,7 @@ pub mod function_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.functions.v2beta.FunctionService/GenerateUploadUrl",
             );
@@ -1747,7 +1747,7 @@ pub mod function_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.functions.v2beta.FunctionService/GenerateDownloadUrl",
             );
@@ -1777,7 +1777,7 @@ pub mod function_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.functions.v2beta.FunctionService/ListRuntimes",
             );

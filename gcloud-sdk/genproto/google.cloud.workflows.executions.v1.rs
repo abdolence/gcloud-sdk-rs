@@ -68,7 +68,7 @@ pub struct Execution {
 /// Nested message and enum types in `Execution`.
 pub mod execution {
     /// A single stack element (frame) where an error occurred.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct StackTraceElement {
         /// The step the error occurred at.
         #[prost(string, tag = "1")]
@@ -85,7 +85,7 @@ pub mod execution {
         /// Position contains source position information about the stack trace
         /// element such as line number, column number and length of the code block
         /// in bytes.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Position {
             /// The source code line number the current instruction was generated from.
             #[prost(int64, tag = "1")]
@@ -135,7 +135,7 @@ pub mod execution {
     /// Nested message and enum types in `Status`.
     pub mod status {
         /// Represents a step of the workflow this execution is running.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Step {
             /// Name of a routine within the workflow.
             #[prost(string, tag = "1")]
@@ -146,7 +146,7 @@ pub mod execution {
         }
     }
     /// Describes an error related to the current state of the Execution resource.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct StateError {
         /// Provides specifics about the error.
         #[prost(string, tag = "1")]
@@ -308,9 +308,9 @@ pub mod execution {
     }
 }
 /// Request for the
-/// [ListExecutions][]
+/// \[ListExecutions\]\[\]
 /// method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListExecutionsRequest {
     /// Required. Name of the workflow for which the executions should be listed.
     /// Format: projects/{project}/locations/{location}/workflows/{workflow}
@@ -351,7 +351,7 @@ pub struct ListExecutionsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response for the
-/// [ListExecutions][google.cloud.workflows.executions.v1.Executions.ListExecutions]
+/// \[ListExecutions\]\[google.cloud.workflows.executions.v1.Executions.ListExecutions\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExecutionsResponse {
@@ -364,7 +364,7 @@ pub struct ListExecutionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for the
-/// [CreateExecution][google.cloud.workflows.executions.v1.Executions.CreateExecution]
+/// \[CreateExecution\]\[google.cloud.workflows.executions.v1.Executions.CreateExecution\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateExecutionRequest {
@@ -378,9 +378,9 @@ pub struct CreateExecutionRequest {
     pub execution: ::core::option::Option<Execution>,
 }
 /// Request for the
-/// [GetExecution][google.cloud.workflows.executions.v1.Executions.GetExecution]
+/// \[GetExecution\]\[google.cloud.workflows.executions.v1.Executions.GetExecution\]
 /// method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetExecutionRequest {
     /// Required. Name of the execution to be retrieved.
     /// Format:
@@ -393,9 +393,9 @@ pub struct GetExecutionRequest {
     pub view: i32,
 }
 /// Request for the
-/// [CancelExecution][google.cloud.workflows.executions.v1.Executions.CancelExecution]
+/// \[CancelExecution\]\[google.cloud.workflows.executions.v1.Executions.CancelExecution\]
 /// method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelExecutionRequest {
     /// Required. Name of the execution to be cancelled.
     /// Format:
@@ -450,7 +450,7 @@ pub mod executions_client {
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// Executions is used to start and manage running instances of
-    /// [Workflows][google.cloud.workflows.v1.Workflow] called executions.
+    /// \[Workflows\]\[google.cloud.workflows.v1.Workflow\] called executions.
     #[derive(Debug, Clone)]
     pub struct ExecutionsClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -550,7 +550,7 @@ pub mod executions_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workflows.executions.v1.Executions/ListExecutions",
             );
@@ -577,7 +577,7 @@ pub mod executions_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workflows.executions.v1.Executions/CreateExecution",
             );
@@ -604,7 +604,7 @@ pub mod executions_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workflows.executions.v1.Executions/GetExecution",
             );
@@ -631,7 +631,7 @@ pub mod executions_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workflows.executions.v1.Executions/CancelExecution",
             );

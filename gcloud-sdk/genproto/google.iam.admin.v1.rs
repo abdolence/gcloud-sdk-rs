@@ -2,7 +2,7 @@
 /// Audit log information specific to Cloud IAM admin APIs. This message is
 /// serialized as an `Any` type in the `ServiceData` message of an
 /// `AuditLog` message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AuditData {
     /// The permission_delta when when creating or updating a Role.
     #[prost(message, optional, tag = "1")]
@@ -12,7 +12,7 @@ pub struct AuditData {
 pub mod audit_data {
     /// A PermissionDelta message to record the added_permissions and
     /// removed_permissions inside a role.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PermissionDelta {
         /// Added permissions.
         #[prost(string, repeated, tag = "1")]
@@ -35,7 +35,7 @@ pub mod audit_data {
 /// service account, as well as a name that must be unique within the project.
 /// IAM uses these values to create an email address that identifies the service
 /// account.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServiceAccount {
     /// The resource name of the service account.
     ///
@@ -54,8 +54,7 @@ pub struct ServiceAccount {
     /// response messages to contain misleading error codes. For example, if you
     /// try to get the service account
     /// `projects/-/serviceAccounts/fake@example.com`, which does not exist, the
-    /// response contains an HTTP `403 Forbidden` error instead of a `404 Not
-    /// Found` error.
+    /// response contains an HTTP `403 Forbidden` error instead of a `404 Not  Found` error.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The ID of the project that owns the service account.
@@ -92,7 +91,7 @@ pub struct ServiceAccount {
     pub disabled: bool,
 }
 /// The service account create request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateServiceAccountRequest {
     /// Required. The resource name of the project associated with the service
     /// accounts, such as `projects/my-project-123`.
@@ -104,14 +103,14 @@ pub struct CreateServiceAccountRequest {
     /// `[a-z](\[-a-z0-9\]*[a-z0-9])` to comply with RFC1035.
     #[prost(string, tag = "2")]
     pub account_id: ::prost::alloc::string::String,
-    /// The [ServiceAccount][google.iam.admin.v1.ServiceAccount] resource to
+    /// The \[ServiceAccount\]\[google.iam.admin.v1.ServiceAccount\] resource to
     /// create. Currently, only the following values are user assignable:
     /// `display_name` and `description`.
     #[prost(message, optional, tag = "3")]
     pub service_account: ::core::option::Option<ServiceAccount>,
 }
 /// The service account list request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListServiceAccountsRequest {
     /// Required. The resource name of the project associated with the service
     /// accounts, such as `projects/my-project-123`.
@@ -119,14 +118,14 @@ pub struct ListServiceAccountsRequest {
     pub name: ::prost::alloc::string::String,
     /// Optional limit on the number of service accounts to include in the
     /// response. Further accounts can subsequently be obtained by including the
-    /// [ListServiceAccountsResponse.next_page_token][google.iam.admin.v1.ListServiceAccountsResponse.next_page_token]
+    /// \[ListServiceAccountsResponse.next_page_token\]\[google.iam.admin.v1.ListServiceAccountsResponse.next_page_token\]
     /// in a subsequent request.
     ///
     /// The default is 20, and the maximum is 100.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional pagination token returned in an earlier
-    /// [ListServiceAccountsResponse.next_page_token][google.iam.admin.v1.ListServiceAccountsResponse.next_page_token].
+    /// \[ListServiceAccountsResponse.next_page_token\]\[google.iam.admin.v1.ListServiceAccountsResponse.next_page_token\].
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
@@ -137,13 +136,13 @@ pub struct ListServiceAccountsResponse {
     #[prost(message, repeated, tag = "1")]
     pub accounts: ::prost::alloc::vec::Vec<ServiceAccount>,
     /// To retrieve the next page of results, set
-    /// [ListServiceAccountsRequest.page_token][google.iam.admin.v1.ListServiceAccountsRequest.page_token]
+    /// \[ListServiceAccountsRequest.page_token\]\[google.iam.admin.v1.ListServiceAccountsRequest.page_token\]
     /// to this value.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The service account get request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetServiceAccountRequest {
     /// Required. The resource name of the service account in the following format:
     /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
@@ -154,7 +153,7 @@ pub struct GetServiceAccountRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The service account delete request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteServiceAccountRequest {
     /// Required. The resource name of the service account in the following format:
     /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
@@ -171,7 +170,7 @@ pub struct DeleteServiceAccountRequest {
 ///
 /// Only the fields specified in the request are guaranteed to be returned in
 /// the response. Other fields may be empty in the response.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PatchServiceAccountRequest {
     #[prost(message, optional, tag = "1")]
     pub service_account: ::core::option::Option<ServiceAccount>,
@@ -179,7 +178,7 @@ pub struct PatchServiceAccountRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The service account undelete request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UndeleteServiceAccountRequest {
     /// The resource name of the service account in the following format:
     /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT_UNIQUE_ID}`.
@@ -188,14 +187,14 @@ pub struct UndeleteServiceAccountRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UndeleteServiceAccountResponse {
     /// Metadata for the restored service account.
     #[prost(message, optional, tag = "1")]
     pub restored_account: ::core::option::Option<ServiceAccount>,
 }
 /// The service account enable request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnableServiceAccountRequest {
     /// The resource name of the service account in the following format:
     /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
@@ -206,7 +205,7 @@ pub struct EnableServiceAccountRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The service account disable request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisableServiceAccountRequest {
     /// The resource name of the service account in the following format:
     /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
@@ -217,7 +216,7 @@ pub struct DisableServiceAccountRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The service account keys list request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListServiceAccountKeysRequest {
     /// Required. The resource name of the service account in the following format:
     /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
@@ -293,7 +292,7 @@ pub struct ListServiceAccountKeysResponse {
     pub keys: ::prost::alloc::vec::Vec<ServiceAccountKey>,
 }
 /// The service account key get by id request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetServiceAccountKeyRequest {
     /// Required. The resource name of the service account key in the following format:
     /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}/keys/{key}`.
@@ -332,7 +331,7 @@ pub struct GetServiceAccountKeyRequest {
 ///
 /// Public keys for all service accounts are also published at the OAuth2
 /// Service Account API.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServiceAccountKey {
     /// The resource name of the service account key in the following format
     /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}/keys/{key}`.
@@ -381,7 +380,7 @@ pub struct ServiceAccountKey {
     pub disabled: bool,
 }
 /// The service account key create request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateServiceAccountKeyRequest {
     /// Required. The resource name of the service account in the following format:
     /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
@@ -402,7 +401,7 @@ pub struct CreateServiceAccountKeyRequest {
     pub key_algorithm: i32,
 }
 /// The service account key upload request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UploadServiceAccountKeyRequest {
     /// The resource name of the service account in the following format:
     /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
@@ -419,7 +418,7 @@ pub struct UploadServiceAccountKeyRequest {
     pub public_key_data: ::prost::alloc::vec::Vec<u8>,
 }
 /// The service account key delete request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteServiceAccountKeyRequest {
     /// Required. The resource name of the service account key in the following format:
     /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}/keys/{key}`.
@@ -430,7 +429,7 @@ pub struct DeleteServiceAccountKeyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The service account key disable request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisableServiceAccountKeyRequest {
     /// Required. The resource name of the service account key in the following format:
     /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}/keys/{key}`.
@@ -442,7 +441,7 @@ pub struct DisableServiceAccountKeyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The service account key enable request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnableServiceAccountKeyRequest {
     /// Required. The resource name of the service account key in the following format:
     /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}/keys/{key}`.
@@ -457,7 +456,7 @@ pub struct EnableServiceAccountKeyRequest {
 /// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
 ///
 /// The service account sign blob request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SignBlobRequest {
     /// Required. Deprecated. [Migrate to Service Account Credentials
     /// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
@@ -482,7 +481,7 @@ pub struct SignBlobRequest {
 /// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
 ///
 /// The service account sign blob response.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SignBlobResponse {
     /// Deprecated. [Migrate to Service Account Credentials
     /// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
@@ -503,7 +502,7 @@ pub struct SignBlobResponse {
 /// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
 ///
 /// The service account sign JWT request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SignJwtRequest {
     /// Required. Deprecated. [Migrate to Service Account Credentials
     /// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
@@ -537,7 +536,7 @@ pub struct SignJwtRequest {
 /// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
 ///
 /// The service account sign JWT response.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SignJwtResponse {
     /// Deprecated. [Migrate to Service Account Credentials
     /// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
@@ -555,7 +554,7 @@ pub struct SignJwtResponse {
     pub signed_jwt: ::prost::alloc::string::String,
 }
 /// A role in the Identity and Access Management API.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Role {
     /// The name of the role.
     ///
@@ -651,7 +650,7 @@ pub mod role {
     }
 }
 /// The grantable role query request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct QueryGrantableRolesRequest {
     /// Required. The full resource name to query from the list of grantable roles.
     ///
@@ -684,7 +683,7 @@ pub struct QueryGrantableRolesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to get all roles defined under a resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRolesRequest {
     /// The `parent` parameter's value depends on the target resource for the
     /// request, namely
@@ -695,26 +694,26 @@ pub struct ListRolesRequest {
     /// Each resource type's `parent` value format is described below:
     ///
     /// * [`roles.list()`](<https://cloud.google.com/iam/reference/rest/v1/roles/list>): An empty string.
-    ///    This method doesn't require a resource; it simply returns all
-    ///    [predefined
-    ///    roles](<https://cloud.google.com/iam/docs/understanding-roles#predefined_roles>)
-    ///    in Cloud IAM. Example request URL: `<https://iam.googleapis.com/v1/roles`>
+    ///   This method doesn't require a resource; it simply returns all
+    ///   [predefined
+    ///   roles](<https://cloud.google.com/iam/docs/understanding-roles#predefined_roles>)
+    ///   in Cloud IAM. Example request URL: `<https://iam.googleapis.com/v1/roles`>
     ///
     /// * [`projects.roles.list()`](<https://cloud.google.com/iam/reference/rest/v1/projects.roles/list>):
-    ///    `projects/{PROJECT_ID}`. This method lists all project-level
-    ///    [custom
-    ///    roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>).
-    ///    Example request URL:
-    ///    `<https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles`>
+    ///   `projects/{PROJECT_ID}`. This method lists all project-level
+    ///   [custom
+    ///   roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>).
+    ///   Example request URL:
+    ///   `<https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles`>
     ///
     /// * [`organizations.roles.list()`](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles/list>):
-    ///    `organizations/{ORGANIZATION_ID}`. This method lists all
-    ///    organization-level [custom
-    ///    roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>).
-    ///    Example request URL:
-    ///    `<https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles`>
+    ///   `organizations/{ORGANIZATION_ID}`. This method lists all
+    ///   organization-level [custom
+    ///   roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>).
+    ///   Example request URL:
+    ///   `<https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles`>
     ///
-    /// Note: Wildcard (*) values are invalid; you must specify a complete project
+    /// Note: Wildcard (\*) values are invalid; you must specify a complete project
     /// ID or organization ID.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -748,7 +747,7 @@ pub struct ListRolesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to get the definition of an existing role.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRoleRequest {
     /// The `name` parameter's value depends on the target resource for the
     /// request, namely
@@ -759,33 +758,33 @@ pub struct GetRoleRequest {
     /// Each resource type's `name` value format is described below:
     ///
     /// * [`roles.get()`](<https://cloud.google.com/iam/reference/rest/v1/roles/get>): `roles/{ROLE_NAME}`.
-    ///    This method returns results from all
-    ///    [predefined
-    ///    roles](<https://cloud.google.com/iam/docs/understanding-roles#predefined_roles>)
-    ///    in Cloud IAM. Example request URL:
-    ///    `<https://iam.googleapis.com/v1/roles/{ROLE_NAME}`>
+    ///   This method returns results from all
+    ///   [predefined
+    ///   roles](<https://cloud.google.com/iam/docs/understanding-roles#predefined_roles>)
+    ///   in Cloud IAM. Example request URL:
+    ///   `<https://iam.googleapis.com/v1/roles/{ROLE_NAME}`>
     ///
     /// * [`projects.roles.get()`](<https://cloud.google.com/iam/reference/rest/v1/projects.roles/get>):
-    ///    `projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`. This method returns only
-    ///    [custom
-    ///    roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>) that
-    ///    have been created at the project level. Example request URL:
-    ///    `<https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`>
+    ///   `projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`. This method returns only
+    ///   [custom
+    ///   roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>) that
+    ///   have been created at the project level. Example request URL:
+    ///   `<https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`>
     ///
     /// * [`organizations.roles.get()`](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles/get>):
-    ///    `organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`. This method
-    ///    returns only [custom
-    ///    roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>) that
-    ///    have been created at the organization level. Example request URL:
-    ///    `<https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`>
+    ///   `organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`. This method
+    ///   returns only [custom
+    ///   roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>) that
+    ///   have been created at the organization level. Example request URL:
+    ///   `<https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`>
     ///
-    /// Note: Wildcard (*) values are invalid; you must specify a complete project
+    /// Note: Wildcard (\*) values are invalid; you must specify a complete project
     /// ID or organization ID.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request to create a new role.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateRoleRequest {
     /// The `parent` parameter's value depends on the target resource for the
     /// request, namely
@@ -795,20 +794,20 @@ pub struct CreateRoleRequest {
     /// Each resource type's `parent` value format is described below:
     ///
     /// * [`projects.roles.create()`](<https://cloud.google.com/iam/reference/rest/v1/projects.roles/create>):
-    ///    `projects/{PROJECT_ID}`. This method creates project-level
-    ///    [custom
-    ///    roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>).
-    ///    Example request URL:
-    ///    `<https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles`>
+    ///   `projects/{PROJECT_ID}`. This method creates project-level
+    ///   [custom
+    ///   roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>).
+    ///   Example request URL:
+    ///   `<https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles`>
     ///
     /// * [`organizations.roles.create()`](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles/create>):
-    ///    `organizations/{ORGANIZATION_ID}`. This method creates organization-level
-    ///    [custom
-    ///    roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>).
-    ///    Example request URL:
-    ///    `<https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles`>
+    ///   `organizations/{ORGANIZATION_ID}`. This method creates organization-level
+    ///   [custom
+    ///   roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>).
+    ///   Example request URL:
+    ///   `<https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles`>
     ///
-    /// Note: Wildcard (*) values are invalid; you must specify a complete project
+    /// Note: Wildcard (\*) values are invalid; you must specify a complete project
     /// ID or organization ID.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -824,7 +823,7 @@ pub struct CreateRoleRequest {
     pub role: ::core::option::Option<Role>,
 }
 /// The request to update a role.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateRoleRequest {
     /// The `name` parameter's value depends on the target resource for the
     /// request, namely
@@ -834,20 +833,20 @@ pub struct UpdateRoleRequest {
     /// Each resource type's `name` value format is described below:
     ///
     /// * [`projects.roles.patch()`](<https://cloud.google.com/iam/reference/rest/v1/projects.roles/patch>):
-    ///    `projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`. This method updates only
-    ///    [custom
-    ///    roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>) that
-    ///    have been created at the project level. Example request URL:
-    ///    `<https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`>
+    ///   `projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`. This method updates only
+    ///   [custom
+    ///   roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>) that
+    ///   have been created at the project level. Example request URL:
+    ///   `<https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`>
     ///
     /// * [`organizations.roles.patch()`](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles/patch>):
-    ///    `organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`. This method
-    ///    updates only [custom
-    ///    roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>) that
-    ///    have been created at the organization level. Example request URL:
-    ///    `<https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`>
+    ///   `organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`. This method
+    ///   updates only [custom
+    ///   roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>) that
+    ///   have been created at the organization level. Example request URL:
+    ///   `<https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`>
     ///
-    /// Note: Wildcard (*) values are invalid; you must specify a complete project
+    /// Note: Wildcard (\*) values are invalid; you must specify a complete project
     /// ID or organization ID.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -859,7 +858,7 @@ pub struct UpdateRoleRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request to delete an existing role.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRoleRequest {
     /// The `name` parameter's value depends on the target resource for the
     /// request, namely
@@ -869,20 +868,20 @@ pub struct DeleteRoleRequest {
     /// Each resource type's `name` value format is described below:
     ///
     /// * [`projects.roles.delete()`](<https://cloud.google.com/iam/reference/rest/v1/projects.roles/delete>):
-    ///    `projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`. This method deletes only
-    ///    [custom
-    ///    roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>) that
-    ///    have been created at the project level. Example request URL:
-    ///    `<https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`>
+    ///   `projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`. This method deletes only
+    ///   [custom
+    ///   roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>) that
+    ///   have been created at the project level. Example request URL:
+    ///   `<https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`>
     ///
     /// * [`organizations.roles.delete()`](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles/delete>):
-    ///    `organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`. This method
-    ///    deletes only [custom
-    ///    roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>) that
-    ///    have been created at the organization level. Example request URL:
-    ///    `<https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`>
+    ///   `organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`. This method
+    ///   deletes only [custom
+    ///   roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>) that
+    ///   have been created at the organization level. Example request URL:
+    ///   `<https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`>
     ///
-    /// Note: Wildcard (*) values are invalid; you must specify a complete project
+    /// Note: Wildcard (\*) values are invalid; you must specify a complete project
     /// ID or organization ID.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -891,7 +890,7 @@ pub struct DeleteRoleRequest {
     pub etag: ::prost::alloc::vec::Vec<u8>,
 }
 /// The request to undelete an existing role.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UndeleteRoleRequest {
     /// The `name` parameter's value depends on the target resource for the
     /// request, namely
@@ -901,20 +900,20 @@ pub struct UndeleteRoleRequest {
     /// Each resource type's `name` value format is described below:
     ///
     /// * [`projects.roles.undelete()`](<https://cloud.google.com/iam/reference/rest/v1/projects.roles/undelete>):
-    ///    `projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`. This method undeletes
-    ///    only [custom
-    ///    roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>) that
-    ///    have been created at the project level. Example request URL:
-    ///    `<https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`>
+    ///   `projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`. This method undeletes
+    ///   only [custom
+    ///   roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>) that
+    ///   have been created at the project level. Example request URL:
+    ///   `<https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`>
     ///
     /// * [`organizations.roles.undelete()`](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles/undelete>):
-    ///    `organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`. This method
-    ///    undeletes only [custom
-    ///    roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>) that
-    ///    have been created at the organization level. Example request URL:
-    ///    `<https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`>
+    ///   `organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`. This method
+    ///   undeletes only [custom
+    ///   roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>) that
+    ///   have been created at the organization level. Example request URL:
+    ///   `<https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`>
     ///
-    /// Note: Wildcard (*) values are invalid; you must specify a complete project
+    /// Note: Wildcard (\*) values are invalid; you must specify a complete project
     /// ID or organization ID.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -923,7 +922,7 @@ pub struct UndeleteRoleRequest {
     pub etag: ::prost::alloc::vec::Vec<u8>,
 }
 /// A permission which can be included by a role.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Permission {
     /// The name of this Permission.
     #[prost(string, tag = "1")]
@@ -1046,7 +1045,7 @@ pub mod permission {
     }
 }
 /// A request to get permissions which can be tested on a resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct QueryTestablePermissionsRequest {
     /// Required. The full resource name to query from the list of testable
     /// permissions.
@@ -1078,7 +1077,7 @@ pub struct QueryTestablePermissionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// A request to get the list of auditable services for a resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct QueryAuditableServicesRequest {
     /// Required. The full resource name to query from the list of auditable
     /// services.
@@ -1101,7 +1100,7 @@ pub struct QueryAuditableServicesResponse {
 /// Nested message and enum types in `QueryAuditableServicesResponse`.
 pub mod query_auditable_services_response {
     /// Contains information about an auditable service.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AuditableService {
         /// Public name of the service.
         /// For example, the service name for Cloud IAM is 'iam.googleapis.com'.
@@ -1110,7 +1109,7 @@ pub mod query_auditable_services_response {
     }
 }
 /// The request to lint a Cloud IAM policy object.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LintPolicyRequest {
     /// The full resource name of the policy this lint request is about.
     ///
@@ -1130,15 +1129,15 @@ pub struct LintPolicyRequest {
 /// Nested message and enum types in `LintPolicyRequest`.
 pub mod lint_policy_request {
     /// Required. The Cloud IAM object to be linted.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum LintObject {
-        /// \[google.iam.v1.Binding.condition\] [google.iam.v1.Binding.condition] object to be linted.
+        /// \[google.iam.v1.Binding.condition\] \[google.iam.v1.Binding.condition\] object to be linted.
         #[prost(message, tag = "5")]
         Condition(super::super::super::super::r#type::Expr),
     }
 }
 /// Structured response of a single validation unit.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LintResult {
     /// The validation unit level.
     #[prost(enumeration = "lint_result::Level", tag = "1")]
@@ -1237,9 +1236,9 @@ pub mod lint_result {
         /// won't behave as expected during policy evaluation in `checkPolicy`.
         /// This includes the following common scenarios:
         ///
-        /// - Unsatisfiable condition: Expired timestamp in date/time condition.
-        /// - Ineffective condition: Condition on a <principal, role> pair which is
-        ///    granted unconditionally in another binding of the same policy.
+        /// * Unsatisfiable condition: Expired timestamp in date/time condition.
+        /// * Ineffective condition: Condition on a \<principal, role> pair which is
+        ///   granted unconditionally in another binding of the same policy.
         Warning = 2,
         /// Reserved for the issues that are not severe as `ERROR`/`WARNING`, but
         /// need special handling. For instance, messages about skipped validation
@@ -1470,13 +1469,13 @@ pub mod iam_client {
     /// You can use this service to work with all of the following resources:
     ///
     /// * **Service accounts**, which identify an application or a virtual machine
-    ///   (VM) instance rather than a person
+    ///  (VM) instance rather than a person
     /// * **Service account keys**, which service accounts use to authenticate with
-    ///   Google APIs
+    ///  Google APIs
     /// * **IAM policies for service accounts**, which specify the roles that a
-    ///   principal has for the service account
+    ///  principal has for the service account
     /// * **IAM custom roles**, which help you limit the number of permissions that
-    ///   you grant to principals
+    ///  you grant to principals
     ///
     /// In addition, you can use this service to complete the following tasks, among
     /// others:
@@ -1574,7 +1573,7 @@ pub mod iam_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Lists every [ServiceAccount][google.iam.admin.v1.ServiceAccount] that belongs to a specific project.
+        /// Lists every \[ServiceAccount\]\[google.iam.admin.v1.ServiceAccount\] that belongs to a specific project.
         pub async fn list_service_accounts(
             &mut self,
             request: impl tonic::IntoRequest<super::ListServiceAccountsRequest>,
@@ -1590,7 +1589,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/ListServiceAccounts",
             );
@@ -1601,7 +1600,7 @@ pub mod iam_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Gets a [ServiceAccount][google.iam.admin.v1.ServiceAccount].
+        /// Gets a \[ServiceAccount\]\[google.iam.admin.v1.ServiceAccount\].
         pub async fn get_service_account(
             &mut self,
             request: impl tonic::IntoRequest<super::GetServiceAccountRequest>,
@@ -1614,7 +1613,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/GetServiceAccount",
             );
@@ -1623,7 +1622,7 @@ pub mod iam_client {
                 .insert(GrpcMethod::new("google.iam.admin.v1.IAM", "GetServiceAccount"));
             self.inner.unary(req, path, codec).await
         }
-        /// Creates a [ServiceAccount][google.iam.admin.v1.ServiceAccount].
+        /// Creates a \[ServiceAccount\]\[google.iam.admin.v1.ServiceAccount\].
         pub async fn create_service_account(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateServiceAccountRequest>,
@@ -1636,7 +1635,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/CreateServiceAccount",
             );
@@ -1648,9 +1647,9 @@ pub mod iam_client {
             self.inner.unary(req, path, codec).await
         }
         /// **Note:** We are in the process of deprecating this method. Use
-        /// [PatchServiceAccount][google.iam.admin.v1.IAM.PatchServiceAccount] instead.
+        /// \[PatchServiceAccount\]\[google.iam.admin.v1.IAM.PatchServiceAccount\] instead.
         ///
-        /// Updates a [ServiceAccount][google.iam.admin.v1.ServiceAccount].
+        /// Updates a \[ServiceAccount\]\[google.iam.admin.v1.ServiceAccount\].
         ///
         /// You can update only the `display_name` field.
         pub async fn update_service_account(
@@ -1665,7 +1664,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/UpdateServiceAccount",
             );
@@ -1676,7 +1675,7 @@ pub mod iam_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Patches a [ServiceAccount][google.iam.admin.v1.ServiceAccount].
+        /// Patches a \[ServiceAccount\]\[google.iam.admin.v1.ServiceAccount\].
         pub async fn patch_service_account(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchServiceAccountRequest>,
@@ -1689,7 +1688,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/PatchServiceAccount",
             );
@@ -1700,18 +1699,18 @@ pub mod iam_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Deletes a [ServiceAccount][google.iam.admin.v1.ServiceAccount].
+        /// Deletes a \[ServiceAccount\]\[google.iam.admin.v1.ServiceAccount\].
         ///
         /// **Warning:** After you delete a service account, you might not be able to
         /// undelete it. If you know that you need to re-enable the service account in
-        /// the future, use [DisableServiceAccount][google.iam.admin.v1.IAM.DisableServiceAccount] instead.
+        /// the future, use \[DisableServiceAccount\]\[google.iam.admin.v1.IAM.DisableServiceAccount\] instead.
         ///
         /// If you delete a service account, IAM permanently removes the service
         /// account 30 days later. Google Cloud cannot recover the service account
         /// after it is permanently removed, even if you file a support request.
         ///
         /// To help avoid unplanned outages, we recommend that you disable the service
-        /// account before you delete it. Use [DisableServiceAccount][google.iam.admin.v1.IAM.DisableServiceAccount] to disable the
+        /// account before you delete it. Use \[DisableServiceAccount\]\[google.iam.admin.v1.IAM.DisableServiceAccount\] to disable the
         /// service account, then wait at least 24 hours and watch for unintended
         /// consequences. If there are no unintended consequences, you can delete the
         /// service account.
@@ -1727,7 +1726,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/DeleteServiceAccount",
             );
@@ -1738,7 +1737,7 @@ pub mod iam_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Restores a deleted [ServiceAccount][google.iam.admin.v1.ServiceAccount].
+        /// Restores a deleted \[ServiceAccount\]\[google.iam.admin.v1.ServiceAccount\].
         ///
         /// **Important:** It is not always possible to restore a deleted service
         /// account. Use this method only as a last resort.
@@ -1761,7 +1760,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/UndeleteServiceAccount",
             );
@@ -1772,8 +1771,8 @@ pub mod iam_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Enables a [ServiceAccount][google.iam.admin.v1.ServiceAccount] that was disabled by
-        /// [DisableServiceAccount][google.iam.admin.v1.IAM.DisableServiceAccount].
+        /// Enables a \[ServiceAccount\]\[google.iam.admin.v1.ServiceAccount\] that was disabled by
+        /// \[DisableServiceAccount\]\[google.iam.admin.v1.IAM.DisableServiceAccount\].
         ///
         /// If the service account is already enabled, then this method has no effect.
         ///
@@ -1792,7 +1791,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/EnableServiceAccount",
             );
@@ -1803,14 +1802,14 @@ pub mod iam_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Disables a [ServiceAccount][google.iam.admin.v1.ServiceAccount] immediately.
+        /// Disables a \[ServiceAccount\]\[google.iam.admin.v1.ServiceAccount\] immediately.
         ///
         /// If an application uses the service account to authenticate, that
         /// application can no longer call Google APIs or access Google Cloud
         /// resources. Existing access tokens for the service account are rejected, and
         /// requests for new access tokens will fail.
         ///
-        /// To re-enable the service account, use [EnableServiceAccount][google.iam.admin.v1.IAM.EnableServiceAccount]. After you
+        /// To re-enable the service account, use \[EnableServiceAccount\]\[google.iam.admin.v1.IAM.EnableServiceAccount\]. After you
         /// re-enable the service account, its existing access tokens will be accepted,
         /// and you can request new access tokens.
         ///
@@ -1818,7 +1817,7 @@ pub mod iam_client {
         /// account before you delete it. Use this method to disable the service
         /// account, then wait at least 24 hours and watch for unintended consequences.
         /// If there are no unintended consequences, you can delete the service account
-        /// with [DeleteServiceAccount][google.iam.admin.v1.IAM.DeleteServiceAccount].
+        /// with \[DeleteServiceAccount\]\[google.iam.admin.v1.IAM.DeleteServiceAccount\].
         pub async fn disable_service_account(
             &mut self,
             request: impl tonic::IntoRequest<super::DisableServiceAccountRequest>,
@@ -1831,7 +1830,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/DisableServiceAccount",
             );
@@ -1842,7 +1841,7 @@ pub mod iam_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists every [ServiceAccountKey][google.iam.admin.v1.ServiceAccountKey] for a service account.
+        /// Lists every \[ServiceAccountKey\]\[google.iam.admin.v1.ServiceAccountKey\] for a service account.
         pub async fn list_service_account_keys(
             &mut self,
             request: impl tonic::IntoRequest<super::ListServiceAccountKeysRequest>,
@@ -1858,7 +1857,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/ListServiceAccountKeys",
             );
@@ -1869,7 +1868,7 @@ pub mod iam_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Gets a [ServiceAccountKey][google.iam.admin.v1.ServiceAccountKey].
+        /// Gets a \[ServiceAccountKey\]\[google.iam.admin.v1.ServiceAccountKey\].
         pub async fn get_service_account_key(
             &mut self,
             request: impl tonic::IntoRequest<super::GetServiceAccountKeyRequest>,
@@ -1885,7 +1884,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/GetServiceAccountKey",
             );
@@ -1896,7 +1895,7 @@ pub mod iam_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Creates a [ServiceAccountKey][google.iam.admin.v1.ServiceAccountKey].
+        /// Creates a \[ServiceAccountKey\]\[google.iam.admin.v1.ServiceAccountKey\].
         pub async fn create_service_account_key(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateServiceAccountKeyRequest>,
@@ -1912,7 +1911,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/CreateServiceAccountKey",
             );
@@ -1924,7 +1923,7 @@ pub mod iam_client {
             self.inner.unary(req, path, codec).await
         }
         /// Uploads the public key portion of a key pair that you manage, and
-        /// associates the public key with a [ServiceAccount][google.iam.admin.v1.ServiceAccount].
+        /// associates the public key with a \[ServiceAccount\]\[google.iam.admin.v1.ServiceAccount\].
         ///
         /// After you upload the public key, you can use the private key from the key
         /// pair as a service account key.
@@ -1943,7 +1942,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/UploadServiceAccountKey",
             );
@@ -1954,7 +1953,7 @@ pub mod iam_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Deletes a [ServiceAccountKey][google.iam.admin.v1.ServiceAccountKey]. Deleting a service account key does not
+        /// Deletes a \[ServiceAccountKey\]\[google.iam.admin.v1.ServiceAccountKey\]. Deleting a service account key does not
         /// revoke short-lived credentials that have been issued based on the service
         /// account key.
         pub async fn delete_service_account_key(
@@ -1969,7 +1968,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/DeleteServiceAccountKey",
             );
@@ -1980,8 +1979,8 @@ pub mod iam_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Disable a [ServiceAccountKey][google.iam.admin.v1.ServiceAccountKey]. A disabled service account key can be
-        /// re-enabled with [EnableServiceAccountKey][google.iam.admin.v1.IAM.EnableServiceAccountKey].
+        /// Disable a \[ServiceAccountKey\]\[google.iam.admin.v1.ServiceAccountKey\]. A disabled service account key can be
+        /// re-enabled with \[EnableServiceAccountKey\]\[google.iam.admin.v1.IAM.EnableServiceAccountKey\].
         pub async fn disable_service_account_key(
             &mut self,
             request: impl tonic::IntoRequest<super::DisableServiceAccountKeyRequest>,
@@ -1994,7 +1993,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/DisableServiceAccountKey",
             );
@@ -2008,7 +2007,7 @@ pub mod iam_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Enable a [ServiceAccountKey][google.iam.admin.v1.ServiceAccountKey].
+        /// Enable a \[ServiceAccountKey\]\[google.iam.admin.v1.ServiceAccountKey\].
         pub async fn enable_service_account_key(
             &mut self,
             request: impl tonic::IntoRequest<super::EnableServiceAccountKeyRequest>,
@@ -2021,7 +2020,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/EnableServiceAccountKey",
             );
@@ -2039,7 +2038,7 @@ pub mod iam_client {
         /// guide](https://cloud.google.com/iam/help/credentials/migrate-api) for
         /// instructions.
         ///
-        /// Signs a blob using the system-managed private key for a [ServiceAccount][google.iam.admin.v1.ServiceAccount].
+        /// Signs a blob using the system-managed private key for a \[ServiceAccount\]\[google.iam.admin.v1.ServiceAccount\].
         #[deprecated]
         pub async fn sign_blob(
             &mut self,
@@ -2056,7 +2055,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/SignBlob",
             );
@@ -2073,7 +2072,7 @@ pub mod iam_client {
         /// instructions.
         ///
         /// Signs a JSON Web Token (JWT) using the system-managed private key for a
-        /// [ServiceAccount][google.iam.admin.v1.ServiceAccount].
+        /// \[ServiceAccount\]\[google.iam.admin.v1.ServiceAccount\].
         #[deprecated]
         pub async fn sign_jwt(
             &mut self,
@@ -2090,7 +2089,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/SignJwt",
             );
@@ -2099,7 +2098,7 @@ pub mod iam_client {
                 .insert(GrpcMethod::new("google.iam.admin.v1.IAM", "SignJwt"));
             self.inner.unary(req, path, codec).await
         }
-        /// Gets the IAM policy that is attached to a [ServiceAccount][google.iam.admin.v1.ServiceAccount]. This IAM
+        /// Gets the IAM policy that is attached to a \[ServiceAccount\]\[google.iam.admin.v1.ServiceAccount\]. This IAM
         /// policy specifies which principals have access to the service account.
         ///
         /// This method does not tell you whether the service account has been granted
@@ -2126,7 +2125,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/GetIamPolicy",
             );
@@ -2135,7 +2134,7 @@ pub mod iam_client {
                 .insert(GrpcMethod::new("google.iam.admin.v1.IAM", "GetIamPolicy"));
             self.inner.unary(req, path, codec).await
         }
-        /// Sets the IAM policy that is attached to a [ServiceAccount][google.iam.admin.v1.ServiceAccount].
+        /// Sets the IAM policy that is attached to a \[ServiceAccount\]\[google.iam.admin.v1.ServiceAccount\].
         ///
         /// Use this method to grant or revoke access to the service account. For
         /// example, you could grant a principal the ability to impersonate the service
@@ -2145,9 +2144,9 @@ pub mod iam_client {
         /// To grant roles to a service account on a resource, follow these steps:
         ///
         /// 1. Call the resource's `getIamPolicy` method to get its current IAM policy.
-        /// 2. Edit the policy so that it binds the service account to an IAM role for
-        /// the resource.
-        /// 3. Call the resource's `setIamPolicy` method to update its IAM policy.
+        /// 1. Edit the policy so that it binds the service account to an IAM role for
+        ///   the resource.
+        /// 1. Call the resource's `setIamPolicy` method to update its IAM policy.
         ///
         /// For detailed instructions, see
         /// [Manage access to project, folders, and
@@ -2171,7 +2170,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/SetIamPolicy",
             );
@@ -2181,7 +2180,7 @@ pub mod iam_client {
             self.inner.unary(req, path, codec).await
         }
         /// Tests whether the caller has the specified permissions on a
-        /// [ServiceAccount][google.iam.admin.v1.ServiceAccount].
+        /// \[ServiceAccount\]\[google.iam.admin.v1.ServiceAccount\].
         pub async fn test_iam_permissions(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -2199,7 +2198,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/TestIamPermissions",
             );
@@ -2228,7 +2227,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/QueryGrantableRoles",
             );
@@ -2239,7 +2238,7 @@ pub mod iam_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists every predefined [Role][google.iam.admin.v1.Role] that IAM supports, or every custom role
+        /// Lists every predefined \[Role\]\[google.iam.admin.v1.Role\] that IAM supports, or every custom role
         /// that is defined for an organization or project.
         pub async fn list_roles(
             &mut self,
@@ -2256,7 +2255,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/ListRoles",
             );
@@ -2265,7 +2264,7 @@ pub mod iam_client {
                 .insert(GrpcMethod::new("google.iam.admin.v1.IAM", "ListRoles"));
             self.inner.unary(req, path, codec).await
         }
-        /// Gets the definition of a [Role][google.iam.admin.v1.Role].
+        /// Gets the definition of a \[Role\]\[google.iam.admin.v1.Role\].
         pub async fn get_role(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRoleRequest>,
@@ -2278,7 +2277,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/GetRole",
             );
@@ -2287,7 +2286,7 @@ pub mod iam_client {
                 .insert(GrpcMethod::new("google.iam.admin.v1.IAM", "GetRole"));
             self.inner.unary(req, path, codec).await
         }
-        /// Creates a new custom [Role][google.iam.admin.v1.Role].
+        /// Creates a new custom \[Role\]\[google.iam.admin.v1.Role\].
         pub async fn create_role(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateRoleRequest>,
@@ -2300,7 +2299,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/CreateRole",
             );
@@ -2309,7 +2308,7 @@ pub mod iam_client {
                 .insert(GrpcMethod::new("google.iam.admin.v1.IAM", "CreateRole"));
             self.inner.unary(req, path, codec).await
         }
-        /// Updates the definition of a custom [Role][google.iam.admin.v1.Role].
+        /// Updates the definition of a custom \[Role\]\[google.iam.admin.v1.Role\].
         pub async fn update_role(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateRoleRequest>,
@@ -2322,7 +2321,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/UpdateRole",
             );
@@ -2331,23 +2330,23 @@ pub mod iam_client {
                 .insert(GrpcMethod::new("google.iam.admin.v1.IAM", "UpdateRole"));
             self.inner.unary(req, path, codec).await
         }
-        /// Deletes a custom [Role][google.iam.admin.v1.Role].
+        /// Deletes a custom \[Role\]\[google.iam.admin.v1.Role\].
         ///
         /// When you delete a custom role, the following changes occur immediately:
         ///
         /// * You cannot bind a principal to the custom role in an IAM
-        /// [Policy][google.iam.v1.Policy].
+        ///  \[Policy\]\[google.iam.v1.Policy\].
         /// * Existing bindings to the custom role are not changed, but they have no
-        /// effect.
-        /// * By default, the response from [ListRoles][google.iam.admin.v1.IAM.ListRoles] does not include the custom
-        /// role.
+        ///  effect.
+        /// * By default, the response from \[ListRoles\]\[google.iam.admin.v1.IAM.ListRoles\] does not include the custom
+        ///  role.
         ///
         /// You have 7 days to undelete the custom role. After 7 days, the following
         /// changes occur:
         ///
         /// * The custom role is permanently deleted and cannot be recovered.
         /// * If an IAM policy contains a binding to the custom role, the binding is
-        /// permanently removed.
+        ///  permanently removed.
         pub async fn delete_role(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRoleRequest>,
@@ -2360,7 +2359,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/DeleteRole",
             );
@@ -2369,7 +2368,7 @@ pub mod iam_client {
                 .insert(GrpcMethod::new("google.iam.admin.v1.IAM", "DeleteRole"));
             self.inner.unary(req, path, codec).await
         }
-        /// Undeletes a custom [Role][google.iam.admin.v1.Role].
+        /// Undeletes a custom \[Role\]\[google.iam.admin.v1.Role\].
         pub async fn undelete_role(
             &mut self,
             request: impl tonic::IntoRequest<super::UndeleteRoleRequest>,
@@ -2382,7 +2381,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/UndeleteRole",
             );
@@ -2409,7 +2408,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/QueryTestablePermissions",
             );
@@ -2443,7 +2442,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/QueryAuditableServices",
             );
@@ -2455,7 +2454,7 @@ pub mod iam_client {
             self.inner.unary(req, path, codec).await
         }
         /// Lints, or validates, an IAM policy. Currently checks the
-        /// [google.iam.v1.Binding.condition][google.iam.v1.Binding.condition] field, which contains a condition
+        /// \[google.iam.v1.Binding.condition\]\[google.iam.v1.Binding.condition\] field, which contains a condition
         /// expression for a role binding.
         ///
         /// Successful calls to this method always return an HTTP `200 OK` status code,
@@ -2475,7 +2474,7 @@ pub mod iam_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.admin.v1.IAM/LintPolicy",
             );

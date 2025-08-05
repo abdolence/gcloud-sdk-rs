@@ -103,7 +103,7 @@ impl ValidationState {
     }
 }
 /// A contact that will receive notifications from Google Cloud.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Contact {
     /// Output only. The identifier for the contact.
     /// Format: {resource_type}/{resource_id}/contacts/{contact_id}
@@ -134,7 +134,7 @@ pub struct Contact {
     pub validate_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request message for the ListContacts method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListContactsRequest {
     /// Required. The parent resource name.
     /// Format: organizations/{organization_id}, folders/{folder_id} or
@@ -168,7 +168,7 @@ pub struct ListContactsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the GetContact method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetContactRequest {
     /// Required. The name of the contact to retrieve.
     /// Format: organizations/{organization_id}/contacts/{contact_id},
@@ -178,7 +178,7 @@ pub struct GetContactRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the DeleteContact method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteContactRequest {
     /// Required. The name of the contact to delete.
     /// Format: organizations/{organization_id}/contacts/{contact_id},
@@ -188,7 +188,7 @@ pub struct DeleteContactRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the CreateContact method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateContactRequest {
     /// Required. The resource to save this contact for.
     /// Format: organizations/{organization_id}, folders/{folder_id} or
@@ -201,7 +201,7 @@ pub struct CreateContactRequest {
     pub contact: ::core::option::Option<Contact>,
 }
 /// Request message for the UpdateContact method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateContactRequest {
     /// Required. The contact resource to replace the existing saved contact. Note:
     /// the email address of the contact cannot be modified.
@@ -214,7 +214,7 @@ pub struct UpdateContactRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for the ComputeContacts method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ComputeContactsRequest {
     /// Required. The name of the resource to compute contacts for.
     /// Format: organizations/{organization_id},
@@ -255,7 +255,7 @@ pub struct ComputeContactsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the SendTestMessage method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SendTestMessageRequest {
     /// Required. The list of names of the contacts to send a test message to.
     /// Format: organizations/{organization_id}/contacts/{contact_id},
@@ -382,7 +382,7 @@ pub mod essential_contacts_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.essentialcontacts.v1.EssentialContactsService/CreateContact",
             );
@@ -410,7 +410,7 @@ pub mod essential_contacts_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.essentialcontacts.v1.EssentialContactsService/UpdateContact",
             );
@@ -440,7 +440,7 @@ pub mod essential_contacts_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.essentialcontacts.v1.EssentialContactsService/ListContacts",
             );
@@ -467,7 +467,7 @@ pub mod essential_contacts_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.essentialcontacts.v1.EssentialContactsService/GetContact",
             );
@@ -494,7 +494,7 @@ pub mod essential_contacts_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.essentialcontacts.v1.EssentialContactsService/DeleteContact",
             );
@@ -526,7 +526,7 @@ pub mod essential_contacts_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.essentialcontacts.v1.EssentialContactsService/ComputeContacts",
             );
@@ -554,7 +554,7 @@ pub mod essential_contacts_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.essentialcontacts.v1.EssentialContactsService/SendTestMessage",
             );

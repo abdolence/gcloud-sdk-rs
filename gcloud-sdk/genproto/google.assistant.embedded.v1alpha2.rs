@@ -115,7 +115,7 @@ pub mod assist_response {
 }
 /// Debug info for developer. Only returned if request set `return_debug_info`
 /// to true.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DebugInfo {
     /// The original JSON response from an Action-on-Google agent to Google server.
     /// See
@@ -149,10 +149,10 @@ pub struct AssistConfig {
 }
 /// Nested message and enum types in `AssistConfig`.
 pub mod assist_config {
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Type {
         /// Specifies how to process the subsequent incoming audio. Required if
-        /// [AssistRequest.audio_in][google.assistant.embedded.v1alpha2.AssistRequest.audio_in]
+        /// \[AssistRequest.audio_in\]\[google.assistant.embedded.v1alpha2.AssistRequest.audio_in\]
         /// bytes will be provided in subsequent requests.
         #[prost(message, tag = "1")]
         AudioInConfig(super::AudioInConfig),
@@ -166,7 +166,7 @@ pub mod assist_config {
 /// subsequent requests. For recommended settings, see the Google Assistant SDK
 /// [best
 /// practices](<https://developers.google.com/assistant/sdk/guides/service/python/best-practices/audio>).
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AudioInConfig {
     /// *Required* Encoding of audio data sent in all `audio_in` messages.
     #[prost(enumeration = "audio_in_config::Encoding", tag = "1")]
@@ -196,7 +196,7 @@ pub mod audio_in_config {
     )]
     #[repr(i32)]
     pub enum Encoding {
-        /// Not specified. Will return result [google.rpc.Code.INVALID_ARGUMENT][].
+        /// Not specified. Will return result \[google.rpc.Code.INVALID_ARGUMENT\]\[\].
         Unspecified = 0,
         /// Uncompressed 16-bit signed little-endian samples (Linear PCM).
         /// This encoding includes no header, only the raw audio bytes.
@@ -235,7 +235,7 @@ pub mod audio_in_config {
 }
 /// Specifies the desired format for the server to use when it returns
 /// `audio_out` messages.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AudioOutConfig {
     /// *Required* The encoding of audio data to be returned in all `audio_out`
     /// messages.
@@ -267,7 +267,7 @@ pub mod audio_out_config {
     )]
     #[repr(i32)]
     pub enum Encoding {
-        /// Not specified. Will return result [google.rpc.Code.INVALID_ARGUMENT][].
+        /// Not specified. Will return result \[google.rpc.Code.INVALID_ARGUMENT\]\[\].
         Unspecified = 0,
         /// Uncompressed 16-bit signed little-endian samples (Linear PCM).
         Linear16 = 1,
@@ -306,7 +306,7 @@ pub mod audio_out_config {
 }
 /// Specifies the desired format for the server to use when it returns
 /// `screen_out` response.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ScreenOutConfig {
     /// Current visual screen-mode for the device while issuing the query.
     #[prost(enumeration = "screen_out_config::ScreenMode", tag = "1")]
@@ -366,7 +366,7 @@ pub mod screen_out_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DialogStateIn {
     /// *Required* This field must always be set to the
-    /// [DialogStateOut.conversation_state][google.assistant.embedded.v1alpha2.DialogStateOut.conversation_state]
+    /// \[DialogStateOut.conversation_state\]\[google.assistant.embedded.v1alpha2.DialogStateOut.conversation_state\]
     /// value that was returned in the prior `Assist` RPC. It should only be
     /// omitted (field not set) if there was no prior `Assist` RPC because this is
     /// the first `Assist` RPC made by this device after it was first setup and/or
@@ -398,13 +398,13 @@ pub struct DialogStateIn {
 ///
 /// See also:
 ///
-/// *   [Register a Device - REST
-/// API](<https://developers.google.com/assistant/sdk/reference/device-registration/register-device-manual>)
-/// *   [Device Model and Instance
-/// Schemas](<https://developers.google.com/assistant/sdk/reference/device-registration/model-and-instance-schemas>)
-/// *   [Device
-/// Proto](<https://developers.google.com/assistant/sdk/reference/rpc/google.assistant.devices.v1alpha2#device>)
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// * [Register a Device - REST
+///   API](<https://developers.google.com/assistant/sdk/reference/device-registration/register-device-manual>)
+/// * [Device Model and Instance
+///   Schemas](<https://developers.google.com/assistant/sdk/reference/device-registration/model-and-instance-schemas>)
+/// * [Device
+///   Proto](<https://developers.google.com/assistant/sdk/reference/rpc/google.assistant.devices.v1alpha2#device>)
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeviceConfig {
     /// *Required* Unique identifier for the device. The id length must be 128
     /// characters or less. Example: DBCDW098234. This MUST match the device_id
@@ -423,7 +423,7 @@ pub struct DeviceConfig {
 }
 /// The audio containing the Assistant's response to the query. Sequential chunks
 /// of audio data are received in sequential `AssistResponse` messages.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AudioOut {
     /// *Output-only* The audio data containing the Assistant's response to the
     /// query. Sequential chunks of audio data are received in sequential
@@ -433,7 +433,7 @@ pub struct AudioOut {
 }
 /// The Assistant's visual output response to query. Enabled by
 /// `screen_out_config`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ScreenOut {
     /// *Output-only* The format of the provided screen data.
     #[prost(enumeration = "screen_out::Format", tag = "1")]
@@ -492,7 +492,7 @@ pub mod screen_out {
 /// Action. For example, a device which supports the query *Turn on the light*
 /// would receive a `DeviceAction` with a JSON payload containing the semantics
 /// of the request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeviceAction {
     /// JSON containing the device command response generated from the triggered
     /// Device Action grammar. The format is given by the
@@ -517,7 +517,7 @@ pub struct SpeechRecognitionResult {
 }
 /// The dialog state resulting from the user's query. Multiple of these messages
 /// may be received.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DialogStateOut {
     /// *Output-only* Supplemental display text from the Assistant. This could be
     /// the same as the speech spoken in `AssistResponse.audio_out` or it could
@@ -599,7 +599,7 @@ pub mod dialog_state_out {
     }
 }
 /// Debugging parameters for the current request.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DebugConfig {
     /// When this field is set to true, the `debug_info` field in `AssistResponse`
     /// may be populated. However it will significantly increase latency of
@@ -610,11 +610,11 @@ pub struct DebugConfig {
 /// There are three sources of locations. They are used with this precedence:
 ///
 /// 1. This `DeviceLocation`, which is primarily used for mobile devices with
-///     GPS .
-/// 2. Location specified by the user during device setup; this is per-user, per
-///     device. This location is used if `DeviceLocation` is not specified.
-/// 3. Inferred location based on IP address. This is used only if neither of the
-///     above are specified.
+///    GPS .
+/// 1. Location specified by the user during device setup; this is per-user, per
+///    device. This location is used if `DeviceLocation` is not specified.
+/// 1. Inferred location based on IP address. This is used only if neither of the
+///    above are specified.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct DeviceLocation {
     #[prost(oneof = "device_location::Type", tags = "1")]
@@ -732,34 +732,33 @@ pub mod embedded_assistant_client {
         /// responds *What do you want to add?*. The sequence of streamed requests and
         /// responses in the first gRPC message could be:
         ///
-        /// *   AssistRequest.config
-        /// *   AssistRequest.audio_in
-        /// *   AssistRequest.audio_in
-        /// *   AssistRequest.audio_in
-        /// *   AssistRequest.audio_in
-        /// *   AssistResponse.event_type.END_OF_UTTERANCE
-        /// *   AssistResponse.speech_results.transcript "add to my shopping list"
-        /// *   AssistResponse.dialog_state_out.microphone_mode.DIALOG_FOLLOW_ON
-        /// *   AssistResponse.audio_out
-        /// *   AssistResponse.audio_out
-        /// *   AssistResponse.audio_out
-        ///
+        /// * AssistRequest.config
+        /// * AssistRequest.audio_in
+        /// * AssistRequest.audio_in
+        /// * AssistRequest.audio_in
+        /// * AssistRequest.audio_in
+        /// * AssistResponse.event_type.END_OF_UTTERANCE
+        /// * AssistResponse.speech_results.transcript "add to my shopping list"
+        /// * AssistResponse.dialog_state_out.microphone_mode.DIALOG_FOLLOW_ON
+        /// * AssistResponse.audio_out
+        /// * AssistResponse.audio_out
+        /// * AssistResponse.audio_out
         ///
         /// The user then says *bagels* and the Assistant responds
         /// *OK, I've added bagels to your shopping list*. This is sent as another gRPC
         /// connection call to the `Assist` method, again with streamed requests and
         /// responses, such as:
         ///
-        /// *   AssistRequest.config
-        /// *   AssistRequest.audio_in
-        /// *   AssistRequest.audio_in
-        /// *   AssistRequest.audio_in
-        /// *   AssistResponse.event_type.END_OF_UTTERANCE
-        /// *   AssistResponse.dialog_state_out.microphone_mode.CLOSE_MICROPHONE
-        /// *   AssistResponse.audio_out
-        /// *   AssistResponse.audio_out
-        /// *   AssistResponse.audio_out
-        /// *   AssistResponse.audio_out
+        /// * AssistRequest.config
+        /// * AssistRequest.audio_in
+        /// * AssistRequest.audio_in
+        /// * AssistRequest.audio_in
+        /// * AssistResponse.event_type.END_OF_UTTERANCE
+        /// * AssistResponse.dialog_state_out.microphone_mode.CLOSE_MICROPHONE
+        /// * AssistResponse.audio_out
+        /// * AssistResponse.audio_out
+        /// * AssistResponse.audio_out
+        /// * AssistResponse.audio_out
         ///
         /// Although the precise order of responses is not guaranteed, sequential
         /// `AssistResponse.audio_out` messages will always contain sequential portions
@@ -779,7 +778,7 @@ pub mod embedded_assistant_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.assistant.embedded.v1alpha2.EmbeddedAssistant/Assist",
             );

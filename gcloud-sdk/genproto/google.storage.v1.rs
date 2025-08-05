@@ -9,20 +9,20 @@ pub struct Bucket {
     #[prost(message, repeated, tag = "2")]
     pub default_object_acl: ::prost::alloc::vec::Vec<ObjectAccessControl>,
     /// The bucket's lifecycle configuration. See
-    /// \[<https://developers.google.com/storage/docs/lifecycle\]Lifecycle> Management]
+    /// \[<https://developers.google.com/storage/docs/lifecycle\]Lifecycle> Management\]
     /// for more information.
     #[prost(message, optional, tag = "3")]
     pub lifecycle: ::core::option::Option<bucket::Lifecycle>,
     /// The creation time of the bucket in
-    /// [<https://tools.ietf.org/html/rfc3339][RFC> 3339] format.
+    /// \[<https://tools.ietf.org/html/rfc3339\]\[RFC> 3339\] format.
     /// Attempting to set or update this field will result in a
-    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
+    /// \[FieldViolation\]\[google.rpc.BadRequest.FieldViolation\].
     #[prost(message, optional, tag = "4")]
     pub time_created: ::core::option::Option<::prost_types::Timestamp>,
     /// The ID of the bucket. For buckets, the `id` and `name` properties are the
     /// same.
     /// Attempting to update this field after the bucket is created will result in
-    /// a [FieldViolation][google.rpc.BadRequest.FieldViolation].
+    /// a \[FieldViolation\]\[google.rpc.BadRequest.FieldViolation\].
     #[prost(string, tag = "5")]
     pub id: ::prost::alloc::string::String,
     /// The name of the bucket.
@@ -32,22 +32,22 @@ pub struct Bucket {
     pub name: ::prost::alloc::string::String,
     /// The project number of the project the bucket belongs to.
     /// Attempting to set or update this field will result in a
-    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
+    /// \[FieldViolation\]\[google.rpc.BadRequest.FieldViolation\].
     #[prost(int64, tag = "7")]
     pub project_number: i64,
     /// The metadata generation of this bucket.
     /// Attempting to set or update this field will result in a
-    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
+    /// \[FieldViolation\]\[google.rpc.BadRequest.FieldViolation\].
     #[prost(int64, tag = "8")]
     pub metageneration: i64,
-    /// The bucket's [<https://www.w3.org/TR/cors/][Cross-Origin> Resource Sharing]
+    /// The bucket's \[<https://www.w3.org/TR/cors/\]\[Cross-Origin> Resource Sharing\]
     /// (CORS) configuration.
     #[prost(message, repeated, tag = "9")]
     pub cors: ::prost::alloc::vec::Vec<bucket::Cors>,
     /// The location of the bucket. Object data for objects in the bucket resides
     /// in physical storage within this region.  Defaults to `US`. See the
-    /// [<https://developers.google.com/storage/docs/concepts-techniques#specifyinglocations"][developer's>
-    /// guide] for the authoritative list. Attempting to update this field after
+    /// \[<https://developers.google.com/storage/docs/concepts-techniques#specifyinglocations"\]\[developer's>
+    /// guide\] for the authoritative list. Attempting to update this field after
     /// the bucket is created will result in an error.
     #[prost(string, tag = "10")]
     pub location: ::prost::alloc::string::String,
@@ -59,15 +59,15 @@ pub struct Bucket {
     /// <https://developers.google.com/storage/docs/storage-classes.>
     #[prost(string, tag = "11")]
     pub storage_class: ::prost::alloc::string::String,
-    /// HTTP 1.1 \[<https://tools.ietf.org/html/rfc7232#section-2.3"\]Entity> tag]
+    /// HTTP 1.1 \[<https://tools.ietf.org/html/rfc7232#section-2.3"\]Entity> tag\]
     /// for the bucket.
     /// Attempting to set or update this field will result in a
-    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
+    /// \[FieldViolation\]\[google.rpc.BadRequest.FieldViolation\].
     #[prost(string, tag = "12")]
     pub etag: ::prost::alloc::string::String,
     /// The modification time of the bucket.
     /// Attempting to set or update this field will result in a
-    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
+    /// \[FieldViolation\]\[google.rpc.BadRequest.FieldViolation\].
     #[prost(message, optional, tag = "13")]
     pub updated: ::core::option::Option<::prost_types::Timestamp>,
     /// The default value for event-based hold on newly created objects in this
@@ -93,8 +93,8 @@ pub struct Bucket {
     >,
     /// The bucket's website configuration, controlling how the service behaves
     /// when accessing bucket contents as a web site. See the
-    /// [<https://cloud.google.com/storage/docs/static-website][Static> Website
-    /// Examples] for more information.
+    /// \[<https://cloud.google.com/storage/docs/static-website\]\[Static> Website
+    /// Examples\] for more information.
     #[prost(message, optional, tag = "16")]
     pub website: ::core::option::Option<bucket::Website>,
     /// The bucket's versioning configuration.
@@ -149,7 +149,7 @@ pub struct Bucket {
 /// Nested message and enum types in `Bucket`.
 pub mod bucket {
     /// Billing properties of a bucket.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Billing {
         /// When set to true, Requester Pays is enabled for this bucket.
         #[prost(bool, tag = "1")]
@@ -159,31 +159,31 @@ pub mod bucket {
     /// For more on GCS and CORS, see
     /// <https://cloud.google.com/storage/docs/cross-origin.>
     /// For more on CORS in general, see <https://tools.ietf.org/html/rfc6454.>
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Cors {
         /// The list of Origins eligible to receive CORS response headers. See
-        /// [<https://tools.ietf.org/html/rfc6454][RFC> 6454] for more on origins.
-        /// Note: "*" is permitted in the list of origins, and means "any Origin".
+        /// \[<https://tools.ietf.org/html/rfc6454\]\[RFC> 6454\] for more on origins.
+        /// Note: "\*" is permitted in the list of origins, and means "any Origin".
         #[prost(string, repeated, tag = "1")]
         pub origin: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// The list of HTTP methods on which to include CORS response headers,
-        /// (`GET`, `OPTIONS`, `POST`, etc) Note: "*" is permitted in the list of
+        /// (`GET`, `OPTIONS`, `POST`, etc) Note: "\*" is permitted in the list of
         /// methods, and means "any method".
         #[prost(string, repeated, tag = "2")]
         pub method: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// The list of HTTP headers other than the
-        /// [<https://www.w3.org/TR/cors/#simple-response-header][simple> response
-        /// headers] to give permission for the user-agent to share across domains.
+        /// \[<https://www.w3.org/TR/cors/#simple-response-header\]\[simple> response
+        /// headers\] to give permission for the user-agent to share across domains.
         #[prost(string, repeated, tag = "3")]
         pub response_header: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// The value, in seconds, to return in the
-        /// [<https://www.w3.org/TR/cors/#access-control-max-age-response-header][Access-Control-Max-Age>
-        /// header] used in preflight responses.
+        /// \[<https://www.w3.org/TR/cors/#access-control-max-age-response-header\]\[Access-Control-Max-Age>
+        /// header\] used in preflight responses.
         #[prost(int32, tag = "4")]
         pub max_age_seconds: i32,
     }
     /// Encryption properties of a bucket.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Encryption {
         /// A Cloud KMS key that will be used to encrypt objects inserted into this
         /// bucket, if no encryption method is specified.
@@ -191,7 +191,7 @@ pub mod bucket {
         pub default_kms_key_name: ::prost::alloc::string::String,
     }
     /// Bucket restriction options currently enforced on the bucket.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct IamConfiguration {
         #[prost(message, optional, tag = "1")]
         pub uniform_bucket_level_access: ::core::option::Option<
@@ -203,14 +203,14 @@ pub mod bucket {
     }
     /// Nested message and enum types in `IamConfiguration`.
     pub mod iam_configuration {
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct UniformBucketLevelAccess {
             /// If set, access checks only use bucket-level IAM policies or above.
             #[prost(bool, tag = "1")]
             pub enabled: bool,
             /// The deadline time for changing
             /// <code>iamConfiguration.uniformBucketLevelAccess.enabled</code> from
-            /// true to false in [<https://tools.ietf.org/html/rfc3339][RFC> 3339]. After
+            /// true to false in \[<https://tools.ietf.org/html/rfc3339\]\[RFC> 3339\]. After
             /// the deadline is passed the field is immutable.
             #[prost(message, optional, tag = "2")]
             pub locked_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -275,7 +275,7 @@ pub mod bucket {
     pub mod lifecycle {
         /// A lifecycle Rule, combining an action to take on an object and a
         /// condition which will trigger that action.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Rule {
             /// The action to take.
             #[prost(message, optional, tag = "1")]
@@ -287,7 +287,7 @@ pub mod bucket {
         /// Nested message and enum types in `Rule`.
         pub mod rule {
             /// An action to take on an object.
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct Action {
                 /// Type of the action. Currently, only `Delete`, `SetStorageClass`, and
                 /// `AbortIncompleteMultipartUpload` are supported.
@@ -299,13 +299,13 @@ pub mod bucket {
                 pub storage_class: ::prost::alloc::string::String,
             }
             /// A condition of an object which triggers some action.
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct Condition {
                 /// Age of an object (in days). This condition is satisfied when an
                 /// object reaches the specified age.
                 #[prost(int32, tag = "1")]
                 pub age: i32,
-                /// A date in [RFC 3339][1] format with only the date part (for
+                /// A date in \[RFC 3339\]\[1\] format with only the date part (for
                 /// instance, "2013-01-15"). This condition is satisfied when an
                 /// object is created before midnight of the specified date in UTC.
                 /// \[1\]: <https://tools.ietf.org/html/rfc3339>
@@ -375,7 +375,7 @@ pub mod bucket {
         }
     }
     /// Logging-related properties of a bucket.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Logging {
         /// The destination bucket where the current bucket's logs should be placed.
         #[prost(string, tag = "1")]
@@ -385,11 +385,11 @@ pub mod bucket {
         pub log_object_prefix: ::prost::alloc::string::String,
     }
     /// Retention policy properties of a bucket.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RetentionPolicy {
         /// Server-determined value that indicates the time from which policy was
         /// enforced and effective. This value is in
-        /// [<https://tools.ietf.org/html/rfc3339][RFC> 3339] format.
+        /// \[<https://tools.ietf.org/html/rfc3339\]\[RFC> 3339\] format.
         #[prost(message, optional, tag = "1")]
         pub effective_time: ::core::option::Option<::prost_types::Timestamp>,
         /// Once locked, an object retention policy cannot be modified.
@@ -405,7 +405,7 @@ pub mod bucket {
     /// Properties of a bucket related to versioning.
     /// For more on GCS versioning, see
     /// <https://cloud.google.com/storage/docs/object-versioning.>
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Versioning {
         /// While set to true, versioning is fully enabled for this bucket.
         #[prost(bool, tag = "1")]
@@ -414,7 +414,7 @@ pub mod bucket {
     /// Properties of a bucket related to accessing the contents as a static
     /// website. For more on hosting a static website via GCS, see
     /// <https://cloud.google.com/storage/docs/hosting-static-website.>
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Website {
         /// If the requested object path is missing, the service will ensure the path
         /// has a trailing '/', append this suffix, and attempt to retrieve the
@@ -425,13 +425,13 @@ pub mod bucket {
         /// If the requested object path is missing, and any
         /// `mainPageSuffix` object is missing, if applicable, the service
         /// will return the named object from this bucket as the content for a
-        /// [<https://tools.ietf.org/html/rfc7231#section-6.5.4][404> Not Found]
+        /// \[<https://tools.ietf.org/html/rfc7231#section-6.5.4\]\[404> Not Found\]
         /// result.
         #[prost(string, tag = "2")]
         pub not_found_page: ::prost::alloc::string::String,
     }
     /// Configuration for a bucket's Autoclass feature.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Autoclass {
         /// Enables Autoclass.
         #[prost(bool, tag = "1")]
@@ -442,12 +442,12 @@ pub mod bucket {
     }
 }
 /// An access-control entry.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BucketAccessControl {
     /// The access permission for the entity.
     #[prost(string, tag = "1")]
     pub role: ::prost::alloc::string::String,
-    /// HTTP 1.1 ["<https://tools.ietf.org/html/rfc7232#section-2.3][Entity> tag]
+    /// HTTP 1.1 \["<https://tools.ietf.org/html/rfc7232#section-2.3\]\[Entity> tag\]
     /// for the access-control entry.
     #[prost(string, tag = "2")]
     pub etag: ::prost::alloc::string::String,
@@ -458,6 +458,7 @@ pub struct BucketAccessControl {
     #[prost(string, tag = "4")]
     pub bucket: ::prost::alloc::string::String,
     /// The entity holding the permission, in one of the following forms:
+    ///
     /// * `user-{userid}`
     /// * `user-{email}`
     /// * `group-{groupid}`
@@ -466,12 +467,12 @@ pub struct BucketAccessControl {
     /// * `project-{team-projectid}`
     /// * `allUsers`
     /// * `allAuthenticatedUsers`
-    /// Examples:
+    ///   Examples:
     /// * The user `liz@example.com` would be `user-liz@example.com`.
     /// * The group `example@googlegroups.com` would be
-    /// `group-example@googlegroups.com`
+    ///   `group-example@googlegroups.com`
     /// * All members of the Google Apps for Business domain `example.com` would be
-    /// `domain-example.com`
+    ///   `domain-example.com`
     #[prost(string, tag = "6")]
     pub entity: ::prost::alloc::string::String,
     /// The ID for the entity, if any.
@@ -550,7 +551,7 @@ pub struct ListChannelsResponse {
 }
 /// Nested message and enum types in `ListChannelsResponse`.
 pub mod list_channels_response {
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Items {
         /// User-specified name for a channel. Needed to unsubscribe.
         #[prost(string, tag = "1")]
@@ -572,7 +573,7 @@ pub mod list_channels_response {
 }
 /// Message used to convey content being read or written, along with its
 /// checksum.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ChecksummedData {
     /// The data.
     #[prost(bytes = "vec", tag = "1")]
@@ -582,7 +583,7 @@ pub struct ChecksummedData {
     pub crc32c: ::core::option::Option<u32>,
 }
 /// Message used for storing full (not subrange) object checksums.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ObjectChecksums {
     /// CRC32C digest of the object data. Computed by the GCS service for
     /// all written objects, and validated by the GCS service against
@@ -595,7 +596,7 @@ pub struct ObjectChecksums {
     pub md5_hash: ::prost::alloc::string::String,
 }
 /// A collection of enums used in multiple places throughout the API.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CommonEnums {}
 /// Nested message and enum types in `CommonEnums`.
 pub mod common_enums {
@@ -770,7 +771,7 @@ pub mod common_enums {
     }
 }
 /// Specifies a requested range of bytes to download.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ContentRange {
     /// The starting offset of the object data.
     #[prost(int64, tag = "1")]
@@ -783,7 +784,7 @@ pub struct ContentRange {
     pub complete_length: i64,
 }
 /// Hmac Key Metadata, which includes all information other than the secret.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HmacKeyMetadata {
     /// Resource name ID of the key in the format <projectId>/<accessId>.
     #[prost(string, tag = "1")]
@@ -828,7 +829,7 @@ pub struct Notification {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// HTTP 1.1 [<https://tools.ietf.org/html/rfc7232#section-2.3][Entity> tag]
+    /// HTTP 1.1 \[<https://tools.ietf.org/html/rfc7232#section-2.3\]\[Entity> tag\]
     /// for this subscription notification.
     #[prost(string, tag = "4")]
     pub etag: ::prost::alloc::string::String,
@@ -854,15 +855,15 @@ pub struct ListNotificationsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Object {
     /// Content-Encoding of the object data, matching
-    /// [<https://tools.ietf.org/html/rfc7231#section-3.1.2.2][RFC> 7231 §3.1.2.2]
+    /// \[<https://tools.ietf.org/html/rfc7231#section-3.1.2.2\]\[RFC> 7231 §3.1.2.2\]
     #[prost(string, tag = "1")]
     pub content_encoding: ::prost::alloc::string::String,
     /// Content-Disposition of the object data, matching
-    /// [<https://tools.ietf.org/html/rfc6266][RFC> 6266].
+    /// \[<https://tools.ietf.org/html/rfc6266\]\[RFC> 6266\].
     #[prost(string, tag = "2")]
     pub content_disposition: ::prost::alloc::string::String,
     /// Cache-Control directive for the object data, matching
-    /// [<https://tools.ietf.org/html/rfc7234#section-5.2"][RFC> 7234 §5.2].
+    /// \[<https://tools.ietf.org/html/rfc7234#section-5.2"\]\[RFC> 7234 §5.2\].
     /// If omitted, and the object is accessible to all anonymous users, the
     /// default will be `public, max-age=3600`.
     #[prost(string, tag = "3")]
@@ -871,7 +872,7 @@ pub struct Object {
     #[prost(message, repeated, tag = "4")]
     pub acl: ::prost::alloc::vec::Vec<ObjectAccessControl>,
     /// Content-Language of the object data, matching
-    /// [<https://tools.ietf.org/html/rfc7231#section-3.1.3.2][RFC> 7231 §3.1.3.2].
+    /// \[<https://tools.ietf.org/html/rfc7231#section-3.1.3.2\]\[RFC> 7231 §3.1.3.2\].
     #[prost(string, tag = "5")]
     pub content_language: ::prost::alloc::string::String,
     /// The version of the metadata for this object at this generation. Used for
@@ -879,36 +880,36 @@ pub struct Object {
     /// number is only meaningful in the context of a particular generation of a
     /// particular object.
     /// Attempting to set or update this field will result in a
-    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
+    /// \[FieldViolation\]\[google.rpc.BadRequest.FieldViolation\].
     #[prost(int64, tag = "6")]
     pub metageneration: i64,
     /// The deletion time of the object. Will be returned if and only if this
     /// version of the object has been deleted.
     /// Attempting to set or update this field will result in a
-    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
+    /// \[FieldViolation\]\[google.rpc.BadRequest.FieldViolation\].
     #[prost(message, optional, tag = "7")]
     pub time_deleted: ::core::option::Option<::prost_types::Timestamp>,
     /// Content-Type of the object data, matching
-    /// [<https://tools.ietf.org/html/rfc7231#section-3.1.1.5][RFC> 7231 §3.1.1.5].
+    /// \[<https://tools.ietf.org/html/rfc7231#section-3.1.1.5\]\[RFC> 7231 §3.1.1.5\].
     /// If an object is stored without a Content-Type, it is served as
     /// `application/octet-stream`.
     #[prost(string, tag = "8")]
     pub content_type: ::prost::alloc::string::String,
     /// Content-Length of the object data in bytes, matching
-    /// [<https://tools.ietf.org/html/rfc7230#section-3.3.2][RFC> 7230 §3.3.2].
+    /// \[<https://tools.ietf.org/html/rfc7230#section-3.3.2\]\[RFC> 7230 §3.3.2\].
     /// Attempting to set or update this field will result in a
-    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
+    /// \[FieldViolation\]\[google.rpc.BadRequest.FieldViolation\].
     #[prost(int64, tag = "9")]
     pub size: i64,
     /// The creation time of the object.
     /// Attempting to set or update this field will result in a
-    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
+    /// \[FieldViolation\]\[google.rpc.BadRequest.FieldViolation\].
     #[prost(message, optional, tag = "10")]
     pub time_created: ::core::option::Option<::prost_types::Timestamp>,
     /// CRC32c checksum. For more information about using the CRC32c
     /// checksum, see
-    /// [<https://cloud.google.com/storage/docs/hashes-etags#json-api][Hashes> and
-    /// ETags: Best Practices]. This is a server determined value and should not be
+    /// \[<https://cloud.google.com/storage/docs/hashes-etags#json-api\]\[Hashes> and
+    /// ETags: Best Practices\]. This is a server determined value and should not be
     /// supplied by the user when sending an Object. The server will ignore any
     /// value provided. Users should instead use the object_checksums field on the
     /// InsertObjectRequest when uploading an object.
@@ -917,28 +918,28 @@ pub struct Object {
     /// Number of underlying components that make up this object. Components are
     /// accumulated by compose operations.
     /// Attempting to set or update this field will result in a
-    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
+    /// \[FieldViolation\]\[google.rpc.BadRequest.FieldViolation\].
     #[prost(int32, tag = "12")]
     pub component_count: i32,
     /// MD5 hash of the data; encoded using base64 as per
-    /// [<https://tools.ietf.org/html/rfc4648#section-4][RFC> 4648 §4]. For more
+    /// \[<https://tools.ietf.org/html/rfc4648#section-4\]\[RFC> 4648 §4\]. For more
     /// information about using the MD5 hash, see
-    /// [<https://cloud.google.com/storage/docs/hashes-etags#json-api][Hashes> and
-    /// ETags: Best Practices]. This is a server determined value and should not be
+    /// \[<https://cloud.google.com/storage/docs/hashes-etags#json-api\]\[Hashes> and
+    /// ETags: Best Practices\]. This is a server determined value and should not be
     /// supplied by the user when sending an Object. The server will ignore any
     /// value provided. Users should instead use the object_checksums field on the
     /// InsertObjectRequest when uploading an object.
     #[prost(string, tag = "13")]
     pub md5_hash: ::prost::alloc::string::String,
     /// HTTP 1.1 Entity tag for the object. See
-    /// [<https://tools.ietf.org/html/rfc7232#section-2.3][RFC> 7232 §2.3].
+    /// \[<https://tools.ietf.org/html/rfc7232#section-2.3\]\[RFC> 7232 §2.3\].
     /// Attempting to set or update this field will result in a
-    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
+    /// \[FieldViolation\]\[google.rpc.BadRequest.FieldViolation\].
     #[prost(string, tag = "14")]
     pub etag: ::prost::alloc::string::String,
     /// The modification time of the object metadata.
     /// Attempting to set or update this field will result in a
-    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
+    /// \[FieldViolation\]\[google.rpc.BadRequest.FieldViolation\].
     #[prost(message, optional, tag = "15")]
     pub updated: ::core::option::Option<::prost_types::Timestamp>,
     /// Storage class of the object.
@@ -951,7 +952,7 @@ pub struct Object {
     /// The time at which the object's storage class was last changed. When the
     /// object is initially created, it will be set to time_created.
     /// Attempting to set or update this field will result in a
-    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
+    /// \[FieldViolation\]\[google.rpc.BadRequest.FieldViolation\].
     #[prost(message, optional, tag = "18")]
     pub time_storage_class_updated: ::core::option::Option<::prost_types::Timestamp>,
     /// Whether an object is under temporary hold. While this flag is set to true,
@@ -963,7 +964,7 @@ pub struct Object {
     pub temporary_hold: bool,
     /// A server-determined value that specifies the earliest time that the
     /// object's retention period expires. This value is in
-    /// [<https://tools.ietf.org/html/rfc3339][RFC> 3339] format.
+    /// \[<https://tools.ietf.org/html/rfc3339\]\[RFC> 3339\] format.
     /// Note 1: This field is not provided for objects with an active event-based
     /// hold, since retention expiration is unknown until the hold is removed.
     /// Note 2: This value can be provided even when temporary hold is set (so that
@@ -1008,12 +1009,12 @@ pub struct Object {
     pub bucket: ::prost::alloc::string::String,
     /// The content generation of this object. Used for object versioning.
     /// Attempting to set or update this field will result in a
-    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
+    /// \[FieldViolation\]\[google.rpc.BadRequest.FieldViolation\].
     #[prost(int64, tag = "26")]
     pub generation: i64,
     /// The owner of the object. This will always be the uploader of the object.
     /// Attempting to set or update this field will result in a
-    /// [FieldViolation][google.rpc.BadRequest.FieldViolation].
+    /// \[FieldViolation\]\[google.rpc.BadRequest.FieldViolation\].
     #[prost(message, optional, tag = "27")]
     pub owner: ::core::option::Option<Owner>,
     /// Metadata of customer-supplied encryption key, if the object is encrypted by
@@ -1027,7 +1028,7 @@ pub struct Object {
 /// Nested message and enum types in `Object`.
 pub mod object {
     /// Describes the customer-specified mechanism used to store the data at rest.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CustomerEncryption {
         /// The encryption algorithm.
         #[prost(string, tag = "1")]
@@ -1038,13 +1039,13 @@ pub mod object {
     }
 }
 /// An access-control entry.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ObjectAccessControl {
     /// The access permission for the entity.
     #[prost(string, tag = "1")]
     pub role: ::prost::alloc::string::String,
     /// HTTP 1.1 Entity tag for the access-control entry.
-    /// See [<https://tools.ietf.org/html/rfc7232#section-2.3][RFC> 7232 §2.3].
+    /// See \[<https://tools.ietf.org/html/rfc7232#section-2.3\]\[RFC> 7232 §2.3\].
     #[prost(string, tag = "2")]
     pub etag: ::prost::alloc::string::String,
     /// The ID of the access-control entry.
@@ -1060,6 +1061,7 @@ pub struct ObjectAccessControl {
     #[prost(int64, tag = "6")]
     pub generation: i64,
     /// The entity holding the permission, in one of the following forms:
+    ///
     /// * `user-{userid}`
     /// * `user-{email}`
     /// * `group-{groupid}`
@@ -1068,12 +1070,12 @@ pub struct ObjectAccessControl {
     /// * `project-{team-projectid}`
     /// * `allUsers`
     /// * `allAuthenticatedUsers`
-    /// Examples:
+    ///   Examples:
     /// * The user `liz@example.com` would be `user-liz@example.com`.
     /// * The group `example@googlegroups.com` would be
-    /// `group-example@googlegroups.com`.
+    ///   `group-example@googlegroups.com`.
     /// * All members of the Google Apps for Business domain `example.com` would be
-    /// `domain-example.com`.
+    ///   `domain-example.com`.
     #[prost(string, tag = "7")]
     pub entity: ::prost::alloc::string::String,
     /// The ID for the entity, if any.
@@ -1112,7 +1114,7 @@ pub struct ListObjectsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Represents the Viewers, Editors, or Owners of a given project.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProjectTeam {
     /// The project number.
     #[prost(string, tag = "1")]
@@ -1122,14 +1124,14 @@ pub struct ProjectTeam {
     pub team: ::prost::alloc::string::String,
 }
 /// A subscription to receive Google PubSub notifications.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServiceAccount {
     /// The ID of the notification.
     #[prost(string, tag = "1")]
     pub email_address: ::prost::alloc::string::String,
 }
 /// The owner of a specific resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Owner {
     /// The entity, in the form `user-`*userId*.
     #[prost(string, tag = "1")]
@@ -1139,12 +1141,13 @@ pub struct Owner {
     pub entity_id: ::prost::alloc::string::String,
 }
 /// Request message for DeleteBucketAccessControl.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteBucketAccessControlRequest {
     /// Required. Name of a bucket.
     #[prost(string, tag = "1")]
     pub bucket: ::prost::alloc::string::String,
     /// Required. The entity holding the permission. Can be one of:
+    ///
     /// * `user-`*userId*
     /// * `user-`*emailAddress*
     /// * `group-`*groupId*
@@ -1158,12 +1161,13 @@ pub struct DeleteBucketAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for GetBucketAccessControl.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetBucketAccessControlRequest {
     /// Required. Name of a bucket.
     #[prost(string, tag = "1")]
     pub bucket: ::prost::alloc::string::String,
     /// Required. The entity holding the permission. Can be one of:
+    ///
     /// * `user-`*userId*
     /// * `user-`*emailAddress*
     /// * `group-`*groupId*
@@ -1177,7 +1181,7 @@ pub struct GetBucketAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for InsertBucketAccessControl.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InsertBucketAccessControlRequest {
     /// Required. Name of a bucket.
     #[prost(string, tag = "1")]
@@ -1190,7 +1194,7 @@ pub struct InsertBucketAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for ListBucketAccessControl.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListBucketAccessControlsRequest {
     /// Required. Name of a bucket.
     #[prost(string, tag = "1")]
@@ -1200,12 +1204,13 @@ pub struct ListBucketAccessControlsRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request for PatchBucketAccessControl.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PatchBucketAccessControlRequest {
     /// Required. Name of a bucket.
     #[prost(string, tag = "1")]
     pub bucket: ::prost::alloc::string::String,
     /// Required. The entity holding the permission. Can be one of:
+    ///
     /// * `user-`*userId*
     /// * `user-`*emailAddress*
     /// * `group-`*groupId*
@@ -1222,7 +1227,6 @@ pub struct PatchBucketAccessControlRequest {
     /// To specify ALL fields, equivalent to the JSON API's "update" function,
     /// specify a single field with the value `*`.
     ///
-    ///
     /// Not specifying any fields is an error.
     /// Not specifying a field while setting that field to a non-default value is
     /// an error.
@@ -1233,12 +1237,13 @@ pub struct PatchBucketAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request for UpdateBucketAccessControl.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateBucketAccessControlRequest {
     /// Required. Name of a bucket.
     #[prost(string, tag = "1")]
     pub bucket: ::prost::alloc::string::String,
     /// Required. The entity holding the permission. Can be one of:
+    ///
     /// * `user-`*userId*
     /// * `user-`*emailAddress*
     /// * `group-`*groupId*
@@ -1255,7 +1260,7 @@ pub struct UpdateBucketAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for DeleteBucket.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteBucketRequest {
     /// Required. Name of a bucket.
     #[prost(string, tag = "1")]
@@ -1272,7 +1277,7 @@ pub struct DeleteBucketRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for GetBucket.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetBucketRequest {
     /// Required. Name of a bucket.
     #[prost(string, tag = "1")]
@@ -1317,7 +1322,7 @@ pub struct InsertBucketRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for ListChannels.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListChannelsRequest {
     /// Required. Name of a bucket.
     #[prost(string, tag = "1")]
@@ -1327,7 +1332,7 @@ pub struct ListChannelsRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for ListBuckets.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListBucketsRequest {
     /// Maximum number of buckets to return in a single response. The service will
     /// use this parameter or 1,000 items, whichever is smaller.
@@ -1351,7 +1356,7 @@ pub struct ListBucketsRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for LockRetentionPolicy.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LockRetentionPolicyRequest {
     /// Required. Name of a bucket.
     #[prost(string, tag = "1")]
@@ -1447,12 +1452,13 @@ pub struct StopChannelRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for DeleteDefaultObjectAccessControl.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDefaultObjectAccessControlRequest {
     /// Required. Name of a bucket.
     #[prost(string, tag = "1")]
     pub bucket: ::prost::alloc::string::String,
     /// Required. The entity holding the permission. Can be one of:
+    ///
     /// * `user-`*userId*
     /// * `user-`*emailAddress*
     /// * `group-`*groupId*
@@ -1466,12 +1472,13 @@ pub struct DeleteDefaultObjectAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for GetDefaultObjectAccessControl.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDefaultObjectAccessControlRequest {
     /// Required. Name of a bucket.
     #[prost(string, tag = "1")]
     pub bucket: ::prost::alloc::string::String,
     /// Required. The entity holding the permission. Can be one of:
+    ///
     /// * `user-`*userId*
     /// * `user-`*emailAddress*
     /// * `group-`*groupId*
@@ -1485,7 +1492,7 @@ pub struct GetDefaultObjectAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for InsertDefaultObjectAccessControl.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InsertDefaultObjectAccessControlRequest {
     /// Required. Name of a bucket.
     #[prost(string, tag = "1")]
@@ -1498,7 +1505,7 @@ pub struct InsertDefaultObjectAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for ListDefaultObjectAccessControls.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDefaultObjectAccessControlsRequest {
     /// Required. Name of a bucket.
     #[prost(string, tag = "1")]
@@ -1516,12 +1523,13 @@ pub struct ListDefaultObjectAccessControlsRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for PatchDefaultObjectAccessControl.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PatchDefaultObjectAccessControlRequest {
     /// Required. Name of a bucket.
     #[prost(string, tag = "1")]
     pub bucket: ::prost::alloc::string::String,
     /// Required. The entity holding the permission. Can be one of:
+    ///
     /// * `user-`*userId*
     /// * `user-`*emailAddress*
     /// * `group-`*groupId*
@@ -1550,12 +1558,13 @@ pub struct PatchDefaultObjectAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for UpdateDefaultObjectAccessControl.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateDefaultObjectAccessControlRequest {
     /// Required. Name of a bucket.
     #[prost(string, tag = "1")]
     pub bucket: ::prost::alloc::string::String,
     /// Required. The entity holding the permission. Can be one of:
+    ///
     /// * `user-`*userId*
     /// * `user-`*emailAddress*
     /// * `group-`*groupId*
@@ -1572,7 +1581,7 @@ pub struct UpdateDefaultObjectAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for DeleteNotification.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteNotificationRequest {
     /// Required. The parent bucket of the notification.
     #[prost(string, tag = "1")]
@@ -1585,7 +1594,7 @@ pub struct DeleteNotificationRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for GetNotification.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetNotificationRequest {
     /// Required. The parent bucket of the notification.
     #[prost(string, tag = "1")]
@@ -1612,7 +1621,7 @@ pub struct InsertNotificationRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for ListNotifications.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNotificationsRequest {
     /// Required. Name of a Google Cloud Storage bucket.
     #[prost(string, tag = "1")]
@@ -1622,12 +1631,13 @@ pub struct ListNotificationsRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for DeleteObjectAccessControl.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteObjectAccessControlRequest {
     /// Required. Name of a bucket.
     #[prost(string, tag = "1")]
     pub bucket: ::prost::alloc::string::String,
     /// Required. The entity holding the permission. Can be one of:
+    ///
     /// * `user-`*userId*
     /// * `user-`*emailAddress*
     /// * `group-`*groupId*
@@ -1648,12 +1658,13 @@ pub struct DeleteObjectAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for GetObjectAccessControl.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetObjectAccessControlRequest {
     /// Required. Name of a bucket.
     #[prost(string, tag = "1")]
     pub bucket: ::prost::alloc::string::String,
     /// Required. The entity holding the permission. Can be one of:
+    ///
     /// * `user-`*userId*
     /// * `user-`*emailAddress*
     /// * `group-`*groupId*
@@ -1674,7 +1685,7 @@ pub struct GetObjectAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for InsertObjectAccessControl.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InsertObjectAccessControlRequest {
     /// Required. Name of a bucket.
     #[prost(string, tag = "1")]
@@ -1694,7 +1705,7 @@ pub struct InsertObjectAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for ListObjectAccessControls.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListObjectAccessControlsRequest {
     /// Required. Name of a bucket.
     #[prost(string, tag = "1")]
@@ -1711,12 +1722,13 @@ pub struct ListObjectAccessControlsRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for PatchObjectAccessControl.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PatchObjectAccessControlRequest {
     /// Required. Name of a bucket.
     #[prost(string, tag = "1")]
     pub bucket: ::prost::alloc::string::String,
     /// Required. The entity holding the permission. Can be one of:
+    ///
     /// * `user-`*userId*
     /// * `user-`*emailAddress*
     /// * `group-`*groupId*
@@ -1753,12 +1765,13 @@ pub struct PatchObjectAccessControlRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for UpdateObjectAccessControl.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateObjectAccessControlRequest {
     /// Required. Name of a bucket.
     #[prost(string, tag = "1")]
     pub bucket: ::prost::alloc::string::String,
     /// Required. The entity holding the permission. Can be one of:
+    ///
     /// * `user-`*userId*
     /// * `user-`*emailAddress*
     /// * `group-`*groupId*
@@ -1838,7 +1851,7 @@ pub struct ComposeObjectRequest {
 /// Nested message and enum types in `ComposeObjectRequest`.
 pub mod compose_object_request {
     /// Description of a source object for a composition request.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SourceObjects {
         /// The source object's name. All source objects must reside in the same
         /// bucket.
@@ -1856,7 +1869,7 @@ pub mod compose_object_request {
     /// Nested message and enum types in `SourceObjects`.
     pub mod source_objects {
         /// Preconditions for a source object of a composition request.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct ObjectPreconditions {
             /// Only perform the composition if the generation of the source object
             /// that would be used matches this value.  If this value and a generation
@@ -1951,7 +1964,7 @@ pub struct CopyObjectRequest {
 }
 /// Message for deleting an object.
 /// Either `bucket` and `object` *or* `upload_id` **must** be set (but not both).
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteObjectRequest {
     /// Required. Name of the bucket in which the object resides.
     #[prost(string, tag = "1")]
@@ -1995,7 +2008,7 @@ pub struct DeleteObjectRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for GetObjectMedia.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetObjectMediaRequest {
     /// The name of the bucket containing the object to read.
     #[prost(string, tag = "1")]
@@ -2054,7 +2067,7 @@ pub struct GetObjectMediaRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for GetObject.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetObjectRequest {
     /// Required. Name of the bucket in which the object resides.
     #[prost(string, tag = "1")]
@@ -2213,7 +2226,7 @@ pub mod insert_object_request {
         InsertObjectSpec(super::InsertObjectSpec),
     }
     /// A portion of the data for the object.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Data {
         /// The data to insert. If a crc32c checksum is provided that doesn't match
         /// the checksum computed by the service, the request will fail.
@@ -2221,22 +2234,23 @@ pub mod insert_object_request {
         ChecksummedData(super::ChecksummedData),
         /// A reference to an existing object. This can be used to support
         /// several use cases:
-        ///    - Writing a sequence of data buffers supports the basic use case of
-        ///      uploading a complete object, chunk by chunk.
-        ///    - Writing a sequence of references to existing objects allows an
-        ///      object to be composed from a collection of objects, which can be
-        ///      used to support parallel object writes.
-        ///    - Writing a single reference with a given offset and size can be used
-        ///      to create an object from a slice of an existing object.
-        ///    - Writing an object referencing a object slice (created as noted
-        ///      above) followed by a data buffer followed by another object
-        ///      slice can be used to support delta upload functionality.
+        ///
+        /// * Writing a sequence of data buffers supports the basic use case of
+        ///   uploading a complete object, chunk by chunk.
+        /// * Writing a sequence of references to existing objects allows an
+        ///   object to be composed from a collection of objects, which can be
+        ///   used to support parallel object writes.
+        /// * Writing a single reference with a given offset and size can be used
+        ///   to create an object from a slice of an existing object.
+        /// * Writing an object referencing a object slice (created as noted
+        ///   above) followed by a data buffer followed by another object
+        ///   slice can be used to support delta upload functionality.
         #[prost(message, tag = "5")]
         Reference(super::GetObjectMediaRequest),
     }
 }
 /// Request message for ListObjects.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListObjectsRequest {
     /// Required. Name of the bucket in which to look for objects.
     #[prost(string, tag = "1")]
@@ -2293,7 +2307,7 @@ pub struct ListObjectsRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request object for `QueryWriteStatus`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct QueryWriteStatusRequest {
     /// Required. The name of the resume token for the object whose write status is being
     /// requested.
@@ -2465,7 +2479,7 @@ pub struct StartResumableWriteRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Response object for `StartResumableWrite`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StartResumableWriteResponse {
     /// The upload_id of the newly started resumable write operation. This
     /// value should be copied into the `InsertObjectRequest.upload_id` field.
@@ -2629,7 +2643,7 @@ pub struct WatchAllObjectsRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for GetProjectServiceAccount.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetProjectServiceAccountRequest {
     /// Required. Project ID.
     #[prost(string, tag = "1")]
@@ -2638,7 +2652,7 @@ pub struct GetProjectServiceAccountRequest {
     #[prost(message, optional, tag = "3")]
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateHmacKeyRequest {
     /// Required. The project that the HMAC-owning service account lives in.
     #[prost(string, tag = "1")]
@@ -2651,7 +2665,7 @@ pub struct CreateHmacKeyRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Create hmac response.  The only time the secret for an HMAC will be returned.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateHmacKeyResponse {
     /// Key metadata.
     #[prost(message, optional, tag = "1")]
@@ -2661,7 +2675,7 @@ pub struct CreateHmacKeyResponse {
     pub secret: ::prost::alloc::string::String,
 }
 /// Request object to delete a given HMAC key.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteHmacKeyRequest {
     /// Required. The identifying key for the HMAC to delete.
     #[prost(string, tag = "1")]
@@ -2674,7 +2688,7 @@ pub struct DeleteHmacKeyRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request object to get metadata on a given HMAC key.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetHmacKeyRequest {
     /// Required. The identifying key for the HMAC to delete.
     #[prost(string, tag = "1")]
@@ -2687,7 +2701,7 @@ pub struct GetHmacKeyRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request to fetch a list of HMAC keys under a given project.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListHmacKeysRequest {
     /// Required. The project id to list HMAC keys for.
     #[prost(string, tag = "1")]
@@ -2720,7 +2734,7 @@ pub struct ListHmacKeysResponse {
     pub items: ::prost::alloc::vec::Vec<HmacKeyMetadata>,
 }
 /// Request object to update an HMAC key state.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateHmacKeyRequest {
     /// Required. The id of the HMAC key.
     #[prost(string, tag = "1")]
@@ -2737,7 +2751,7 @@ pub struct UpdateHmacKeyRequest {
 }
 /// A wrapper around the IAM get policy request to support our
 /// common_request_params.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIamPolicyRequest {
     /// The request sent to IAM.
     #[prost(message, optional, tag = "1")]
@@ -2759,7 +2773,7 @@ pub struct SetIamPolicyRequest {
 }
 /// A wrapper around the IAM test iam permissions request to support our
 /// common_request_params.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestIamPermissionsRequest {
     /// The request sent to IAM.
     #[prost(message, optional, tag = "1")]
@@ -2771,7 +2785,7 @@ pub struct TestIamPermissionsRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Parameters that can be passed to any object request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CommonObjectRequestParams {
     /// Encryption algorithm used with Customer-Supplied Encryption Keys feature.
     #[prost(string, tag = "1")]
@@ -2785,7 +2799,7 @@ pub struct CommonObjectRequestParams {
     pub encryption_key_sha256: ::prost::alloc::string::String,
 }
 /// Parameters that can be passed to any request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CommonRequestParams {
     /// Required. Required when using buckets with Requestor Pays feature enabled.
     #[prost(string, tag = "1")]

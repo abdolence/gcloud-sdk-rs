@@ -39,7 +39,7 @@
 /// California is returned as a candidate in the candidate_place_ids field.
 ///
 /// Next available tag: 10
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegionIdentifier {
     /// Required. Place type to match.
     #[prost(enumeration = "region_identifier::PlaceType", tag = "6")]
@@ -135,7 +135,7 @@ pub mod region_identifier {
         }
     }
     /// The location must be specified by one of the following:
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Location {
         /// The name of the region to match to a Place ID.
         ///
@@ -182,7 +182,7 @@ pub mod region_identifier {
 /// Region Match.
 ///
 /// Next available tag: 5
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegionMatch {
     /// Place ID of the region that is matched. If region is found, this field is
     /// not set.
@@ -539,7 +539,7 @@ pub mod region_lookup_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.regionlookup.v1alpha.RegionLookup/LookupRegion",
             );
@@ -582,7 +582,7 @@ pub mod region_lookup_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.regionlookup.v1alpha.RegionLookup/SearchRegion",
             );

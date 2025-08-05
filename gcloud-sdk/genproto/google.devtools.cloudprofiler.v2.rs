@@ -3,7 +3,6 @@
 /// The deployment field must be populated. The profile_type specifies the list
 /// of profile types supported by the agent. The creation call will hang until a
 /// profile of one of these types needs to be collected.
-///
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateProfileRequest {
     /// Parent project to create the profile in.
@@ -87,17 +86,18 @@ pub struct Deployment {
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Target is the service name used to group related deployments:
+    ///
     /// * Service name for App Engine Flex / Standard.
     /// * Cluster and container name for GKE.
     /// * User-specified string for direct Compute Engine profiling (e.g. Java).
     /// * Job name for Dataflow.
-    /// Validation regex: `^[a-z0-9](\[-a-z0-9_.\]{0,253}\[a-z0-9\])?$`.
+    ///   Validation regex: `^[a-z0-9](\[-a-z0-9_.\]{0,253}\[a-z0-9\])?$`.
     #[prost(string, tag = "2")]
     pub target: ::prost::alloc::string::String,
     /// Labels identify the deployment within the user universe and same target.
     /// Validation regex for label names: `^[a-z0-9](\[a-z0-9-\]{0,61}\[a-z0-9\])?$`.
-    /// Value for an individual label must be <= 512 bytes, the total
-    /// size of all label names and values must be <= 1024 bytes.
+    /// Value for an individual label must be \<= 512 bytes, the total
+    /// size of all label names and values must be \<= 1024 bytes.
     ///
     /// Label named "language" can be used to record the programming language of
     /// the profiled deployment. The standard choices for the value include "java",
@@ -115,7 +115,7 @@ pub struct Deployment {
 }
 /// ListProfilesRequest contains request parameters for listing profiles for
 /// deployments in projects which the user has permissions to view.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListProfilesRequest {
     /// Required. The parent, which owns this collection of profiles.
     /// Format: projects/{user_project_id}
@@ -225,8 +225,8 @@ pub mod profiler_service_client {
     /// Manage the collection of continuous profiling data provided by profiling
     /// agents running in the cloud or by an offline provider of profiling data.
     ///
-    /// __The APIs listed in this service are intended for use within our profiler
-    /// agents only.__
+    /// **The APIs listed in this service are intended for use within our profiler
+    /// agents only.**
     #[derive(Debug, Clone)]
     pub struct ProfilerServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -309,10 +309,10 @@ pub mod profiler_service_client {
         }
         /// CreateProfile creates a new profile resource in the online mode.
         ///
-        /// _Direct use of this API is discouraged, please use a [supported
+        /// *Direct use of this API is discouraged, please use a [supported
         /// profiler
         /// agent](https://cloud.google.com/profiler/docs/about-profiler#profiling_agent)
-        /// instead for profile collection._
+        /// instead for profile collection.*
         ///
         /// The server ensures that the new profiles are created at a constant rate per
         /// deployment, so the creation request may hang for some time until the next
@@ -325,7 +325,6 @@ pub mod profiler_service_client {
         /// status. To a gRPC client, the extension will be return as a
         /// binary-serialized proto in the trailing metadata item named
         /// "google.rpc.retryinfo-bin".
-        ///
         pub async fn create_profile(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateProfileRequest>,
@@ -338,7 +337,7 @@ pub mod profiler_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.cloudprofiler.v2.ProfilerService/CreateProfile",
             );
@@ -356,10 +355,10 @@ pub mod profiler_service_client {
         /// mode. The client provides the profile to create along with the profile
         /// bytes, the server records it.
         ///
-        /// _Direct use of this API is discouraged, please use a [supported
+        /// *Direct use of this API is discouraged, please use a [supported
         /// profiler
         /// agent](https://cloud.google.com/profiler/docs/about-profiler#profiling_agent)
-        /// instead for profile collection._
+        /// instead for profile collection.*
         pub async fn create_offline_profile(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateOfflineProfileRequest>,
@@ -372,7 +371,7 @@ pub mod profiler_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.cloudprofiler.v2.ProfilerService/CreateOfflineProfile",
             );
@@ -391,10 +390,10 @@ pub mod profiler_service_client {
         /// offline mode is currently not supported: the profile content must be
         /// provided at the time of the profile creation.
         ///
-        /// _Direct use of this API is discouraged, please use a [supported
+        /// *Direct use of this API is discouraged, please use a [supported
         /// profiler
         /// agent](https://cloud.google.com/profiler/docs/about-profiler#profiling_agent)
-        /// instead for profile collection._
+        /// instead for profile collection.*
         pub async fn update_profile(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateProfileRequest>,
@@ -407,7 +406,7 @@ pub mod profiler_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.cloudprofiler.v2.ProfilerService/UpdateProfile",
             );
@@ -533,7 +532,7 @@ pub mod export_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.cloudprofiler.v2.ExportService/ListProfiles",
             );

@@ -23,10 +23,10 @@ pub struct NodeConfig {
     /// not included:
     ///
     /// * `<https://www.googleapis.com/auth/compute`> is required for mounting
-    /// persistent storage on your nodes.
+    ///   persistent storage on your nodes.
     /// * `<https://www.googleapis.com/auth/devstorage.read_only`> is required for
-    /// communicating with **gcr.io**
-    /// (the [Google Container Registry](/container-registry/)).
+    ///   communicating with **gcr.io**
+    ///   (the [Google Container Registry](/container-registry/)).
     ///
     /// If unspecified, no scopes are added, unless Cloud Logging or Cloud
     /// Monitoring are enabled, in which case their required scopes will be added.
@@ -38,7 +38,7 @@ pub struct NodeConfig {
     pub service_account: ::prost::alloc::string::String,
     /// The metadata key/value pairs assigned to instances in the cluster.
     ///
-    /// Keys must conform to the regexp \[a-zA-Z0-9-_\]+ and be less than 128 bytes
+    /// Keys must conform to the regexp \[a-zA-Z0-9-\_\]+ and be less than 128 bytes
     /// in length. These are reflected as part of a URL in the metadata server.
     /// Additionally, to avoid ambiguity, keys must not conflict with any other
     /// metadata keys for the project or be one of the four reserved keys:
@@ -98,8 +98,8 @@ pub struct NodeConfig {
     /// Minimum CPU platform to be used by this instance. The instance may be
     /// scheduled on the specified or newer CPU platform. Applicable values are the
     /// friendly names of CPU platforms, such as
-    /// <code>minCpuPlatform: &quot;Intel Haswell&quot;</code> or
-    /// <code>minCpuPlatform: &quot;Intel Sandy Bridge&quot;</code>. For more
+    /// <code>minCpuPlatform: "Intel Haswell"</code> or
+    /// <code>minCpuPlatform: "Intel Sandy Bridge"</code>. For more
     /// information, read [how to specify min CPU platform](<https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform>)
     #[prost(string, tag = "13")]
     pub min_cpu_platform: ::prost::alloc::string::String,
@@ -115,7 +115,7 @@ pub struct NodeConfig {
 ///
 /// For more information, including usage and the valid values, see:
 /// <https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/>
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NodeTaint {
     /// Key for taint.
     #[prost(string, tag = "1")]
@@ -180,7 +180,7 @@ pub mod node_taint {
 /// The authentication information for accessing the master endpoint.
 /// Authentication can be done using HTTP basic auth or using client
 /// certificates.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MasterAuth {
     /// The username to use for HTTP basic authentication to the master endpoint.
     /// For clusters v1.6.0 and later, you can disable basic authentication by
@@ -211,7 +211,7 @@ pub struct MasterAuth {
     pub client_key: ::prost::alloc::string::String,
 }
 /// Configuration for client certificates on the cluster.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ClientCertificateConfig {
     /// Issue a client certificate.
     #[prost(bool, tag = "1")]
@@ -219,7 +219,7 @@ pub struct ClientCertificateConfig {
 }
 /// Configuration for the addons that can be automatically spun up in the
 /// cluster, enabling additional functionality.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddonsConfig {
     /// Configuration for the HTTP (L7) load balancing controller addon, which
     /// makes it easy to set up HTTP load balancers for services in a cluster.
@@ -241,7 +241,7 @@ pub struct AddonsConfig {
 }
 /// Configuration options for the HTTP (L7) load balancing controller addon,
 /// which makes it easy to set up HTTP load balancers for services in a cluster.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HttpLoadBalancing {
     /// Whether the HTTP Load Balancing controller is enabled in the cluster.
     /// When enabled, it runs a small pod in the cluster that manages the load
@@ -252,7 +252,7 @@ pub struct HttpLoadBalancing {
 /// Configuration options for the horizontal pod autoscaling feature, which
 /// increases or decreases the number of replica pods a replication controller
 /// has based on the resource usage of the existing pods.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HorizontalPodAutoscaling {
     /// Whether the Horizontal Pod Autoscaling feature is enabled in the cluster.
     /// When enabled, it ensures that a Heapster pod is running in the cluster,
@@ -261,7 +261,7 @@ pub struct HorizontalPodAutoscaling {
     pub disabled: bool,
 }
 /// Configuration for the Kubernetes Dashboard.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct KubernetesDashboard {
     /// Whether the Kubernetes Dashboard is enabled for this cluster.
     #[prost(bool, tag = "1")]
@@ -270,7 +270,7 @@ pub struct KubernetesDashboard {
 /// Configuration for NetworkPolicy. This only tracks whether the addon
 /// is enabled or not on the Master, it does not track whether network policy
 /// is enabled for the nodes.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkPolicyConfig {
     /// Whether NetworkPolicy is enabled for this cluster.
     #[prost(bool, tag = "1")]
@@ -295,7 +295,7 @@ pub struct MasterAuthorizedNetworksConfig {
 /// Nested message and enum types in `MasterAuthorizedNetworksConfig`.
 pub mod master_authorized_networks_config {
     /// CidrBlock contains an optional name and one CIDR block.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CidrBlock {
         /// display_name is an optional field for users to identify CIDR blocks.
         #[prost(string, tag = "1")]
@@ -307,7 +307,7 @@ pub mod master_authorized_networks_config {
 }
 /// Configuration options for the NetworkPolicy feature.
 /// <https://kubernetes.io/docs/concepts/services-networking/networkpolicies/>
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkPolicy {
     /// The selected network policy provider.
     #[prost(enumeration = "network_policy::Provider", tag = "1")]
@@ -359,7 +359,7 @@ pub mod network_policy {
     }
 }
 /// Configuration for controlling how IPs are allocated in the cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IpAllocationPolicy {
     /// Whether alias IPs will be used for pod IPs in the cluster.
     #[prost(bool, tag = "1")]
@@ -453,7 +453,7 @@ pub struct IpAllocationPolicy {
     pub services_ipv4_cidr_block: ::prost::alloc::string::String,
 }
 /// Configuration for the PodSecurityPolicy feature.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PodSecurityPolicyConfig {
     /// Enable the PodSecurityPolicy controller for this cluster. If enabled, pods
     /// must be valid under a PodSecurityPolicy to be created.
@@ -768,7 +768,7 @@ pub struct ClusterUpdate {
 }
 /// This operation resource represents operations that may have happened or are
 /// happening on the cluster. All fields are output only.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Operation {
     /// The server-assigned ID for the operation.
     #[prost(string, tag = "1")]
@@ -989,7 +989,7 @@ pub struct CreateClusterRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// GetClusterRequest gets the settings of a cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetClusterRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://support.google.com/cloud/answer/6158840>).
@@ -1007,7 +1007,7 @@ pub struct GetClusterRequest {
     #[prost(string, tag = "3")]
     pub cluster_id: ::prost::alloc::string::String,
     /// The name (project, location, cluster) of the cluster to retrieve.
-    /// Specified in the format 'projects/*/locations/*/clusters/*'.
+    /// Specified in the format 'projects/*/locations/*/clusters/\*'.
     #[prost(string, tag = "5")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1033,12 +1033,12 @@ pub struct UpdateClusterRequest {
     #[prost(message, optional, tag = "4")]
     pub update: ::core::option::Option<ClusterUpdate>,
     /// The name (project, location, cluster) of the cluster to update.
-    /// Specified in the format 'projects/*/locations/*/clusters/*'.
+    /// Specified in the format 'projects/*/locations/*/clusters/\*'.
     #[prost(string, tag = "5")]
     pub name: ::prost::alloc::string::String,
 }
 /// SetNodePoolVersionRequest updates the version of a node pool.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateNodePoolRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://support.google.com/cloud/answer/6158840>).
@@ -1073,7 +1073,7 @@ pub struct UpdateNodePoolRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// SetNodePoolAutoscalingRequest sets the autoscaler settings of a node pool.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetNodePoolAutoscalingRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://support.google.com/cloud/answer/6158840>).
@@ -1104,7 +1104,7 @@ pub struct SetNodePoolAutoscalingRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// SetLoggingServiceRequest sets the logging service of a cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetLoggingServiceRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://support.google.com/cloud/answer/6158840>).
@@ -1128,12 +1128,12 @@ pub struct SetLoggingServiceRequest {
     #[prost(string, tag = "4")]
     pub logging_service: ::prost::alloc::string::String,
     /// The name (project, location, cluster) of the cluster to set logging.
-    /// Specified in the format 'projects/*/locations/*/clusters/*'.
+    /// Specified in the format 'projects/*/locations/*/clusters/\*'.
     #[prost(string, tag = "5")]
     pub name: ::prost::alloc::string::String,
 }
 /// SetMonitoringServiceRequest sets the monitoring service of a cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetMonitoringServiceRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://support.google.com/cloud/answer/6158840>).
@@ -1158,12 +1158,12 @@ pub struct SetMonitoringServiceRequest {
     #[prost(string, tag = "4")]
     pub monitoring_service: ::prost::alloc::string::String,
     /// The name (project, location, cluster) of the cluster to set monitoring.
-    /// Specified in the format 'projects/*/locations/*/clusters/*'.
+    /// Specified in the format 'projects/*/locations/*/clusters/\*'.
     #[prost(string, tag = "6")]
     pub name: ::prost::alloc::string::String,
 }
 /// SetAddonsRequest sets the addons associated with the cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetAddonsConfigRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://support.google.com/cloud/answer/6158840>).
@@ -1185,12 +1185,12 @@ pub struct SetAddonsConfigRequest {
     #[prost(message, optional, tag = "4")]
     pub addons_config: ::core::option::Option<AddonsConfig>,
     /// The name (project, location, cluster) of the cluster to set addons.
-    /// Specified in the format 'projects/*/locations/*/clusters/*'.
+    /// Specified in the format 'projects/*/locations/*/clusters/\*'.
     #[prost(string, tag = "6")]
     pub name: ::prost::alloc::string::String,
 }
 /// SetLocationsRequest sets the locations of the cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetLocationsRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://support.google.com/cloud/answer/6158840>).
@@ -1217,12 +1217,12 @@ pub struct SetLocationsRequest {
     #[prost(string, repeated, tag = "4")]
     pub locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The name (project, location, cluster) of the cluster to set locations.
-    /// Specified in the format 'projects/*/locations/*/clusters/*'.
+    /// Specified in the format 'projects/*/locations/*/clusters/\*'.
     #[prost(string, tag = "6")]
     pub name: ::prost::alloc::string::String,
 }
 /// UpdateMasterRequest updates the master of the cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateMasterRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://support.google.com/cloud/answer/6158840>).
@@ -1244,12 +1244,12 @@ pub struct UpdateMasterRequest {
     #[prost(string, tag = "4")]
     pub master_version: ::prost::alloc::string::String,
     /// The name (project, location, cluster) of the cluster to update.
-    /// Specified in the format 'projects/*/locations/*/clusters/*'.
+    /// Specified in the format 'projects/*/locations/*/clusters/\*'.
     #[prost(string, tag = "7")]
     pub name: ::prost::alloc::string::String,
 }
 /// SetMasterAuthRequest updates the admin password of a cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetMasterAuthRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://support.google.com/cloud/answer/6158840>).
@@ -1273,7 +1273,7 @@ pub struct SetMasterAuthRequest {
     #[prost(message, optional, tag = "5")]
     pub update: ::core::option::Option<MasterAuth>,
     /// The name (project, location, cluster) of the cluster to set auth.
-    /// Specified in the format 'projects/*/locations/*/clusters/*'.
+    /// Specified in the format 'projects/*/locations/*/clusters/\*'.
     #[prost(string, tag = "7")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1331,7 +1331,7 @@ pub mod set_master_auth_request {
     }
 }
 /// DeleteClusterRequest deletes a cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteClusterRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://support.google.com/cloud/answer/6158840>).
@@ -1349,12 +1349,12 @@ pub struct DeleteClusterRequest {
     #[prost(string, tag = "3")]
     pub cluster_id: ::prost::alloc::string::String,
     /// The name (project, location, cluster) of the cluster to delete.
-    /// Specified in the format 'projects/*/locations/*/clusters/*'.
+    /// Specified in the format 'projects/*/locations/*/clusters/\*'.
     #[prost(string, tag = "4")]
     pub name: ::prost::alloc::string::String,
 }
 /// ListClustersRequest lists clusters.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListClustersRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://support.google.com/cloud/answer/6158840>).
@@ -1386,7 +1386,7 @@ pub struct ListClustersResponse {
     pub missing_zones: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// GetOperationRequest gets a single operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetOperationRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://support.google.com/cloud/answer/6158840>).
@@ -1404,12 +1404,12 @@ pub struct GetOperationRequest {
     #[prost(string, tag = "3")]
     pub operation_id: ::prost::alloc::string::String,
     /// The name (project, location, operation id) of the operation to get.
-    /// Specified in the format 'projects/*/locations/*/operations/*'.
+    /// Specified in the format 'projects/*/locations/*/operations/\*'.
     #[prost(string, tag = "5")]
     pub name: ::prost::alloc::string::String,
 }
 /// ListOperationsRequest lists operations.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListOperationsRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://support.google.com/cloud/answer/6158840>).
@@ -1428,7 +1428,7 @@ pub struct ListOperationsRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// CancelOperationRequest cancels a single operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelOperationRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://support.google.com/cloud/answer/6158840>).
@@ -1445,7 +1445,7 @@ pub struct CancelOperationRequest {
     #[prost(string, tag = "3")]
     pub operation_id: ::prost::alloc::string::String,
     /// The name (project, location, operation id) of the operation to cancel.
-    /// Specified in the format 'projects/*/locations/*/operations/*'.
+    /// Specified in the format 'projects/*/locations/*/operations/\*'.
     #[prost(string, tag = "4")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1461,7 +1461,7 @@ pub struct ListOperationsResponse {
     pub missing_zones: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Gets the current Container Engine service configuration.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetServerConfigRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://support.google.com/cloud/answer/6158840>).
@@ -1479,7 +1479,7 @@ pub struct GetServerConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Container Engine service configuration.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServerConfig {
     /// Version of Kubernetes the service deploys by default.
     #[prost(string, tag = "1")]
@@ -1524,7 +1524,7 @@ pub struct CreateNodePoolRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// DeleteNodePoolRequest deletes a node pool for a cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteNodePoolRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://developers.google.com/console/help/new/#projectnumber>).
@@ -1551,7 +1551,7 @@ pub struct DeleteNodePoolRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// ListNodePoolsRequest lists the node pool(s) for a cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNodePoolsRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://developers.google.com/console/help/new/#projectnumber>).
@@ -1569,12 +1569,12 @@ pub struct ListNodePoolsRequest {
     #[prost(string, tag = "3")]
     pub cluster_id: ::prost::alloc::string::String,
     /// The parent (project, location, cluster id) where the node pools will be listed.
-    /// Specified in the format 'projects/*/locations/*/clusters/*'.
+    /// Specified in the format 'projects/*/locations/*/clusters/\*'.
     #[prost(string, tag = "5")]
     pub parent: ::prost::alloc::string::String,
 }
 /// GetNodePoolRequest retrieves a node pool for a cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetNodePoolRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://developers.google.com/console/help/new/#projectnumber>).
@@ -1717,7 +1717,7 @@ pub mod node_pool {
 }
 /// NodeManagement defines the set of node management services turned on for the
 /// node pool.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NodeManagement {
     /// Whether the nodes will be automatically upgraded.
     #[prost(bool, tag = "1")]
@@ -1731,7 +1731,7 @@ pub struct NodeManagement {
 }
 /// AutoUpgradeOptions defines the set of options for the user to control how
 /// the Auto Upgrades will proceed.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AutoUpgradeOptions {
     /// \[Output only\] This field is set when upgrades are about to commence
     /// with the approximate start time for the upgrades, in
@@ -1744,14 +1744,14 @@ pub struct AutoUpgradeOptions {
     pub description: ::prost::alloc::string::String,
 }
 /// MaintenancePolicy defines the maintenance policy to be used for the cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MaintenancePolicy {
     /// Specifies the maintenance window in which maintenance may be performed.
     #[prost(message, optional, tag = "1")]
     pub window: ::core::option::Option<MaintenanceWindow>,
 }
 /// MaintenanceWindow defines the maintenance window to be used for the cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MaintenanceWindow {
     /// Unimplemented, reserved for future use.
     /// HourlyMaintenanceWindow hourly_maintenance_window = 1;
@@ -1762,7 +1762,7 @@ pub struct MaintenanceWindow {
 pub mod maintenance_window {
     /// Unimplemented, reserved for future use.
     /// HourlyMaintenanceWindow hourly_maintenance_window = 1;
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Policy {
         /// DailyMaintenanceWindow specifies a daily maintenance operation window.
         #[prost(message, tag = "2")]
@@ -1770,7 +1770,7 @@ pub mod maintenance_window {
     }
 }
 /// Time window specified for daily maintenance operations.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DailyMaintenanceWindow {
     /// Time within the maintenance window to start the maintenance operations.
     /// It must be in format "HH:MM”, where HH : \[00-23\] and MM : \[00-59\] GMT.
@@ -1783,7 +1783,7 @@ pub struct DailyMaintenanceWindow {
 }
 /// SetNodePoolManagementRequest sets the node management properties of a node
 /// pool.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetNodePoolManagementRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://support.google.com/cloud/answer/6158840>).
@@ -1815,7 +1815,7 @@ pub struct SetNodePoolManagementRequest {
 }
 /// SetNodePoolSizeRequest sets the size a node
 /// pool.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetNodePoolSizeRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://support.google.com/cloud/answer/6158840>).
@@ -1847,7 +1847,7 @@ pub struct SetNodePoolSizeRequest {
 /// RollbackNodePoolUpgradeRequest rollbacks the previously Aborted or Failed
 /// NodePool upgrade. This will be an no-op if the last upgrade successfully
 /// completed.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RollbackNodePoolUpgradeRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://support.google.com/cloud/answer/6158840>).
@@ -1883,12 +1883,12 @@ pub struct ListNodePoolsResponse {
 }
 /// NodePoolAutoscaling contains information required by cluster autoscaler to
 /// adjust the size of the node pool to the current cluster usage.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NodePoolAutoscaling {
     /// Is autoscaling enabled for this node pool.
     #[prost(bool, tag = "1")]
     pub enabled: bool,
-    /// Minimum number of nodes in the NodePool. Must be >= 1 and <=
+    /// Minimum number of nodes in the NodePool. Must be >= 1 and \<=
     /// max_node_count.
     #[prost(int32, tag = "2")]
     pub min_node_count: i32,
@@ -1932,13 +1932,13 @@ pub struct SetLabelsRequest {
     #[prost(string, tag = "5")]
     pub label_fingerprint: ::prost::alloc::string::String,
     /// The name (project, location, cluster id) of the cluster to set labels.
-    /// Specified in the format 'projects/*/locations/*/clusters/*'.
+    /// Specified in the format 'projects/*/locations/*/clusters/\*'.
     #[prost(string, tag = "7")]
     pub name: ::prost::alloc::string::String,
 }
 /// SetLegacyAbacRequest enables or disables the ABAC authorization mechanism for
 /// a cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetLegacyAbacRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://support.google.com/cloud/answer/6158840>).
@@ -1959,13 +1959,13 @@ pub struct SetLegacyAbacRequest {
     #[prost(bool, tag = "4")]
     pub enabled: bool,
     /// The name (project, location, cluster id) of the cluster to set legacy abac.
-    /// Specified in the format 'projects/*/locations/*/clusters/*'.
+    /// Specified in the format 'projects/*/locations/*/clusters/\*'.
     #[prost(string, tag = "6")]
     pub name: ::prost::alloc::string::String,
 }
 /// StartIPRotationRequest creates a new IP for the cluster and then performs
 /// a node upgrade on each node pool to point to the new IP.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StartIpRotationRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://developers.google.com/console/help/new/#projectnumber>).
@@ -1983,12 +1983,12 @@ pub struct StartIpRotationRequest {
     #[prost(string, tag = "3")]
     pub cluster_id: ::prost::alloc::string::String,
     /// The name (project, location, cluster id) of the cluster to start IP rotation.
-    /// Specified in the format 'projects/*/locations/*/clusters/*'.
+    /// Specified in the format 'projects/*/locations/*/clusters/\*'.
     #[prost(string, tag = "6")]
     pub name: ::prost::alloc::string::String,
 }
 /// CompleteIPRotationRequest moves the cluster master back into single-IP mode.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CompleteIpRotationRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://developers.google.com/console/help/new/#projectnumber>).
@@ -2006,12 +2006,12 @@ pub struct CompleteIpRotationRequest {
     #[prost(string, tag = "3")]
     pub cluster_id: ::prost::alloc::string::String,
     /// The name (project, location, cluster id) of the cluster to complete IP rotation.
-    /// Specified in the format 'projects/*/locations/*/clusters/*'.
+    /// Specified in the format 'projects/*/locations/*/clusters/\*'.
     #[prost(string, tag = "7")]
     pub name: ::prost::alloc::string::String,
 }
 /// AcceleratorConfig represents a Hardware Accelerator request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AcceleratorConfig {
     /// The number of the accelerator cards exposed to an instance.
     #[prost(int64, tag = "1")]
@@ -2022,7 +2022,7 @@ pub struct AcceleratorConfig {
     pub accelerator_type: ::prost::alloc::string::String,
 }
 /// SetNetworkPolicyRequest enables/disables network policy for a cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetNetworkPolicyRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://developers.google.com/console/help/new/#projectnumber>).
@@ -2044,12 +2044,12 @@ pub struct SetNetworkPolicyRequest {
     pub network_policy: ::core::option::Option<NetworkPolicy>,
     /// The name (project, location, cluster id) of the cluster to set networking
     /// policy.
-    /// Specified in the format 'projects/*/locations/*/clusters/*'.
+    /// Specified in the format 'projects/*/locations/*/clusters/\*'.
     #[prost(string, tag = "6")]
     pub name: ::prost::alloc::string::String,
 }
 /// SetMaintenancePolicyRequest sets the maintenance policy for a cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetMaintenancePolicyRequest {
     /// The Google Developers Console [project ID or project
     /// number](<https://support.google.com/cloud/answer/6158840>).
@@ -2069,7 +2069,7 @@ pub struct SetMaintenancePolicyRequest {
     pub maintenance_policy: ::core::option::Option<MaintenancePolicy>,
     /// The name (project, location, cluster id) of the cluster to set maintenance
     /// policy.
-    /// Specified in the format 'projects/*/locations/*/clusters/*'.
+    /// Specified in the format 'projects/*/locations/*/clusters/\*'.
     #[prost(string, tag = "5")]
     pub name: ::prost::alloc::string::String,
 }
@@ -2182,7 +2182,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/ListClusters",
             );
@@ -2209,7 +2209,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/GetCluster",
             );
@@ -2248,7 +2248,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/CreateCluster",
             );
@@ -2275,7 +2275,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/UpdateCluster",
             );
@@ -2302,7 +2302,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/UpdateNodePool",
             );
@@ -2329,7 +2329,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/SetNodePoolAutoscaling",
             );
@@ -2356,7 +2356,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/SetLoggingService",
             );
@@ -2383,7 +2383,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/SetMonitoringService",
             );
@@ -2410,7 +2410,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/SetAddonsConfig",
             );
@@ -2437,7 +2437,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/SetLocations",
             );
@@ -2464,7 +2464,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/UpdateMaster",
             );
@@ -2494,7 +2494,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/SetMasterAuth",
             );
@@ -2529,7 +2529,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/DeleteCluster",
             );
@@ -2559,7 +2559,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/ListOperations",
             );
@@ -2586,7 +2586,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/GetOperation",
             );
@@ -2613,7 +2613,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/CancelOperation",
             );
@@ -2640,7 +2640,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/GetServerConfig",
             );
@@ -2670,7 +2670,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/ListNodePools",
             );
@@ -2697,7 +2697,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/GetNodePool",
             );
@@ -2724,7 +2724,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/CreateNodePool",
             );
@@ -2751,7 +2751,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/DeleteNodePool",
             );
@@ -2779,7 +2779,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/RollbackNodePoolUpgrade",
             );
@@ -2806,7 +2806,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/SetNodePoolManagement",
             );
@@ -2833,7 +2833,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/SetLabels",
             );
@@ -2860,7 +2860,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/SetLegacyAbac",
             );
@@ -2887,7 +2887,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/StartIPRotation",
             );
@@ -2914,7 +2914,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/CompleteIPRotation",
             );
@@ -2941,7 +2941,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/SetNodePoolSize",
             );
@@ -2968,7 +2968,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/SetNetworkPolicy",
             );
@@ -2995,7 +2995,7 @@ pub mod cluster_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.container.v1alpha1.ClusterManager/SetMaintenancePolicy",
             );

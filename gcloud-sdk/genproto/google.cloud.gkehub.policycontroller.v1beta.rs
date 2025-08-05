@@ -3,9 +3,10 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MembershipState {
     /// Currently these include (also serving as map keys):
+    ///
     /// 1. "admission"
-    /// 2. "audit"
-    /// 3. "mutation"
+    /// 1. "audit"
+    /// 1. "mutation"
     #[prost(map = "string, message", tag = "3")]
     pub component_states: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -284,7 +285,7 @@ pub struct PolicyControllerDeploymentConfig {
 /// Nested message and enum types in `PolicyControllerDeploymentConfig`.
 pub mod policy_controller_deployment_config {
     /// Toleration of a node taint.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Toleration {
         /// Matches a taint key (not necessarily unique).
         #[prost(string, optional, tag = "1")]
@@ -345,7 +346,7 @@ pub mod policy_controller_deployment_config {
     }
 }
 /// ResourceRequirements describes the compute resource requirements.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourceRequirements {
     /// Limits describes the maximum amount of compute resources allowed for use by
     /// the running container.
@@ -357,7 +358,7 @@ pub struct ResourceRequirements {
     pub requests: ::core::option::Option<ResourceList>,
 }
 /// ResourceList contains container resource requirements.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourceList {
     /// Memory requirement expressed in Kubernetes resource units.
     #[prost(string, optional, tag = "1")]
@@ -367,7 +368,7 @@ pub struct ResourceList {
     pub cpu: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// The config specifying which default library templates to install.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TemplateLibraryConfig {
     /// Configures the manner in which the template library is installed on the
     /// cluster.
@@ -424,7 +425,7 @@ pub mod template_library_config {
 /// export metrics to. For example, to specify metrics should be exported to
 /// Cloud Monitoring and Prometheus, specify
 /// backends: \["cloudmonitoring", "prometheus"\]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MonitoringConfig {
     /// Specifies the list of backends Policy Controller will export to.
     /// An empty list would effectively disable metrics export.
@@ -478,7 +479,7 @@ pub mod monitoring_config {
     }
 }
 /// OnClusterState represents the state of a sub-component of Policy Controller.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OnClusterState {
     /// The lifecycle state of this component.
     #[prost(enumeration = "membership_state::LifecycleState", tag = "1")]
@@ -489,7 +490,7 @@ pub struct OnClusterState {
 }
 /// BundleInstallSpec is the specification configuration for a single managed
 /// bundle.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BundleInstallSpec {
     /// The set of namespaces to be exempted from the bundle.
     #[prost(string, repeated, tag = "2")]

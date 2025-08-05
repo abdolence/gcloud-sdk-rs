@@ -15,11 +15,11 @@ pub struct SecurityMarks {
     /// Mutable user specified security marks belonging to the parent resource.
     /// Constraints are as follows:
     ///
-    ///    * Keys and values are treated as case insensitive
-    ///    * Keys must be between 1 - 256 characters (inclusive)
-    ///    * Keys must be letters, numbers, underscores, or dashes
-    ///    * Values have leading and trailing whitespace trimmed, remaining
-    ///      characters must be between 1 - 4096 characters (inclusive)
+    /// * Keys and values are treated as case insensitive
+    /// * Keys must be between 1 - 256 characters (inclusive)
+    /// * Keys must be letters, numbers, underscores, or dashes
+    /// * Values have leading and trailing whitespace trimmed, remaining
+    ///   characters must be between 1 - 4096 characters (inclusive)
     #[prost(map = "string, string", tag = "2")]
     pub marks: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -70,7 +70,7 @@ pub struct Asset {
 pub mod asset {
     /// Security Command Center managed properties. These properties are managed by
     /// Security Command Center and cannot be modified by the user.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SecurityCenterProperties {
         /// Immutable. The full resource name of the Google Cloud resource this asset
         /// represents. This field is immutable after create time. See:
@@ -213,7 +213,7 @@ pub mod finding {
 }
 /// User specified settings that are attached to the Security Command
 /// Center organization.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OrganizationSettings {
     /// The relative resource name of the settings. See:
     /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
@@ -222,7 +222,7 @@ pub struct OrganizationSettings {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// A flag that indicates if Asset Discovery should be enabled. If the flag is
-    /// set to `true`, then discovery of assets will occur. If it is set to `false,
+    /// set to `true`, then discovery of assets will occur. If it is set to \`false,
     /// all historical assets will remain, but discovery of future assets will not
     /// occur.
     #[prost(bool, tag = "2")]
@@ -236,7 +236,7 @@ pub struct OrganizationSettings {
 /// Nested message and enum types in `OrganizationSettings`.
 pub mod organization_settings {
     /// The configuration used for Asset Discovery runs.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AssetDiscoveryConfig {
         /// The project ids to use for filtering asset discovery.
         #[prost(string, repeated, tag = "1")]
@@ -303,7 +303,7 @@ pub mod organization_settings {
     }
 }
 /// Response of asset discovery run
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RunAssetDiscoveryResponse {
     /// The state of an asset discovery run.
     #[prost(enumeration = "run_asset_discovery_response::State", tag = "1")]
@@ -366,7 +366,7 @@ pub mod run_asset_discovery_response {
 /// Security Command Center finding source. A finding source
 /// is an entity or a mechanism that can produce a finding. A source is like a
 /// container of findings that come from the same scanner, logger, monitor, etc.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Source {
     /// The relative resource name of this source. See:
     /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
@@ -409,7 +409,7 @@ pub struct CreateFindingRequest {
     pub finding: ::core::option::Option<Finding>,
 }
 /// Request message for creating a source.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateSourceRequest {
     /// Required. Resource name of the new source's parent. Its format should be
     /// "organizations/\[organization_id\]".
@@ -421,7 +421,7 @@ pub struct CreateSourceRequest {
     pub source: ::core::option::Option<Source>,
 }
 /// Request message for getting organization settings.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetOrganizationSettingsRequest {
     /// Required. Name of the organization to get organization settings for. Its format is
     /// "organizations/\[organization_id\]/organizationSettings".
@@ -429,7 +429,7 @@ pub struct GetOrganizationSettingsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for getting a source.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSourceRequest {
     /// Required. Relative resource name of the source. Its format is
     /// "organizations/\[organization_id\]/source/\[source_id\]".
@@ -437,7 +437,7 @@ pub struct GetSourceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for grouping by assets.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GroupAssetsRequest {
     /// Required. Name of the organization to groupBy. Its format is
     /// "organizations/\[organization_id\]".
@@ -501,12 +501,12 @@ pub struct GroupAssetsRequest {
     /// Possible "state" values when compare_duration is specified:
     ///
     /// * "ADDED": indicates that the asset was not present before
-    ///               compare_duration, but present at reference_time.
+    ///   compare_duration, but present at reference_time.
     /// * "REMOVED": indicates that the asset was present at the start of
-    ///               compare_duration, but not present at reference_time.
+    ///   compare_duration, but not present at reference_time.
     /// * "ACTIVE": indicates that the asset was present at both the
-    ///               start and the end of the time period defined by
-    ///               compare_duration and reference_time.
+    ///   start and the end of the time period defined by
+    ///   compare_duration and reference_time.
     ///
     /// This field is ignored if `state` is not a field in `group_by`.
     #[prost(message, optional, tag = "4")]
@@ -544,7 +544,7 @@ pub struct GroupAssetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for grouping by findings.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GroupFindingsRequest {
     /// Required. Name of the source to groupBy. Its format is
     /// "organizations/\[organization_id\]/sources/\[source_id\]". To groupBy across
@@ -560,9 +560,9 @@ pub struct GroupFindingsRequest {
     /// Restrictions have the form `<field> <operator> <value>` and may have a `-`
     /// character in front of them to indicate negation. Examples include:
     ///
-    ///   * name
-    ///   * source_properties.a_property
-    ///   * security_marks.marks.marka
+    /// * name
+    /// * source_properties.a_property
+    /// * security_marks.marks.marka
     ///
     /// The supported operators are:
     ///
@@ -638,7 +638,7 @@ pub struct GroupResult {
     pub count: i64,
 }
 /// Request message for listing sources.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSourcesRequest {
     /// Required. Resource name of the parent of sources to list. Its format should be
     /// "organizations/\[organization_id\]".
@@ -666,7 +666,7 @@ pub struct ListSourcesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for listing assets.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAssetsRequest {
     /// Required. Name of the organization assets should belong to. Its format is
     /// "organizations/\[organization_id\]".
@@ -731,12 +731,12 @@ pub struct ListAssetsRequest {
     /// Possible "state" values when compare_duration is specified:
     ///
     /// * "ADDED": indicates that the asset was not present before
-    ///               compare_duration, but present at read_time.
+    ///   compare_duration, but present at read_time.
     /// * "REMOVED": indicates that the asset was present at the start of
-    ///               compare_duration, but not present at read_time.
+    ///   compare_duration, but not present at read_time.
     /// * "ACTIVE": indicates that the asset was present at both the
-    ///               start and the end of the time period defined by
-    ///               compare_duration and read_time.
+    ///   start and the end of the time period defined by
+    ///   compare_duration and read_time.
     ///
     /// If compare_duration is not specified, then the only possible state is
     /// "UNUSED", which indicates that the asset is present at read_time.
@@ -849,7 +849,7 @@ pub mod list_assets_response {
     }
 }
 /// Request message for listing findings.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFindingsRequest {
     /// Required. Name of the source the findings belong to. Its format is
     /// "organizations/\[organization_id\]/sources/\[source_id\]". To list across all
@@ -865,9 +865,9 @@ pub struct ListFindingsRequest {
     /// Restrictions have the form `<field> <operator> <value>` and may have a `-`
     /// character in front of them to indicate negation. Examples include:
     ///
-    ///   * name
-    ///   * source_properties.a_property
-    ///   * security_marks.marks.marka
+    /// * name
+    /// * source_properties.a_property
+    /// * security_marks.marks.marka
     ///
     /// The supported operators are:
     ///
@@ -932,7 +932,7 @@ pub struct ListFindingsResponse {
     pub total_size: i32,
 }
 /// Request message for updating a finding's state.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetFindingStateRequest {
     /// Required. The relative resource name of the finding. See:
     /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
@@ -948,7 +948,7 @@ pub struct SetFindingStateRequest {
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request message for running asset discovery for an organization.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RunAssetDiscoveryRequest {
     /// Required. Name of the organization to run asset discovery for. Its format is
     /// "organizations/\[organization_id\]".
@@ -972,7 +972,7 @@ pub struct UpdateFindingRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for updating an organization's settings.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateOrganizationSettingsRequest {
     /// Required. The organization settings resource to update.
     #[prost(message, optional, tag = "1")]
@@ -982,7 +982,7 @@ pub struct UpdateOrganizationSettingsRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for updating a source.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateSourceRequest {
     /// Required. The source resource to update.
     #[prost(message, optional, tag = "1")]
@@ -1109,7 +1109,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1beta1.SecurityCenter/CreateSource",
             );
@@ -1137,7 +1137,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1beta1.SecurityCenter/CreateFinding",
             );
@@ -1169,7 +1169,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1beta1.SecurityCenter/GetIamPolicy",
             );
@@ -1199,7 +1199,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1beta1.SecurityCenter/GetOrganizationSettings",
             );
@@ -1226,7 +1226,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1beta1.SecurityCenter/GetSource",
             );
@@ -1257,7 +1257,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1beta1.SecurityCenter/GroupAssets",
             );
@@ -1291,7 +1291,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1beta1.SecurityCenter/GroupFindings",
             );
@@ -1321,7 +1321,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1beta1.SecurityCenter/ListAssets",
             );
@@ -1354,7 +1354,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1beta1.SecurityCenter/ListFindings",
             );
@@ -1384,7 +1384,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1beta1.SecurityCenter/ListSources",
             );
@@ -1419,7 +1419,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1beta1.SecurityCenter/RunAssetDiscovery",
             );
@@ -1446,7 +1446,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1beta1.SecurityCenter/SetFindingState",
             );
@@ -1478,7 +1478,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1beta1.SecurityCenter/SetIamPolicy",
             );
@@ -1512,7 +1512,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1beta1.SecurityCenter/TestIamPermissions",
             );
@@ -1540,7 +1540,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1beta1.SecurityCenter/UpdateFinding",
             );
@@ -1570,7 +1570,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1beta1.SecurityCenter/UpdateOrganizationSettings",
             );
@@ -1597,7 +1597,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1beta1.SecurityCenter/UpdateSource",
             );
@@ -1624,7 +1624,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1beta1.SecurityCenter/UpdateSecurityMarks",
             );

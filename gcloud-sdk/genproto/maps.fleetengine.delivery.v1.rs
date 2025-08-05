@@ -60,7 +60,7 @@ pub struct DeliveryVehicleLocation {
     #[prost(message, optional, tag = "22")]
     pub latlng_accuracy: ::core::option::Option<f64>,
     /// Direction the vehicle is moving in degrees.  0 represents North.
-    /// The valid range is [0,360).
+    /// The valid range is \[0,360).
     #[prost(message, optional, tag = "2")]
     pub heading: ::core::option::Option<i32>,
     /// Deprecated: Use `heading_accuracy` instead.
@@ -144,7 +144,7 @@ pub struct DeliveryVehicleLocation {
     #[prost(message, optional, tag = "31")]
     pub flp_latlng_accuracy_meters: ::core::option::Option<f64>,
     /// Direction the vehicle is moving in degrees, as determined by the Fused
-    /// Location Provider. 0 represents North. The valid range is [0,360).
+    /// Location Provider. 0 represents North. The valid range is \[0,360).
     #[prost(message, optional, tag = "32")]
     pub flp_heading_degrees: ::core::option::Option<i32>,
     /// Supplemental location provided by the integrating app.
@@ -168,7 +168,7 @@ pub struct DeliveryVehicleLocation {
     pub road_snapped: bool,
 }
 /// A time range.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TimeWindow {
     /// Required. The start time of the time window (inclusive).
     #[prost(message, optional, tag = "1")]
@@ -354,14 +354,14 @@ pub struct DeliveryVehicle {
     /// (REST):
     ///
     /// * The endpoint of the `current_route_segment` does not match
-    /// `DeliveryVehicle.remaining_vehicle_journey_segments\[0\].stop` (gRPC) or
-    /// `DeliveryVehicle.remainingVehicleJourneySegments\[0\].stop` (REST).
+    ///   `DeliveryVehicle.remaining_vehicle_journey_segments\[0\].stop` (gRPC) or
+    ///   `DeliveryVehicle.remainingVehicleJourneySegments\[0\].stop` (REST).
     ///
     /// * The driver app has not updated its location recently, so the last
-    /// updated value for this field might be stale.
+    ///   updated value for this field might be stale.
     ///
     /// * The driver app has recently updated its location, but the
-    /// `current_route_segment` is stale, and points to a previous vehicle stop.
+    ///   `current_route_segment` is stale, and points to a previous vehicle stop.
     ///
     /// In these cases, Fleet Engine populates this field with a route from the
     /// most recently passed VehicleStop to the upcoming VehicleStop to ensure that
@@ -385,7 +385,7 @@ pub struct DeliveryVehicle {
     /// The Driver app typically provides this field, but there are some
     /// circumstances in which Fleet Engine will override the value sent by the
     /// app. For more information, see
-    /// [DeliveryVehicle.current_route_segment][maps.fleetengine.delivery.v1.DeliveryVehicle.current_route_segment].
+    /// \[DeliveryVehicle.current_route_segment\]\[maps.fleetengine.delivery.v1.DeliveryVehicle.current_route_segment\].
     /// This field is returned in
     /// `Task.remaining_vehicle_journey_segments\[0\].driving_distance_meters` (gRPC)
     /// or `Task.remainingVehicleJourneySegments\[0\].drivingDistanceMeters` (REST)
@@ -399,7 +399,7 @@ pub struct DeliveryVehicle {
     /// The Driver app typically provides this field, but there are some
     /// circumstances in which Fleet Engine will override the value sent by the
     /// app.  For more information, see
-    /// [DeliveryVehicle.current_route_segment][maps.fleetengine.delivery.v1.DeliveryVehicle.current_route_segment].
+    /// \[DeliveryVehicle.current_route_segment\]\[maps.fleetengine.delivery.v1.DeliveryVehicle.current_route_segment\].
     /// This field is returned in
     /// `Task.remaining_vehicle_journey_segments\[0\].driving_duration` (gRPC) or
     /// `Task.remainingVehicleJourneySegments\[0\].drivingDuration` (REST) for all
@@ -559,7 +559,7 @@ pub struct VehicleStop {
 /// Nested message and enum types in `VehicleStop`.
 pub mod vehicle_stop {
     /// Additional information about the Task performed at this stop.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TaskInfo {
         /// The Task ID. This field won't be populated in the response of a `GetTask`
         /// call. Task IDs are subject to the following restrictions:
@@ -567,9 +567,9 @@ pub mod vehicle_stop {
         /// * Must be a valid Unicode string.
         /// * Limited to a maximum length of 64 characters.
         /// * Normalized according to \[Unicode Normalization Form C\]
-        /// (<http://www.unicode.org/reports/tr15/>).
+        ///   (<http://www.unicode.org/reports/tr15/>).
         /// * May not contain any of the following ASCII characters: '/', ':', '?',
-        /// ',', or '#'.
+        ///   ',', or '#'.
         #[prost(string, tag = "1")]
         pub task_id: ::prost::alloc::string::String,
         /// Output only. The time required to perform the Task.
@@ -630,7 +630,7 @@ pub mod vehicle_stop {
     }
 }
 /// A RequestHeader contains fields common to all Delivery RPC requests.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeliveryRequestHeader {
     /// The BCP-47 language code, such as en-US or sr-Latn. For more information,
     /// see <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.> If none
@@ -828,9 +828,9 @@ pub struct Task {
     /// * Must be a valid Unicode string.
     /// * Limited to a maximum length of 64 characters.
     /// * Normalized according to \[Unicode Normalization Form C\]
-    /// (<http://www.unicode.org/reports/tr15/>).
+    ///   (<http://www.unicode.org/reports/tr15/>).
     /// * May not contain any of the following ASCII characters: '/', ':', '?',
-    /// ',', or '#'.
+    ///   ',', or '#'.
     #[prost(string, tag = "4")]
     pub tracking_id: ::prost::alloc::string::String,
     /// Output only. The ID of the vehicle that is executing this Task. Delivery
@@ -839,9 +839,9 @@ pub struct Task {
     /// * Must be a valid Unicode string.
     /// * Limited to a maximum length of 64 characters.
     /// * Normalized according to \[Unicode Normalization Form C\]
-    /// (<http://www.unicode.org/reports/tr15/>).
+    ///   (<http://www.unicode.org/reports/tr15/>).
     /// * May not contain any of the following ASCII characters: '/', ':', '?',
-    /// ',', or '#'.
+    ///   ',', or '#'.
     #[prost(string, tag = "5")]
     pub delivery_vehicle_id: ::prost::alloc::string::String,
     /// Immutable. The location where the Task will be completed.
@@ -881,7 +881,7 @@ pub mod task {
         /// contains route information from the driver's last known location to the
         /// upcoming `VehicleStop`. Current route information usually comes from the
         /// driver app, except for some cases noted in the documentation for
-        /// [DeliveryVehicle.current_route_segment][maps.fleetengine.delivery.v1.DeliveryVehicle.current_route_segment].
+        /// \[DeliveryVehicle.current_route_segment\]\[maps.fleetengine.delivery.v1.DeliveryVehicle.current_route_segment\].
         /// The other segments in
         /// `Task.journey_sharing_info.remaining_vehicle_journey_segments` (gRPC) or
         /// `Task.journeySharingInfo.remainingVehicleJourneySegments` (REST) are
@@ -1096,7 +1096,7 @@ pub mod task {
 }
 /// The configuration message that defines when a data element of a Task should
 /// be visible to the end users.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TaskTrackingViewConfig {
     /// The field that specifies when route polyline points can be visible. If this
     /// field is not specified, the project level default visibility configuration
@@ -1145,7 +1145,7 @@ pub struct TaskTrackingViewConfig {
 pub mod task_tracking_view_config {
     /// The option message that defines when a data element should be visible to
     /// the end users.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct VisibilityOption {
         /// The specific visibility option chosen.
         #[prost(oneof = "visibility_option::VisibilityOption", tags = "1, 2, 3, 4, 5")]
@@ -1156,18 +1156,18 @@ pub mod task_tracking_view_config {
     /// Nested message and enum types in `VisibilityOption`.
     pub mod visibility_option {
         /// The specific visibility option chosen.
-        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum VisibilityOption {
             /// This data element is visible to the end users if the remaining stop
-            /// count <= remaining_stop_count_threshold.
+            /// count \<= remaining_stop_count_threshold.
             #[prost(int32, tag = "1")]
             RemainingStopCountThreshold(i32),
             /// This data element is visible to the end users if the ETA to the stop
-            /// <= duration_until_estimated_arrival_time_threshold.
+            /// \<= duration_until_estimated_arrival_time_threshold.
             #[prost(message, tag = "2")]
             DurationUntilEstimatedArrivalTimeThreshold(::prost_types::Duration),
             /// This data element is visible to the end users if the remaining
-            /// driving distance in meters <=
+            /// driving distance in meters \<=
             /// remaining_driving_distance_meters_threshold.
             #[prost(int32, tag = "3")]
             RemainingDrivingDistanceMetersThreshold(i32),
@@ -1193,12 +1193,13 @@ pub struct TaskTrackingInfo {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Immutable. The tracking ID of a Task.
+    ///
     /// * Must be a valid Unicode string.
     /// * Limited to a maximum length of 64 characters.
     /// * Normalized according to \[Unicode Normalization Form C\]
-    /// (<http://www.unicode.org/reports/tr15/>).
+    ///   (<http://www.unicode.org/reports/tr15/>).
     /// * May not contain any of the following ASCII characters: '/', ':', '?',
-    /// ',', or '#'.
+    ///   ',', or '#'.
     #[prost(string, tag = "2")]
     pub tracking_id: ::prost::alloc::string::String,
     /// The vehicle's last location.
@@ -1261,9 +1262,9 @@ pub struct CreateDeliveryVehicleRequest {
     /// * Must be a valid Unicode string.
     /// * Limited to a maximum length of 64 characters.
     /// * Normalized according to \[Unicode Normalization Form C\]
-    /// (<http://www.unicode.org/reports/tr15/>).
+    ///   (<http://www.unicode.org/reports/tr15/>).
     /// * May not contain any of the following ASCII characters: '/', ':', '?',
-    /// ',', or '#'.
+    ///   ',', or '#'.
     #[prost(string, tag = "4")]
     pub delivery_vehicle_id: ::prost::alloc::string::String,
     /// Required. The `DeliveryVehicle` entity to create. When creating a new
@@ -1279,7 +1280,7 @@ pub struct CreateDeliveryVehicleRequest {
     pub delivery_vehicle: ::core::option::Option<DeliveryVehicle>,
 }
 /// The `GetDeliveryVehicle` request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDeliveryVehicleRequest {
     /// Optional. The standard Delivery API request header.
     #[prost(message, optional, tag = "1")]
@@ -1292,7 +1293,7 @@ pub struct GetDeliveryVehicleRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// DeleteDeliveryVehicle request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDeliveryVehicleRequest {
     /// Optional. The standard Delivery API request header.
     #[prost(message, optional, tag = "1")]
@@ -1437,9 +1438,9 @@ pub struct CreateTaskRequest {
     /// * Must be a valid Unicode string.
     /// * Limited to a maximum length of 64 characters.
     /// * Normalized according to \[Unicode Normalization Form C\]
-    /// (<http://www.unicode.org/reports/tr15/>).
+    ///   (<http://www.unicode.org/reports/tr15/>).
     /// * May not contain any of the following ASCII characters: '/', ':', '?',
-    /// ',', or '#'.
+    ///   ',', or '#'.
     #[prost(string, tag = "5")]
     pub task_id: ::prost::alloc::string::String,
     /// Required. The Task entity to create.
@@ -1448,7 +1449,7 @@ pub struct CreateTaskRequest {
     /// * `type`
     /// * `state` (must be set to `OPEN`)
     /// * `tracking_id` (must not be set for `UNAVAILABLE` or `SCHEDULED_STOP`
-    /// tasks, but required for all other task types)
+    ///   tasks, but required for all other task types)
     /// * `planned_location` (optional for `UNAVAILABLE` tasks)
     /// * `task_duration`
     ///
@@ -1464,7 +1465,7 @@ pub struct CreateTaskRequest {
     pub task: ::core::option::Option<Task>,
 }
 /// The `GetTask` request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTaskRequest {
     /// Optional. The standard Delivery API request header.
     #[prost(message, optional, tag = "1")]
@@ -1476,7 +1477,7 @@ pub struct GetTaskRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// DeleteTask request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteTaskRequest {
     /// Optional. The standard Delivery API request header.
     #[prost(message, optional, tag = "1")]
@@ -1497,11 +1498,11 @@ pub struct UpdateTaskRequest {
     /// The following fields are maintained by Fleet Engine. Do not update
     /// them using `Task.update`.
     ///
-    ///    * `last_location`.
-    ///    * `last_location_snappable`.
-    ///    * `name`.
-    ///    * `remaining_vehicle_journey_segments`.
-    ///    * `task_outcome_location_source`.
+    /// * `last_location`.
+    /// * `last_location_snappable`.
+    /// * `name`.
+    /// * `remaining_vehicle_journey_segments`.
+    /// * `task_outcome_location_source`.
     ///
     /// Note: You cannot change the value of `task_outcome` once you set it.
     ///
@@ -1520,7 +1521,7 @@ pub struct UpdateTaskRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The `ListTasks` request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListTasksRequest {
     /// Optional. The standard Delivery API request header.
     #[prost(message, optional, tag = "1")]
@@ -1571,7 +1572,7 @@ pub struct ListTasksResponse {
     pub total_size: i64,
 }
 /// The `GetTaskTrackingInfoRequest` request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTaskTrackingInfoRequest {
     /// Optional. The standard Delivery API request header.
     #[prost(message, optional, tag = "1")]
@@ -1692,7 +1693,7 @@ pub mod delivery_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.delivery.v1.DeliveryService/CreateDeliveryVehicle",
             );
@@ -1722,7 +1723,7 @@ pub mod delivery_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.delivery.v1.DeliveryService/GetDeliveryVehicle",
             );
@@ -1752,7 +1753,7 @@ pub mod delivery_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.delivery.v1.DeliveryService/DeleteDeliveryVehicle",
             );
@@ -1788,7 +1789,7 @@ pub mod delivery_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.delivery.v1.DeliveryService/UpdateDeliveryVehicle",
             );
@@ -1818,7 +1819,7 @@ pub mod delivery_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.delivery.v1.DeliveryService/BatchCreateTasks",
             );
@@ -1845,7 +1846,7 @@ pub mod delivery_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.delivery.v1.DeliveryService/CreateTask",
             );
@@ -1872,7 +1873,7 @@ pub mod delivery_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.delivery.v1.DeliveryService/GetTask",
             );
@@ -1902,7 +1903,7 @@ pub mod delivery_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.delivery.v1.DeliveryService/DeleteTask",
             );
@@ -1929,7 +1930,7 @@ pub mod delivery_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.delivery.v1.DeliveryService/UpdateTask",
             );
@@ -1959,7 +1960,7 @@ pub mod delivery_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.delivery.v1.DeliveryService/ListTasks",
             );
@@ -1989,7 +1990,7 @@ pub mod delivery_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.delivery.v1.DeliveryService/GetTaskTrackingInfo",
             );
@@ -2019,7 +2020,7 @@ pub mod delivery_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.delivery.v1.DeliveryService/ListDeliveryVehicles",
             );

@@ -118,7 +118,7 @@ pub mod quota_info {
     }
 }
 /// Eligibility information regarding requesting increase adjustment of a quota.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct QuotaIncreaseEligibility {
     /// Whether a higher quota value can be requested for the quota.
     #[prost(bool, tag = "1")]
@@ -362,7 +362,7 @@ pub struct DimensionsInfo {
     pub applicable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The quota details for a map of dimensions.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct QuotaDetails {
     /// The value currently in effect and being enforced.
     #[prost(int64, tag = "1")]
@@ -374,7 +374,7 @@ pub struct QuotaDetails {
     pub rollout_info: ::core::option::Option<RolloutInfo>,
 }
 /// \[Output only\] Rollout information of a quota.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RolloutInfo {
     /// Whether there is an ongoing rollout for a quota or not.
     #[prost(bool, tag = "1")]
@@ -418,7 +418,7 @@ impl QuotaSafetyCheck {
     }
 }
 /// Message for requesting list of QuotaInfos
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListQuotaInfosRequest {
     /// Required. Parent value of QuotaInfo resources.
     /// Listing across different resource containers (such as 'projects/-') is not
@@ -450,7 +450,7 @@ pub struct ListQuotaInfosResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Message for getting a QuotaInfo
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetQuotaInfoRequest {
     /// Required. The resource name of the quota info.
     ///
@@ -460,7 +460,7 @@ pub struct GetQuotaInfoRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Message for requesting list of QuotaPreferences
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListQuotaPreferencesRequest {
     /// Required. Parent value of QuotaPreference resources.
     /// Listing across different resource containers (such as 'projects/-') is not
@@ -513,7 +513,7 @@ pub struct ListQuotaPreferencesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a QuotaPreference
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetQuotaPreferenceRequest {
     /// Required. Name of the resource
     ///
@@ -582,10 +582,10 @@ pub mod cloud_quotas_client {
     /// The Cloud Quotas API is an infrastructure service for Google Cloud that lets
     /// service consumers list and manage their resource usage limits.
     ///
-    /// - List/Get the metadata and current status of the quotas for a service.
-    /// - Create/Update quota preferencess that declare the preferred quota values.
-    /// - Check the status of a quota preference request.
-    /// - List/Get pending and historical quota preference.
+    /// * List/Get the metadata and current status of the quotas for a service.
+    /// * Create/Update quota preferencess that declare the preferred quota values.
+    /// * Check the status of a quota preference request.
+    /// * List/Get pending and historical quota preference.
     #[derive(Debug, Clone)]
     pub struct CloudQuotasClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -682,7 +682,7 @@ pub mod cloud_quotas_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.cloudquotas.v1.CloudQuotas/ListQuotaInfos",
             );
@@ -709,7 +709,7 @@ pub mod cloud_quotas_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.cloudquotas.v1.CloudQuotas/GetQuotaInfo",
             );
@@ -739,7 +739,7 @@ pub mod cloud_quotas_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.cloudquotas.v1.CloudQuotas/ListQuotaPreferences",
             );
@@ -769,7 +769,7 @@ pub mod cloud_quotas_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.cloudquotas.v1.CloudQuotas/GetQuotaPreference",
             );
@@ -799,7 +799,7 @@ pub mod cloud_quotas_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.cloudquotas.v1.CloudQuotas/CreateQuotaPreference",
             );
@@ -830,7 +830,7 @@ pub mod cloud_quotas_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.cloudquotas.v1.CloudQuotas/UpdateQuotaPreference",
             );

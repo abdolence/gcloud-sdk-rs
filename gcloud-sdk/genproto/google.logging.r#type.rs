@@ -8,7 +8,9 @@
 /// filter expression will match log entries with severities `INFO`, `NOTICE`,
 /// and `WARNING`:
 ///
-///      severity > DEBUG AND severity <= WARNING
+/// ```text
+/// severity > DEBUG AND severity <= WARNING
+/// ```
 ///
 /// If you are writing log entries, you should map other severity encodings to
 /// one of these standard levels. For example, you might map all of Java's FINE,
@@ -74,7 +76,7 @@ impl LogSeverity {
 /// A common proto for logging HTTP requests. Only contains semantics
 /// defined by the HTTP specification. Product-specific logging
 /// information MUST be defined in a separate message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HttpRequest {
     /// The request method. Examples: `"GET"`, `"HEAD"`, `"PUT"`, `"POST"`.
     #[prost(string, tag = "1")]
@@ -97,8 +99,7 @@ pub struct HttpRequest {
     #[prost(int64, tag = "5")]
     pub response_size: i64,
     /// The user agent sent by the client. Example:
-    /// `"Mozilla/4.0 (compatible; MSIE 6.0; Windows 98; Q312461; .NET
-    /// CLR 1.0.3705)"`.
+    /// `"Mozilla/4.0 (compatible; MSIE 6.0; Windows 98; Q312461; .NET  CLR 1.0.3705)"`.
     #[prost(string, tag = "6")]
     pub user_agent: ::prost::alloc::string::String,
     /// The IP address (IPv4 or IPv6) of the client that issued the HTTP

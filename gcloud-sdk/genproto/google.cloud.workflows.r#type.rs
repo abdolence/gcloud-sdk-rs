@@ -24,7 +24,7 @@ pub struct EngineCallLog {
 /// Nested message and enum types in `EngineCallLog`.
 pub mod engine_call_log {
     /// Information about an argument to a called function.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CallArg {
         /// A function argument, serialized to a string. This may be truncated for
         /// size reasons.
@@ -49,7 +49,7 @@ pub mod engine_call_log {
         >,
     }
     /// Information about the end of a successful call.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Succeeded {
         /// The time when the call started.
         #[prost(message, optional, tag = "1")]
@@ -60,7 +60,7 @@ pub mod engine_call_log {
         pub response: ::prost::alloc::string::String,
     }
     /// Information about the end of a failed call.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ExceptionRaised {
         /// The time when the call started.
         #[prost(message, optional, tag = "1")]
@@ -74,7 +74,7 @@ pub mod engine_call_log {
         pub origin: ::prost::alloc::string::String,
     }
     /// Information about an exception which was handled.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ExceptionHandled {
         /// The time when the call started.
         #[prost(message, optional, tag = "1")]
@@ -155,7 +155,7 @@ pub mod engine_call_log {
     }
 }
 /// Logged during the lifetime of Workflow Execution.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExecutionsSystemLog {
     /// Human readable contents of the log in English. The size limit is 5 kB.
     #[prost(string, tag = "1")]
@@ -173,21 +173,21 @@ pub struct ExecutionsSystemLog {
 /// Nested message and enum types in `ExecutionsSystemLog`.
 pub mod executions_system_log {
     /// Detailed information about the start of the execution.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Start {
         /// The execution input argument.
         #[prost(string, tag = "2")]
         pub argument: ::prost::alloc::string::String,
     }
     /// Detailed information about the successful finish of the execution.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Success {
         /// The final result of the execution.
         #[prost(string, tag = "2")]
         pub result: ::prost::alloc::string::String,
     }
     /// Detailed information about the execution failure.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Failure {
         /// The exception message, e.g. "division by zero". The size limit is 1 kB.
         #[prost(string, tag = "1")]
@@ -250,7 +250,7 @@ pub mod executions_system_log {
         }
     }
     /// Detailed log information.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Details {
         /// Appears only in the log created when the execution has started.
         #[prost(message, tag = "4")]

@@ -7,19 +7,19 @@
 ///
 /// Partition dimensions:
 ///
-/// - May be `""`.
-/// - Must be valid UTF-8 bytes.
-/// - Must have values that match regex `\[A-Za-z\d\.\-_\]{1,100}`
-/// If the value of any dimension matches regex `__.*__`, the partition is
-/// reserved/read-only.
-/// A reserved/read-only partition ID is forbidden in certain documented
-/// contexts.
+/// * May be `""`.
+/// * Must be valid UTF-8 bytes.
+/// * Must have values that match regex `\[A-Za-z\d\.\-_\]{1,100}`
+///   If the value of any dimension matches regex `__.*__`, the partition is
+///   reserved/read-only.
+///   A reserved/read-only partition ID is forbidden in certain documented
+///   contexts.
 ///
 /// Foreign partition IDs (in which the project ID does
 /// not match the context project ID ) are discouraged.
 /// Reads and writes of foreign partition IDs may fail if the project is not in
 /// an active state.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PartitionId {
     /// The ID of the project to which the entities belong.
     #[prost(string, tag = "2")]
@@ -42,10 +42,10 @@ pub struct Key {
     /// The entity path.
     /// An entity path consists of one or more elements composed of a kind and a
     /// string or numerical identifier, which identify entities. The first
-    /// element identifies a _root entity_, the second element identifies
-    /// a _child_ of the root entity, the third element identifies a child of the
+    /// element identifies a *root entity*, the second element identifies
+    /// a *child* of the root entity, the third element identifies a child of the
     /// second entity, and so forth. The entities identified by all prefixes of
-    /// the path are called the element's _ancestors_.
+    /// the path are called the element's *ancestors*.
     ///
     /// An entity path is always fully complete: *all* of the entity's ancestors
     /// are required to be in the path along with the entity identifier itself.
@@ -64,7 +64,7 @@ pub mod key {
     ///
     /// If either name or ID is set, the element is complete.
     /// If neither is set, the element is incomplete.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PathElement {
         /// The kind of the entity.
         /// A kind matching regex `__.*__` is reserved/read-only.
@@ -79,7 +79,7 @@ pub mod key {
     /// Nested message and enum types in `PathElement`.
     pub mod path_element {
         /// The type of ID.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum IdType {
             /// The auto-allocated ID of the entity.
             /// Never equal to zero. Values less than zero are discouraged and may not
@@ -160,9 +160,9 @@ pub mod value {
         GeoPointValue(super::super::super::r#type::LatLng),
         /// An entity value.
         ///
-        /// - May have no key.
-        /// - May have a key with an incomplete key path.
-        /// - May have a reserved/read-only key.
+        /// * May have no key.
+        /// * May have a key with an incomplete key path.
+        /// * May have a reserved/read-only key.
         #[prost(message, tag = "6")]
         EntityValue(super::Entity),
         /// An array value.
@@ -175,7 +175,7 @@ pub mod value {
 }
 /// A Datastore data object.
 ///
-/// An entity is limited to 1 megabyte when stored. That _roughly_
+/// An entity is limited to 1 megabyte when stored. That *roughly*
 /// corresponds to a limit of 1 megabyte for the serialized form of this
 /// message.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -207,10 +207,10 @@ pub struct EntityResult {
     /// increases with changes to the entity.
     ///
     /// This field is set for
-    /// [`FULL`][google.datastore.v1beta3.EntityResult.ResultType.FULL] entity
+    /// \[`FULL`\]\[google.datastore.v1beta3.EntityResult.ResultType.FULL\] entity
     /// results.
     ///
-    /// For [missing][google.datastore.v1beta3.LookupResponse.missing] entities in
+    /// For \[missing\]\[google.datastore.v1beta3.LookupResponse.missing\] entities in
     /// `LookupResponse`, this is the version of the snapshot that was used to look
     /// up the entity, and it is always set except for eventually consistent reads.
     #[prost(int64, tag = "4")]
@@ -319,14 +319,14 @@ pub struct Query {
     pub limit: ::core::option::Option<i32>,
 }
 /// A representation of a kind.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct KindExpression {
     /// The name of the kind.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// A reference to a property relative to the kind expressions.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PropertyReference {
     /// The name of the property.
     /// If name includes "."s, it may be interpreted as a property name path.
@@ -334,14 +334,14 @@ pub struct PropertyReference {
     pub name: ::prost::alloc::string::String,
 }
 /// A representation of a property in a projection.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Projection {
     /// The property to project.
     #[prost(message, optional, tag = "1")]
     pub property: ::core::option::Option<PropertyReference>,
 }
 /// The desired order for a specific property.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PropertyOrder {
     /// The property to order by.
     #[prost(message, optional, tag = "1")]
@@ -687,7 +687,7 @@ pub mod query_result_batch {
     }
 }
 /// The request for
-/// [Datastore.Lookup][google.datastore.v1beta3.Datastore.Lookup].
+/// \[Datastore.Lookup\]\[google.datastore.v1beta3.Datastore.Lookup\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupRequest {
     /// The ID of the project against which to make the request.
@@ -701,7 +701,7 @@ pub struct LookupRequest {
     pub keys: ::prost::alloc::vec::Vec<Key>,
 }
 /// The response for
-/// [Datastore.Lookup][google.datastore.v1beta3.Datastore.Lookup].
+/// \[Datastore.Lookup\]\[google.datastore.v1beta3.Datastore.Lookup\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupResponse {
     /// Entities found as `ResultType.FULL` entities. The order of results in this
@@ -721,7 +721,7 @@ pub struct LookupResponse {
     pub deferred: ::prost::alloc::vec::Vec<Key>,
 }
 /// The request for
-/// [Datastore.RunQuery][google.datastore.v1beta3.Datastore.RunQuery].
+/// \[Datastore.RunQuery\]\[google.datastore.v1beta3.Datastore.RunQuery\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunQueryRequest {
     /// The ID of the project against which to make the request.
@@ -754,7 +754,7 @@ pub mod run_query_request {
     }
 }
 /// The response for
-/// [Datastore.RunQuery][google.datastore.v1beta3.Datastore.RunQuery].
+/// \[Datastore.RunQuery\]\[google.datastore.v1beta3.Datastore.RunQuery\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunQueryResponse {
     /// A batch of query results (always present).
@@ -765,8 +765,8 @@ pub struct RunQueryResponse {
     pub query: ::core::option::Option<Query>,
 }
 /// The request for
-/// [Datastore.BeginTransaction][google.datastore.v1beta3.Datastore.BeginTransaction].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[Datastore.BeginTransaction\]\[google.datastore.v1beta3.Datastore.BeginTransaction\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BeginTransactionRequest {
     /// The ID of the project against which to make the request.
     #[prost(string, tag = "8")]
@@ -776,32 +776,32 @@ pub struct BeginTransactionRequest {
     pub transaction_options: ::core::option::Option<TransactionOptions>,
 }
 /// The response for
-/// [Datastore.BeginTransaction][google.datastore.v1beta3.Datastore.BeginTransaction].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[Datastore.BeginTransaction\]\[google.datastore.v1beta3.Datastore.BeginTransaction\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BeginTransactionResponse {
     /// The transaction identifier (always present).
     #[prost(bytes = "vec", tag = "1")]
     pub transaction: ::prost::alloc::vec::Vec<u8>,
 }
 /// The request for
-/// [Datastore.Rollback][google.datastore.v1beta3.Datastore.Rollback].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[Datastore.Rollback\]\[google.datastore.v1beta3.Datastore.Rollback\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RollbackRequest {
     /// The ID of the project against which to make the request.
     #[prost(string, tag = "8")]
     pub project_id: ::prost::alloc::string::String,
     /// The transaction identifier, returned by a call to
-    /// [Datastore.BeginTransaction][google.datastore.v1beta3.Datastore.BeginTransaction].
+    /// \[Datastore.BeginTransaction\]\[google.datastore.v1beta3.Datastore.BeginTransaction\].
     #[prost(bytes = "vec", tag = "1")]
     pub transaction: ::prost::alloc::vec::Vec<u8>,
 }
 /// The response for
-/// [Datastore.Rollback][google.datastore.v1beta3.Datastore.Rollback]. (an empty
+/// \[Datastore.Rollback\]\[google.datastore.v1beta3.Datastore.Rollback\]. (an empty
 /// message).
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RollbackResponse {}
 /// The request for
-/// [Datastore.Commit][google.datastore.v1beta3.Datastore.Commit].
+/// \[Datastore.Commit\]\[google.datastore.v1beta3.Datastore.Commit\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommitRequest {
     /// The ID of the project against which to make the request.
@@ -816,10 +816,10 @@ pub struct CommitRequest {
     /// applied in order. The following sequences of mutations affecting a single
     /// entity are not permitted in a single `Commit` request:
     ///
-    /// - `insert` followed by `insert`
-    /// - `update` followed by `insert`
-    /// - `upsert` followed by `insert`
-    /// - `delete` followed by `update`
+    /// * `insert` followed by `insert`
+    /// * `update` followed by `insert`
+    /// * `upsert` followed by `insert`
+    /// * `delete` followed by `update`
     ///
     /// When mode is `NON_TRANSACTIONAL`, no two mutations may affect a single
     /// entity.
@@ -879,17 +879,17 @@ pub mod commit_request {
         }
     }
     /// Must be set when mode is `TRANSACTIONAL`.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum TransactionSelector {
         /// The identifier of the transaction associated with the commit. A
         /// transaction identifier is returned by a call to
-        /// [Datastore.BeginTransaction][google.datastore.v1beta3.Datastore.BeginTransaction].
+        /// \[Datastore.BeginTransaction\]\[google.datastore.v1beta3.Datastore.BeginTransaction\].
         #[prost(bytes, tag = "1")]
         Transaction(::prost::alloc::vec::Vec<u8>),
     }
 }
 /// The response for
-/// [Datastore.Commit][google.datastore.v1beta3.Datastore.Commit].
+/// \[Datastore.Commit\]\[google.datastore.v1beta3.Datastore.Commit\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommitResponse {
     /// The result of performing the mutations.
@@ -902,7 +902,7 @@ pub struct CommitResponse {
     pub index_updates: i32,
 }
 /// The request for
-/// [Datastore.AllocateIds][google.datastore.v1beta3.Datastore.AllocateIds].
+/// \[Datastore.AllocateIds\]\[google.datastore.v1beta3.Datastore.AllocateIds\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AllocateIdsRequest {
     /// The ID of the project against which to make the request.
@@ -914,7 +914,7 @@ pub struct AllocateIdsRequest {
     pub keys: ::prost::alloc::vec::Vec<Key>,
 }
 /// The response for
-/// [Datastore.AllocateIds][google.datastore.v1beta3.Datastore.AllocateIds].
+/// \[Datastore.AllocateIds\]\[google.datastore.v1beta3.Datastore.AllocateIds\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AllocateIdsResponse {
     /// The keys specified in the request (in the same order), each with
@@ -923,7 +923,7 @@ pub struct AllocateIdsResponse {
     pub keys: ::prost::alloc::vec::Vec<Key>,
 }
 /// The request for
-/// [Datastore.ReserveIds][google.datastore.v1beta3.Datastore.ReserveIds].
+/// \[Datastore.ReserveIds\]\[google.datastore.v1beta3.Datastore.ReserveIds\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReserveIdsRequest {
     /// The ID of the project against which to make the request.
@@ -938,8 +938,8 @@ pub struct ReserveIdsRequest {
     pub keys: ::prost::alloc::vec::Vec<Key>,
 }
 /// The response for
-/// [Datastore.ReserveIds][google.datastore.v1beta3.Datastore.ReserveIds].
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+/// \[Datastore.ReserveIds\]\[google.datastore.v1beta3.Datastore.ReserveIds\].
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReserveIdsResponse {}
 /// A mutation to apply to an entity.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -947,11 +947,12 @@ pub struct Mutation {
     /// The mutation operation.
     ///
     /// For `insert`, `update`, and `upsert`:
-    /// - The entity's key must not be reserved/read-only.
-    /// - No property in the entity may have a reserved name,
-    ///    not even a property in an entity in a value.
-    /// - No value in the entity may have meaning 18,
-    ///    not even a value in an entity in another value.
+    ///
+    /// * The entity's key must not be reserved/read-only.
+    /// * No property in the entity may have a reserved name,
+    ///   not even a property in an entity in a value.
+    /// * No value in the entity may have meaning 18,
+    ///   not even a value in an entity in another value.
     #[prost(oneof = "mutation::Operation", tags = "4, 5, 6, 7")]
     pub operation: ::core::option::Option<mutation::Operation>,
     /// When set, the server will detect whether or not this mutation conflicts
@@ -967,11 +968,12 @@ pub mod mutation {
     /// The mutation operation.
     ///
     /// For `insert`, `update`, and `upsert`:
-    /// - The entity's key must not be reserved/read-only.
-    /// - No property in the entity may have a reserved name,
-    ///    not even a property in an entity in a value.
-    /// - No value in the entity may have meaning 18,
-    ///    not even a value in an entity in another value.
+    ///
+    /// * The entity's key must not be reserved/read-only.
+    /// * No property in the entity may have a reserved name,
+    ///   not even a property in an entity in a value.
+    /// * No value in the entity may have meaning 18,
+    ///   not even a value in an entity in another value.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
         /// The entity to insert. The entity must not already exist.
@@ -994,7 +996,7 @@ pub mod mutation {
     /// When set, the server will detect whether or not this mutation conflicts
     /// with the current version of the entity on the server. Conflicting mutations
     /// are not applied, and are marked as such in MutationResult.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ConflictDetectionStrategy {
         /// The version of the entity that this mutation is being applied to. If this
         /// does not match the current version on the server, the mutation conflicts.
@@ -1022,7 +1024,7 @@ pub struct MutationResult {
     pub conflict_detected: bool,
 }
 /// The options shared by read requests.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReadOptions {
     /// If not specified, lookups and ancestor queries default to
     /// `read_consistency`=`STRONG`, global queries default to
@@ -1078,7 +1080,7 @@ pub mod read_options {
     /// If not specified, lookups and ancestor queries default to
     /// `read_consistency`=`STRONG`, global queries default to
     /// `read_consistency`=`EVENTUAL`.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ConsistencyType {
         /// The non-transactional read consistency to use.
         /// Cannot be set to `STRONG` for global queries.
@@ -1086,7 +1088,7 @@ pub mod read_options {
         ReadConsistency(i32),
         /// The identifier of the transaction in which to read. A
         /// transaction identifier is returned by a call to
-        /// [Datastore.BeginTransaction][google.datastore.v1beta3.Datastore.BeginTransaction].
+        /// \[Datastore.BeginTransaction\]\[google.datastore.v1beta3.Datastore.BeginTransaction\].
         #[prost(bytes, tag = "2")]
         Transaction(::prost::alloc::vec::Vec<u8>),
     }
@@ -1094,11 +1096,11 @@ pub mod read_options {
 /// Options for beginning a new transaction.
 ///
 /// Transactions can be created explicitly with calls to
-/// [Datastore.BeginTransaction][google.datastore.v1beta3.Datastore.BeginTransaction]
+/// \[Datastore.BeginTransaction\]\[google.datastore.v1beta3.Datastore.BeginTransaction\]
 /// or implicitly by setting
-/// [ReadOptions.new_transaction][google.datastore.v1beta3.ReadOptions.new_transaction]
+/// \[ReadOptions.new_transaction\]\[google.datastore.v1beta3.ReadOptions.new_transaction\]
 /// in read requests.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TransactionOptions {
     /// The `mode` of the transaction, indicating whether write operations are
     /// supported.
@@ -1108,18 +1110,18 @@ pub struct TransactionOptions {
 /// Nested message and enum types in `TransactionOptions`.
 pub mod transaction_options {
     /// Options specific to read / write transactions.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ReadWrite {
         /// The transaction identifier of the transaction being retried.
         #[prost(bytes = "vec", tag = "1")]
         pub previous_transaction: ::prost::alloc::vec::Vec<u8>,
     }
     /// Options specific to read-only transactions.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ReadOnly {}
     /// The `mode` of the transaction, indicating whether write operations are
     /// supported.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Mode {
         /// The transaction should allow both reads and writes.
         #[prost(message, tag = "1")]
@@ -1146,7 +1148,6 @@ pub mod datastore_client {
     /// with both an empty path and an empty or unset partition ID. Normalization of
     /// input keys sets the project ID (if not already set) to the project ID from
     /// the request.
-    ///
     #[derive(Debug, Clone)]
     pub struct DatastoreClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -1240,7 +1241,7 @@ pub mod datastore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.v1beta3.Datastore/Lookup",
             );
@@ -1265,7 +1266,7 @@ pub mod datastore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.v1beta3.Datastore/RunQuery",
             );
@@ -1292,7 +1293,7 @@ pub mod datastore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.v1beta3.Datastore/BeginTransaction",
             );
@@ -1320,7 +1321,7 @@ pub mod datastore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.v1beta3.Datastore/Commit",
             );
@@ -1345,7 +1346,7 @@ pub mod datastore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.v1beta3.Datastore/Rollback",
             );
@@ -1373,7 +1374,7 @@ pub mod datastore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.v1beta3.Datastore/AllocateIds",
             );
@@ -1401,7 +1402,7 @@ pub mod datastore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.v1beta3.Datastore/ReserveIds",
             );

@@ -88,7 +88,7 @@ pub mod calendar_add_on_manifest {
     }
 }
 /// Defines conference related values.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ConferenceSolution {
     /// Required. The endpoint to call when ConferenceData should be created.
     #[prost(string, tag = "1")]
@@ -108,7 +108,7 @@ pub struct ConferenceSolution {
     pub logo_url: ::prost::alloc::string::String,
 }
 /// Common format for declaring a calendar add-on's triggers.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CalendarExtensionPoint {
     /// Required. The endpoint to execute when this extension point is
     /// activated.

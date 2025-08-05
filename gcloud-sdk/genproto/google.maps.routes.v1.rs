@@ -101,10 +101,10 @@ pub enum TollPass {
     /// Not used. If this value is used, then the request fails.
     Unspecified = 0,
     /// One of many Sydney toll pass providers.
-    ///   <https://www.myetoll.com.au>
+    /// <https://www.myetoll.com.au>
     AuEtollTag = 82,
     /// One of many Sydney toll pass providers.
-    ///   <https://www.tollpay.com.au/>
+    /// <https://www.tollpay.com.au/>
     AuEwayTag = 83,
     /// Australia-wide toll pass.
     /// See additional details at <https://www.linkt.com.au/.>
@@ -163,7 +163,7 @@ pub enum TollPass {
     /// <https://www.pase.com.mx>
     MxPase = 91,
     /// Mexico
-    ///   <https://operadoravial.com/quick-pass/>
+    /// <https://operadoravial.com/quick-pass/>
     MxQuickpass = 93,
     /// Mexico
     /// <http://appsh.chihuahua.gob.mx/transparencia/?doc=/ingresos/TelepeajeFormato4.pdf>
@@ -679,7 +679,7 @@ pub struct ComputeRoutesRequest {
     pub travel_mode: i32,
     /// Optional. Specifies how to compute the route. The server
     /// attempts to use the selected routing preference to compute the route. If
-    ///   the routing preference results in an error or an extra long latency, then
+    /// the routing preference results in an error or an extra long latency, then
     /// an error is returned. You can specify this option only when the
     /// `travel_mode` is `DRIVE` or `TWO_WHEELER`, otherwise the request fails.
     #[prost(enumeration = "RoutingPreference", tag = "5")]
@@ -733,7 +733,7 @@ pub struct ComputeRoutesRequest {
 }
 /// Encapsulates a set of optional conditions to satisfy when calculating the
 /// routes.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RouteModifiers {
     /// When set to true, avoids toll roads where reasonable, giving preference to
     /// routes not containing toll roads. Applies only to the `DRIVE` and
@@ -767,14 +767,14 @@ pub struct RouteModifiers {
     pub toll_passes: ::prost::alloc::vec::Vec<i32>,
 }
 /// Encapsulates the vehicle information, such as the vehicle emission type.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VehicleInfo {
     /// Specifies the license plate last character. Could be a digit or a letter.
     #[prost(string, tag = "1")]
     pub license_plate_last_character: ::prost::alloc::string::String,
     /// Describes the vehicle's emission type.
     /// Applies only to the `DRIVE`
-    /// [`RouteTravelMode`][google.maps.routes.v1.RouteTravelMode].
+    /// \[`RouteTravelMode`\]\[google.maps.routes.v1.RouteTravelMode\].
     #[prost(enumeration = "VehicleEmissionType", tag = "2")]
     pub emission_type: i32,
 }
@@ -1013,7 +1013,7 @@ pub mod route_objective {
     }
     /// Deprecated: Custom layers will stop affecting route generation soon.
     /// Customized data layer that customers use to influence the generated route.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CustomLayer {
         /// Required. A dataset that the customer has uploaded in advance.
         #[prost(message, optional, tag = "1")]
@@ -1023,7 +1023,7 @@ pub mod route_objective {
     pub mod custom_layer {
         /// Information about a dataset that customers have uploaded in advance. The
         /// dataset information is used to influence routing.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct DatasetInfo {
             /// Optional. Deprecated: use display_name instead.
             /// ID of a customer uploaded dataset which is used to influence the route.
@@ -1124,8 +1124,10 @@ pub struct RouteTravelAdvisory {
     ///
     /// Example:
     ///
-    ///      polyline: A ---- B ---- C ---- D ---- E ---- F ---- G
-    ///      speed_reading_intervals: [A,C), [C,D), [D,G).
+    /// ```text
+    /// polyline: A ---- B ---- C ---- D ---- E ---- F ---- G
+    /// speed_reading_intervals: [A,C), [C,D), [D,G).
+    /// ```
     #[prost(message, repeated, tag = "3")]
     pub speed_reading_intervals: ::prost::alloc::vec::Vec<SpeedReadingInterval>,
     /// Deprecated: This field will stop being populated soon.
@@ -1155,8 +1157,10 @@ pub struct RouteLegTravelAdvisory {
     ///
     /// Example:
     ///
-    ///      polyline: A ---- B ---- C ---- D ---- E ---- F ---- G
-    ///      speed_reading_intervals: [A,C), [C,D), [D,G).
+    /// ```text
+    /// polyline: A ---- B ---- C ---- D ---- E ---- F ---- G
+    /// speed_reading_intervals: [A,C), [C,D), [D,G).
+    /// ```
     #[prost(message, repeated, tag = "2")]
     pub speed_reading_intervals: ::prost::alloc::vec::Vec<SpeedReadingInterval>,
     /// Deprecated: This field will stop being populated soon.
@@ -1176,7 +1180,7 @@ pub struct RouteLegStepTravelAdvisory {
 }
 /// Encapsulates the traffic restriction applied to the route. As of October
 /// 2019, only Jakarta, Indonesia takes into consideration.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TrafficRestriction {
     /// The restriction based on the vehicle's license plate last character. If
     /// this field does not exist, then no restriction on route.
@@ -1186,7 +1190,7 @@ pub struct TrafficRestriction {
     >,
 }
 /// Encapsulates the license plate last character restriction.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LicensePlateLastCharacterRestriction {
     /// The allowed last character of a license plate of a vehicle. Only vehicles
     /// whose license plate's last characters match these are allowed to travel on
@@ -1277,7 +1281,7 @@ pub struct RouteLegStep {
     #[prost(message, optional, tag = "7")]
     pub travel_advisory: ::core::option::Option<RouteLegStepTravelAdvisory>,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NavigationInstruction {
     /// Encapsulates the navigation instructions for the current step (for example,
     /// turn left, merge, or straight). This field determines which icon to
@@ -1292,7 +1296,7 @@ pub struct NavigationInstruction {
 /// Given a path with points P_0, P_1, ... , P_N (zero-based index), the
 /// `SpeedReadingInterval` defines an interval and describes its traffic using
 /// the following categories.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SpeedReadingInterval {
     /// The starting index of this interval in the polyline.
     /// In JSON, when the index is 0, the field appears to be unpopulated.
@@ -1528,7 +1532,7 @@ pub struct CustomRoute {
 /// Information related to how and why a fallback result was used. If this field
 /// is set, then it means the server used a different routing mode from your
 /// preferred mode as fallback.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FallbackInfo {
     /// Routing mode used for the response. If fallback was triggered, the mode
     /// may be different from routing preference set in the original client
@@ -1637,16 +1641,16 @@ pub mod compute_custom_routes_response {
     /// performs two types of fallbacks:
     ///
     /// 1. If it cannot compute the route using the `routing_preference` requested
-    /// by the customer, it will fallback to another routing mode. In this case
-    /// `fallback_routing_mode` and `routing_mode_fallback_reason` are used to
-    /// communicate the fallback routing mode used, as well as the reason for
-    /// fallback.
+    ///    by the customer, it will fallback to another routing mode. In this case
+    ///    `fallback_routing_mode` and `routing_mode_fallback_reason` are used to
+    ///    communicate the fallback routing mode used, as well as the reason for
+    ///    fallback.
     ///
-    /// 2. If it cannot compute a 'best' route for the route objective specified by
-    /// the customer, it might fallback to another objective.
-    /// `fallback_route_objective` is used to communicate the fallback route
-    /// objective.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    /// 1. If it cannot compute a 'best' route for the route objective specified by
+    ///    the customer, it might fallback to another objective.
+    ///    `fallback_route_objective` is used to communicate the fallback route
+    ///    objective.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct FallbackInfo {
         /// Routing mode used for the response. If fallback was triggered, the mode
         /// may be different from routing preference set in the original client
@@ -1722,11 +1726,11 @@ pub struct ComputeRouteMatrixRequest {
     /// destinations:
     ///
     /// * The number of elements (origins × destinations) must be no greater than
-    /// 625 in any case.
+    ///   625 in any case.
     /// * The number of elements (origins × destinations) must be no greater than
-    /// 100 if routing_preference is set to `TRAFFIC_AWARE_OPTIMAL`.
+    ///   100 if routing_preference is set to `TRAFFIC_AWARE_OPTIMAL`.
     /// * The number of waypoints (origins + destinations) specified as `place_id`
-    /// must be no greater than 50.
+    ///   must be no greater than 50.
     #[prost(message, repeated, tag = "1")]
     pub origins: ::prost::alloc::vec::Vec<RouteMatrixOrigin>,
     /// Required. Array of destinations, which determines the columns of the
@@ -1967,26 +1971,25 @@ pub mod routes_preferred_client {
         /// For example, in this method:
         ///
         /// * Field mask of all available fields (for manual inspection):
-        ///   `X-Goog-FieldMask: *`
+        ///  `X-Goog-FieldMask: *`
         /// * Field mask of Route-level duration, distance, and polyline (an example
-        /// production setup):
-        ///   `X-Goog-FieldMask:
-        ///   routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline`
+        ///  production setup):
+        ///  `X-Goog-FieldMask: routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline`
         ///
         /// Google discourage the use of the wildcard (`*`) response field mask, or
         /// specifying the field mask at the top level (`routes`), because:
         ///
         /// * Selecting only the fields that you need helps our server save computation
-        /// cycles, allowing us to return the result to you with a lower latency.
+        ///  cycles, allowing us to return the result to you with a lower latency.
         /// * Selecting only the fields that you need
-        /// in your production job ensures stable latency performance. We might add
-        /// more response fields in the future, and those new fields might require
-        /// extra computation time. If you select all fields, or if you select all
-        /// fields at the top level, then you might experience performance degradation
-        /// because any new field we add will be automatically included in the
-        /// response.
+        ///  in your production job ensures stable latency performance. We might add
+        ///  more response fields in the future, and those new fields might require
+        ///  extra computation time. If you select all fields, or if you select all
+        ///  fields at the top level, then you might experience performance degradation
+        ///  because any new field we add will be automatically included in the
+        ///  response.
         /// * Selecting only the fields that you need results in a smaller response
-        /// size, and thus higher network throughput.
+        ///  size, and thus higher network throughput.
         pub async fn compute_routes(
             &mut self,
             request: impl tonic::IntoRequest<super::ComputeRoutesRequest>,
@@ -2002,7 +2005,7 @@ pub mod routes_preferred_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.routes.v1.RoutesPreferred/ComputeRoutes",
             );
@@ -2031,26 +2034,25 @@ pub mod routes_preferred_client {
         /// For example, in this method:
         ///
         /// * Field mask of all available fields (for manual inspection):
-        ///   `X-Goog-FieldMask: *`
+        ///  `X-Goog-FieldMask: *`
         /// * Field mask of route durations, distances, element status, condition, and
-        ///   element indices (an example production setup):
-        ///   `X-Goog-FieldMask:
-        ///   originIndex,destinationIndex,status,condition,distanceMeters,duration`
+        ///  element indices (an example production setup):
+        ///  `X-Goog-FieldMask: originIndex,destinationIndex,status,condition,distanceMeters,duration`
         ///
         /// It is critical that you include `status` in your field mask as otherwise
         /// all messages will appear to be OK. Google discourages the use of the
         /// wildcard (`*`) response field mask, because:
         ///
         /// * Selecting only the fields that you need helps our server save computation
-        /// cycles, allowing us to return the result to you with a lower latency.
+        ///  cycles, allowing us to return the result to you with a lower latency.
         /// * Selecting only the fields that you need in your production job ensures
-        /// stable latency performance. We might add more response fields in the
-        /// future, and those new fields might require extra computation time. If you
-        /// select all fields, or if you select all fields at the top level, then you
-        /// might experience performance degradation because any new field we add will
-        /// be automatically included in the response.
+        ///  stable latency performance. We might add more response fields in the
+        ///  future, and those new fields might require extra computation time. If you
+        ///  select all fields, or if you select all fields at the top level, then you
+        ///  might experience performance degradation because any new field we add will
+        ///  be automatically included in the response.
         /// * Selecting only the fields that you need results in a smaller response
-        /// size, and thus higher network throughput.
+        ///  size, and thus higher network throughput.
         pub async fn compute_route_matrix(
             &mut self,
             request: impl tonic::IntoRequest<super::ComputeRouteMatrixRequest>,
@@ -2066,7 +2068,7 @@ pub mod routes_preferred_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.routes.v1.RoutesPreferred/ComputeRouteMatrix",
             );
@@ -2096,24 +2098,23 @@ pub mod routes_preferred_client {
         /// For example, in this method:
         ///
         /// * Field mask of all available fields (for manual inspection):
-        ///   `X-Goog-FieldMask: *`
+        ///  `X-Goog-FieldMask: *`
         /// * Field mask of route distances, durations, token and toll info:
-        ///   `X-Goog-FieldMask:
-        ///   routes.route.distanceMeters,routes.route.duration,routes.token,routes.route.travelAdvisory.tollInfo`
+        ///  `X-Goog-FieldMask: routes.route.distanceMeters,routes.route.duration,routes.token,routes.route.travelAdvisory.tollInfo`
         ///
         /// Google discourages the use of the wildcard (`*`) response field mask, or
         /// specifying the field mask at the top level (`routes`), because:
         ///
         /// * Selecting only the fields that you need helps our server save computation
-        /// cycles, allowing us to return the result to you with a lower latency.
+        ///  cycles, allowing us to return the result to you with a lower latency.
         /// * Selecting only the fields that you need in your production job ensures
-        /// stable latency performance. We might add more response fields in the
-        /// future, and those new fields might require extra computation time. If you
-        /// select all fields, or if you select all fields at the top level, then you
-        /// might experience performance degradation because any new field we add will
-        /// be automatically included in the response.
+        ///  stable latency performance. We might add more response fields in the
+        ///  future, and those new fields might require extra computation time. If you
+        ///  select all fields, or if you select all fields at the top level, then you
+        ///  might experience performance degradation because any new field we add will
+        ///  be automatically included in the response.
         /// * Selecting only the fields that you need results in a smaller response
-        /// size, and thus higher network throughput.
+        ///  size, and thus higher network throughput.
         pub async fn compute_custom_routes(
             &mut self,
             request: impl tonic::IntoRequest<super::ComputeCustomRoutesRequest>,
@@ -2129,7 +2130,7 @@ pub mod routes_preferred_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.routes.v1.RoutesPreferred/ComputeCustomRoutes",
             );

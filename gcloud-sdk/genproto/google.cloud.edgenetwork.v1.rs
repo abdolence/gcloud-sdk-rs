@@ -318,7 +318,7 @@ pub struct Router {
 pub mod router {
     /// Router Interface defines the GDCE zone side layer-3 information for
     /// building the BGP session.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Interface {
         /// Name of this interface entry. Unique within the Zones resource.
         #[prost(string, tag = "1")]
@@ -345,7 +345,7 @@ pub mod router {
     }
     /// BGPPeer defines the peer side layer-3 information for building the BGP
     /// session.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct BgpPeer {
         /// Name of this BGP peer. Unique within the Zones resource.
         #[prost(string, tag = "1")]
@@ -376,7 +376,7 @@ pub mod router {
         pub local_asn: u32,
     }
     /// BGP information specific to this router.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Bgp {
         /// Locally assigned BGP ASN.
         #[prost(uint32, tag = "1")]
@@ -388,7 +388,7 @@ pub mod router {
     }
 }
 /// LinkLayerAddress contains an IP address and corresponding link-layer address.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LinkLayerAddress {
     /// The MAC address of this neighbor.
     #[prost(string, tag = "1")]
@@ -448,7 +448,7 @@ pub mod interconnect_diagnostics {
         pub packet_counts: ::core::option::Option<PacketCounts>,
     }
     /// Containing a collection of interface-related statistics objects.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PacketCounts {
         /// The number of packets that are delivered.
         #[prost(int64, tag = "1")]
@@ -473,7 +473,7 @@ pub mod interconnect_diagnostics {
         pub outbound_discards: i64,
     }
     /// Describing the status of a LACP link.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct LinkLacpStatus {
         /// The state of a LACP link.
         #[prost(enumeration = "link_lacp_status::State", tag = "1")]
@@ -546,7 +546,7 @@ pub mod interconnect_diagnostics {
         }
     }
     /// Describing a LLDP link.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct LinkLldpStatus {
         /// The peer system's administratively assigned name.
         #[prost(string, tag = "1")]
@@ -585,7 +585,7 @@ pub struct RouterStatus {
 /// Nested message and enum types in `RouterStatus`.
 pub mod router_status {
     /// Status of a BGP peer.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct BgpPeerStatus {
         /// Name of this BGP peer. Unique within the Routers resource.
         #[prost(string, tag = "1")]
@@ -604,7 +604,7 @@ pub mod router_status {
         pub state: ::prost::alloc::string::String,
         /// Time this session has been up.
         /// Format:
-        ///   14 years, 51 weeks, 6 days, 23 hours, 59 minutes, 59 seconds
+        /// 14 years, 51 weeks, 6 days, 23 hours, 59 minutes, 59 seconds
         #[prost(string, tag = "6")]
         pub uptime: ::prost::alloc::string::String,
         /// Time this session has been up, in seconds.
@@ -661,7 +661,7 @@ pub mod router_status {
         }
     }
     /// PrefixCounter contains a collection of prefixes related counts.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PrefixCounter {
         /// Number of prefixes advertised.
         #[prost(int64, tag = "1")]
@@ -734,7 +734,7 @@ impl ResourceState {
 }
 /// Deprecated: not implemented.
 /// Message for requesting list of Zones
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListZonesRequest {
     /// Required. Parent value for ListZonesRequest
     #[prost(string, tag = "1")]
@@ -769,14 +769,14 @@ pub struct ListZonesResponse {
 }
 /// Deprecated: not implemented.
 /// Message for getting a Zone
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetZoneRequest {
     /// Required. Name of the resource
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message for requesting list of Networks
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNetworksRequest {
     /// Required. Parent value for ListNetworksRequest
     #[prost(string, tag = "1")]
@@ -809,7 +809,7 @@ pub struct ListNetworksResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Network
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetNetworkRequest {
     /// Required. Name of the resource
     #[prost(string, tag = "1")]
@@ -846,7 +846,7 @@ pub struct CreateNetworkRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting a Network
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteNetworkRequest {
     /// Required. Name of the resource
     #[prost(string, tag = "1")]
@@ -868,7 +868,7 @@ pub struct DeleteNetworkRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for requesting list of Subnets
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSubnetsRequest {
     /// Required. Parent value for ListSubnetsRequest
     #[prost(string, tag = "1")]
@@ -901,7 +901,7 @@ pub struct ListSubnetsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Subnet
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSubnetRequest {
     /// Required. Name of the resource
     #[prost(string, tag = "1")]
@@ -967,7 +967,7 @@ pub struct UpdateSubnetRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting a Subnet
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSubnetRequest {
     /// Required. Name of the resource
     #[prost(string, tag = "1")]
@@ -989,7 +989,7 @@ pub struct DeleteSubnetRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for requesting list of Interconnects
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInterconnectsRequest {
     /// Required. Parent value for ListInterconnectsRequest
     #[prost(string, tag = "1")]
@@ -1022,14 +1022,14 @@ pub struct ListInterconnectsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Interconnect
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInterconnectRequest {
     /// Required. Name of the resource
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message for requesting list of InterconnectAttachments
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInterconnectAttachmentsRequest {
     /// Required. Parent value for ListInterconnectAttachmentsRequest
     #[prost(string, tag = "1")]
@@ -1062,7 +1062,7 @@ pub struct ListInterconnectAttachmentsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a InterconnectAttachment
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInterconnectAttachmentRequest {
     /// Required. Name of the resource
     #[prost(string, tag = "1")]
@@ -1099,7 +1099,7 @@ pub struct CreateInterconnectAttachmentRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting a InterconnectAttachment
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteInterconnectAttachmentRequest {
     /// Required. Name of the resource
     #[prost(string, tag = "1")]
@@ -1121,7 +1121,7 @@ pub struct DeleteInterconnectAttachmentRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for requesting list of Routers
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRoutersRequest {
     /// Required. Parent value for ListRoutersRequest
     #[prost(string, tag = "1")]
@@ -1154,7 +1154,7 @@ pub struct ListRoutersResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Router
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRouterRequest {
     /// Required. Name of the resource
     #[prost(string, tag = "1")]
@@ -1220,7 +1220,7 @@ pub struct UpdateRouterRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting a Router
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRouterRequest {
     /// Required. Name of the resource
     #[prost(string, tag = "1")]
@@ -1242,7 +1242,7 @@ pub struct DeleteRouterRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -1261,8 +1261,8 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have been cancelled successfully
-    /// have [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+    /// have \[Operation.error\]\[\] value with a
+    /// \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -1271,7 +1271,7 @@ pub struct OperationMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// Message for requesting the diagnostics of a network within a specific zone.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DiagnoseNetworkRequest {
     /// Required. The name of the network resource.
     #[prost(string, tag = "1")]
@@ -1349,7 +1349,7 @@ pub mod diagnose_network_response {
 }
 /// Message for requesting the diagnostics of an interconnect within a specific
 /// zone.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DiagnoseInterconnectRequest {
     /// Required. The name of the interconnect resource.
     #[prost(string, tag = "1")]
@@ -1367,7 +1367,7 @@ pub struct DiagnoseInterconnectResponse {
     pub result: ::core::option::Option<InterconnectDiagnostics>,
 }
 /// Message for requesting diagnostics of a router within a specific zone.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DiagnoseRouterRequest {
     /// Required. The name of the router resource.
     #[prost(string, tag = "1")]
@@ -1384,14 +1384,14 @@ pub struct DiagnoseRouterResponse {
     pub result: ::core::option::Option<RouterStatus>,
 }
 /// Message for initializing a specified zone
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InitializeZoneRequest {
     /// Required. The name of the zone resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The response of initializing a zone
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InitializeZoneResponse {}
 /// Generated client implementations.
 pub mod edge_network_client {
@@ -1504,7 +1504,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/InitializeZone",
             );
@@ -1536,7 +1536,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/ListZones",
             );
@@ -1565,7 +1565,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/GetZone",
             );
@@ -1592,7 +1592,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/ListNetworks",
             );
@@ -1619,7 +1619,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/GetNetwork",
             );
@@ -1649,7 +1649,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/DiagnoseNetwork",
             );
@@ -1679,7 +1679,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/CreateNetwork",
             );
@@ -1709,7 +1709,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/DeleteNetwork",
             );
@@ -1739,7 +1739,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/ListSubnets",
             );
@@ -1766,7 +1766,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/GetSubnet",
             );
@@ -1796,7 +1796,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/CreateSubnet",
             );
@@ -1826,7 +1826,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/UpdateSubnet",
             );
@@ -1856,7 +1856,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/DeleteSubnet",
             );
@@ -1886,7 +1886,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/ListInterconnects",
             );
@@ -1913,7 +1913,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/GetInterconnect",
             );
@@ -1943,7 +1943,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/DiagnoseInterconnect",
             );
@@ -1973,7 +1973,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/ListInterconnectAttachments",
             );
@@ -2003,7 +2003,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/GetInterconnectAttachment",
             );
@@ -2033,7 +2033,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/CreateInterconnectAttachment",
             );
@@ -2063,7 +2063,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/DeleteInterconnectAttachment",
             );
@@ -2093,7 +2093,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/ListRouters",
             );
@@ -2120,7 +2120,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/GetRouter",
             );
@@ -2150,7 +2150,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/DiagnoseRouter",
             );
@@ -2180,7 +2180,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/CreateRouter",
             );
@@ -2210,7 +2210,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/UpdateRouter",
             );
@@ -2240,7 +2240,7 @@ pub mod edge_network_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgenetwork.v1.EdgeNetwork/DeleteRouter",
             );

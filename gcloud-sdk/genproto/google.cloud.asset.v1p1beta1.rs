@@ -96,14 +96,14 @@ pub mod iam_policy_search_result {
     }
 }
 /// IAM permissions.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Permissions {
     /// A list of permissions. Example permission string: "compute.disk.get".
     #[prost(string, repeated, tag = "1")]
     pub permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Search all resources request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchAllResourcesRequest {
     /// Required. The relative name of an asset. The search is limited to the
     /// resources within the `scope`. The allowed value must be:
@@ -154,7 +154,7 @@ pub struct SearchAllResourcesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Search all IAM policies request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchAllIamPoliciesRequest {
     /// Required. The relative name of an asset. The search is limited to the
     /// resources within the `scope`. The allowed value must be:
@@ -311,7 +311,7 @@ pub mod asset_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1p1beta1.AssetService/SearchAllResources",
             );
@@ -346,7 +346,7 @@ pub mod asset_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1p1beta1.AssetService/SearchAllIamPolicies",
             );

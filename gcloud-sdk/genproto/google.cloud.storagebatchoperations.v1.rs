@@ -133,7 +133,7 @@ pub struct BucketList {
 pub mod bucket_list {
     /// Describes configuration of a single bucket and its objects to be
     /// transformed.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Bucket {
         /// Required. Bucket name for the objects to be transformed.
         #[prost(string, tag = "1")]
@@ -145,7 +145,7 @@ pub mod bucket_list {
     /// Nested message and enum types in `Bucket`.
     pub mod bucket {
         /// Specifies objects to be transformed.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum ObjectConfiguration {
             /// Specifies objects matching a prefix set.
             #[prost(message, tag = "2")]
@@ -157,27 +157,29 @@ pub mod bucket_list {
     }
 }
 /// Describes list of objects to be transformed.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Manifest {
     /// Required. `manifest_location` must contain the manifest source file that is
     /// a CSV file in a Google Cloud Storage bucket. Each row in the file must
     /// include the object details i.e. BucketId and Name. Generation may
     /// optionally be specified. When it is not specified the live object is acted
     /// upon.
-    ///   `manifest_location` should either be
-    /// 1) An absolute path to the object in the format of
-    /// `gs://bucket_name/path/file_name.csv`.
-    /// 2) An absolute path with a single wildcard character in the file name, for
-    /// example `gs://bucket_name/path/file_name*.csv`.
-    /// If manifest location is specified with a wildcard, objects in all manifest
-    /// files matching the pattern will be acted upon.
+    /// `manifest_location` should either be
+    ///
+    /// 1. An absolute path to the object in the format of
+    ///    `gs://bucket_name/path/file_name.csv`.
+    /// 1. An absolute path with a single wildcard character in the file name, for
+    ///    example `gs://bucket_name/path/file_name*.csv`.
+    ///    If manifest location is specified with a wildcard, objects in all manifest
+    ///    files matching the pattern will be acted upon.
     #[prost(string, tag = "2")]
     pub manifest_location: ::prost::alloc::string::String,
 }
 /// Describes prefixes of objects to be transformed.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PrefixList {
     /// Optional. Include prefixes of the objects to be transformed.
+    ///
     /// * Supports full object name
     /// * Supports prefix of the object name
     /// * Wildcards are not supported
@@ -188,7 +190,7 @@ pub struct PrefixList {
     >,
 }
 /// Describes options to update object hold.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PutObjectHold {
     /// Required. Updates object temporary holds state. When object temporary hold
     /// is set, object cannot be deleted or replaced.
@@ -247,7 +249,7 @@ pub mod put_object_hold {
     }
 }
 /// Describes options to delete an object.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteObject {
     /// Required. Controls deletion behavior when versioning is enabled for the
     /// object's bucket. If true both live and noncurrent objects will be
@@ -262,7 +264,7 @@ pub struct DeleteObject {
     pub permanent_object_deletion_enabled: bool,
 }
 /// Describes options for object rewrite.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RewriteObject {
     /// Required. Resource name of the Cloud KMS key that will be used to encrypt
     /// the object. The Cloud KMS key must be located in same location as the
@@ -300,15 +302,15 @@ pub struct PutMetadata {
     pub content_language: ::core::option::Option<::prost::alloc::string::String>,
     /// Optional. Updates objects Content-Type fixed metadata. Unset values will be
     /// ignored.
-    ///   Set empty values to clear the metadata. Refer to documentation in
-    ///   <https://cloud.google.com/storage/docs/metadata#content-type>
+    /// Set empty values to clear the metadata. Refer to documentation in
+    /// <https://cloud.google.com/storage/docs/metadata#content-type>
     #[prost(string, optional, tag = "4")]
     pub content_type: ::core::option::Option<::prost::alloc::string::String>,
     /// Optional. Updates objects Cache-Control fixed metadata. Unset values will
     /// be
-    ///   ignored. Set empty values to clear the metadata.
-    ///   Additionally, the value for Custom-Time cannot decrease. Refer to
-    ///   documentation in
+    /// ignored. Set empty values to clear the metadata.
+    /// Additionally, the value for Custom-Time cannot decrease. Refer to
+    /// documentation in
     /// <https://cloud.google.com/storage/docs/metadata#caching_data.>
     #[prost(string, optional, tag = "5")]
     pub cache_control: ::core::option::Option<::prost::alloc::string::String>,
@@ -343,7 +345,7 @@ pub struct ErrorSummary {
     pub error_log_entries: ::prost::alloc::vec::Vec<ErrorLogEntry>,
 }
 /// An entry describing an error that has occurred.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ErrorLogEntry {
     /// Required. Output only. Object URL. e.g. gs://my_bucket/object.txt
     #[prost(string, tag = "1")]
@@ -354,7 +356,7 @@ pub struct ErrorLogEntry {
     pub error_details: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Describes details about the progress of the job.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Counters {
     /// Output only. Number of objects listed.
     #[prost(int64, tag = "1")]
@@ -367,7 +369,7 @@ pub struct Counters {
     pub failed_object_count: i64,
 }
 /// Specifies the Cloud Logging behavior.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LoggingConfig {
     /// Required. Specifies the actions to be logged.
     #[prost(
@@ -445,10 +447,10 @@ pub mod logging_config {
         /// Illegal value, to avoid allowing a default.
         Unspecified = 0,
         /// `LoggableAction` completed successfully. `SUCCEEDED` actions are
-        /// logged as [INFO][google.logging.type.LogSeverity.INFO].
+        /// logged as \[INFO\]\[google.logging.type.LogSeverity.INFO\].
         Succeeded = 1,
         /// `LoggableAction` terminated in an error state. `FAILED` actions
-        /// are logged as [ERROR][google.logging.type.LogSeverity.ERROR].
+        /// are logged as \[ERROR\]\[google.logging.type.LogSeverity.ERROR\].
         Failed = 2,
     }
     impl LoggableActionState {
@@ -475,7 +477,7 @@ pub mod logging_config {
     }
 }
 /// Message for request to list Jobs
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListJobsRequest {
     /// Required. Format: projects/{project_id}/locations/global.
     #[prost(string, tag = "1")]
@@ -507,7 +509,7 @@ pub struct ListJobsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Job
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetJobRequest {
     /// Required. `name` of the job to retrieve.
     /// Format: projects/{project_id}/locations/global/jobs/{job_id} .
@@ -538,7 +540,7 @@ pub struct CreateJobRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for Job to Cancel
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelJobRequest {
     /// Required. The `name` of the job to cancel.
     /// Format: projects/{project_id}/locations/global/jobs/{job_id}.
@@ -553,7 +555,7 @@ pub struct CancelJobRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting a Job
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteJobRequest {
     /// Required. The `name` of the job to delete.
     /// Format: projects/{project_id}/locations/global/jobs/{job_id} .
@@ -568,7 +570,7 @@ pub struct DeleteJobRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for response to cancel Job.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelJobResponse {}
 /// Represents the metadata of the long-running operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -586,8 +588,8 @@ pub struct OperationMetadata {
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have been cancelled successfully
     /// have
-    /// [google.longrunning.Operation.error][google.longrunning.Operation.error]
-    /// value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// \[google.longrunning.Operation.error\]\[google.longrunning.Operation.error\]
+    /// value with a \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1,
     /// corresponding to
     /// `[Code.CANCELLED][google.rpc.Code.CANCELLED]`.
     #[prost(bool, tag = "7")]
@@ -712,7 +714,7 @@ pub mod storage_batch_operations_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.storagebatchoperations.v1.StorageBatchOperations/ListJobs",
             );
@@ -739,7 +741,7 @@ pub mod storage_batch_operations_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.storagebatchoperations.v1.StorageBatchOperations/GetJob",
             );
@@ -769,7 +771,7 @@ pub mod storage_batch_operations_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.storagebatchoperations.v1.StorageBatchOperations/CreateJob",
             );
@@ -796,7 +798,7 @@ pub mod storage_batch_operations_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.storagebatchoperations.v1.StorageBatchOperations/DeleteJob",
             );
@@ -826,7 +828,7 @@ pub mod storage_batch_operations_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.storagebatchoperations.v1.StorageBatchOperations/CancelJob",
             );

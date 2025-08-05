@@ -65,33 +65,33 @@ pub struct TraceSpan {
     /// your own, we recommend the following formats:
     ///
     /// * `/category/product/key` for agents of well-known products (e.g.
-    ///    `/db/mongodb/read_size`).
+    ///   `/db/mongodb/read_size`).
     /// * `short_host/path/key` for domain-specific keys (e.g.
-    ///    `foo.com/myproduct/bar`)
+    ///   `foo.com/myproduct/bar`)
     ///
     /// Predefined labels include:
     ///
-    /// *   `/agent`
-    /// *   `/component`
-    /// *   `/error/message`
-    /// *   `/error/name`
-    /// *   `/http/client_city`
-    /// *   `/http/client_country`
-    /// *   `/http/client_protocol`
-    /// *   `/http/client_region`
-    /// *   `/http/host`
-    /// *   `/http/method`
-    /// *   `/http/path`
-    /// *   `/http/redirected_url`
-    /// *   `/http/request/size`
-    /// *   `/http/response/size`
-    /// *   `/http/route`
-    /// *   `/http/status_code`
-    /// *   `/http/url`
-    /// *   `/http/user_agent`
-    /// *   `/pid`
-    /// *   `/stacktrace`
-    /// *   `/tid`
+    /// * `/agent`
+    /// * `/component`
+    /// * `/error/message`
+    /// * `/error/name`
+    /// * `/http/client_city`
+    /// * `/http/client_country`
+    /// * `/http/client_protocol`
+    /// * `/http/client_region`
+    /// * `/http/host`
+    /// * `/http/method`
+    /// * `/http/path`
+    /// * `/http/redirected_url`
+    /// * `/http/request/size`
+    /// * `/http/response/size`
+    /// * `/http/route`
+    /// * `/http/status_code`
+    /// * `/http/url`
+    /// * `/http/user_agent`
+    /// * `/pid`
+    /// * `/stacktrace`
+    /// * `/tid`
     #[prost(map = "string, string", tag = "7")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -149,7 +149,7 @@ pub mod trace_span {
 }
 /// The request message for the `ListTraces` method. All fields are required
 /// unless specified.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListTracesRequest {
     /// Required. ID of the Cloud project where the trace data is stored.
     #[prost(string, tag = "1")]
@@ -158,7 +158,7 @@ pub struct ListTracesRequest {
     /// `MINIMAL`.
     #[prost(enumeration = "list_traces_request::ViewType", tag = "2")]
     pub view: i32,
-    /// Optional. Maximum number of traces to return. If not specified or <= 0, the
+    /// Optional. Maximum number of traces to return. If not specified or \<= 0, the
     /// implementation selects a reasonable value.  The implementation may
     /// return fewer traces than the requested page size.
     #[prost(int32, tag = "3")]
@@ -181,40 +181,40 @@ pub struct ListTracesRequest {
     /// a plus symbol (`+`) to the search term.
     /// Multiple terms are ANDed. Syntax:
     ///
-    /// *   `root:NAME_PREFIX` or `NAME_PREFIX`: Return traces where any root
-    ///      span starts with `NAME_PREFIX`.
-    /// *   `+root:NAME` or `+NAME`: Return traces where any root span's name is
-    ///      exactly `NAME`.
-    /// *   `span:NAME_PREFIX`: Return traces where any span starts with
-    ///      `NAME_PREFIX`.
-    /// *   `+span:NAME`: Return traces where any span's name is exactly
-    ///      `NAME`.
-    /// *   `latency:DURATION`: Return traces whose overall latency is
-    ///      greater or equal to than `DURATION`. Accepted units are nanoseconds
-    ///      (`ns`), milliseconds (`ms`), and seconds (`s`). Default is `ms`. For
-    ///      example, `latency:24ms` returns traces whose overall latency
-    ///      is greater than or equal to 24 milliseconds.
-    /// *   `label:LABEL_KEY`: Return all traces containing the specified
-    ///      label key (exact match, case-sensitive) regardless of the key:value
-    ///      pair's value (including empty values).
-    /// *   `LABEL_KEY:VALUE_PREFIX`: Return all traces containing the specified
-    ///      label key (exact match, case-sensitive) whose value starts with
-    ///      `VALUE_PREFIX`. Both a key and a value must be specified.
-    /// *   `+LABEL_KEY:VALUE`: Return all traces containing a key:value pair
-    ///      exactly matching the specified text. Both a key and a value must be
-    ///      specified.
-    /// *   `method:VALUE`: Equivalent to `/http/method:VALUE`.
-    /// *   `url:VALUE`: Equivalent to `/http/url:VALUE`.
+    /// * `root:NAME_PREFIX` or `NAME_PREFIX`: Return traces where any root
+    ///   span starts with `NAME_PREFIX`.
+    /// * `+root:NAME` or `+NAME`: Return traces where any root span's name is
+    ///   exactly `NAME`.
+    /// * `span:NAME_PREFIX`: Return traces where any span starts with
+    ///   `NAME_PREFIX`.
+    /// * `+span:NAME`: Return traces where any span's name is exactly
+    ///   `NAME`.
+    /// * `latency:DURATION`: Return traces whose overall latency is
+    ///   greater or equal to than `DURATION`. Accepted units are nanoseconds
+    ///   (`ns`), milliseconds (`ms`), and seconds (`s`). Default is `ms`. For
+    ///   example, `latency:24ms` returns traces whose overall latency
+    ///   is greater than or equal to 24 milliseconds.
+    /// * `label:LABEL_KEY`: Return all traces containing the specified
+    ///   label key (exact match, case-sensitive) regardless of the key:value
+    ///   pair's value (including empty values).
+    /// * `LABEL_KEY:VALUE_PREFIX`: Return all traces containing the specified
+    ///   label key (exact match, case-sensitive) whose value starts with
+    ///   `VALUE_PREFIX`. Both a key and a value must be specified.
+    /// * `+LABEL_KEY:VALUE`: Return all traces containing a key:value pair
+    ///   exactly matching the specified text. Both a key and a value must be
+    ///   specified.
+    /// * `method:VALUE`: Equivalent to `/http/method:VALUE`.
+    /// * `url:VALUE`: Equivalent to `/http/url:VALUE`.
     #[prost(string, tag = "7")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Field used to sort the returned traces.
     /// Can be one of the following:
     ///
-    /// *   `trace_id`
-    /// *   `name` (`name` field of root span in the trace)
-    /// *   `duration` (difference between `end_time` and `start_time` fields of
-    ///       the root span)
-    /// *   `start` (`start_time` field of the root span)
+    /// * `trace_id`
+    /// * `name` (`name` field of root span in the trace)
+    /// * `duration` (difference between `end_time` and `start_time` fields of
+    ///   the root span)
+    /// * `start` (`start_time` field of the root span)
     ///
     /// Descending order can be specified by appending `desc` to the sort field
     /// (for example, `name desc`).
@@ -290,7 +290,7 @@ pub struct ListTracesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for the `GetTrace` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTraceRequest {
     /// Required. ID of the Cloud project where the trace data is stored.
     #[prost(string, tag = "1")]
@@ -421,7 +421,7 @@ pub mod trace_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.cloudtrace.v1.TraceService/ListTraces",
             );
@@ -448,7 +448,7 @@ pub mod trace_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.cloudtrace.v1.TraceService/GetTrace",
             );
@@ -479,7 +479,7 @@ pub mod trace_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.cloudtrace.v1.TraceService/PatchTraces",
             );

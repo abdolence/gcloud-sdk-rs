@@ -66,7 +66,7 @@ pub mod video {
     }
 }
 /// Contains all the uris for a given video format.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Uris {
     /// A signed short-lived URI for the media in a landscape orientation.
     #[prost(string, tag = "1")]
@@ -76,7 +76,7 @@ pub struct Uris {
     pub portrait_uri: ::prost::alloc::string::String,
 }
 /// Contains metadata about a video, such as its videoId and duration.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VideoMetadata {
     /// An ID for the video, and the recommended way to retrieve a video.
     #[prost(string, tag = "1")]
@@ -90,14 +90,14 @@ pub struct VideoMetadata {
     pub duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Request message for `AerialView.RenderVideo`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RenderVideoRequest {
     /// Required. A US postal address for the location to be rendered in the video.
     #[prost(string, tag = "1")]
     pub address: ::prost::alloc::string::String,
 }
 /// Response message for `AerialView.RenderVideo`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RenderVideoResponse {
     /// Current state of the render request.
     #[prost(enumeration = "video::State", tag = "1")]
@@ -107,7 +107,7 @@ pub struct RenderVideoResponse {
     pub metadata: ::core::option::Option<VideoMetadata>,
 }
 /// Request message for `AerialView.LookupVideo`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LookupVideoRequest {
     /// Required.
     /// A key used to look-up a video.
@@ -118,7 +118,7 @@ pub struct LookupVideoRequest {
 pub mod lookup_video_request {
     /// Required.
     /// A key used to look-up a video.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Key {
         /// An ID returned from `RenderVideo`.
         #[prost(string, tag = "1")]
@@ -237,7 +237,7 @@ pub mod aerial_view_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.aerialview.v1.AerialView/RenderVideo",
             );
@@ -268,7 +268,7 @@ pub mod aerial_view_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.aerialview.v1.AerialView/LookupVideo",
             );

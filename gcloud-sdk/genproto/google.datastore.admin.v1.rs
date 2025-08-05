@@ -29,7 +29,7 @@ pub struct Index {
 /// Nested message and enum types in `Index`.
 pub mod index {
     /// A property of an index.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct IndexedProperty {
         /// Required. The property name to index.
         #[prost(string, tag = "1")]
@@ -100,10 +100,10 @@ pub mod index {
         /// The direction is unspecified.
         Unspecified = 0,
         /// The property's values are indexed so as to support sequencing in
-        /// ascending order and also query by <, >, <=, >=, and =.
+        /// ascending order and also query by \<, >, \<=, >=, and =.
         Ascending = 1,
         /// The property's values are indexed so as to support sequencing in
-        /// descending order and also query by <, >, <=, >=, and =.
+        /// descending order and also query by \<, >, \<=, >=, and =.
         Descending = 2,
     }
     impl Direction {
@@ -196,7 +196,7 @@ pub mod index {
 /// An event signifying a change in state of a [migration from Cloud Datastore to
 /// Cloud Firestore in Datastore
 /// mode](<https://cloud.google.com/datastore/docs/upgrade-to-firestore>).
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MigrationStateEvent {
     /// The new state of the migration.
     #[prost(enumeration = "MigrationState", tag = "1")]
@@ -205,7 +205,7 @@ pub struct MigrationStateEvent {
 /// An event signifying the start of a new step in a [migration from Cloud
 /// Datastore to Cloud Firestore in Datastore
 /// mode](<https://cloud.google.com/datastore/docs/upgrade-to-firestore>).
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MigrationProgressEvent {
     /// The step that is starting.
     ///
@@ -220,7 +220,7 @@ pub struct MigrationProgressEvent {
 /// Nested message and enum types in `MigrationProgressEvent`.
 pub mod migration_progress_event {
     /// Details for the `PREPARE` step.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PrepareStepDetails {
         /// The concurrency mode this database will use when it reaches the
         /// `REDIRECT_WRITES` step.
@@ -228,7 +228,7 @@ pub mod migration_progress_event {
         pub concurrency_mode: i32,
     }
     /// Details for the `REDIRECT_WRITES` step.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RedirectWritesStepDetails {
         /// Ths concurrency mode for this database.
         #[prost(enumeration = "ConcurrencyMode", tag = "1")]
@@ -282,7 +282,7 @@ pub mod migration_progress_event {
         }
     }
     /// Details about this step.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum StepDetails {
         /// Details for the `PREPARE` step.
         #[prost(message, tag = "2")]
@@ -482,7 +482,7 @@ pub mod common_metadata {
     }
 }
 /// Measures the progress of a particular metric.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Progress {
     /// The amount of work that has been completed. Note that this may be greater
     /// than work_estimated.
@@ -494,7 +494,7 @@ pub struct Progress {
     pub work_estimated: i64,
 }
 /// The request for
-/// [google.datastore.admin.v1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1.DatastoreAdmin.ExportEntities].
+/// \[google.datastore.admin.v1.DatastoreAdmin.ExportEntities\]\[google.datastore.admin.v1.DatastoreAdmin.ExportEntities\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportEntitiesRequest {
     /// Required. Project ID against which to make the request.
@@ -522,7 +522,7 @@ pub struct ExportEntitiesRequest {
     ///
     /// The resulting files will be nested deeper than the specified URL prefix.
     /// The final output URL will be provided in the
-    /// [google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url]
+    /// \[google.datastore.admin.v1.ExportEntitiesResponse.output_url\]\[google.datastore.admin.v1.ExportEntitiesResponse.output_url\]
     /// field. That value should be used for subsequent ImportEntities operations.
     ///
     /// By nesting the data files deeper, the same Cloud Storage bucket can be used
@@ -531,7 +531,7 @@ pub struct ExportEntitiesRequest {
     pub output_url_prefix: ::prost::alloc::string::String,
 }
 /// The request for
-/// [google.datastore.admin.v1.DatastoreAdmin.ImportEntities][google.datastore.admin.v1.DatastoreAdmin.ImportEntities].
+/// \[google.datastore.admin.v1.DatastoreAdmin.ImportEntities\]\[google.datastore.admin.v1.DatastoreAdmin.ImportEntities\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportEntitiesRequest {
     /// Required. Project ID against which to make the request.
@@ -556,7 +556,7 @@ pub struct ImportEntitiesRequest {
     /// considerations](<https://cloud.google.com/storage/docs/naming#object-considerations>).
     ///
     /// For more information, see
-    /// [google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url].
+    /// \[google.datastore.admin.v1.ExportEntitiesResponse.output_url\]\[google.datastore.admin.v1.ExportEntitiesResponse.output_url\].
     #[prost(string, tag = "3")]
     pub input_url: ::prost::alloc::string::String,
     /// Optionally specify which kinds/namespaces are to be imported. If provided,
@@ -567,12 +567,12 @@ pub struct ImportEntitiesRequest {
     pub entity_filter: ::core::option::Option<EntityFilter>,
 }
 /// The response for
-/// [google.datastore.admin.v1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1.DatastoreAdmin.ExportEntities].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[google.datastore.admin.v1.DatastoreAdmin.ExportEntities\]\[google.datastore.admin.v1.DatastoreAdmin.ExportEntities\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportEntitiesResponse {
     /// Location of the output metadata file. This can be used to begin an import
     /// into Cloud Datastore (this project or another project). See
-    /// [google.datastore.admin.v1.ImportEntitiesRequest.input_url][google.datastore.admin.v1.ImportEntitiesRequest.input_url].
+    /// \[google.datastore.admin.v1.ImportEntitiesRequest.input_url\]\[google.datastore.admin.v1.ImportEntitiesRequest.input_url\].
     /// Only present if the operation completed successfully.
     #[prost(string, tag = "1")]
     pub output_url: ::prost::alloc::string::String,
@@ -594,9 +594,9 @@ pub struct ExportEntitiesMetadata {
     pub entity_filter: ::core::option::Option<EntityFilter>,
     /// Location for the export metadata and data files. This will be the same
     /// value as the
-    /// [google.datastore.admin.v1.ExportEntitiesRequest.output_url_prefix][google.datastore.admin.v1.ExportEntitiesRequest.output_url_prefix]
+    /// \[google.datastore.admin.v1.ExportEntitiesRequest.output_url_prefix\]\[google.datastore.admin.v1.ExportEntitiesRequest.output_url_prefix\]
     /// field. The final output location is provided in
-    /// [google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url].
+    /// \[google.datastore.admin.v1.ExportEntitiesResponse.output_url\]\[google.datastore.admin.v1.ExportEntitiesResponse.output_url\].
     #[prost(string, tag = "5")]
     pub output_url_prefix: ::prost::alloc::string::String,
 }
@@ -617,7 +617,7 @@ pub struct ImportEntitiesMetadata {
     pub entity_filter: ::core::option::Option<EntityFilter>,
     /// The location of the import metadata file. This will be the same value as
     /// the
-    /// [google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url]
+    /// \[google.datastore.admin.v1.ExportEntitiesResponse.output_url\]\[google.datastore.admin.v1.ExportEntitiesResponse.output_url\]
     /// field.
     #[prost(string, tag = "5")]
     pub input_url: ::prost::alloc::string::String,
@@ -628,20 +628,20 @@ pub struct ImportEntitiesMetadata {
 /// Example usage:
 ///
 /// Entire project:
-///    kinds=\[\], namespace_ids=\[\]
+/// kinds=\[\], namespace_ids=\[\]
 ///
 /// Kinds Foo and Bar in all namespaces:
-///    kinds=\['Foo', 'Bar'\], namespace_ids=\[\]
+/// kinds=\['Foo', 'Bar'\], namespace_ids=\[\]
 ///
 /// Kinds Foo and Bar only in the default namespace:
-///    kinds=\['Foo', 'Bar'\], namespace_ids=\[''\]
+/// kinds=\['Foo', 'Bar'\], namespace_ids=\[''\]
 ///
 /// Kinds Foo and Bar in both the default and Baz namespaces:
-///    kinds=\['Foo', 'Bar'\], namespace_ids=\['', 'Baz'\]
+/// kinds=\['Foo', 'Bar'\], namespace_ids=\['', 'Baz'\]
 ///
 /// The entire Baz namespace:
-///    kinds=\[\], namespace_ids=\['Baz'\]
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// kinds=\[\], namespace_ids=\['Baz'\]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EntityFilter {
     /// If empty, then this represents all kinds.
     #[prost(string, repeated, tag = "1")]
@@ -657,7 +657,7 @@ pub struct EntityFilter {
     pub namespace_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request for
-/// [google.datastore.admin.v1.DatastoreAdmin.CreateIndex][google.datastore.admin.v1.DatastoreAdmin.CreateIndex].
+/// \[google.datastore.admin.v1.DatastoreAdmin.CreateIndex\]\[google.datastore.admin.v1.DatastoreAdmin.CreateIndex\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateIndexRequest {
     /// Project ID against which to make the request.
@@ -669,8 +669,8 @@ pub struct CreateIndexRequest {
     pub index: ::core::option::Option<Index>,
 }
 /// The request for
-/// [google.datastore.admin.v1.DatastoreAdmin.DeleteIndex][google.datastore.admin.v1.DatastoreAdmin.DeleteIndex].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[google.datastore.admin.v1.DatastoreAdmin.DeleteIndex\]\[google.datastore.admin.v1.DatastoreAdmin.DeleteIndex\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteIndexRequest {
     /// Project ID against which to make the request.
     #[prost(string, tag = "1")]
@@ -680,8 +680,8 @@ pub struct DeleteIndexRequest {
     pub index_id: ::prost::alloc::string::String,
 }
 /// The request for
-/// [google.datastore.admin.v1.DatastoreAdmin.GetIndex][google.datastore.admin.v1.DatastoreAdmin.GetIndex].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[google.datastore.admin.v1.DatastoreAdmin.GetIndex\]\[google.datastore.admin.v1.DatastoreAdmin.GetIndex\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetIndexRequest {
     /// Project ID against which to make the request.
     #[prost(string, tag = "1")]
@@ -691,8 +691,8 @@ pub struct GetIndexRequest {
     pub index_id: ::prost::alloc::string::String,
 }
 /// The request for
-/// [google.datastore.admin.v1.DatastoreAdmin.ListIndexes][google.datastore.admin.v1.DatastoreAdmin.ListIndexes].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[google.datastore.admin.v1.DatastoreAdmin.ListIndexes\]\[google.datastore.admin.v1.DatastoreAdmin.ListIndexes\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListIndexesRequest {
     /// Project ID against which to make the request.
     #[prost(string, tag = "1")]
@@ -708,7 +708,7 @@ pub struct ListIndexesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for
-/// [google.datastore.admin.v1.DatastoreAdmin.ListIndexes][google.datastore.admin.v1.DatastoreAdmin.ListIndexes].
+/// \[google.datastore.admin.v1.DatastoreAdmin.ListIndexes\]\[google.datastore.admin.v1.DatastoreAdmin.ListIndexes\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexesResponse {
     /// The indexes.
@@ -739,7 +739,7 @@ pub struct IndexOperationMetadata {
 ///
 /// This singleton resource can be accessed at:
 /// "projects/{project_id}/operations/datastore-firestore-migration"
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DatastoreFirestoreMigrationMetadata {
     /// The current state of migration from Cloud Datastore to Cloud Firestore in
     /// Datastore mode.
@@ -817,38 +817,38 @@ pub mod datastore_admin_client {
     ///
     /// Export/Import Service:
     ///
-    /// - The Export/Import service provides the ability to copy all or a subset of
-    /// entities to/from Google Cloud Storage.
-    /// - Exported data may be imported into Cloud Datastore for any Google Cloud
-    /// Platform project. It is not restricted to the export source project. It is
-    /// possible to export from one project and then import into another.
-    /// - Exported data can also be loaded into Google BigQuery for analysis.
-    /// - Exports and imports are performed asynchronously. An Operation resource is
-    /// created for each export/import. The state (including any errors encountered)
-    /// of the export/import may be queried via the Operation resource.
+    /// * The Export/Import service provides the ability to copy all or a subset of
+    ///  entities to/from Google Cloud Storage.
+    /// * Exported data may be imported into Cloud Datastore for any Google Cloud
+    ///  Platform project. It is not restricted to the export source project. It is
+    ///  possible to export from one project and then import into another.
+    /// * Exported data can also be loaded into Google BigQuery for analysis.
+    /// * Exports and imports are performed asynchronously. An Operation resource is
+    ///  created for each export/import. The state (including any errors encountered)
+    ///  of the export/import may be queried via the Operation resource.
     ///
     /// Index Service:
     ///
-    /// - The index service manages Cloud Datastore composite indexes.
-    /// - Index creation and deletion are performed asynchronously.
-    /// An Operation resource is created for each such asynchronous operation.
-    /// The state of the operation (including any errors encountered)
-    /// may be queried via the Operation resource.
+    /// * The index service manages Cloud Datastore composite indexes.
+    /// * Index creation and deletion are performed asynchronously.
+    ///  An Operation resource is created for each such asynchronous operation.
+    ///  The state of the operation (including any errors encountered)
+    ///  may be queried via the Operation resource.
     ///
     /// Operation Service:
     ///
-    /// - The Operations collection provides a record of actions performed for the
-    /// specified project (including any operations in progress). Operations are not
-    /// created directly but through calls on other collections or resources.
-    /// - An operation that is not yet done may be cancelled. The request to cancel
-    /// is asynchronous and the operation may continue to run for some time after the
-    /// request to cancel is made.
-    /// - An operation that is done may be deleted so that it is no longer listed as
-    /// part of the Operation collection.
-    /// - ListOperations returns all pending operations, but not completed
-    /// operations.
-    /// - Operations are created by service DatastoreAdmin, but are accessed via
-    /// service google.longrunning.Operations.
+    /// * The Operations collection provides a record of actions performed for the
+    ///  specified project (including any operations in progress). Operations are not
+    ///  created directly but through calls on other collections or resources.
+    /// * An operation that is not yet done may be cancelled. The request to cancel
+    ///  is asynchronous and the operation may continue to run for some time after the
+    ///  request to cancel is made.
+    /// * An operation that is done may be deleted so that it is no longer listed as
+    ///  part of the Operation collection.
+    /// * ListOperations returns all pending operations, but not completed
+    ///  operations.
+    /// * Operations are created by service DatastoreAdmin, but are accessed via
+    ///  service google.longrunning.Operations.
     #[derive(Debug, Clone)]
     pub struct DatastoreAdminClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -952,7 +952,7 @@ pub mod datastore_admin_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.admin.v1.DatastoreAdmin/ExportEntities",
             );
@@ -986,7 +986,7 @@ pub mod datastore_admin_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.admin.v1.DatastoreAdmin/ImportEntities",
             );
@@ -1002,16 +1002,16 @@ pub mod datastore_admin_client {
         }
         /// Creates the specified index.
         /// A newly created index's initial state is `CREATING`. On completion of the
-        /// returned [google.longrunning.Operation][google.longrunning.Operation], the
+        /// returned \[google.longrunning.Operation\]\[google.longrunning.Operation\], the
         /// state will be `READY`. If the index already exists, the call will return an
         /// `ALREADY_EXISTS` status.
         ///
         /// During index creation, the process could result in an error, in which
         /// case the index will move to the `ERROR` state. The process can be recovered
         /// by fixing the data that caused the error, removing the index with
-        /// [delete][google.datastore.admin.v1.DatastoreAdmin.DeleteIndex], then
-        /// re-creating the index with [create]
-        /// [google.datastore.admin.v1.DatastoreAdmin.CreateIndex].
+        /// \[delete\]\[google.datastore.admin.v1.DatastoreAdmin.DeleteIndex\], then
+        /// re-creating the index with \[create\]
+        /// \[google.datastore.admin.v1.DatastoreAdmin.CreateIndex\].
         ///
         /// Indexes with a single property cannot be created.
         pub async fn create_index(
@@ -1029,7 +1029,7 @@ pub mod datastore_admin_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.admin.v1.DatastoreAdmin/CreateIndex",
             );
@@ -1046,14 +1046,14 @@ pub mod datastore_admin_client {
         /// Deletes an existing index.
         /// An index can only be deleted if it is in a `READY` or `ERROR` state. On
         /// successful execution of the request, the index will be in a `DELETING`
-        /// [state][google.datastore.admin.v1.Index.State]. And on completion of the
-        /// returned [google.longrunning.Operation][google.longrunning.Operation], the
+        /// \[state\]\[google.datastore.admin.v1.Index.State\]. And on completion of the
+        /// returned \[google.longrunning.Operation\]\[google.longrunning.Operation\], the
         /// index will be removed.
         ///
         /// During index deletion, the process could result in an error, in which
         /// case the index will move to the `ERROR` state. The process can be recovered
         /// by fixing the data that caused the error, followed by calling
-        /// [delete][google.datastore.admin.v1.DatastoreAdmin.DeleteIndex] again.
+        /// \[delete\]\[google.datastore.admin.v1.DatastoreAdmin.DeleteIndex\] again.
         pub async fn delete_index(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteIndexRequest>,
@@ -1069,7 +1069,7 @@ pub mod datastore_admin_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.admin.v1.DatastoreAdmin/DeleteIndex",
             );
@@ -1096,7 +1096,7 @@ pub mod datastore_admin_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.admin.v1.DatastoreAdmin/GetIndex",
             );
@@ -1128,7 +1128,7 @@ pub mod datastore_admin_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.admin.v1.DatastoreAdmin/ListIndexes",
             );

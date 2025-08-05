@@ -69,7 +69,7 @@ pub struct OracleAsmConfig {
     pub secret_manager_stored_password: ::prost::alloc::string::String,
 }
 /// MySQL database profile.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MysqlProfile {
     /// Required. Hostname for the MySQL connection.
     #[prost(string, tag = "1")]
@@ -93,7 +93,7 @@ pub struct MysqlProfile {
     pub secret_manager_stored_password: ::prost::alloc::string::String,
 }
 /// PostgreSQL database profile.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PostgresqlProfile {
     /// Required. Hostname for the PostgreSQL connection.
     #[prost(string, tag = "1")]
@@ -124,7 +124,7 @@ pub struct PostgresqlProfile {
     pub ssl_config: ::core::option::Option<PostgresqlSslConfig>,
 }
 /// SQLServer database profile.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SqlServerProfile {
     /// Required. Hostname for the SQLServer connection.
     #[prost(string, tag = "1")]
@@ -149,7 +149,7 @@ pub struct SqlServerProfile {
     pub secret_manager_stored_password: ::prost::alloc::string::String,
 }
 /// Salesforce profile
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SalesforceProfile {
     /// Required. Domain endpoint for the Salesforce connection.
     #[prost(string, tag = "1")]
@@ -161,7 +161,7 @@ pub struct SalesforceProfile {
 /// Nested message and enum types in `SalesforceProfile`.
 pub mod salesforce_profile {
     /// Username-password credentials.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct UserCredentials {
         /// Required. Username for the Salesforce connection.
         #[prost(string, tag = "1")]
@@ -186,7 +186,7 @@ pub mod salesforce_profile {
         pub secret_manager_stored_security_token: ::prost::alloc::string::String,
     }
     /// OAuth2 Client Credentials.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Oauth2ClientCredentials {
         /// Required. Client ID for Salesforce OAuth2 Client Credentials.
         #[prost(string, tag = "1")]
@@ -202,7 +202,7 @@ pub mod salesforce_profile {
         pub secret_manager_stored_client_secret: ::prost::alloc::string::String,
     }
     /// Credentials for Salesforce connection.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Credentials {
         /// User-password authentication.
         #[prost(message, tag = "2")]
@@ -213,7 +213,7 @@ pub mod salesforce_profile {
     }
 }
 /// Cloud Storage bucket profile.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GcsProfile {
     /// Required. The Cloud Storage bucket name.
     #[prost(string, tag = "1")]
@@ -223,15 +223,15 @@ pub struct GcsProfile {
     pub root_path: ::prost::alloc::string::String,
 }
 /// BigQuery warehouse profile.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BigQueryProfile {}
 /// Static IP address connectivity. Used when the source database is configured
 /// to allow incoming connections from the Datastream public IP addresses
 /// for the region specified in the connection profile.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StaticServiceIpConnectivity {}
 /// Forward SSH Tunnel connectivity.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ForwardSshTunnelConnectivity {
     /// Required. Hostname for the SSH tunnel.
     #[prost(string, tag = "1")]
@@ -252,7 +252,7 @@ pub struct ForwardSshTunnelConnectivity {
 }
 /// Nested message and enum types in `ForwardSshTunnelConnectivity`.
 pub mod forward_ssh_tunnel_connectivity {
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum AuthenticationMethod {
         /// Input only. SSH password.
         #[prost(string, tag = "100")]
@@ -264,7 +264,7 @@ pub mod forward_ssh_tunnel_connectivity {
 }
 /// The VPC Peering configuration is used to create VPC peering between
 /// Datastream and the consumer's VPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VpcPeeringConfig {
     /// Required. Fully qualified name of the VPC that Datastream will peer to.
     /// Format: `projects/{project}/global/{networks}/{name}`
@@ -372,7 +372,7 @@ pub mod private_connection {
     }
 }
 /// Private Connectivity
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PrivateConnectivity {
     /// Required. A reference to a private connection resource.
     /// Format: `projects/{project}/locations/{location}/privateConnections/{name}`
@@ -409,7 +409,7 @@ pub struct Route {
     pub destination_port: i32,
 }
 /// MySQL SSL configuration information.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MysqlSslConfig {
     /// Optional. Input only. PEM-encoded private key associated with the Client
     /// Certificate. If this field is used then the 'client_certificate' and the
@@ -437,7 +437,7 @@ pub struct MysqlSslConfig {
     pub ca_certificate_set: bool,
 }
 /// Oracle SSL configuration information.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OracleSslConfig {
     /// Input only. PEM-encoded certificate of the CA that signed the source
     /// database server's certificate.
@@ -449,7 +449,7 @@ pub struct OracleSslConfig {
     pub ca_certificate_set: bool,
 }
 /// PostgreSQL SSL configuration information.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PostgresqlSslConfig {
     /// The encryption settings available for PostgreSQL connection profiles.
     /// This captures various SSL mode supported by PostgreSQL, which includes
@@ -465,7 +465,7 @@ pub mod postgresql_ssl_config {
     /// Message represents the option where Datastream will enforce the encryption
     /// and authenticate the server identity. ca_certificate must be set if user
     /// selects this option.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ServerVerification {
         /// Required. Input only. PEM-encoded server root CA certificate.
         #[prost(string, tag = "1")]
@@ -475,7 +475,7 @@ pub mod postgresql_ssl_config {
     /// and authenticate the server identity as well as the client identity.
     /// ca_certificate, client_certificate and client_key must be set if user
     /// selects this option.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ServerAndClientVerification {
         /// Required. Input only. PEM-encoded certificate used by the source database
         /// to authenticate the client identity (i.e., the Datastream's identity).
@@ -499,10 +499,10 @@ pub mod postgresql_ssl_config {
     /// This captures various SSL mode supported by PostgreSQL, which includes
     /// TLS encryption with server verification, TLS encryption with both server
     /// and client verification and no TLS encryption.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum EncryptionSetting {
         ///  If this field is set, the communication will be encrypted with TLS
-        ///   encryption and the server identity will be authenticated.
+        /// encryption and the server identity will be authenticated.
         #[prost(message, tag = "1")]
         ServerVerification(ServerVerification),
         /// If this field is set, the communication will be encrypted with TLS
@@ -578,7 +578,7 @@ pub mod connection_profile {
         SalesforceProfile(super::SalesforceProfile),
     }
     /// Connectivity options used to establish a connection to the profile.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Connectivity {
         /// Static Service IP connectivity.
         #[prost(message, tag = "200")]
@@ -592,7 +592,7 @@ pub mod connection_profile {
     }
 }
 /// Oracle Column.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OracleColumn {
     /// Column name.
     #[prost(string, tag = "1")]
@@ -680,16 +680,16 @@ pub struct OracleSourceConfig {
 /// Nested message and enum types in `OracleSourceConfig`.
 pub mod oracle_source_config {
     /// Configuration to drop large object values.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DropLargeObjects {}
     /// Configuration to stream large object values.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct StreamLargeObjects {}
     /// Configuration to use LogMiner CDC method.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct LogMiner {}
     /// Configuration to use Binary Log Parser CDC technique.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct BinaryLogParser {
         /// Configuration to specify how the log file should be accessed.
         #[prost(oneof = "binary_log_parser::LogFileAccess", tags = "1, 2")]
@@ -698,10 +698,10 @@ pub mod oracle_source_config {
     /// Nested message and enum types in `BinaryLogParser`.
     pub mod binary_log_parser {
         /// Configuration to use Oracle ASM to access the log files.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct OracleAsmLogFileAccess {}
         /// Configuration to specify the Oracle directories to access the log files.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct LogFileDirectories {
             /// Required. Oracle directory for online logs.
             #[prost(string, tag = "1")]
@@ -711,7 +711,7 @@ pub mod oracle_source_config {
             pub archived_log_directory: ::prost::alloc::string::String,
         }
         /// Configuration to specify how the log file should be accessed.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum LogFileAccess {
             /// Use Oracle ASM.
             #[prost(message, tag = "1")]
@@ -722,7 +722,7 @@ pub mod oracle_source_config {
         }
     }
     /// The configuration for handle Oracle large objects.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum LargeObjectsHandling {
         /// Drop large object values.
         #[prost(message, tag = "100")]
@@ -732,7 +732,7 @@ pub mod oracle_source_config {
         StreamLargeObjects(StreamLargeObjects),
     }
     /// Configuration to select the CDC method.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum CdcMethod {
         /// Use LogMiner.
         #[prost(message, tag = "103")]
@@ -743,7 +743,7 @@ pub mod oracle_source_config {
     }
 }
 /// PostgreSQL Column.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PostgresqlColumn {
     /// Column name.
     #[prost(string, tag = "1")]
@@ -823,7 +823,7 @@ pub struct PostgresqlSourceConfig {
     pub max_concurrent_backfill_tasks: i32,
 }
 /// SQLServer Column.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SqlServerColumn {
     /// Column name.
     #[prost(string, tag = "1")]
@@ -901,7 +901,7 @@ pub struct SqlServerSourceConfig {
 /// Nested message and enum types in `SqlServerSourceConfig`.
 pub mod sql_server_source_config {
     /// Configuration to select the CDC read method for the stream.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum CdcMethod {
         /// CDC reader reads from transaction logs.
         #[prost(message, tag = "101")]
@@ -912,13 +912,13 @@ pub mod sql_server_source_config {
     }
 }
 /// Configuration to use Transaction Logs CDC read method.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SqlServerTransactionLogs {}
 /// Configuration to use Change Tables CDC read method.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SqlServerChangeTables {}
 /// MySQL Column.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MysqlColumn {
     /// Column name.
     #[prost(string, tag = "1")]
@@ -1003,13 +1003,13 @@ pub struct MysqlSourceConfig {
 /// Nested message and enum types in `MysqlSourceConfig`.
 pub mod mysql_source_config {
     /// Use Binary log position based replication.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct BinaryLogPosition {}
     /// Use GTID based replication.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Gtid {}
     /// The CDC method to use for the stream.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum CdcMethod {
         /// Use Binary log position based replication.
         #[prost(message, tag = "101")]
@@ -1055,7 +1055,7 @@ pub struct SalesforceObject {
     pub fields: ::prost::alloc::vec::Vec<SalesforceField>,
 }
 /// Salesforce field.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SalesforceField {
     /// Field name.
     #[prost(string, tag = "1")]
@@ -1104,10 +1104,10 @@ pub mod source_config {
     }
 }
 /// AVRO file format configuration.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AvroFileFormat {}
 /// JSON file format configuration.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct JsonFileFormat {
     /// The schema file format along JSON data files.
     #[prost(enumeration = "json_file_format::SchemaFileFormat", tag = "1")]
@@ -1206,7 +1206,7 @@ pub mod json_file_format {
     }
 }
 /// Google Cloud Storage destination configuration
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GcsDestinationConfig {
     /// Path inside the Cloud Storage bucket to write data to.
     #[prost(string, tag = "1")]
@@ -1226,7 +1226,7 @@ pub struct GcsDestinationConfig {
 /// Nested message and enum types in `GcsDestinationConfig`.
 pub mod gcs_destination_config {
     /// File Format that the data should be written in.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum FileFormat {
         /// AVRO file format configuration.
         #[prost(message, tag = "100")]
@@ -1237,7 +1237,7 @@ pub mod gcs_destination_config {
     }
 }
 /// BigQuery destination configuration
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BigQueryDestinationConfig {
     /// The guaranteed data freshness (in seconds) when querying tables created by
     /// the stream. Editing this field will only affect new tables created in the
@@ -1259,7 +1259,7 @@ pub struct BigQueryDestinationConfig {
 /// Nested message and enum types in `BigQueryDestinationConfig`.
 pub mod big_query_destination_config {
     /// A single target dataset to which all data will be streamed.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SingleTargetDataset {
         /// The dataset ID of the target dataset.
         /// DatasetIds allowed characters:
@@ -1269,7 +1269,7 @@ pub mod big_query_destination_config {
     }
     /// Destination datasets are created so that hierarchy of the destination data
     /// objects matches the source hierarchy.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SourceHierarchyDatasets {
         /// The dataset template to use for dynamic dataset creation.
         #[prost(message, optional, tag = "2")]
@@ -1280,7 +1280,7 @@ pub mod big_query_destination_config {
     /// Nested message and enum types in `SourceHierarchyDatasets`.
     pub mod source_hierarchy_datasets {
         /// Dataset template used for dynamic dataset creation.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct DatasetTemplate {
             /// Required. The geographic location where the dataset should reside. See
             /// <https://cloud.google.com/bigquery/docs/locations> for supported
@@ -1289,7 +1289,7 @@ pub mod big_query_destination_config {
             pub location: ::prost::alloc::string::String,
             /// If supplied, every created dataset will have its name prefixed by the
             /// provided value. The prefix and name will be separated by an underscore.
-            /// i.e. <prefix>_<dataset_name>.
+            /// i.e. <prefix>\_\<dataset_name>.
             #[prost(string, tag = "2")]
             pub dataset_id_prefix: ::prost::alloc::string::String,
             /// Describes the Cloud KMS encryption key that will be used to
@@ -1304,7 +1304,7 @@ pub mod big_query_destination_config {
         }
     }
     /// The configuration for BLMT.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct BlmtConfig {
         /// Required. The Cloud Storage bucket name.
         #[prost(string, tag = "1")]
@@ -1406,14 +1406,14 @@ pub mod big_query_destination_config {
     }
     /// AppendOnly mode defines that all changes to a table will be written to the
     /// destination table.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AppendOnly {}
     /// Merge mode defines that all changes to a table will be merged at the
     /// destination table.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Merge {}
     /// Target dataset(s) configuration.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum DatasetConfig {
         /// Single destination dataset.
         #[prost(message, tag = "201")]
@@ -1422,7 +1422,7 @@ pub mod big_query_destination_config {
         #[prost(message, tag = "202")]
         SourceHierarchyDatasets(SourceHierarchyDatasets),
     }
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum WriteMode {
         /// The standard mode
         #[prost(message, tag = "301")]
@@ -1433,7 +1433,7 @@ pub mod big_query_destination_config {
     }
 }
 /// The configuration of the stream destination.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DestinationConfig {
     /// Required. Destination connection profile resource.
     /// Format: `projects/{project}/locations/{location}/connectionProfiles/{name}`
@@ -1448,7 +1448,7 @@ pub struct DestinationConfig {
 /// Nested message and enum types in `DestinationConfig`.
 pub mod destination_config {
     /// Stream configuration that is specific to the data destination type.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum DestinationStreamConfig {
         /// A configuration for how data should be loaded to Cloud Storage.
         #[prost(message, tag = "100")]
@@ -1551,7 +1551,7 @@ pub mod stream {
         }
     }
     /// Backfill strategy to disable automatic backfill for the Stream's objects.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct BackfillNoneStrategy {}
     /// Stream state.
     #[derive(
@@ -1662,7 +1662,7 @@ pub struct StreamObject {
     pub source_object: ::core::option::Option<SourceObjectIdentifier>,
 }
 /// Represents an identifier of an object in the data source.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SourceObjectIdentifier {
     /// The identifier for an object in the data source.
     #[prost(
@@ -1676,7 +1676,7 @@ pub struct SourceObjectIdentifier {
 /// Nested message and enum types in `SourceObjectIdentifier`.
 pub mod source_object_identifier {
     /// Oracle data source object identifier.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct OracleObjectIdentifier {
         /// Required. The schema name.
         #[prost(string, tag = "1")]
@@ -1686,7 +1686,7 @@ pub mod source_object_identifier {
         pub table: ::prost::alloc::string::String,
     }
     /// PostgreSQL data source object identifier.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PostgresqlObjectIdentifier {
         /// Required. The schema name.
         #[prost(string, tag = "1")]
@@ -1696,7 +1696,7 @@ pub mod source_object_identifier {
         pub table: ::prost::alloc::string::String,
     }
     /// Mysql data source object identifier.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct MysqlObjectIdentifier {
         /// Required. The database name.
         #[prost(string, tag = "1")]
@@ -1706,7 +1706,7 @@ pub mod source_object_identifier {
         pub table: ::prost::alloc::string::String,
     }
     /// SQLServer data source object identifier.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SqlServerObjectIdentifier {
         /// Required. The schema name.
         #[prost(string, tag = "1")]
@@ -1716,14 +1716,14 @@ pub mod source_object_identifier {
         pub table: ::prost::alloc::string::String,
     }
     /// Salesforce data source object identifier.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SalesforceObjectIdentifier {
         /// Required. The object name.
         #[prost(string, tag = "1")]
         pub object_name: ::prost::alloc::string::String,
     }
     /// The identifier for an object in the data source.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum SourceIdentifier {
         /// Oracle data source object identifier.
         #[prost(message, tag = "1")]
@@ -2041,7 +2041,7 @@ pub mod validation_message {
     }
 }
 /// The strategy that the stream uses for CDC replication.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CdcStrategy {
     /// The position to start reading from when starting, resuming, or recovering
     /// the stream.
@@ -2053,14 +2053,14 @@ pub struct CdcStrategy {
 pub mod cdc_strategy {
     /// CDC strategy to start replicating from the most recent position in the
     /// source.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct MostRecentStartPosition {}
     /// CDC strategy to resume replication from the next available position in the
     /// source.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct NextAvailableStartPosition {}
     /// CDC strategy to start replicating from a specific position in the source.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SpecificStartPosition {
         #[prost(
             oneof = "specific_start_position::Position",
@@ -2070,7 +2070,7 @@ pub mod cdc_strategy {
     }
     /// Nested message and enum types in `SpecificStartPosition`.
     pub mod specific_start_position {
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Position {
             /// MySQL specific log position to start replicating from.
             #[prost(message, tag = "101")]
@@ -2089,7 +2089,7 @@ pub mod cdc_strategy {
     /// The position to start reading from when starting, resuming, or recovering
     /// the stream.
     /// If not set, the system's default value will be used.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum StartPosition {
         /// Optional. Start replicating from the most recent position in the source.
         #[prost(message, tag = "101")]
@@ -2104,21 +2104,21 @@ pub mod cdc_strategy {
     }
 }
 /// SQL Server LSN position
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SqlServerLsnPosition {
     /// Required. Log sequence number (LSN) from where Logs will be read
     #[prost(string, tag = "1")]
     pub lsn: ::prost::alloc::string::String,
 }
 /// Oracle SCN position
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OracleScnPosition {
     /// Required. SCN number from where Logs will be read
     #[prost(int64, tag = "1")]
     pub scn: i64,
 }
 /// MySQL log position
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MysqlLogPosition {
     /// Required. The binary log file name.
     #[prost(string, tag = "1")]
@@ -2128,7 +2128,7 @@ pub struct MysqlLogPosition {
     pub log_position: ::core::option::Option<i32>,
 }
 /// MySQL GTID position
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MysqlGtidPosition {
     /// Required. The gtid set to start replication from.
     #[prost(string, tag = "1")]
@@ -2171,7 +2171,7 @@ pub mod discover_connection_profile_request {
         ConnectionProfileName(::prost::alloc::string::String),
     }
     /// The depth of the retrieved hierarchy of data objects.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Hierarchy {
         /// Whether to retrieve the full hierarchy of data objects (TRUE) or only the
         /// current level (FALSE).
@@ -2230,7 +2230,7 @@ pub mod discover_connection_profile_response {
     }
 }
 /// Request message for 'FetchStaticIps' request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FetchStaticIpsRequest {
     /// Required. The resource name for the location for which static IPs should be
     /// returned. Must be in the format `projects/*/locations/*`.
@@ -2245,7 +2245,7 @@ pub struct FetchStaticIpsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for a 'FetchStaticIps' response.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FetchStaticIpsResponse {
     /// list of static ips by account
     #[prost(string, repeated, tag = "1")]
@@ -2256,7 +2256,7 @@ pub struct FetchStaticIpsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for listing connection profiles.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListConnectionProfilesRequest {
     /// Required. The parent that owns the collection of connection profiles.
     #[prost(string, tag = "1")]
@@ -2295,7 +2295,7 @@ pub struct ListConnectionProfilesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for getting a connection profile.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetConnectionProfileRequest {
     /// Required. The name of the connection profile resource to get.
     #[prost(string, tag = "1")]
@@ -2373,7 +2373,7 @@ pub struct UpdateConnectionProfileRequest {
     pub force: bool,
 }
 /// Request message for deleting a connection profile.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteConnectionProfileRequest {
     /// Required. The name of the connection profile resource to delete.
     #[prost(string, tag = "1")]
@@ -2395,7 +2395,7 @@ pub struct DeleteConnectionProfileRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for listing streams.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListStreamsRequest {
     /// Required. The parent that owns the collection of streams.
     #[prost(string, tag = "1")]
@@ -2434,7 +2434,7 @@ pub struct ListStreamsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for getting a stream.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetStreamRequest {
     /// Required. The name of the stream resource to get.
     #[prost(string, tag = "1")]
@@ -2512,7 +2512,7 @@ pub struct UpdateStreamRequest {
     pub force: bool,
 }
 /// Request message for deleting a stream.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteStreamRequest {
     /// Required. The name of the stream resource to delete.
     #[prost(string, tag = "1")]
@@ -2534,7 +2534,7 @@ pub struct DeleteStreamRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for running a stream.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RunStreamRequest {
     /// Required. Name of the stream resource to start, in the format:
     /// projects/{project_id}/locations/{location}/streams/{stream_name}
@@ -2549,7 +2549,7 @@ pub struct RunStreamRequest {
     pub force: bool,
 }
 /// Request for fetching a specific stream object.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetStreamObjectRequest {
     /// Required. The name of the stream object resource to get.
     #[prost(string, tag = "1")]
@@ -2557,7 +2557,7 @@ pub struct GetStreamObjectRequest {
 }
 /// Request for looking up a specific stream object by its source object
 /// identifier.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LookupStreamObjectRequest {
     /// Required. The parent stream that owns the collection of objects.
     #[prost(string, tag = "1")]
@@ -2567,7 +2567,7 @@ pub struct LookupStreamObjectRequest {
     pub source_object_identifier: ::core::option::Option<SourceObjectIdentifier>,
 }
 /// Request for manually initiating a backfill job for a specific stream object.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StartBackfillJobRequest {
     /// Required. The name of the stream object resource to start a backfill job
     /// for.
@@ -2583,7 +2583,7 @@ pub struct StartBackfillJobResponse {
 }
 /// Request for manually stopping a running backfill job for a specific stream
 /// object.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StopBackfillJobRequest {
     /// Required. The name of the stream object resource to stop the backfill job
     /// for.
@@ -2598,7 +2598,7 @@ pub struct StopBackfillJobResponse {
     pub object: ::core::option::Option<StreamObject>,
 }
 /// Request for listing all objects for a specific stream.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListStreamObjectsRequest {
     /// Required. The parent stream that owns the collection of objects.
     #[prost(string, tag = "1")]
@@ -2647,8 +2647,8 @@ pub struct OperationMetadata {
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
     /// have
-    /// [google.longrunning.Operation.error][google.longrunning.Operation.error]
-    /// value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// \[google.longrunning.Operation.error\]\[google.longrunning.Operation.error\]
+    /// value with a \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -2691,7 +2691,7 @@ pub struct CreatePrivateConnectionRequest {
     pub force: bool,
 }
 /// Request for listing private connections.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPrivateConnectionsRequest {
     /// Required. The parent that owns the collection of private connectivity
     /// configurations.
@@ -2733,7 +2733,7 @@ pub struct ListPrivateConnectionsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request to delete a private connection.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeletePrivateConnectionRequest {
     /// Required. The name of the private connectivity configuration to delete.
     #[prost(string, tag = "1")]
@@ -2759,7 +2759,7 @@ pub struct DeletePrivateConnectionRequest {
     pub force: bool,
 }
 /// Request to get a private connection configuration.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPrivateConnectionRequest {
     /// Required. The name of the  private connectivity configuration to get.
     #[prost(string, tag = "1")]
@@ -2794,7 +2794,7 @@ pub struct CreateRouteRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Route list request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRoutesRequest {
     /// Required. The parent that owns the collection of Routess.
     #[prost(string, tag = "1")]
@@ -2835,7 +2835,7 @@ pub struct ListRoutesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Route deletion request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRouteRequest {
     /// Required. The name of the Route resource to delete.
     #[prost(string, tag = "1")]
@@ -2857,7 +2857,7 @@ pub struct DeleteRouteRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Route get request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRouteRequest {
     /// Required. The name of the Route resource to get.
     #[prost(string, tag = "1")]
@@ -2972,7 +2972,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/ListConnectionProfiles",
             );
@@ -3002,7 +3002,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/GetConnectionProfile",
             );
@@ -3032,7 +3032,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/CreateConnectionProfile",
             );
@@ -3062,7 +3062,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/UpdateConnectionProfile",
             );
@@ -3092,7 +3092,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/DeleteConnectionProfile",
             );
@@ -3125,7 +3125,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/DiscoverConnectionProfile",
             );
@@ -3155,7 +3155,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/ListStreams",
             );
@@ -3182,7 +3182,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/GetStream",
             );
@@ -3209,7 +3209,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/CreateStream",
             );
@@ -3239,7 +3239,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/UpdateStream",
             );
@@ -3269,7 +3269,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/DeleteStream",
             );
@@ -3300,7 +3300,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/RunStream",
             );
@@ -3324,7 +3324,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/GetStreamObject",
             );
@@ -3351,7 +3351,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/LookupStreamObject",
             );
@@ -3381,7 +3381,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/ListStreamObjects",
             );
@@ -3411,7 +3411,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/StartBackfillJob",
             );
@@ -3441,7 +3441,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/StopBackfillJob",
             );
@@ -3472,7 +3472,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/FetchStaticIps",
             );
@@ -3502,7 +3502,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/CreatePrivateConnection",
             );
@@ -3532,7 +3532,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/GetPrivateConnection",
             );
@@ -3563,7 +3563,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/ListPrivateConnections",
             );
@@ -3593,7 +3593,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/DeletePrivateConnection",
             );
@@ -3624,7 +3624,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/CreateRoute",
             );
@@ -3651,7 +3651,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/GetRoute",
             );
@@ -3679,7 +3679,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/ListRoutes",
             );
@@ -3709,7 +3709,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1.Datastream/DeleteRoute",
             );

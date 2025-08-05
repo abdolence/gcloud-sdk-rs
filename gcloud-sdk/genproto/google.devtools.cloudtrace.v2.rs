@@ -11,7 +11,7 @@
 pub struct Span {
     /// Required. The resource name of the span in the following format:
     ///
-    ///   * `projects/\[PROJECT_ID\]/traces/\[TRACE_ID\]/spans/\[SPAN_ID\]`
+    /// * `projects/\[PROJECT_ID\]/traces/\[TRACE_ID\]/spans/\[SPAN_ID\]`
     ///
     /// `\[TRACE_ID\]` is a unique identifier for a trace within a project;
     /// it is a 32-character hexadecimal encoding of a 16-byte array. It should
@@ -91,9 +91,11 @@ pub mod span {
         /// long. The value can be a string up to 256 bytes, a signed 64-bit integer,
         /// or the boolean values `true` or `false`. For example:
         ///
-        ///      "/instance_id": { "string_value": { "value": "my-instance" } }
-        ///      "/http/request_bytes": { "int_value": 300 }
-        ///      "abc.com/myattribute": { "bool_value": false }
+        /// ```text
+        /// "/instance_id": { "string_value": { "value": "my-instance" } }
+        /// "/http/request_bytes": { "int_value": 300 }
+        /// "abc.com/myattribute": { "bool_value": false }
+        /// ```
         #[prost(map = "string, message", tag = "1")]
         pub attribute_map: ::std::collections::HashMap<
             ::prost::alloc::string::String,
@@ -131,7 +133,7 @@ pub mod span {
             pub attributes: ::core::option::Option<super::Attributes>,
         }
         /// An event describing a message sent/received between Spans.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct MessageEvent {
             /// Type of MessageEvent. Indicates whether the message was sent or
             /// received.
@@ -371,7 +373,7 @@ pub mod span {
     }
 }
 /// The allowed types for `\[VALUE\]` in a `\[KEY\]:[VALUE]` attribute.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AttributeValue {
     /// The type of the value.
     #[prost(oneof = "attribute_value::Value", tags = "1, 2, 3")]
@@ -380,7 +382,7 @@ pub struct AttributeValue {
 /// Nested message and enum types in `AttributeValue`.
 pub mod attribute_value {
     /// The type of the value.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Value {
         /// A string up to 256 bytes long.
         #[prost(message, tag = "1")]
@@ -414,7 +416,7 @@ pub struct StackTrace {
 /// Nested message and enum types in `StackTrace`.
 pub mod stack_trace {
     /// Represents a single stack frame in a stack trace.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct StackFrame {
         /// The fully-qualified name that uniquely identifies the function or
         /// method that is active in this frame (up to 1024 bytes).
@@ -458,7 +460,7 @@ pub mod stack_trace {
     }
 }
 /// Binary module.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Module {
     /// For example: main binary, kernel modules, and dynamic libraries
     /// such as libc.so, sharedlib.so (up to 256 bytes).
@@ -470,7 +472,7 @@ pub struct Module {
     pub build_id: ::core::option::Option<TruncatableString>,
 }
 /// Represents a string that might be shortened to a specified length.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TruncatableString {
     /// The shortened string. For example, if the original string is 500
     /// bytes long and the limit of the string is 128 bytes, then
@@ -610,7 +612,7 @@ pub mod trace_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.cloudtrace.v2.TraceService/BatchWriteSpans",
             );
@@ -637,7 +639,7 @@ pub mod trace_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.cloudtrace.v2.TraceService/CreateSpan",
             );

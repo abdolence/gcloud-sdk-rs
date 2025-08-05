@@ -89,7 +89,7 @@ pub struct Device {
     /// interpreted or indexed by Cloud IoT Core. It can be used to add contextual
     /// information for the device.
     ///
-    /// Keys must conform to the regular expression [a-zA-Z][a-zA-Z0-9-_.+~%]+ and
+    /// Keys must conform to the regular expression \[a-zA-Z\]\[a-zA-Z0-9-\_.+~%\]+ and
     /// be less than 128 bytes in length.
     ///
     /// Values are free-form strings. Each value must be less than or equal to 32
@@ -107,7 +107,7 @@ pub struct Device {
     pub gateway_config: ::core::option::Option<GatewayConfig>,
 }
 /// Gateway-related configuration and state.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GatewayConfig {
     /// Indicates whether the device is a gateway.
     #[prost(enumeration = "GatewayType", tag = "1")]
@@ -180,7 +180,7 @@ pub struct DeviceRegistry {
     pub credentials: ::prost::alloc::vec::Vec<RegistryCredential>,
 }
 /// The configuration of MQTT for a device registry.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MqttConfig {
     /// If enabled, allows connections using the MQTT protocol. Otherwise, MQTT
     /// connections to this registry will fail.
@@ -188,7 +188,7 @@ pub struct MqttConfig {
     pub mqtt_enabled_state: i32,
 }
 /// The configuration of the HTTP bridge for a device registry.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HttpConfig {
     /// If enabled, allows devices to use DeviceService via the HTTP protocol.
     /// Otherwise, any requests to DeviceService will fail for this registry.
@@ -196,7 +196,7 @@ pub struct HttpConfig {
     pub http_enabled_state: i32,
 }
 /// The configuration for forwarding telemetry events.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EventNotificationConfig {
     /// If the subfolder name matches this string exactly, this configuration will
     /// be used. The string must not include the leading '/' character. If empty,
@@ -210,7 +210,7 @@ pub struct EventNotificationConfig {
     pub pubsub_topic_name: ::prost::alloc::string::String,
 }
 /// The configuration for notification of new states received from the device.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StateNotificationConfig {
     /// A Cloud Pub/Sub topic name. For example,
     /// `projects/myProject/topics/deviceEvents`.
@@ -218,7 +218,7 @@ pub struct StateNotificationConfig {
     pub pubsub_topic_name: ::prost::alloc::string::String,
 }
 /// A server-stored registry credential used to validate device credentials.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegistryCredential {
     /// The credential data. Reserved for expansion in the future.
     #[prost(oneof = "registry_credential::Credential", tags = "1")]
@@ -227,7 +227,7 @@ pub struct RegistryCredential {
 /// Nested message and enum types in `RegistryCredential`.
 pub mod registry_credential {
     /// The credential data. Reserved for expansion in the future.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Credential {
         /// A public key certificate used to verify the device credentials.
         #[prost(message, tag = "1")]
@@ -235,7 +235,7 @@ pub mod registry_credential {
     }
 }
 /// Details of an X.509 certificate. For informational purposes only.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct X509CertificateDetails {
     /// The entity that signed the certificate.
     #[prost(string, tag = "1")]
@@ -257,7 +257,7 @@ pub struct X509CertificateDetails {
     pub public_key_type: ::prost::alloc::string::String,
 }
 /// A public key certificate format and data.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PublicKeyCertificate {
     /// The certificate format.
     #[prost(enumeration = "PublicKeyCertificateFormat", tag = "1")]
@@ -270,7 +270,7 @@ pub struct PublicKeyCertificate {
     pub x509_details: ::core::option::Option<X509CertificateDetails>,
 }
 /// A server-stored device credential used for authentication.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeviceCredential {
     /// \[Optional\] The time at which this credential becomes invalid. This
     /// credential will be ignored for new client authentication requests after
@@ -284,7 +284,7 @@ pub struct DeviceCredential {
 /// Nested message and enum types in `DeviceCredential`.
 pub mod device_credential {
     /// The credential data. Reserved for expansion in the future.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Credential {
         /// A public key used to verify the signature of JSON Web Tokens (JWTs).
         /// When adding a new device credential, either via device creation or via
@@ -302,7 +302,7 @@ pub mod device_credential {
     }
 }
 /// A public key format and data.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PublicKeyCredential {
     /// The format of the key.
     #[prost(enumeration = "PublicKeyFormat", tag = "1")]
@@ -312,7 +312,7 @@ pub struct PublicKeyCredential {
     pub key: ::prost::alloc::string::String,
 }
 /// The device configuration. Eventually delivered to devices.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeviceConfig {
     /// \[Output only\] The version of this update. The version number is assigned by
     /// the server, and is always greater than 0 after device creation. The
@@ -340,7 +340,7 @@ pub struct DeviceConfig {
     pub binary_data: ::prost::alloc::vec::Vec<u8>,
 }
 /// The device state, as reported by the device.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeviceState {
     /// \[Output only\] The time at which this state version was updated in Cloud
     /// IoT Core.
@@ -589,21 +589,17 @@ pub enum PublicKeyFormat {
     UnspecifiedPublicKeyFormat = 0,
     /// An RSA public key encoded in base64, and wrapped by
     /// `-----BEGIN PUBLIC KEY-----` and `-----END PUBLIC KEY-----`. This can be
-    /// used to verify `RS256` signatures in JWT tokens ([RFC7518](
-    /// <https://www.ietf.org/rfc/rfc7518.txt>)).
+    /// used to verify `RS256` signatures in JWT tokens ([RFC7518](<https://www.ietf.org/rfc/rfc7518.txt>)).
     RsaPem = 3,
-    /// As RSA_PEM, but wrapped in an X.509v3 certificate ([RFC5280](
-    /// <https://www.ietf.org/rfc/rfc5280.txt>)), encoded in base64, and wrapped by
+    /// As RSA_PEM, but wrapped in an X.509v3 certificate ([RFC5280](<https://www.ietf.org/rfc/rfc5280.txt>)), encoded in base64, and wrapped by
     /// `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----`.
     RsaX509Pem = 1,
     /// Public key for the ECDSA algorithm using P-256 and SHA-256, encoded in
-    /// base64, and wrapped by `-----BEGIN PUBLIC KEY-----` and `-----END
-    /// PUBLIC KEY-----`. This can be used to verify JWT tokens with the `ES256`
+    /// base64, and wrapped by `-----BEGIN PUBLIC KEY-----` and `-----END  PUBLIC KEY-----`. This can be used to verify JWT tokens with the `ES256`
     /// algorithm ([RFC7518](<https://www.ietf.org/rfc/rfc7518.txt>)). This curve is
     /// defined in [OpenSSL](<https://www.openssl.org/>) as the `prime256v1` curve.
     Es256Pem = 2,
-    /// As ES256_PEM, but wrapped in an X.509v3 certificate ([RFC5280](
-    /// <https://www.ietf.org/rfc/rfc5280.txt>)), encoded in base64, and wrapped by
+    /// As ES256_PEM, but wrapped in an X.509v3 certificate ([RFC5280](<https://www.ietf.org/rfc/rfc5280.txt>)), encoded in base64, and wrapped by
     /// `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----`.
     Es256X509Pem = 4,
 }
@@ -647,7 +643,7 @@ pub struct CreateDeviceRegistryRequest {
     pub device_registry: ::core::option::Option<DeviceRegistry>,
 }
 /// Request for `GetDeviceRegistry`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDeviceRegistryRequest {
     /// Required. The name of the device registry. For example,
     /// `projects/example-project/locations/us-central1/registries/my-registry`.
@@ -655,7 +651,7 @@ pub struct GetDeviceRegistryRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for `DeleteDeviceRegistry`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDeviceRegistryRequest {
     /// Required. The name of the device registry. For example,
     /// `projects/example-project/locations/us-central1/registries/my-registry`.
@@ -679,7 +675,7 @@ pub struct UpdateDeviceRegistryRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for `ListDeviceRegistries`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDeviceRegistriesRequest {
     /// Required. The project and cloud region path. For example,
     /// `projects/example-project/locations/us-central1`.
@@ -724,7 +720,7 @@ pub struct CreateDeviceRequest {
     pub device: ::core::option::Option<Device>,
 }
 /// Request for `GetDevice`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDeviceRequest {
     /// Required. The name of the device. For example,
     /// `projects/p0/locations/us-central1/registries/registry0/devices/device0` or
@@ -754,7 +750,7 @@ pub struct UpdateDeviceRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for `DeleteDevice`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDeviceRequest {
     /// Required. The name of the device. For example,
     /// `projects/p0/locations/us-central1/registries/registry0/devices/device0` or
@@ -763,7 +759,7 @@ pub struct DeleteDeviceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for `ListDevices`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDevicesRequest {
     /// Required. The device registry path. Required. For example,
     /// `projects/my-project/locations/us-central1/registries/my-registry`.
@@ -799,7 +795,7 @@ pub struct ListDevicesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Options for limiting the list based on gateway type and associations.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GatewayListOptions {
     /// If not set, all devices and gateways are returned. If set, the list is
     /// filtered based on gateway type and associations.
@@ -810,7 +806,7 @@ pub struct GatewayListOptions {
 pub mod gateway_list_options {
     /// If not set, all devices and gateways are returned. If set, the list is
     /// filtered based on gateway type and associations.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Filter {
         /// If `GATEWAY` is specified, only gateways are returned. If `NON_GATEWAY`
         /// is specified, only non-gateway devices are returned. If
@@ -843,7 +839,7 @@ pub struct ListDevicesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for `ModifyCloudToDeviceConfig`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ModifyCloudToDeviceConfigRequest {
     /// Required. The name of the device. For example,
     /// `projects/p0/locations/us-central1/registries/registry0/devices/device0` or
@@ -862,7 +858,7 @@ pub struct ModifyCloudToDeviceConfigRequest {
     pub binary_data: ::prost::alloc::vec::Vec<u8>,
 }
 /// Request for `ListDeviceConfigVersions`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDeviceConfigVersionsRequest {
     /// Required. The name of the device. For example,
     /// `projects/p0/locations/us-central1/registries/registry0/devices/device0` or
@@ -884,7 +880,7 @@ pub struct ListDeviceConfigVersionsResponse {
     pub device_configs: ::prost::alloc::vec::Vec<DeviceConfig>,
 }
 /// Request for `ListDeviceStates`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDeviceStatesRequest {
     /// Required. The name of the device. For example,
     /// `projects/p0/locations/us-central1/registries/registry0/devices/device0` or
@@ -906,7 +902,7 @@ pub struct ListDeviceStatesResponse {
     pub device_states: ::prost::alloc::vec::Vec<DeviceState>,
 }
 /// Request for `SendCommandToDevice`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SendCommandToDeviceRequest {
     /// Required. The name of the device. For example,
     /// `projects/p0/locations/us-central1/registries/registry0/devices/device0` or
@@ -925,10 +921,10 @@ pub struct SendCommandToDeviceRequest {
     pub subfolder: ::prost::alloc::string::String,
 }
 /// Response for `SendCommandToDevice`.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SendCommandToDeviceResponse {}
 /// Request for `BindDeviceToGateway`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BindDeviceToGatewayRequest {
     /// Required. The name of the registry. For example,
     /// `projects/example-project/locations/us-central1/registries/my-registry`.
@@ -945,10 +941,10 @@ pub struct BindDeviceToGatewayRequest {
     pub device_id: ::prost::alloc::string::String,
 }
 /// Response for `BindDeviceToGateway`.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BindDeviceToGatewayResponse {}
 /// Request for `UnbindDeviceFromGateway`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UnbindDeviceFromGatewayRequest {
     /// Required. The name of the registry. For example,
     /// `projects/example-project/locations/us-central1/registries/my-registry`.
@@ -965,7 +961,7 @@ pub struct UnbindDeviceFromGatewayRequest {
     pub device_id: ::prost::alloc::string::String,
 }
 /// Response for `UnbindDeviceFromGateway`.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UnbindDeviceFromGatewayResponse {}
 /// Generated client implementations.
 pub mod device_manager_client {
@@ -1072,7 +1068,7 @@ pub mod device_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.iot.v1.DeviceManager/CreateDeviceRegistry",
             );
@@ -1099,7 +1095,7 @@ pub mod device_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.iot.v1.DeviceManager/GetDeviceRegistry",
             );
@@ -1126,7 +1122,7 @@ pub mod device_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.iot.v1.DeviceManager/UpdateDeviceRegistry",
             );
@@ -1153,7 +1149,7 @@ pub mod device_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.iot.v1.DeviceManager/DeleteDeviceRegistry",
             );
@@ -1183,7 +1179,7 @@ pub mod device_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.iot.v1.DeviceManager/ListDeviceRegistries",
             );
@@ -1210,7 +1206,7 @@ pub mod device_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.iot.v1.DeviceManager/CreateDevice",
             );
@@ -1234,7 +1230,7 @@ pub mod device_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.iot.v1.DeviceManager/GetDevice",
             );
@@ -1258,7 +1254,7 @@ pub mod device_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.iot.v1.DeviceManager/UpdateDevice",
             );
@@ -1282,7 +1278,7 @@ pub mod device_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.iot.v1.DeviceManager/DeleteDevice",
             );
@@ -1309,7 +1305,7 @@ pub mod device_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.iot.v1.DeviceManager/ListDevices",
             );
@@ -1335,7 +1331,7 @@ pub mod device_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.iot.v1.DeviceManager/ModifyCloudToDeviceConfig",
             );
@@ -1366,7 +1362,7 @@ pub mod device_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.iot.v1.DeviceManager/ListDeviceConfigVersions",
             );
@@ -1397,7 +1393,7 @@ pub mod device_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.iot.v1.DeviceManager/ListDeviceStates",
             );
@@ -1430,7 +1426,7 @@ pub mod device_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.iot.v1.DeviceManager/SetIamPolicy",
             );
@@ -1461,7 +1457,7 @@ pub mod device_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.iot.v1.DeviceManager/GetIamPolicy",
             );
@@ -1494,7 +1490,7 @@ pub mod device_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.iot.v1.DeviceManager/TestIamPermissions",
             );
@@ -1510,17 +1506,18 @@ pub mod device_manager_client {
         }
         /// Sends a command to the specified device. In order for a device to be able
         /// to receive commands, it must:
-        /// 1) be connected to Cloud IoT Core using the MQTT protocol, and
-        /// 2) be subscribed to the group of MQTT topics specified by
-        ///    /devices/{device-id}/commands/#. This subscription will receive commands
-        ///    at the top-level topic /devices/{device-id}/commands as well as commands
-        ///    for subfolders, like /devices/{device-id}/commands/subfolder.
-        ///    Note that subscribing to specific subfolders is not supported.
-        /// If the command could not be delivered to the device, this method will
-        /// return an error; in particular, if the device is not subscribed, this
-        /// method will return FAILED_PRECONDITION. Otherwise, this method will
-        /// return OK. If the subscription is QoS 1, at least once delivery will be
-        /// guaranteed; for QoS 0, no acknowledgment will be expected from the device.
+        ///
+        /// 1. be connected to Cloud IoT Core using the MQTT protocol, and
+        /// 1. be subscribed to the group of MQTT topics specified by
+        ///   /devices/{device-id}/commands/#. This subscription will receive commands
+        ///   at the top-level topic /devices/{device-id}/commands as well as commands
+        ///   for subfolders, like /devices/{device-id}/commands/subfolder.
+        ///   Note that subscribing to specific subfolders is not supported.
+        ///   If the command could not be delivered to the device, this method will
+        ///   return an error; in particular, if the device is not subscribed, this
+        ///   method will return FAILED_PRECONDITION. Otherwise, this method will
+        ///   return OK. If the subscription is QoS 1, at least once delivery will be
+        ///   guaranteed; for QoS 0, no acknowledgment will be expected from the device.
         pub async fn send_command_to_device(
             &mut self,
             request: impl tonic::IntoRequest<super::SendCommandToDeviceRequest>,
@@ -1536,7 +1533,7 @@ pub mod device_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.iot.v1.DeviceManager/SendCommandToDevice",
             );
@@ -1566,7 +1563,7 @@ pub mod device_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.iot.v1.DeviceManager/BindDeviceToGateway",
             );
@@ -1596,7 +1593,7 @@ pub mod device_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.iot.v1.DeviceManager/UnbindDeviceFromGateway",
             );

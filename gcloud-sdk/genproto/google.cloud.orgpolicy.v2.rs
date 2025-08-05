@@ -8,7 +8,7 @@
 /// locations in the organization's resource hierarchy. Policies are inherited
 /// down the resource hierarchy from higher levels, but can also be overridden.
 /// For details about the inheritance rules, see
-/// [`Policy`][google.cloud.orgpolicy.v2.Policy].
+/// \[`Policy`\]\[google.cloud.orgpolicy.v2.Policy\].
 ///
 /// Constraints have a default behavior determined by the `constraint_default`
 /// field, which is the enforcement behavior that is used in the absence of a
@@ -59,8 +59,8 @@ pub struct Constraint {
 pub mod constraint {
     /// A constraint type that allows or disallows a list of string values, which
     /// are configured in the
-    /// [`PolicyRule`][google.cloud.orgpolicy.v2.PolicySpec.PolicyRule].
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    /// \[`PolicyRule`\]\[google.cloud.orgpolicy.v2.PolicySpec.PolicyRule\].
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ListConstraint {
         /// Indicates whether values grouped into categories can be used in
         /// `Policy.allowed_values` and `Policy.denied_values`. For example,
@@ -80,7 +80,7 @@ pub mod constraint {
         /// The resource instance type on which this policy applies. Format will be
         /// of the form : `<service name>/<type>` Example:
         ///
-        ///   * `compute.googleapis.com/Instance`.
+        /// * `compute.googleapis.com/Instance`.
         #[prost(string, repeated, tag = "1")]
         pub resource_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// All the operations being applied for this constraint.
@@ -101,7 +101,7 @@ pub mod constraint {
         #[prost(enumeration = "custom_constraint_definition::ActionType", tag = "4")]
         pub action_type: i32,
         /// Stores the structure of
-        /// [`Parameters`][google.cloud.orgpolicy.v2.Constraint.CustomConstraintDefinition.Parameter]
+        /// \[`Parameters`\]\[google.cloud.orgpolicy.v2.Constraint.CustomConstraintDefinition.Parameter\]
         /// used by the constraint condition. The key of `map` represents the name of
         /// the parameter.
         #[prost(map = "string, message", tag = "5")]
@@ -139,7 +139,7 @@ pub mod constraint {
         /// Nested message and enum types in `Parameter`.
         pub mod parameter {
             /// Defines Metadata structure.
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct Metadata {
                 /// Detailed description of what this `parameter` is and use of it.
                 /// Mutable.
@@ -304,7 +304,7 @@ pub mod constraint {
         }
     }
     /// A constraint type is enforced or not enforced, which is configured in the
-    /// [`PolicyRule`][google.cloud.orgpolicy.v2.PolicySpec.PolicyRule].
+    /// \[`PolicyRule`\]\[google.cloud.orgpolicy.v2.PolicySpec.PolicyRule\].
     ///
     /// If `customConstraintDefinition` is defined, this constraint is a managed
     /// constraint.
@@ -384,7 +384,7 @@ pub mod constraint {
 /// By creating a custom constraint, customers can apply policies of this
 /// custom constraint. *Creating a custom constraint itself does NOT apply any
 /// policy enforcement*.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomConstraint {
     /// Immutable. Name of the constraint. This is unique within the organization.
     /// Format of the name should be
@@ -400,7 +400,7 @@ pub struct CustomConstraint {
     /// Immutable. The resource instance type on which this policy applies. Format
     /// will be of the form : `<service name>/<type>` Example:
     ///
-    ///   * `compute.googleapis.com/Instance`.
+    /// * `compute.googleapis.com/Instance`.
     #[prost(string, repeated, tag = "2")]
     pub resource_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// All the operations being applied for this constraint.
@@ -616,11 +616,11 @@ pub struct PolicySpec {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// In policies for boolean constraints, the following requirements apply:
     ///
-    ///    - There must be one and only one policy rule where condition is unset.
-    ///    - Boolean policy rules with conditions must set `enforced` to the
-    ///      opposite of the policy rule without a condition.
-    ///    - During policy evaluation, policy rules with conditions that are
-    ///      true for a target resource take precedence.
+    /// * There must be one and only one policy rule where condition is unset.
+    /// * Boolean policy rules with conditions must set `enforced` to the
+    ///   opposite of the policy rule without a condition.
+    /// * During policy evaluation, policy rules with conditions that are
+    ///   true for a target resource take precedence.
     #[prost(message, repeated, tag = "3")]
     pub rules: ::prost::alloc::vec::Vec<policy_spec::PolicyRule>,
     /// Determines the inheritance behavior for this policy.
@@ -648,9 +648,9 @@ pub mod policy_spec {
     pub struct PolicyRule {
         /// A condition which determines whether this rule is used
         /// in the evaluation of the policy. When set, the `expression` field in
-        /// the `Expr' must include from 1 to 10 subexpressions, joined by the "||"
+        /// the \`Expr' must include from 1 to 10 subexpressions, joined by the "||"
         /// or "&&" operators. Each subexpression must be of the form
-        /// "resource.matchTag('<ORG_ID>/tag_key_short_name,
+        /// "resource.matchTag('\<ORG_ID>/tag_key_short_name,
         /// 'tag_value_short_name')". or "resource.matchTagId('tagKeys/key_id',
         /// 'tagValues/value_id')". where key_name and value_name are the resource
         /// names for Label Keys and Values. These names are available from the Tag
@@ -665,8 +665,8 @@ pub mod policy_spec {
         /// parameter value types match those defined in the constraint definition.
         /// For example:
         /// {
-        ///    "allowedLocations" : \["us-east1", "us-west1"\],
-        ///    "allowAll" : true
+        /// "allowedLocations" : \["us-east1", "us-west1"\],
+        /// "allowAll" : true
         /// }
         #[prost(message, optional, tag = "6")]
         pub parameters: ::core::option::Option<::prost_types::Struct>,
@@ -686,13 +686,13 @@ pub mod policy_spec {
         /// same as values with no prefix.
         /// Ancestry subtrees must be in one of the following formats:
         ///
-        /// - `projects/<project-id>` (for example, `projects/tokyo-rain-123`)
-        /// - `folders/<folder-id>` (for example, `folders/1234`)
-        /// - `organizations/<organization-id>` (for example, `organizations/1234`)
+        /// * `projects/<project-id>` (for example, `projects/tokyo-rain-123`)
+        /// * `folders/<folder-id>` (for example, `folders/1234`)
+        /// * `organizations/<organization-id>` (for example, `organizations/1234`)
         ///
         /// The `supports_under` field of the associated `Constraint`  defines
         /// whether ancestry prefixes can be used.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct StringValues {
             /// List of values allowed at this resource.
             #[prost(string, repeated, tag = "1")]
@@ -701,7 +701,7 @@ pub mod policy_spec {
             #[prost(string, repeated, tag = "2")]
             pub denied_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Kind {
             /// List of values to be used for this policy rule. This field can be set
             /// only in policies for list constraints.
@@ -725,7 +725,7 @@ pub mod policy_spec {
 }
 /// The request sent to the \[ListConstraints\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.ListConstraints\] method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListConstraintsRequest {
     /// Required. The Google Cloud resource that parents the constraint. Must be in
     /// one of the following forms:
@@ -759,7 +759,7 @@ pub struct ListConstraintsResponse {
 }
 /// The request sent to the \[ListPolicies\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.ListPolicies\] method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPoliciesRequest {
     /// Required. The target Google Cloud resource that parents the set of
     /// constraints and policies that will be returned from this call. Must be in
@@ -797,19 +797,19 @@ pub struct ListPoliciesResponse {
 }
 /// The request sent to the \[GetPolicy\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.GetPolicy\] method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPolicyRequest {
     /// Required. Resource name of the policy. See
-    /// [Policy][google.cloud.orgpolicy.v2.Policy] for naming requirements.
+    /// \[Policy\]\[google.cloud.orgpolicy.v2.Policy\] for naming requirements.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request sent to the \[GetEffectivePolicy\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.GetEffectivePolicy\] method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEffectivePolicyRequest {
     /// Required. The effective policy to compute. See
-    /// [Policy][google.cloud.orgpolicy.v2.Policy] for naming requirements.
+    /// \[Policy\]\[google.cloud.orgpolicy.v2.Policy\] for naming requirements.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -845,7 +845,7 @@ pub struct UpdatePolicyRequest {
 }
 /// The request sent to the \[DeletePolicy\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.DeletePolicy\] method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeletePolicyRequest {
     /// Required. Name of the policy to delete.
     /// See the policy entry for naming rules.
@@ -859,7 +859,7 @@ pub struct DeletePolicyRequest {
 }
 /// The request sent to the \[CreateCustomConstraintRequest\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.CreateCustomConstraint\] method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateCustomConstraintRequest {
     /// Required. Must be in the following form:
     ///
@@ -872,7 +872,7 @@ pub struct CreateCustomConstraintRequest {
 }
 /// The request sent to the \[GetCustomConstraint\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.GetCustomConstraint\] method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCustomConstraintRequest {
     /// Required. Resource name of the custom or managed constraint. See the custom
     /// constraint entry for naming requirements.
@@ -881,7 +881,7 @@ pub struct GetCustomConstraintRequest {
 }
 /// The request sent to the \[ListCustomConstraints\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.ListCustomConstraints\] method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCustomConstraintsRequest {
     /// Required. The target Google Cloud resource that parents the set of custom
     /// constraints that will be returned from this call. Must be in one of the
@@ -917,7 +917,7 @@ pub struct ListCustomConstraintsResponse {
 }
 /// The request sent to the \[UpdateCustomConstraintRequest\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.UpdateCustomConstraint\] method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateCustomConstraintRequest {
     /// Required. `CustomConstraint` to update.
     #[prost(message, optional, tag = "1")]
@@ -925,7 +925,7 @@ pub struct UpdateCustomConstraintRequest {
 }
 /// The request sent to the \[DeleteCustomConstraint\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.DeleteCustomConstraint\] method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteCustomConstraintRequest {
     /// Required. Name of the custom constraint to delete.
     /// See the custom constraint entry for naming rules.
@@ -1059,7 +1059,7 @@ pub mod org_policy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/ListConstraints",
             );
@@ -1089,7 +1089,7 @@ pub mod org_policy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/ListPolicies",
             );
@@ -1120,7 +1120,7 @@ pub mod org_policy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/GetPolicy",
             );
@@ -1149,7 +1149,7 @@ pub mod org_policy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/GetEffectivePolicy",
             );
@@ -1181,7 +1181,7 @@ pub mod org_policy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/CreatePolicy",
             );
@@ -1216,7 +1216,7 @@ pub mod org_policy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/UpdatePolicy",
             );
@@ -1246,7 +1246,7 @@ pub mod org_policy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/DeletePolicy",
             );
@@ -1281,7 +1281,7 @@ pub mod org_policy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/CreateCustomConstraint",
             );
@@ -1317,7 +1317,7 @@ pub mod org_policy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/UpdateCustomConstraint",
             );
@@ -1350,7 +1350,7 @@ pub mod org_policy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/GetCustomConstraint",
             );
@@ -1381,7 +1381,7 @@ pub mod org_policy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/ListCustomConstraints",
             );
@@ -1411,7 +1411,7 @@ pub mod org_policy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.orgpolicy.v2.OrgPolicy/DeleteCustomConstraint",
             );

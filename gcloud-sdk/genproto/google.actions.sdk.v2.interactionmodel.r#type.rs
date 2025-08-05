@@ -2,7 +2,7 @@
 /// A reference to a class which is used to declare the type of a field or return
 /// value. Enums are also a type of class that can be referenced using
 /// ClassReference.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ClassReference {
     /// Required. Name of a built-in type or custom type of the parameter. Examples:
     /// `PizzaToppings`, `actions.type.Number`
@@ -15,7 +15,7 @@ pub struct ClassReference {
 /// Elements that will be displayed on the canvas once a particular type's entity
 /// is extracted from a query. Only relevant for canvas enabled apps.
 /// **This message is localizable.**
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EntityDisplay {
     /// Optional. Title of the icon.
     #[prost(string, tag = "1")]
@@ -26,7 +26,7 @@ pub struct EntityDisplay {
 }
 /// Type that matches any text if surrounding words context is close to provided
 /// training examples.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FreeTextType {
     /// Optional. Elements that will be displayed on the canvas once an entity is extracted
     /// from a query. Only relevant for canvas enabled apps.
@@ -48,7 +48,7 @@ pub struct RegularExpressionType {
 pub mod regular_expression_type {
     /// Represents an entity object that contains the regular expression that is
     /// used for comparison.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Entity {
         /// Optional. Elements that will be displayed on the canvas once an entity is
         /// extracted from a query. Only relevant for canvas enabled apps.
@@ -84,7 +84,7 @@ pub struct SynonymType {
 pub mod synonym_type {
     /// Represents a synonym entity field that contains the details of a single
     /// entry inside the type.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Entity {
         /// Optional. The entity display details.
         #[prost(message, optional, tag = "1")]

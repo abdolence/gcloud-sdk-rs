@@ -147,7 +147,7 @@ pub struct MerchantReviewStatus {
 /// Nested message and enum types in `MerchantReviewStatus`.
 pub mod merchant_review_status {
     /// The destination status of the merchant review status.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct MerchantReviewDestinationStatus {
         /// Output only. The name of the reporting context.
         #[prost(
@@ -157,7 +157,7 @@ pub mod merchant_review_status {
         pub reporting_context: i32,
     }
     /// The ItemLevelIssue of the merchant review status.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct MerchantReviewItemLevelIssue {
         /// Output only. The error code of the issue.
         #[prost(string, tag = "1")]
@@ -237,7 +237,7 @@ pub mod merchant_review_status {
     }
 }
 /// Request message for the `GetMerchantReview` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetMerchantReviewRequest {
     /// Required. The ID of the merchant review.
     /// Format: accounts/{account}/merchantReviews/{merchantReview}
@@ -245,7 +245,7 @@ pub struct GetMerchantReviewRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `DeleteMerchantReview` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteMerchantReviewRequest {
     /// Required. The ID of the merchant review.
     /// Format: accounts/{account}/merchantReviews/{merchantReview}
@@ -253,7 +253,7 @@ pub struct DeleteMerchantReviewRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `ListMerchantsReview` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListMerchantReviewsRequest {
     /// Required. The account to list merchant reviews for.
     /// Format: accounts/{account}
@@ -447,7 +447,7 @@ pub mod merchant_reviews_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.reviews.v1beta.MerchantReviewsService/GetMerchantReview",
             );
@@ -477,7 +477,7 @@ pub mod merchant_reviews_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.reviews.v1beta.MerchantReviewsService/ListMerchantReviews",
             );
@@ -505,7 +505,7 @@ pub mod merchant_reviews_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.reviews.v1beta.MerchantReviewsService/InsertMerchantReview",
             );
@@ -532,7 +532,7 @@ pub mod merchant_reviews_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.reviews.v1beta.MerchantReviewsService/DeleteMerchantReview",
             );
@@ -682,7 +682,7 @@ pub struct ProductReviewAttributes {
 /// Nested message and enum types in `ProductReviewAttributes`.
 pub mod product_review_attributes {
     /// The URI of the review landing page.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ReviewLink {
         /// Optional. Type of the review URI.
         #[prost(enumeration = "review_link::Type", tag = "1")]
@@ -809,7 +809,7 @@ pub struct ProductReviewStatus {
 /// Nested message and enum types in `ProductReviewStatus`.
 pub mod product_review_status {
     /// The destination status of the product review status.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ProductReviewDestinationStatus {
         /// Output only. The name of the reporting context.
         #[prost(
@@ -819,7 +819,7 @@ pub mod product_review_status {
         pub reporting_context: i32,
     }
     /// The ItemLevelIssue of the product review status.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ProductReviewItemLevelIssue {
         /// Output only. The error code of the issue.
         #[prost(string, tag = "1")]
@@ -899,7 +899,7 @@ pub mod product_review_status {
     }
 }
 /// Request message for the GetProductReview method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetProductReviewRequest {
     /// Required. The ID of the merchant review.
     /// Format: accounts/{account}/productReviews/{productReview}
@@ -907,7 +907,7 @@ pub struct GetProductReviewRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `DeleteProductReview` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteProductReviewRequest {
     /// Required. The ID of the Product review.
     /// Format: accounts/{account}/productReviews/{productReview}
@@ -915,7 +915,7 @@ pub struct DeleteProductReviewRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the ListProductReviews method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListProductReviewsRequest {
     /// Required. The account to list product reviews for.
     /// Format: accounts/{account}
@@ -1094,7 +1094,7 @@ pub mod product_reviews_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.reviews.v1beta.ProductReviewsService/GetProductReview",
             );
@@ -1124,7 +1124,7 @@ pub mod product_reviews_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.reviews.v1beta.ProductReviewsService/ListProductReviews",
             );
@@ -1151,7 +1151,7 @@ pub mod product_reviews_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.reviews.v1beta.ProductReviewsService/InsertProductReview",
             );
@@ -1178,7 +1178,7 @@ pub mod product_reviews_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.reviews.v1beta.ProductReviewsService/DeleteProductReview",
             );
