@@ -21,14 +21,14 @@ pub mod device_message {
     }
 }
 /// A message to an ADB server.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AdbMessage {
     #[prost(oneof = "adb_message::Contents", tags = "1, 2")]
     pub contents: ::core::option::Option<adb_message::Contents>,
 }
 /// Nested message and enum types in `AdbMessage`.
 pub mod adb_message {
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Contents {
         /// Open a new stream.
         #[prost(message, tag = "1")]
@@ -129,7 +129,7 @@ pub mod status_update {
     }
 }
 /// The result of a stream.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamStatus {
     /// The unique ID of this stream, assigned by the client.
     #[prost(int32, tag = "1")]
@@ -141,7 +141,7 @@ pub struct StreamStatus {
 /// Nested message and enum types in `StreamStatus`.
 pub mod stream_status {
     /// The result of the stream. Either "Okay" for success or "Fail" for failure.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Status {
         /// Okay for success.
         #[prost(message, tag = "2")]
@@ -152,7 +152,7 @@ pub mod stream_status {
     }
 }
 /// Message for opening a new stream.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Open {
     /// Required. The unique ID that will be used to talk to this stream. This
     /// should probably just be a number that increments for each new Open request.
@@ -163,7 +163,7 @@ pub struct Open {
     pub service: ::prost::alloc::string::String,
 }
 /// Data for a stream.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamData {
     /// Required. The unique ID of this stream, assigned by the client.
     #[prost(int32, tag = "1")]
@@ -177,7 +177,7 @@ pub struct StreamData {
 pub mod stream_data {
     /// The data of the stream, either bytes or "Close", indicating that the stream
     /// is done.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Contents {
         /// Data in the stream.
         #[prost(bytes, tag = "2")]
@@ -188,17 +188,17 @@ pub mod stream_data {
     }
 }
 /// Message signifying that the stream is open
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Okay {}
 /// Message signifying that the stream failed to open
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Fail {
     /// A user-displayable failure reason.
     #[prost(string, tag = "1")]
     pub reason: ::prost::alloc::string::String,
 }
 /// Message signifying that the stream closed.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Close {}
 /// Request message for DirectAccessService.CreateDeviceSession.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -214,12 +214,12 @@ pub struct CreateDeviceSessionRequest {
     /// component of the DeviceSession's resource name.
     ///
     /// This value should be 4-63 characters, and valid characters
-    /// are /[a-z][0-9]-/.
+    /// are /\[a-z\]\[0-9\]-/.
     #[prost(string, tag = "4")]
     pub device_session_id: ::prost::alloc::string::String,
 }
 /// Request message for DirectAccessService.ListDeviceSessions.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDeviceSessionsRequest {
     /// Required. The name of the parent to request, e.g. "projects/{project_id}"
     #[prost(string, tag = "4")]
@@ -247,7 +247,7 @@ pub struct ListDeviceSessionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for DirectAccessService.GetDeviceSession.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDeviceSessionRequest {
     /// Required. Name of the DeviceSession, e.g.
     /// "projects/{project_id}/deviceSessions/{session_id}"
@@ -255,7 +255,7 @@ pub struct GetDeviceSessionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for DirectAccessService.CancelDeviceSession.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelDeviceSessionRequest {
     /// Required. Name of the DeviceSession, e.g.
     /// "projects/{project_id}/deviceSessions/{session_id}"
@@ -312,7 +312,7 @@ pub struct DeviceSession {
 pub mod device_session {
     /// A message encapsulating a series of Session states and the time that the
     /// DeviceSession first entered those states.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SessionStateEvent {
         /// Output only. The session_state tracked by this event
         #[prost(enumeration = "SessionState", tag = "1")]
@@ -398,7 +398,7 @@ pub mod device_session {
         }
     }
     /// The amount of time that a device will be initially allocated for.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Expiration {
         /// Optional. The amount of time that a device will be initially allocated
         /// for. This can eventually be extended with the UpdateDeviceSession RPC.
@@ -413,7 +413,7 @@ pub mod device_session {
     }
 }
 /// A single Android device.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AndroidDevice {
     /// Required. The id of the Android device to be used.
     /// Use the TestEnvironmentDiscoveryService to get supported options.
@@ -546,7 +546,7 @@ pub mod direct_access_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.devicestreaming.v1.DirectAccessService/CreateDeviceSession",
             );
@@ -576,7 +576,7 @@ pub mod direct_access_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.devicestreaming.v1.DirectAccessService/ListDeviceSessions",
             );
@@ -605,7 +605,7 @@ pub mod direct_access_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.devicestreaming.v1.DirectAccessService/GetDeviceSession",
             );
@@ -636,7 +636,7 @@ pub mod direct_access_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.devicestreaming.v1.DirectAccessService/CancelDeviceSession",
             );
@@ -664,7 +664,7 @@ pub mod direct_access_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.devicestreaming.v1.DirectAccessService/UpdateDeviceSession",
             );
@@ -697,7 +697,7 @@ pub mod direct_access_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.devicestreaming.v1.DirectAccessService/AdbConnect",
             );

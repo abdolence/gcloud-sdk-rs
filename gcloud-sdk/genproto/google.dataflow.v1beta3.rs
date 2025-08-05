@@ -13,8 +13,8 @@ pub struct Environment {
     ///
     /// Google Cloud Storage:
     ///
-    ///    storage.googleapis.com/{bucket}/{object}
-    ///    bucket.storage.googleapis.com/{object}
+    /// storage.googleapis.com/{bucket}/{object}
+    /// bucket.storage.googleapis.com/{object}
     #[prost(string, tag = "1")]
     pub temp_storage_prefix: ::prost::alloc::string::String,
     /// The type of cluster manager API to use.  If unknown or
@@ -38,7 +38,7 @@ pub struct Environment {
     /// data at rest, AKA a Customer Managed Encryption Key (CMEK).
     ///
     /// Format:
-    ///    projects/PROJECT_ID/locations/LOCATION/keyRings/KEY_RING/cryptoKeys/KEY
+    /// projects/PROJECT_ID/locations/LOCATION/keyRings/KEY_RING/cryptoKeys/KEY
     #[prost(string, tag = "12")]
     pub service_kms_key_name: ::prost::alloc::string::String,
     /// The worker pools. At least one "harness" worker pool must be
@@ -58,7 +58,7 @@ pub struct Environment {
     /// The supported resource type is:
     ///
     /// Google BigQuery:
-    ///    bigquery.googleapis.com/{dataset}
+    /// bigquery.googleapis.com/{dataset}
     #[prost(string, tag = "7")]
     pub dataset: ::prost::alloc::string::String,
     /// The Cloud Dataflow SDK pipeline options specified by the user. These
@@ -120,7 +120,7 @@ pub struct Environment {
 /// might use this to install jars containing the user's code and all of the
 /// various dependencies (libraries, data files, etc.) required in order
 /// for that code to run.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Package {
     /// The name of the package.
     #[prost(string, tag = "1")]
@@ -129,13 +129,13 @@ pub struct Package {
     ///
     /// Google Cloud Storage:
     ///
-    ///    storage.googleapis.com/{bucket}
-    ///    bucket.storage.googleapis.com/
+    /// storage.googleapis.com/{bucket}
+    /// bucket.storage.googleapis.com/
     #[prost(string, tag = "2")]
     pub location: ::prost::alloc::string::String,
 }
 /// Describes the data disk used by a workflow job.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Disk {
     /// Size of disk in GB.  If zero or unspecified, the service will
     /// attempt to choose a reasonable default.
@@ -166,7 +166,7 @@ pub struct Disk {
     pub mount_point: ::prost::alloc::string::String,
 }
 /// Provides data to pass through to the worker harness.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WorkerSettings {
     /// The base URL for accessing Google Cloud APIs.
     ///
@@ -200,13 +200,13 @@ pub struct WorkerSettings {
     ///
     /// Google Cloud Storage:
     ///
-    ///    storage.googleapis.com/{bucket}/{object}
-    ///    bucket.storage.googleapis.com/{object}
+    /// storage.googleapis.com/{bucket}/{object}
+    /// bucket.storage.googleapis.com/{object}
     #[prost(string, tag = "6")]
     pub temp_storage_prefix: ::prost::alloc::string::String,
 }
 /// Taskrunner configuration settings.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TaskRunnerSettings {
     /// The UNIX user ID on the worker VM to use for tasks launched by
     /// taskrunner; e.g. "root".
@@ -256,8 +256,8 @@ pub struct TaskRunnerSettings {
     /// The supported resource type is:
     ///
     /// Google Cloud Storage:
-    ///    storage.googleapis.com/{bucket}/{object}
-    ///    bucket.storage.googleapis.com/{object}
+    /// storage.googleapis.com/{bucket}/{object}
+    /// bucket.storage.googleapis.com/{object}
     #[prost(string, tag = "11")]
     pub log_upload_location: ::prost::alloc::string::String,
     /// The directory on the VM to store logs.
@@ -269,8 +269,8 @@ pub struct TaskRunnerSettings {
     /// The supported resource type is:
     ///
     /// Google Cloud Storage:
-    ///    storage.googleapis.com/{bucket}/{object}
-    ///    bucket.storage.googleapis.com/{object}
+    /// storage.googleapis.com/{bucket}/{object}
+    /// bucket.storage.googleapis.com/{object}
     #[prost(string, tag = "13")]
     pub temp_storage_prefix: ::prost::alloc::string::String,
     /// The command to launch the worker harness.
@@ -293,7 +293,7 @@ pub struct TaskRunnerSettings {
     pub streaming_worker_main_class: ::prost::alloc::string::String,
 }
 /// Settings for WorkerPool autoscaling.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AutoscalingSettings {
     /// The algorithm to use for autoscaling.
     #[prost(enumeration = "AutoscalingAlgorithm", tag = "1")]
@@ -303,7 +303,7 @@ pub struct AutoscalingSettings {
     pub max_num_workers: i32,
 }
 /// Defines an SDK harness container for executing Dataflow pipelines.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SdkHarnessContainerImage {
     /// A docker container image that resides in Google Container Registry.
     #[prost(string, tag = "1")]
@@ -439,7 +439,7 @@ pub struct WorkerPool {
     pub sdk_harness_container_images: ::prost::alloc::vec::Vec<SdkHarnessContainerImage>,
 }
 /// Configuration options for sampling elements.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataSamplingConfig {
     /// List of given sampling behaviors to enable. For example, specifying
     /// behaviors = \[ALWAYS_ON\] samples in-flight elements but does not sample
@@ -512,7 +512,7 @@ pub mod data_sampling_config {
     }
 }
 /// Describes any options that have an effect on the debugging of pipelines.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DebugOptions {
     /// Optional. When true, enables the logging of the literal hot key to the
     /// user's Cloud Logging.
@@ -594,7 +594,7 @@ impl FlexResourceSchedulingGoal {
     }
 }
 /// Specifies what happens to a resource when a Cloud Dataflow
-/// [google.dataflow.v1beta3.Job][google.dataflow.v1beta3.Job] has completed.
+/// \[google.dataflow.v1beta3.Job\]\[google.dataflow.v1beta3.Job\] has completed.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum TeardownPolicy {
@@ -824,7 +824,7 @@ impl StreamingMode {
     }
 }
 /// Represents a Pubsub snapshot.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PubsubSnapshotMetadata {
     /// The name of the Pubsub topic.
     #[prost(string, tag = "1")]
@@ -872,7 +872,7 @@ pub struct Snapshot {
     pub region: ::prost::alloc::string::String,
 }
 /// Request to get information about a snapshot
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSnapshotRequest {
     /// The ID of the Cloud Platform project that the snapshot belongs to.
     #[prost(string, tag = "1")]
@@ -885,7 +885,7 @@ pub struct GetSnapshotRequest {
     pub location: ::prost::alloc::string::String,
 }
 /// Request to delete a snapshot.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSnapshotRequest {
     /// The ID of the Cloud Platform project that the snapshot belongs to.
     #[prost(string, tag = "1")]
@@ -898,10 +898,10 @@ pub struct DeleteSnapshotRequest {
     pub location: ::prost::alloc::string::String,
 }
 /// Response from deleting a snapshot.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSnapshotResponse {}
 /// Request to list snapshots.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSnapshotsRequest {
     /// The project ID to list snapshots for.
     #[prost(string, tag = "1")]
@@ -1071,7 +1071,7 @@ pub mod snapshots_v1_beta3_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.SnapshotsV1Beta3/GetSnapshot",
             );
@@ -1101,7 +1101,7 @@ pub mod snapshots_v1_beta3_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.SnapshotsV1Beta3/DeleteSnapshot",
             );
@@ -1131,7 +1131,7 @@ pub mod snapshots_v1_beta3_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.SnapshotsV1Beta3/ListSnapshots",
             );
@@ -1261,8 +1261,10 @@ pub struct Job {
     ///
     /// Google Cloud Storage:
     ///
-    ///     storage.googleapis.com/{bucket}/{object}
-    ///     bucket.storage.googleapis.com/{object}
+    /// ```text
+    /// storage.googleapis.com/{bucket}/{object}
+    /// bucket.storage.googleapis.com/{object}
+    /// ```
     #[prost(string, repeated, tag = "16")]
     pub temp_files: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// User-defined labels for this job.
@@ -1270,10 +1272,10 @@ pub struct Job {
     /// The labels map can contain no more than 64 entries.  Entries of the labels
     /// map are UTF8 strings that comply with the following restrictions:
     ///
-    /// * Keys must conform to regexp:  [\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}
-    /// * Values must conform to regexp:  \[\p{Ll}\p{Lo}\p{N}_-\]{0,63}
-    /// * Both keys and values are additionally constrained to be <= 128 bytes in
-    /// size.
+    /// * Keys must conform to regexp:  \[\\p{Ll}\p{Lo}\]\[\\p{Ll}\p{Lo}\p{N}\_-\]{0,62}
+    /// * Values must conform to regexp:  \[\\p{Ll}\p{Lo}\p{N}\_-\]{0,63}
+    /// * Both keys and values are additionally constrained to be \<= 128 bytes in
+    ///   size.
     #[prost(map = "string, string", tag = "17")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -1329,7 +1331,7 @@ pub struct Job {
     pub service_resources: ::core::option::Option<ServiceResources>,
 }
 /// Resources used by the Dataflow Service to run the job.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServiceResources {
     /// Output only. List of Cloud Zones being used by the Dataflow Service for
     /// this job. Example: us-central1-c
@@ -1359,7 +1361,7 @@ pub struct RuntimeUpdatableParams {
     pub worker_utilization_hint: ::core::option::Option<f64>,
 }
 /// Metadata for a Datastore connector used by the job.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DatastoreIoDetails {
     /// Namespace used in the connection.
     #[prost(string, tag = "1")]
@@ -1369,7 +1371,7 @@ pub struct DatastoreIoDetails {
     pub project_id: ::prost::alloc::string::String,
 }
 /// Metadata for a Pub/Sub connector used by the job.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PubSubIoDetails {
     /// Topic accessed in the connection.
     #[prost(string, tag = "1")]
@@ -1379,14 +1381,14 @@ pub struct PubSubIoDetails {
     pub subscription: ::prost::alloc::string::String,
 }
 /// Metadata for a File connector used by the job.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FileIoDetails {
     /// File Pattern used to access files by the connector.
     #[prost(string, tag = "1")]
     pub file_pattern: ::prost::alloc::string::String,
 }
 /// Metadata for a Cloud Bigtable connector used by the job.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BigTableIoDetails {
     /// ProjectId accessed in the connection.
     #[prost(string, tag = "1")]
@@ -1399,7 +1401,7 @@ pub struct BigTableIoDetails {
     pub table_id: ::prost::alloc::string::String,
 }
 /// Metadata for a BigQuery connector used by the job.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BigQueryIoDetails {
     /// Table accessed in the connection.
     #[prost(string, tag = "1")]
@@ -1415,7 +1417,7 @@ pub struct BigQueryIoDetails {
     pub query: ::prost::alloc::string::String,
 }
 /// Metadata for a Spanner connector used by the job.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SpannerIoDetails {
     /// ProjectId accessed in the connection.
     #[prost(string, tag = "1")]
@@ -1499,7 +1501,7 @@ pub mod sdk_version {
     }
 }
 /// A bug found in the Dataflow SDK.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SdkBug {
     /// Output only. Describes the impact of this SDK bug.
     #[prost(enumeration = "sdk_bug::Type", tag = "1")]
@@ -1646,7 +1648,7 @@ pub struct JobMetadata {
     >,
 }
 /// A message describing the state of a particular execution stage.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExecutionStageState {
     /// The name of the execution stage.
     #[prost(string, tag = "1")]
@@ -1735,7 +1737,7 @@ pub struct ExecutionStageSummary {
 /// Nested message and enum types in `ExecutionStageSummary`.
 pub mod execution_stage_summary {
     /// Description of an input or output of an execution stage.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct StageSource {
         /// Human-readable name for this source; may be user or system generated.
         #[prost(string, tag = "1")]
@@ -1752,7 +1754,7 @@ pub mod execution_stage_summary {
         pub size_bytes: i64,
     }
     /// Description of a transform executed as part of an execution stage.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ComponentTransform {
         /// Human-readable name for this transform; may be user or system generated.
         #[prost(string, tag = "1")]
@@ -1767,7 +1769,7 @@ pub mod execution_stage_summary {
     }
     /// Description of an interstitial value between transforms in an execution
     /// stage.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ComponentSource {
         /// Human-readable name for this transform; may be user or system generated.
         #[prost(string, tag = "1")]
@@ -1854,19 +1856,19 @@ pub mod display_data {
 /// Here's an example of a sequence of steps which together implement a
 /// Map-Reduce job:
 ///
-///    * Read a collection of data from some source, parsing the
-///      collection's elements.
+/// * Read a collection of data from some source, parsing the
+///   collection's elements.
 ///
-///    * Validate the elements.
+/// * Validate the elements.
 ///
-///    * Apply a user-defined function to map each element to some value
-///      and extract an element-specific key value.
+/// * Apply a user-defined function to map each element to some value
+///   and extract an element-specific key value.
 ///
-///    * Group elements with the same key into a single element with
-///      that key, transforming a multiply-keyed collection into a
-///      uniquely-keyed collection.
+/// * Group elements with the same key into a single element with
+///   that key, transforming a multiply-keyed collection into a
+///   uniquely-keyed collection.
 ///
-///    * Write the elements out to some data sink.
+/// * Write the elements out to some data sink.
 ///
 /// Note that the Cloud Dataflow service may be used to run many different
 /// types of jobs, not just Map-Reduce.
@@ -1897,9 +1899,9 @@ pub struct JobExecutionInfo {
     >,
 }
 /// Contains information about how a particular
-/// [google.dataflow.v1beta3.Step][google.dataflow.v1beta3.Step] will be
+/// \[google.dataflow.v1beta3.Step\]\[google.dataflow.v1beta3.Step\] will be
 /// executed.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct JobExecutionStageInfo {
     /// The steps associated with the execution stage.
     /// Note that stages may have several steps, and that a given step
@@ -1929,7 +1931,7 @@ pub struct CreateJobRequest {
     pub location: ::prost::alloc::string::String,
 }
 /// Request to get the state of a Cloud Dataflow job.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetJobRequest {
     /// The ID of the Cloud Platform project that the job belongs to.
     #[prost(string, tag = "1")]
@@ -1974,7 +1976,7 @@ pub struct UpdateJobRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request to list Cloud Dataflow jobs.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListJobsRequest {
     /// The kind of filter to use.
     #[prost(enumeration = "list_jobs_request::Filter", tag = "5")]
@@ -2064,7 +2066,7 @@ pub mod list_jobs_request {
 /// Indicates which \[regional endpoint\]
 /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) failed
 /// to respond to a request for data.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FailedLocation {
     /// The name of the \[regional endpoint\]
     /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) that
@@ -2092,7 +2094,7 @@ pub struct ListJobsResponse {
     pub failed_location: ::prost::alloc::vec::Vec<FailedLocation>,
 }
 /// Request to create a snapshot of a job.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SnapshotJobRequest {
     /// The project which owns the job to be snapshotted.
     #[prost(string, tag = "1")]
@@ -2114,14 +2116,14 @@ pub struct SnapshotJobRequest {
     pub description: ::prost::alloc::string::String,
 }
 /// Request to check is active jobs exists for a project
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CheckActiveJobsRequest {
     /// The project which owns the jobs.
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
 }
 /// Response for CheckActiveJobsRequest.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CheckActiveJobsResponse {
     /// If True, active jobs exists for project. False otherwise.
     #[prost(bool, tag = "1")]
@@ -2185,7 +2187,7 @@ impl KindType {
     }
 }
 /// Describes the overall state of a
-/// [google.dataflow.v1beta3.Job][google.dataflow.v1beta3.Job].
+/// \[google.dataflow.v1beta3.Job\]\[google.dataflow.v1beta3.Job\].
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum JobState {
@@ -2433,7 +2435,7 @@ pub mod jobs_v1_beta3_client {
         /// Creates a Cloud Dataflow job.
         ///
         /// To create a job, we recommend using `projects.locations.jobs.create` with a
-        /// [regional endpoint]
+        /// \[regional endpoint\]
         /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). Using
         /// `projects.jobs.create` is not recommended, as your job will always start
         /// in `us-central1`.
@@ -2452,7 +2454,7 @@ pub mod jobs_v1_beta3_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.JobsV1Beta3/CreateJob",
             );
@@ -2466,7 +2468,7 @@ pub mod jobs_v1_beta3_client {
         /// Gets the state of the specified Cloud Dataflow job.
         ///
         /// To get the state of a job, we recommend using `projects.locations.jobs.get`
-        /// with a [regional endpoint]
+        /// with a \[regional endpoint\]
         /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). Using
         /// `projects.jobs.get` is not recommended, as you can only get the state of
         /// jobs that are running in `us-central1`.
@@ -2482,7 +2484,7 @@ pub mod jobs_v1_beta3_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.JobsV1Beta3/GetJob",
             );
@@ -2496,7 +2498,7 @@ pub mod jobs_v1_beta3_client {
         /// Updates the state of an existing Cloud Dataflow job.
         ///
         /// To update the state of an existing job, we recommend using
-        /// `projects.locations.jobs.update` with a [regional endpoint]
+        /// `projects.locations.jobs.update` with a \[regional endpoint\]
         /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). Using
         /// `projects.jobs.update` is not recommended, as you can only update the state
         /// of jobs that are running in `us-central1`.
@@ -2512,7 +2514,7 @@ pub mod jobs_v1_beta3_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.JobsV1Beta3/UpdateJob",
             );
@@ -2526,7 +2528,7 @@ pub mod jobs_v1_beta3_client {
         /// List the jobs of a project.
         ///
         /// To list the jobs of a project in a region, we recommend using
-        /// `projects.locations.jobs.list` with a [regional endpoint]
+        /// `projects.locations.jobs.list` with a \[regional endpoint\]
         /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). To
         /// list the all jobs across all regions, use `projects.jobs.aggregated`. Using
         /// `projects.jobs.list` is not recommended, because you can only get the list
@@ -2550,7 +2552,7 @@ pub mod jobs_v1_beta3_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.JobsV1Beta3/ListJobs",
             );
@@ -2580,7 +2582,7 @@ pub mod jobs_v1_beta3_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.JobsV1Beta3/AggregatedListJobs",
             );
@@ -2610,7 +2612,7 @@ pub mod jobs_v1_beta3_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.JobsV1Beta3/CheckActiveJobs",
             );
@@ -2637,7 +2639,7 @@ pub mod jobs_v1_beta3_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.JobsV1Beta3/SnapshotJob",
             );
@@ -2651,7 +2653,7 @@ pub mod jobs_v1_beta3_client {
     }
 }
 /// A particular message pertaining to a Dataflow job.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct JobMessage {
     /// Deprecated.
     #[prost(string, tag = "1")]
@@ -2789,7 +2791,7 @@ pub mod autoscaling_event {
 /// Up to max_results messages will be returned in the time range specified
 /// starting with the oldest messages first. If no time range is specified
 /// the results with start with the oldest message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListJobMessagesRequest {
     /// A project id.
     #[prost(string, tag = "1")]
@@ -2814,7 +2816,7 @@ pub struct ListJobMessagesRequest {
     /// The default is the job creation time (i.e. beginning of messages).
     #[prost(message, optional, tag = "6")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Return only messages with timestamps < end_time. The default is now
+    /// Return only messages with timestamps \< end_time. The default is now
     /// (i.e. return up to the latest messages available).
     #[prost(message, optional, tag = "7")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -2996,7 +2998,7 @@ pub mod messages_v1_beta3_client {
         /// Request the job status.
         ///
         /// To request the status of a job, we recommend using
-        /// `projects.locations.jobs.messages.list` with a [regional endpoint]
+        /// `projects.locations.jobs.messages.list` with a \[regional endpoint\]
         /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). Using
         /// `projects.jobs.messages.list` is not recommended, as you can only request
         /// the status of jobs that are running in `us-central1`.
@@ -3015,7 +3017,7 @@ pub mod messages_v1_beta3_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.MessagesV1Beta3/ListJobMessages",
             );
@@ -3120,7 +3122,7 @@ pub struct MetricUpdate {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request to get job metrics.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetJobMetricsRequest {
     /// A project id.
     #[prost(string, tag = "1")]
@@ -3156,7 +3158,7 @@ pub struct JobMetrics {
     pub metrics: ::prost::alloc::vec::Vec<MetricUpdate>,
 }
 /// Request to get job execution details.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetJobExecutionDetailsRequest {
     /// A project id.
     #[prost(string, tag = "1")]
@@ -3246,7 +3248,7 @@ pub mod straggler_info {
     }
 }
 /// Information useful for streaming straggler identification and debugging.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamingStragglerInfo {
     /// Start time of this straggler.
     #[prost(message, optional, tag = "1")]
@@ -3298,7 +3300,7 @@ pub struct HotKeyDebuggingInfo {
 /// Nested message and enum types in `HotKeyDebuggingInfo`.
 pub mod hot_key_debugging_info {
     /// Information about a hot key.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct HotKeyInfo {
         /// The age of the hot key measured from when it was first detected.
         #[prost(message, optional, tag = "1")]
@@ -3374,7 +3376,7 @@ pub struct JobExecutionDetails {
 }
 /// Request to get information about a particular execution stage of a job.
 /// Currently only tracked for Batch jobs.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetStageExecutionDetailsRequest {
     /// A project id.
     #[prost(string, tag = "1")]
@@ -3601,7 +3603,7 @@ pub mod metrics_v1_beta3_client {
         /// Request the job status.
         ///
         /// To request the status of a job, we recommend using
-        /// `projects.locations.jobs.getMetrics` with a [regional endpoint]
+        /// `projects.locations.jobs.getMetrics` with a \[regional endpoint\]
         /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). Using
         /// `projects.jobs.getMetrics` is not recommended, as you can only request the
         /// status of jobs that are running in `us-central1`.
@@ -3617,7 +3619,7 @@ pub mod metrics_v1_beta3_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.MetricsV1Beta3/GetJobMetrics",
             );
@@ -3649,7 +3651,7 @@ pub mod metrics_v1_beta3_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.MetricsV1Beta3/GetJobExecutionDetails",
             );
@@ -3682,7 +3684,7 @@ pub mod metrics_v1_beta3_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.MetricsV1Beta3/GetStageExecutionDetails",
             );
@@ -3723,7 +3725,7 @@ pub struct TopologyConfig {
 }
 /// Identifies a pubsub location to use for transferring data into or
 /// out of a streaming Dataflow job.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PubsubLocation {
     /// A pubsub topic, in the form of
     /// "pubsub.googleapis.com/topics/<project-id>/<topic-name>"
@@ -3757,7 +3759,7 @@ pub struct PubsubLocation {
 }
 /// Identifies the location of a streaming computation stage, for
 /// stage-to-stage communication.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamingStageLocation {
     /// Identifies the particular stream within the streaming Dataflow
     /// job.
@@ -3765,7 +3767,7 @@ pub struct StreamingStageLocation {
     pub stream_id: ::prost::alloc::string::String,
 }
 /// Identifies the location of a streaming side input.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamingSideInputLocation {
     /// Identifies the particular side input within the streaming Dataflow job.
     #[prost(string, tag = "1")]
@@ -3775,7 +3777,7 @@ pub struct StreamingSideInputLocation {
     pub state_family: ::prost::alloc::string::String,
 }
 /// Identifies the location of a custom souce.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomSourceLocation {
     /// Whether this source is stateful.
     #[prost(bool, tag = "1")]
@@ -3783,7 +3785,7 @@ pub struct CustomSourceLocation {
 }
 /// Describes a stream of data, either as input to be processed or as
 /// output of a streaming Dataflow job.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamLocation {
     /// A specification of a stream's location.
     #[prost(oneof = "stream_location::Location", tags = "1, 2, 3, 4")]
@@ -3792,7 +3794,7 @@ pub struct StreamLocation {
 /// Nested message and enum types in `StreamLocation`.
 pub mod stream_location {
     /// A specification of a stream's location.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Location {
         /// The stream is part of another computation within the current
         /// streaming Dataflow job.
@@ -3810,7 +3812,7 @@ pub mod stream_location {
     }
 }
 /// State family configuration.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StateFamilyConfig {
     /// The state family value.
     #[prost(string, tag = "1")]
@@ -3844,7 +3846,7 @@ pub struct ComputationTopology {
 /// Location information for a specific key-range of a sharded computation.
 /// Currently we only support UTF-8 character splits to simplify encoding into
 /// JSON.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct KeyRangeLocation {
     /// The start (inclusive) of the key range.
     #[prost(string, tag = "1")]
@@ -3869,7 +3871,7 @@ pub struct KeyRangeLocation {
     pub deprecated_persistent_directory: ::prost::alloc::string::String,
 }
 /// Describes mounted data disk.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MountedDataDisk {
     /// The name of the data disk.
     /// This name is local to the Google Cloud Platform project and uniquely
@@ -3879,7 +3881,7 @@ pub struct MountedDataDisk {
     pub data_disk: ::prost::alloc::string::String,
 }
 /// Data disk assignment for a given VM instance.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataDiskAssignment {
     /// VM instance name the data disks mounted to, for example
     /// "myproject-1014-104817-4c2-harness-0".
@@ -3896,7 +3898,7 @@ pub struct DataDiskAssignment {
 /// computation.
 /// Currently we only support UTF-8 character splits to simplify encoding into
 /// JSON.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct KeyRangeDataDiskAssignment {
     /// The start (inclusive) of the key range.
     #[prost(string, tag = "1")]
@@ -3923,7 +3925,7 @@ pub struct StreamingComputationRanges {
     pub range_assignments: ::prost::alloc::vec::Vec<KeyRangeDataDiskAssignment>,
 }
 /// Streaming appliance snapshot configuration.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamingApplianceSnapshotConfig {
     /// If set, indicates the snapshot id for the snapshot being performed.
     #[prost(string, tag = "1")]
@@ -4210,7 +4212,7 @@ pub struct RuntimeEnvironment {
     pub network: ::prost::alloc::string::String,
     /// Optional. Subnetwork to which VMs will be assigned, if desired. You can
     /// specify a subnetwork using either a complete URL or an abbreviated path.
-    ///   Expected to be of the form
+    /// Expected to be of the form
     /// "<https://www.googleapis.com/compute/v1/projects/HOST_PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK">
     /// or "regions/REGION/subnetworks/SUBNETWORK". If the subnetwork is located in
     /// a Shared VPC network, you must use the complete URL.
@@ -4268,7 +4270,7 @@ pub struct RuntimeEnvironment {
     pub streaming_mode: ::core::option::Option<i32>,
 }
 /// ParameterMetadataEnumOption specifies the option shown in the enum form.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ParameterMetadataEnumOption {
     /// Required. The value of the enum option.
     #[prost(string, tag = "1")]
@@ -4366,7 +4368,7 @@ pub struct TemplateMetadata {
     pub default_streaming_mode: ::prost::alloc::string::String,
 }
 /// SDK Information.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SdkInfo {
     /// Required. The SDK Language.
     #[prost(enumeration = "sdk_info::Language", tag = "1")]
@@ -4465,7 +4467,7 @@ pub struct CreateJobFromTemplateRequest {
 /// Nested message and enum types in `CreateJobFromTemplateRequest`.
 pub mod create_job_from_template_request {
     /// The template from which to create the job.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Template {
         /// Required. A Cloud Storage path to the template from which to
         /// create the job.
@@ -4475,7 +4477,7 @@ pub mod create_job_from_template_request {
     }
 }
 /// A request to retrieve a Cloud Dataflow job template.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTemplateRequest {
     /// Required. The ID of the Cloud Platform project that the job belongs to.
     #[prost(string, tag = "1")]
@@ -4531,7 +4533,7 @@ pub mod get_template_request {
         }
     }
     /// The template from which to create the job.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Template {
         /// Required. A Cloud Storage path to the template from which to
         /// create the job.
@@ -4663,7 +4665,7 @@ pub struct LaunchTemplateRequest {
 /// Nested message and enum types in `LaunchTemplateRequest`.
 pub mod launch_template_request {
     /// The template to use to create the job.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Template {
         /// A Cloud Storage path to the template to use to create
         /// the job.
@@ -4696,7 +4698,7 @@ pub struct InvalidTemplateParameters {
 /// Nested message and enum types in `InvalidTemplateParameters`.
 pub mod invalid_template_parameters {
     /// A specific template-parameter violation.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ParameterViolation {
         /// The parameter that failed to validate.
         #[prost(string, tag = "1")]
@@ -4707,7 +4709,7 @@ pub mod invalid_template_parameters {
     }
 }
 /// Parameters to pass when launching a dynamic template.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DynamicTemplateLaunchParams {
     /// Path to the dynamic template specification file on Cloud Storage.
     /// The file must be a JSON serialized `DynamicTemplateFileSpec` object.
@@ -4931,7 +4933,7 @@ pub mod templates_service_client {
         /// information when you supply string values using the API.
         ///
         /// To create a job, we recommend using `projects.locations.templates.create`
-        /// with a [regional endpoint]
+        /// with a \[regional endpoint\]
         /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). Using
         /// `projects.templates.create` is not recommended, because your job will
         /// always start in `us-central1`.
@@ -4947,7 +4949,7 @@ pub mod templates_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.TemplatesService/CreateJobFromTemplate",
             );
@@ -4964,7 +4966,7 @@ pub mod templates_service_client {
         /// Launches a template.
         ///
         /// To launch a template, we recommend using
-        /// `projects.locations.templates.launch` with a [regional endpoint]
+        /// `projects.locations.templates.launch` with a \[regional endpoint\]
         /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). Using
         /// `projects.templates.launch` is not recommended, because jobs launched
         /// from the template will always start in `us-central1`.
@@ -4983,7 +4985,7 @@ pub mod templates_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.TemplatesService/LaunchTemplate",
             );
@@ -5000,7 +5002,7 @@ pub mod templates_service_client {
         /// Get the template associated with a template.
         ///
         /// To get the template, we recommend using `projects.locations.templates.get`
-        /// with a [regional endpoint]
+        /// with a \[regional endpoint\]
         /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints). Using
         /// `projects.templates.get` is not recommended, because only
         /// templates that are running in `us-central1` are retrieved.
@@ -5019,7 +5021,7 @@ pub mod templates_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.TemplatesService/GetTemplate",
             );
@@ -5143,7 +5145,7 @@ pub mod flex_templates_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.dataflow.v1beta3.FlexTemplatesService/LaunchFlexTemplate",
             );

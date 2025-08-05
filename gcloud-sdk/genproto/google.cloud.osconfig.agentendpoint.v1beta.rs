@@ -3,7 +3,6 @@
 /// The agent on the VM instance uses the system package manager to apply the
 /// config.
 ///
-///
 /// These are the commands that the agent uses to install or remove
 /// packages.
 ///
@@ -22,7 +21,7 @@
 /// Googet
 /// install: `googet -noconfirm install package1 package2 package3`
 /// remove: `googet -noconfirm remove package1 package2 package3`
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Package {
     /// The name of the package. A package is uniquely identified for conflict
     /// validation by checking the package name and the manager(s) that the
@@ -106,7 +105,7 @@ pub mod package {
 /// Represents a single Apt package repository. This repository is added to
 /// a repo file that is stored at
 /// `/etc/apt/sources.list.d/google_osconfig.list`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AptRepository {
     /// Type of archive files in this repository. The default behavior is DEB.
     #[prost(enumeration = "apt_repository::ArchiveType", tag = "1")]
@@ -174,7 +173,7 @@ pub mod apt_repository {
 }
 /// Represents a single Yum package repository. This repository is added to a
 /// repo file that is stored at `/etc/yum.repos.d/google_osconfig.repo`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct YumRepository {
     /// A one word, unique name for this repository. This is
     /// the `repo id` in the Yum config file and also the `display_name` if
@@ -194,7 +193,7 @@ pub struct YumRepository {
 }
 /// Represents a single Zypper package repository. This repository is added to a
 /// repo file that is stored at `/etc/zypp/repos.d/google_osconfig.repo`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ZypperRepository {
     /// A one word, unique name for this repository. This is
     /// the `repo id` in the zypper config file and also the `display_name` if
@@ -214,7 +213,7 @@ pub struct ZypperRepository {
 }
 /// Represents a Goo package repository. These is added to a repo file
 /// that is stored at C:/ProgramData/GooGet/repos/google_osconfig.repo.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GooRepository {
     /// The name of the repository.
     #[prost(string, tag = "1")]
@@ -224,7 +223,7 @@ pub struct GooRepository {
     pub url: ::prost::alloc::string::String,
 }
 /// A package repository.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PackageRepository {
     /// A specific type of repository.
     #[prost(oneof = "package_repository::Repository", tags = "1, 2, 3, 4")]
@@ -233,7 +232,7 @@ pub struct PackageRepository {
 /// Nested message and enum types in `PackageRepository`.
 pub mod package_repository {
     /// A specific type of repository.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Repository {
         /// An Apt Repository.
         #[prost(message, tag = "1")]
@@ -306,19 +305,19 @@ pub struct SoftwareRecipe {
     /// recipe.
     ///
     /// INSTALLED: The software recipe is installed on the instance but won't be
-    ///                          updated to new versions.
+    /// updated to new versions.
     /// UPDATED: The software recipe is installed on the instance. The recipe is
-    ///                          updated to a higher version, if a higher version of
-    ///                          the recipe is assigned to this instance.
+    /// updated to a higher version, if a higher version of
+    /// the recipe is assigned to this instance.
     /// REMOVE: Remove is unsupported for software recipes and attempts to
-    ///          create or update a recipe to the REMOVE state is rejected.
+    /// create or update a recipe to the REMOVE state is rejected.
     #[prost(enumeration = "DesiredState", tag = "6")]
     pub desired_state: i32,
 }
 /// Nested message and enum types in `SoftwareRecipe`.
 pub mod software_recipe {
     /// Specifies a resource to be used in the recipe.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Artifact {
         /// Id of the artifact, which the installation and update steps of this
         /// recipe can reference. Artifacts in a recipe cannot have the same id.
@@ -328,7 +327,7 @@ pub mod software_recipe {
         /// based on the artifact type:
         ///
         /// Remote: A checksum must be specified, and only protocols with
-        ///          transport-layer security are permitted.
+        /// transport-layer security are permitted.
         /// GCS:    An object generation number must be specified.
         #[prost(bool, tag = "4")]
         pub allow_insecure: bool,
@@ -339,7 +338,7 @@ pub mod software_recipe {
     /// Nested message and enum types in `Artifact`.
     pub mod artifact {
         /// Specifies an artifact available via some URI.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Remote {
             /// URI from which to fetch the object. It should contain both the protocol
             /// and path following the format {protocol}://{location}.
@@ -354,7 +353,7 @@ pub mod software_recipe {
             pub checksum: ::prost::alloc::string::String,
         }
         /// Specifies an artifact available as a Cloud Storage object.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Gcs {
             /// Bucket of the Cloud Storage object.
             /// Given an example URL:
@@ -378,7 +377,7 @@ pub mod software_recipe {
             pub generation: i64,
         }
         /// A specific type of artifact.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Artifact {
             /// A generic remote artifact.
             #[prost(message, tag = "2")]
@@ -389,7 +388,7 @@ pub mod software_recipe {
         }
     }
     /// An action that can be taken as part of installing or updating a recipe.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Step {
         /// A specific type of step.
         #[prost(oneof = "step::Step", tags = "1, 2, 3, 4, 5, 6, 7")]
@@ -398,7 +397,7 @@ pub mod software_recipe {
     /// Nested message and enum types in `Step`.
     pub mod step {
         /// Copies the artifact to the specified path on the instance.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct CopyFile {
             /// The id of the relevant artifact in the recipe.
             #[prost(string, tag = "1")]
@@ -428,7 +427,7 @@ pub mod software_recipe {
             pub permissions: ::prost::alloc::string::String,
         }
         /// Extracts an archive of the type specified in the specified directory.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct ExtractArchive {
             /// The id of the relevant artifact in the recipe.
             #[prost(string, tag = "1")]
@@ -504,7 +503,7 @@ pub mod software_recipe {
             }
         }
         /// Installs an MSI file.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct InstallMsi {
             /// The id of the relevant artifact in the recipe.
             #[prost(string, tag = "1")]
@@ -519,21 +518,21 @@ pub mod software_recipe {
             pub allowed_exit_codes: ::prost::alloc::vec::Vec<i32>,
         }
         /// Installs a deb via dpkg.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct InstallDpkg {
             /// The id of the relevant artifact in the recipe.
             #[prost(string, tag = "1")]
             pub artifact_id: ::prost::alloc::string::String,
         }
         /// Installs an rpm file via the rpm utility.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct InstallRpm {
             /// The id of the relevant artifact in the recipe.
             #[prost(string, tag = "1")]
             pub artifact_id: ::prost::alloc::string::String,
         }
         /// Executes an artifact or local file.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct ExecFile {
             /// Arguments to be passed to the provided executable.
             #[prost(string, repeated, tag = "3")]
@@ -549,7 +548,7 @@ pub mod software_recipe {
         /// Nested message and enum types in `ExecFile`.
         pub mod exec_file {
             /// Location of the file to execute.
-            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum LocationType {
                 /// The id of the relevant artifact in the recipe.
                 #[prost(string, tag = "1")]
@@ -560,7 +559,7 @@ pub mod software_recipe {
             }
         }
         /// Runs a script through an interpreter.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct RunScript {
             /// The shell script to be executed.
             #[prost(string, tag = "1")]
@@ -624,7 +623,7 @@ pub mod software_recipe {
             }
         }
         /// A specific type of step.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Step {
             /// Copies a file onto the instance.
             #[prost(message, tag = "1")]
@@ -651,7 +650,7 @@ pub mod software_recipe {
     }
 }
 /// A request message for getting effective policy assigned to the instance.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LookupEffectiveGuestPolicyRequest {
     /// Required. This is the GCE instance identity token described in
     /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
@@ -694,7 +693,7 @@ pub struct EffectiveGuestPolicy {
 /// Nested message and enum types in `EffectiveGuestPolicy`.
 pub mod effective_guest_policy {
     /// A guest policy package including its source.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SourcedPackage {
         /// Name of the guest policy providing this config.
         #[prost(string, tag = "1")]
@@ -704,7 +703,7 @@ pub mod effective_guest_policy {
         pub package: ::core::option::Option<super::Package>,
     }
     /// A guest policy package repository including its source.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SourcedPackageRepository {
         /// Name of the guest policy providing this config.
         #[prost(string, tag = "1")]
@@ -765,7 +764,7 @@ impl DesiredState {
 }
 /// Patch configuration specifications. Contains details on how to
 /// apply patches to a VM instance.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PatchConfig {
     /// Post-patch reboot settings.
     #[prost(enumeration = "patch_config::RebootConfig", tag = "1")]
@@ -853,9 +852,8 @@ pub mod patch_config {
         }
     }
 }
-/// Apt patching will be performed by executing `apt-get update && apt-get
-/// upgrade`. Additional options can be set to control how this is executed.
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Apt patching will be performed by executing `apt-get update && apt-get  upgrade`. Additional options can be set to control how this is executed.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AptSettings {
     /// By changing the type to DIST, the patching will be performed
     /// using `apt-get dist-upgrade` instead.
@@ -921,7 +919,7 @@ pub mod apt_settings {
 /// can be set to control how this is executed.
 ///
 /// Note that not all settings are supported on all platforms.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct YumSettings {
     /// Adds the `--security` flag to `yum update`. Not supported on
     /// all platforms.
@@ -942,11 +940,11 @@ pub struct YumSettings {
     pub exclusive_packages: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Googet patching is performed by running `googet update`.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GooSettings {}
 /// Zypper patching is performed by running `zypper patch`.
 /// See also <https://en.opensuse.org/SDB:Zypper_manual.>
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ZypperSettings {
     /// Adds the `--with-optional` flag to `zypper patch`.
     #[prost(bool, tag = "1")]
@@ -966,13 +964,13 @@ pub struct ZypperSettings {
     #[prost(string, repeated, tag = "5")]
     pub excludes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// An exclusive list of patches to be updated. These are the only patches
-    /// that will be installed using 'zypper patch patch:<patch_name>' command.
+    /// that will be installed using 'zypper patch patch:\<patch_name>' command.
     /// This field must not be used with any other patch configuration fields.
     #[prost(string, repeated, tag = "6")]
     pub exclusive_patches: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Windows patching is performed using the Windows Update Agent.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WindowsUpdateSettings {
     /// Only apply updates of these windows update classifications. If empty, all
     /// updates will be applied.
@@ -1085,7 +1083,7 @@ pub mod windows_update_settings {
     }
 }
 /// The strategy for retrying failed patches during the patch window.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RetryStrategy {
     /// If true, the agent will continue to try and patch until the window has
     /// ended.
@@ -1093,7 +1091,7 @@ pub struct RetryStrategy {
     pub enabled: bool,
 }
 /// A step that runs an executable for a PatchJob.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExecStep {
     /// The ExecStepConfig for all Linux VMs targeted by the PatchJob.
     #[prost(message, optional, tag = "1")]
@@ -1103,7 +1101,7 @@ pub struct ExecStep {
     pub windows_exec_step_config: ::core::option::Option<ExecStepConfig>,
 }
 /// Common configurations for an ExecStep.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExecStepConfig {
     /// Defaults to \[0\]. A list of possible return values that the
     /// execution can return to indicate a success.
@@ -1172,7 +1170,7 @@ pub mod exec_step_config {
         }
     }
     /// Location of the executable.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Executable {
         /// An absolute path to the executable on the VM.
         #[prost(string, tag = "1")]
@@ -1183,7 +1181,7 @@ pub mod exec_step_config {
     }
 }
 /// GCS object representation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GcsObject {
     /// Bucket of the GCS object.
     #[prost(string, tag = "1")]
@@ -1226,7 +1224,7 @@ pub struct Task {
 /// Nested message and enum types in `Task`.
 pub mod task {
     /// Specific details about the current task to perform.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum TaskDetails {
         /// Details about the apply patches task to perform.
         #[prost(message, tag = "4")]
@@ -1237,7 +1235,7 @@ pub mod task {
     }
 }
 /// Message which instructs agent to apply patches.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ApplyPatchesTask {
     /// Specific information about how patches should be applied.
     #[prost(message, optional, tag = "1")]
@@ -1248,7 +1246,7 @@ pub struct ApplyPatchesTask {
     pub dry_run: bool,
 }
 /// Information reported from the agent about applying patches execution.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ApplyPatchesTaskProgress {
     /// Required. The current state of this patch execution.
     #[prost(enumeration = "apply_patches_task_progress::State", tag = "1")]
@@ -1309,7 +1307,7 @@ pub mod apply_patches_task_progress {
     }
 }
 /// Information reported from the agent about applying patches execution.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ApplyPatchesTaskOutput {
     /// Required. The final state of this task.
     #[prost(enumeration = "apply_patches_task_output::State", tag = "1")]
@@ -1366,14 +1364,14 @@ pub mod apply_patches_task_output {
     }
 }
 /// Message which instructs agent to execute the following command.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExecStepTask {
     /// Details of the exec step to run.
     #[prost(message, optional, tag = "1")]
     pub exec_step: ::core::option::Option<ExecStep>,
 }
 /// Information reported from the agent about the exec step execution.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExecStepTaskProgress {
     /// Required. The current state of this exec step.
     #[prost(enumeration = "exec_step_task_progress::State", tag = "1")]
@@ -1422,7 +1420,7 @@ pub mod exec_step_task_progress {
     }
 }
 /// Information reported from the agent about the exec step execution.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExecStepTaskOutput {
     /// Required. The final state of the exec step.
     #[prost(enumeration = "exec_step_task_output::State", tag = "1")]
@@ -1550,7 +1548,7 @@ impl TaskType {
     }
 }
 /// A request message to receive task notifications.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReceiveTaskNotificationRequest {
     /// Required. This is the Compute Engine instance identity token described in
     /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
@@ -1563,10 +1561,10 @@ pub struct ReceiveTaskNotificationRequest {
 }
 /// The streaming rpc message that notifies the agent when it has a task
 /// that it needs to perform on the VM instance.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReceiveTaskNotificationResponse {}
 /// A request message for signaling the start of a task execution.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StartNextTaskRequest {
     /// Required. This is the Compute Engine instance identity token described in
     /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
@@ -1583,7 +1581,7 @@ pub struct StartNextTaskResponse {
     pub task: ::core::option::Option<Task>,
 }
 /// A request message for reporting the progress of current task.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReportTaskProgressRequest {
     /// Required. This is the Compute Engine instance identity token described in
     /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
@@ -1609,7 +1607,7 @@ pub struct ReportTaskProgressRequest {
 /// Nested message and enum types in `ReportTaskProgressRequest`.
 pub mod report_task_progress_request {
     /// Intermediate progress of the current task.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Progress {
         /// Details about the progress of the apply patches task.
         #[prost(message, tag = "4")]
@@ -1620,14 +1618,14 @@ pub mod report_task_progress_request {
     }
 }
 /// The response message after the agent reported the current task progress.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReportTaskProgressResponse {
     /// Instructs agent to continue or not.
     #[prost(enumeration = "TaskDirective", tag = "1")]
     pub task_directive: i32,
 }
 /// A request message for signaling the completion of a task execution.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReportTaskCompleteRequest {
     /// Required. This is the Compute Engine instance identity token described in
     /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
@@ -1656,7 +1654,7 @@ pub struct ReportTaskCompleteRequest {
 /// Nested message and enum types in `ReportTaskCompleteRequest`.
 pub mod report_task_complete_request {
     /// Final output details of the current task.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Output {
         /// Final output details of the apply patches task;
         #[prost(message, tag = "5")]
@@ -1667,10 +1665,10 @@ pub mod report_task_complete_request {
     }
 }
 /// The response message after the agent signaled the current task complete.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReportTaskCompleteResponse {}
 /// The request message for registering the agent.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegisterAgentRequest {
     /// Required. This is the Compute Engine instance identity token described in
     /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
@@ -1703,7 +1701,7 @@ pub struct RegisterAgentRequest {
     pub os_architecture: ::prost::alloc::string::String,
 }
 /// The response message after the agent registered.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegisterAgentResponse {}
 /// Generated client implementations.
 pub mod agent_endpoint_service_client {
@@ -1815,7 +1813,7 @@ pub mod agent_endpoint_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.agentendpoint.v1beta.AgentEndpointService/ReceiveTaskNotification",
             );
@@ -1845,7 +1843,7 @@ pub mod agent_endpoint_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.agentendpoint.v1beta.AgentEndpointService/StartNextTask",
             );
@@ -1875,7 +1873,7 @@ pub mod agent_endpoint_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.agentendpoint.v1beta.AgentEndpointService/ReportTaskProgress",
             );
@@ -1906,7 +1904,7 @@ pub mod agent_endpoint_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.agentendpoint.v1beta.AgentEndpointService/ReportTaskComplete",
             );
@@ -1937,7 +1935,7 @@ pub mod agent_endpoint_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.agentendpoint.v1beta.AgentEndpointService/LookupEffectiveGuestPolicy",
             );
@@ -1967,7 +1965,7 @@ pub mod agent_endpoint_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.agentendpoint.v1beta.AgentEndpointService/RegisterAgent",
             );

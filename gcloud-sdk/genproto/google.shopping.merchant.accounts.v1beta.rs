@@ -39,7 +39,7 @@ impl AccessRight {
 /// Primary type convension
 ///
 /// percent micro : 100% = 1 000 000 and 1% = 10 000
-///                  cannot be negative.
+/// cannot be negative.
 ///
 /// Information about tax nexus and related parameters applicable to orders
 /// delivered to the area covered by a single tax admin. Nexus is created when a
@@ -48,7 +48,7 @@ impl AccessRight {
 /// state, merchant needs to pay tax to all tax authorities associated with
 /// the shipping destination.
 /// Next Id : 8
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TaxRule {
     /// Region code in which this rule is applicable
     #[prost(string, tag = "1")]
@@ -76,7 +76,7 @@ pub struct TaxRule {
 /// Nested message and enum types in `TaxRule`.
 pub mod tax_rule {
     /// A range of postal codes that defines the area.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TaxPostalCodeRange {
         /// Required. The start of the postal code range, which is also the smallest
         /// in the range.
@@ -88,7 +88,7 @@ pub mod tax_rule {
         pub end: ::prost::alloc::string::String,
     }
     /// Describe the location through either postal code range or a criteria id.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Location {
         /// The admin_id or criteria_id of the region in which this rule is
         /// applicable.
@@ -100,7 +100,7 @@ pub mod tax_rule {
     }
     /// What is the way to calculate tax rate for deliveries to this admin's area.
     /// Can only be set on US states.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum RateCalculation {
         /// Rate that depends on delivery location: if merchant has a nexus in
         /// corresponding US state, rates from authorities with jurisdiction over
@@ -131,7 +131,7 @@ pub struct AccountTax {
     pub tax_rules: ::prost::alloc::vec::Vec<TaxRule>,
 }
 /// Request to get tax settings
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAccountTaxRequest {
     /// Required. The name from which tax settings will be retrieved
     #[prost(string, tag = "1")]
@@ -150,7 +150,7 @@ pub struct UpdateAccountTaxRequest {
 /// Request to list all sub-account tax settings only for the requesting merchant
 /// This method can only be called on a multi-client account, otherwise it'll
 /// return an error.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAccountTaxRequest {
     /// Required. The parent, which owns this collection of account tax.
     /// Format: accounts/{account}
@@ -191,7 +191,7 @@ pub mod account_tax_service_client {
     ///
     /// This API defines the following resource model:
     ///
-    /// - [AccountTax][google.shopping.merchant.accounts.v1main.AccountTax]
+    /// * \[AccountTax\]\[google.shopping.merchant.accounts.v1main.AccountTax\]
     #[derive(Debug, Clone)]
     pub struct AccountTaxServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -285,7 +285,7 @@ pub mod account_tax_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.AccountTaxService/GetAccountTax",
             );
@@ -318,7 +318,7 @@ pub mod account_tax_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.AccountTaxService/ListAccountTax",
             );
@@ -345,7 +345,7 @@ pub mod account_tax_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.AccountTaxService/UpdateAccountTax",
             );
@@ -407,7 +407,7 @@ pub mod account_issue {
     /// Nested message and enum types in `ImpactedDestination`.
     pub mod impacted_destination {
         /// The impact of the issue on a region.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Impact {
             /// The [CLDR region code](<https://cldr.unicode.org/>) where this issue
             /// applies.
@@ -468,7 +468,7 @@ pub mod account_issue {
     }
 }
 /// Request message for the `ListAccountIssues` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAccountIssuesRequest {
     /// Required. The parent, which owns this collection of issues.
     /// Format: `accounts/{account}`
@@ -617,7 +617,7 @@ pub mod account_issue_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.AccountIssueService/ListAccountIssues",
             );
@@ -634,10 +634,10 @@ pub mod account_issue_service_client {
     }
 }
 /// `AccountAggregation` payload.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccountAggregation {}
 /// A [user](<https://support.google.com/merchants/answer/12160472>).
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct User {
     /// Identifier. The resource name of the user.
     /// Format: `accounts/{account}/user/{email}`
@@ -703,7 +703,7 @@ pub mod user {
     }
 }
 /// Request message for the `GetUser` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetUserRequest {
     /// Required. The name of the user to retrieve.
     /// Format: `accounts/{account}/users/{email}`
@@ -715,7 +715,7 @@ pub struct GetUserRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `CreateUser` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateUserRequest {
     /// Required. The resource name of the account for which a user will be
     /// created. Format: `accounts/{account}`
@@ -730,7 +730,7 @@ pub struct CreateUserRequest {
     pub user: ::core::option::Option<User>,
 }
 /// Request message for the `DeleteUser` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteUserRequest {
     /// Required. The name of the user to delete.
     /// Format: `accounts/{account}/users/{email}`
@@ -741,7 +741,7 @@ pub struct DeleteUserRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `UpdateUser` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateUserRequest {
     /// Required. The new version of the user.
     ///
@@ -754,7 +754,7 @@ pub struct UpdateUserRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for the `ListUsers` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListUsersRequest {
     /// Required. The parent, which owns this collection of users.
     /// Format: `accounts/{account}`
@@ -889,7 +889,7 @@ pub mod user_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.UserService/GetUser",
             );
@@ -917,7 +917,7 @@ pub mod user_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.UserService/CreateUser",
             );
@@ -945,7 +945,7 @@ pub mod user_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.UserService/DeleteUser",
             );
@@ -973,7 +973,7 @@ pub mod user_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.UserService/UpdateUser",
             );
@@ -1003,7 +1003,7 @@ pub mod user_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.UserService/ListUsers",
             );
@@ -1020,7 +1020,7 @@ pub mod user_service_client {
     }
 }
 /// An account.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Account {
     /// Identifier. The resource name of the account.
     /// Format: `accounts/{account}`
@@ -1056,7 +1056,7 @@ pub struct Account {
     pub language_code: ::prost::alloc::string::String,
 }
 /// Request message for the `GetAccount` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAccountRequest {
     /// Required. The name of the account to retrieve.
     /// Format: `accounts/{account}`
@@ -1092,7 +1092,7 @@ pub struct CreateAndConfigureAccountRequest {
 /// Nested message and enum types in `CreateAndConfigureAccountRequest`.
 pub mod create_and_configure_account_request {
     /// Reference to a Terms of Service resource.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AcceptTermsOfService {
         /// Required. The resource name of the terms of service version in the format
         /// `termsOfService/{version}`. To retrieve the latest version, use the
@@ -1108,7 +1108,7 @@ pub mod create_and_configure_account_request {
     }
     /// Additional instructions to add account services during creation of the
     /// account.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AddAccountService {
         /// Optional. The provider of the service.
         /// Format: `accounts/{account}`
@@ -1121,7 +1121,7 @@ pub mod create_and_configure_account_request {
     /// Nested message and enum types in `AddAccountService`.
     pub mod add_account_service {
         /// The service type to be added.
-        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum ServiceType {
             /// The provider is an
             /// [aggregator](<https://support.google.com/merchants/answer/188487>) for
@@ -1132,7 +1132,7 @@ pub mod create_and_configure_account_request {
     }
 }
 /// Request message for the `DeleteAccount` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAccountRequest {
     /// Required. The name of the account to delete.
     /// Format: `accounts/{account}`
@@ -1144,7 +1144,7 @@ pub struct DeleteAccountRequest {
     pub force: bool,
 }
 /// Request message for the `UpdateAccount` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateAccountRequest {
     /// Required. The new version of the account.
     #[prost(message, optional, tag = "1")]
@@ -1154,7 +1154,7 @@ pub struct UpdateAccountRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for the `ListAccounts` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAccountsRequest {
     /// Optional. The maximum number of accounts to return. The service may return
     /// fewer than this value.  If unspecified, at most 250 accounts are returned.
@@ -1187,7 +1187,7 @@ pub struct ListAccountsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the `ListSubAccounts` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSubAccountsRequest {
     /// Required. The parent account.
     /// Format: `accounts/{account}`
@@ -1324,7 +1324,7 @@ pub mod accounts_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.AccountsService/GetAccount",
             );
@@ -1352,7 +1352,7 @@ pub mod accounts_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.AccountsService/CreateAndConfigureAccount",
             );
@@ -1384,7 +1384,7 @@ pub mod accounts_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.AccountsService/DeleteAccount",
             );
@@ -1412,7 +1412,7 @@ pub mod accounts_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.AccountsService/UpdateAccount",
             );
@@ -1447,7 +1447,7 @@ pub mod accounts_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.AccountsService/ListAccounts",
             );
@@ -1481,7 +1481,7 @@ pub mod accounts_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.AccountsService/ListSubAccounts",
             );
@@ -1499,7 +1499,7 @@ pub mod accounts_service_client {
 }
 /// Collection of information related to the
 /// [autofeed](<https://support.google.com/merchants/answer/7538732>) settings.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AutofeedSettings {
     /// Identifier. The resource name of the autofeed settings.
     /// Format: `accounts/{account}/autofeedSettings`.
@@ -1521,7 +1521,7 @@ pub struct AutofeedSettings {
     pub eligible: bool,
 }
 /// Request message for the `GetAutofeedSettings` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAutofeedSettingsRequest {
     /// Required. The resource name of the autofeed settings.
     /// Format: `accounts/{account}/autofeedSettings`
@@ -1529,7 +1529,7 @@ pub struct GetAutofeedSettingsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `UpdateAutofeedSettings` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateAutofeedSettingsRequest {
     /// Required. The new version of the autofeed setting.
     #[prost(message, optional, tag = "1")]
@@ -1649,7 +1649,7 @@ pub mod autofeed_settings_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.AutofeedSettingsService/GetAutofeedSettings",
             );
@@ -1679,7 +1679,7 @@ pub mod autofeed_settings_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.AutofeedSettingsService/UpdateAutofeedSettings",
             );
@@ -1698,7 +1698,7 @@ pub mod autofeed_settings_service_client {
 /// Collection of information related to the [automatic
 /// improvements](<https://developers.google.com/shopping-content/guides/automatic-improvements>)
 /// of an account.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AutomaticImprovements {
     /// Identifier. The resource name of the automatic improvements.
     /// Format: `accounts/{account}/automaticImprovements`.
@@ -1731,11 +1731,12 @@ pub struct AutomaticImprovements {
     /// shown to shoppers using Google. More accurate delivery times, especially
     /// when faster, typically lead to better conversion rates. Google will improve
     /// your estimated delivery times based on various factors:
+    ///
     /// * Delivery address of an order
     /// * Current handling time and shipping time settings
     /// * Estimated weekdays or business days
     /// * Parcel tracking data
-    /// This field is only updated (cleared) if provided in the update mask.
+    ///   This field is only updated (cleared) if provided in the update mask.
     #[prost(message, optional, tag = "4")]
     pub shipping_improvements: ::core::option::Option<AutomaticShippingImprovements>,
 }
@@ -1745,7 +1746,7 @@ pub struct AutomaticImprovements {
 /// Google uses the structured data markup on the website and advanced data
 /// extractors to update the price and availability of the items. When the item
 /// updates are off, items with mismatched data aren't shown.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AutomaticItemUpdates {
     /// Optional. Determines which attributes of the items should be automatically
     /// updated. If this field is not present and provided in the update mask, then
@@ -1788,7 +1789,7 @@ pub struct AutomaticItemUpdates {
 /// Nested message and enum types in `AutomaticItemUpdates`.
 pub mod automatic_item_updates {
     /// Settings for the Automatic Item Updates.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ItemUpdatesAccountLevelSettings {
         /// If price updates are enabled, Google always updates the active price with
         /// the crawled information.
@@ -1824,7 +1825,7 @@ pub mod automatic_item_updates {
 /// approved. This improvement is only applied to images of disapproved offers.
 /// For more information see: [Automatic image
 /// improvements](<https://support.google.com/merchants/answer/9242973>)
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AutomaticImageImprovements {
     /// Optional. Determines how the images should be automatically updated.
     /// If this field is not present and provided in the update mask, then the
@@ -1844,7 +1845,7 @@ pub struct AutomaticImageImprovements {
 /// Nested message and enum types in `AutomaticImageImprovements`.
 pub mod automatic_image_improvements {
     /// Settings for the Automatic Image Improvements.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ImageImprovementsAccountLevelSettings {
         /// Enables automatic image improvements.
         #[prost(bool, optional, tag = "1")]
@@ -1859,18 +1860,19 @@ pub mod automatic_image_improvements {
 /// to shoppers using Google. More accurate delivery times, especially when
 /// faster, typically lead to better conversion rates. Google will improve your
 /// estimated delivery times based on various factors:
+///
 /// * Delivery address of an order
 /// * Current handling time and shipping time settings
 /// * Estimated weekdays or business days
 /// * Parcel tracking data
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AutomaticShippingImprovements {
     /// Enables automatic shipping improvements.
     #[prost(bool, optional, tag = "1")]
     pub allow_shipping_improvements: ::core::option::Option<bool>,
 }
 /// Request message for the `GetAutomaticImprovements` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAutomaticImprovementsRequest {
     /// Required. The resource name of the automatic improvements.
     /// Format: `accounts/{account}/automaticImprovements`
@@ -1878,7 +1880,7 @@ pub struct GetAutomaticImprovementsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `UpdateAutomaticImprovements` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateAutomaticImprovementsRequest {
     /// Required. The new version of the automatic imrovements.
     #[prost(message, optional, tag = "1")]
@@ -1887,12 +1889,12 @@ pub struct UpdateAutomaticImprovementsRequest {
     /// The following fields are supported (in both `snake_case` and
     /// `lowerCamelCase`):
     ///
-    /// - `item_updates`
-    /// - `item_updates.account_level_settings`
-    /// - `image_improvements`
-    /// - `image_improvements.account_level_settings`
-    /// - `shipping_improvements`
-    /// - `shipping_improvements.allow_shipping_improvements`
+    /// * `item_updates`
+    /// * `item_updates.account_level_settings`
+    /// * `image_improvements`
+    /// * `image_improvements.account_level_settings`
+    /// * `shipping_improvements`
+    /// * `shipping_improvements.allow_shipping_improvements`
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -2008,7 +2010,7 @@ pub mod automatic_improvements_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.AutomaticImprovementsService/GetAutomaticImprovements",
             );
@@ -2038,7 +2040,7 @@ pub mod automatic_improvements_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.AutomaticImprovementsService/UpdateAutomaticImprovements",
             );
@@ -2056,7 +2058,7 @@ pub mod automatic_improvements_service_client {
 }
 /// Collection of information related to the [identity of a
 /// business](<https://support.google.com/merchants/answer/12564247>).
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BusinessIdentity {
     /// Identifier. The resource name of the business identity.
     /// Format: `accounts/{account}/businessIdentity`
@@ -2098,7 +2100,7 @@ pub struct BusinessIdentity {
 /// Nested message and enum types in `BusinessIdentity`.
 pub mod business_identity {
     /// All information related to an identity attribute.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct IdentityAttribute {
         /// Required. The declaration of identity for this attribute.
         #[prost(enumeration = "identity_attribute::IdentityDeclaration", tag = "1")]
@@ -2198,7 +2200,7 @@ pub mod business_identity {
     }
 }
 /// Request message for the `GetBusinessIdentity` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetBusinessIdentityRequest {
     /// Required. The resource name of the business identity.
     /// Format: `accounts/{account}/businessIdentity`
@@ -2206,7 +2208,7 @@ pub struct GetBusinessIdentityRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `UpdateBusinessIdentity` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateBusinessIdentityRequest {
     /// Required. The new version of the business identity.
     #[prost(message, optional, tag = "1")]
@@ -2326,7 +2328,7 @@ pub mod business_identity_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.BusinessIdentityService/GetBusinessIdentity",
             );
@@ -2357,7 +2359,7 @@ pub mod business_identity_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.BusinessIdentityService/UpdateBusinessIdentity",
             );
@@ -2374,7 +2376,7 @@ pub mod business_identity_service_client {
     }
 }
 /// Customer service information.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomerService {
     /// Optional. The URI where customer service may be found.
     #[prost(string, optional, tag = "1")]
@@ -2420,7 +2422,7 @@ impl PhoneVerificationState {
     }
 }
 /// Collection of information related to a business.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BusinessInfo {
     /// Identifier. The resource name of the business info.
     /// Format: `accounts/{account}/businessInfo`
@@ -2449,7 +2451,7 @@ pub struct BusinessInfo {
     >,
 }
 /// Request message for the `GetBusinessInfo` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetBusinessInfoRequest {
     /// Required. The resource name of the business info.
     /// Format: `accounts/{account}/businessInfo`
@@ -2457,7 +2459,7 @@ pub struct GetBusinessInfoRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `UpdateBusinessInfo` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateBusinessInfoRequest {
     /// Required. The new version of the business info.
     #[prost(message, optional, tag = "1")]
@@ -2571,7 +2573,7 @@ pub mod business_info_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.BusinessInfoService/GetBusinessInfo",
             );
@@ -2599,7 +2601,7 @@ pub mod business_info_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.BusinessInfoService/UpdateBusinessInfo",
             );
@@ -2616,7 +2618,7 @@ pub mod business_info_service_client {
     }
 }
 /// Request message for `GetCheckoutSettings` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCheckoutSettingsRequest {
     /// Required. The name/identifier of the merchant account.
     /// Format: `accounts/{account}/programs/{program}/checkoutSettings`
@@ -2624,7 +2626,7 @@ pub struct GetCheckoutSettingsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `CreateCheckoutSettings` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateCheckoutSettingsRequest {
     /// Required. The merchant account for which the `CheckoutSettings` will be
     /// created.
@@ -2635,7 +2637,7 @@ pub struct CreateCheckoutSettingsRequest {
     pub checkout_settings: ::core::option::Option<CheckoutSettings>,
 }
 /// Request message for the `UpdateCheckoutSettings` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateCheckoutSettingsRequest {
     /// Required. The updated version of the `CheckoutSettings`.
     /// The `name` field is used to identify the `CheckoutSettings`.
@@ -2646,13 +2648,13 @@ pub struct UpdateCheckoutSettingsRequest {
     /// The following fields are supported (in both `snake_case` and
     /// `lowerCamelCase`):
     ///
-    /// - `eligible_destinations`
-    /// - `uri_settings`
+    /// * `eligible_destinations`
+    /// * `uri_settings`
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for the `DeleteCheckoutSettings` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteCheckoutSettingsRequest {
     /// Required. The name/identifier of the merchant account.
     /// Format: `accounts/{account}/programs/{program}/checkoutSettings`
@@ -2661,7 +2663,7 @@ pub struct DeleteCheckoutSettingsRequest {
 }
 /// [CheckoutSettings](<https://support.google.com/merchants/answer/13945960>) for
 /// a specific merchant.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CheckoutSettings {
     /// Identifier. The resource name of the program configuration settings.
     /// Format: `accounts/{account}/programs/{program}/checkoutSettings`
@@ -2821,7 +2823,7 @@ pub mod checkout_settings {
     }
 }
 /// URL settings for cart or checkout URL.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UriSettings {
     /// Specifications related to the `Checkout` URL. The `UriTemplate` is
     /// of the form `<https://www.mystore.com/checkout?item_id={id}`>
@@ -2838,7 +2840,7 @@ pub mod uri_settings {
     /// where `{id}` will be automatically replaced with \[offer_id\]
     /// (<https://developers.google.com/shopping-content/reference/rest/v2.1/products#Product.FIELDS.offer_id>)
     /// attribute from the merchant account
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum UriTemplate {
         /// Checkout URL template. When the placeholders are expanded will redirect
         /// the buyer to the merchant checkout page with the item in the cart. For
@@ -2966,7 +2968,7 @@ pub mod checkout_settings_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.CheckoutSettingsService/GetCheckoutSettings",
             );
@@ -2996,7 +2998,7 @@ pub mod checkout_settings_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.CheckoutSettingsService/CreateCheckoutSettings",
             );
@@ -3026,7 +3028,7 @@ pub mod checkout_settings_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.CheckoutSettingsService/UpdateCheckoutSettings",
             );
@@ -3054,7 +3056,7 @@ pub mod checkout_settings_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.CheckoutSettingsService/DeleteCheckoutSettings",
             );
@@ -3073,7 +3075,7 @@ pub mod checkout_settings_service_client {
 /// The categories of notifications the user opted into / opted out of. The email
 /// preferences do not include mandatory announcements as users can't opt out of
 /// them.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EmailPreferences {
     /// Identifier. The name of the EmailPreferences. The endpoint is only
     /// supported for the authenticated user.
@@ -3136,7 +3138,7 @@ pub mod email_preferences {
     }
 }
 /// Request message for GetEmailPreferences method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEmailPreferencesRequest {
     /// Required. The name of the `EmailPreferences` resource.
     /// Format: `accounts/{account}/users/{email}/emailPreferences`
@@ -3144,7 +3146,7 @@ pub struct GetEmailPreferencesRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateEmailPreferences method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateEmailPreferencesRequest {
     /// Required. Email Preferences to be updated.
     #[prost(message, optional, tag = "1")]
@@ -3252,7 +3254,7 @@ pub mod email_preferences_service_client {
         }
         /// Returns the email preferences for a Merchant Center account user.
         ///
-        /// Use the name=accounts/*/users/me/emailPreferences alias to get preferences
+        /// Use the name=accounts/\*/users/me/emailPreferences alias to get preferences
         /// for the authenticated user.
         pub async fn get_email_preferences(
             &mut self,
@@ -3269,7 +3271,7 @@ pub mod email_preferences_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.EmailPreferencesService/GetEmailPreferences",
             );
@@ -3291,7 +3293,7 @@ pub mod email_preferences_service_client {
         ///
         /// It is invalid for updates to specify an UNCONFIRMED opt-in status value.
         ///
-        /// Use the name=accounts/*/users/me/emailPreferences alias to update
+        /// Use the name=accounts/\*/users/me/emailPreferences alias to update
         /// preferences
         /// for the authenticated user.
         pub async fn update_email_preferences(
@@ -3309,7 +3311,7 @@ pub mod email_preferences_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.EmailPreferencesService/UpdateEmailPreferences",
             );
@@ -3326,7 +3328,7 @@ pub mod email_preferences_service_client {
     }
 }
 /// Collection of information related to a Google Business Profile (GBP) account.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GbpAccount {
     /// Identifier. The resource name of the GBP account. Format:
     /// `accounts/{account}/gbpAccount/{gbp_account}`
@@ -3394,7 +3396,7 @@ pub mod gbp_account {
     }
 }
 /// Request message for the ListGbpAccounts method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListGbpAccountsRequest {
     /// Required. The name of the parent resource under which the GBP accounts are
     /// listed. Format: `accounts/{account}`.
@@ -3427,7 +3429,7 @@ pub struct ListGbpAccountsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the LinkGbpAccount method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LinkGbpAccountRequest {
     /// Required. The name of the parent resource to which the GBP account is
     /// linked. Format: `accounts/{account}`.
@@ -3438,7 +3440,7 @@ pub struct LinkGbpAccountRequest {
     pub gbp_email: ::prost::alloc::string::String,
 }
 /// Response message for the LinkGbpAccount method.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LinkGbpAccountResponse {
     /// Empty response.
     #[prost(message, optional, tag = "1")]
@@ -3458,7 +3460,8 @@ pub mod gbp_accounts_service_client {
     /// The service facilitates the management of a merchant's Google Business
     /// Profile (GBP) account settings. This API defines the following resource
     /// model:
-    /// - [GbpAccount][google.shopping.merchant.accounts.v1.GbpAccount]
+    ///
+    /// * \[GbpAccount\]\[google.shopping.merchant.accounts.v1.GbpAccount\]
     #[derive(Debug, Clone)]
     pub struct GbpAccountsServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -3555,7 +3558,7 @@ pub mod gbp_accounts_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.GbpAccountsService/ListGbpAccounts",
             );
@@ -3585,7 +3588,7 @@ pub mod gbp_accounts_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.GbpAccountsService/LinkGbpAccount",
             );
@@ -3602,7 +3605,7 @@ pub mod gbp_accounts_service_client {
     }
 }
 /// A store's homepage.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Homepage {
     /// Identifier. The resource name of the store's homepage.
     /// Format: `accounts/{account}/homepage`
@@ -3617,7 +3620,7 @@ pub struct Homepage {
     pub claimed: bool,
 }
 /// Request message for the `GetHomepage` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetHomepageRequest {
     /// Required. The name of the homepage to retrieve.
     /// Format: `accounts/{account}/homepage`
@@ -3625,7 +3628,7 @@ pub struct GetHomepageRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `UpdateHomepage` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateHomepageRequest {
     /// Required. The new version of the homepage.
     #[prost(message, optional, tag = "1")]
@@ -3635,7 +3638,7 @@ pub struct UpdateHomepageRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for the `ClaimHomepage` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ClaimHomepageRequest {
     /// Required. The name of the homepage to claim.
     /// Format: `accounts/{account}/homepage`
@@ -3643,7 +3646,7 @@ pub struct ClaimHomepageRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `UnclaimHomepage` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UnclaimHomepageRequest {
     /// Required. The name of the homepage to unclaim.
     /// Format: `accounts/{account}/homepage`
@@ -3755,7 +3758,7 @@ pub mod homepage_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.HomepageService/GetHomepage",
             );
@@ -3782,7 +3785,7 @@ pub mod homepage_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.HomepageService/UpdateHomepage",
             );
@@ -3803,13 +3806,13 @@ pub mod homepage_service_client {
         /// exempts from verification) and return a successful response. If ownership
         /// can no longer be verified, it will return an error, but it won't clear the
         /// claim. In case of failure, a canonical error message will be returned:
-        ///    * PERMISSION_DENIED: user doesn't have the necessary permissions on this
-        ///    MC account;
-        ///    * FAILED_PRECONDITION:
-        ///      - The account is not a Merchant Center account;
-        ///      - MC account doesn't have a homepage;
-        ///      - claiming failed (in this case the error message will contain more
-        ///      details).
+        /// \* PERMISSION_DENIED: user doesn't have the necessary permissions on this
+        /// MC account;
+        /// \* FAILED_PRECONDITION:
+        /// - The account is not a Merchant Center account;
+        /// - MC account doesn't have a homepage;
+        /// - claiming failed (in this case the error message will contain more
+        /// details).
         pub async fn claim_homepage(
             &mut self,
             request: impl tonic::IntoRequest<super::ClaimHomepageRequest>,
@@ -3822,7 +3825,7 @@ pub mod homepage_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.HomepageService/ClaimHomepage",
             );
@@ -3849,7 +3852,7 @@ pub mod homepage_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.HomepageService/UnclaimHomepage",
             );
@@ -3866,7 +3869,7 @@ pub mod homepage_service_client {
     }
 }
 /// Collection of information related to a Local Feed Partnership (LFP) provider.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LfpProvider {
     /// Identifier. The resource name of the LFP provider.
     /// Format:
@@ -3881,7 +3884,7 @@ pub struct LfpProvider {
     pub display_name: ::prost::alloc::string::String,
 }
 /// Request message for the FindLfpProviders method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FindLfpProvidersRequest {
     /// Required. The name of the parent resource under which the LFP providers are
     /// found. Format:
@@ -3915,7 +3918,7 @@ pub struct FindLfpProvidersResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the LinkLfpProvider method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LinkLfpProviderRequest {
     /// Required. The name of the LFP provider resource to link.
     /// Format:
@@ -3929,7 +3932,7 @@ pub struct LinkLfpProviderRequest {
     pub external_account_id: ::prost::alloc::string::String,
 }
 /// Response message for the LinkLfpProvider method.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LinkLfpProviderResponse {
     /// Empty response.
     #[prost(message, optional, tag = "1")]
@@ -3948,7 +3951,8 @@ pub mod lfp_providers_service_client {
     use tonic::codegen::http::Uri;
     /// The service facilitates the management of a merchant's LFP provider settings.
     /// This API defines the following resource model:
-    /// - [LfpProvider][google.shopping.merchant.accounts.v1.LfpProvider]
+    ///
+    /// * \[LfpProvider\]\[google.shopping.merchant.accounts.v1.LfpProvider\]
     #[derive(Debug, Clone)]
     pub struct LfpProvidersServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -4045,7 +4049,7 @@ pub mod lfp_providers_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.LfpProvidersService/FindLfpProviders",
             );
@@ -4075,7 +4079,7 @@ pub mod lfp_providers_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.LfpProvidersService/LinkLfpProvider",
             );
@@ -4092,7 +4096,7 @@ pub mod lfp_providers_service_client {
     }
 }
 /// Collection of information related to the omnichannel settings of a merchant.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OmnichannelSetting {
     /// Identifier. The resource name of the omnichannel setting. Format:
     /// `accounts/{account}/omnichannelSettings/{omnichannel_setting}`
@@ -4186,7 +4190,7 @@ pub mod omnichannel_setting {
     }
 }
 /// The state of a omnichannel setting related review process.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReviewState {}
 /// Nested message and enum types in `ReviewState`.
 pub mod review_state {
@@ -4244,7 +4248,7 @@ pub mod review_state {
     }
 }
 /// Collection of information related to InStock.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InStock {
     /// Optional. Product landing page URI. It is only used for the review of MHLSF
     /// in-stock serving. This URI domain should match with the business's
@@ -4257,7 +4261,7 @@ pub struct InStock {
     pub state: i32,
 }
 /// Collection of information related to Pickup.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Pickup {
     /// Required. Pickup product page URI. It is only used for the review of pickup
     /// serving. This URI domain should match with the business's homepage.
@@ -4268,7 +4272,7 @@ pub struct Pickup {
     pub state: i32,
 }
 /// Collection of information related to the LFP link.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LfpLink {
     /// Required. The resource name of the LFP provider.
     /// Format: `lfpProviders/{lfp_provider}`
@@ -4284,7 +4288,7 @@ pub struct LfpLink {
 }
 /// Collection of information related to the on display to order
 /// ([ODO](<https://support.google.com/merchants/answer/14615056?hl=en&ref_topic=15145747&sjid=6892280366904591178-NC>)).
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OnDisplayToOrder {
     /// Required. The on display to order (ODO) policy URI.
     #[prost(string, tag = "1")]
@@ -4295,7 +4299,7 @@ pub struct OnDisplayToOrder {
 }
 /// Collection of information related to the about page
 /// ([impressum](<https://support.google.com/merchants/answer/14675634?hl=en&ref_topic=15145634&sjid=6892280366904591178-NC>)).
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct About {
     /// Required. The about page URI.
     #[prost(string, tag = "1")]
@@ -4306,7 +4310,7 @@ pub struct About {
 }
 /// Collection of information related to [inventory
 /// verification](<https://support.google.com/merchants/answer/14684499?hl=en&ref_topic=15145634&sjid=6892280366904591178-NC>).
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InventoryVerification {
     /// Output only. The state of the inventory verification process.
     #[prost(enumeration = "inventory_verification::State", tag = "1")]
@@ -4386,7 +4390,7 @@ pub mod inventory_verification {
     }
 }
 /// Request message for the GetOmnichannelSettings method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetOmnichannelSettingRequest {
     /// Required. The name of the omnichannel setting to retrieve.
     /// Format: `accounts/{account}/omnichannelSettings/{omnichannel_setting}`
@@ -4394,7 +4398,7 @@ pub struct GetOmnichannelSettingRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the ListOmnichannelSettings method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListOmnichannelSettingsRequest {
     /// Required. The parent, which owns this collection of omnichannel settings.
     /// Format: `accounts/{account}`
@@ -4426,7 +4430,7 @@ pub struct ListOmnichannelSettingsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the CreateOmnichannelSetting method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateOmnichannelSettingRequest {
     /// Required. The parent resource where this omnichannel setting will be
     /// created. Format: `accounts/{account}`
@@ -4437,7 +4441,7 @@ pub struct CreateOmnichannelSettingRequest {
     pub omnichannel_setting: ::core::option::Option<OmnichannelSetting>,
 }
 /// Request message for the UpdateOmnichannelSetting method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateOmnichannelSettingRequest {
     /// Required. The omnichannel setting to update.
     ///
@@ -4448,12 +4452,13 @@ pub struct UpdateOmnichannelSettingRequest {
     /// Required. The list of fields to be updated.
     ///
     /// The following fields are supported in snake_case only:
-    /// - `lsf_type`
-    /// - `in_stock`
-    /// - `pickup`
-    /// - `odo`
-    /// - `about`
-    /// - `inventory_verification`
+    ///
+    /// * `lsf_type`
+    /// * `in_stock`
+    /// * `pickup`
+    /// * `odo`
+    /// * `about`
+    /// * `inventory_verification`
     ///
     /// Full replacement with wildcard `*`is supported, while empty/implied update
     /// mask is not.
@@ -4461,7 +4466,7 @@ pub struct UpdateOmnichannelSettingRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for the RequestInventoryVerification method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RequestInventoryVerificationRequest {
     /// Required. The name of the omnichannel setting to request inventory
     /// verification. Format:
@@ -4470,7 +4475,7 @@ pub struct RequestInventoryVerificationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Response message for the RequestInventoryVerification method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RequestInventoryVerificationResponse {
     /// The omnichannel setting that was updated.
     #[prost(message, optional, tag = "1")]
@@ -4488,9 +4493,10 @@ pub mod omnichannel_settings_service_client {
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The service facilitates the management of a merchant's omnichannel settings.
+    ///
     /// ## This API defines the following resource model:
     ///
-    /// [OmnichannelSetting][google.shopping.merchant.accounts.v1.OmnichannelSetting]
+    /// \[OmnichannelSetting\]\[google.shopping.merchant.accounts.v1.OmnichannelSetting\]
     #[derive(Debug, Clone)]
     pub struct OmnichannelSettingsServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -4589,7 +4595,7 @@ pub mod omnichannel_settings_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.OmnichannelSettingsService/GetOmnichannelSetting",
             );
@@ -4619,7 +4625,7 @@ pub mod omnichannel_settings_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.OmnichannelSettingsService/ListOmnichannelSettings",
             );
@@ -4649,7 +4655,7 @@ pub mod omnichannel_settings_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.OmnichannelSettingsService/CreateOmnichannelSetting",
             );
@@ -4679,7 +4685,7 @@ pub mod omnichannel_settings_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.OmnichannelSettingsService/UpdateOmnichannelSetting",
             );
@@ -4709,7 +4715,7 @@ pub mod omnichannel_settings_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.OmnichannelSettingsService/RequestInventoryVerification",
             );
@@ -4726,7 +4732,7 @@ pub mod omnichannel_settings_service_client {
     }
 }
 /// Request message for the `GetOnlineReturnPolicy` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetOnlineReturnPolicyRequest {
     /// Required. The name of the return policy to retrieve.
     /// Format: `accounts/{account}/onlineReturnPolicies/{return_policy}`
@@ -4759,20 +4765,20 @@ pub struct UpdateOnlineReturnPolicyRequest {
     /// The following fields are supported (in both `snake_case` and
     /// `lowerCamelCase`):
     ///
-    /// - `accept_defective_only`
-    /// - `accept_exchange`
-    /// - `item_conditions`
-    /// - `policy`
-    /// - `process_refund_days`
-    /// - `restocking_fee`
-    /// - `return_methods`
-    /// - `return_policy_uri`
-    /// - `return_shipping_fee`
+    /// * `accept_defective_only`
+    /// * `accept_exchange`
+    /// * `item_conditions`
+    /// * `policy`
+    /// * `process_refund_days`
+    /// * `restocking_fee`
+    /// * `return_methods`
+    /// * `return_policy_uri`
+    /// * `return_shipping_fee`
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for the `DeleteOnlineReturnPolicy` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteOnlineReturnPolicyRequest {
     /// Required. The name of the return policy to delete.
     /// Format: `accounts/{account}/onlineReturnPolicies/{return_policy}`
@@ -4780,7 +4786,7 @@ pub struct DeleteOnlineReturnPolicyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `ListOnlineReturnPolicies` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListOnlineReturnPoliciesRequest {
     /// Required. The merchant account for which to list return policies.
     /// Format: `accounts/{account}`
@@ -4799,7 +4805,7 @@ pub struct ListOnlineReturnPoliciesRequest {
     /// When paginating, all other parameters provided to
     /// `ListOnlineReturnPolicies` must match the call that provided the page
     /// token. The token returned as
-    /// [nextPageToken][google.shopping.merchant.accounts.v1beta.ListOnlineReturnPoliciesResponse.next_page_token]
+    /// \[nextPageToken\]\[google.shopping.merchant.accounts.v1beta.ListOnlineReturnPoliciesResponse.next_page_token\]
     /// in the response to the previous request.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
@@ -4908,7 +4914,7 @@ pub struct OnlineReturnPolicy {
 pub mod online_return_policy {
     /// The return shipping fee. This can either be a fixed fee or a boolean to
     /// indicate that the customer pays the actual shipping cost.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ReturnShippingFee {
         /// Required. Type of return shipping fee.
         #[prost(enumeration = "return_shipping_fee::Type", tag = "1")]
@@ -4966,14 +4972,14 @@ pub mod online_return_policy {
         }
     }
     /// The restocking fee. This can be a flat fee or a micro percent.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RestockingFee {
         #[prost(oneof = "restocking_fee::Type", tags = "1, 2")]
         pub r#type: ::core::option::Option<restocking_fee::Type>,
     }
     /// Nested message and enum types in `RestockingFee`.
     pub mod restocking_fee {
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Type {
             /// Fixed restocking fee.
             #[prost(message, tag = "1")]
@@ -4985,7 +4991,7 @@ pub mod online_return_policy {
         }
     }
     /// The available policies.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Policy {
         /// Policy type.
         #[prost(enumeration = "policy::Type", tag = "1")]
@@ -5048,7 +5054,7 @@ pub mod online_return_policy {
             }
         }
     }
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SeasonalOverride {
         /// Required. Display name of this seasonal override in Merchant Center.
         #[prost(string, tag = "1")]
@@ -5076,7 +5082,7 @@ pub mod online_return_policy {
         /// ReturnWindow: Specifies either a fixed return date or the number of
         /// days (from the delivery date) until which a product can be returned.
         /// [Merchant Return Days](<https://schema.org/merchantReturnDays>)
-        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum ReturnWindow {
             /// Number of days (from the delivery date) that the product can be
             /// returned.
@@ -5238,6 +5244,7 @@ pub mod online_return_policy_service_client {
     use tonic::codegen::http::Uri;
     /// The service facilitates the management of a merchant's remorse return policy
     /// configuration, encompassing return policies for both ads and free listings
+    ///
     /// ## programs. This API defines the following resource model:
     ///
     /// [OnlineReturnPolicy](/merchant/api/reference/rpc/google.shopping.merchant.accounts.v1beta#google.shopping.merchant.accounts.v1beta.OnlineReturnPolicy)
@@ -5339,7 +5346,7 @@ pub mod online_return_policy_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService/GetOnlineReturnPolicy",
             );
@@ -5369,7 +5376,7 @@ pub mod online_return_policy_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService/ListOnlineReturnPolicies",
             );
@@ -5399,7 +5406,7 @@ pub mod online_return_policy_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService/CreateOnlineReturnPolicy",
             );
@@ -5429,7 +5436,7 @@ pub mod online_return_policy_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService/UpdateOnlineReturnPolicy",
             );
@@ -5456,7 +5463,7 @@ pub mod online_return_policy_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService/DeleteOnlineReturnPolicy",
             );
@@ -5508,7 +5515,7 @@ pub struct Program {
 /// Nested message and enum types in `Program`.
 pub mod program {
     /// Defines a requirement specified for participation in the program.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Requirement {
         /// Output only. Name of the requirement.
         #[prost(string, tag = "1")]
@@ -5576,7 +5583,7 @@ pub mod program {
     }
 }
 /// Request message for the GetProgram method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetProgramRequest {
     /// Required. The name of the program to retrieve.
     /// Format: `accounts/{account}/programs/{program}`
@@ -5584,7 +5591,7 @@ pub struct GetProgramRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the ListPrograms method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListProgramsRequest {
     /// Required. The name of the account for which to retrieve all programs.
     /// Format: `accounts/{account}`
@@ -5612,7 +5619,7 @@ pub struct ListProgramsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the EnableProgram method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnableProgramRequest {
     /// Required. The name of the program for which to enable participation for the
     /// given account. Format: `accounts/{account}/programs/{program}`
@@ -5620,7 +5627,7 @@ pub struct EnableProgramRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the DisableProgram method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisableProgramRequest {
     /// Required. The name of the program for which to disable participation for
     /// the given account. Format: `accounts/{account}/programs/{program}`
@@ -5742,7 +5749,7 @@ pub mod programs_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.ProgramsService/GetProgram",
             );
@@ -5772,7 +5779,7 @@ pub mod programs_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.ProgramsService/ListPrograms",
             );
@@ -5800,7 +5807,7 @@ pub mod programs_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.ProgramsService/EnableProgram",
             );
@@ -5828,7 +5835,7 @@ pub mod programs_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.ProgramsService/DisableProgram",
             );
@@ -5845,7 +5852,7 @@ pub mod programs_service_client {
     }
 }
 /// Request message for the `GetRegion` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRegionRequest {
     /// Required. The name of the region to retrieve.
     /// Format: `accounts/{account}/regions/{region}`
@@ -5880,7 +5887,7 @@ pub struct UpdateRegionRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for the `DeleteRegion` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRegionRequest {
     /// Required. The name of the region to delete.
     /// Format: `accounts/{account}/regions/{region}`
@@ -5888,7 +5895,7 @@ pub struct DeleteRegionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `ListRegions` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRegionsRequest {
     /// Required. The account to list regions for.
     /// Format: `accounts/{account}`
@@ -5968,9 +5975,9 @@ pub mod region {
     /// Nested message and enum types in `PostalCodeArea`.
     pub mod postal_code_area {
         /// A range of postal codes that defines the region area.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct PostalCodeRange {
-            /// Required. A postal code or a pattern of the form prefix* denoting the
+            /// Required. A postal code or a pattern of the form prefix\* denoting the
             /// inclusive lower bound of the range defining the area. Examples values:
             /// `94108`, `9410*`, `9*`.
             #[prost(string, tag = "1")]
@@ -5988,7 +5995,7 @@ pub mod region {
         }
     }
     /// A list of geotargets that defines the region area.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct GeoTargetArea {
         /// Required. A non-empty list of [location
         /// IDs](<https://developers.google.com/adwords/api/docs/appendix/geotargeting>).
@@ -6012,7 +6019,7 @@ pub mod regions_service_client {
     ///
     /// This API defines the following resource model:
     ///
-    /// - [Region][google.shopping.merchant.accounts.v1main.Region]
+    /// * \[Region\]\[google.shopping.merchant.accounts.v1main.Region\]
     #[derive(Debug, Clone)]
     pub struct RegionsServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -6106,7 +6113,7 @@ pub mod regions_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.RegionsService/GetRegion",
             );
@@ -6134,7 +6141,7 @@ pub mod regions_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.RegionsService/CreateRegion",
             );
@@ -6162,7 +6169,7 @@ pub mod regions_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.RegionsService/UpdateRegion",
             );
@@ -6190,7 +6197,7 @@ pub mod regions_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.RegionsService/DeleteRegion",
             );
@@ -6220,7 +6227,7 @@ pub mod regions_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.RegionsService/ListRegions",
             );
@@ -6252,22 +6259,22 @@ pub struct ShippingSettings {
     pub warehouses: ::prost::alloc::vec::Vec<Warehouse>,
     /// Required. This field is used for avoid async issue. Make sure shipping
     /// setting data
-    ///   didn't change between get call and insert call. The user should do
-    ///   following steps：
+    /// didn't change between get call and insert call. The user should do
+    /// following steps：
     ///
     /// 1. Set etag field as empty string for initial shipping setting creation.
     ///
-    /// 2. After initial creation, call get method to obtain an etag and current
-    /// shipping setting data before call insert.
+    /// 1. After initial creation, call get method to obtain an etag and current
+    ///    shipping setting data before call insert.
     ///
-    /// 3. Modify to wanted shipping setting information.
+    /// 1. Modify to wanted shipping setting information.
     ///
-    /// 4. Call insert method with the wanted shipping setting information with
-    /// the etag obtained from step 2.
+    /// 1. Call insert method with the wanted shipping setting information with
+    ///    the etag obtained from step 2.
     ///
-    /// 5. If shipping setting data changed between step 2 and step 4. Insert
-    /// request will fail because the etag changes every time the shipping setting
-    /// data changes. User should repeate step 2-4 with the new etag.
+    /// 1. If shipping setting data changed between step 2 and step 4. Insert
+    ///    request will fail because the etag changes every time the shipping setting
+    ///    data changes. User should repeate step 2-4 with the new etag.
     #[prost(string, tag = "4")]
     pub etag: ::prost::alloc::string::String,
 }
@@ -6323,7 +6330,7 @@ pub struct Service {
 pub mod service {
     /// A list of stores your products are delivered from.
     /// This is only valid for the local delivery shipment type.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct StoreConfig {
         /// Indicates whether all stores, or selected stores, listed by this
         /// merchant provide local delivery.
@@ -6344,7 +6351,7 @@ pub mod service {
     /// Nested message and enum types in `StoreConfig`.
     pub mod store_config {
         /// Configs related to local delivery ends for the day.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct CutoffConfig {
             /// Time that local delivery ends for the day.
             #[prost(message, optional, tag = "1")]
@@ -6369,7 +6376,7 @@ pub mod service {
         /// Nested message and enum types in `CutoffConfig`.
         pub mod cutoff_config {
             /// Time that local delivery ends for the day.
-            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct LocalCutoffTime {
                 /// Hour local delivery orders must be placed by to process the same
                 /// day.
@@ -6446,7 +6453,7 @@ pub mod service {
     /// Nested message and enum types in `LoyaltyProgram`.
     pub mod loyalty_program {
         /// Subset of a merchants loyalty program.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct LoyaltyProgramTiers {
             /// The tier label \[tier_label\] sub-attribute differentiates offer level
             /// benefits between each tier. This value is also set in your program
@@ -6508,7 +6515,7 @@ pub mod service {
 }
 /// Maximum delivery radius.
 /// This is only required for the local delivery shipment type.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Distance {
     /// Integer value of distance.
     #[prost(int64, optional, tag = "1")]
@@ -6567,7 +6574,7 @@ pub mod distance {
 }
 /// A fulfillment warehouse, which stores and handles inventory.
 /// Next tag: 7
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Warehouse {
     /// Required. The name of the warehouse. Must be unique within account.
     #[prost(string, optional, tag = "1")]
@@ -6593,7 +6600,7 @@ pub struct Warehouse {
 /// The latest time of day that an order can be accepted and begin processing.
 /// Later orders will be processed in the next day. The time is based on the
 /// warehouse postal code.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WarehouseCutoffTime {
     /// Required. Hour of the cutoff time until which an order has to be placed to
     /// be processed in the same day by the warehouse. Hour is based on the
@@ -6607,7 +6614,7 @@ pub struct WarehouseCutoffTime {
     pub minute: ::core::option::Option<i32>,
 }
 /// Shipping address of the warehouse.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Address {
     /// Street-level part of the address. For example: `111w 31st Street`.
     #[prost(string, optional, tag = "1")]
@@ -6675,8 +6682,8 @@ pub struct DeliveryTime {
     pub transit_business_day_config: ::core::option::Option<BusinessDayConfig>,
     /// Optional. Indicates that the delivery time should be calculated per
     /// warehouse (shipping origin location) based on the settings of the selected
-    /// carrier. When set, no other transit time related field in [delivery
-    /// time][\[google.shopping.content.bundles.ShippingSetting.DeliveryTime\] should
+    /// carrier. When set, no other transit time related field in \[delivery
+    /// time\]\[\[google.shopping.content.bundles.ShippingSetting.DeliveryTime\] should
     /// be set.
     #[prost(message, repeated, tag = "9")]
     pub warehouse_based_delivery_times: ::prost::alloc::vec::Vec<
@@ -6684,7 +6691,7 @@ pub struct DeliveryTime {
     >,
 }
 /// Business days cutoff time definition.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CutoffTime {
     /// Required. Hour of the cutoff time until which an order has to be placed to
     /// be processed in the same day.
@@ -6701,7 +6708,7 @@ pub struct CutoffTime {
     pub time_zone: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Business days of the warehouse.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BusinessDayConfig {
     /// Required. Regular business days.
     /// May not be empty.
@@ -6774,7 +6781,7 @@ pub mod business_day_config {
 /// (shipping origin location) based on the settings of the selected carrier.
 /// When set, no other transit time related field in `delivery_time` should be
 /// set.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WarehouseBasedDeliveryTime {
     /// Required. Carrier, such as `"UPS"` or `"Fedex"`.
     #[prost(string, optional, tag = "1")]
@@ -6784,7 +6791,7 @@ pub struct WarehouseBasedDeliveryTime {
     #[prost(string, optional, tag = "2")]
     pub carrier_service: ::core::option::Option<::prost::alloc::string::String>,
     /// Required. Warehouse name. This should match
-    /// [warehouse][ShippingSetting.warehouses.name]
+    /// \[warehouse\]\[ShippingSetting.warehouses.name\]
     #[prost(string, optional, tag = "3")]
     pub warehouse: ::core::option::Option<::prost::alloc::string::String>,
 }
@@ -6850,7 +6857,7 @@ pub struct Table {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransitTable {
     /// Required. A list of region names
-    /// [Region.name][google.shopping.merchant.accounts.v1beta.Region.name] . The
+    /// \[Region.name\]\[google.shopping.merchant.accounts.v1beta.Region.name\] . The
     /// last value can be
     /// `"all other locations"`. Example:
     /// `\["zone 1", "zone 2", "all other locations"\]`. The referred
@@ -6888,7 +6895,7 @@ pub mod transit_table {
     /// Nested message and enum types in `TransitTimeRow`.
     pub mod transit_time_row {
         /// Transit time range (min-max) in business days.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct TransitTimeValue {
             /// Minimum transit time range in business days. 0 means same
             /// day delivery, 1 means next day delivery.
@@ -6920,7 +6927,7 @@ pub mod minimum_order_value_table {
     /// 'MOV for all other stores'.
     /// Each store code can only appear once across all the sets.
     /// All prices within a service must have the same currency.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct StoreCodeSetWithMov {
         /// Optional. A list of unique store codes or empty for the catch all.
         #[prost(string, repeated, tag = "1")]
@@ -6938,20 +6945,16 @@ pub mod minimum_order_value_table {
 pub struct Headers {
     /// Required. A list of inclusive order price upper bounds. The last price's
     /// value can be infinity by setting price amount_micros = -1. For example
-    /// `[{"amount_micros": 10000000, "currency_code": "USD"},
-    /// {"amount_micros": 500000000, "currency_code": "USD"},
-    /// {"amount_micros": -1, "currency_code": "USD"}]` represents the headers
-    /// "<= $10", "<= $500", and "> $500". All prices within a service must have
+    /// `\[{"amount_micros": 10000000, "currency_code": "USD"},  {"amount_micros": 500000000, "currency_code": "USD"},  {"amount_micros": -1, "currency_code": "USD"}\]` represents the headers
+    /// "\<= $10", "\<= $500", and "> $500". All prices within a service must have
     /// the same currency. Must be non-empty. Must be positive except -1. Can only
     /// be set if all other fields are not set.
     #[prost(message, repeated, tag = "1")]
     pub prices: ::prost::alloc::vec::Vec<super::super::super::r#type::Price>,
     /// Required. A list of inclusive order weight upper bounds. The last weight's
     /// value can be infinity by setting price amount_micros = -1. For example
-    /// `[{"amount_micros": 10000000, "unit": "kg"}, {"amount_micros": 50000000,
-    /// "unit": "kg"},
-    /// {"amount_micros": -1, "unit": "kg"}]` represents the headers
-    /// "<= 10kg", "<= 50kg", and "> 50kg". All weights within a service must have
+    /// `\[{"amount_micros": 10000000, "unit": "kg"}, {"amount_micros": 50000000,  "unit": "kg"},  {"amount_micros": -1, "unit": "kg"}\]` represents the headers
+    /// "\<= 10kg", "\<= 50kg", and "> 50kg". All weights within a service must have
     /// the same unit. Must be non-empty. Must be positive except -1. Can only be
     /// set if all other fields are not set.
     #[prost(message, repeated, tag = "2")]
@@ -6960,7 +6963,7 @@ pub struct Headers {
     /// can be
     /// `"infinity"`. For example
     /// `\["10", "50", "infinity"\]` represents the headers
-    /// "<= 10 items", "<= 50 items", and "> 50 items". Must be non-empty. Can
+    /// "\<= 10 items", "\<= 50 items", and "> 50 items". Must be non-empty. Can
     /// only be set if all other fields are not set.
     #[prost(string, repeated, tag = "3")]
     pub number_of_items: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -6980,7 +6983,7 @@ pub struct Headers {
 }
 /// A list of location ID sets. Must be non-empty. Can only be set if all
 /// other fields are not set.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LocationIdSet {
     /// Required. A non-empty list of
     /// [location
@@ -7003,7 +7006,7 @@ pub struct Row {
 /// Exactly one of `no_shipping`, `flat_rate`,
 /// `price_percentage`, `carrier_rateName`,
 /// `subtable_name` must be set.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Value {
     /// If true, then the product can't be shipped. Must be true when set, can only
     /// be set if all other fields are not set.
@@ -7028,7 +7031,7 @@ pub struct Value {
 }
 /// A list of carrier rates that can be referred to by
 /// `main_table` or `single_value`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CarrierRate {
     /// Required. Name of the carrier rate. Must be unique per rate group.
     #[prost(string, optional, tag = "1")]
@@ -7055,7 +7058,7 @@ pub struct CarrierRate {
     pub flat_adjustment: ::core::option::Option<super::super::super::r#type::Price>,
 }
 /// Request message for the `GetShippingSetting` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetShippingSettingsRequest {
     /// Required. The name of the shipping setting to retrieve.
     /// Format: `accounts/{account}/shippingsetting`
@@ -7184,7 +7187,7 @@ pub mod shipping_settings_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.ShippingSettingsService/GetShippingSettings",
             );
@@ -7215,7 +7218,7 @@ pub mod shipping_settings_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.ShippingSettingsService/InsertShippingSettings",
             );
@@ -7261,7 +7264,7 @@ impl TermsOfServiceKind {
     }
 }
 /// A `TermsOfService`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TermsOfService {
     /// Identifier. The resource name of the terms of service version.
     /// Format: `termsOfService/{version}`
@@ -7288,7 +7291,7 @@ pub struct TermsOfService {
     pub external: bool,
 }
 /// Request message for the `GetTermsOfService` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTermsOfServiceRequest {
     /// Required. The resource name of the terms of service version.
     /// Format: `termsOfService/{version}`
@@ -7296,7 +7299,7 @@ pub struct GetTermsOfServiceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `RetrieveLatestTermsOfService` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RetrieveLatestTermsOfServiceRequest {
     /// Required. Region code as defined by [CLDR](<https://cldr.unicode.org/>). This
     /// is either a country when the ToS applies specifically to that country or
@@ -7308,7 +7311,7 @@ pub struct RetrieveLatestTermsOfServiceRequest {
     pub kind: i32,
 }
 /// Request message for the `AcceptTermsOfService` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AcceptTermsOfServiceRequest {
     /// Required. The resource name of the terms of service version.
     /// Format: `termsOfService/{version}`
@@ -7428,7 +7431,7 @@ pub mod terms_of_service_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.TermsOfServiceService/GetTermsOfService",
             );
@@ -7456,7 +7459,7 @@ pub mod terms_of_service_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.TermsOfServiceService/RetrieveLatestTermsOfService",
             );
@@ -7483,7 +7486,7 @@ pub mod terms_of_service_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.TermsOfServiceService/AcceptTermsOfService",
             );
@@ -7504,11 +7507,11 @@ pub mod terms_of_service_service_client {
 /// The state is as follows:
 ///
 /// * If the merchant has accepted a terms of service:
-/// [accepted](TermsOfServiceAggrementState.accepted) will be populated,
-/// otherwise it will be empty
+///   [accepted](TermsOfServiceAggrementState.accepted) will be populated,
+///   otherwise it will be empty
 /// * If the merchant must sign a terms of service:
-/// [required](TermsOfServiceAggrementState.required) will be populated,
-/// otherwise it will be empty.
+///   [required](TermsOfServiceAggrementState.required) will be populated,
+///   otherwise it will be empty.
 ///
 /// Note that both [required](TermsOfServiceAggrementState.required) and
 /// [accepted](TermsOfServiceAggrementState.accepted) can be present. In this
@@ -7521,7 +7524,7 @@ pub mod terms_of_service_service_client {
 /// [tos_file_uri](Accepted.tos_file_uri). The actual acceptance of the terms of
 /// service is done by calling accept on the [TermsOfService](TermsOfService)
 /// resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TermsOfServiceAgreementState {
     /// Identifier. The resource name of the terms of service version.
     /// Format: `accounts/{account}/termsOfServiceAgreementState/{identifier}`
@@ -7545,7 +7548,7 @@ pub struct TermsOfServiceAgreementState {
     pub required: ::core::option::Option<Required>,
 }
 /// Describes the accepted terms of service.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Accepted {
     /// The accepted
     /// [termsOfService](google.shopping.merchant.accounts.v1main.TermsOfService).
@@ -7565,7 +7568,7 @@ pub struct Accepted {
     pub valid_until: ::core::option::Option<super::super::super::super::r#type::Date>,
 }
 /// Describes the terms of service which are required to be accepted.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Required {
     /// The
     /// [termsOfService](google.shopping.merchant.accounts.v1main.TermsOfService)
@@ -7579,7 +7582,7 @@ pub struct Required {
     pub tos_file_uri: ::prost::alloc::string::String,
 }
 /// Request message for the `GetTermsOfServiceAgreementState` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTermsOfServiceAgreementStateRequest {
     /// Required. The resource name of the terms of service version.
     /// Format: `accounts/{account}/termsOfServiceAgreementState/{identifier}`
@@ -7589,7 +7592,7 @@ pub struct GetTermsOfServiceAgreementStateRequest {
 }
 /// Request message for the `RetrieveForApplicationTermsOfServiceAgreementState`
 /// method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RetrieveForApplicationTermsOfServiceAgreementStateRequest {
     /// Required. The account for which to get a TermsOfServiceAgreementState
     /// Format: `accounts/{account}`
@@ -7708,7 +7711,7 @@ pub mod terms_of_service_agreement_state_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.TermsOfServiceAgreementStateService/GetTermsOfServiceAgreementState",
             );
@@ -7740,7 +7743,7 @@ pub mod terms_of_service_agreement_state_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.accounts.v1beta.TermsOfServiceAgreementStateService/RetrieveForApplicationTermsOfServiceAgreementState",
             );

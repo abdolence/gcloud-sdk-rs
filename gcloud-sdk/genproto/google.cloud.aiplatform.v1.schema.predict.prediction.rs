@@ -39,7 +39,7 @@ pub struct ImageObjectDetectionPredictionResult {
     pub bboxes: ::prost::alloc::vec::Vec<::prost_types::ListValue>,
 }
 /// Prediction output format for Image Segmentation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImageSegmentationPredictionResult {
     /// A PNG image where each pixel in the mask represents the category in which
     /// the pixel in the original image was predicted to belong to. The size of
@@ -110,7 +110,7 @@ pub struct TextExtractionPredictionResult {
     pub confidences: ::prost::alloc::vec::Vec<f32>,
 }
 /// Prediction output format for Text Sentiment
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TextSentimentPredictionResult {
     /// The integer sentiment labels between 0 (inclusive) and sentimentMax label
     /// (inclusive), while 0 maps to the least positive sentiment and
@@ -157,9 +157,10 @@ pub struct VideoClassificationPredictionResult {
     pub display_name: ::prost::alloc::string::String,
     /// The type of the prediction. The requested types can be configured
     /// via parameters. This will be one of
-    /// - segment-classification
-    /// - shot-classification
-    /// - one-sec-interval-classification
+    ///
+    /// * segment-classification
+    /// * shot-classification
+    /// * one-sec-interval-classification
     #[prost(string, tag = "3")]
     pub r#type: ::prost::alloc::string::String,
     /// The beginning, inclusive, of the video's time segment in which the

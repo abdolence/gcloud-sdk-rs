@@ -48,11 +48,11 @@ pub struct Address {
     /// but could not be confirmed to be correct. This field is provided for the
     /// sake of convenience: its contents are equivalent to iterating through the
     /// `address_components` to find the types of all the components where the
-    /// [confirmation_level][google.maps.addressvalidation.v1.AddressComponent.confirmation_level]
+    /// \[confirmation_level\]\[google.maps.addressvalidation.v1.AddressComponent.confirmation_level\]
     /// is not
-    /// [CONFIRMED][google.maps.addressvalidation.v1.AddressComponent.ConfirmationLevel.CONFIRMED]
+    /// \[CONFIRMED\]\[google.maps.addressvalidation.v1.AddressComponent.ConfirmationLevel.CONFIRMED\]
     /// or the
-    /// [inferred][google.maps.addressvalidation.v1.AddressComponent.inferred]
+    /// \[inferred\]\[google.maps.addressvalidation.v1.AddressComponent.inferred\]
     /// flag is not set to `true`. The list of possible types can be found
     /// [here](<https://developers.google.com/maps/documentation/geocoding/requests-geocoding#Types>).
     #[prost(string, repeated, tag = "6")]
@@ -62,13 +62,12 @@ pub struct Address {
     /// Any tokens in the input that could not be resolved. This might be an
     /// input that was not recognized as a valid part of an address. For example,
     /// for an input such as "Parcel 0000123123 & 0000456456 Str # Guthrie Center
-    /// IA 50115 US", the unresolved tokens might look like `["Parcel",
-    /// "0000123123", "&", "0000456456"]`.
+    /// IA 50115 US", the unresolved tokens might look like `\["Parcel",  "0000123123", "&", "0000456456"\]`.
     #[prost(string, repeated, tag = "7")]
     pub unresolved_tokens: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Represents an address component, such as a street, city, or state.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddressComponent {
     /// The name for this component.
     #[prost(message, optional, tag = "1")]
@@ -162,7 +161,7 @@ pub mod address_component {
     }
 }
 /// A wrapper for the name of the component.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ComponentName {
     /// The name text. For example, "5th Avenue" for a street name or "1253" for a
     /// street number.
@@ -214,7 +213,7 @@ pub struct Geocode {
 /// Plus code (<http://plus.codes>) is a location reference with two formats:
 /// global code defining a 14mx14m (1/8000th of a degree) or smaller rectangle,
 /// and compound code, replacing the prefix with a reference location.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PlusCode {
     /// Place's global (full) code, such as "9FWM33GV+HQ", representing an
     /// 1/8000 by 1/8000 degree area (~14 by 14 meters).
@@ -228,7 +227,7 @@ pub struct PlusCode {
 }
 /// The metadata for the post-processed address. `metadata` is not guaranteed to
 /// be fully populated for every address sent to the Address Validation API.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddressMetadata {
     /// Indicates that this is the address of a business.
     /// If unset, indicates that the value is unknown.
@@ -244,7 +243,7 @@ pub struct AddressMetadata {
     pub residential: ::core::option::Option<bool>,
 }
 /// USPS representation of a US address.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UspsAddress {
     /// First address line.
     #[prost(string, tag = "1")]
@@ -278,7 +277,7 @@ pub struct UspsAddress {
 /// populated for every US or PR address sent to the Address Validation API. It's
 /// recommended to integrate the backup address fields in the response if you
 /// utilize uspsData as the primary part of the response.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UspsData {
     /// USPS standardized address.
     #[prost(message, optional, tag = "1")]
@@ -296,14 +295,14 @@ pub struct UspsData {
     /// returns no value.
     ///
     /// * `N`: Primary and any secondary number information failed to
-    /// DPV confirm.
+    ///   DPV confirm.
     /// * `D`: Address was DPV confirmed for the primary number only, and the
-    /// secondary number information was missing.
+    ///   secondary number information was missing.
     /// * `S`: Address was DPV confirmed for the primary number only, and the
-    /// secondary number information was present but not confirmed.
+    ///   secondary number information was present but not confirmed.
     /// * `Y`: Address was DPV confirmed for primary and any secondary numbers.
     /// * Empty: If the response does not contain a `dpv_confirmation` value, the
-    /// address was not submitted for DPV confirmation.
+    ///   address was not submitted for DPV confirmation.
     #[prost(string, tag = "4")]
     pub dpv_confirmation: ::prost::alloc::string::String,
     /// The footnotes from delivery point validation.
@@ -355,16 +354,16 @@ pub struct UspsData {
     /// Indicates the NoStat type. Returns a reason code as int.
     ///
     /// * `1`: IDA (Internal Drop Address) – Addresses that do not receive mail
-    /// directly from the USPS but are delivered to a drop address that services
-    /// them.
+    ///   directly from the USPS but are delivered to a drop address that services
+    ///   them.
     /// * `2`: CDS - Addresses that have not yet become deliverable. For example, a
-    /// new subdivision where lots and primary numbers have been determined, but no
-    /// structure exists yet for occupancy.
+    ///   new subdivision where lots and primary numbers have been determined, but no
+    ///   structure exists yet for occupancy.
     /// * `3`: Collision - Addresses that do not actually DPV confirm.
     /// * `4`: CMZ (College, Military and Other Types) - ZIP + 4 records USPS has
-    /// incorporated into the data.
+    ///   incorporated into the data.
     /// * `5`: Regular - Indicates addresses not receiving delivery and the
-    /// addresses are not counted as possible deliveries.
+    ///   addresses are not counted as possible deliveries.
     /// * `6`: Secondary Required - The address requires secondary information.
     #[prost(int32, tag = "29")]
     pub dpv_no_stat_reason_code: i32,
@@ -387,7 +386,7 @@ pub struct UspsData {
     ///
     /// * `Y`: The mail delivery is not performed every day of the week.
     /// * `N`: No indication the mail delivery is not performed every day of the
-    /// week.
+    ///   week.
     #[prost(string, tag = "32")]
     pub dpv_non_delivery_days: ::prost::alloc::string::String,
     /// Integer identifying non-delivery days. It can be interrogated using bit
@@ -428,15 +427,15 @@ pub struct UspsData {
     ///
     /// * `Y`: Address was DPV confirmed for primary and any secondary numbers.
     /// * `N`: Primary and any secondary number information failed to
-    /// DPV confirm.
+    ///   DPV confirm.
     /// * `S`: Address was DPV confirmed for the primary number only, and the
-    /// secondary number information was present but not confirmed,  or a single
-    /// trailing alpha on a primary number was dropped to make a DPV match and
-    /// secondary information required.
+    ///   secondary number information was present but not confirmed,  or a single
+    ///   trailing alpha on a primary number was dropped to make a DPV match and
+    ///   secondary information required.
     /// * `D`: Address was DPV confirmed for the primary number only, and the
-    /// secondary number information was missing.
+    ///   secondary number information was missing.
     /// * `R`: Address confirmed but assigned to phantom route R777 and R779 and
-    /// USPS delivery is not provided.
+    ///   USPS delivery is not provided.
     #[prost(string, tag = "37")]
     pub dpv_enhanced_delivery_code: ::prost::alloc::string::String,
     /// The carrier route code.
@@ -505,16 +504,16 @@ pub struct UspsData {
     /// Type of the address record that matches the input address.
     ///
     /// * `F`: FIRM. This is a match to a Firm Record, which is the finest level of
-    /// match available for an address.
+    ///   match available for an address.
     /// * `G`: GENERAL DELIVERY. This is a match to a General Delivery record.
     /// * `H`: BUILDING / APARTMENT. This is a match to a Building or Apartment
-    /// record.
+    ///   record.
     /// * `P`: POST OFFICE BOX. This is a match to a Post Office Box.
     /// * `R`: RURAL ROUTE or HIGHWAY CONTRACT: This is a match to either a Rural
-    /// Route or a Highway Contract record, both of which may have associated Box
-    /// Number ranges.
+    ///   Route or a Highway Contract record, both of which may have associated Box
+    ///   Number ranges.
     /// * `S`: STREET RECORD: This is a match to a Street record containing a valid
-    /// primary number range.
+    ///   primary number range.
     #[prost(string, tag = "25")]
     pub address_record_type: ::prost::alloc::string::String,
     /// Indicator that a default address was found, but more specific addresses
@@ -533,10 +532,10 @@ pub struct UspsData {
     pub cass_processed: bool,
 }
 /// The request for validating an address.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ValidateAddressRequest {
     /// Required. The address being validated. Unformatted addresses should be
-    /// submitted via [`address_lines`][google.type.PostalAddress.address_lines].
+    /// submitted via \[`address_lines`\]\[google.type.PostalAddress.address_lines\].
     ///
     /// The total length of the fields in this input must not exceed 280
     /// characters.
@@ -544,14 +543,14 @@ pub struct ValidateAddressRequest {
     /// Supported regions can be found
     /// [here](<https://developers.google.com/maps/documentation/address-validation/coverage>).
     ///
-    /// The [language_code][google.type.PostalAddress.language_code] value in the
+    /// The \[language_code\]\[google.type.PostalAddress.language_code\] value in the
     /// input address is reserved for future uses and is ignored today. The
     /// validated address result will be populated based on the preferred language
     /// for the given address, as identified by the system.
     ///
     /// The Address Validation API ignores the values in
-    /// [recipients][google.type.PostalAddress.recipients] and
-    /// [organization][google.type.PostalAddress.organization]. Any values in those
+    /// \[recipients\]\[google.type.PostalAddress.recipients\] and
+    /// \[organization\]\[google.type.PostalAddress.organization\]. Any values in those
     /// fields will be discarded and not returned. Please do not set them.
     #[prost(message, optional, tag = "1")]
     pub address: ::core::option::Option<super::super::super::r#type::PostalAddress>,
@@ -560,11 +559,11 @@ pub struct ValidateAddressRequest {
     /// example if the changes the user makes after the initial validation need to
     /// be re-validated), then each followup request must populate this field with
     /// the
-    /// [response_id][google.maps.addressvalidation.v1.ValidateAddressResponse.response_id]
+    /// \[response_id\]\[google.maps.addressvalidation.v1.ValidateAddressResponse.response_id\]
     /// from the very first response in the validation sequence.
     #[prost(string, tag = "2")]
     pub previous_response_id: ::prost::alloc::string::String,
-    /// Enables USPS CASS compatible mode. This affects _only_ the
+    /// Enables USPS CASS compatible mode. This affects *only* the
     /// \[google.maps.addressvalidation.v1.ValidationResult.usps_data\] field of
     /// \[google.maps.addressvalidation.v1.ValidationResult\]. Note: for USPS CASS
     /// enabled requests for addresses in Puerto Rico, a
@@ -613,7 +612,7 @@ pub struct ValidateAddressResponse {
     pub response_id: ::prost::alloc::string::String,
 }
 /// The request for sending validation feedback.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProvideValidationFeedbackRequest {
     /// Required. The outcome of the sequence of validation attempts.
     ///
@@ -626,7 +625,7 @@ pub struct ProvideValidationFeedbackRequest {
     pub conclusion: i32,
     /// Required. The ID of the response that this feedback is for. This should be
     /// the
-    /// [response_id][google.maps.addressvalidation.v1.ValidateAddressRequest.response_id]
+    /// \[response_id\]\[google.maps.addressvalidation.v1.ValidateAddressRequest.response_id\]
     /// from the first response in a series of address validation attempts.
     #[prost(string, tag = "2")]
     pub response_id: ::prost::alloc::string::String,
@@ -695,7 +694,7 @@ pub mod provide_validation_feedback_request {
 /// The response for validation feedback.
 ///
 /// The response is empty if the feedback is sent successfully.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProvideValidationFeedbackResponse {}
 /// The result of validating an address.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -719,7 +718,7 @@ pub struct ValidationResult {
     pub usps_data: ::core::option::Option<UspsData>,
 }
 /// High level overview of the address validation result and geocode.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Verdict {
     /// The granularity of the **input** address. This is the result of parsing the
     /// input address and does not give any validation signals. For validation
@@ -742,7 +741,7 @@ pub struct Verdict {
     #[prost(enumeration = "verdict::Granularity", tag = "2")]
     pub validation_granularity: i32,
     /// Information about the granularity of the
-    /// [`geocode`][google.maps.addressvalidation.v1.ValidationResult.geocode].
+    /// \[`geocode`\]\[google.maps.addressvalidation.v1.ValidationResult.geocode\].
     /// This can be understood as the semantic meaning of how coarse or fine the
     /// geocoded location is.
     ///
@@ -756,10 +755,10 @@ pub struct Verdict {
     /// The post-processed address is considered complete if there are no
     /// unresolved tokens, no unexpected or missing address components. If unset,
     /// indicates that the value is `false`. See
-    /// [`missing_component_types`][google.maps.addressvalidation.v1.Address.missing_component_types],
-    /// [`unresolved_tokens`][google.maps.addressvalidation.v1.Address.unresolved_tokens]
+    /// \[`missing_component_types`\]\[google.maps.addressvalidation.v1.Address.missing_component_types\],
+    /// \[`unresolved_tokens`\]\[google.maps.addressvalidation.v1.Address.unresolved_tokens\]
     /// or
-    /// [`unexpected`][google.maps.addressvalidation.v1.AddressComponent.unexpected]
+    /// \[`unexpected`\]\[google.maps.addressvalidation.v1.AddressComponent.unexpected\]
     /// fields for more details.
     #[prost(bool, tag = "4")]
     pub address_complete: bool,
@@ -965,7 +964,7 @@ pub mod address_validation_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.addressvalidation.v1.AddressValidation/ValidateAddress",
             );
@@ -999,7 +998,7 @@ pub mod address_validation_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.addressvalidation.v1.AddressValidation/ProvideValidationFeedback",
             );

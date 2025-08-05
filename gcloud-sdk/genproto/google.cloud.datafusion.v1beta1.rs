@@ -5,7 +5,7 @@
 /// these configurations allows several benefits, such as reduced network latency
 /// while accessing the customer resources from managed Data Fusion instance
 /// nodes, as well as access to the customer on-prem resources.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkConfig {
     /// Name of the network in the customer project with which the Tenant Project
     /// will be peered for executing pipelines. In case of shared VPC where the
@@ -20,7 +20,7 @@ pub struct NetworkConfig {
     pub ip_allocation: ::prost::alloc::string::String,
 }
 /// The Data Fusion version.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Version {
     /// The version number of the Data Fusion instance, such as '6.0.1.0'.
     #[prost(string, tag = "1")]
@@ -82,7 +82,7 @@ pub mod version {
     }
 }
 /// Identifies Data Fusion accelerators for an instance.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Accelerator {
     /// The type of an accelator for a CDF instance.
     #[prost(enumeration = "accelerator::AcceleratorType", tag = "1")]
@@ -138,7 +138,7 @@ pub mod accelerator {
 }
 /// The crypto key configuration. This field is used by the Customer-managed
 /// encryption keys (CMEK) feature.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CryptoKeyConfig {
     /// The name of the key which is used to encrypt/decrypt customer data. For key
     /// in Cloud KMS, the key should be in the format of
@@ -435,7 +435,7 @@ pub mod instance {
     }
 }
 /// Request message for listing Data Fusion instances.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInstancesRequest {
     /// Required. The project and location for which to retrieve instance information
     /// in the format projects/{project}/locations/{location}. If the location is
@@ -472,7 +472,7 @@ pub struct ListInstancesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for the list available versions request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAvailableVersionsRequest {
     /// Required. The project and location for which to retrieve instance information
     /// in the format projects/{project}/locations/{location}.
@@ -503,7 +503,7 @@ pub struct ListAvailableVersionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for getting details about a Data Fusion instance.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInstanceRequest {
     /// Required. The instance resource name in the format
     /// projects/{project}/locations/{location}/instances/{instance}.
@@ -525,7 +525,7 @@ pub struct CreateInstanceRequest {
     pub instance: ::core::option::Option<Instance>,
 }
 /// Request message for deleting a Data Fusion instance.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteInstanceRequest {
     /// Required. The instance resource name in the format
     /// projects/{project}/locations/{location}/instances/{instance}
@@ -552,7 +552,7 @@ pub struct UpdateInstanceRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for restarting a Data Fusion instance.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RestartInstanceRequest {
     /// Required. Name of the Data Fusion instance which need to be restarted in the form of
     /// projects/{project}/locations/{location}/instances/{instance}
@@ -561,7 +561,7 @@ pub struct RestartInstanceRequest {
 }
 /// Request message for upgrading a Data Fusion instance.
 /// To change the instance properties, instance update should be used.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpgradeInstanceRequest {
     /// Required. Name of the Data Fusion instance which need to be upgraded in the form of
     /// projects/{project}/locations/{location}/instances/{instance}
@@ -571,7 +571,7 @@ pub struct UpgradeInstanceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Represents the metadata of a long-running operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -590,7 +590,7 @@ pub struct OperationMetadata {
     pub status_detail: ::prost::alloc::string::String,
     /// Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// have \[Operation.error\]\[\] value with a \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -599,17 +599,17 @@ pub struct OperationMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// Request message for RemoveIamPolicy method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveIamPolicyRequest {
     /// Required. The resource on which IAM policy to be removed is attached to.
     #[prost(string, tag = "1")]
     pub resource: ::prost::alloc::string::String,
 }
 /// Response message for RemoveIamPolicy method.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveIamPolicyResponse {}
 /// List namespaces request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNamespacesRequest {
     /// Required. The instance to list its namespaces.
     #[prost(string, tag = "1")]
@@ -663,7 +663,7 @@ pub struct ListNamespacesResponse {
 }
 /// DNS peering configuration. These configurations are used to create
 /// DNS peering with the customer Cloud DNS.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DnsPeering {
     /// Required. Name of the zone.
     #[prost(string, tag = "1")]
@@ -682,7 +682,7 @@ pub struct DnsPeering {
     pub target_network: ::prost::alloc::string::String,
 }
 /// Request message to create dns peering.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddDnsPeeringRequest {
     /// Required. The resource on which DNS peering will be created.
     #[prost(string, tag = "1")]
@@ -692,10 +692,10 @@ pub struct AddDnsPeeringRequest {
     pub dns_peering: ::core::option::Option<DnsPeering>,
 }
 /// Response message for set dns peering method.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddDnsPeeringResponse {}
 /// Request message to remove dns peering.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveDnsPeeringRequest {
     /// Required. The resource on which DNS peering will be removed.
     #[prost(string, tag = "1")]
@@ -705,10 +705,10 @@ pub struct RemoveDnsPeeringRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// Response message for set dns peering method.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveDnsPeeringResponse {}
 /// List dns peering request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDnsPeeringsRequest {
     /// Required. The resource on which dns peering will be listed.
     #[prost(string, tag = "1")]
@@ -876,7 +876,7 @@ pub mod data_fusion_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datafusion.v1beta1.DataFusion/ListAvailableVersions",
             );
@@ -906,7 +906,7 @@ pub mod data_fusion_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datafusion.v1beta1.DataFusion/ListInstances",
             );
@@ -933,7 +933,7 @@ pub mod data_fusion_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datafusion.v1beta1.DataFusion/GetInstance",
             );
@@ -963,7 +963,7 @@ pub mod data_fusion_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datafusion.v1beta1.DataFusion/CreateInstance",
             );
@@ -993,7 +993,7 @@ pub mod data_fusion_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datafusion.v1beta1.DataFusion/DeleteInstance",
             );
@@ -1023,7 +1023,7 @@ pub mod data_fusion_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datafusion.v1beta1.DataFusion/UpdateInstance",
             );
@@ -1054,7 +1054,7 @@ pub mod data_fusion_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datafusion.v1beta1.DataFusion/RestartInstance",
             );
@@ -1085,7 +1085,7 @@ pub mod data_fusion_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datafusion.v1beta1.DataFusion/UpgradeInstance",
             );
@@ -1115,7 +1115,7 @@ pub mod data_fusion_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datafusion.v1beta1.DataFusion/RemoveIamPolicy",
             );
@@ -1145,7 +1145,7 @@ pub mod data_fusion_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datafusion.v1beta1.DataFusion/ListNamespaces",
             );
@@ -1175,7 +1175,7 @@ pub mod data_fusion_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datafusion.v1beta1.DataFusion/AddDnsPeering",
             );
@@ -1205,7 +1205,7 @@ pub mod data_fusion_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datafusion.v1beta1.DataFusion/RemoveDnsPeering",
             );
@@ -1235,7 +1235,7 @@ pub mod data_fusion_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datafusion.v1beta1.DataFusion/ListDnsPeerings",
             );

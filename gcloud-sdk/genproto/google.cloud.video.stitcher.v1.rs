@@ -70,7 +70,7 @@ pub struct ResponseMetadata {
 /// Configuration for a CDN key. Used by the Video Stitcher
 /// to sign URIs for fetching video manifests and signing
 /// media segments for playback.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CdnKey {
     /// The resource name of the CDN key, in the form of
     /// `projects/{project}/locations/{location}/cdnKeys/{id}`.
@@ -87,7 +87,7 @@ pub struct CdnKey {
 /// Nested message and enum types in `CdnKey`.
 pub mod cdn_key {
     /// Configuration associated with the CDN key.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum CdnKeyConfig {
         /// The configuration for a Google Cloud CDN key.
         #[prost(message, tag = "5")]
@@ -101,7 +101,7 @@ pub mod cdn_key {
     }
 }
 /// Configuration for a Google Cloud CDN key.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GoogleCdnKey {
     /// Input only. Secret for this Google Cloud CDN key.
     #[prost(bytes = "vec", tag = "1")]
@@ -111,14 +111,14 @@ pub struct GoogleCdnKey {
     pub key_name: ::prost::alloc::string::String,
 }
 /// Configuration for an Akamai CDN key.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AkamaiCdnKey {
     /// Input only. Token key for the Akamai CDN edge configuration.
     #[prost(bytes = "vec", tag = "1")]
     pub token_key: ::prost::alloc::vec::Vec<u8>,
 }
 /// Configuration for a Media CDN key.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MediaCdnKey {
     /// Input only. 64-byte ed25519 private key for this Media CDN key.
     #[prost(bytes = "vec", tag = "1")]
@@ -134,7 +134,7 @@ pub struct MediaCdnKey {
 /// Nested message and enum types in `MediaCdnKey`.
 pub mod media_cdn_key {
     /// Configuration for a Media CDN token.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TokenConfig {
         /// Optional. The query parameter in which to find the token.
         ///
@@ -149,7 +149,7 @@ pub mod media_cdn_key {
     }
 }
 /// Describes an event and a trigger URI.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Event {
     /// Describes the event that occurred.
     #[prost(enumeration = "event::EventType", tag = "1")]
@@ -412,7 +412,7 @@ pub struct Companion {
 /// Nested message and enum types in `Companion`.
 pub mod companion {
     /// Ad resource associated with the companion ad.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum AdResource {
         /// The IFrame ad resource associated with the companion ad.
         #[prost(message, tag = "10")]
@@ -426,21 +426,21 @@ pub mod companion {
     }
 }
 /// Metadata for an HTML ad resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HtmlAdResource {
     /// The HTML to display for the ad resource.
     #[prost(string, tag = "1")]
     pub html_source: ::prost::alloc::string::String,
 }
 /// Metadata for an IFrame ad resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IframeAdResource {
     /// URI source for an IFrame to display for the ad resource.
     #[prost(string, tag = "1")]
     pub uri: ::prost::alloc::string::String,
 }
 /// Metadata for a static ad resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StaticAdResource {
     /// URI to the static file for the ad resource.
     #[prost(string, tag = "1")]
@@ -598,7 +598,7 @@ pub mod live_config {
     }
 }
 /// The configuration for prefetch ads.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PrefetchConfig {
     /// Required. Indicates whether the option to prefetch ad requests is enabled.
     #[prost(bool, tag = "1")]
@@ -613,7 +613,7 @@ pub struct PrefetchConfig {
     pub initial_ad_request_duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Metadata used to register a live stream with Google Ad Manager (GAM)
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GamLiveConfig {
     /// Required. Ad Manager network code to associate with the live config.
     #[prost(string, tag = "1")]
@@ -674,12 +674,12 @@ pub struct VodSession {
     #[prost(string, tag = "4")]
     pub play_uri: ::prost::alloc::string::String,
     /// URI of the media to stitch. For most use cases, you should create a
-    /// [VodConfig][google.cloud.video.stitcher.v1.VodConfig] with this information
+    /// \[VodConfig\]\[google.cloud.video.stitcher.v1.VodConfig\] with this information
     /// rather than setting this field directly.
     #[prost(string, tag = "5")]
     pub source_uri: ::prost::alloc::string::String,
     /// Ad tag URI. For most use cases, you should create a
-    /// [VodConfig][google.cloud.video.stitcher.v1.VodConfig] with this information
+    /// \[VodConfig\]\[google.cloud.video.stitcher.v1.VodConfig\] with this information
     /// rather than setting this field directly.
     #[prost(string, tag = "6")]
     pub ad_tag_uri: ::prost::alloc::string::String,
@@ -690,12 +690,12 @@ pub struct VodSession {
     ///
     /// Macros are designated by square brackets, for example:
     ///
-    ///    Ad tag URI: `"<https://doubleclick.google.com/ad/1?geo_id=\[geoId\]"`>
+    /// Ad tag URI: `"<https://doubleclick.google.com/ad/1?geo_id=\[geoId\]"`>
     ///
-    ///    Ad tag macro map: `{"geoId": "123"}`
+    /// Ad tag macro map: `{"geoId": "123"}`
     ///
-    ///    Fully qualified ad tag:
-    ///    `"<https://doubleclick.google.com/ad/1?geo_id=123"`>
+    /// Fully qualified ad tag:
+    /// `"<https://doubleclick.google.com/ad/1?geo_id=123"`>
     #[prost(map = "string, string", tag = "7")]
     pub ad_tag_macro_map: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -723,7 +723,7 @@ pub struct VodSession {
 pub mod vod_session {
     /// Defines fields related to Google Ad Manager (GAM). This should be set if
     /// GAM is being used for ads.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct GamSettings {
         /// Required. Ad Manager network code.
         #[prost(string, tag = "1")]
@@ -761,7 +761,7 @@ pub struct VodSessionAd {
     pub activity_events: ::prost::alloc::vec::Vec<Event>,
 }
 /// Metadata for the entire stitched content in a VOD session.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VodSessionContent {
     /// The total duration in seconds of the content including the ads stitched
     /// in.
@@ -802,12 +802,12 @@ pub struct LiveSession {
     ///
     /// Macros are designated by square brackets, for example:
     ///
-    ///    Ad tag URI: "<https://doubleclick.google.com/ad/1?geo_id=\[geoId\]">
+    /// Ad tag URI: "<https://doubleclick.google.com/ad/1?geo_id=\[geoId\]">
     ///
-    ///    Ad tag macros: `{"geoId": "123"}`
+    /// Ad tag macros: `{"geoId": "123"}`
     ///
-    ///    Fully qualified ad tag:
-    ///    `"<https://doubleclick.google.com/ad/1?geo_id=123"`>
+    /// Fully qualified ad tag:
+    /// `"<https://doubleclick.google.com/ad/1?geo_id=123"`>
     #[prost(map = "string, string", tag = "6")]
     pub ad_tag_macros: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -908,7 +908,7 @@ pub mod manifest_options {
     }
 }
 /// Filters for a video or muxed redition.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RenditionFilter {
     /// Bitrate in bits per second for the rendition. If set, only renditions with
     /// the exact bitrate will match.
@@ -920,7 +920,7 @@ pub struct RenditionFilter {
     pub codecs: ::prost::alloc::string::String,
 }
 /// Slate object
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Slate {
     /// Output only. The name of the slate, in the form of
     /// `projects/{project_number}/locations/{location}/slates/{id}`.
@@ -938,7 +938,7 @@ pub struct Slate {
 pub mod slate {
     /// GamSlate object has Google Ad Manager (GAM) related properties for the
     /// slate.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct GamSlate {
         /// Required. Ad Manager network code to associate with the live config.
         #[prost(string, tag = "1")]
@@ -1057,14 +1057,14 @@ pub mod vod_config {
     }
 }
 /// Metadata used for GAM ad decisioning.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GamVodConfig {
     /// Required. Ad Manager network code to associate with the VOD config.
     #[prost(string, tag = "1")]
     pub network_code: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.createCdnKey.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateCdnKeyRequest {
     /// Required. The project in which the CDN key should be created, in the form
     /// of `projects/{project_number}/locations/{location}`.
@@ -1083,7 +1083,7 @@ pub struct CreateCdnKeyRequest {
     pub cdn_key_id: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.listCdnKeys.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCdnKeysRequest {
     /// Required. The project that contains the list of CDN keys, in the form of
     /// `projects/{project_number}/locations/{location}`.
@@ -1117,7 +1117,7 @@ pub struct ListCdnKeysResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for VideoStitcherService.getCdnKey.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCdnKeyRequest {
     /// Required. The name of the CDN key to be retrieved, in the form of
     /// `projects/{project}/locations/{location}/cdnKeys/{id}`.
@@ -1125,7 +1125,7 @@ pub struct GetCdnKeyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.deleteCdnKey.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteCdnKeyRequest {
     /// Required. The name of the CDN key to be deleted, in the form of
     /// `projects/{project_number}/locations/{location}/cdnKeys/{id}`.
@@ -1133,7 +1133,7 @@ pub struct DeleteCdnKeyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.updateCdnKey.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateCdnKeyRequest {
     /// Required. The CDN key resource which replaces the resource on the server.
     #[prost(message, optional, tag = "1")]
@@ -1156,7 +1156,7 @@ pub struct CreateVodSessionRequest {
     pub vod_session: ::core::option::Option<VodSession>,
 }
 /// Request message for VideoStitcherService.getVodSession
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetVodSessionRequest {
     /// Required. The name of the VOD session to be retrieved, in the form of
     /// `projects/{project_number}/locations/{location}/vodSessions/{id}`.
@@ -1164,7 +1164,7 @@ pub struct GetVodSessionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.listVodStitchDetails.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListVodStitchDetailsRequest {
     /// Required. The VOD session where the stitch details belong to, in the form
     /// of `projects/{project}/locations/{location}/vodSessions/{id}`.
@@ -1188,7 +1188,7 @@ pub struct ListVodStitchDetailsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.getVodStitchDetail.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetVodStitchDetailRequest {
     /// Required. The name of the stitch detail in the specified VOD session, in
     /// the form of
@@ -1197,7 +1197,7 @@ pub struct GetVodStitchDetailRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.listVodAdTagDetails.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListVodAdTagDetailsRequest {
     /// Required. The VOD session which the ad tag details belong to, in the form
     /// of `projects/{project}/locations/{location}/vodSessions/{vod_session_id}`.
@@ -1221,7 +1221,7 @@ pub struct ListVodAdTagDetailsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.getVodAdTagDetail
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetVodAdTagDetailRequest {
     /// Required. The name of the ad tag detail for the specified VOD session, in
     /// the form of
@@ -1230,7 +1230,7 @@ pub struct GetVodAdTagDetailRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.listLiveAdTagDetails.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListLiveAdTagDetailsRequest {
     /// Required. The resource parent in the form of
     /// `projects/{project}/locations/{location}/liveSessions/{live_session}`.
@@ -1254,7 +1254,7 @@ pub struct ListLiveAdTagDetailsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.getLiveAdTagDetail
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetLiveAdTagDetailRequest {
     /// Required. The resource name in the form of
     /// `projects/{project}/locations/{location}/liveSessions/{live_session}/liveAdTagDetails/{live_ad_tag_detail}`.
@@ -1262,7 +1262,7 @@ pub struct GetLiveAdTagDetailRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.createSlate.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateSlateRequest {
     /// Required. The project in which the slate should be created, in the form of
     /// `projects/{project_number}/locations/{location}`.
@@ -1294,7 +1294,7 @@ pub struct CreateSlateRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.getSlate.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSlateRequest {
     /// Required. The name of the slate to be retrieved, of the slate, in the form
     /// of `projects/{project_number}/locations/{location}/slates/{id}`.
@@ -1302,7 +1302,7 @@ pub struct GetSlateRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.listSlates.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSlatesRequest {
     /// Required. The project to list slates, in the form of
     /// `projects/{project_number}/locations/{location}`.
@@ -1336,7 +1336,7 @@ pub struct ListSlatesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for VideoStitcherService.updateSlate.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateSlateRequest {
     /// Required. The resource with updated fields.
     #[prost(message, optional, tag = "1")]
@@ -1346,7 +1346,7 @@ pub struct UpdateSlateRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for VideoStitcherService.deleteSlate.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSlateRequest {
     /// Required. The name of the slate to be deleted, in the form of
     /// `projects/{project_number}/locations/{location}/slates/{id}`.
@@ -1365,7 +1365,7 @@ pub struct CreateLiveSessionRequest {
     pub live_session: ::core::option::Option<LiveSession>,
 }
 /// Request message for VideoStitcherService.getSession.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetLiveSessionRequest {
     /// Required. The name of the live session, in the form of
     /// `projects/{project_number}/locations/{location}/liveSessions/{id}`.
@@ -1402,7 +1402,7 @@ pub struct CreateLiveConfigRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.listLiveConfig.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListLiveConfigsRequest {
     /// Required. The project that contains the list of live configs, in the
     /// form of `projects/{project_number}/locations/{location}`.
@@ -1438,7 +1438,7 @@ pub struct ListLiveConfigsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for VideoStitcherService.getLiveConfig.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetLiveConfigRequest {
     /// Required. The name of the live config to be retrieved, in the form
     /// of
@@ -1447,7 +1447,7 @@ pub struct GetLiveConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.deleteLiveConfig.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteLiveConfigRequest {
     /// Required. The name of the live config to be deleted, in the form of
     /// `projects/{project_number}/locations/{location}/liveConfigs/{id}`.
@@ -1497,7 +1497,7 @@ pub struct CreateVodConfigRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.listVodConfig.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListVodConfigsRequest {
     /// Required. The project that contains the list of VOD configs, in the
     /// form of `projects/{project_number}/locations/{location}`.
@@ -1534,7 +1534,7 @@ pub struct ListVodConfigsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for VideoStitcherService.getVodConfig.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetVodConfigRequest {
     /// Required. The name of the VOD config to be retrieved, in the form
     /// of `projects/{project_number}/locations/{location}/vodConfigs/{id}`.
@@ -1542,7 +1542,7 @@ pub struct GetVodConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.deleteVodConfig.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteVodConfigRequest {
     /// Required. The name of the VOD config to be deleted, in the form of
     /// `projects/{project_number}/locations/{location}/vodConfigs/{id}`.
@@ -1563,7 +1563,7 @@ pub struct UpdateVodConfigRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Represents the metadata of the long-running operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -1690,7 +1690,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/CreateCdnKey",
             );
@@ -1720,7 +1720,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/ListCdnKeys",
             );
@@ -1747,7 +1747,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/GetCdnKey",
             );
@@ -1777,7 +1777,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/DeleteCdnKey",
             );
@@ -1808,7 +1808,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/UpdateCdnKey",
             );
@@ -1836,7 +1836,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/CreateVodSession",
             );
@@ -1864,7 +1864,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/GetVodSession",
             );
@@ -1895,7 +1895,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/ListVodStitchDetails",
             );
@@ -1925,7 +1925,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/GetVodStitchDetail",
             );
@@ -1955,7 +1955,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/ListVodAdTagDetails",
             );
@@ -1982,7 +1982,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/GetVodAdTagDetail",
             );
@@ -2012,7 +2012,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/ListLiveAdTagDetails",
             );
@@ -2042,7 +2042,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/GetLiveAdTagDetail",
             );
@@ -2072,7 +2072,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/CreateSlate",
             );
@@ -2102,7 +2102,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/ListSlates",
             );
@@ -2129,7 +2129,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/GetSlate",
             );
@@ -2159,7 +2159,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/UpdateSlate",
             );
@@ -2189,7 +2189,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/DeleteSlate",
             );
@@ -2216,7 +2216,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/CreateLiveSession",
             );
@@ -2243,7 +2243,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/GetLiveSession",
             );
@@ -2274,7 +2274,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/CreateLiveConfig",
             );
@@ -2305,7 +2305,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/ListLiveConfigs",
             );
@@ -2333,7 +2333,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/GetLiveConfig",
             );
@@ -2363,7 +2363,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/DeleteLiveConfig",
             );
@@ -2394,7 +2394,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/UpdateLiveConfig",
             );
@@ -2425,7 +2425,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/CreateVodConfig",
             );
@@ -2456,7 +2456,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/ListVodConfigs",
             );
@@ -2484,7 +2484,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/GetVodConfig",
             );
@@ -2514,7 +2514,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/DeleteVodConfig",
             );
@@ -2545,7 +2545,7 @@ pub mod video_stitcher_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.stitcher.v1.VideoStitcherService/UpdateVodConfig",
             );

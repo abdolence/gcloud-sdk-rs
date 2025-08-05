@@ -133,7 +133,7 @@ pub struct Resource {
     pub data: ::core::option::Option<::prost_types::Struct>,
 }
 /// ListAssets request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAssetsRequest {
     /// Required. Name of the organization or project the assets belong to. Format:
     /// "organizations/\[organization-number\]" (such as "organizations/123"),
@@ -153,9 +153,9 @@ pub struct ListAssetsRequest {
     ///
     /// Regular expression is also supported. For example:
     ///
-    /// * "compute.googleapis.com.*" snapshots resources whose asset type starts
-    /// with "compute.googleapis.com".
-    /// * ".*Instance" snapshots resources whose asset type ends with "Instance".
+    /// * "compute.googleapis.com.\*" snapshots resources whose asset type starts
+    ///   with "compute.googleapis.com".
+    /// * ".\*Instance" snapshots resources whose asset type ends with "Instance".
     /// * ".*Instance.*" snapshots resources whose asset type contains "Instance".
     ///
     /// See [RE2](<https://github.com/google/re2/wiki/Syntax>) for all supported
@@ -347,7 +347,7 @@ pub mod asset_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1p5beta1.AssetService/ListAssets",
             );

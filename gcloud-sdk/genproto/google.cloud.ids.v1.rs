@@ -146,7 +146,7 @@ pub mod endpoint {
         }
     }
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListEndpointsRequest {
     /// Required. The parent, which owns this collection of endpoints.
     #[prost(string, tag = "1")]
@@ -184,7 +184,7 @@ pub struct ListEndpointsResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEndpointRequest {
     /// Required. The name of the endpoint to retrieve.
     /// Format: `projects/{project}/locations/{location}/endpoints/{endpoint}`
@@ -223,7 +223,7 @@ pub struct CreateEndpointRequest {
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteEndpointRequest {
     /// Required. The name of the endpoint to delete.
     #[prost(string, tag = "1")]
@@ -245,7 +245,7 @@ pub struct DeleteEndpointRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -264,7 +264,7 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// have \[Operation.error\]\[\] value with a \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -380,7 +380,7 @@ pub mod ids_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.ids.v1.IDS/ListEndpoints",
             );
@@ -402,7 +402,7 @@ pub mod ids_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.ids.v1.IDS/GetEndpoint",
             );
@@ -427,7 +427,7 @@ pub mod ids_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.ids.v1.IDS/CreateEndpoint",
             );
@@ -452,7 +452,7 @@ pub mod ids_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.ids.v1.IDS/DeleteEndpoint",
             );

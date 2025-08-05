@@ -71,7 +71,7 @@ pub mod gapic_metadata {
     /// List of GAPIC client methods implementing the proto-defined RPC
     /// for the transport and service specified in the containing
     /// structures.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct MethodList {
         /// List of methods for a specific proto-service client in the
         /// GAPIC. These names should be formatted as they appear in the

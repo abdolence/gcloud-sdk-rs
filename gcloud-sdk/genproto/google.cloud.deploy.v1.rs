@@ -58,7 +58,7 @@ impl Type {
 }
 /// Payload proto for "clouddeploy.googleapis.com/automation"
 /// Platform Log event that describes the Automation related events.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AutomationEvent {
     /// Debug message for when there is an update on the AutomationRun.
     /// Provides further details about the resource creation or state change.
@@ -76,7 +76,7 @@ pub struct AutomationEvent {
 }
 /// Payload proto for "clouddeploy.googleapis.com/automation_run"
 /// Platform Log event that describes the AutomationRun related events.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AutomationRunEvent {
     /// Debug message for when there is an update on the AutomationRun.
     /// Provides further details about the resource creation or state change.
@@ -131,13 +131,13 @@ pub struct DeliveryPipeline {
     /// user and by Cloud Deploy. Labels must meet the following constraints:
     ///
     /// * Keys and values can contain only lowercase letters, numeric characters,
-    /// underscores, and dashes.
+    ///   underscores, and dashes.
     /// * All characters must use UTF-8 encoding, and international characters are
-    /// allowed.
+    ///   allowed.
     /// * Keys must start with a lowercase letter or international character.
     /// * Each resource is limited to a maximum of 64 labels.
     ///
-    /// Both keys and values are additionally constrained to be <= 128 bytes.
+    /// Both keys and values are additionally constrained to be \<= 128 bytes.
     #[prost(map = "string, string", tag = "5")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -247,7 +247,7 @@ pub mod strategy {
     }
 }
 /// Predeploy contains the predeploy job configuration information.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Predeploy {
     /// Optional. A sequence of Skaffold custom actions to invoke during execution
     /// of the predeploy job.
@@ -255,7 +255,7 @@ pub struct Predeploy {
     pub actions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Postdeploy contains the postdeploy job configuration information.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Postdeploy {
     /// Optional. A sequence of Skaffold custom actions to invoke during execution
     /// of the postdeploy job.
@@ -263,7 +263,7 @@ pub struct Postdeploy {
     pub actions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Standard represents the standard deployment strategy.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Standard {
     /// Optional. Whether to verify a deployment via `skaffold verify`.
     #[prost(bool, tag = "1")]
@@ -305,13 +305,13 @@ pub mod canary {
     }
 }
 /// CanaryDeployment represents the canary deployment configuration
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CanaryDeployment {
     /// Required. The percentage based deployments that will occur as a part of a
     /// `Rollout`. List is expected in ascending order and each integer n is
-    /// 0 <= n < 100.
+    /// 0 \<= n \< 100.
     /// If the GatewayServiceMesh is configured for Kubernetes, then the range for
-    /// n is 0 <= n <= 100.
+    /// n is 0 \<= n \<= 100.
     #[prost(int32, repeated, packed = "false", tag = "1")]
     pub percentages: ::prost::alloc::vec::Vec<i32>,
     /// Optional. Whether to run verify tests after each percentage deployment via
@@ -340,7 +340,7 @@ pub struct CustomCanaryDeployment {
 pub mod custom_canary_deployment {
     /// PhaseConfig represents the configuration for a phase in the custom
     /// canary deployment.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PhaseConfig {
         /// Required. The ID to assign to the `Rollout` phase.
         /// This value must consist of lower-case letters, numbers, and hyphens,
@@ -357,8 +357,7 @@ pub mod custom_canary_deployment {
         /// `DeliveryPipeline` stage.
         #[prost(string, repeated, tag = "3")]
         pub profiles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// Optional. Whether to run verify tests after the deployment via `skaffold
-        /// verify`.
+        /// Optional. Whether to run verify tests after the deployment via `skaffold  verify`.
         #[prost(bool, tag = "4")]
         pub verify: bool,
         /// Optional. Configuration for the predeploy job of this phase. If this is
@@ -372,7 +371,7 @@ pub mod custom_canary_deployment {
     }
 }
 /// KubernetesConfig contains the Kubernetes runtime configuration.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct KubernetesConfig {
     /// The service definition configuration.
     #[prost(oneof = "kubernetes_config::ServiceDefinition", tags = "1, 2")]
@@ -381,7 +380,7 @@ pub struct KubernetesConfig {
 /// Nested message and enum types in `KubernetesConfig`.
 pub mod kubernetes_config {
     /// Information about the Kubernetes Gateway API service mesh configuration.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct GatewayServiceMesh {
         /// Required. Name of the Gateway API HTTPRoute.
         #[prost(string, tag = "1")]
@@ -421,7 +420,7 @@ pub mod kubernetes_config {
     /// Nested message and enum types in `GatewayServiceMesh`.
     pub mod gateway_service_mesh {
         /// Information about route destinations for the Gateway API service mesh.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct RouteDestinations {
             /// Required. The clusters where the Gateway API HTTPRoute resource will be
             /// deployed to. Valid entries include the associated entities IDs
@@ -441,7 +440,7 @@ pub mod kubernetes_config {
         }
     }
     /// Information about the Kubernetes Service networking configuration.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ServiceNetworking {
         /// Required. Name of the Kubernetes Service.
         #[prost(string, tag = "1")]
@@ -462,7 +461,7 @@ pub mod kubernetes_config {
         pub pod_selector_label: ::prost::alloc::string::String,
     }
     /// The service definition configuration.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ServiceDefinition {
         /// Optional. Kubernetes Gateway API service mesh configuration.
         #[prost(message, tag = "1")]
@@ -473,7 +472,7 @@ pub mod kubernetes_config {
     }
 }
 /// CloudRunConfig contains the Cloud Run runtime configuration.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloudRunConfig {
     /// Optional. Whether Cloud Deploy should update the traffic stanza in a Cloud
     /// Run Service on the user's behalf to facilitate traffic splitting. This is
@@ -496,7 +495,7 @@ pub struct CloudRunConfig {
 }
 /// RuntimeConfig contains the runtime specific configurations for a deployment
 /// strategy.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RuntimeConfig {
     /// The runtime configuration details.
     #[prost(oneof = "runtime_config::RuntimeConfig", tags = "1, 2")]
@@ -505,7 +504,7 @@ pub struct RuntimeConfig {
 /// Nested message and enum types in `RuntimeConfig`.
 pub mod runtime_config {
     /// The runtime configuration details.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum RuntimeConfig {
         /// Optional. Kubernetes runtime configuration.
         #[prost(message, tag = "1")]
@@ -517,7 +516,7 @@ pub mod runtime_config {
 }
 /// PipelineReadyCondition contains information around the status of the
 /// Pipeline.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PipelineReadyCondition {
     /// True if the Pipeline is in a valid state. Otherwise at least one condition
     /// in `PipelineCondition` is in an invalid state. Iterate over those
@@ -531,7 +530,7 @@ pub struct PipelineReadyCondition {
 }
 /// `TargetsPresentCondition` contains information on any Targets referenced in
 /// the Delivery Pipeline that do not actually exist.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TargetsPresentCondition {
     /// True if there aren't any missing Targets.
     #[prost(bool, tag = "1")]
@@ -546,7 +545,7 @@ pub struct TargetsPresentCondition {
 }
 /// TargetsTypeCondition contains information on whether the Targets defined in
 /// the Delivery Pipeline are of the same type.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TargetsTypeCondition {
     /// True if the targets are all a comparable type. For example this is true if
     /// all targets are GKE clusters. This is false if some targets are Cloud Run
@@ -558,7 +557,7 @@ pub struct TargetsTypeCondition {
     pub error_details: ::prost::alloc::string::String,
 }
 /// PipelineCondition contains all conditions relevant to a Delivery Pipeline.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PipelineCondition {
     /// Details around the Pipeline's overall status.
     #[prost(message, optional, tag = "1")]
@@ -572,7 +571,7 @@ pub struct PipelineCondition {
     pub targets_type_condition: ::core::option::Option<TargetsTypeCondition>,
 }
 /// The request object for `ListDeliveryPipelines`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDeliveryPipelinesRequest {
     /// Required. The parent, which owns this collection of pipelines. Format must
     /// be `projects/{project_id}/locations/{location_name}`.
@@ -614,7 +613,7 @@ pub struct ListDeliveryPipelinesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request object for `GetDeliveryPipeline`
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDeliveryPipelineRequest {
     /// Required. Name of the `DeliveryPipeline`. Format must be
     /// `projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}`.
@@ -692,7 +691,7 @@ pub struct UpdateDeliveryPipelineRequest {
     pub validate_only: bool,
 }
 /// The request object for `DeleteDeliveryPipeline`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDeliveryPipelineRequest {
     /// Required. The name of the `DeliveryPipeline` to delete. The format is
     /// `projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}`.
@@ -818,13 +817,13 @@ pub struct Target {
     /// user and by Cloud Deploy. Labels must meet the following constraints:
     ///
     /// * Keys and values can contain only lowercase letters, numeric characters,
-    /// underscores, and dashes.
+    ///   underscores, and dashes.
     /// * All characters must use UTF-8 encoding, and international characters are
-    /// allowed.
+    ///   allowed.
     /// * Keys must start with a lowercase letter or international character.
     /// * Each resource is limited to a maximum of 64 labels.
     ///
-    /// Both keys and values are additionally constrained to be <= 128 bytes.
+    /// Both keys and values are additionally constrained to be \<= 128 bytes.
     #[prost(map = "string, string", tag = "6")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -881,7 +880,7 @@ pub struct Target {
 pub mod target {
     /// Destination to which the Skaffold configuration is applied during a
     /// rollout.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum DeploymentTarget {
         /// Optional. Information specifying a GKE Cluster.
         #[prost(message, tag = "15")]
@@ -901,7 +900,7 @@ pub mod target {
     }
 }
 /// Configuration of the environment to use when calling Skaffold.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExecutionConfig {
     /// Required. Usages when this configuration should be applied.
     #[prost(
@@ -919,7 +918,7 @@ pub struct ExecutionConfig {
     pub worker_pool: ::prost::alloc::string::String,
     /// Optional. Google service account to use for execution. If unspecified,
     /// the project execution service account
-    /// (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com) is used.
+    /// (\<PROJECT_NUMBER>-compute@developer.gserviceaccount.com) is used.
     #[prost(string, tag = "5")]
     pub service_account: ::prost::alloc::string::String,
     /// Optional. Cloud Storage location in which to store execution outputs. This
@@ -1001,7 +1000,7 @@ pub mod execution_config {
         }
     }
     /// Details of the environment.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ExecutionEnvironment {
         /// Optional. Use default Cloud Build pool.
         #[prost(message, tag = "2")]
@@ -1012,11 +1011,11 @@ pub mod execution_config {
     }
 }
 /// Execution using the default Cloud Build pool.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DefaultPool {
     /// Optional. Google service account to use for execution. If unspecified,
     /// the project execution service account
-    /// (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com) will be used.
+    /// (\<PROJECT_NUMBER>-compute@developer.gserviceaccount.com) will be used.
     #[prost(string, tag = "1")]
     pub service_account: ::prost::alloc::string::String,
     /// Optional. Cloud Storage location where execution outputs should be stored.
@@ -1027,7 +1026,7 @@ pub struct DefaultPool {
     pub artifact_storage: ::prost::alloc::string::String,
 }
 /// Execution using a private Cloud Build pool.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PrivatePool {
     /// Required. Resource name of the Cloud Build worker pool to use. The format
     /// is `projects/{project}/locations/{location}/workerPools/{pool}`.
@@ -1035,7 +1034,7 @@ pub struct PrivatePool {
     pub worker_pool: ::prost::alloc::string::String,
     /// Optional. Google service account to use for execution. If unspecified,
     /// the project execution service account
-    /// (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com) will be used.
+    /// (\<PROJECT_NUMBER>-compute@developer.gserviceaccount.com) will be used.
     #[prost(string, tag = "2")]
     pub service_account: ::prost::alloc::string::String,
     /// Optional. Cloud Storage location where execution outputs should be stored.
@@ -1046,7 +1045,7 @@ pub struct PrivatePool {
     pub artifact_storage: ::prost::alloc::string::String,
 }
 /// Information specifying a GKE Cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GkeCluster {
     /// Optional. Information specifying a GKE Cluster. Format is
     /// `projects/{project_id}/locations/{location_id}/clusters/{cluster_id}`.
@@ -1074,7 +1073,7 @@ pub struct GkeCluster {
     pub dns_endpoint: bool,
 }
 /// Information specifying an Anthos Cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AnthosCluster {
     /// Optional. Membership of the GKE Hub-registered cluster to which to apply
     /// the Skaffold configuration. Format is
@@ -1083,7 +1082,7 @@ pub struct AnthosCluster {
     pub membership: ::prost::alloc::string::String,
 }
 /// Information specifying where to deploy a Cloud Run Service.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloudRunLocation {
     /// Required. The location for the Cloud Run Service. Format must be
     /// `projects/{project}/locations/{location}`.
@@ -1091,14 +1090,14 @@ pub struct CloudRunLocation {
     pub location: ::prost::alloc::string::String,
 }
 /// Information specifying a multiTarget.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MultiTarget {
     /// Required. The target_ids of this multiTarget.
     #[prost(string, repeated, tag = "1")]
     pub target_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Information specifying a Custom Target.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomTarget {
     /// Required. The name of the CustomTargetType. Format must be
     /// `projects/{project}/locations/{location}/customTargetTypes/{custom_target_type}`.
@@ -1116,7 +1115,7 @@ pub struct AssociatedEntities {
     pub anthos_clusters: ::prost::alloc::vec::Vec<AnthosCluster>,
 }
 /// The request object for `ListTargets`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListTargetsRequest {
     /// Required. The parent, which owns this collection of targets. Format must be
     /// `projects/{project_id}/locations/{location_name}`.
@@ -1159,7 +1158,7 @@ pub struct ListTargetsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request object for `GetTarget`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTargetRequest {
     /// Required. Name of the `Target`. Format must be
     /// `projects/{project_id}/locations/{location_name}/targets/{target_name}`.
@@ -1238,7 +1237,7 @@ pub struct UpdateTargetRequest {
     pub validate_only: bool,
 }
 /// The request object for `DeleteTarget`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteTargetRequest {
     /// Required. The name of the `Target` to delete. The format is
     /// `projects/{project_id}/locations/{location_name}/targets/{target_name}`.
@@ -1309,13 +1308,13 @@ pub struct CustomTargetType {
     /// user and by Cloud Deploy. Labels must meet the following constraints:
     ///
     /// * Keys and values can contain only lowercase letters, numeric characters,
-    /// underscores, and dashes.
+    ///   underscores, and dashes.
     /// * All characters must use UTF-8 encoding, and international characters are
-    /// allowed.
+    ///   allowed.
     /// * Keys must start with a lowercase letter or international character.
     /// * Each resource is limited to a maximum of 64 labels.
     ///
-    /// Both keys and values are additionally constrained to be <= 128 bytes.
+    /// Both keys and values are additionally constrained to be \<= 128 bytes.
     #[prost(map = "string, string", tag = "6")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -1365,7 +1364,7 @@ pub struct CustomTargetSkaffoldActions {
     pub include_skaffold_modules: ::prost::alloc::vec::Vec<SkaffoldModules>,
 }
 /// Skaffold Config modules and their remote source.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SkaffoldModules {
     /// Optional. The Skaffold Config modules to use from the specified source.
     #[prost(string, repeated, tag = "1")]
@@ -1377,7 +1376,7 @@ pub struct SkaffoldModules {
 /// Nested message and enum types in `SkaffoldModules`.
 pub mod skaffold_modules {
     /// Git repository containing Skaffold Config modules.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SkaffoldGitSource {
         /// Required. Git repository the package should be cloned from.
         #[prost(string, tag = "1")]
@@ -1390,10 +1389,10 @@ pub mod skaffold_modules {
         pub r#ref: ::prost::alloc::string::String,
     }
     /// Cloud Storage bucket containing Skaffold Config modules.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SkaffoldGcsSource {
         /// Required. Cloud Storage source paths to copy recursively. For example,
-        /// providing "gs://my-bucket/dir/configs/*" will result in Skaffold copying
+        /// providing "gs://my-bucket/dir/configs/\*" will result in Skaffold copying
         /// all files within the "dir/configs" directory in the bucket "my-bucket".
         #[prost(string, tag = "1")]
         pub source: ::prost::alloc::string::String,
@@ -1402,7 +1401,7 @@ pub mod skaffold_modules {
         pub path: ::prost::alloc::string::String,
     }
     /// Cloud Build V2 Repository containing Skaffold Configs.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SkaffoldGcbRepoSource {
         /// Required. Name of the Cloud Build V2 Repository.
         /// Format is
@@ -1418,7 +1417,7 @@ pub mod skaffold_modules {
         pub r#ref: ::prost::alloc::string::String,
     }
     /// The source that contains the Skaffold Config modules.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Source {
         /// Optional. Remote git repository containing the Skaffold Config modules.
         #[prost(message, tag = "2")]
@@ -1433,7 +1432,7 @@ pub mod skaffold_modules {
     }
 }
 /// The request object for `ListCustomTargetTypes`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCustomTargetTypesRequest {
     /// Required. The parent that owns this collection of custom target types.
     /// Format must be `projects/{project_id}/locations/{location_name}`.
@@ -1476,7 +1475,7 @@ pub struct ListCustomTargetTypesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request object for `GetCustomTargetType`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCustomTargetTypeRequest {
     /// Required. Name of the `CustomTargetType`. Format must be
     /// `projects/{project_id}/locations/{location_name}/customTargetTypes/{custom_target_type}`.
@@ -1554,7 +1553,7 @@ pub struct UpdateCustomTargetTypeRequest {
     pub validate_only: bool,
 }
 /// The request object for `DeleteCustomTargetType`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteCustomTargetTypeRequest {
     /// Required. The name of the `CustomTargetType` to delete. Format must be
     /// `projects/{project_id}/locations/{location_name}/customTargetTypes/{custom_target_type}`.
@@ -1612,13 +1611,13 @@ pub struct DeployPolicy {
     ///
     /// * Annotations are key/value pairs.
     /// * Valid annotation keys have two segments: an optional prefix and name,
-    /// separated by a slash (`/`).
+    ///   separated by a slash (`/`).
     /// * The name segment is required and must be 63 characters or less,
-    /// beginning and ending with an alphanumeric character (`\[a-z0-9A-Z\]`) with
-    /// dashes (`-`), underscores (`_`), dots (`.`), and alphanumerics between.
+    ///   beginning and ending with an alphanumeric character (`\[a-z0-9A-Z\]`) with
+    ///   dashes (`-`), underscores (`_`), dots (`.`), and alphanumerics between.
     /// * The prefix is optional. If specified, the prefix must be a DNS subdomain:
-    /// a series of DNS labels separated by dots(`.`), not longer than 253
-    /// characters in total, followed by a slash (`/`).
+    ///   a series of DNS labels separated by dots(`.`), not longer than 253
+    ///   characters in total, followed by a slash (`/`).
     ///
     /// See
     /// <https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/#syntax-and-character-set>
@@ -1632,13 +1631,13 @@ pub struct DeployPolicy {
     /// user and by Cloud Deploy. Labels must meet the following constraints:
     ///
     /// * Keys and values can contain only lowercase letters, numeric characters,
-    /// underscores, and dashes.
+    ///   underscores, and dashes.
     /// * All characters must use UTF-8 encoding, and international characters are
-    /// allowed.
+    ///   allowed.
     /// * Keys must start with a lowercase letter or international character.
     /// * Each resource is limited to a maximum of 64 labels.
     ///
-    /// Both keys and values are additionally constrained to be <= 128 bytes.
+    /// Both keys and values are additionally constrained to be \<= 128 bytes.
     #[prost(map = "string, string", tag = "5")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -1739,7 +1738,7 @@ pub struct DeliveryPipelineAttribute {
     /// one of the following:
     ///
     /// * The last segment of a pipeline name
-    /// * "*", all delivery pipelines in a location
+    /// * "\*", all delivery pipelines in a location
     #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
     /// DeliveryPipeline labels.
@@ -1757,7 +1756,7 @@ pub struct TargetAttribute {
     /// following:
     ///
     /// * The last segment of a target name
-    /// * "*", all targets in a location
+    /// * "\*", all targets in a location
     #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
     /// Target labels.
@@ -1899,7 +1898,7 @@ pub struct TimeWindows {
 }
 /// One-time window within which actions are restricted. For example, blocking
 /// actions over New Year's Eve from December 31st at 5pm to January 1st at 9am.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OneTimeWindow {
     /// Required. Start date.
     #[prost(message, optional, tag = "1")]
@@ -1916,7 +1915,7 @@ pub struct OneTimeWindow {
 }
 /// Weekly windows. For example, blocking actions every Saturday and Sunday.
 /// Another example would be blocking actions every weekday from 5pm to midnight.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WeeklyWindow {
     /// Optional. Days of week. If left empty, all days of the week will be
     /// included.
@@ -1948,7 +1947,7 @@ pub struct PolicyViolation {
     pub policy_violation_details: ::prost::alloc::vec::Vec<PolicyViolationDetails>,
 }
 /// Policy violation details.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PolicyViolationDetails {
     /// Name of the policy that was violated.
     /// Policy resource will be in the format of
@@ -1993,13 +1992,13 @@ pub struct Release {
     /// user and by Cloud Deploy. Labels must meet the following constraints:
     ///
     /// * Keys and values can contain only lowercase letters, numeric characters,
-    /// underscores, and dashes.
+    ///   underscores, and dashes.
     /// * All characters must use UTF-8 encoding, and international characters are
-    /// allowed.
+    ///   allowed.
     /// * Keys must start with a lowercase letter or international character.
     /// * Each resource is limited to a maximum of 64 labels.
     ///
-    /// Both keys and values are additionally constrained to be <= 128 bytes.
+    /// Both keys and values are additionally constrained to be \<= 128 bytes.
     #[prost(map = "string, string", tag = "5")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -2235,7 +2234,7 @@ pub mod release {
     /// ReleaseReadyCondition contains information around the status of the
     /// Release. If a release is not ready, you cannot create a rollout with the
     /// release.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ReleaseReadyCondition {
         /// True if the Release is in a valid state. Otherwise at least one condition
         /// in `ReleaseCondition` is in an invalid state. Iterate over those
@@ -2246,7 +2245,7 @@ pub mod release {
     }
     /// SkaffoldSupportedCondition contains information about when support for the
     /// release's version of Skaffold ends.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SkaffoldSupportedCondition {
         /// True if the version of Skaffold used by this release is supported.
         #[prost(bool, tag = "1")]
@@ -2264,7 +2263,7 @@ pub mod release {
         pub support_expiration_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// ReleaseCondition contains all conditions relevant to a Release.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ReleaseCondition {
         /// Details around the Releases's overall status.
         #[prost(message, optional, tag = "1")]
@@ -2395,7 +2394,7 @@ pub struct UpdateDeployPolicyRequest {
     pub validate_only: bool,
 }
 /// The request object for `DeleteDeployPolicy`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDeployPolicyRequest {
     /// Required. The name of the `DeployPolicy` to delete. The format is
     /// `projects/{project_id}/locations/{location_name}/deployPolicies/{deploy_policy_name}`.
@@ -2431,7 +2430,7 @@ pub struct DeleteDeployPolicyRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// The request object for `ListDeployPolicies`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDeployPoliciesRequest {
     /// Required. The parent, which owns this collection of deploy policies. Format
     /// must be `projects/{project_id}/locations/{location_name}`.
@@ -2473,7 +2472,7 @@ pub struct ListDeployPoliciesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request object for `GetDeployPolicy`
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDeployPolicyRequest {
     /// Required. Name of the `DeployPolicy`. Format must be
     /// `projects/{project_id}/locations/{location_name}/deployPolicies/{deploy_policy_name}`.
@@ -2481,7 +2480,7 @@ pub struct GetDeployPolicyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Description of an a image to use during Skaffold rendering.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BuildArtifact {
     /// Optional. Image name in Skaffold configuration.
     #[prost(string, tag = "3")]
@@ -2515,7 +2514,7 @@ pub struct TargetArtifact {
 /// Nested message and enum types in `TargetArtifact`.
 pub mod target_artifact {
     /// Contains the paths to the artifacts, relative to the URI, for a phase.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PhaseArtifact {
         /// Output only. File path of the resolved Skaffold configuration relative to
         /// the URI.
@@ -2529,7 +2528,7 @@ pub mod target_artifact {
         #[prost(string, tag = "4")]
         pub job_manifests_path: ::prost::alloc::string::String,
     }
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Uri {
         /// Output only. URI of a directory containing the artifacts. This contains
         /// deployment configuration used by Skaffold during a rollout, and all
@@ -2539,7 +2538,7 @@ pub mod target_artifact {
     }
 }
 /// The artifacts produced by a deploy operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeployArtifact {
     /// Output only. URI of a directory containing the artifacts. All paths are
     /// relative to this location.
@@ -2552,7 +2551,7 @@ pub struct DeployArtifact {
 }
 /// CloudRunRenderMetadata contains Cloud Run information associated with a
 /// `Release` render.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloudRunRenderMetadata {
     /// Output only. The name of the Cloud Run Service in the rendered manifest.
     /// Format is `projects/{project}/locations/{location}/services/{service}`.
@@ -2570,7 +2569,7 @@ pub struct RenderMetadata {
     pub custom: ::core::option::Option<CustomMetadata>,
 }
 /// The request object for `ListReleases`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListReleasesRequest {
     /// Required. The `DeliveryPipeline` which owns this collection of `Release`
     /// objects.
@@ -2613,7 +2612,7 @@ pub struct ListReleasesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request object for `GetRelease`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetReleaseRequest {
     /// Required. Name of the `Release`. Format must be
     /// `projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/releases/{release_name}`.
@@ -2688,13 +2687,13 @@ pub struct Rollout {
     /// user and by Cloud Deploy. Labels must meet the following constraints:
     ///
     /// * Keys and values can contain only lowercase letters, numeric characters,
-    /// underscores, and dashes.
+    ///   underscores, and dashes.
     /// * All characters must use UTF-8 encoding, and international characters are
-    /// allowed.
+    ///   allowed.
     /// * Keys must start with a lowercase letter or international character.
     /// * Each resource is limited to a maximum of 64 labels.
     ///
-    /// Both keys and values are additionally constrained to be <= 128 bytes.
+    /// Both keys and values are additionally constrained to be \<= 128 bytes.
     #[prost(map = "string, string", tag = "5")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -2999,7 +2998,7 @@ pub struct DeployJobRunMetadata {
     pub custom: ::core::option::Option<CustomMetadata>,
 }
 /// CloudRunMetadata contains information from a Cloud Run deployment.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloudRunMetadata {
     /// Output only. The name of the Cloud Run Service that is associated with a
     /// `Rollout`. Format is
@@ -3021,7 +3020,7 @@ pub struct CloudRunMetadata {
 }
 /// CustomTargetDeployMetadata contains information from a Custom Target
 /// deploy operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomTargetDeployMetadata {
     /// Output only. Skip message provided in the results of a custom deploy
     /// operation.
@@ -3030,7 +3029,7 @@ pub struct CustomTargetDeployMetadata {
 }
 /// AutomationRolloutMetadata contains Automation-related actions that
 /// were performed on a rollout.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AutomationRolloutMetadata {
     /// Output only. The name of the AutomationRun initiated by a promote release
     /// rule.
@@ -3148,7 +3147,7 @@ pub mod phase {
     }
 }
 /// Deployment job composition.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeploymentJobs {
     /// Output only. The predeploy Job, which is the first job on the phase.
     #[prost(message, optional, tag = "3")]
@@ -3174,7 +3173,7 @@ pub struct ChildRolloutJobs {
     pub advance_rollout_jobs: ::prost::alloc::vec::Vec<Job>,
 }
 /// Job represents an operation for a `Rollout`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Job {
     /// Output only. The ID of the Job.
     #[prost(string, tag = "1")]
@@ -3264,7 +3263,7 @@ pub mod job {
         }
     }
     /// The type of Job.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum JobType {
         /// Output only. A deploy Job.
         #[prost(message, tag = "4")]
@@ -3287,33 +3286,33 @@ pub mod job {
     }
 }
 /// A deploy Job.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeployJob {}
 /// A verify Job.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VerifyJob {}
 /// A predeploy Job.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PredeployJob {
     /// Output only. The custom actions that the predeploy Job executes.
     #[prost(string, repeated, tag = "1")]
     pub actions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A postdeploy Job.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PostdeployJob {
     /// Output only. The custom actions that the postdeploy Job executes.
     #[prost(string, repeated, tag = "1")]
     pub actions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A createChildRollout Job.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateChildRolloutJob {}
 /// An advanceChildRollout Job.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AdvanceChildRolloutJob {}
 /// ListRolloutsRequest is the request object used by `ListRollouts`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRolloutsRequest {
     /// Required. The `Release` which owns this collection of `Rollout` objects.
     #[prost(string, tag = "1")]
@@ -3355,7 +3354,7 @@ pub struct ListRolloutsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// GetRolloutRequest is the request object used by `GetRollout`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRolloutRequest {
     /// Required. Name of the `Rollout`. Format must be
     /// `projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/releases/{release_name}/rollouts/{rollout_name}`.
@@ -3405,7 +3404,7 @@ pub struct CreateRolloutRequest {
     pub starting_phase_id: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -3425,8 +3424,8 @@ pub struct OperationMetadata {
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
     /// have
-    /// [google.longrunning.Operation.error][google.longrunning.Operation.error]
-    /// value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// \[google.longrunning.Operation.error\]\[google.longrunning.Operation.error\]
+    /// value with a \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -3435,7 +3434,7 @@ pub struct OperationMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// The request object used by `ApproveRollout`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ApproveRolloutRequest {
     /// Required. Name of the Rollout. Format is
     /// `projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/{rollout}`.
@@ -3450,10 +3449,10 @@ pub struct ApproveRolloutRequest {
     pub override_deploy_policy: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The response object from `ApproveRollout`.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ApproveRolloutResponse {}
 /// The request object used by `AdvanceRollout`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AdvanceRolloutRequest {
     /// Required. Name of the Rollout. Format is
     /// `projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/{rollout}`.
@@ -3468,10 +3467,10 @@ pub struct AdvanceRolloutRequest {
     pub override_deploy_policy: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The response object from `AdvanceRollout`.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AdvanceRolloutResponse {}
 /// The request object used by `CancelRollout`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelRolloutRequest {
     /// Required. Name of the Rollout. Format is
     /// `projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/{rollout}`.
@@ -3483,10 +3482,10 @@ pub struct CancelRolloutRequest {
     pub override_deploy_policy: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The response object from `CancelRollout`.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelRolloutResponse {}
 /// The request object used by `IgnoreJob`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IgnoreJobRequest {
     /// Required. Name of the Rollout. Format is
     /// `projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/{rollout}`.
@@ -3504,10 +3503,10 @@ pub struct IgnoreJobRequest {
     pub override_deploy_policy: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The response object from `IgnoreJob`.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IgnoreJobResponse {}
 /// RetryJobRequest is the request object used by `RetryJob`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RetryJobRequest {
     /// Required. Name of the Rollout. Format is
     /// `projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/{rollout}`.
@@ -3525,10 +3524,10 @@ pub struct RetryJobRequest {
     pub override_deploy_policy: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The response object from 'RetryJob'.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RetryJobResponse {}
 /// The request object used by `AbandonRelease`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AbandonReleaseRequest {
     /// Required. Name of the Release. Format is
     /// `projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}`.
@@ -3536,7 +3535,7 @@ pub struct AbandonReleaseRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The response object for `AbandonRelease`.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AbandonReleaseResponse {}
 /// A `JobRun` resource in the Cloud Deploy API.
 ///
@@ -3747,7 +3746,7 @@ pub mod deploy_job_run {
     }
 }
 /// VerifyJobRun contains information specific to a verify `JobRun`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VerifyJobRun {
     /// Output only. The resource name of the Cloud Build `Build` object that is
     /// used to verify. Format is
@@ -3833,7 +3832,7 @@ pub mod verify_job_run {
     }
 }
 /// PredeployJobRun contains information specific to a predeploy `JobRun`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PredeployJobRun {
     /// Output only. The resource name of the Cloud Build `Build` object that is
     /// used to execute the custom actions associated with the predeploy Job.
@@ -3908,7 +3907,7 @@ pub mod predeploy_job_run {
     }
 }
 /// PostdeployJobRun contains information specific to a postdeploy `JobRun`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PostdeployJobRun {
     /// Output only. The resource name of the Cloud Build `Build` object that is
     /// used to execute the custom actions associated with the postdeploy Job.
@@ -3984,7 +3983,7 @@ pub mod postdeploy_job_run {
 }
 /// CreateChildRolloutJobRun contains information specific to a
 /// createChildRollout `JobRun`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateChildRolloutJobRun {
     /// Output only. Name of the `ChildRollout`. Format is
     /// `projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/{rollout}`.
@@ -3996,7 +3995,7 @@ pub struct CreateChildRolloutJobRun {
 }
 /// AdvanceChildRolloutJobRun contains information specific to a
 /// advanceChildRollout `JobRun`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AdvanceChildRolloutJobRun {
     /// Output only. Name of the `ChildRollout`. Format is
     /// `projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/{rollout}`.
@@ -4007,7 +4006,7 @@ pub struct AdvanceChildRolloutJobRun {
     pub rollout_phase_id: ::prost::alloc::string::String,
 }
 /// ListJobRunsRequest is the request object used by `ListJobRuns`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListJobRunsRequest {
     /// Required. The `Rollout` which owns this collection of `JobRun` objects.
     #[prost(string, tag = "1")]
@@ -4049,7 +4048,7 @@ pub struct ListJobRunsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// GetJobRunRequest is the request object used by `GetJobRun`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetJobRunRequest {
     /// Required. Name of the `JobRun`. Format must be
     /// `projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/releases/{release_name}/rollouts/{rollout_name}/jobRuns/{job_run_name}`.
@@ -4057,7 +4056,7 @@ pub struct GetJobRunRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request object used by `TerminateJobRun`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TerminateJobRunRequest {
     /// Required. Name of the `JobRun`. Format must be
     /// `projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/releases/{release}/rollouts/{rollout}/jobRuns/{jobRun}`.
@@ -4069,7 +4068,7 @@ pub struct TerminateJobRunRequest {
     pub override_deploy_policy: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The response object from `TerminateJobRun`.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TerminateJobRunResponse {}
 /// Service-wide configuration.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4086,7 +4085,7 @@ pub struct Config {
     pub default_skaffold_version: ::prost::alloc::string::String,
 }
 /// Details of a supported Skaffold version.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SkaffoldVersion {
     /// Release version number. For example, "1.20.3".
     #[prost(string, tag = "1")]
@@ -4102,7 +4101,7 @@ pub struct SkaffoldVersion {
     pub support_end_date: ::core::option::Option<super::super::super::r#type::Date>,
 }
 /// Request to get a configuration.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetConfigRequest {
     /// Required. Name of requested configuration.
     #[prost(string, tag = "1")]
@@ -4139,13 +4138,13 @@ pub struct Automation {
     ///
     /// * Annotations are key/value pairs.
     /// * Valid annotation keys have two segments: an optional prefix and name,
-    /// separated by a slash (`/`).
+    ///   separated by a slash (`/`).
     /// * The name segment is required and must be 63 characters or less,
-    /// beginning and ending with an alphanumeric character (`\[a-z0-9A-Z\]`) with
-    /// dashes (`-`), underscores (`_`), dots (`.`), and alphanumerics between.
+    ///   beginning and ending with an alphanumeric character (`\[a-z0-9A-Z\]`) with
+    ///   dashes (`-`), underscores (`_`), dots (`.`), and alphanumerics between.
     /// * The prefix is optional. If specified, the prefix must be a DNS subdomain:
-    /// a series of DNS labels separated by dots(`.`), not longer than 253
-    /// characters in total, followed by a slash (`/`).
+    ///   a series of DNS labels separated by dots(`.`), not longer than 253
+    ///   characters in total, followed by a slash (`/`).
     ///
     /// See
     /// <https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/#syntax-and-character-set>
@@ -4159,13 +4158,13 @@ pub struct Automation {
     /// user and by Cloud Deploy. Labels must meet the following constraints:
     ///
     /// * Keys and values can contain only lowercase letters, numeric characters,
-    /// underscores, and dashes.
+    ///   underscores, and dashes.
     /// * All characters must use UTF-8 encoding, and international characters are
-    /// allowed.
+    ///   allowed.
     /// * Keys must start with a lowercase letter or international character.
     /// * Each resource is limited to a maximum of 64 labels.
     ///
-    /// Both keys and values are additionally constrained to be <= 63 characters.
+    /// Both keys and values are additionally constrained to be \<= 63 characters.
     #[prost(map = "string, string", tag = "7")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -4352,7 +4351,7 @@ pub struct RepairRolloutRule {
     pub repair_phases: ::prost::alloc::vec::Vec<RepairPhaseConfig>,
 }
 /// Configuration of the repair phase.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RepairPhaseConfig {
     /// The repair phase to perform.
     #[prost(oneof = "repair_phase_config::RepairPhase", tags = "1, 2")]
@@ -4361,7 +4360,7 @@ pub struct RepairPhaseConfig {
 /// Nested message and enum types in `RepairPhaseConfig`.
 pub mod repair_phase_config {
     /// The repair phase to perform.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum RepairPhase {
         /// Optional. Retries a failed job.
         #[prost(message, tag = "1")]
@@ -4372,7 +4371,7 @@ pub mod repair_phase_config {
     }
 }
 /// Retries the failed job.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Retry {
     /// Required. Total number of retries. Retry is skipped if set to 0; The
     /// minimum value is 1, and the maximum value is 10.
@@ -4388,7 +4387,7 @@ pub struct Retry {
     pub backoff_mode: i32,
 }
 /// Rolls back a `Rollout`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Rollback {
     /// Optional. The starting phase ID for the `Rollout`. If unspecified, the
     /// `Rollout` will start in the stable phase.
@@ -4437,7 +4436,7 @@ pub struct TimedPromoteReleaseCondition {
 /// Nested message and enum types in `TimedPromoteReleaseCondition`.
 pub mod timed_promote_release_condition {
     /// The targets involved in a single timed promotion.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Targets {
         /// Optional. The source target ID.
         #[prost(string, tag = "1")]
@@ -4519,7 +4518,7 @@ pub struct UpdateAutomationRequest {
     pub validate_only: bool,
 }
 /// The request object for `DeleteAutomation`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAutomationRequest {
     /// Required. The name of the `Automation` to delete. The format is
     /// `projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/automations/{automation_name}`.
@@ -4556,7 +4555,7 @@ pub struct DeleteAutomationRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// The request object for `ListAutomations`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAutomationsRequest {
     /// Required. The parent `Delivery Pipeline`, which owns this collection of
     /// automations. Format must be
@@ -4599,7 +4598,7 @@ pub struct ListAutomationsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request object for `GetAutomation`
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAutomationRequest {
     /// Required. Name of the `Automation`. Format must be
     /// `projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/automations/{automation_name}`.
@@ -4750,7 +4749,7 @@ pub mod automation_run {
     }
 }
 /// Contains the information of an automated promote-release operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PromoteReleaseOperation {
     /// Output only. The ID of the target that represents the promotion stage to
     /// which the release will be promoted. The value of this field is the last
@@ -4768,7 +4767,7 @@ pub struct PromoteReleaseOperation {
     pub phase: ::prost::alloc::string::String,
 }
 /// Contains the information of an automated advance-rollout operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AdvanceRolloutOperation {
     /// Output only. The phase of a deployment that initiated the operation.
     #[prost(string, tag = "5")]
@@ -4805,7 +4804,7 @@ pub struct RepairRolloutOperation {
     pub job_id: ::prost::alloc::string::String,
 }
 /// Contains the information of an automated timed promote-release operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TimedPromoteReleaseOperation {
     /// Output only. The ID of the target that represents the promotion stage to
     /// which the release will be promoted. The value of this field is the last
@@ -4856,7 +4855,7 @@ pub struct RetryPhase {
     pub attempts: ::prost::alloc::vec::Vec<RetryAttempt>,
 }
 /// RetryAttempt represents an action of retrying the failed Cloud Deploy job.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RetryAttempt {
     /// Output only. The index of this retry attempt.
     #[prost(int64, tag = "1")]
@@ -4872,7 +4871,7 @@ pub struct RetryAttempt {
     pub state_desc: ::prost::alloc::string::String,
 }
 /// RollbackAttempt represents an action of rolling back a Cloud Deploy 'Target'.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RollbackAttempt {
     /// Output only. The phase to which the rollout will be rolled back to.
     #[prost(string, tag = "1")]
@@ -4891,7 +4890,7 @@ pub struct RollbackAttempt {
     pub disable_rollback_if_rollout_pending: bool,
 }
 /// The request object for `ListAutomationRuns`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAutomationRunsRequest {
     /// Required. The parent `Delivery Pipeline`, which owns this collection of
     /// automationRuns. Format must be
@@ -4934,7 +4933,7 @@ pub struct ListAutomationRunsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request object for `GetAutomationRun`
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAutomationRunRequest {
     /// Required. Name of the `AutomationRun`. Format must be
     /// `projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}/automationRuns/{automation_run}`.
@@ -4942,7 +4941,7 @@ pub struct GetAutomationRunRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request object used by `CancelAutomationRun`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelAutomationRunRequest {
     /// Required. Name of the `AutomationRun`. Format is
     /// `projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}/automationRuns/{automation_run}`.
@@ -4950,7 +4949,7 @@ pub struct CancelAutomationRunRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The response object from `CancelAutomationRun`.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelAutomationRunResponse {}
 /// The support state of a specific Skaffold version.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -5180,7 +5179,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/ListDeliveryPipelines",
             );
@@ -5210,7 +5209,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/GetDeliveryPipeline",
             );
@@ -5240,7 +5239,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/CreateDeliveryPipeline",
             );
@@ -5270,7 +5269,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/UpdateDeliveryPipeline",
             );
@@ -5300,7 +5299,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/DeleteDeliveryPipeline",
             );
@@ -5330,7 +5329,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/ListTargets",
             );
@@ -5357,7 +5356,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/RollbackTarget",
             );
@@ -5384,7 +5383,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/GetTarget",
             );
@@ -5411,7 +5410,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/CreateTarget",
             );
@@ -5438,7 +5437,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/UpdateTarget",
             );
@@ -5465,7 +5464,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/DeleteTarget",
             );
@@ -5492,7 +5491,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/ListCustomTargetTypes",
             );
@@ -5522,7 +5521,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/GetCustomTargetType",
             );
@@ -5552,7 +5551,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/CreateCustomTargetType",
             );
@@ -5582,7 +5581,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/UpdateCustomTargetType",
             );
@@ -5612,7 +5611,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/DeleteCustomTargetType",
             );
@@ -5642,7 +5641,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/ListReleases",
             );
@@ -5666,7 +5665,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/GetRelease",
             );
@@ -5693,7 +5692,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/CreateRelease",
             );
@@ -5723,7 +5722,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/AbandonRelease",
             );
@@ -5753,7 +5752,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/CreateDeployPolicy",
             );
@@ -5783,7 +5782,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/UpdateDeployPolicy",
             );
@@ -5813,7 +5812,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/DeleteDeployPolicy",
             );
@@ -5843,7 +5842,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/ListDeployPolicies",
             );
@@ -5870,7 +5869,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/GetDeployPolicy",
             );
@@ -5900,7 +5899,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/ApproveRollout",
             );
@@ -5930,7 +5929,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/AdvanceRollout",
             );
@@ -5960,7 +5959,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/CancelRollout",
             );
@@ -5990,7 +5989,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/ListRollouts",
             );
@@ -6014,7 +6013,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/GetRollout",
             );
@@ -6041,7 +6040,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/CreateRollout",
             );
@@ -6071,7 +6070,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/IgnoreJob",
             );
@@ -6098,7 +6097,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/RetryJob",
             );
@@ -6125,7 +6124,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/ListJobRuns",
             );
@@ -6149,7 +6148,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/GetJobRun",
             );
@@ -6176,7 +6175,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/TerminateJobRun",
             );
@@ -6203,7 +6202,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/GetConfig",
             );
@@ -6230,7 +6229,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/CreateAutomation",
             );
@@ -6260,7 +6259,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/UpdateAutomation",
             );
@@ -6290,7 +6289,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/DeleteAutomation",
             );
@@ -6317,7 +6316,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/GetAutomation",
             );
@@ -6347,7 +6346,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/ListAutomations",
             );
@@ -6374,7 +6373,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/GetAutomationRun",
             );
@@ -6404,7 +6403,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/ListAutomationRuns",
             );
@@ -6437,7 +6436,7 @@ pub mod cloud_deploy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.deploy.v1.CloudDeploy/CancelAutomationRun",
             );
@@ -6456,7 +6455,7 @@ pub mod cloud_deploy_client {
 /// Payload proto for "clouddeploy.googleapis.com/customtargettype_notification"
 /// Platform Log event that describes the failure to send a custom target type
 /// status change Pub/Sub notification.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomTargetTypeNotificationEvent {
     /// Debug message for when a notification fails to send.
     #[prost(string, tag = "1")]
@@ -6474,7 +6473,7 @@ pub struct CustomTargetTypeNotificationEvent {
 /// Payload proto for "clouddeploy.googleapis.com/deliverypipeline_notification"
 /// Platform Log event that describes the failure to send delivery pipeline
 /// status change Pub/Sub notification.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeliveryPipelineNotificationEvent {
     /// Debug message for when a notification fails to send.
     #[prost(string, tag = "1")]
@@ -6491,7 +6490,7 @@ pub struct DeliveryPipelineNotificationEvent {
 }
 /// Payload proto for "clouddeploy.googleapis.com/deploypolicy_evaluation"
 /// Platform Log event that describes the deploy policy evaluation event.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeployPolicyEvaluationEvent {
     /// Debug message for when a deploy policy event occurs.
     #[prost(string, tag = "1")]
@@ -6639,7 +6638,7 @@ pub mod deploy_policy_evaluation_event {
 /// Payload proto for "clouddeploy.googleapis.com/deploypolicy_notification".
 /// Platform Log event that describes the failure to send a pub/sub notification
 /// when there is a DeployPolicy status change.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeployPolicyNotificationEvent {
     /// Debug message for when a deploy policy fails to send a pub/sub
     /// notification.
@@ -6658,7 +6657,7 @@ pub struct DeployPolicyNotificationEvent {
 /// Payload proto for "clouddeploy.googleapis.com/jobrun_notification"
 /// Platform Log event that describes the failure to send JobRun resource update
 /// Pub/Sub notification.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct JobRunNotificationEvent {
     /// Debug message for when a notification fails to send.
     #[prost(string, tag = "1")]
@@ -6691,7 +6690,7 @@ pub struct JobRunNotificationEvent {
 /// Payload proto for "clouddeploy.googleapis.com/release_notification"
 /// Platform Log event that describes the failure to send release status change
 /// Pub/Sub notification.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReleaseNotificationEvent {
     /// Debug message for when a notification fails to send.
     #[prost(string, tag = "1")]
@@ -6711,7 +6710,7 @@ pub struct ReleaseNotificationEvent {
 }
 /// Payload proto for "clouddeploy.googleapis.com/release_render"
 /// Platform Log event that describes the render status change.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReleaseRenderEvent {
     /// Debug message for when a render transition occurs. Provides further
     /// details as rendering progresses through render states.
@@ -6735,7 +6734,7 @@ pub struct ReleaseRenderEvent {
 /// Payload proto for "clouddeploy.googleapis.com/rollout_notification"
 /// Platform Log event that describes the failure to send rollout status change
 /// Pub/Sub notification.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RolloutNotificationEvent {
     /// Debug message for when a notification fails to send.
     #[prost(string, tag = "1")]
@@ -6764,7 +6763,7 @@ pub struct RolloutNotificationEvent {
 }
 /// Payload proto for "clouddeploy.googleapis.com/rollout_update"
 /// Platform Log event that describes the rollout update event.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RolloutUpdateEvent {
     /// Debug message for when a rollout update event occurs.
     #[prost(string, tag = "6")]
@@ -6886,7 +6885,7 @@ pub mod rollout_update_event {
 /// Payload proto for "clouddeploy.googleapis.com/target_notification"
 /// Platform Log event that describes the failure to send target status change
 /// Pub/Sub notification.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TargetNotificationEvent {
     /// Debug message for when a notification fails to send.
     #[prost(string, tag = "1")]

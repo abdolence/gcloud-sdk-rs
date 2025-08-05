@@ -18,7 +18,7 @@ pub struct CustomClass {
 /// Nested message and enum types in `CustomClass`.
 pub mod custom_class {
     /// An item of the class.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ClassItem {
         /// The class item's value.
         #[prost(string, tag = "1")]
@@ -62,12 +62,7 @@ pub mod phrase_set {
     /// year (e.g. "i was born in january", "i was born in febuary", ...), use the
     /// pre-built `$MONTH` class improves the likelihood of correctly transcribing
     /// audio that includes months (e.g. "i was born in $month").
-    /// To refer to pre-built classes, use the class' symbol prepended with `$`
-    /// e.g. `$MONTH`. To refer to custom classes that were defined inline in the
-    /// request, set the class's `custom_class_id` to a string unique to all class
-    /// resources and inline classes. Then use the class' id wrapped in $`{...}`
-    /// e.g. "${my-months}". To refer to custom classes resources, use the class'
-    /// id wrapped in `${}` (e.g. `${my-months}`).
+    /// To refer to pre-built classes, use the class' symbol prepended with `$` e.g.`$MONTH`. To refer to custom classes that were defined inline in the  request, set the class's `custom_class_id` to a string unique to all class  resources and inline classes. Then use the class' id wrapped in $`{...}` e.g. "${my-months}". To refer to custom classes resources, use the class'  id wrapped in`${}` (e.g. `${my-months}\`).
     ///
     /// Speech-to-Text supports three locations: `global`, `us` (US North America),
     /// and `eu` (Europe). If you are calling the `speech.googleapis.com`
@@ -117,7 +112,7 @@ pub struct SpeechAdaptation {
 }
 /// Nested message and enum types in `SpeechAdaptation`.
 pub mod speech_adaptation {
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AbnfGrammar {
         /// All declarations and rules of an ABNF grammar broken up into multiple
         /// strings that will end up concatenated.
@@ -132,8 +127,8 @@ pub mod speech_adaptation {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TranscriptNormalization {
     /// A list of replacement entries. We will perform replacement with one entry
-    /// at a time. For example, the second entry in ["cat" => "dog", "mountain cat"
-    /// => "mountain dog"] will never be applied because we will always process the
+    /// at a time. For example, the second entry in \["cat" => "dog", "mountain cat"
+    /// => "mountain dog"\] will never be applied because we will always process the
     /// first entry before it. At most 100 entries.
     #[prost(message, repeated, tag = "1")]
     pub entries: ::prost::alloc::vec::Vec<transcript_normalization::Entry>,
@@ -141,7 +136,7 @@ pub struct TranscriptNormalization {
 /// Nested message and enum types in `TranscriptNormalization`.
 pub mod transcript_normalization {
     /// A single replacement configuration.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Entry {
         /// What to replace. Max length is 100 characters.
         #[prost(string, tag = "1")]
@@ -181,14 +176,14 @@ pub struct LongRunningRecognizeRequest {
     pub output_config: ::core::option::Option<TranscriptOutputConfig>,
 }
 /// Specifies an optional destination for the recognition results.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TranscriptOutputConfig {
     #[prost(oneof = "transcript_output_config::OutputType", tags = "1")]
     pub output_type: ::core::option::Option<transcript_output_config::OutputType>,
 }
 /// Nested message and enum types in `TranscriptOutputConfig`.
 pub mod transcript_output_config {
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum OutputType {
         /// Specifies a Cloud Storage URI for the recognition results. Must be
         /// specified in the format: `gs://bucket_name/object_name`, and the bucket
@@ -253,14 +248,14 @@ pub struct StreamingRecognitionConfig {
     /// `true`.
     ///
     /// The `single_utterance` field can only be used with specified models,
-    /// otherwise an error is thrown. The `model` field in [`RecognitionConfig`][]
+    /// otherwise an error is thrown. The `model` field in \[`RecognitionConfig`\]\[\]
     /// must be set to:
     ///
     /// * `command_and_search`
     /// * `phone_call` AND additional field `useEnhanced`=`true`
     /// * The `model` field is left undefined. In this case the API auto-selects
-    ///    a model based on any other parameters that you set in
-    ///    `RecognitionConfig`.
+    ///   a model based on any other parameters that you set in
+    ///   `RecognitionConfig`.
     #[prost(bool, tag = "2")]
     pub single_utterance: bool,
     /// If `true`, interim results (tentative hypotheses) may be
@@ -284,7 +279,7 @@ pub struct StreamingRecognitionConfig {
 /// Nested message and enum types in `StreamingRecognitionConfig`.
 pub mod streaming_recognition_config {
     /// Events that a timeout can be set on for voice activity.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct VoiceActivityTimeout {
         /// Duration to timeout the stream if no speech begins.
         #[prost(message, optional, tag = "1")]
@@ -301,7 +296,7 @@ pub struct RecognitionConfig {
     /// Encoding of audio data sent in all `RecognitionAudio` messages.
     /// This field is optional for `FLAC` and `WAV` audio files and required
     /// for all other audio formats. For details, see
-    /// [AudioEncoding][google.cloud.speech.v1.RecognitionConfig.AudioEncoding].
+    /// \[AudioEncoding\]\[google.cloud.speech.v1.RecognitionConfig.AudioEncoding\].
     #[prost(enumeration = "recognition_config::AudioEncoding", tag = "1")]
     pub encoding: i32,
     /// Sample rate in Hertz of the audio data sent in all
@@ -311,7 +306,7 @@ pub struct RecognitionConfig {
     /// the audio source (instead of re-sampling).
     /// This field is optional for FLAC and WAV audio files, but is
     /// required for all other audio formats. For details, see
-    /// [AudioEncoding][google.cloud.speech.v1.RecognitionConfig.AudioEncoding].
+    /// \[AudioEncoding\]\[google.cloud.speech.v1.RecognitionConfig.AudioEncoding\].
     #[prost(int32, tag = "2")]
     pub sample_rate_hertz: i32,
     /// The number of channels in the input audio data.
@@ -366,7 +361,7 @@ pub struct RecognitionConfig {
     pub max_alternatives: i32,
     /// If set to `true`, the server will attempt to filter out
     /// profanities, replacing all but the initial character in each filtered word
-    /// with asterisks, e.g. "f***". If set to `false` or omitted, profanities
+    /// with asterisks, e.g. "f\*\*\*". If set to `false` or omitted, profanities
     /// won't be filtered out.
     #[prost(bool, tag = "5")]
     pub profanity_filter: bool,
@@ -383,7 +378,7 @@ pub struct RecognitionConfig {
     /// and final transcripts.
     #[prost(message, optional, tag = "24")]
     pub transcript_normalization: ::core::option::Option<TranscriptNormalization>,
-    /// Array of [SpeechContext][google.cloud.speech.v1.SpeechContext].
+    /// Array of \[SpeechContext\]\[google.cloud.speech.v1.SpeechContext\].
     /// A means to provide context to assist the speech recognition. For more
     /// information, see
     /// [speech
@@ -440,6 +435,7 @@ pub struct RecognitionConfig {
     /// best suited to your domain to get best results. If a model is not
     /// explicitly specified, then we auto-select a model based on the parameters
     /// in the RecognitionConfig.
+    ///
     /// <table>
     ///    <tr>
     ///      <td><b>Model</b></td>
@@ -524,7 +520,7 @@ pub mod recognition_config {
     /// an `AudioEncoding` when you send  send `FLAC` or `WAV` audio, the
     /// encoding configuration must match the encoding described in the audio
     /// header; otherwise the request returns an
-    /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT] error
+    /// \[google.rpc.Code.INVALID_ARGUMENT\]\[google.rpc.Code.INVALID_ARGUMENT\] error
     /// code.
     #[derive(
         Clone,
@@ -622,7 +618,7 @@ pub mod recognition_config {
     }
 }
 /// Config to enable speaker diarization.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SpeakerDiarizationConfig {
     /// If 'true', enables speaker detection for each recognized word in
     /// the top alternative of the recognition result using a speaker_label
@@ -645,7 +641,7 @@ pub struct SpeakerDiarizationConfig {
     pub speaker_tag: i32,
 }
 /// Description of audio data to be recognized.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RecognitionMetadata {
     /// The use case most closely describing the audio content to be recognized.
     #[prost(enumeration = "recognition_metadata::InteractionType", tag = "1")]
@@ -941,9 +937,9 @@ pub struct SpeechContext {
 }
 /// Contains audio data in the encoding specified in the `RecognitionConfig`.
 /// Either `content` or `uri` must be supplied. Supplying both or neither
-/// returns [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
+/// returns \[google.rpc.Code.INVALID_ARGUMENT\]\[google.rpc.Code.INVALID_ARGUMENT\].
 /// See [content limits](<https://cloud.google.com/speech-to-text/quotas#content>).
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RecognitionAudio {
     /// The audio source, which is either inline content or a Google Cloud
     /// Storage uri.
@@ -954,7 +950,7 @@ pub struct RecognitionAudio {
 pub mod recognition_audio {
     /// The audio source, which is either inline content or a Google Cloud
     /// Storage uri.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum AudioSource {
         /// The audio data bytes encoded as specified in
         /// `RecognitionConfig`. Note: as with all bytes fields, proto buffers use a
@@ -966,7 +962,7 @@ pub mod recognition_audio {
         /// Currently, only Google Cloud Storage URIs are
         /// supported, which must be specified in the following format:
         /// `gs://bucket_name/object_name` (other URI formats return
-        /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]).
+        /// \[google.rpc.Code.INVALID_ARGUMENT\]\[google.rpc.Code.INVALID_ARGUMENT\]).
         /// For more information, see [Request
         /// URIs](<https://cloud.google.com/storage/docs/reference-uris>).
         #[prost(string, tag = "2")]
@@ -1024,7 +1020,7 @@ pub struct LongRunningRecognizeResponse {
 /// Describes the progress of a long-running `LongRunningRecognize` call. It is
 /// included in the `metadata` field of the `Operation` returned by the
 /// `GetOperation` call of the `google::longrunning::Operations` service.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LongRunningRecognizeMetadata {
     /// Approximate percentage of audio processed thus far. Guaranteed to be 100
     /// when the audio is fully processed and the results are available.
@@ -1052,47 +1048,47 @@ pub struct LongRunningRecognizeMetadata {
 ///
 /// 1. results { alternatives { transcript: "tube" } stability: 0.01 }
 ///
-/// 2. results { alternatives { transcript: "to be a" } stability: 0.01 }
+/// 1. results { alternatives { transcript: "to be a" } stability: 0.01 }
 ///
-/// 3. results { alternatives { transcript: "to be" } stability: 0.9 }
-///     results { alternatives { transcript: " or not to be" } stability: 0.01 }
+/// 1. results { alternatives { transcript: "to be" } stability: 0.9 }
+///    results { alternatives { transcript: " or not to be" } stability: 0.01 }
 ///
-/// 4. results { alternatives { transcript: "to be or not to be"
-///                              confidence: 0.92 }
-///               alternatives { transcript: "to bee or not to bee" }
-///               is_final: true }
+/// 1. results { alternatives { transcript: "to be or not to be"
+///    confidence: 0.92 }
+///    alternatives { transcript: "to bee or not to bee" }
+///    is_final: true }
 ///
-/// 5. results { alternatives { transcript: " that's" } stability: 0.01 }
+/// 1. results { alternatives { transcript: " that's" } stability: 0.01 }
 ///
-/// 6. results { alternatives { transcript: " that is" } stability: 0.9 }
-///     results { alternatives { transcript: " the question" } stability: 0.01 }
+/// 1. results { alternatives { transcript: " that is" } stability: 0.9 }
+///    results { alternatives { transcript: " the question" } stability: 0.01 }
 ///
-/// 7. results { alternatives { transcript: " that is the question"
-///                              confidence: 0.98 }
-///               alternatives { transcript: " that was the question" }
-///               is_final: true }
+/// 1. results { alternatives { transcript: " that is the question"
+///    confidence: 0.98 }
+///    alternatives { transcript: " that was the question" }
+///    is_final: true }
 ///
 /// Notes:
 ///
-/// - Only two of the above responses #4 and #7 contain final results; they are
-///    indicated by `is_final: true`. Concatenating these together generates the
-///    full transcript: "to be or not to be that is the question".
+/// * Only two of the above responses #4 and #7 contain final results; they are
+///   indicated by `is_final: true`. Concatenating these together generates the
+///   full transcript: "to be or not to be that is the question".
 ///
-/// - The others contain interim `results`. #3 and #6 contain two interim
-///    `results`: the first portion has a high stability and is less likely to
-///    change; the second portion has a low stability and is very likely to
-///    change. A UI designer might choose to show only high stability `results`.
+/// * The others contain interim `results`. #3 and #6 contain two interim
+///   `results`: the first portion has a high stability and is less likely to
+///   change; the second portion has a low stability and is very likely to
+///   change. A UI designer might choose to show only high stability `results`.
 ///
-/// - The specific `stability` and `confidence` values shown above are only for
-///    illustrative purposes. Actual values may vary.
+/// * The specific `stability` and `confidence` values shown above are only for
+///   illustrative purposes. Actual values may vary.
 ///
-/// - In each response, only one of these fields will be set:
-///      `error`,
-///      `speech_event_type`, or
-///      one or more (repeated) `results`.
+/// * In each response, only one of these fields will be set:
+///   `error`,
+///   `speech_event_type`, or
+///   one or more (repeated) `results`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingRecognizeResponse {
-    /// If set, returns a [google.rpc.Status][google.rpc.Status] message that
+    /// If set, returns a \[google.rpc.Status\]\[google.rpc.Status\] message that
     /// specifies the error for the operation.
     #[prost(message, optional, tag = "1")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
@@ -1325,7 +1321,7 @@ pub struct WordInfo {
     pub speaker_label: ::prost::alloc::string::String,
 }
 /// Information on speech adaptation use in results
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SpeechAdaptationInfo {
     /// Whether there was a timeout when applying speech adaptation. If true,
     /// adaptation had no effect in the response transcript.
@@ -1445,7 +1441,7 @@ pub mod speech_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v1.Speech/Recognize",
             );
@@ -1475,7 +1471,7 @@ pub mod speech_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v1.Speech/LongRunningRecognize",
             );
@@ -1508,7 +1504,7 @@ pub mod speech_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v1.Speech/StreamingRecognize",
             );
@@ -1572,7 +1568,7 @@ pub struct UpdatePhraseSetRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Message sent by the client for the `GetPhraseSet` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPhraseSetRequest {
     /// Required. The name of the phrase set to retrieve. Format:
     ///
@@ -1587,7 +1583,7 @@ pub struct GetPhraseSetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Message sent by the client for the `ListPhraseSet` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPhraseSetRequest {
     /// Required. The parent, which owns this collection of phrase set. Format:
     ///
@@ -1626,7 +1622,7 @@ pub struct ListPhraseSetResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Message sent by the client for the `DeletePhraseSet` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeletePhraseSetRequest {
     /// Required. The name of the phrase set to delete. Format:
     ///
@@ -1682,7 +1678,7 @@ pub struct UpdateCustomClassRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Message sent by the client for the `GetCustomClass` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCustomClassRequest {
     /// Required. The name of the custom class to retrieve. Format:
     ///
@@ -1691,7 +1687,7 @@ pub struct GetCustomClassRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Message sent by the client for the `ListCustomClasses` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCustomClassesRequest {
     /// Required. The parent, which owns this collection of custom classes. Format:
     ///
@@ -1730,7 +1726,7 @@ pub struct ListCustomClassesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Message sent by the client for the `DeleteCustomClass` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteCustomClassRequest {
     /// Required. The name of the custom class to delete. Format:
     ///
@@ -1851,7 +1847,7 @@ pub mod adaptation_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v1.Adaptation/CreatePhraseSet",
             );
@@ -1878,7 +1874,7 @@ pub mod adaptation_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v1.Adaptation/GetPhraseSet",
             );
@@ -1905,7 +1901,7 @@ pub mod adaptation_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v1.Adaptation/ListPhraseSet",
             );
@@ -1929,7 +1925,7 @@ pub mod adaptation_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v1.Adaptation/UpdatePhraseSet",
             );
@@ -1956,7 +1952,7 @@ pub mod adaptation_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v1.Adaptation/DeletePhraseSet",
             );
@@ -1983,7 +1979,7 @@ pub mod adaptation_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v1.Adaptation/CreateCustomClass",
             );
@@ -2010,7 +2006,7 @@ pub mod adaptation_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v1.Adaptation/GetCustomClass",
             );
@@ -2040,7 +2036,7 @@ pub mod adaptation_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v1.Adaptation/ListCustomClasses",
             );
@@ -2067,7 +2063,7 @@ pub mod adaptation_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v1.Adaptation/UpdateCustomClass",
             );
@@ -2094,7 +2090,7 @@ pub mod adaptation_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v1.Adaptation/DeleteCustomClass",
             );

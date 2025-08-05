@@ -4,7 +4,7 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RelocateBucketError {
     /// The full resource name, following the format:
-    /// 'projects/_/buckets/{bucket_id}'.
+    /// 'projects/\_/buckets/{bucket_id}'.
     #[prost(string, tag = "1")]
     pub resource: ::prost::alloc::string::String,
     /// The object id of an object that is not supported for relocation.
@@ -41,7 +41,7 @@ pub struct RelocateBucketError {
 pub mod relocate_bucket_error {
     /// Configuration for Custom Dual Regions. It specifies eligible regions within
     /// the same Multiregion.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CustomPlacementConfig {
         /// List of locations to use for data placement.
         #[prost(string, repeated, tag = "1")]

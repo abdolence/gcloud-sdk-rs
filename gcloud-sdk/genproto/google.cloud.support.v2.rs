@@ -2,7 +2,7 @@
 /// An Actor represents an entity that performed an action. For example, an actor
 /// could be a user who posted a comment on a support case, a user who
 /// uploaded an attachment, or a service account that created a support case.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Actor {
     /// The name to display for the actor. If not provided, it is inferred from
     /// credentials supplied during case creation. When an email is provided, a
@@ -38,7 +38,7 @@ pub struct Actor {
 /// While attachments can be uploaded in the console at the
 /// same time as a comment, they're associated on a "case" level, not a
 /// "comment" level.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Attachment {
     /// Output only. Identifier. The resource name of the attachment.
     #[prost(string, tag = "1")]
@@ -61,7 +61,7 @@ pub struct Attachment {
     pub size_bytes: i64,
 }
 /// The request message for the ListAttachments endpoint.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAttachmentsRequest {
     /// Required. The name of the case for which attachments should be listed.
     #[prost(string, tag = "1")]
@@ -201,7 +201,7 @@ pub mod case_attachment_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.support.v2.CaseAttachmentService/ListAttachments",
             );
@@ -227,24 +227,24 @@ pub mod case_attachment_service_client {
 /// Organizations are identified by a number, so the name of a case parented by
 /// an organization would look like this:
 ///
-/// ```
+/// ```text,
 /// organizations/123/cases/456
 /// ```
 ///
 /// Projects have two unique identifiers, an ID and a number, and they look like
 /// this:
 ///
-/// ```
+/// ```text,
 /// projects/abc/cases/456
 /// ```
 ///
-/// ```
+/// ```text,
 /// projects/123/cases/456
 /// ```
 ///
 /// You can use either of them when calling the API. To learn more
 /// about project identifiers, see [AIP-2510](<https://google.aip.dev/cloud/2510>).
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Case {
     /// Identifier. The resource name for the case.
     #[prost(string, tag = "1")]
@@ -431,7 +431,7 @@ pub mod case {
 ///
 /// A classification always has an ID that is its unique identifier.
 /// A valid ID is required when creating a case.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CaseClassification {
     /// The unique ID for a classification. Must be specified for case creation.
     ///
@@ -452,7 +452,7 @@ pub struct CaseClassification {
     pub display_name: ::prost::alloc::string::String,
 }
 /// An escalation of a support case.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Escalation {
     /// Required. The reason why the Case is being escalated.
     #[prost(enumeration = "escalation::Reason", tag = "4")]
@@ -514,14 +514,14 @@ pub mod escalation {
     }
 }
 /// The request message for the GetCase endpoint.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCaseRequest {
     /// Required. The full name of a case to be retrieved.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the CreateCase endpoint.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateCaseRequest {
     /// Required. The name of the parent under which the case should be created.
     #[prost(string, tag = "1")]
@@ -531,7 +531,7 @@ pub struct CreateCaseRequest {
     pub case: ::core::option::Option<Case>,
 }
 /// The request message for the ListCases endpoint.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCasesRequest {
     /// Required. The name of a parent to list cases under.
     #[prost(string, tag = "1")]
@@ -544,17 +544,17 @@ pub struct ListCasesRequest {
     /// Expressions use the following fields separated by `AND` and specified with
     /// `=`:
     ///
-    /// - `state`: Can be `OPEN` or `CLOSED`.
-    /// - `priority`: Can be `P0`, `P1`, `P2`, `P3`, or `P4`. You
-    /// can specify multiple values for priority using the `OR` operator. For
-    /// example, `priority=P1 OR priority=P2`.
-    /// - `creator.email`: The email address of the case creator.
+    /// * `state`: Can be `OPEN` or `CLOSED`.
+    /// * `priority`: Can be `P0`, `P1`, `P2`, `P3`, or `P4`. You
+    ///   can specify multiple values for priority using the `OR` operator. For
+    ///   example, `priority=P1 OR priority=P2`.
+    /// * `creator.email`: The email address of the case creator.
     ///
     /// EXAMPLES:
     ///
-    /// - `state=CLOSED`
-    /// - `state=OPEN AND creator.email="tester@example.com"`
-    /// - `state=OPEN AND (priority=P0 OR priority=P1)`
+    /// * `state=CLOSED`
+    /// * `state=OPEN AND creator.email="tester@example.com"`
+    /// * `state=OPEN AND (priority=P0 OR priority=P1)`
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// The maximum number of cases fetched with each request. Defaults to 10.
@@ -579,7 +579,7 @@ pub struct ListCasesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for the SearchCases endpoint.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchCasesRequest {
     /// The name of the parent resource to search for cases under.
     #[prost(string, tag = "4")]
@@ -589,14 +589,14 @@ pub struct SearchCasesRequest {
     /// Expressions use the following fields separated by `AND` and specified with
     /// `=`:
     ///
-    /// - `organization`: An organization name in the form
-    /// `organizations/<organization_id>`.
-    /// - `project`: A project name in the form `projects/<project_id>`.
-    /// - `state`: Can be `OPEN` or `CLOSED`.
-    /// - `priority`: Can be `P0`, `P1`, `P2`, `P3`, or `P4`. You
-    /// can specify multiple values for priority using the `OR` operator. For
-    /// example, `priority=P1 OR priority=P2`.
-    /// - `creator.email`: The email address of the case creator.
+    /// * `organization`: An organization name in the form
+    ///   `organizations/<organization_id>`.
+    /// * `project`: A project name in the form `projects/<project_id>`.
+    /// * `state`: Can be `OPEN` or `CLOSED`.
+    /// * `priority`: Can be `P0`, `P1`, `P2`, `P3`, or `P4`. You
+    ///   can specify multiple values for priority using the `OR` operator. For
+    ///   example, `priority=P1 OR priority=P2`.
+    /// * `creator.email`: The email address of the case creator.
     ///
     /// You must specify either `organization` or `project`.
     ///
@@ -610,12 +610,12 @@ pub struct SearchCasesRequest {
     ///
     /// Examples:
     ///
-    /// - `organization="organizations/123456789"`
-    /// - `project="projects/my-project-id"`
-    /// - `project="projects/123456789"`
-    /// - `organization="organizations/123456789" AND state=CLOSED`
-    /// - `project="projects/my-project-id" AND creator.email="tester@example.com"`
-    /// - `project="projects/my-project-id" AND (priority=P0 OR priority=P1)`
+    /// * `organization="organizations/123456789"`
+    /// * `project="projects/my-project-id"`
+    /// * `project="projects/123456789"`
+    /// * `organization="organizations/123456789" AND state=CLOSED`
+    /// * `project="projects/my-project-id" AND creator.email="tester@example.com"`
+    /// * `project="projects/my-project-id" AND (priority=P0 OR priority=P1)`
     #[prost(string, tag = "1")]
     pub query: ::prost::alloc::string::String,
     /// The maximum number of cases fetched with each request. The default page
@@ -641,7 +641,7 @@ pub struct SearchCasesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for the EscalateCase endpoint.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EscalateCaseRequest {
     /// Required. The name of the case to be escalated.
     #[prost(string, tag = "1")]
@@ -651,7 +651,7 @@ pub struct EscalateCaseRequest {
     pub escalation: ::core::option::Option<Escalation>,
 }
 /// The request message for the UpdateCase endpoint
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateCaseRequest {
     /// Required. The case to update.
     #[prost(message, optional, tag = "1")]
@@ -668,14 +668,14 @@ pub struct UpdateCaseRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request message for the CloseCase endpoint.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloseCaseRequest {
     /// Required. The name of the case to close.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for the SearchCaseClassifications endpoint.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchCaseClassificationsRequest {
     /// An expression used to filter case classifications.
     ///
@@ -808,7 +808,7 @@ pub mod case_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.support.v2.CaseService/GetCase",
             );
@@ -839,7 +839,7 @@ pub mod case_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.support.v2.CaseService/ListCases",
             );
@@ -866,7 +866,7 @@ pub mod case_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.support.v2.CaseService/SearchCases",
             );
@@ -894,7 +894,7 @@ pub mod case_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.support.v2.CaseService/CreateCase",
             );
@@ -918,7 +918,7 @@ pub mod case_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.support.v2.CaseService/UpdateCase",
             );
@@ -948,7 +948,7 @@ pub mod case_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.support.v2.CaseService/EscalateCase",
             );
@@ -975,7 +975,7 @@ pub mod case_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.support.v2.CaseService/CloseCase",
             );
@@ -1011,7 +1011,7 @@ pub mod case_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.support.v2.CaseService/SearchCaseClassifications",
             );
@@ -1032,7 +1032,7 @@ pub mod case_service_client {
 /// Case comments are the primary way for Google Support to communicate with a
 /// user who has opened a case. When a user responds to Google Support, the
 /// user's responses also appear as comments.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Comment {
     /// Output only. Identifier. The resource name of the comment.
     #[prost(string, tag = "1")]
@@ -1058,7 +1058,7 @@ pub struct Comment {
     pub plain_text_body: ::prost::alloc::string::String,
 }
 /// The request message for the ListComments endpoint.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCommentsRequest {
     /// Required. The name of the case for which to list comments.
     #[prost(string, tag = "1")]
@@ -1084,7 +1084,7 @@ pub struct ListCommentsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for the CreateComment endpoint.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateCommentRequest {
     /// Required. The name of the case to which the comment should be added.
     #[prost(string, tag = "1")]
@@ -1201,7 +1201,7 @@ pub mod comment_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.support.v2.CommentService/ListComments",
             );
@@ -1230,7 +1230,7 @@ pub mod comment_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.support.v2.CommentService/CreateComment",
             );

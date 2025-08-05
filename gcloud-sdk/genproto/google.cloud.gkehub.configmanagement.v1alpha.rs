@@ -32,7 +32,7 @@ pub struct MembershipState {
 }
 /// **Anthos Config Management**: Configuration for a single cluster.
 /// Intended to parallel the ConfigManagement CR.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MembershipSpec {
     /// Config Sync configuration for the cluster.
     #[prost(message, optional, tag = "1")]
@@ -51,7 +51,7 @@ pub struct MembershipSpec {
     pub version: ::prost::alloc::string::String,
 }
 /// Configuration for Config Sync
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ConfigSync {
     /// Git repo configuration for the cluster.
     #[prost(message, optional, tag = "7")]
@@ -62,7 +62,7 @@ pub struct ConfigSync {
     pub source_format: ::prost::alloc::string::String,
 }
 /// Git repo configuration for a single cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GitConfig {
     /// The URL of the Git repository to use as the source of truth.
     #[prost(string, tag = "1")]
@@ -92,7 +92,7 @@ pub struct GitConfig {
     pub gcp_service_account_email: ::prost::alloc::string::String,
 }
 /// Configuration for Policy Controller
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PolicyController {
     /// Enables the installation of Policy Controller.
     /// If false, the rest of PolicyController fields take no
@@ -122,14 +122,14 @@ pub struct PolicyController {
     pub mutation_enabled: bool,
 }
 /// Configuration for Binauthz
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BinauthzConfig {
     /// Whether binauthz is enabled in this cluster.
     #[prost(bool, tag = "1")]
     pub enabled: bool,
 }
 /// Configuration for Hierarchy Controller
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HierarchyControllerConfig {
     /// Whether Hierarchy Controller is enabled in this cluster.
     #[prost(bool, tag = "1")]
@@ -142,7 +142,7 @@ pub struct HierarchyControllerConfig {
     pub enable_hierarchical_resource_quota: bool,
 }
 /// Deployment state for Hierarchy Controller
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HierarchyControllerDeploymentState {
     /// The deployment state for open source HNC (e.g. v0.7.0-hc.0)
     #[prost(enumeration = "DeploymentState", tag = "1")]
@@ -152,7 +152,7 @@ pub struct HierarchyControllerDeploymentState {
     pub extension: i32,
 }
 /// Version for Hierarchy Controller
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HierarchyControllerVersion {
     /// Version for open source HNC
     #[prost(string, tag = "1")]
@@ -162,7 +162,7 @@ pub struct HierarchyControllerVersion {
     pub extension: ::prost::alloc::string::String,
 }
 /// State for Hierarchy Controller
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HierarchyControllerState {
     /// The version for Hierarchy Controller
     #[prost(message, optional, tag = "1")]
@@ -185,7 +185,7 @@ pub struct OperatorState {
     pub errors: ::prost::alloc::vec::Vec<InstallError>,
 }
 /// Errors pertaining to the installation of ACM
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstallError {
     /// A string representing the user facing error message
     #[prost(string, tag = "1")]
@@ -206,7 +206,7 @@ pub struct ConfigSyncState {
     pub sync_state: ::core::option::Option<SyncState>,
 }
 /// Specific versioning information pertaining to ConfigSync's Pods
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ConfigSyncVersion {
     /// Version of the deployed importer pod
     #[prost(string, tag = "1")]
@@ -228,7 +228,7 @@ pub struct ConfigSyncVersion {
     pub root_reconciler: ::prost::alloc::string::String,
 }
 /// The state of ConfigSync's deployment on a cluster
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ConfigSyncDeploymentState {
     /// Deployment state of the importer pod
     #[prost(enumeration = "DeploymentState", tag = "1")]
@@ -360,7 +360,7 @@ pub struct SyncError {
     pub error_resources: ::prost::alloc::vec::Vec<ErrorResource>,
 }
 /// Model for a config file in the git repo with an associated Sync error
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ErrorResource {
     /// Path in the git repo of the erroneous config
     #[prost(string, tag = "1")]
@@ -376,7 +376,7 @@ pub struct ErrorResource {
     pub resource_gvk: ::core::option::Option<GroupVersionKind>,
 }
 /// A Kubernetes object's GVK
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GroupVersionKind {
     /// Kubernetes Group
     #[prost(string, tag = "1")]
@@ -389,7 +389,7 @@ pub struct GroupVersionKind {
     pub kind: ::prost::alloc::string::String,
 }
 /// State for PolicyControllerState.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PolicyControllerState {
     /// The version of Gatekeeper Policy Controller deployed.
     #[prost(message, optional, tag = "1")]
@@ -399,7 +399,7 @@ pub struct PolicyControllerState {
     pub deployment_state: ::core::option::Option<GatekeeperDeploymentState>,
 }
 /// The build version of Gatekeeper Policy Controller is using.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PolicyControllerVersion {
     /// The gatekeeper image tag that is composed of ACM version, git tag, build
     /// number.
@@ -407,7 +407,7 @@ pub struct PolicyControllerVersion {
     pub version: ::prost::alloc::string::String,
 }
 /// State for Binauthz
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BinauthzState {
     /// The state of the binauthz webhook.
     #[prost(enumeration = "DeploymentState", tag = "1")]
@@ -417,14 +417,14 @@ pub struct BinauthzState {
     pub version: ::core::option::Option<BinauthzVersion>,
 }
 /// The version of binauthz.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BinauthzVersion {
     /// The version of the binauthz webhook.
     #[prost(string, tag = "1")]
     pub webhook_version: ::prost::alloc::string::String,
 }
 /// State of Policy Controller installation.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GatekeeperDeploymentState {
     /// Status of gatekeeper-controller-manager pod.
     #[prost(enumeration = "DeploymentState", tag = "1")]

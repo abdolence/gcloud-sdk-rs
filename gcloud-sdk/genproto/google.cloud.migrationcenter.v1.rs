@@ -304,7 +304,7 @@ pub struct ErrorFrame {
 }
 /// Source represents an object from which asset information is
 /// streamed to Migration Center.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Source {
     /// Output only. The full name of the source.
     #[prost(string, tag = "1")]
@@ -471,7 +471,7 @@ pub struct ReportConfig {
 /// Nested message and enum types in `ReportConfig`.
 pub mod report_config {
     /// Represents a combination of a group with a preference set.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct GroupPreferenceSetAssignment {
         /// Required. Name of the group.
         #[prost(string, tag = "1")]
@@ -599,7 +599,7 @@ pub mod report {
     }
 }
 /// Represents the metadata of the long-running operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -618,8 +618,8 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have been cancelled successfully
-    /// have [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+    /// have \[Operation.error\]\[\] value with a
+    /// \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -628,7 +628,7 @@ pub struct OperationMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// Message for requesting a list of assets.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAssetsRequest {
     /// Required. Parent value for `ListAssetsRequest`.
     #[prost(string, tag = "1")]
@@ -664,7 +664,7 @@ pub struct ListAssetsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Asset.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAssetRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -723,7 +723,7 @@ pub struct BatchUpdateAssetsResponse {
     pub assets: ::prost::alloc::vec::Vec<Asset>,
 }
 /// A request to delete an asset.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAssetRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -745,7 +745,7 @@ pub struct DeleteAssetRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// A request to delete a list of  asset.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BatchDeleteAssetsRequest {
     /// Required. Parent value for batch asset delete.
     #[prost(string, tag = "1")]
@@ -775,7 +775,7 @@ pub struct ReportAssetFramesRequest {
     pub source: ::prost::alloc::string::String,
 }
 /// A response to a call to `ReportAssetFrame`.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReportAssetFramesResponse {}
 /// A request to aggregate one or more values.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -827,7 +827,7 @@ pub struct CreateImportJobRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// A request to list import jobs.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListImportJobsRequest {
     /// Required. Parent value for `ListImportJobsRequest`.
     #[prost(string, tag = "1")]
@@ -864,7 +864,7 @@ pub struct ListImportJobsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A request to get an import job.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetImportJobRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -875,7 +875,7 @@ pub struct GetImportJobRequest {
     pub view: i32,
 }
 /// A request to delete an import job.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteImportJobRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -932,7 +932,7 @@ pub struct UpdateImportJobRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// A request to validate an import job.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ValidateImportJobRequest {
     /// Required. The name of the import job to validate.
     #[prost(string, tag = "1")]
@@ -954,7 +954,7 @@ pub struct ValidateImportJobRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// A request to run an import job.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RunImportJobRequest {
     /// Required. The name of the import job to run.
     #[prost(string, tag = "1")]
@@ -976,14 +976,14 @@ pub struct RunImportJobRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// A request to get an import data file.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetImportDataFileRequest {
     /// Required. Name of the ImportDataFile.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// A request to list import data files of an import job.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListImportDataFilesRequest {
     /// Required. Name of the parent of the `ImportDataFiles` resource.
     #[prost(string, tag = "1")]
@@ -1051,7 +1051,7 @@ pub struct CreateImportDataFileRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// A request to delete an `ImportDataFile` resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteImportDataFileRequest {
     /// Required. Name of the ImportDataFile to delete.
     #[prost(string, tag = "1")]
@@ -1073,7 +1073,7 @@ pub struct DeleteImportDataFileRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// A request to list groups.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListGroupsRequest {
     /// Required. Parent value for `ListGroupsRequest`.
     #[prost(string, tag = "1")]
@@ -1106,7 +1106,7 @@ pub struct ListGroupsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A request to get a group.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetGroupRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -1174,7 +1174,7 @@ pub struct UpdateGroupRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// A request to delete a group.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteGroupRequest {
     /// Required. Name of the group resource.
     #[prost(string, tag = "1")]
@@ -1196,7 +1196,7 @@ pub struct DeleteGroupRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// A request to add assets to a group.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AddAssetsToGroupRequest {
     /// Required. Group reference.
     #[prost(string, tag = "1")]
@@ -1231,7 +1231,7 @@ pub struct AddAssetsToGroupRequest {
     pub allow_existing: bool,
 }
 /// A request to remove assets from a group.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RemoveAssetsFromGroupRequest {
     /// Required. Group reference.
     #[prost(string, tag = "1")]
@@ -1265,7 +1265,7 @@ pub struct RemoveAssetsFromGroupRequest {
     pub allow_missing: bool,
 }
 /// A request to list error frames for a source.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListErrorFramesRequest {
     /// Required. Parent value (the source) for `ListErrorFramesRequest`.
     #[prost(string, tag = "1")]
@@ -1295,7 +1295,7 @@ pub struct ListErrorFramesResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetErrorFrameRequest {
     /// Required. The name of the frame to retrieve.
     /// Format:
@@ -1308,7 +1308,7 @@ pub struct GetErrorFrameRequest {
     pub view: i32,
 }
 /// A request for a list of sources.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSourcesRequest {
     /// Required. Parent value for `ListSourcesRequest`.
     #[prost(string, tag = "1")]
@@ -1341,14 +1341,14 @@ pub struct ListSourcesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A request to get a source.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSourceRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// A request to create a source.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateSourceRequest {
     /// Required. Value for parent.
     #[prost(string, tag = "1")]
@@ -1380,7 +1380,7 @@ pub struct CreateSourceRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// A request to update a source.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateSourceRequest {
     /// Required. Field mask is used to specify the fields to be overwritten in the
     /// `Source` resource by the update.
@@ -1410,7 +1410,7 @@ pub struct UpdateSourceRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// A request to delete a source.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSourceRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -1432,7 +1432,7 @@ pub struct DeleteSourceRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for listing preference sets.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPreferenceSetsRequest {
     /// Required. Parent value for `ListPreferenceSetsRequest`.
     #[prost(string, tag = "1")]
@@ -1463,7 +1463,7 @@ pub struct ListPreferenceSetsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A request to get a preference set.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPreferenceSetRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -1533,7 +1533,7 @@ pub struct UpdatePreferenceSetRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// A request to delete a preference set.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeletePreferenceSetRequest {
     /// Required. Name of the group resource.
     #[prost(string, tag = "1")]
@@ -1555,14 +1555,14 @@ pub struct DeletePreferenceSetRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// A request to get the settings.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSettingsRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// A request to update the settings.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateSettingsRequest {
     /// Required. Field mask is used to specify the fields to be overwritten in the
     /// `Settings` resource by the update.
@@ -1624,7 +1624,7 @@ pub struct CreateReportConfigRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// A request to delete a ReportConfig.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteReportConfigRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -1651,7 +1651,7 @@ pub struct DeleteReportConfigRequest {
     pub force: bool,
 }
 /// A request to get a Report.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetReportRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -1661,7 +1661,7 @@ pub struct GetReportRequest {
     pub view: i32,
 }
 /// A request for a list of Reports.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListReportsRequest {
     /// Required. Parent value for `ListReportsRequest`.
     #[prost(string, tag = "1")]
@@ -1697,7 +1697,7 @@ pub struct ListReportsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A request to delete a Report.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteReportRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
@@ -1719,14 +1719,14 @@ pub struct DeleteReportRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// A request to get a `ReportConfig` resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetReportConfigRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// A request to get a list of `ReportConfig` resources.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListReportConfigsRequest {
     /// Required. Parent value for `ListReportConfigsRequest`.
     #[prost(string, tag = "1")]
@@ -1941,7 +1941,7 @@ pub mod machine_details {
     }
 }
 /// Details of the machine architecture.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MachineArchitectureDetails {
     /// CPU architecture, e.g., "x64-based PC", "x86_64", "i686" etc.
     #[prost(string, tag = "1")]
@@ -2058,7 +2058,7 @@ pub mod machine_architecture_details {
     }
 }
 /// Details about the BIOS.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BiosDetails {
     /// BIOS name.
     /// This fields is deprecated. Please use the `id` field instead.
@@ -2126,7 +2126,7 @@ pub struct NetworkAddressList {
     pub entries: ::prost::alloc::vec::Vec<NetworkAddress>,
 }
 /// Details of network address.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkAddress {
     /// Assigned or configured IP Address.
     #[prost(string, tag = "1")]
@@ -2304,7 +2304,7 @@ pub mod disk_entry {
         }
     }
     /// Additional details for specific platforms.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum PlatformSpecific {
         /// VMware disk details.
         #[prost(message, tag = "20")]
@@ -2344,7 +2344,7 @@ pub struct DiskPartition {
     pub sub_partitions: ::core::option::Option<DiskPartitionList>,
 }
 /// VMware disk config details.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VmwareDiskConfig {
     /// VMDK backing type.
     #[prost(enumeration = "vmware_disk_config::BackingType", tag = "1")]
@@ -2615,7 +2615,7 @@ pub struct FstabEntryList {
     pub entries: ::prost::alloc::vec::Vec<FstabEntry>,
 }
 /// Single fstab entry.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FstabEntry {
     /// The block special device or remote filesystem to be mounted.
     #[prost(string, tag = "1")]
@@ -2645,7 +2645,7 @@ pub struct HostsEntryList {
     pub entries: ::prost::alloc::vec::Vec<HostsEntry>,
 }
 /// Single /etc/hosts entry.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HostsEntry {
     /// IP (raw, IPv4/6 agnostic).
     #[prost(string, tag = "1")]
@@ -2662,7 +2662,7 @@ pub struct NfsExportList {
     pub entries: ::prost::alloc::vec::Vec<NfsExport>,
 }
 /// NFS export.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NfsExport {
     /// The directory being exported.
     #[prost(string, tag = "1")]
@@ -2707,7 +2707,7 @@ pub struct RunningServiceList {
     pub entries: ::prost::alloc::vec::Vec<RunningService>,
 }
 /// Guest OS running service details.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RunningService {
     /// Service name.
     #[prost(string, tag = "1")]
@@ -2879,7 +2879,7 @@ pub struct NetworkConnectionList {
     #[prost(message, repeated, tag = "1")]
     pub entries: ::prost::alloc::vec::Vec<NetworkConnection>,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkConnection {
     /// Connection protocol (e.g. TCP/UDP).
     #[prost(string, tag = "1")]
@@ -2972,7 +2972,7 @@ pub struct GuestInstalledApplicationList {
     pub entries: ::prost::alloc::vec::Vec<GuestInstalledApplication>,
 }
 /// Guest installed application information.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GuestInstalledApplication {
     /// Installed application name.
     #[prost(string, tag = "1")]
@@ -2998,7 +2998,7 @@ pub struct OpenFileList {
     pub entries: ::prost::alloc::vec::Vec<OpenFileDetails>,
 }
 /// Open file Information.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OpenFileDetails {
     /// Opened file command.
     #[prost(string, tag = "1")]
@@ -3014,14 +3014,14 @@ pub struct OpenFileDetails {
     pub file_path: ::prost::alloc::string::String,
 }
 /// Information about the platform.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PlatformDetails {
     #[prost(oneof = "platform_details::VendorDetails", tags = "1, 2, 3, 4, 5")]
     pub vendor_details: ::core::option::Option<platform_details::VendorDetails>,
 }
 /// Nested message and enum types in `PlatformDetails`.
 pub mod platform_details {
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum VendorDetails {
         /// VMware specific details.
         #[prost(message, tag = "1")]
@@ -3041,7 +3041,7 @@ pub mod platform_details {
     }
 }
 /// VMware specific details.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VmwarePlatformDetails {
     /// vCenter version.
     #[prost(string, tag = "1")]
@@ -3064,7 +3064,7 @@ pub struct VmwarePlatformDetails {
     pub vcenter_vm_id: ::prost::alloc::string::String,
 }
 /// AWS EC2 specific details.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AwsEc2PlatformDetails {
     /// AWS platform's machine type label.
     #[prost(string, tag = "1")]
@@ -3074,7 +3074,7 @@ pub struct AwsEc2PlatformDetails {
     pub location: ::prost::alloc::string::String,
 }
 /// Azure VM specific details.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AzureVmPlatformDetails {
     /// Azure platform's machine type label.
     #[prost(string, tag = "1")]
@@ -3087,7 +3087,7 @@ pub struct AzureVmPlatformDetails {
     pub provisioning_state: ::prost::alloc::string::String,
 }
 /// Generic platform details.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenericPlatformDetails {
     /// Free text representation of the machine location.
     /// The format of this field should not be relied on. Different VMs in the same
@@ -3096,7 +3096,7 @@ pub struct GenericPlatformDetails {
     pub location: ::prost::alloc::string::String,
 }
 /// Platform specific details for Physical Machines.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PhysicalPlatformDetails {
     /// Free text representation of the machine location.
     /// The format of this field should not be relied on. Different machines in the
@@ -3114,8 +3114,8 @@ pub struct MemoryUsageSample {
 /// CPU usage sample.
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct CpuUsageSample {
-    /// Percentage of total CPU capacity utilized. Must be in the interval [0,
-    /// 100]. On most systems can be calculated using 100 - idle percentage.
+    /// Percentage of total CPU capacity utilized. Must be in the interval \[0,
+    /// 100\]. On most systems can be calculated using 100 - idle percentage.
     #[prost(float, tag = "1")]
     pub utilized_percentage: f32,
 }
@@ -3267,7 +3267,7 @@ pub mod insight {
     }
 }
 /// A generic insight about an asset.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenericInsight {
     /// Output only. Represents a globally unique message id for
     /// this insight, can be used for localization purposes, in case message_code
@@ -3335,7 +3335,7 @@ pub struct ComputeEngineShapeDescriptor {
     pub storage: ::prost::alloc::vec::Vec<ComputeStorageDescriptor>,
 }
 /// Compute Engine storage option descriptor.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ComputeStorageDescriptor {
     /// Disk type backing the storage.
     #[prost(enumeration = "PersistentDiskType", tag = "1")]
@@ -3345,7 +3345,7 @@ pub struct ComputeStorageDescriptor {
     pub size_gb: i32,
 }
 /// Describes the fit level of an asset for migration to a specific target.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FitDescriptor {
     /// Fit level.
     #[prost(enumeration = "fit_descriptor::FitLevel", tag = "1")]
@@ -3414,10 +3414,10 @@ pub struct Aggregation {
 /// Nested message and enum types in `Aggregation`.
 pub mod aggregation {
     /// Object count.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Count {}
     /// Sum of field values.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Sum {}
     /// Histogram of bucketed assets counts by field value.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3435,7 +3435,7 @@ pub mod aggregation {
         pub lower_bounds: ::prost::alloc::vec::Vec<f64>,
     }
     /// Frequency distribution of all field values.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Frequency {}
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AggregationFunction {
@@ -3464,7 +3464,7 @@ pub struct AggregationResult {
 /// Nested message and enum types in `AggregationResult`.
 pub mod aggregation_result {
     /// The result of a count aggregation.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Count {
         #[prost(int64, tag = "1")]
         pub value: i64,
@@ -3565,7 +3565,7 @@ pub struct ExecutionReport {
 }
 /// A resource that reports the errors encountered while processing an
 /// import job.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportError {
     /// The error information.
     #[prost(string, tag = "1")]
@@ -3654,7 +3654,7 @@ pub struct UploadFileInfo {
     pub uri_expiration_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Lists the asset IDs of all assets.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AssetList {
     /// Required. A list of asset IDs
     #[prost(string, repeated, tag = "1")]
@@ -3662,7 +3662,7 @@ pub struct AssetList {
 }
 /// A resource that contains a single violation of a reported `AssetFrame`
 /// resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FrameViolationEntry {
     /// The field of the original frame where the violation occurred.
     #[prost(string, tag = "1")]
@@ -3735,7 +3735,7 @@ pub struct MachinePreferences {
     pub allowed_machine_series: ::prost::alloc::vec::Vec<MachineSeries>,
 }
 /// A Compute Engine machine series.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MachineSeries {
     /// Code to identify a Compute Engine machine series. Consult
     /// <https://cloud.google.com/compute/docs/machine-resource#machine_type_comparison>
@@ -3968,7 +3968,7 @@ pub mod sole_tenancy_preferences {
     }
 }
 /// A Sole Tenant node type.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SoleTenantNodeType {
     /// Name of the Sole Tenant node. Consult
     /// <https://cloud.google.com/compute/docs/nodes/sole-tenant-nodes>
@@ -3976,7 +3976,7 @@ pub struct SoleTenantNodeType {
     pub node_name: ::prost::alloc::string::String,
 }
 /// The user preferences relating to target regions.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegionPreferences {
     /// A list of preferred regions,
     /// ordered by the most preferred region first.
@@ -3987,7 +3987,7 @@ pub struct RegionPreferences {
     pub preferred_regions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Describes the Migration Center settings related to the project.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Settings {
     /// Output only. The name of the resource.
     #[prost(string, tag = "1")]
@@ -4033,7 +4033,7 @@ pub mod report_summary {
     }
     /// Utilization Chart is a specific type of visualization which displays
     /// a metric classified into "Used" and "Free" buckets.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct UtilizationChartData {
         /// Aggregate value which falls into the "Used" bucket.
         #[prost(int64, tag = "1")]
@@ -4060,7 +4060,7 @@ pub mod report_summary {
         /// with a field value between those bounds.
         /// The lower bound is inclusive and the upper bound is exclusive.
         /// Lower bound may be -infinity and upper bound may be infinity.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Bucket {
             /// Lower bound - inclusive.
             #[prost(int64, tag = "1")]
@@ -4109,7 +4109,7 @@ pub mod report_summary {
     }
     /// Represents a data point tracking the count of assets allocated for a
     /// specific Machine Series.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct MachineSeriesAllocation {
         /// The Machine Series (e.g. "E2", "N2")
         #[prost(message, optional, tag = "1")]
@@ -4150,7 +4150,7 @@ pub mod report_summary {
         pub node_allocations: ::prost::alloc::vec::Vec<VmwareNodeAllocation>,
     }
     /// Represents assets allocated to a specific VMWare Node type.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct VmwareNodeAllocation {
         /// VMWare node type, e.g. "ve1-standard-72"
         #[prost(message, optional, tag = "1")]
@@ -4163,7 +4163,7 @@ pub mod report_summary {
         pub allocated_asset_count: i64,
     }
     /// A VMWare Engine Node
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct VmwareNode {
         /// Code to identify VMware Engine node series, e.g. "ve1-standard-72". Based
         /// on the displayName of
@@ -4185,7 +4185,7 @@ pub mod report_summary {
         pub node_allocations: ::prost::alloc::vec::Vec<SoleTenantNodeAllocation>,
     }
     /// Represents the assets allocated to a specific Sole-Tenant node type.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SoleTenantNodeAllocation {
         /// Sole Tenant node type, e.g. "m3-node-128-3904"
         #[prost(message, optional, tag = "1")]
@@ -4354,16 +4354,16 @@ pub enum ImportJobFormat {
     /// RVTools format (CSV).
     RvtoolsCsv = 2,
     /// CSV format exported from AWS using the
-    /// [AWS collection
-    /// script][<https://github.com/GoogleCloudPlatform/aws-to-stratozone-export].>
+    /// \[AWS collection
+    /// script\]\[<https://github.com/GoogleCloudPlatform/aws-to-stratozone-export\].>
     ExportedAwsCsv = 4,
     /// CSV format exported from Azure using the
-    /// [Azure collection
-    /// script][<https://github.com/GoogleCloudPlatform/azure-to-stratozone-export].>
+    /// \[Azure collection
+    /// script\]\[<https://github.com/GoogleCloudPlatform/azure-to-stratozone-export\].>
     ExportedAzureCsv = 5,
     /// CSV format created manually and following the StratoZone format. For more
-    /// information, see [Manually create and upload data
-    /// tables][<https://cloud.google.com/migrate/stratozone/docs/import-data-portal].>
+    /// information, see \[Manually create and upload data
+    /// tables\]\[<https://cloud.google.com/migrate/stratozone/docs/import-data-portal\].>
     StratozoneCsv = 6,
 }
 impl ImportJobFormat {
@@ -4807,7 +4807,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/ListAssets",
             );
@@ -4834,7 +4834,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/GetAsset",
             );
@@ -4861,7 +4861,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/UpdateAsset",
             );
@@ -4891,7 +4891,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/BatchUpdateAssets",
             );
@@ -4918,7 +4918,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/DeleteAsset",
             );
@@ -4945,7 +4945,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/BatchDeleteAssets",
             );
@@ -4975,7 +4975,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/ReportAssetFrames",
             );
@@ -5005,7 +5005,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/AggregateAssetsValues",
             );
@@ -5035,7 +5035,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/CreateImportJob",
             );
@@ -5065,7 +5065,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/ListImportJobs",
             );
@@ -5092,7 +5092,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/GetImportJob",
             );
@@ -5122,7 +5122,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/DeleteImportJob",
             );
@@ -5152,7 +5152,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/UpdateImportJob",
             );
@@ -5182,7 +5182,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/ValidateImportJob",
             );
@@ -5212,7 +5212,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/RunImportJob",
             );
@@ -5239,7 +5239,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/GetImportDataFile",
             );
@@ -5269,7 +5269,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/ListImportDataFiles",
             );
@@ -5299,7 +5299,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/CreateImportDataFile",
             );
@@ -5329,7 +5329,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/DeleteImportDataFile",
             );
@@ -5359,7 +5359,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/ListGroups",
             );
@@ -5386,7 +5386,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/GetGroup",
             );
@@ -5416,7 +5416,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/CreateGroup",
             );
@@ -5446,7 +5446,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/UpdateGroup",
             );
@@ -5476,7 +5476,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/DeleteGroup",
             );
@@ -5506,7 +5506,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/AddAssetsToGroup",
             );
@@ -5536,7 +5536,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/RemoveAssetsFromGroup",
             );
@@ -5566,7 +5566,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/ListErrorFrames",
             );
@@ -5593,7 +5593,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/GetErrorFrame",
             );
@@ -5623,7 +5623,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/ListSources",
             );
@@ -5650,7 +5650,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/GetSource",
             );
@@ -5680,7 +5680,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/CreateSource",
             );
@@ -5710,7 +5710,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/UpdateSource",
             );
@@ -5740,7 +5740,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/DeleteSource",
             );
@@ -5770,7 +5770,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/ListPreferenceSets",
             );
@@ -5797,7 +5797,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/GetPreferenceSet",
             );
@@ -5827,7 +5827,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/CreatePreferenceSet",
             );
@@ -5857,7 +5857,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/UpdatePreferenceSet",
             );
@@ -5887,7 +5887,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/DeletePreferenceSet",
             );
@@ -5914,7 +5914,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/GetSettings",
             );
@@ -5944,7 +5944,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/UpdateSettings",
             );
@@ -5974,7 +5974,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/CreateReportConfig",
             );
@@ -6001,7 +6001,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/GetReportConfig",
             );
@@ -6031,7 +6031,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/ListReportConfigs",
             );
@@ -6061,7 +6061,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/DeleteReportConfig",
             );
@@ -6091,7 +6091,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/CreateReport",
             );
@@ -6118,7 +6118,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/GetReport",
             );
@@ -6148,7 +6148,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/ListReports",
             );
@@ -6178,7 +6178,7 @@ pub mod migration_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.migrationcenter.v1.MigrationCenter/DeleteReport",
             );

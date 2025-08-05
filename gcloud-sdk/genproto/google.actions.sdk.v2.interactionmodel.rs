@@ -11,7 +11,7 @@ pub struct EntitySet {
 /// Nested message and enum types in `EntitySet`.
 pub mod entity_set {
     /// An entity a built-in intent parameter value can come from.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Entity {
         /// Required. The ID of the entity.
         /// For a list of built-in-intent parameters and their supported entities,
@@ -87,7 +87,7 @@ pub struct Intent {
     /// `($<paramName> '<sample text>' auto=<true or false>)`
     /// `auto = true` means the part was auto annotated by NLU.
     /// `auto = false` means the part was annotated by the user. This is the
-    ///      default when auto is not specified.
+    /// default when auto is not specified.
     /// Example:
     /// "Book a flight from ($source 'San Francisco' auto=false) to ($dest
     /// 'Vancouver')"
@@ -122,7 +122,7 @@ pub mod intent {
         /// Nested message and enum types in `EntitySetReferences`.
         pub mod entity_set_references {
             /// A reference to the set of allowed entities for this intent parameter.
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct EntitySetReference {
                 /// Required. Identifies the specific collection of entities to be considered for a
                 /// given parameter. The corresponding entity set definition should be
@@ -152,18 +152,18 @@ pub struct ConditionalEvent {
     /// Required. Filter condition for this event to trigger. If condition is evaluated to
     /// true then the associated `handler` will be triggered.
     /// The following variable references are supported:
-    ///    `$session` - To reference data in session storage.
-    ///    `$user` - To reference data in user storage.
+    /// `$session` - To reference data in session storage.
+    /// `$user` - To reference data in user storage.
     /// The following boolean operators are supported (with examples):
-    ///    `&&` - `session.params.counter > 0 && session.params.counter < 100`
-    ///    `||` - `session.params.foo == "John" || session.params.counter == "Adam"`
-    ///    `!`  - `!(session.params.counter == 5)`
+    /// `&&` - `session.params.counter > 0 && session.params.counter < 100`
+    /// `||` - `session.params.foo == "John" || session.params.counter == "Adam"`
+    /// `!`  - `!(session.params.counter == 5)`
     /// The following comparisons are supported:
-    ///    `==`, `!=`, `<`, `>`, `<=`, `>=`
+    /// `==`, `!=`, `<`, `>`, `<=`, `>=`
     /// The following list and string operators are supported (with examples):
-    ///    `in`        - "Watermelon" in `session.params.fruitList`
-    ///    `size`      - `size(session.params.fruitList) > 2`
-    ///    `substring` - `session.params.fullName.contains("John")`
+    /// `in`        - "Watermelon" in `session.params.fruitList`
+    /// `size`      - `size(session.params.fruitList) > 2`
+    /// `substring` - `session.params.fullName.contains("John")`
     #[prost(string, tag = "1")]
     pub condition: ::prost::alloc::string::String,
     /// Optional. Destination scene which the conversation should jump to when the associated
@@ -222,19 +222,21 @@ pub struct Slot {
     /// transactions and user engagement.
     ///
     /// Example:
-    ///   For a slot of type actions.type.CompletePurchaseValue, the following
-    ///   config proposes a digital good order with a reference to a client defined
-    ///   session parameter `userSelectedSkuId`:
+    /// For a slot of type actions.type.CompletePurchaseValue, the following
+    /// config proposes a digital good order with a reference to a client defined
+    /// session parameter `userSelectedSkuId`:
     ///
-    ///     {
-    ///       "@type": "type.googleapis.com/
-    ///                   google.actions.transactions.v3.CompletePurchaseValueSpec",
-    ///       "skuId": {
-    ///         "skuType": "SKU_TYPE_IN_APP",
-    ///         "id": "$session.params.userSelectedSkuId",
-    ///         "packageName": "com.example.company"
-    ///       }
-    ///     }
+    /// ```text
+    /// {
+    ///   "@type": "type.googleapis.com/
+    ///               google.actions.transactions.v3.CompletePurchaseValueSpec",
+    ///   "skuId": {
+    ///     "skuType": "SKU_TYPE_IN_APP",
+    ///     "id": "$session.params.userSelectedSkuId",
+    ///     "packageName": "com.example.company"
+    ///   }
+    /// }
+    /// ```
     #[prost(message, optional, tag = "6")]
     pub config: ::core::option::Option<::prost_types::Value>,
     /// Optional. Configuration to populate a default value for this slot.
@@ -279,7 +281,7 @@ pub mod slot {
     }
     /// Message describing the commit behavior associated with the slot after it
     /// has been successfully filled.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CommitBehavior {
         /// The session parameter to write the slot value after it is filled. Note
         /// that nested paths are not currently supported. "$$" is used to write the

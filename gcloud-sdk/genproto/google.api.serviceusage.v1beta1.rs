@@ -5,13 +5,15 @@ pub struct Service {
     /// The resource name of the consumer and service.
     ///
     /// A valid name would be:
-    /// - `projects/123/services/serviceusage.googleapis.com`
+    ///
+    /// * `projects/123/services/serviceusage.googleapis.com`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The resource name of the consumer.
     ///
     /// A valid name would be:
-    /// - `projects/123`
+    ///
+    /// * `projects/123`
     #[prost(string, tag = "5")]
     pub parent: ::prost::alloc::string::String,
     /// The service configuration of the available service.
@@ -58,8 +60,8 @@ pub struct ServiceConfig {
     #[prost(message, repeated, tag = "18")]
     pub endpoints: ::prost::alloc::vec::Vec<super::super::Endpoint>,
     /// Defines the monitored resources used by this service. This is required
-    /// by the [Service.monitoring][google.api.Service.monitoring] and
-    /// [Service.logging][google.api.Service.logging] configurations.
+    /// by the \[Service.monitoring\]\[google.api.Service.monitoring\] and
+    /// \[Service.logging\]\[google.api.Service.logging\] configurations.
     #[prost(message, repeated, tag = "25")]
     pub monitored_resources: ::prost::alloc::vec::Vec<
         super::super::MonitoredResourceDescriptor,
@@ -70,7 +72,7 @@ pub struct ServiceConfig {
     pub monitoring: ::core::option::Option<super::super::Monitoring>,
 }
 /// The operation metadata returned for the batchend services operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// The full name of the resources that this operation is directly
     /// associated with.
@@ -228,19 +230,19 @@ pub struct QuotaOverride {
     ///
     /// This map has the following restrictions:
     ///
-    /// *   Keys that are not defined in the limit's unit are not valid keys.
-    ///      Any string appearing in `{brackets}` in the unit (besides `{project}`
-    ///      or
-    ///      `{user}`) is a defined key.
-    /// *   `project` is not a valid key; the project is already specified in
-    ///      the parent resource name.
-    /// *   `user` is not a valid key; the API does not support quota overrides
-    ///      that apply only to a specific user.
-    /// *   If `region` appears as a key, its value must be a valid Cloud region.
-    /// *   If `zone` appears as a key, its value must be a valid Cloud zone.
-    /// *   If any valid key other than `region` or `zone` appears in the map, then
-    ///      all valid keys other than `region` or `zone` must also appear in the
-    ///      map.
+    /// * Keys that are not defined in the limit's unit are not valid keys.
+    ///   Any string appearing in `{brackets}` in the unit (besides `{project}`
+    ///   or
+    ///   `{user}`) is a defined key.
+    /// * `project` is not a valid key; the project is already specified in
+    ///   the parent resource name.
+    /// * `user` is not a valid key; the API does not support quota overrides
+    ///   that apply only to a specific user.
+    /// * If `region` appears as a key, its value must be a valid Cloud region.
+    /// * If `zone` appears as a key, its value must be a valid Cloud zone.
+    /// * If any valid key other than `region` or `zone` appears in the map, then
+    ///   all valid keys other than `region` or `zone` must also appear in the
+    ///   map.
     #[prost(map = "string, string", tag = "3")]
     pub dimensions: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -290,7 +292,6 @@ pub struct ProducerQuotaPolicy {
     /// Can be any nonnegative integer, or -1 (unlimited quota).
     #[prost(int64, tag = "2")]
     pub policy_value: i64,
-    ///
     /// If this map is nonempty, then this policy applies only to specific values
     /// for dimensions defined in the limit unit.
     ///
@@ -300,18 +301,18 @@ pub struct ProducerQuotaPolicy {
     ///
     /// This map has the following restrictions:
     ///
-    /// *   Keys that are not defined in the limit's unit are not valid keys.
-    ///      Any string appearing in {brackets} in the unit (besides {project} or
-    ///      {user}) is a defined key.
-    /// *   `project` is not a valid key; the project is already specified in
-    ///      the parent resource name.
-    /// *   `user` is not a valid key; the API does not support quota policies
-    ///      that apply only to a specific user.
-    /// *   If `region` appears as a key, its value must be a valid Cloud region.
-    /// *   If `zone` appears as a key, its value must be a valid Cloud zone.
-    /// *   If any valid key other than `region` or `zone` appears in the map, then
-    ///      all valid keys other than `region` or `zone` must also appear in the
-    ///      map.
+    /// * Keys that are not defined in the limit's unit are not valid keys.
+    ///   Any string appearing in {brackets} in the unit (besides {project} or
+    ///   {user}) is a defined key.
+    /// * `project` is not a valid key; the project is already specified in
+    ///   the parent resource name.
+    /// * `user` is not a valid key; the API does not support quota policies
+    ///   that apply only to a specific user.
+    /// * If `region` appears as a key, its value must be a valid Cloud region.
+    /// * If `zone` appears as a key, its value must be a valid Cloud zone.
+    /// * If any valid key other than `region` or `zone` appears in the map, then
+    ///   all valid keys other than `region` or `zone` must also appear in the
+    ///   map.
     #[prost(map = "string, string", tag = "3")]
     pub dimensions: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -350,7 +351,6 @@ pub struct AdminQuotaPolicy {
     /// Can be any nonnegative integer, or -1 (unlimited quota).
     #[prost(int64, tag = "2")]
     pub policy_value: i64,
-    ///
     /// If this map is nonempty, then this policy applies only to specific values
     /// for dimensions defined in the limit unit.
     ///
@@ -360,9 +360,9 @@ pub struct AdminQuotaPolicy {
     ///
     /// This map has the following restrictions:
     ///
-    /// *   If `region` appears as a key, its value must be a valid Cloud region.
-    /// *   If `zone` appears as a key, its value must be a valid Cloud zone.
-    /// *   Keys other than `region` or `zone` are not valid.
+    /// * If `region` appears as a key, its value must be a valid Cloud region.
+    /// * If `zone` appears as a key, its value must be a valid Cloud zone.
+    /// * Keys other than `region` or `zone` are not valid.
     #[prost(map = "string, string", tag = "3")]
     pub dimensions: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -389,7 +389,7 @@ pub struct AdminQuotaPolicy {
 }
 /// Service identity for a service. This is the identity that service producer
 /// should use to access consumer resources.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServiceIdentity {
     /// The email address of the service account that a service producer would use
     /// to access consumer resources.
@@ -514,7 +514,7 @@ impl QuotaSafetyCheck {
     }
 }
 /// Request message for the `EnableService` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnableServiceRequest {
     /// Name of the consumer and service to enable the service on.
     ///
@@ -531,7 +531,7 @@ pub struct EnableServiceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `DisableService` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisableServiceRequest {
     /// Name of the consumer and service to disable the service on.
     ///
@@ -544,7 +544,7 @@ pub struct DisableServiceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `GetService` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetServiceRequest {
     /// Name of the consumer and service to get the `ConsumerState` for.
     ///
@@ -555,7 +555,7 @@ pub struct GetServiceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `ListServices` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListServicesRequest {
     /// Parent to search for services on.
     ///
@@ -566,7 +566,7 @@ pub struct ListServicesRequest {
     pub parent: ::prost::alloc::string::String,
     /// Requested size of the next page of data.
     /// Requested page size cannot exceed 200.
-    ///   If not set, the default page size is 50.
+    /// If not set, the default page size is 50.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Token identifying which result to start with, which is returned by a
@@ -590,7 +590,7 @@ pub struct ListServicesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the `BatchEnableServices` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BatchEnableServicesRequest {
     /// Parent to enable services on.
     ///
@@ -619,7 +619,7 @@ pub struct BatchEnableServicesRequest {
     pub service_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for ListConsumerQuotaMetrics
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListConsumerQuotaMetricsRequest {
     /// Parent of the quotas resource.
     ///
@@ -652,7 +652,7 @@ pub struct ListConsumerQuotaMetricsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetConsumerQuotaMetric
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetConsumerQuotaMetricRequest {
     /// The resource name of the quota limit.
     ///
@@ -665,7 +665,7 @@ pub struct GetConsumerQuotaMetricRequest {
     pub view: i32,
 }
 /// Request message for GetConsumerQuotaLimit
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetConsumerQuotaLimitRequest {
     /// The resource name of the quota limit.
     ///
@@ -732,7 +732,7 @@ pub struct UpdateAdminOverrideRequest {
     pub force_only: ::prost::alloc::vec::Vec<i32>,
 }
 /// Request message for DeleteAdminOverride.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAdminOverrideRequest {
     /// The resource name of the override to delete.
     ///
@@ -753,7 +753,7 @@ pub struct DeleteAdminOverrideRequest {
     pub force_only: ::prost::alloc::vec::Vec<i32>,
 }
 /// Request message for ListAdminOverrides
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAdminOverridesRequest {
     /// The resource name of the parent quota limit, returned by a
     /// ListConsumerQuotaMetrics or GetConsumerQuotaMetric call.
@@ -832,7 +832,7 @@ pub struct ImportAdminOverridesResponse {
 /// Metadata message that provides information such as progress,
 /// partial failures, and similar information on each GetOperation call
 /// of LRO returned by ImportAdminOverrides.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportAdminOverridesMetadata {}
 /// Request message for CreateConsumerOverride.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -889,7 +889,7 @@ pub struct UpdateConsumerOverrideRequest {
     pub force_only: ::prost::alloc::vec::Vec<i32>,
 }
 /// Request message for DeleteConsumerOverride.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteConsumerOverrideRequest {
     /// The resource name of the override to delete.
     ///
@@ -910,7 +910,7 @@ pub struct DeleteConsumerOverrideRequest {
     pub force_only: ::prost::alloc::vec::Vec<i32>,
 }
 /// Request message for ListConsumerOverrides
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListConsumerOverridesRequest {
     /// The resource name of the parent quota limit, returned by a
     /// ListConsumerQuotaMetrics or GetConsumerQuotaMetric call.
@@ -989,7 +989,7 @@ pub struct ImportConsumerOverridesResponse {
 /// Metadata message that provides information such as progress,
 /// partial failures, and similar information on each GetOperation call
 /// of LRO returned by ImportConsumerOverrides.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportConsumerOverridesMetadata {}
 /// Response message for ImportAdminQuotaPolicies
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1001,25 +1001,25 @@ pub struct ImportAdminQuotaPoliciesResponse {
 /// Metadata message that provides information such as progress,
 /// partial failures, and similar information on each GetOperation call
 /// of LRO returned by ImportAdminQuotaPolicies.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportAdminQuotaPoliciesMetadata {}
 /// Metadata message that provides information such as progress,
 /// partial failures, and similar information on each GetOperation call
 /// of LRO returned by CreateAdminQuotaPolicy.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateAdminQuotaPolicyMetadata {}
 /// Metadata message that provides information such as progress,
 /// partial failures, and similar information on each GetOperation call
 /// of LRO returned by UpdateAdminQuotaPolicy.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateAdminQuotaPolicyMetadata {}
 /// Metadata message that provides information such as progress,
 /// partial failures, and similar information on each GetOperation call
 /// of LRO returned by DeleteAdminQuotaPolicy.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAdminQuotaPolicyMetadata {}
 /// Request message for generating service identity.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateServiceIdentityRequest {
     /// Name of the consumer and service to generate an identity for.
     ///
@@ -1034,7 +1034,7 @@ pub struct GenerateServiceIdentityRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// Response message for getting service identity.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetServiceIdentityResponse {
     /// Service identity that service producer can use to access consumer
     /// resources. If exists is true, it contains email and unique_id. If exists is
@@ -1089,7 +1089,7 @@ pub mod get_service_identity_response {
     }
 }
 /// Metadata for the `GetServiceIdentity` method.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetServiceIdentityMetadata {}
 /// Generated client implementations.
 pub mod service_usage_client {
@@ -1202,7 +1202,7 @@ pub mod service_usage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/EnableService",
             );
@@ -1241,7 +1241,7 @@ pub mod service_usage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/DisableService",
             );
@@ -1269,7 +1269,7 @@ pub mod service_usage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/GetService",
             );
@@ -1306,7 +1306,7 @@ pub mod service_usage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/ListServices",
             );
@@ -1341,7 +1341,7 @@ pub mod service_usage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/BatchEnableServices",
             );
@@ -1375,7 +1375,7 @@ pub mod service_usage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/ListConsumerQuotaMetrics",
             );
@@ -1405,7 +1405,7 @@ pub mod service_usage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/GetConsumerQuotaMetric",
             );
@@ -1435,7 +1435,7 @@ pub mod service_usage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/GetConsumerQuotaLimit",
             );
@@ -1470,7 +1470,7 @@ pub mod service_usage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/CreateAdminOverride",
             );
@@ -1500,7 +1500,7 @@ pub mod service_usage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/UpdateAdminOverride",
             );
@@ -1530,7 +1530,7 @@ pub mod service_usage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/DeleteAdminOverride",
             );
@@ -1560,7 +1560,7 @@ pub mod service_usage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/ListAdminOverrides",
             );
@@ -1592,7 +1592,7 @@ pub mod service_usage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/ImportAdminOverrides",
             );
@@ -1626,7 +1626,7 @@ pub mod service_usage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/CreateConsumerOverride",
             );
@@ -1656,7 +1656,7 @@ pub mod service_usage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/UpdateConsumerOverride",
             );
@@ -1686,7 +1686,7 @@ pub mod service_usage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/DeleteConsumerOverride",
             );
@@ -1716,7 +1716,7 @@ pub mod service_usage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/ListConsumerOverrides",
             );
@@ -1748,7 +1748,7 @@ pub mod service_usage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/ImportConsumerOverrides",
             );
@@ -1778,7 +1778,7 @@ pub mod service_usage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1beta1.ServiceUsage/GenerateServiceIdentity",
             );

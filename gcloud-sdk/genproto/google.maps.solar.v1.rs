@@ -138,7 +138,7 @@ pub struct SolarPotential {
     /// Size and sunlight quantiles for each roof segment.
     #[prost(message, repeated, tag = "6")]
     pub roof_segment_stats: ::prost::alloc::vec::Vec<RoofSegmentSizeAndSunshineStats>,
-    /// Each \[SolarPanel\] [google.maps.solar.v1.SolarPanel]
+    /// Each \[SolarPanel\] \[google.maps.solar.v1.SolarPanel\]
     /// describes a single solar panel. They are listed in the order that
     /// the panel layout algorithm placed this. This is usually, though
     /// not always, in decreasing order of annual energy production.
@@ -386,7 +386,7 @@ pub struct FinancialDetails {
     pub percentage_exported_to_grid: ::core::option::Option<f32>,
 }
 /// Financial information that's shared between different financing methods.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SavingsOverTime {
     /// Savings in the first year after panel installation.
     #[prost(message, optional, tag = "1")]
@@ -416,7 +416,7 @@ pub struct SavingsOverTime {
 }
 /// Cost and benefit of leasing a particular configuration of solar panels
 /// with a particular electricity usage.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LeasingSavings {
     /// Whether leases are allowed in this juristiction (leases are not
     /// allowed in some states). If this field is false, then the values in
@@ -492,9 +492,9 @@ pub struct GetDataLayersRequest {
     ///
     /// * Any value up to 100m can always be specified.
     /// * Values over 100m can be specified, as long as
-    ///    `radius_meters` <= `pixel_size_meters * 1000`.
+    ///   `radius_meters` \<= `pixel_size_meters * 1000`.
     /// * However, for values over 175m, the `DataLayerView` in the
-    ///    request must not include monthly flux or hourly shade.
+    ///   request must not include monthly flux or hourly shade.
     #[prost(float, tag = "2")]
     pub radius_meters: f32,
     /// Optional. The desired subset of the data to return.
@@ -534,7 +534,7 @@ pub struct GetDataLayersRequest {
 /// `pixel_size_meters` value was specified in the
 /// `GetDataLayersRequest`, then the minimum resolution in the GeoTIFF
 /// files will be that value.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataLayers {
     /// When the source imagery (from which all the other data are derived) in this
     /// region was taken. It is necessarily somewhat approximate, as the images may
@@ -594,9 +594,11 @@ pub struct DataLayers {
     /// Given `month` (1-12), `day` (1...month max; February has 28 days)
     /// and `hour` (0-23), the shade/sun for that month/day/hour at a
     /// position `(x, y)` is the bit
-    /// ```
+    ///
+    /// ```text,
     /// (hourly_shade\[month - 1\])(x, y)\[hour\] & (1 << (day - 1))
     /// ```
+    ///
     /// where `(x, y)` is spatial indexing, `\[month - 1\]` refers to
     /// fetching the `month - 1`st URL (indexing from zero), `\[hour\]` is
     /// indexing into the channels, and a final non-zero result means
@@ -609,7 +611,7 @@ pub struct DataLayers {
     pub imagery_quality: i32,
 }
 /// Request message for `Solar.GetGeoTiff`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetGeoTiffRequest {
     /// Required. The ID of the asset being requested.
     #[prost(string, tag = "1")]
@@ -847,7 +849,7 @@ pub mod solar_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.solar.v1.Solar/FindClosestBuildingInsights",
             );
@@ -876,7 +878,7 @@ pub mod solar_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.solar.v1.Solar/GetDataLayers",
             );
@@ -901,7 +903,7 @@ pub mod solar_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.solar.v1.Solar/GetGeoTiff",
             );

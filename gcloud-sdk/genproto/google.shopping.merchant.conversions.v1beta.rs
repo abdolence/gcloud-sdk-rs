@@ -9,8 +9,9 @@ pub struct ConversionSource {
     /// represents the ID of the conversion source within that type. The ID of two
     /// different conversion sources might be the same across different types. The
     /// following type prefixes are supported:
-    /// - galk: For GoogleAnalyticsLink sources.
-    /// - mcdn: For MerchantCenterDestination sources.
+    ///
+    /// * galk: For GoogleAnalyticsLink sources.
+    /// * mcdn: For MerchantCenterDestination sources.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Current state of this conversion source. Can't be edited
@@ -154,7 +155,7 @@ pub struct AttributionSettings {
 /// Nested message and enum types in `AttributionSettings`.
 pub mod attribution_settings {
     /// Message representing a types of conversion events
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ConversionType {
         /// Output only. Conversion event name, as it'll be reported by the client.
         #[prost(string, tag = "1")]
@@ -293,7 +294,7 @@ pub struct UpdateConversionSourceRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for the DeleteConversionSource method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteConversionSourceRequest {
     /// Required. The name of the conversion source to be deleted.
     /// Format: accounts/{account}/conversionSources/{conversion_source}
@@ -301,7 +302,7 @@ pub struct DeleteConversionSourceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the UndeleteConversionSource method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UndeleteConversionSourceRequest {
     /// Required. The name of the conversion source to be undeleted.
     /// Format: accounts/{account}/conversionSources/{conversion_source}
@@ -309,7 +310,7 @@ pub struct UndeleteConversionSourceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the GetConversionSource method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetConversionSourceRequest {
     /// Required. The name of the conversion source to be fetched.
     /// Format: accounts/{account}/conversionsources/{conversion_source}
@@ -317,7 +318,7 @@ pub struct GetConversionSourceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the ListConversionSources method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListConversionSourcesRequest {
     /// Required. The merchant account who owns the collection of conversion
     /// sources. Format: accounts/{account}
@@ -457,7 +458,7 @@ pub mod conversion_sources_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.conversions.v1beta.ConversionSourcesService/CreateConversionSource",
             );
@@ -488,7 +489,7 @@ pub mod conversion_sources_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.conversions.v1beta.ConversionSourcesService/UpdateConversionSource",
             );
@@ -518,7 +519,7 @@ pub mod conversion_sources_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.conversions.v1beta.ConversionSourcesService/DeleteConversionSource",
             );
@@ -549,7 +550,7 @@ pub mod conversion_sources_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.conversions.v1beta.ConversionSourcesService/UndeleteConversionSource",
             );
@@ -579,7 +580,7 @@ pub mod conversion_sources_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.conversions.v1beta.ConversionSourcesService/GetConversionSource",
             );
@@ -609,7 +610,7 @@ pub mod conversion_sources_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.conversions.v1beta.ConversionSourcesService/ListConversionSources",
             );

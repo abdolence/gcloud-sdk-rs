@@ -2,11 +2,13 @@
 /// A RuntimeConfig resource is the primary resource in the Cloud RuntimeConfig
 /// service. A RuntimeConfig resource consists of metadata and a hierarchy of
 /// variables.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RuntimeConfig {
     /// The resource name of a runtime config. The name must have the format:
     ///
-    ///      projects/\[PROJECT_ID\]/configs/\[CONFIG_NAME\]
+    /// ```text
+    /// projects/\[PROJECT_ID\]/configs/\[CONFIG_NAME\]
+    /// ```
     ///
     /// The `\[PROJECT_ID\]` must be a valid project ID, and `\[CONFIG_NAME\]` is an
     /// arbitrary name that matches RFC 1035 segment specification. The length of
@@ -26,11 +28,13 @@ pub struct RuntimeConfig {
 /// `ports/serving_port` is a valid variable name. The variable value is an
 /// opaque string and only leaf variables can have values (that is, variables
 /// that do not have any child variables).
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Variable {
     /// The name of the variable resource, in the format:
     ///
-    ///      projects/\[PROJECT_ID\]/configs/\[CONFIG_NAME\]/variables/\[VARIABLE_NAME\]
+    /// ```text
+    /// projects/\[PROJECT_ID\]/configs/\[CONFIG_NAME\]/variables/\[VARIABLE_NAME\]
+    /// ```
     ///
     /// The `\[PROJECT_ID\]` must be a valid project ID, `\[CONFIG_NAME\]` must be a
     /// valid RuntimeConfig reource and `\[VARIABLE_NAME\]` follows Unix file system
@@ -65,7 +69,7 @@ pub mod variable {
     /// The value of the variable. It can be either a binary or a string
     /// value. You must specify one of either `value` or `text`. Specifying both
     /// will cause the server to return an error.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Contents {
         /// The binary value of the variable. The length of the value must be less
         /// than 4096 bytes. Empty values are also accepted. The value must be
@@ -80,7 +84,7 @@ pub mod variable {
     }
 }
 /// The condition that a Waiter resource is waiting for.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EndCondition {
     /// The condition oneof holds the available condition types for this
     /// EndCondition. Currently, the only available type is Cardinality.
@@ -95,15 +99,15 @@ pub mod end_condition {
     /// the `path` is set to `/foo` and the number of paths is set to 2, the
     /// following variables would meet the condition in a RuntimeConfig resource:
     ///
-    /// + `/foo/variable1 = "value1"`
-    /// + `/foo/variable2 = "value2"`
-    /// + `/bar/variable3 = "value3"`
+    /// * `/foo/variable1 = "value1"`
+    /// * `/foo/variable2 = "value2"`
+    /// * `/bar/variable3 = "value3"`
     ///
     /// It would not would not satisify the same condition with the `number` set to
     /// 3, however, because there is only 2 paths that start with `/foo`.
     /// Cardinality conditions are recursive; all subtrees under the specific
     /// path prefix are counted.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Cardinality {
         /// The root of the variable subtree to monitor. For example, `/foo`.
         #[prost(string, tag = "1")]
@@ -115,7 +119,7 @@ pub mod end_condition {
     }
     /// The condition oneof holds the available condition types for this
     /// EndCondition. Currently, the only available type is Cardinality.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Condition {
         /// The cardinality of the `EndCondition`.
         #[prost(message, tag = "1")]
@@ -142,7 +146,9 @@ pub mod end_condition {
 pub struct Waiter {
     /// The name of the Waiter resource, in the format:
     ///
-    ///      projects/\[PROJECT_ID\]/configs/\[CONFIG_NAME\]/waiters/\[WAITER_NAME\]
+    /// ```text
+    /// projects/\[PROJECT_ID\]/configs/\[CONFIG_NAME\]/waiters/\[WAITER_NAME\]
+    /// ```
     ///
     /// The `\[PROJECT_ID\]` must be a valid Google Cloud project ID,
     /// the `\[CONFIG_NAME\]` must be a valid RuntimeConfig resource, the
@@ -224,7 +230,7 @@ impl VariableState {
     }
 }
 /// Request for the `ListConfigs()` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListConfigsRequest {
     /// The [project
     /// ID](<https://support.google.com/cloud/answer/6158840?hl=en&ref_topic=6158848>)
@@ -257,7 +263,7 @@ pub struct ListConfigsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Gets a RuntimeConfig resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetConfigRequest {
     /// The name of the RuntimeConfig resource to retrieve, in the format:
     ///
@@ -266,7 +272,7 @@ pub struct GetConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Creates a RuntimeConfig resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateConfigRequest {
     /// The [project
     /// ID](<https://support.google.com/cloud/answer/6158840?hl=en&ref_topic=6158848>)
@@ -290,7 +296,7 @@ pub struct CreateConfigRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for `UpdateConfig()` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateConfigRequest {
     /// The name of the RuntimeConfig resource to update, in the format:
     ///
@@ -302,7 +308,7 @@ pub struct UpdateConfigRequest {
     pub config: ::core::option::Option<RuntimeConfig>,
 }
 /// Request for the `DeleteConfig()` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteConfigRequest {
     /// The RuntimeConfig resource to delete, in the format:
     ///
@@ -311,7 +317,7 @@ pub struct DeleteConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `ListVariables()` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListVariablesRequest {
     /// The path to the RuntimeConfig resource for which you want to list
     /// variables. The configuration must exist beforehand; the path must by in the
@@ -355,7 +361,7 @@ pub struct ListVariablesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for the `WatchVariable()` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WatchVariableRequest {
     /// The name of the variable to watch, in the format:
     ///
@@ -372,7 +378,7 @@ pub struct WatchVariableRequest {
     pub newer_than: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request for the `GetVariable()` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetVariableRequest {
     /// The name of the variable to return, in the format:
     ///
@@ -381,7 +387,7 @@ pub struct GetVariableRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `CreateVariable()` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateVariableRequest {
     /// The path to the RutimeConfig resource that this variable should belong to.
     /// The configuration must exist beforehand; the path must by in the format:
@@ -406,7 +412,7 @@ pub struct CreateVariableRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for the `UpdateVariable()` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateVariableRequest {
     /// The name of the variable to update, in the format:
     ///
@@ -418,7 +424,7 @@ pub struct UpdateVariableRequest {
     pub variable: ::core::option::Option<Variable>,
 }
 /// Request for the `DeleteVariable()` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteVariableRequest {
     /// The name of the variable to delete, in the format:
     ///
@@ -431,7 +437,7 @@ pub struct DeleteVariableRequest {
     pub recursive: bool,
 }
 /// Request for the `ListWaiters()` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListWaitersRequest {
     /// The path to the configuration for which you want to get a list of waiters.
     /// The configuration must exist beforehand; the path must by in the format:
@@ -464,7 +470,7 @@ pub struct ListWaitersResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for the `GetWaiter()` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetWaiterRequest {
     /// The fully-qualified name of the Waiter resource object to retrieve, in the
     /// format:
@@ -499,11 +505,11 @@ pub struct CreateWaiterRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for the `DeleteWaiter()` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteWaiterRequest {
     /// The Waiter resource to delete, in the format:
     ///
-    ///   `projects/\[PROJECT_ID\]/configs/\[CONFIG_NAME\]/waiters/\[WAITER_NAME\]`
+    /// `projects/\[PROJECT_ID\]/configs/\[CONFIG_NAME\]/waiters/\[WAITER_NAME\]`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -624,7 +630,7 @@ pub mod runtime_config_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.runtimeconfig.v1beta1.RuntimeConfigManager/ListConfigs",
             );
@@ -651,7 +657,7 @@ pub mod runtime_config_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.runtimeconfig.v1beta1.RuntimeConfigManager/GetConfig",
             );
@@ -679,7 +685,7 @@ pub mod runtime_config_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.runtimeconfig.v1beta1.RuntimeConfigManager/CreateConfig",
             );
@@ -706,7 +712,7 @@ pub mod runtime_config_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.runtimeconfig.v1beta1.RuntimeConfigManager/UpdateConfig",
             );
@@ -733,7 +739,7 @@ pub mod runtime_config_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.runtimeconfig.v1beta1.RuntimeConfigManager/DeleteConfig",
             );
@@ -766,7 +772,7 @@ pub mod runtime_config_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.runtimeconfig.v1beta1.RuntimeConfigManager/ListVariables",
             );
@@ -793,7 +799,7 @@ pub mod runtime_config_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.runtimeconfig.v1beta1.RuntimeConfigManager/GetVariable",
             );
@@ -833,7 +839,7 @@ pub mod runtime_config_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.runtimeconfig.v1beta1.RuntimeConfigManager/WatchVariable",
             );
@@ -867,7 +873,7 @@ pub mod runtime_config_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.runtimeconfig.v1beta1.RuntimeConfigManager/CreateVariable",
             );
@@ -894,7 +900,7 @@ pub mod runtime_config_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.runtimeconfig.v1beta1.RuntimeConfigManager/UpdateVariable",
             );
@@ -926,7 +932,7 @@ pub mod runtime_config_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.runtimeconfig.v1beta1.RuntimeConfigManager/DeleteVariable",
             );
@@ -956,7 +962,7 @@ pub mod runtime_config_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.runtimeconfig.v1beta1.RuntimeConfigManager/ListWaiters",
             );
@@ -983,7 +989,7 @@ pub mod runtime_config_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.runtimeconfig.v1beta1.RuntimeConfigManager/GetWaiter",
             );
@@ -1017,7 +1023,7 @@ pub mod runtime_config_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.runtimeconfig.v1beta1.RuntimeConfigManager/CreateWaiter",
             );
@@ -1044,7 +1050,7 @@ pub mod runtime_config_manager_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.runtimeconfig.v1beta1.RuntimeConfigManager/DeleteWaiter",
             );

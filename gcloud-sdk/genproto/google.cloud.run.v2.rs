@@ -36,7 +36,7 @@ pub struct SubmitBuildRequest {
 /// Nested message and enum types in `SubmitBuildRequest`.
 pub mod submit_build_request {
     /// Build the source using Docker. This means the source has a Dockerfile.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DockerBuild {}
     /// Build the source using Buildpacks.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -77,7 +77,7 @@ pub mod submit_build_request {
         pub project_descriptor: ::prost::alloc::string::String,
     }
     /// Location of source.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Source {
         /// Required. Source for the build.
         #[prost(message, tag = "2")]
@@ -111,7 +111,7 @@ pub struct SubmitBuildResponse {
     pub base_image_warning: ::prost::alloc::string::String,
 }
 /// Location of the source in an archive file in Google Cloud Storage.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StorageSource {
     /// Required. Google Cloud Storage bucket containing the source (see
     /// [Bucket Name
@@ -237,7 +237,7 @@ pub mod builds_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Builds/SubmitBuild",
             );
@@ -249,12 +249,13 @@ pub mod builds_client {
     }
 }
 /// Defines a status condition for a resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Condition {
     /// type is used to communicate the status of the reconciliation process.
     /// See also:
     /// <https://github.com/knative/serving/blob/main/docs/spec/errors.md#error-conditions-and-reporting>
     /// Types common to all resources include:
+    ///
     /// * "Ready": True when the Resource is ready.
     #[prost(string, tag = "1")]
     pub r#type: ::prost::alloc::string::String,
@@ -630,7 +631,7 @@ pub mod condition {
     /// The reason for this condition. Depending on the condition type,
     /// it will populate one of these fields.
     /// Successful conditions cannot have a reason.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Reasons {
         /// Output only. A common (service-level) reason for this condition.
         #[prost(enumeration = "CommonReason", tag = "6")]
@@ -737,7 +738,7 @@ pub struct ResourceRequirements {
     pub startup_cpu_boost: bool,
 }
 /// EnvVar represents an environment variable present in a Container.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnvVar {
     /// Required. Name of the environment variable. Must not exceed 32768
     /// characters.
@@ -748,7 +749,7 @@ pub struct EnvVar {
 }
 /// Nested message and enum types in `EnvVar`.
 pub mod env_var {
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Values {
         /// Literal value of the environment variable.
         /// Defaults to "", and the maximum length is 32768 bytes.
@@ -761,14 +762,14 @@ pub mod env_var {
     }
 }
 /// EnvVarSource represents a source for the value of an EnvVar.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnvVarSource {
     /// Selects a secret and a specific version from Cloud Secret Manager.
     #[prost(message, optional, tag = "1")]
     pub secret_key_ref: ::core::option::Option<SecretKeySelector>,
 }
 /// SecretEnvVarSource represents a source for the value of an EnvVar.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SecretKeySelector {
     /// Required. The name of the secret in Cloud Secret Manager.
     /// Format: {secret_name} if the secret is in the same project.
@@ -783,19 +784,19 @@ pub struct SecretKeySelector {
     pub version: ::prost::alloc::string::String,
 }
 /// ContainerPort represents a network port in a single container.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ContainerPort {
     /// If specified, used to specify which protocol to use.
     /// Allowed values are "http1" and "h2c".
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Port number the container listens on.
-    /// This must be a valid TCP port number, 0 < container_port < 65536.
+    /// This must be a valid TCP port number, 0 \< container_port \< 65536.
     #[prost(int32, tag = "3")]
     pub container_port: i32,
 }
 /// VolumeMount describes a mounting of a Volume within a container.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VolumeMount {
     /// Required. This must match the Name of a Volume.
     #[prost(string, tag = "1")]
@@ -866,12 +867,12 @@ pub struct SecretVolumeSource {
     ///
     /// * Internally, a umask of 0222 will be applied to any non-zero value.
     /// * This is an integer representation of the mode bits. So, the octal
-    /// integer value should look exactly as the chmod numeric notation with a
-    /// leading zero. Some examples: for chmod 640 (u=rw,g=r), set to 0640 (octal)
-    /// or 416 (base-10). For chmod 755 (u=rwx,g=rx,o=rx), set to 0755 (octal) or
-    /// 493 (base-10).
+    ///   integer value should look exactly as the chmod numeric notation with a
+    ///   leading zero. Some examples: for chmod 640 (u=rw,g=r), set to 0640 (octal)
+    ///   or 416 (base-10). For chmod 755 (u=rwx,g=rx,o=rx), set to 0755 (octal) or
+    ///   493 (base-10).
     /// * This might be in conflict with other options that affect the
-    /// file mode, like fsGroup, and the result can be other mode bits set.
+    ///   file mode, like fsGroup, and the result can be other mode bits set.
     ///
     /// This might be in conflict with other options that affect the
     /// file mode, like fsGroup, and as a result, other mode bits could be set.
@@ -880,7 +881,7 @@ pub struct SecretVolumeSource {
 }
 /// VersionToPath maps a specific version of a secret to a relative file to mount
 /// to, relative to VolumeMount's mount_path.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VersionToPath {
     /// Required. The relative path of the secret in the container.
     #[prost(string, tag = "1")]
@@ -898,12 +899,12 @@ pub struct VersionToPath {
     ///
     /// * Internally, a umask of 0222 will be applied to any non-zero value.
     /// * This is an integer representation of the mode bits. So, the octal
-    /// integer value should look exactly as the chmod numeric notation with a
-    /// leading zero. Some examples: for chmod 640 (u=rw,g=r), set to 0640 (octal)
-    /// or 416 (base-10). For chmod 755 (u=rwx,g=rx,o=rx), set to 0755 (octal) or
-    /// 493 (base-10).
+    ///   integer value should look exactly as the chmod numeric notation with a
+    ///   leading zero. Some examples: for chmod 640 (u=rw,g=r), set to 0640 (octal)
+    ///   or 416 (base-10). For chmod 755 (u=rwx,g=rx,o=rx), set to 0755 (octal) or
+    ///   493 (base-10).
     /// * This might be in conflict with other options that affect the
-    /// file mode, like fsGroup, and the result can be other mode bits set.
+    ///   file mode, like fsGroup, and the result can be other mode bits set.
     #[prost(int32, tag = "3")]
     pub mode: i32,
 }
@@ -911,7 +912,7 @@ pub struct VersionToPath {
 /// /cloudsql/\[instance\]. Visit
 /// <https://cloud.google.com/sql/docs/mysql/connect-run> for more information on
 /// how to connect Cloud SQL and Cloud Run.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloudSqlInstance {
     /// The Cloud SQL instance connection names, as can be found in
     /// <https://console.cloud.google.com/sql/instances.> Visit
@@ -924,7 +925,7 @@ pub struct CloudSqlInstance {
 /// In memory (tmpfs) ephemeral storage.
 /// It is ephemeral in the sense that when the sandbox is taken down, the data is
 /// destroyed with it (it does not persist across sandbox runs).
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EmptyDirVolumeSource {
     /// The medium on which the data is stored. Acceptable values today is only
     /// MEMORY or none. When none, the default will currently be backed by memory
@@ -987,7 +988,7 @@ pub mod empty_dir_volume_source {
     }
 }
 /// Represents an NFS mount.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NfsVolumeSource {
     /// Hostname or IP address of the NFS server
     #[prost(string, tag = "1")]
@@ -1001,7 +1002,7 @@ pub struct NfsVolumeSource {
 }
 /// Represents a volume backed by a Cloud Storage bucket using Cloud Storage
 /// FUSE.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GcsVolumeSource {
     /// Cloud Storage Bucket name.
     #[prost(string, tag = "1")]
@@ -1076,7 +1077,7 @@ pub struct HttpGetAction {
     pub port: i32,
 }
 /// HTTPHeader describes a custom header to be used in HTTP probes
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HttpHeader {
     /// Required. The header field name
     #[prost(string, tag = "1")]
@@ -1086,7 +1087,7 @@ pub struct HttpHeader {
     pub value: ::prost::alloc::string::String,
 }
 /// TCPSocketAction describes an action based on opening a socket
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TcpSocketAction {
     /// Optional. Port number to access on the container. Must be in the range 1 to
     /// 65535. If not specified, defaults to the exposed port of the container,
@@ -1095,7 +1096,7 @@ pub struct TcpSocketAction {
     pub port: i32,
 }
 /// GRPCAction describes an action involving a GRPC port.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GrpcAction {
     /// Optional. Port number of the gRPC service. Number must be in the range 1 to
     /// 65535. If not specified, defaults to the exposed port of the container,
@@ -1110,7 +1111,7 @@ pub struct GrpcAction {
     pub service: ::prost::alloc::string::String,
 }
 /// Build information of the image.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BuildInfo {
     /// Output only. Entry point of the function when the image is a Cloud Run
     /// function.
@@ -1143,7 +1144,7 @@ pub struct VpcAccess {
 /// Nested message and enum types in `VpcAccess`.
 pub mod vpc_access {
     /// Direct VPC egress settings.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct NetworkInterface {
         /// Optional. The VPC network that the Cloud Run resource will be able to
         /// send traffic to. At least one of network or subnetwork must be specified.
@@ -1208,7 +1209,7 @@ pub mod vpc_access {
     }
 }
 /// Settings for Binary Authorization feature.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BinaryAuthorization {
     /// Optional. If present, indicates to use Breakglass using this justification.
     /// If use_default is False, then it must be empty.
@@ -1221,7 +1222,7 @@ pub struct BinaryAuthorization {
 }
 /// Nested message and enum types in `BinaryAuthorization`.
 pub mod binary_authorization {
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum BinauthzMethod {
         /// Optional. If True, indicates to use the default project's binary
         /// authorization policy. If False, binary authorization will be disabled.
@@ -1234,7 +1235,7 @@ pub mod binary_authorization {
     }
 }
 /// Settings for revision-level scaling settings.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RevisionScaling {
     /// Optional. Minimum number of serving instances that this resource should
     /// have.
@@ -1249,7 +1250,7 @@ pub struct RevisionScaling {
 }
 /// Settings for Cloud Service Mesh. For more information see
 /// <https://cloud.google.com/service-mesh/docs/overview.>
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServiceMesh {
     /// The Mesh resource name. Format:
     /// `projects/{project}/locations/global/meshes/{mesh}`, where `{project}` can
@@ -1259,7 +1260,7 @@ pub struct ServiceMesh {
 }
 /// Scaling settings applied at the service level rather than
 /// at the revision level.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServiceScaling {
     /// Optional. total min instances for the service. This number of instances is
     /// divided among all revisions with specified traffic based on the percent
@@ -1323,7 +1324,7 @@ pub mod service_scaling {
     }
 }
 /// Hardware constraints configuration.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NodeSelector {
     /// Required. GPU accelerator type to attach to an instance.
     #[prost(string, tag = "1")]
@@ -1530,7 +1531,7 @@ pub struct TaskTemplate {
 }
 /// Nested message and enum types in `TaskTemplate`.
 pub mod task_template {
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Retries {
         /// Number of retries allowed per Task, before marking this Task failed.
         /// Defaults to 3.
@@ -1539,7 +1540,7 @@ pub mod task_template {
     }
 }
 /// Request message for obtaining a Execution by its full name.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetExecutionRequest {
     /// Required. The full name of the Execution.
     /// Format:
@@ -1549,7 +1550,7 @@ pub struct GetExecutionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for retrieving a list of Executions.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListExecutionsRequest {
     /// Required. The Execution from which the Executions should be listed.
     /// To list all Executions across Jobs, use "-" instead of Job name.
@@ -1580,7 +1581,7 @@ pub struct ListExecutionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for deleting an Execution.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteExecutionRequest {
     /// Required. The name of the Execution to delete.
     /// Format:
@@ -1598,7 +1599,7 @@ pub struct DeleteExecutionRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request message for deleting an Execution.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelExecutionRequest {
     /// Required. The name of the Execution to cancel.
     /// Format:
@@ -1696,9 +1697,9 @@ pub struct Execution {
     #[prost(string, tag = "12")]
     pub job: ::prost::alloc::string::String,
     /// Output only. Specifies the maximum desired number of tasks the execution
-    /// should run at any given time. Must be <= task_count. The actual number of
+    /// should run at any given time. Must be \<= task_count. The actual number of
     /// tasks running in steady state will be less than this number when
-    /// ((.spec.task_count - .status.successful) < .spec.parallelism), i.e. when
+    /// ((.spec.task_count - .status.successful) \< .spec.parallelism), i.e. when
     /// the work left to do is less than max parallelism.
     #[prost(int32, tag = "13")]
     pub parallelism: i32,
@@ -1857,7 +1858,7 @@ pub mod executions_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Executions/GetExecution",
             );
@@ -1885,7 +1886,7 @@ pub mod executions_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Executions/ListExecutions",
             );
@@ -1912,7 +1913,7 @@ pub mod executions_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Executions/DeleteExecution",
             );
@@ -1939,7 +1940,7 @@ pub mod executions_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Executions/CancelExecution",
             );
@@ -2028,7 +2029,7 @@ pub struct CreateJobRequest {
     pub validate_only: bool,
 }
 /// Request message for obtaining a Job by its full name.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetJobRequest {
     /// Required. The full name of the Job.
     /// Format: projects/{project}/locations/{location}/jobs/{job}, where {project}
@@ -2053,7 +2054,7 @@ pub struct UpdateJobRequest {
     pub allow_missing: bool,
 }
 /// Request message for retrieving a list of Jobs.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListJobsRequest {
     /// Required. The location and project to list resources on.
     /// Format: projects/{project}/locations/{location}, where {project} can be
@@ -2083,7 +2084,7 @@ pub struct ListJobsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message to delete a Job by its full name.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteJobRequest {
     /// Required. The full name of the Job.
     /// Format: projects/{project}/locations/{location}/jobs/{job}, where {project}
@@ -2312,7 +2313,7 @@ pub struct Job {
 }
 /// Nested message and enum types in `Job`.
 pub mod job {
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum CreateExecution {
         /// A unique string used as a suffix creating a new execution. The Job will
         /// become ready when the execution is successfully started.
@@ -2328,7 +2329,7 @@ pub mod job {
 }
 /// Reference to an Execution. Use /Executions.GetExecution with the given name
 /// to get full execution including the latest status.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExecutionReference {
     /// Name of the execution.
     #[prost(string, tag = "1")]
@@ -2513,7 +2514,7 @@ pub mod jobs_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Jobs/CreateJob",
             );
@@ -2535,7 +2536,7 @@ pub mod jobs_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Jobs/GetJob",
             );
@@ -2560,7 +2561,7 @@ pub mod jobs_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Jobs/ListJobs",
             );
@@ -2585,7 +2586,7 @@ pub mod jobs_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Jobs/UpdateJob",
             );
@@ -2610,7 +2611,7 @@ pub mod jobs_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Jobs/DeleteJob",
             );
@@ -2635,7 +2636,7 @@ pub mod jobs_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Jobs/RunJob",
             );
@@ -2663,7 +2664,7 @@ pub mod jobs_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Jobs/GetIamPolicy",
             );
@@ -2691,7 +2692,7 @@ pub mod jobs_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Jobs/SetIamPolicy",
             );
@@ -2722,7 +2723,7 @@ pub mod jobs_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Jobs/TestIamPermissions",
             );
@@ -2736,14 +2737,14 @@ pub mod jobs_client {
     }
 }
 /// Effective settings for the current revision
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RevisionScalingStatus {
     /// The current number of min instances provisioned for this revision.
     #[prost(int32, tag = "1")]
     pub desired_min_instance_count: i32,
 }
 /// Request message for obtaining a Revision by its full name.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRevisionRequest {
     /// Required. The full name of the Revision.
     /// Format:
@@ -2752,7 +2753,7 @@ pub struct GetRevisionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for retrieving a list of Revisions.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRevisionsRequest {
     /// Required. The Service from which the Revisions should be listed.
     /// To list all Revisions across Services, use "-" instead of Service name.
@@ -2785,7 +2786,7 @@ pub struct ListRevisionsResponse {
 /// Request message for deleting a retired Revision.
 /// Revision lifecycle is usually managed by making changes to the parent
 /// Service. Only retired revisions can be deleted with this API.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRevisionRequest {
     /// Required. The name of the Revision to delete.
     /// Format:
@@ -3059,7 +3060,7 @@ pub mod revisions_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Revisions/GetRevision",
             );
@@ -3085,7 +3086,7 @@ pub mod revisions_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Revisions/ListRevisions",
             );
@@ -3112,7 +3113,7 @@ pub mod revisions_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Revisions/DeleteRevision",
             );
@@ -3229,7 +3230,7 @@ pub struct RevisionTemplate {
 }
 /// Holds a single traffic routing entry for the Service. Allocations can be done
 /// to a specific Revision name, or pointing to the latest Ready Revision.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TrafficTarget {
     /// The allocation type for this traffic target.
     #[prost(enumeration = "TrafficTargetAllocationType", tag = "1")]
@@ -3248,7 +3249,7 @@ pub struct TrafficTarget {
     pub tag: ::prost::alloc::string::String,
 }
 /// Represents the observed state of a single `TrafficTarget` entry.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TrafficTargetStatus {
     /// The allocation type for this traffic target.
     #[prost(enumeration = "TrafficTargetAllocationType", tag = "1")]
@@ -3340,7 +3341,7 @@ pub struct UpdateServiceRequest {
     pub allow_missing: bool,
 }
 /// Request message for retrieving a list of Services.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListServicesRequest {
     /// Required. The location and project to list resources on.
     /// Location must be a valid Google Cloud region, and cannot be the "-"
@@ -3371,7 +3372,7 @@ pub struct ListServicesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for obtaining a Service by its full name.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetServiceRequest {
     /// Required. The full name of the Service.
     /// Format: projects/{project}/locations/{location}/services/{service}, where
@@ -3380,7 +3381,7 @@ pub struct GetServiceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message to delete a Service by its full name.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteServiceRequest {
     /// Required. The full name of the Service.
     /// Format: projects/{project}/locations/{location}/services/{service}, where
@@ -3714,7 +3715,7 @@ pub mod services_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Services/CreateService",
             );
@@ -3738,7 +3739,7 @@ pub mod services_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Services/GetService",
             );
@@ -3763,7 +3764,7 @@ pub mod services_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Services/ListServices",
             );
@@ -3788,7 +3789,7 @@ pub mod services_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Services/UpdateService",
             );
@@ -3817,7 +3818,7 @@ pub mod services_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Services/DeleteService",
             );
@@ -3847,7 +3848,7 @@ pub mod services_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Services/GetIamPolicy",
             );
@@ -3875,7 +3876,7 @@ pub mod services_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Services/SetIamPolicy",
             );
@@ -3906,7 +3907,7 @@ pub mod services_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Services/TestIamPermissions",
             );
@@ -3920,7 +3921,7 @@ pub mod services_client {
     }
 }
 /// Request message for obtaining a Task by its full name.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTaskRequest {
     /// Required. The full name of the Task.
     /// Format:
@@ -3929,7 +3930,7 @@ pub struct GetTaskRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for retrieving a list of Tasks.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListTasksRequest {
     /// Required. The Execution from which the Tasks should be listed.
     /// To list all Tasks across Executions of a Job, use "-" instead of Execution
@@ -4234,7 +4235,7 @@ pub mod tasks_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Tasks/GetTask",
             );
@@ -4259,7 +4260,7 @@ pub mod tasks_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Tasks/ListTasks",
             );

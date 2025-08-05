@@ -12,7 +12,7 @@ pub struct Budget {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// User data for display name in UI.
-    /// Validation: <= 60 chars.
+    /// Validation: \<= 60 chars.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// Optional. Filters that define which resources are used to compute the
@@ -42,7 +42,7 @@ pub struct Budget {
     pub etag: ::prost::alloc::string::String,
 }
 /// The budgeted amount for each usage period.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BudgetAmount {
     /// Specification for what amount to use as the budget.
     #[prost(oneof = "budget_amount::BudgetAmount", tags = "1, 2")]
@@ -51,7 +51,7 @@ pub struct BudgetAmount {
 /// Nested message and enum types in `BudgetAmount`.
 pub mod budget_amount {
     /// Specification for what amount to use as the budget.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum BudgetAmount {
         /// A specified amount to use as the budget.
         /// `currency_code` is optional. If specified when creating a budget, it must
@@ -62,23 +62,23 @@ pub mod budget_amount {
         SpecifiedAmount(super::super::super::super::super::r#type::Money),
         /// Use the last period's actual spend as the budget for the present period.
         /// LastPeriodAmount can only be set when the budget's time period is a
-        /// [Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period].
+        /// \[Filter.calendar_period\]\[google.cloud.billing.budgets.v1beta1.Filter.calendar_period\].
         /// It cannot be set in combination with
-        /// [Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period].
+        /// \[Filter.custom_period\]\[google.cloud.billing.budgets.v1beta1.Filter.custom_period\].
         #[prost(message, tag = "2")]
         LastPeriodAmount(super::LastPeriodAmount),
     }
 }
 /// Describes a budget amount targeted to the last
-/// [Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period]
+/// \[Filter.calendar_period\]\[google.cloud.billing.budgets.v1beta1.Filter.calendar_period\]
 /// spend. At this time, the amount is automatically 100% of the last calendar
 /// period's spend; that is, there are no other options yet.
 /// Future configuration options will be described here (for example, configuring
 /// a percentage of last period's spend).
 /// LastPeriodAmount cannot be set for a budget configured with
 /// a
-/// [Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period].
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+/// \[Filter.custom_period\]\[google.cloud.billing.budgets.v1beta1.Filter.custom_period\].
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LastPeriodAmount {}
 /// ThresholdRule contains the definition of a threshold. Threshold rules define
 /// the triggering events used to generate a budget notification email. When a
@@ -92,9 +92,9 @@ pub struct LastPeriodAmount {}
 /// object](<https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format>)
 /// sent to a Pub/Sub topic.
 ///
-/// Threshold rules are _required_ if using email notifications.
+/// Threshold rules are *required* if using email notifications.
 ///
-/// Threshold rules are _optional_ if only setting a
+/// Threshold rules are *optional* if only setting a
 /// [`pubsubTopic` NotificationsRule](#NotificationsRule),
 /// unless you want your JSON data object to include data about the thresholds
 /// you set.
@@ -137,9 +137,9 @@ pub mod threshold_rule {
         /// Use forecasted spend for the period as the basis for comparison against
         /// the threshold.
         /// FORECASTED_SPEND can only be set when the budget's time period is a
-        /// [Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period].
+        /// \[Filter.calendar_period\]\[google.cloud.billing.budgets.v1beta1.Filter.calendar_period\].
         /// It cannot be set in combination with
-        /// [Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period].
+        /// \[Filter.custom_period\]\[google.cloud.billing.budgets.v1beta1.Filter.custom_period\].
         ForecastedSpend = 2,
     }
     impl Basis {
@@ -167,7 +167,7 @@ pub mod threshold_rule {
 }
 /// AllUpdatesRule defines notifications that are sent based on budget spend
 /// and thresholds.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AllUpdatesRule {
     /// Optional. The name of the Pub/Sub topic where budget related messages will
     /// be published, in the form `projects/{project_id}/topics/{topic_id}`.
@@ -183,9 +183,9 @@ pub struct AllUpdatesRule {
     #[prost(string, tag = "1")]
     pub pubsub_topic: ::prost::alloc::string::String,
     /// Optional. Required when
-    /// [AllUpdatesRule.pubsub_topic][google.cloud.billing.budgets.v1beta1.AllUpdatesRule.pubsub_topic]
+    /// \[AllUpdatesRule.pubsub_topic\]\[google.cloud.billing.budgets.v1beta1.AllUpdatesRule.pubsub_topic\]
     /// is set. The schema version of the notification sent to
-    /// [AllUpdatesRule.pubsub_topic][google.cloud.billing.budgets.v1beta1.AllUpdatesRule.pubsub_topic].
+    /// \[AllUpdatesRule.pubsub_topic\]\[google.cloud.billing.budgets.v1beta1.AllUpdatesRule.pubsub_topic\].
     /// Only "1.0" is accepted. It represents the JSON schema as defined in
     /// <https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format.>
     #[prost(string, tag = "2")]
@@ -237,14 +237,14 @@ pub struct Filter {
     #[prost(string, repeated, tag = "2")]
     pub resource_ancestors: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. If
-    /// [Filter.credit_types_treatment][google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment]
+    /// \[Filter.credit_types_treatment\]\[google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment\]
     /// is INCLUDE_SPECIFIED_CREDITS, this is a list of credit types to be
     /// subtracted from gross cost to determine the spend for threshold
     /// calculations. See [a list of acceptable credit type
     /// values](<https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type>).
     ///
     /// If
-    /// [Filter.credit_types_treatment][google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment]
+    /// \[Filter.credit_types_treatment\]\[google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment\]
     /// is **not** INCLUDE_SPECIFIED_CREDITS, this field must be empty.
     #[prost(string, repeated, tag = "7")]
     pub credit_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -271,11 +271,10 @@ pub struct Filter {
     /// this set of labeled resources should be included in the budget. If omitted,
     /// the report will include all labeled and unlabeled usage.
     ///
-    /// An object containing a single `"key": value` pair. Example: `{ "name":
-    /// "wrench" }`.
+    /// An object containing a single `"key": value` pair. Example: `{ "name":  "wrench" }`.
     ///
-    ///   _Currently, multiple entries or multiple values per entry are not
-    ///   allowed._
+    /// *Currently, multiple entries or multiple values per entry are not
+    /// allowed.*
     #[prost(map = "string, message", tag = "6")]
     pub labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -347,7 +346,7 @@ pub mod filter {
     /// Multiple options to choose the budget's time period, specifying that only
     /// usage that occurs during this time period should be included in the budget.
     /// If not set, the <code>usage_period</code> defaults to CalendarPeriod.MONTH.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum UsagePeriod {
         /// Optional. Specifies to track usage for recurring calendar period.
         /// For example, assume that CalendarPeriod.QUARTER is set. The budget will
@@ -364,7 +363,7 @@ pub mod filter {
     }
 }
 /// All date times begin at 12 AM US and Canadian Pacific Time (UTC-8).
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomPeriod {
     /// Required. The start date must be after January 1, 2017.
     #[prost(message, optional, tag = "1")]
@@ -446,7 +445,7 @@ pub struct UpdateBudgetRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for GetBudget
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetBudgetRequest {
     /// Required. Name of budget to get. Values are of the form
     /// `billingAccounts/{billingAccountId}/budgets/{budgetId}`.
@@ -454,7 +453,7 @@ pub struct GetBudgetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for ListBudgets
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListBudgetsRequest {
     /// Required. Name of billing account to list budgets under. Values
     /// are of the form `billingAccounts/{billingAccountId}`.
@@ -490,7 +489,7 @@ pub struct ListBudgetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for DeleteBudget
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteBudgetRequest {
     /// Required. Name of the budget to delete. Values are of the form
     /// `billingAccounts/{billingAccountId}/budgets/{budgetId}`.
@@ -605,7 +604,7 @@ pub mod budget_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.billing.budgets.v1beta1.BudgetService/CreateBudget",
             );
@@ -636,7 +635,7 @@ pub mod budget_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.billing.budgets.v1beta1.BudgetService/UpdateBudget",
             );
@@ -668,7 +667,7 @@ pub mod budget_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.billing.budgets.v1beta1.BudgetService/GetBudget",
             );
@@ -703,7 +702,7 @@ pub mod budget_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.billing.budgets.v1beta1.BudgetService/ListBudgets",
             );
@@ -730,7 +729,7 @@ pub mod budget_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.billing.budgets.v1beta1.BudgetService/DeleteBudget",
             );

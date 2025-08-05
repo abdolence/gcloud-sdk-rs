@@ -152,7 +152,7 @@ pub mod parameter {
     }
 }
 /// Subscription information.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Subscription {
     /// The timestamp when the subscription begins, if applicable.
     #[prost(message, optional, tag = "3")]
@@ -307,7 +307,7 @@ impl LineItemChangeStateReasonType {
     }
 }
 /// Request message for
-/// [ConsumerProcurementService.PlaceOrder][google.cloud.commerce.consumer.procurement.v1alpha1.ConsumerProcurementService.PlaceOrder].
+/// \[ConsumerProcurementService.PlaceOrder\]\[google.cloud.commerce.consumer.procurement.v1alpha1.ConsumerProcurementService.PlaceOrder\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlaceOrderRequest {
     /// Required. The resource name of the parent resource.
@@ -331,20 +331,20 @@ pub struct PlaceOrderRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message stored in the metadata field of the Operation returned by
-/// [ConsumerProcurementService.PlaceOrder][google.cloud.commerce.consumer.procurement.v1alpha1.ConsumerProcurementService.PlaceOrder].
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+/// \[ConsumerProcurementService.PlaceOrder\]\[google.cloud.commerce.consumer.procurement.v1alpha1.ConsumerProcurementService.PlaceOrder\].
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PlaceOrderMetadata {}
 /// Request message for
-/// [ConsumerProcurementService.GetOrder][google.cloud.commerce.consumer.procurement.v1alpha1.ConsumerProcurementService.GetOrder]
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[ConsumerProcurementService.GetOrder\]\[google.cloud.commerce.consumer.procurement.v1alpha1.ConsumerProcurementService.GetOrder\]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetOrderRequest {
     /// Required. The name of the order to retrieve.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [ConsumerProcurementService.ListOrders][google.cloud.commerce.consumer.procurement.v1alpha1.ConsumerProcurementService.ListOrders].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[ConsumerProcurementService.ListOrders\]\[google.cloud.commerce.consumer.procurement.v1alpha1.ConsumerProcurementService.ListOrders\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListOrdersRequest {
     /// Required. The parent resource to query for orders.
     /// This field has the form `billingAccounts/{billing-account-id}`.
@@ -377,7 +377,7 @@ pub struct ListOrdersRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [ConsumerProcurementService.ListOrders][google.cloud.commerce.consumer.procurement.v1alpha1.ConsumerProcurementService.ListOrders].
+/// \[ConsumerProcurementService.ListOrders\]\[google.cloud.commerce.consumer.procurement.v1alpha1.ConsumerProcurementService.ListOrders\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOrdersResponse {
     /// The list of orders in this response.
@@ -401,13 +401,11 @@ pub mod consumer_procurement_service_client {
     /// ConsumerProcurementService allows customers to make purchases of products
     /// served by the Cloud Commerce platform.
     ///
-    ///
     /// When purchases are made, the
-    /// [ConsumerProcurementService][google.cloud.commerce.consumer.procurement.v1alpha1.ConsumerProcurementService]
+    /// \[ConsumerProcurementService\]\[google.cloud.commerce.consumer.procurement.v1alpha1.ConsumerProcurementService\]
     /// programs the appropriate backends, including both Google's own
     /// infrastructure, as well as third-party systems, and to enable billing setup
     /// for charging for the procured item.
-    ///
     #[derive(Debug, Clone)]
     pub struct ConsumerProcurementServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -491,7 +489,7 @@ pub mod consumer_procurement_service_client {
             self
         }
         /// Creates a new
-        /// [Order][google.cloud.commerce.consumer.procurement.v1alpha1.Order].
+        /// \[Order\]\[google.cloud.commerce.consumer.procurement.v1alpha1.Order\].
         ///
         /// This API only supports GCP spend-based committed use
         /// discounts specified by GCP documentation.
@@ -499,7 +497,7 @@ pub mod consumer_procurement_service_client {
         /// The returned long-running operation is in-progress until the backend
         /// completes the creation of the resource. Once completed, the order is
         /// in
-        /// [OrderState.ORDER_STATE_ACTIVE][google.cloud.commerce.consumer.procurement.v1alpha1.OrderState.ORDER_STATE_ACTIVE].
+        /// \[OrderState.ORDER_STATE_ACTIVE\]\[google.cloud.commerce.consumer.procurement.v1alpha1.OrderState.ORDER_STATE_ACTIVE\].
         /// In case of failure, the order resource will be removed.
         pub async fn place_order(
             &mut self,
@@ -518,7 +516,7 @@ pub mod consumer_procurement_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.commerce.consumer.procurement.v1alpha1.ConsumerProcurementService/PlaceOrder",
             );
@@ -533,7 +531,7 @@ pub mod consumer_procurement_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Returns the requested
-        /// [Order][google.cloud.commerce.consumer.procurement.v1alpha1.Order]
+        /// \[Order\]\[google.cloud.commerce.consumer.procurement.v1alpha1.Order\]
         /// resource.
         pub async fn get_order(
             &mut self,
@@ -547,7 +545,7 @@ pub mod consumer_procurement_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.commerce.consumer.procurement.v1alpha1.ConsumerProcurementService/GetOrder",
             );
@@ -561,7 +559,7 @@ pub mod consumer_procurement_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lists [Order][google.cloud.commerce.consumer.procurement.v1alpha1.Order]
+        /// Lists \[Order\]\[google.cloud.commerce.consumer.procurement.v1alpha1.Order\]
         /// resources that the user has access to, within the scope of the parent
         /// resource.
         pub async fn list_orders(
@@ -579,7 +577,7 @@ pub mod consumer_procurement_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.commerce.consumer.procurement.v1alpha1.ConsumerProcurementService/ListOrders",
             );

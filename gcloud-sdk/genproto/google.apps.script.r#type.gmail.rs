@@ -37,7 +37,7 @@ pub struct GmailAddOnManifest {
 }
 /// An action that is always available in the add-on toolbar menu regardless of
 /// message context.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UniversalAction {
     /// Required. User-visible text describing the action, for example, "Add a new
     /// contact."
@@ -52,7 +52,7 @@ pub struct UniversalAction {
 pub mod universal_action {
     /// The type of the action determines the behavior of Gmail when the user
     /// invokes the action.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ActionType {
         /// A link that is opened by Gmail when the user triggers the action.
         #[prost(string, tag = "2")]
@@ -127,7 +127,7 @@ pub mod compose_trigger {
 /// Defines a trigger that fires when the open email meets a specific criteria.
 /// When the trigger fires, it executes a specific endpoint, usually
 /// in order to create new cards and update the UI.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ContextualTrigger {
     /// Required. The name of the endpoint to call when a message matches the
     /// trigger.
@@ -142,7 +142,7 @@ pub struct ContextualTrigger {
 pub mod contextual_trigger {
     /// The type of trigger determines the conditions Gmail uses to show the
     /// add-on.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Trigger {
         /// UnconditionalTriggers are executed when any mail message is opened.
         #[prost(message, tag = "1")]
@@ -150,5 +150,5 @@ pub mod contextual_trigger {
     }
 }
 /// A trigger that fires when any email message is opened.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UnconditionalTrigger {}

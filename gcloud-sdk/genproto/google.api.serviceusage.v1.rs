@@ -5,13 +5,15 @@ pub struct Service {
     /// The resource name of the consumer and service.
     ///
     /// A valid name would be:
-    /// - projects/123/services/serviceusage.googleapis.com
+    ///
+    /// * projects/123/services/serviceusage.googleapis.com
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The resource name of the consumer.
     ///
     /// A valid name would be:
-    /// - projects/123
+    ///
+    /// * projects/123
     #[prost(string, tag = "5")]
     pub parent: ::prost::alloc::string::String,
     /// The service configuration of the available service.
@@ -58,8 +60,8 @@ pub struct ServiceConfig {
     #[prost(message, repeated, tag = "18")]
     pub endpoints: ::prost::alloc::vec::Vec<super::super::Endpoint>,
     /// Defines the monitored resources used by this service. This is required
-    /// by the [Service.monitoring][google.api.Service.monitoring] and
-    /// [Service.logging][google.api.Service.logging] configurations.
+    /// by the \[Service.monitoring\]\[google.api.Service.monitoring\] and
+    /// \[Service.logging\]\[google.api.Service.logging\] configurations.
     #[prost(message, repeated, tag = "25")]
     pub monitored_resources: ::prost::alloc::vec::Vec<
         super::super::MonitoredResourceDescriptor,
@@ -70,7 +72,7 @@ pub struct ServiceConfig {
     pub monitoring: ::core::option::Option<super::super::Monitoring>,
 }
 /// The operation metadata returned for the batchend services operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// The full name of the resources that this operation is directly
     /// associated with.
@@ -114,7 +116,7 @@ impl State {
     }
 }
 /// Request message for the `EnableService` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnableServiceRequest {
     /// Name of the consumer and service to enable the service on.
     ///
@@ -140,7 +142,7 @@ pub struct EnableServiceResponse {
     pub service: ::core::option::Option<Service>,
 }
 /// Request message for the `DisableService` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisableServiceRequest {
     /// Name of the consumer and service to disable the service on.
     ///
@@ -221,7 +223,7 @@ pub struct DisableServiceResponse {
     pub service: ::core::option::Option<Service>,
 }
 /// Request message for the `GetService` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetServiceRequest {
     /// Name of the consumer and service to get the `ConsumerState` for.
     ///
@@ -232,7 +234,7 @@ pub struct GetServiceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `ListServices` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListServicesRequest {
     /// Parent to search for services on.
     ///
@@ -266,7 +268,7 @@ pub struct ListServicesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the `BatchEnableServices` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BatchEnableServicesRequest {
     /// Parent to enable services on.
     ///
@@ -308,7 +310,7 @@ pub struct BatchEnableServicesResponse {
 /// Nested message and enum types in `BatchEnableServicesResponse`.
 pub mod batch_enable_services_response {
     /// Provides error messages for the failing services.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct EnableFailure {
         /// The service id of a service that could not be enabled.
         #[prost(string, tag = "1")]
@@ -319,7 +321,7 @@ pub mod batch_enable_services_response {
     }
 }
 /// Request message for the `BatchGetServices` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BatchGetServicesRequest {
     /// Parent to retrieve services from.
     /// If this is set, the parent of all of the services specified in `names` must
@@ -456,7 +458,7 @@ pub mod service_usage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1.ServiceUsage/EnableService",
             );
@@ -492,7 +494,7 @@ pub mod service_usage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1.ServiceUsage/DisableService",
             );
@@ -519,7 +521,7 @@ pub mod service_usage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1.ServiceUsage/GetService",
             );
@@ -561,7 +563,7 @@ pub mod service_usage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1.ServiceUsage/ListServices",
             );
@@ -593,7 +595,7 @@ pub mod service_usage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1.ServiceUsage/BatchEnableServices",
             );
@@ -624,7 +626,7 @@ pub mod service_usage_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.serviceusage.v1.ServiceUsage/BatchGetServices",
             );

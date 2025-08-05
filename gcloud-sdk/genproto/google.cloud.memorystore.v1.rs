@@ -120,7 +120,7 @@ pub struct Instance {
 /// Nested message and enum types in `Instance`.
 pub mod instance {
     /// Additional information about the state of the instance.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct StateInfo {
         #[prost(oneof = "state_info::Info", tags = "1")]
         pub info: ::core::option::Option<state_info::Info>,
@@ -128,7 +128,7 @@ pub mod instance {
     /// Nested message and enum types in `StateInfo`.
     pub mod state_info {
         /// Represents information about instance with state UPDATING.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct UpdateInfo {
             /// Output only. Target number of shards for the instance.
             #[prost(int32, optional, tag = "1")]
@@ -145,7 +145,7 @@ pub mod instance {
             #[prost(enumeration = "super::NodeType", optional, tag = "4")]
             pub target_node_type: ::core::option::Option<i32>,
         }
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Info {
             /// Output only. Describes ongoing update when instance state is UPDATING.
             #[prost(message, tag = "1")]
@@ -154,14 +154,14 @@ pub mod instance {
     }
     /// Backups that stored in Cloud Storage buckets.
     /// The Cloud Storage buckets need to be the same region as the instances.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct GcsBackupSource {
         /// Optional. Example: gs://bucket1/object1, gs://bucket2/folder2/object2
         #[prost(string, repeated, tag = "1")]
         pub uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Backups that generated and managed by memorystore.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ManagedBackupSource {
         /// Optional. Example:
         /// //memorystore.googleapis.com/projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup}
@@ -183,7 +183,7 @@ pub mod instance {
         pub connections: ::prost::alloc::vec::Vec<ConnectionDetail>,
     }
     /// Information of each PSC connection.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ConnectionDetail {
         /// A PSC connection to an instance could either be created through Service
         /// Connectivity Automation (auto connection) during the cluster creation,
@@ -196,7 +196,7 @@ pub mod instance {
         /// A PSC connection to an instance could either be created through Service
         /// Connectivity Automation (auto connection) during the cluster creation,
         /// or it could be created by customer themeslves (user-created connection).
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Connection {
             /// Immutable. Detailed information of a PSC connection that is created
             /// through service connectivity automation.
@@ -445,7 +445,7 @@ pub mod instance {
         }
     }
     /// The source to import from.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ImportSources {
         /// Optional. Immutable. Backups that stored in Cloud Storage buckets.
         /// The Cloud Storage buckets need to be the same region as the instances.
@@ -460,7 +460,7 @@ pub mod instance {
     }
 }
 /// The automated backup config for an instance.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AutomatedBackupConfig {
     /// Optional. The automated backup mode. If the mode is disabled, the other
     /// fields will be ignored.
@@ -479,7 +479,7 @@ pub struct AutomatedBackupConfig {
 pub mod automated_backup_config {
     /// This schedule allows the backup to be triggered at a fixed frequency
     /// (currently only daily is supported).
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct FixedFrequencySchedule {
         /// Required. The start time of every automated backup in UTC. It must be set
         /// to the start of an hour. This field is required.
@@ -532,7 +532,7 @@ pub mod automated_backup_config {
         }
     }
     /// The schedule of automated backups.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Schedule {
         /// Optional. Trigger automated backups at a fixed frequency.
         #[prost(message, tag = "2")]
@@ -540,7 +540,7 @@ pub mod automated_backup_config {
     }
 }
 /// BackupCollection of an instance.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackupCollection {
     /// Identifier. Full resource path of the backup collection.
     #[prost(string, tag = "1")]
@@ -568,8 +568,8 @@ pub struct BackupCollection {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Backup {
     /// Identifier. Full resource path of the backup. the last part of the name is
-    /// the backup id with the following format: \[YYYYMMDDHHMMSS\]_[Shorted Instance
-    /// UID] OR customer specified while backup instance. Example:
+    /// the backup id with the following format: \[YYYYMMDDHHMMSS\]\_\[Shorted Instance
+    /// UID\] OR customer specified while backup instance. Example:
     /// 20240515123000_1234
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -712,7 +712,7 @@ pub mod backup {
     }
 }
 /// Backup is consisted of multiple backup files.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackupFile {
     /// Output only. e.g: <shard-id>.rdb
     #[prost(string, tag = "1")]
@@ -769,7 +769,7 @@ pub struct CrossInstanceReplicationConfig {
 pub mod cross_instance_replication_config {
     /// Details of the remote instance associated with this instance in a cross
     /// instance replication setup.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RemoteInstance {
         /// Optional. The full resource path of the remote instance in
         /// the format: projects/<project>/locations/<region>/instances/<instance-id>
@@ -861,7 +861,7 @@ pub struct MaintenancePolicy {
     pub weekly_maintenance_window: ::prost::alloc::vec::Vec<WeeklyMaintenanceWindow>,
 }
 /// Time window specified for weekly operations.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WeeklyMaintenanceWindow {
     /// Optional. Allows to define schedule that runs specified day of the week.
     #[prost(enumeration = "super::super::super::r#type::DayOfWeek", tag = "1")]
@@ -871,7 +871,7 @@ pub struct WeeklyMaintenanceWindow {
     pub start_time: ::core::option::Option<super::super::super::r#type::TimeOfDay>,
 }
 /// Upcoming maintenance schedule.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MaintenanceSchedule {
     /// Output only. The start time of any upcoming scheduled maintenance for this
     /// instance.
@@ -884,7 +884,7 @@ pub struct MaintenanceSchedule {
 }
 /// Configuration of a service attachment of the cluster, for creating PSC
 /// connections.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PscAttachmentDetail {
     /// Output only. Service attachment URI which your self-created PscConnection
     /// should use as target.
@@ -895,7 +895,7 @@ pub struct PscAttachmentDetail {
     pub connection_type: i32,
 }
 /// Details of consumer resources in a PSC connection.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PscAutoConnection {
     /// Output only. The PSC connection id of the forwarding rule connected to the
     /// service attachment.
@@ -939,7 +939,7 @@ pub struct PscAutoConnection {
 /// Nested message and enum types in `PscAutoConnection`.
 pub mod psc_auto_connection {
     /// Ports of the exposed endpoint.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Ports {
         /// Optional. port will only be set for Primary/Reader or Discovery endpoint.
         #[prost(int32, tag = "9")]
@@ -947,7 +947,7 @@ pub mod psc_auto_connection {
     }
 }
 /// User created Psc connection configuration.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PscConnection {
     /// Required. The PSC connection id of the forwarding rule connected to the
     /// service attachment.
@@ -991,7 +991,7 @@ pub struct PscConnection {
 /// Nested message and enum types in `PscConnection`.
 pub mod psc_connection {
     /// Ports of the exposed endpoint.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Ports {
         /// Optional. port will only be set for Primary/Reader or Discovery endpoint.
         #[prost(int32, tag = "9")]
@@ -999,7 +999,7 @@ pub mod psc_connection {
     }
 }
 /// Represents an endpoint for clients to connect to the instance.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DiscoveryEndpoint {
     /// Output only. IP address of the exposed endpoint clients connect to.
     #[prost(string, tag = "1")]
@@ -1014,7 +1014,7 @@ pub struct DiscoveryEndpoint {
     pub network: ::prost::alloc::string::String,
 }
 /// Represents persistence configuration for a instance.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PersistenceConfig {
     /// Optional. Current persistence mode.
     #[prost(enumeration = "persistence_config::PersistenceMode", tag = "1")]
@@ -1029,7 +1029,7 @@ pub struct PersistenceConfig {
 /// Nested message and enum types in `PersistenceConfig`.
 pub mod persistence_config {
     /// Configuration for RDB based persistence.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RdbConfig {
         /// Optional. Period between RDB snapshots.
         #[prost(enumeration = "rdb_config::SnapshotPeriod", tag = "1")]
@@ -1095,7 +1095,7 @@ pub mod persistence_config {
         }
     }
     /// Configuration for AOF based persistence.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AofConfig {
         /// Optional. The fsync mode.
         #[prost(enumeration = "aof_config::AppendFsync", tag = "1")]
@@ -1210,7 +1210,7 @@ pub struct NodeConfig {
     pub size_gb: f64,
 }
 /// Zone distribution configuration for allocation of instance resources.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ZoneDistributionConfig {
     /// Optional. Defines zone where all resources will be allocated with
     /// SINGLE_ZONE mode. Ignored for MULTI_ZONE mode.
@@ -1268,7 +1268,7 @@ pub mod zone_distribution_config {
     }
 }
 /// Request for rescheduling instance maintenance.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RescheduleMaintenanceRequest {
     /// Required. Name of the instance to reschedule maintenance for:
     /// `projects/{project}/locations/{location_id}/instances/{instance}`
@@ -1329,8 +1329,8 @@ pub mod reschedule_maintenance_request {
         }
     }
 }
-/// Request message for [ListInstances][].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Request message for \[ListInstances\]\[\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInstancesRequest {
     /// Required. The parent to list instances from.
     /// Format: projects/{project}/locations/{location}
@@ -1351,7 +1351,7 @@ pub struct ListInstancesRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// Response message for [ListInstances][].
+/// Response message for \[ListInstances\]\[\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesResponse {
     /// If the {location} requested was "-" the response contains a list of
@@ -1367,15 +1367,15 @@ pub struct ListInstancesResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Request message for [GetInstance][].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Request message for \[GetInstance\]\[\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInstanceRequest {
     /// Required. The name of the instance to retrieve.
     /// Format: projects/{project}/locations/{location}/instances/{instance}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for [CreateInstance][].
+/// Request message for \[CreateInstance\]\[\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstanceRequest {
     /// Required. The parent resource where this instance will be created.
@@ -1413,7 +1413,7 @@ pub struct CreateInstanceRequest {
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request message for [UpdateInstance][].
+/// Request message for \[UpdateInstance\]\[\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInstanceRequest {
     /// Optional. The list of fields to be updated on the instance. At least one
@@ -1439,8 +1439,8 @@ pub struct UpdateInstanceRequest {
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request message for [DeleteInstance][].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Request message for \[DeleteInstance\]\[\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteInstanceRequest {
     /// Required. The name of the instance to delete.
     /// Format: projects/{project}/locations/{location}/instances/{instance}
@@ -1463,11 +1463,11 @@ pub struct DeleteInstanceRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for \[ListBackupCollections\]
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListBackupCollectionsRequest {
     /// Required. The resource name of the backupCollection location using the
     /// form:
-    ///      `projects/{project_id}/locations/{location_id}`
+    /// `projects/{project_id}/locations/{location_id}`
     /// where `location_id` refers to a Google Cloud region.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -1476,7 +1476,7 @@ pub struct ListBackupCollectionsRequest {
     /// If not specified, a default value of 1000 will be used by the service.
     /// Regardless of the page_size value, the response may include a partial list
     /// and a caller should only rely on response's
-    /// [`next_page_token`][google.cloud.memorystore.v1.ListBackupCollectionsResponse.next_page_token]
+    /// \[`next_page_token`\]\[google.cloud.memorystore.v1.ListBackupCollectionsResponse.next_page_token\]
     /// to determine if there are more clusters left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -1509,16 +1509,16 @@ pub struct ListBackupCollectionsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for \[GetBackupCollection\].
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetBackupCollectionRequest {
     /// Required. Instance backupCollection resource name using the form:
-    ///      `projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}`
+    /// `projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}`
     /// where `location_id` refers to a Google Cloud region.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for \[ListBackups\].
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListBackupsRequest {
     /// Required. The resource name of the backupCollection using the form:
     /// `projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}`
@@ -1529,7 +1529,7 @@ pub struct ListBackupsRequest {
     /// If not specified, a default value of 1000 will be used by the service.
     /// Regardless of the page_size value, the response may include a partial list
     /// and a caller should only rely on response's
-    /// [`next_page_token`][google.cloud.memorystore.v1.ListBackupsResponse.next_page_token]
+    /// \[`next_page_token`\]\[google.cloud.memorystore.v1.ListBackupsResponse.next_page_token\]
     /// to determine if there are more clusters left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -1553,7 +1553,7 @@ pub struct ListBackupsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for \[GetBackup\].
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetBackupRequest {
     /// Required. Instance backup resource name using the form:
     /// `projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}/backups/{backup_id}`
@@ -1561,7 +1561,7 @@ pub struct GetBackupRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for \[DeleteBackup\].
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteBackupRequest {
     /// Required. Instance backup resource name using the form:
     /// `projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}/backups/{backup_id}`
@@ -1572,7 +1572,7 @@ pub struct DeleteBackupRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for \[ExportBackup\].
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportBackupRequest {
     /// Required. Instance backup resource name using the form:
     /// `projects/{project_id}/locations/{location_id}/backupCollections/{backup_collection_id}/backups/{backup_id}`
@@ -1585,7 +1585,7 @@ pub struct ExportBackupRequest {
 /// Nested message and enum types in `ExportBackupRequest`.
 pub mod export_backup_request {
     /// Required. Specify destination to export a backup.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Destination {
         /// Google Cloud Storage bucket, like "my-bucket".
         #[prost(string, tag = "2")]
@@ -1593,10 +1593,10 @@ pub mod export_backup_request {
     }
 }
 /// Request for \[BackupInstance\].
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackupInstanceRequest {
     /// Required. Instance resource name using the form:
-    ///   `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
+    /// `projects/{project_id}/locations/{location_id}/instances/{instance_id}`
     /// where `location_id` refers to a Google Cloud region.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -1605,12 +1605,12 @@ pub struct BackupInstanceRequest {
     #[prost(message, optional, tag = "2")]
     pub ttl: ::core::option::Option<::prost_types::Duration>,
     /// Optional. The id of the backup to be created. If not specified, the
-    /// default value (\[YYYYMMDDHHMMSS\]_[Shortened Instance UID] is used.
+    /// default value (\[YYYYMMDDHHMMSS\]\_\[Shortened Instance UID\] is used.
     #[prost(string, optional, tag = "3")]
     pub backup_id: ::core::option::Option<::prost::alloc::string::String>,
 }
-/// Request message for [GetCertificateAuthority][].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Request message for \[GetCertificateAuthority\]\[\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCertificateAuthorityRequest {
     /// Required. The name of the certificate authority.
     /// Format:
@@ -1642,7 +1642,7 @@ pub mod certificate_authority {
     /// Nested message and enum types in `ManagedCertificateAuthority`.
     pub mod managed_certificate_authority {
         /// A certificate chain.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct CertChain {
             /// The certificates that form the CA chain in order of leaf to root.
             #[prost(string, repeated, tag = "1")]
@@ -1658,7 +1658,7 @@ pub mod certificate_authority {
     }
 }
 /// Represents the metadata of a long-running operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -1677,8 +1677,8 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have been cancelled successfully
-    /// have [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+    /// have \[Operation.error\]\[\] value with a
+    /// \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -1864,7 +1864,7 @@ pub mod memorystore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memorystore.v1.Memorystore/ListInstances",
             );
@@ -1891,7 +1891,7 @@ pub mod memorystore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memorystore.v1.Memorystore/GetInstance",
             );
@@ -1921,7 +1921,7 @@ pub mod memorystore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memorystore.v1.Memorystore/CreateInstance",
             );
@@ -1951,7 +1951,7 @@ pub mod memorystore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memorystore.v1.Memorystore/UpdateInstance",
             );
@@ -1981,7 +1981,7 @@ pub mod memorystore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memorystore.v1.Memorystore/DeleteInstance",
             );
@@ -2011,7 +2011,7 @@ pub mod memorystore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memorystore.v1.Memorystore/GetCertificateAuthority",
             );
@@ -2041,7 +2041,7 @@ pub mod memorystore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memorystore.v1.Memorystore/RescheduleMaintenance",
             );
@@ -2075,7 +2075,7 @@ pub mod memorystore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memorystore.v1.Memorystore/ListBackupCollections",
             );
@@ -2105,7 +2105,7 @@ pub mod memorystore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memorystore.v1.Memorystore/GetBackupCollection",
             );
@@ -2135,7 +2135,7 @@ pub mod memorystore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memorystore.v1.Memorystore/ListBackups",
             );
@@ -2162,7 +2162,7 @@ pub mod memorystore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memorystore.v1.Memorystore/GetBackup",
             );
@@ -2192,7 +2192,7 @@ pub mod memorystore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memorystore.v1.Memorystore/DeleteBackup",
             );
@@ -2222,7 +2222,7 @@ pub mod memorystore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memorystore.v1.Memorystore/ExportBackup",
             );
@@ -2263,7 +2263,7 @@ pub mod memorystore_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.memorystore.v1.Memorystore/BackupInstance",
             );

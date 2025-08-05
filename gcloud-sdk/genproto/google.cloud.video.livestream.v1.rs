@@ -30,7 +30,7 @@ pub mod elementary_stream {
     }
 }
 /// Multiplexing settings for output stream.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MuxStream {
     /// A unique key for this multiplexed stream. The key must be 1-63
     /// characters in length. The key must begin and end with a letter (regardless
@@ -41,17 +41,17 @@ pub struct MuxStream {
     ///
     /// Supported container formats:
     ///
-    /// - `fmp4` - the corresponding file extension is `.m4s`
-    /// - `ts` - the corresponding file extension is `.ts`
+    /// * `fmp4` - the corresponding file extension is `.m4s`
+    /// * `ts` - the corresponding file extension is `.ts`
     #[prost(string, tag = "3")]
     pub container: ::prost::alloc::string::String,
     /// List of `ElementaryStream`
-    /// [key][google.cloud.video.livestream.v1.ElementaryStream.key]s multiplexed
+    /// \[key\]\[google.cloud.video.livestream.v1.ElementaryStream.key\]s multiplexed
     /// in this stream.
     ///
-    /// - For `fmp4` container, must contain either one video or one audio stream.
-    /// - For `ts` container, must contain exactly one audio stream and up to one
-    /// video stream.
+    /// * For `fmp4` container, must contain either one video or one audio stream.
+    /// * For `ts` container, must contain exactly one audio stream and up to one
+    ///   video stream.
     #[prost(string, repeated, tag = "4")]
     pub elementary_streams: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Segment settings for `fmp4` and `ts`.
@@ -63,11 +63,11 @@ pub struct MuxStream {
     pub encryption_id: ::prost::alloc::string::String,
 }
 /// Manifest configuration.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Manifest {
     /// The name of the generated file. The default is `manifest` with the
     /// extension suffix corresponding to the `Manifest`
-    /// [type][google.cloud.video.livestream.v1.Manifest.type]. If multiple
+    /// \[type\]\[google.cloud.video.livestream.v1.Manifest.type\]. If multiple
     /// manifests are added to the channel, each must have a unique file name.
     #[prost(string, tag = "1")]
     pub file_name: ::prost::alloc::string::String,
@@ -75,12 +75,12 @@ pub struct Manifest {
     #[prost(enumeration = "manifest::ManifestType", tag = "2")]
     pub r#type: i32,
     /// Required. List of `MuxStream`
-    /// [key][google.cloud.video.livestream.v1.MuxStream.key]s that should appear
+    /// \[key\]\[google.cloud.video.livestream.v1.MuxStream.key\]s that should appear
     /// in this manifest.
     ///
-    /// - For HLS, either `fmp4` or `ts` mux streams can be specified but not
-    /// mixed.
-    /// - For DASH, only `fmp4` mux streams can be specified.
+    /// * For HLS, either `fmp4` or `ts` mux streams can be specified but not
+    ///   mixed.
+    /// * For DASH, only `fmp4` mux streams can be specified.
     #[prost(string, repeated, tag = "3")]
     pub mux_streams: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Maximum number of segments that this manifest holds. Once the manifest
@@ -97,16 +97,16 @@ pub struct Manifest {
     /// bucket. Default value is `60s`.
     ///
     /// If both segment_keep_duration and
-    /// [RetentionConfig.retention_window_duration][google.cloud.video.livestream.v1.RetentionConfig.retention_window_duration]
+    /// \[RetentionConfig.retention_window_duration\]\[google.cloud.video.livestream.v1.RetentionConfig.retention_window_duration\]
     /// are set,
-    /// [RetentionConfig.retention_window_duration][google.cloud.video.livestream.v1.RetentionConfig.retention_window_duration]
+    /// \[RetentionConfig.retention_window_duration\]\[google.cloud.video.livestream.v1.RetentionConfig.retention_window_duration\]
     /// is used and segment_keep_duration is ignored.
     #[prost(message, optional, tag = "5")]
     pub segment_keep_duration: ::core::option::Option<::prost_types::Duration>,
     /// Whether to use the timecode, as specified in timecode config, when setting:
     ///
-    /// - `availabilityStartTime` attribute in DASH manifests.
-    /// - `#EXT-X-PROGRAM-DATE-TIME` tag in HLS manifests.
+    /// * `availabilityStartTime` attribute in DASH manifests.
+    /// * `#EXT-X-PROGRAM-DATE-TIME` tag in HLS manifests.
     ///
     /// If false, ignore the input timecode and use the time from system clock
     /// when the manifest is first generated. This is the default behavior.
@@ -163,13 +163,13 @@ pub mod manifest {
     }
 }
 /// Sprite sheet configuration.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SpriteSheet {
     /// Format type. The default is `jpeg`.
     ///
     /// Supported formats:
     ///
-    /// - `jpeg`
+    /// * `jpeg`
     #[prost(string, tag = "1")]
     pub format: ::prost::alloc::string::String,
     /// Required. File name prefix for the generated sprite sheets. If multiple
@@ -226,20 +226,20 @@ pub mod preprocessing_config {
         /// Specify audio loudness normalization in loudness units relative to full
         /// scale (LUFS). Enter a value between -24 and 0 according to the following:
         ///
-        /// - -24 is the Advanced Television Systems Committee (ATSC A/85)
-        /// - -23 is the EU R128 broadcast standard
-        /// - -19 is the prior standard for online mono audio
-        /// - -18 is the ReplayGain standard
-        /// - -16 is the prior standard for stereo audio
-        /// - -14 is the new online audio standard recommended by Spotify, as well as
-        /// Amazon Echo
-        /// - 0 disables normalization. The default is 0.
+        /// * -24 is the Advanced Television Systems Committee (ATSC A/85)
+        /// * -23 is the EU R128 broadcast standard
+        /// * -19 is the prior standard for online mono audio
+        /// * -18 is the ReplayGain standard
+        /// * -16 is the prior standard for stereo audio
+        /// * -14 is the new online audio standard recommended by Spotify, as well as
+        ///   Amazon Echo
+        /// * 0 disables normalization. The default is 0.
         #[prost(double, tag = "1")]
         pub lufs: f64,
     }
     /// Video cropping configuration for the input video. The cropped input video
     /// is scaled to match the output resolution.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Crop {
         /// The number of pixels to crop from the top. The default is 0.
         #[prost(int32, tag = "1")]
@@ -256,7 +256,7 @@ pub mod preprocessing_config {
     }
     /// Pad filter configuration for the input video. The padded input video
     /// is scaled after padding with black to match the output resolution.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Pad {
         /// The number of pixels to add to the top. The default is 0.
         #[prost(int32, tag = "1")]
@@ -303,8 +303,8 @@ pub mod video_stream {
         pub frame_rate: f64,
         /// Required. The video bitrate in bits per second. Minimum value is 10,000.
         ///
-        /// - For SD resolution (< 720p), must be <= 3,000,000 (3 Mbps).
-        /// - For HD resolution (<= 1080p), must be <= 15,000,000 (15 Mbps).
+        /// * For SD resolution (\< 720p), must be \<= 3,000,000 (3 Mbps).
+        /// * For HD resolution (\<= 1080p), must be \<= 15,000,000 (15 Mbps).
         #[prost(int32, tag = "4")]
         pub bitrate_bps: i32,
         /// Specifies whether an open Group of Pictures (GOP) structure should be
@@ -313,20 +313,20 @@ pub mod video_stream {
         pub allow_open_gop: bool,
         /// Size of the Video Buffering Verifier (VBV) buffer in bits. Must be
         /// greater than zero. The default is equal to
-        /// [bitrate_bps][google.cloud.video.livestream.v1.VideoStream.H264CodecSettings.bitrate_bps].
+        /// \[bitrate_bps\]\[google.cloud.video.livestream.v1.VideoStream.H264CodecSettings.bitrate_bps\].
         #[prost(int32, tag = "9")]
         pub vbv_size_bits: i32,
         /// Initial fullness of the Video Buffering Verifier (VBV) buffer in bits.
         /// Must be greater than zero. The default is equal to 90% of
-        /// [vbv_size_bits][google.cloud.video.livestream.v1.VideoStream.H264CodecSettings.vbv_size_bits].
+        /// \[vbv_size_bits\]\[google.cloud.video.livestream.v1.VideoStream.H264CodecSettings.vbv_size_bits\].
         #[prost(int32, tag = "10")]
         pub vbv_fullness_bits: i32,
         /// The entropy coder to use. The default is `cabac`.
         ///
         /// Supported entropy coders:
         ///
-        /// - `cavlc`
-        /// - `cabac`
+        /// * `cavlc`
+        /// * `cabac`
         #[prost(string, tag = "11")]
         pub entropy_coder: ::prost::alloc::string::String,
         /// Allow B-pyramid for reference frame selection. This may not be supported
@@ -335,7 +335,7 @@ pub mod video_stream {
         pub b_pyramid: bool,
         /// The number of consecutive B-frames. Must be greater than or equal to
         /// zero. Must be less than
-        /// [gop_frame_count][google.cloud.video.livestream.v1.VideoStream.H264CodecSettings.gop_frame_count]
+        /// \[gop_frame_count\]\[google.cloud.video.livestream.v1.VideoStream.H264CodecSettings.gop_frame_count\]
         /// if set. The default is 0.
         #[prost(int32, tag = "13")]
         pub b_frame_count: i32,
@@ -347,15 +347,15 @@ pub mod video_stream {
         /// Enforces the specified codec profile. The following profiles are
         /// supported:
         ///
-        /// *   `baseline`
-        /// *   `main` (default)
-        /// *   `high`
+        /// * `baseline`
+        /// * `main` (default)
+        /// * `high`
         ///
         /// The available options are [FFmpeg-compatible Profile
         /// Options](<https://trac.ffmpeg.org/wiki/Encode/H.264#Profile>).
         /// Note that certain values for this field may cause the
         /// transcoder to override other fields you set in the
-        /// [H264CodecSettings][google.cloud.video.livestream.v1.VideoStream.H264CodecSettings]
+        /// \[H264CodecSettings\]\[google.cloud.video.livestream.v1.VideoStream.H264CodecSettings\]
         /// message.
         #[prost(string, tag = "15")]
         pub profile: ::prost::alloc::string::String,
@@ -364,7 +364,7 @@ pub mod video_stream {
         /// Options](<https://trac.ffmpeg.org/wiki/Encode/H.264#Tune>)
         /// Note that certain values for this field may cause the transcoder to
         /// override other fields you set in the
-        /// [H264CodecSettings][google.cloud.video.livestream.v1.VideoStream.H264CodecSettings]
+        /// \[H264CodecSettings\]\[google.cloud.video.livestream.v1.VideoStream.H264CodecSettings\]
         /// message.
         #[prost(string, tag = "16")]
         pub tune: ::prost::alloc::string::String,
@@ -375,7 +375,7 @@ pub mod video_stream {
     /// Nested message and enum types in `H264CodecSettings`.
     pub mod h264_codec_settings {
         /// GOP mode can be either by frame count or duration.
-        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum GopMode {
             /// Select the GOP size based on the specified frame count.
             /// If GOP frame count is set instead of GOP duration, GOP duration will be
@@ -386,9 +386,9 @@ pub mod video_stream {
             GopFrameCount(i32),
             /// Select the GOP size based on the specified duration. The default is
             /// `2s`. Note that `gopDuration` must be less than or equal to
-            /// [segment_duration][google.cloud.video.livestream.v1.SegmentSettings.segment_duration],
+            /// \[segment_duration\]\[google.cloud.video.livestream.v1.SegmentSettings.segment_duration\],
             /// and
-            /// [segment_duration][google.cloud.video.livestream.v1.SegmentSettings.segment_duration]
+            /// \[segment_duration\]\[google.cloud.video.livestream.v1.SegmentSettings.segment_duration\]
             /// must be divisible by `gopDuration`. Valid range is \[2s, 20s\].
             ///
             /// All video streams in the same channel must have the same GOP size.
@@ -416,7 +416,7 @@ pub struct AudioStream {
     ///
     /// Supported audio codecs:
     ///
-    /// - `aac`
+    /// * `aac`
     #[prost(string, tag = "1")]
     pub codec: ::prost::alloc::string::String,
     /// Required. Audio bitrate in bits per second. Must be between 1 and
@@ -432,12 +432,12 @@ pub struct AudioStream {
     ///
     /// Supported channel names:
     ///
-    /// - `fl` - Front left channel
-    /// - `fr` - Front right channel
-    /// - `sl` - Side left channel
-    /// - `sr` - Side right channel
-    /// - `fc` - Front center channel
-    /// - `lfe` - Low frequency
+    /// * `fl` - Front left channel
+    /// * `fr` - Front right channel
+    /// * `sl` - Side left channel
+    /// * `sr` - Side right channel
+    /// * `fc` - Front center channel
+    /// * `lfe` - Low frequency
     #[prost(string, repeated, tag = "4")]
     pub channel_layout: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The mapping for the input streams and audio channels.
@@ -453,15 +453,15 @@ pub mod audio_stream {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AudioMapping {
         /// Required. The `Channel`
-        /// [InputAttachment.key][google.cloud.video.livestream.v1.InputAttachment.key]
+        /// \[InputAttachment.key\]\[google.cloud.video.livestream.v1.InputAttachment.key\]
         /// that identifies the input that this audio mapping applies to. If an
         /// active input doesn't have an audio mapping, the primary audio track in
         /// the input stream will be selected.
         #[prost(string, tag = "6")]
         pub input_key: ::prost::alloc::string::String,
         /// Required. The zero-based index of the track in the input stream.
-        /// All [mapping][google.cloud.video.livestream.v1.AudioStream.mapping]s in
-        /// the same [AudioStream][google.cloud.video.livestream.v1.AudioStream] must
+        /// All \[mapping\]\[google.cloud.video.livestream.v1.AudioStream.mapping\]s in
+        /// the same \[AudioStream\]\[google.cloud.video.livestream.v1.AudioStream\] must
         /// have the same input track.
         #[prost(int32, tag = "2")]
         pub input_track: i32,
@@ -470,7 +470,7 @@ pub mod audio_stream {
         pub input_channel: i32,
         /// Required. The zero-based index of the channel in the output audio stream.
         /// Must be consistent with the
-        /// [input_channel][google.cloud.video.livestream.v1.AudioStream.AudioMapping.input_channel].
+        /// \[input_channel\]\[google.cloud.video.livestream.v1.AudioStream.AudioMapping.input_channel\].
         #[prost(int32, tag = "4")]
         pub output_channel: i32,
         /// Audio volume control in dB. Negative values decrease volume,
@@ -480,34 +480,34 @@ pub mod audio_stream {
     }
 }
 /// Encoding of a text stream. For example, closed captions or subtitles.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TextStream {
     /// Required. The codec for this text stream.
     ///
     /// Supported text codecs:
     ///
-    /// - `cea608`
-    /// - `cea708`
+    /// * `cea608`
+    /// * `cea708`
     #[prost(string, tag = "1")]
     pub codec: ::prost::alloc::string::String,
 }
 /// Segment settings for `fmp4` and `ts`.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SegmentSettings {
     /// Duration of the segments in seconds. The default is `6s`. Note that
     /// `segmentDuration` must be greater than or equal to
-    /// [gop_duration][google.cloud.video.livestream.v1.VideoStream.H264CodecSettings.gop_duration],
+    /// \[gop_duration\]\[google.cloud.video.livestream.v1.VideoStream.H264CodecSettings.gop_duration\],
     /// and `segmentDuration` must be divisible by
-    /// [gop_duration][google.cloud.video.livestream.v1.VideoStream.H264CodecSettings.gop_duration].
+    /// \[gop_duration\]\[google.cloud.video.livestream.v1.VideoStream.H264CodecSettings.gop_duration\].
     /// Valid range is \[2s, 20s\].
     ///
-    /// All [mux_streams][google.cloud.video.livestream.v1.Manifest.mux_streams] in
+    /// All \[mux_streams\]\[google.cloud.video.livestream.v1.Manifest.mux_streams\] in
     /// the same manifest must have the same segment duration.
     #[prost(message, optional, tag = "1")]
     pub segment_duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Timecode configuration.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TimecodeConfig {
     /// The source of the timecode that will later be used in outputs/manifests.
     /// It determines the initial timecode/timestamp (first frame) of output
@@ -568,7 +568,7 @@ pub mod timecode_config {
     /// For EMBEDDED_TIMECODE source only.
     /// Used to interpret the embedded timecode (which contains only the time part
     /// and no date). We assume all inputs are live.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum TimeOffset {
         /// UTC offset. Must be whole seconds, between -18 hours and +18 hours.
         #[prost(message, tag = "2")]
@@ -609,10 +609,10 @@ pub struct Input {
     pub tier: i32,
     /// Output only. URI to push the input stream to.
     /// Its format depends on the input
-    /// [type][google.cloud.video.livestream.v1.Input.type], for example:
+    /// \[type\]\[google.cloud.video.livestream.v1.Input.type\], for example:
     ///
-    /// *  `RTMP_PUSH`: `rtmp://1.2.3.4/live/{STREAM-ID}`
-    /// *  `SRT_PUSH`: `srt://1.2.3.4:4201?streamid={STREAM-ID}`
+    /// * `RTMP_PUSH`: `rtmp://1.2.3.4/live/{STREAM-ID}`
+    /// * `SRT_PUSH`: `srt://1.2.3.4:4201?streamid={STREAM-ID}`
     #[prost(string, tag = "6")]
     pub uri: ::prost::alloc::string::String,
     /// Preprocessing configurations.
@@ -631,7 +631,7 @@ pub mod input {
     /// Security rules for access control. Each field represents one security rule.
     /// Only when the source of the input stream satisfies all the fields, this
     /// input stream can be accepted.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SecurityRule {
         /// At least one ip range must match unless none specified. The IP range is
         /// defined by CIDR block: for example, `192.0.1.0/24` for a range and
@@ -698,11 +698,11 @@ pub mod input {
     pub enum Tier {
         /// Tier is not specified.
         Unspecified = 0,
-        /// Resolution < 1280x720. Bitrate <= 6 Mbps. FPS <= 60.
+        /// Resolution \< 1280x720. Bitrate \<= 6 Mbps. FPS \<= 60.
         Sd = 1,
-        /// Resolution <= 1920x1080. Bitrate <= 25 Mbps. FPS <= 60.
+        /// Resolution \<= 1920x1080. Bitrate \<= 25 Mbps. FPS \<= 60.
         Hd = 2,
-        /// Resolution <= 4096x2160. Not supported yet.
+        /// Resolution \<= 4096x2160. Not supported yet.
         Uhd = 3,
     }
     impl Tier {
@@ -759,9 +759,9 @@ pub struct Channel {
     #[prost(message, repeated, tag = "16")]
     pub input_attachments: ::prost::alloc::vec::Vec<InputAttachment>,
     /// Output only. The
-    /// [InputAttachment.key][google.cloud.video.livestream.v1.InputAttachment.key]
+    /// \[InputAttachment.key\]\[google.cloud.video.livestream.v1.InputAttachment.key\]
     /// that serves as the current input source. The first input in the
-    /// [input_attachments][google.cloud.video.livestream.v1.Channel.input_attachments]
+    /// \[input_attachments\]\[google.cloud.video.livestream.v1.Channel.input_attachments\]
     /// is the initial input source.
     #[prost(string, tag = "6")]
     pub active_input: ::prost::alloc::string::String,
@@ -786,9 +786,9 @@ pub struct Channel {
     pub streaming_state: i32,
     /// Output only. A description of the reason for the streaming error. This
     /// property is always present when
-    /// [streaming_state][google.cloud.video.livestream.v1.Channel.streaming_state]
+    /// \[streaming_state\]\[google.cloud.video.livestream.v1.Channel.streaming_state\]
     /// is
-    /// [STREAMING_ERROR][google.cloud.video.livestream.v1.Channel.StreamingState.STREAMING_ERROR].
+    /// \[STREAMING_ERROR\]\[google.cloud.video.livestream.v1.Channel.StreamingState.STREAMING_ERROR\].
     #[prost(message, optional, tag = "18")]
     pub streaming_error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// Configuration of platform logs for this channel.
@@ -803,7 +803,7 @@ pub struct Channel {
     #[prost(message, repeated, tag = "24")]
     pub encryptions: ::prost::alloc::vec::Vec<Encryption>,
     /// The configuration for input sources defined in
-    /// [input_attachments][google.cloud.video.livestream.v1.Channel.input_attachments].
+    /// \[input_attachments\]\[google.cloud.video.livestream.v1.Channel.input_attachments\].
     #[prost(message, optional, tag = "25")]
     pub input_config: ::core::option::Option<InputConfig>,
     /// Optional. Configuration for retention of output files for this channel.
@@ -817,7 +817,7 @@ pub struct Channel {
 /// Nested message and enum types in `Channel`.
 pub mod channel {
     /// Location of output file(s) in a Google Cloud Storage bucket.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Output {
         /// URI for the output file(s). For example, `gs://my-bucket/outputs/`.
         #[prost(string, tag = "1")]
@@ -940,7 +940,7 @@ pub struct StaticOverlay {
     pub opacity: f64,
 }
 /// Configuration for the input sources of a channel.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InputConfig {
     /// Input switch mode. Default mode is `FAILOVER_PREFER_PRIMARY`.
     #[prost(enumeration = "input_config::InputSwitchMode", tag = "1")]
@@ -966,14 +966,14 @@ pub mod input_config {
         Unspecified = 0,
         /// Automatic failover is enabled. The primary input stream is always
         /// preferred over its backup input streams configured using the
-        /// [AutomaticFailover][google.cloud.video.livestream.v1.InputAttachment.AutomaticFailover]
+        /// \[AutomaticFailover\]\[google.cloud.video.livestream.v1.InputAttachment.AutomaticFailover\]
         /// field.
         FailoverPreferPrimary = 1,
         /// Automatic failover is disabled. You must use the
-        /// [inputSwitch][google.cloud.video.livestream.v1.Event.input_switch] event
+        /// \[inputSwitch\]\[google.cloud.video.livestream.v1.Event.input_switch\] event
         /// to switch the active input source for the channel to stream from. When
         /// this mode is chosen, the
-        /// [AutomaticFailover][google.cloud.video.livestream.v1.InputAttachment.AutomaticFailover]
+        /// \[AutomaticFailover\]\[google.cloud.video.livestream.v1.InputAttachment.AutomaticFailover\]
         /// field is ignored.
         Manual = 3,
     }
@@ -1004,7 +1004,7 @@ pub mod input_config {
 /// See [Using and managing platform
 /// logs](<https://cloud.google.com/logging/docs/api/platform-logs#managing-logs>)
 /// for more information about how to view platform logs through Cloud Logging.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LogConfig {
     /// The severity level of platform logging for this resource.
     #[prost(enumeration = "log_config::LogSeverity", tag = "1")]
@@ -1015,8 +1015,8 @@ pub mod log_config {
     /// The severity level of platform logging for this channel. Logs with a
     /// severity level higher than or equal to the chosen severity level will be
     /// logged and can be viewed through Cloud Logging.
-    /// The severity level of a log is ranked as followed from low to high: DEBUG <
-    /// INFO < NOTICE < WARNING < ERROR < CRITICAL < ALERT < EMERGENCY.
+    /// The severity level of a log is ranked as followed from low to high: DEBUG \<
+    /// INFO \< NOTICE \< WARNING \< ERROR \< CRITICAL \< ALERT \< EMERGENCY.
     /// See
     /// [LogSeverity](<https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#logseverity>)
     /// for more information.
@@ -1076,7 +1076,7 @@ pub mod log_config {
     }
 }
 /// Configuration for retention of output files.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RetentionConfig {
     /// The minimum duration for which the output files from the channel will
     /// remain in the output bucket. After this duration, output files are
@@ -1087,13 +1087,13 @@ pub struct RetentionConfig {
     ///
     /// If omitted or set to zero, output files will remain in the output bucket
     /// based on
-    /// [Manifest.segment_keep_duration][google.cloud.video.livestream.v1.Manifest.segment_keep_duration],
+    /// \[Manifest.segment_keep_duration\]\[google.cloud.video.livestream.v1.Manifest.segment_keep_duration\],
     /// which defaults to 60s.
     ///
     /// If both retention_window_duration and
-    /// [Manifest.segment_keep_duration][google.cloud.video.livestream.v1.Manifest.segment_keep_duration]
+    /// \[Manifest.segment_keep_duration\]\[google.cloud.video.livestream.v1.Manifest.segment_keep_duration\]
     /// are set, retention_window_duration is used and
-    /// [Manifest.segment_keep_duration][google.cloud.video.livestream.v1.Manifest.segment_keep_duration]
+    /// \[Manifest.segment_keep_duration\]\[google.cloud.video.livestream.v1.Manifest.segment_keep_duration\]
     /// is ignored.
     #[prost(message, optional, tag = "1")]
     pub retention_window_duration: ::core::option::Option<::prost_types::Duration>,
@@ -1139,7 +1139,7 @@ pub struct VideoFormat {
     pub frame_rate: f64,
 }
 /// Properties of the audio stream.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AudioStreamProperty {
     /// Index of this audio stream.
     #[prost(int32, tag = "1")]
@@ -1149,7 +1149,7 @@ pub struct AudioStreamProperty {
     pub audio_format: ::core::option::Option<AudioFormat>,
 }
 /// Properties of the audio format.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AudioFormat {
     /// Audio codec used in this audio stream.
     #[prost(string, tag = "1")]
@@ -1162,7 +1162,7 @@ pub struct AudioFormat {
     pub channel_layout: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A group of information for attaching an input resource to this channel.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InputAttachment {
     /// A unique key for this input attachment. The key must be 1-63
     /// characters in length. The key must begin and end with a letter (regardless
@@ -1180,10 +1180,10 @@ pub struct InputAttachment {
 /// Nested message and enum types in `InputAttachment`.
 pub mod input_attachment {
     /// Configurations to follow when automatic failover happens.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AutomaticFailover {
         /// The
-        /// [InputAttachment.key][google.cloud.video.livestream.v1.InputAttachment.key]s
+        /// \[InputAttachment.key\]\[google.cloud.video.livestream.v1.InputAttachment.key\]s
         /// of inputs to failover to when this input is disconnected. Currently, only
         /// up to one backup input is supported.
         #[prost(string, repeated, tag = "1")]
@@ -1212,16 +1212,16 @@ pub struct Event {
     >,
     /// When this field is set to true, the event will be executed at the earliest
     /// time that the server can schedule the event and
-    /// [execution_time][google.cloud.video.livestream.v1.Event.execution_time]
+    /// \[execution_time\]\[google.cloud.video.livestream.v1.Event.execution_time\]
     /// will be populated with the time that the server actually schedules the
     /// event.
     #[prost(bool, tag = "9")]
     pub execute_now: bool,
     /// The time to execute the event. If you set
-    /// [execute_now][google.cloud.video.livestream.v1.Event.execute_now] to
+    /// \[execute_now\]\[google.cloud.video.livestream.v1.Event.execute_now\] to
     /// `true`, then do not set this field in the `CreateEvent` request. In
     /// this case, the server schedules the event and populates this field. If you
-    /// set [execute_now][google.cloud.video.livestream.v1.Event.execute_now] to
+    /// set \[execute_now\]\[google.cloud.video.livestream.v1.Event.execute_now\] to
     /// `false`, then you must set this field to at least 10 seconds in the future
     /// or else the event can't be created.
     #[prost(message, optional, tag = "10")]
@@ -1240,23 +1240,23 @@ pub struct Event {
 /// Nested message and enum types in `Event`.
 pub mod event {
     /// Switches to another input stream. Automatic failover is then disabled.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct InputSwitchTask {
         /// The
-        /// [InputAttachment.key][google.cloud.video.livestream.v1.InputAttachment.key]
+        /// \[InputAttachment.key\]\[google.cloud.video.livestream.v1.InputAttachment.key\]
         /// of the input to switch to.
         #[prost(string, tag = "1")]
         pub input_key: ::prost::alloc::string::String,
     }
     /// Inserts a new ad opportunity.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AdBreakTask {
         /// Duration of an ad opportunity. Must be greater than 0.
         #[prost(message, optional, tag = "1")]
         pub duration: ::core::option::Option<::prost_types::Duration>,
     }
     /// Inserts a slate.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SlateTask {
         /// Optional. Duration of the slate. Must be greater than 0 if specified.
         /// Omit this field for a long running slate.
@@ -1271,10 +1271,10 @@ pub mod event {
     }
     /// Stops any events which are currently running. This only applies to events
     /// with a duration.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ReturnToProgramTask {}
     /// Mutes the stream.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct MuteTask {
         /// Duration for which the stream should be muted. If omitted, the stream
         /// will be muted until an UnmuteTask event is sent.
@@ -1282,7 +1282,7 @@ pub mod event {
         pub duration: ::core::option::Option<::prost_types::Duration>,
     }
     /// Unmutes the stream. The task fails if the stream is not currently muted.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct UnmuteTask {}
     /// State of the event
     #[derive(
@@ -1344,7 +1344,7 @@ pub mod event {
         }
     }
     /// Required. Operation to be executed by this event.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Task {
         /// Switches to another input stream.
         #[prost(message, tag = "5")]
@@ -1377,7 +1377,7 @@ pub struct Clip {
     /// criteria:
     ///
     /// 1. 1 character minimum, 63 characters maximum
-    /// 2. Only contains letters, digits, underscores, and hyphens
+    /// 1. Only contains letters, digits, underscores, and hyphens
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The creation timestamp of the clip resource.
@@ -1428,7 +1428,7 @@ pub struct Clip {
 pub mod clip {
     /// TimeSlice represents a tuple of Unix epoch timestamps that specifies a time
     /// range.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TimeSlice {
         /// The mark-in Unix epoch time in the original live stream manifest.
         #[prost(message, optional, tag = "1")]
@@ -1438,7 +1438,7 @@ pub mod clip {
         pub markout_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// Slice represents a slice of the requested clip.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Slice {
         /// The allowlist forms of a slice.
         #[prost(oneof = "slice::Kind", tags = "1")]
@@ -1447,7 +1447,7 @@ pub mod clip {
     /// Nested message and enum types in `Slice`.
     pub mod slice {
         /// The allowlist forms of a slice.
-        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Kind {
             /// A slice in form of a tuple of Unix epoch time.
             #[prost(message, tag = "1")]
@@ -1455,7 +1455,7 @@ pub mod clip {
         }
     }
     /// ClipManifest identifies a source manifest for the generated clip manifest.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ClipManifest {
         /// Required. A unique key that identifies a manifest config in the parent
         /// channel. This key is the same as `channel.manifests.key` for the selected
@@ -1570,7 +1570,7 @@ pub mod clip {
     }
 }
 /// TimeInterval represents a time interval.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TimeInterval {
     /// Optional. The start time of the interval.
     #[prost(message, optional, tag = "1")]
@@ -1589,7 +1589,7 @@ pub struct DvrSession {
     /// following criteria:
     ///
     /// 1. 1 character minimum, 63 characters maximum
-    /// 2. Only contains letters, digits, underscores, and hyphens
+    /// 1. Only contains letters, digits, underscores, and hyphens
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The creation time.
@@ -1623,7 +1623,7 @@ pub struct DvrSession {
 pub mod dvr_session {
     /// DvrManifest identifies a source manifest and specifies a file name for the
     /// generated DVR manifest.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DvrManifest {
         /// Required. A unique key that identifies a manifest config in the parent
         /// channel. This key is the same as `channel.manifests.key` for the selected
@@ -1639,7 +1639,7 @@ pub mod dvr_session {
         pub output_uri: ::prost::alloc::string::String,
     }
     /// DvrWindow represents a DVR window.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DvrWindow {
         /// The allowlist forms of a DVR window.
         #[prost(oneof = "dvr_window::Kind", tags = "1")]
@@ -1648,7 +1648,7 @@ pub mod dvr_session {
     /// Nested message and enum types in `DvrWindow`.
     pub mod dvr_window {
         /// The allowlist forms of a DVR window.
-        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Kind {
             /// A time interval in the form of a tuple of Unix epoch time.
             #[prost(message, tag = "1")]
@@ -1766,12 +1766,12 @@ pub struct Asset {
     /// resource](<https://cloud.google.com/storage/docs/json_api/v1/objects>).
     /// If crc32c is omitted or left empty when the asset is created, this field is
     /// filled by the crc32c checksum of the Cloud Storage object indicated by
-    /// [VideoAsset.uri][google.cloud.video.livestream.v1.Asset.VideoAsset.uri] or
-    /// [ImageAsset.uri][google.cloud.video.livestream.v1.Asset.ImageAsset.uri]. If
+    /// \[VideoAsset.uri\]\[google.cloud.video.livestream.v1.Asset.VideoAsset.uri\] or
+    /// \[ImageAsset.uri\]\[google.cloud.video.livestream.v1.Asset.ImageAsset.uri\]. If
     /// crc32c is set, the asset can't be created if the crc32c value does not
     /// match with the crc32c checksum of the Cloud Storage object indicated by
-    /// [VideoAsset.uri][google.cloud.video.livestream.v1.Asset.VideoAsset.uri] or
-    /// [ImageAsset.uri][google.cloud.video.livestream.v1.Asset.ImageAsset.uri].
+    /// \[VideoAsset.uri\]\[google.cloud.video.livestream.v1.Asset.VideoAsset.uri\] or
+    /// \[ImageAsset.uri\]\[google.cloud.video.livestream.v1.Asset.ImageAsset.uri\].
     #[prost(string, tag = "7")]
     pub crc32c: ::prost::alloc::string::String,
     /// Output only. The state of the asset resource.
@@ -1791,14 +1791,14 @@ pub mod asset {
     /// VideoAsset represents a video. The supported formats are MP4, MPEG-TS, and
     /// FLV. The supported video codec is H264. The supported audio codecs are
     /// AAC, AC3, MP2, and MP3.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct VideoAsset {
         /// Cloud Storage URI of the video. The format is `gs://my-bucket/my-object`.
         #[prost(string, tag = "1")]
         pub uri: ::prost::alloc::string::String,
     }
     /// Image represents an image. The supported formats are JPEG, PNG.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ImageAsset {
         /// Cloud Storage URI of the image. The format is `gs://my-bucket/my-object`.
         #[prost(string, tag = "1")]
@@ -1857,7 +1857,7 @@ pub mod asset {
     }
     /// The reference to the asset.
     /// The maximum size of the resource is 250 MB.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Resource {
         /// VideoAsset represents a video.
         #[prost(message, tag = "5")]
@@ -1868,7 +1868,7 @@ pub mod asset {
     }
 }
 /// Encryption settings.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Encryption {
     /// Required. Identifier for this set of encryption options. The ID must be
     /// 1-63 characters in length. The ID must begin and end with a letter
@@ -1889,7 +1889,7 @@ pub struct Encryption {
 /// Nested message and enum types in `Encryption`.
 pub mod encryption {
     /// Configuration for secrets stored in Google Secret Manager.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SecretManagerSource {
         /// Required. The name of the Secret Version containing the encryption key.
         /// `projects/{project}/secrets/{secret_id}/versions/{version_number}`
@@ -1897,20 +1897,20 @@ pub mod encryption {
         pub secret_version: ::prost::alloc::string::String,
     }
     /// Widevine configuration.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Widevine {}
     /// Fairplay configuration.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Fairplay {}
     /// Playready configuration.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Playready {}
     /// Clearkey configuration.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Clearkey {}
     /// Defines configuration for DRM systems in use. If a field is omitted,
     /// that DRM system will be considered to be disabled.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DrmSystems {
         /// Widevine configuration.
         #[prost(message, optional, tag = "1")]
@@ -1926,29 +1926,30 @@ pub mod encryption {
         pub clearkey: ::core::option::Option<Clearkey>,
     }
     /// Configuration for HLS AES-128 encryption.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Aes128Encryption {}
     /// Configuration for HLS SAMPLE-AES encryption.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SampleAesEncryption {}
     /// Configuration for MPEG-Dash Common Encryption (MPEG-CENC).
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct MpegCommonEncryption {
         /// Required. Specify the encryption scheme, supported schemes:
-        /// - `cenc` - AES-CTR subsample
-        /// - `cbcs`- AES-CBC subsample pattern
+        ///
+        /// * `cenc` - AES-CTR subsample
+        /// * `cbcs`- AES-CBC subsample pattern
         #[prost(string, tag = "1")]
         pub scheme: ::prost::alloc::string::String,
     }
     /// Defines where content keys are stored.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum SecretSource {
         /// For keys stored in Google Secret Manager.
         #[prost(message, tag = "7")]
         SecretManagerKeySource(SecretManagerSource),
     }
     /// Encryption modes for HLS and MPEG-Dash.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum EncryptionMode {
         /// Configuration for HLS AES-128 encryption.
         #[prost(message, tag = "4")]
@@ -1990,7 +1991,7 @@ pub struct Pool {
 /// Nested message and enum types in `Pool`.
 pub mod pool {
     /// Defines the network configuration for the pool.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct NetworkConfig {
         /// peered_network is the network resource URL of the network that is peered
         /// to the service provider network. Must be of the format
@@ -2035,7 +2036,7 @@ pub struct CreateAssetRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for "LivestreamService.DeleteAsset".
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAssetRequest {
     /// Required. The name of the asset resource, in the form of:
     /// `projects/{project}/locations/{location}/assets/{assetId}`.
@@ -2058,7 +2059,7 @@ pub struct DeleteAssetRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for "LivestreamService.ListAssets".
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAssetsRequest {
     /// Required. The parent location for the resource, in the form of:
     /// `projects/{project}/locations/{location}`.
@@ -2092,7 +2093,7 @@ pub struct ListAssetsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for "LivestreamService.GetAsset".
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAssetRequest {
     /// Required. Name of the resource, in the following form:
     /// `projects/{project}/locations/{location}/assets/{asset}`.
@@ -2131,7 +2132,7 @@ pub struct CreateChannelRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for "LivestreamService.ListChannels".
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListChannelsRequest {
     /// Required. The parent location for the resource, in the form of:
     /// `projects/{project}/locations/{location}`.
@@ -2140,7 +2141,7 @@ pub struct ListChannelsRequest {
     /// The maximum number of items to return. If unspecified, server
     /// will pick an appropriate default. Server may return fewer items than
     /// requested. A caller should only rely on response's
-    /// [next_page_token][google.cloud.video.livestream.v1.ListChannelsResponse.next_page_token]
+    /// \[next_page_token\]\[google.cloud.video.livestream.v1.ListChannelsResponse.next_page_token\]
     /// to determine if there are more items left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -2170,7 +2171,7 @@ pub struct ListChannelsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for "LivestreamService.GetChannel".
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetChannelRequest {
     /// Required. The name of the channel resource, in the form of:
     /// `projects/{project}/locations/{location}/channels/{channelId}`.
@@ -2178,7 +2179,7 @@ pub struct GetChannelRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for "LivestreamService.DeleteChannel".
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteChannelRequest {
     /// Required. The name of the channel resource, in the form of:
     /// `projects/{project}/locations/{location}/channels/{channelId}`.
@@ -2251,7 +2252,7 @@ pub struct UpdateChannelRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for "LivestreamService.StartChannel".
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StartChannelRequest {
     /// Required. The name of the channel resource, in the form of:
     /// `projects/{project}/locations/{location}/channels/{channelId}`.
@@ -2274,7 +2275,7 @@ pub struct StartChannelRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for "LivestreamService.StopChannel".
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StopChannelRequest {
     /// Required. The name of the channel resource, in the form of:
     /// `projects/{project}/locations/{location}/channels/{channelId}`.
@@ -2328,7 +2329,7 @@ pub struct CreateInputRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for "LivestreamService.ListInputs".
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInputsRequest {
     /// Required. The parent location for the resource, in the form of:
     /// `projects/{project}/locations/{location}`.
@@ -2337,7 +2338,7 @@ pub struct ListInputsRequest {
     /// The maximum number of items to return. If unspecified, server
     /// will pick an appropriate default. Server may return fewer items than
     /// requested. A caller should only rely on response's
-    /// [next_page_token][google.cloud.video.livestream.v1.ListInputsResponse.next_page_token]
+    /// \[next_page_token\]\[google.cloud.video.livestream.v1.ListInputsResponse.next_page_token\]
     /// to determine if there are more items left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -2367,7 +2368,7 @@ pub struct ListInputsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for "LivestreamService.GetInput".
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInputRequest {
     /// Required. The name of the input resource, in the form of:
     /// `projects/{project}/locations/{location}/inputs/{inputId}`.
@@ -2375,7 +2376,7 @@ pub struct GetInputRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for "LivestreamService.DeleteInput".
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteInputRequest {
     /// Required. The name of the input resource, in the form of:
     /// `projects/{project}/locations/{location}/inputs/{inputId}`.
@@ -2466,7 +2467,7 @@ pub struct CreateEventRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for "LivestreamService.ListEvents".
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListEventsRequest {
     /// Required. The parent channel for the resource, in the form of:
     /// `projects/{project}/locations/{location}/channels/{channelId}`.
@@ -2475,7 +2476,7 @@ pub struct ListEventsRequest {
     /// The maximum number of items to return. If unspecified, server
     /// will pick an appropriate default. Server may return fewer items than
     /// requested. A caller should only rely on response's
-    /// [next_page_token][google.cloud.video.livestream.v1.ListEventsResponse.next_page_token]
+    /// \[next_page_token\]\[google.cloud.video.livestream.v1.ListEventsResponse.next_page_token\]
     /// to determine if there are more items left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -2505,7 +2506,7 @@ pub struct ListEventsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for "LivestreamService.GetEvent".
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEventRequest {
     /// Required. The name of the event resource, in the form of:
     /// `projects/{project}/locations/{location}/channels/{channelId}/events/{eventId}`.
@@ -2513,7 +2514,7 @@ pub struct GetEventRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for "LivestreamService.DeleteEvent".
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteEventRequest {
     /// Required. The name of the event resource, in the form of:
     /// `projects/{project}/locations/{location}/channels/{channelId}/events/{eventId}`.
@@ -2536,10 +2537,10 @@ pub struct DeleteEventRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Response message for Start/Stop Channel long-running operations.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ChannelOperationResponse {}
 /// Request message for "LivestreamService.ListClips".
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListClipsRequest {
     /// Required. Parent value for ListClipsRequest
     #[prost(string, tag = "1")]
@@ -2572,7 +2573,7 @@ pub struct ListClipsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for "LivestreamService.GetClip".
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetClipRequest {
     /// Required. Name of the resource, in the following form:
     /// `projects/{project}/locations/{location}/channels/{channel}/clips/{clip}`.
@@ -2589,7 +2590,7 @@ pub struct CreateClipRequest {
     /// Required. Id of the requesting object in the following form:
     ///
     /// 1. 1 character minimum, 63 characters maximum
-    /// 2. Only contains letters, digits, underscores, and hyphens
+    /// 1. Only contains letters, digits, underscores, and hyphens
     #[prost(string, tag = "2")]
     pub clip_id: ::prost::alloc::string::String,
     /// Required. The resource being created
@@ -2612,7 +2613,7 @@ pub struct CreateClipRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for "LivestreamService.DeleteClip".
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteClipRequest {
     /// Required. The name of the clip resource, in the form of:
     /// `projects/{project}/locations/{location}/channels/{channelId}/clips/{clipId}`.
@@ -2635,7 +2636,7 @@ pub struct DeleteClipRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for "LivestreamService.ListDvrSessions".
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDvrSessionsRequest {
     /// Required. Parent value for ListDvrSessionsRequest
     #[prost(string, tag = "1")]
@@ -2668,7 +2669,7 @@ pub struct ListDvrSessionsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for "LivestreamService.GetDvrSession".
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDvrSessionRequest {
     /// Required. Name of the resource, in the following form:
     /// `projects/{project}/locations/{location}/channels/{channelId}/dvrSessions/{dvrSessionId}`.
@@ -2685,7 +2686,7 @@ pub struct CreateDvrSessionRequest {
     /// Required. Id of the requesting object in the following form:
     ///
     /// 1. 1 character minimum, 63 characters maximum
-    /// 2. Only contains letters, digits, underscores, and hyphens
+    /// 1. Only contains letters, digits, underscores, and hyphens
     #[prost(string, tag = "2")]
     pub dvr_session_id: ::prost::alloc::string::String,
     /// Required. The resource being created
@@ -2708,7 +2709,7 @@ pub struct CreateDvrSessionRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for "LivestreamService.DeleteDvrSession".
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDvrSessionRequest {
     /// Required. The name of the event resource, in the form of:
     /// `projects/{project}/locations/{location}/channels/{channelId}/dvrSessions/{dvrSessionId}`.
@@ -2763,7 +2764,7 @@ pub struct UpdateDvrSessionRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -2780,8 +2781,8 @@ pub struct OperationMetadata {
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
     /// have
-    /// [google.longrunning.Operation.error][google.longrunning.Operation.error]
-    /// value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// \[google.longrunning.Operation.error\]\[google.longrunning.Operation.error\]
+    /// value with a \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "5")]
     pub requested_cancellation: bool,
@@ -2790,7 +2791,7 @@ pub struct OperationMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// Request message for "LivestreamService.GetPool".
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPoolRequest {
     /// Required. The name of the pool resource, in the form of:
     /// `projects/{project}/locations/{location}/pools/{poolId}`.
@@ -2941,7 +2942,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/CreateChannel",
             );
@@ -2971,7 +2972,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/ListChannels",
             );
@@ -2998,7 +2999,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/GetChannel",
             );
@@ -3028,7 +3029,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/DeleteChannel",
             );
@@ -3058,7 +3059,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/UpdateChannel",
             );
@@ -3089,7 +3090,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/StartChannel",
             );
@@ -3120,7 +3121,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/StopChannel",
             );
@@ -3150,7 +3151,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/CreateInput",
             );
@@ -3180,7 +3181,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/ListInputs",
             );
@@ -3207,7 +3208,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/GetInput",
             );
@@ -3237,7 +3238,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/DeleteInput",
             );
@@ -3267,7 +3268,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/UpdateInput",
             );
@@ -3294,7 +3295,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/CreateEvent",
             );
@@ -3324,7 +3325,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/ListEvents",
             );
@@ -3351,7 +3352,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/GetEvent",
             );
@@ -3378,7 +3379,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/DeleteEvent",
             );
@@ -3408,7 +3409,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/ListClips",
             );
@@ -3435,7 +3436,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/GetClip",
             );
@@ -3465,7 +3466,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/CreateClip",
             );
@@ -3496,7 +3497,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/DeleteClip",
             );
@@ -3526,7 +3527,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/CreateDvrSession",
             );
@@ -3556,7 +3557,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/ListDvrSessions",
             );
@@ -3583,7 +3584,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/GetDvrSession",
             );
@@ -3613,7 +3614,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/DeleteDvrSession",
             );
@@ -3643,7 +3644,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/UpdateDvrSession",
             );
@@ -3674,7 +3675,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/CreateAsset",
             );
@@ -3704,7 +3705,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/DeleteAsset",
             );
@@ -3731,7 +3732,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/GetAsset",
             );
@@ -3761,7 +3762,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/ListAssets",
             );
@@ -3788,7 +3789,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/GetPool",
             );
@@ -3818,7 +3819,7 @@ pub mod livestream_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.livestream.v1.LivestreamService/UpdatePool",
             );

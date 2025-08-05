@@ -263,11 +263,12 @@ pub struct Spec {
 pub mod spec {
     /// Specifies the parsing mode for API specifications during creation and
     /// update.
-    /// - `RELAXED`: Parsing errors in the specification content do not fail the
-    /// API call.
-    /// - `STRICT`: Parsing errors in the specification content result in failure
-    /// of the API call.
-    /// If not specified, defaults to `RELAXED`.
+    ///
+    /// * `RELAXED`: Parsing errors in the specification content do not fail the
+    ///   API call.
+    /// * `STRICT`: Parsing errors in the specification content result in failure
+    ///   of the API call.
+    ///   If not specified, defaults to `RELAXED`.
     #[derive(
         Clone,
         Copy,
@@ -514,7 +515,7 @@ pub mod definition {
             }
         }
     }
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Value {
         /// Output only. The value of a schema definition.
         #[prost(message, tag = "4")]
@@ -577,18 +578,19 @@ pub struct Attribute {
 pub mod attribute {
     /// The value that can be assigned to the attribute when the data type is
     /// enum.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AllowedValue {
         /// Required. The ID of the allowed value.
+        ///
         /// * If provided, the same will be used. The service will throw an error if
-        /// the specified id is already used by another allowed value in the same
-        /// attribute resource.
+        ///   the specified id is already used by another allowed value in the same
+        ///   attribute resource.
         /// * If not provided, a system generated id derived from the display name
-        /// will be used. In this case, the service will handle conflict resolution
-        /// by adding a system generated suffix in case of duplicates.
+        ///   will be used. In this case, the service will handle conflict resolution
+        ///   by adding a system generated suffix in case of duplicates.
         ///
         /// This value should be 4-63 characters, and valid characters
-        /// are /[a-z][0-9]-/.
+        /// are /\[a-z\]\[0-9\]-/.
         #[prost(string, tag = "1")]
         pub id: ::prost::alloc::string::String,
         /// Required. The display name of the allowed value.
@@ -767,7 +769,7 @@ pub mod attribute {
     }
 }
 /// The spec contents.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SpecContents {
     /// Required. The contents of the spec.
     #[prost(bytes = "vec", tag = "1")]
@@ -779,7 +781,7 @@ pub struct SpecContents {
 }
 /// SpecDetails contains the details parsed from supported
 /// spec types.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SpecDetails {
     /// Output only. The description of the spec.
     #[prost(string, tag = "1")]
@@ -789,12 +791,12 @@ pub struct SpecDetails {
 }
 /// Nested message and enum types in `SpecDetails`.
 pub mod spec_details {
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Details {
         /// Output only. Additional details apart from `OperationDetails` parsed from
         /// an OpenAPI spec. The OperationDetails parsed from the spec can be
         /// obtained by using
-        /// [ListAPIOperations][google.cloud.apihub.v1.ApiHub.ListApiOperations]
+        /// \[ListAPIOperations\]\[google.cloud.apihub.v1.ApiHub.ListApiOperations\]
         /// method.
         #[prost(message, tag = "2")]
         OpenApiSpecDetails(super::OpenApiSpecDetails),
@@ -802,8 +804,8 @@ pub mod spec_details {
 }
 /// OpenApiSpecDetails contains the details parsed from an OpenAPI spec in
 /// addition to the fields mentioned in
-/// [SpecDetails][google.cloud.apihub.v1.SpecDetails].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[SpecDetails\]\[google.cloud.apihub.v1.SpecDetails\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OpenApiSpecDetails {
     /// Output only. The format of the spec.
     #[prost(enumeration = "open_api_spec_details::Format", tag = "1")]
@@ -868,7 +870,7 @@ pub mod open_api_spec_details {
     }
 }
 /// The operation details parsed from the spec.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationDetails {
     /// Output only. Description of the operation behavior.
     /// For OpenAPI spec, this will map to `operation.description` in the
@@ -888,7 +890,7 @@ pub struct OperationDetails {
 }
 /// Nested message and enum types in `OperationDetails`.
 pub mod operation_details {
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Operation {
         /// The HTTP Operation.
         #[prost(message, tag = "4")]
@@ -896,7 +898,7 @@ pub mod operation_details {
     }
 }
 /// The HTTP Operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HttpOperation {
     /// Output only. The path details for the Operation.
     #[prost(message, optional, tag = "1")]
@@ -976,7 +978,7 @@ pub mod http_operation {
     }
 }
 /// The path details derived from the spec.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Path {
     /// Output only. Complete path relative to server endpoint.
     #[prost(string, tag = "1")]
@@ -990,7 +992,7 @@ pub struct Path {
 /// For OpenAPI spec, this maps to the schema defined in
 /// the  `definitions` section for OpenAPI 2.0 version and in
 /// `components.schemas` section for OpenAPI 3.0 and 3.1 version.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Schema {
     /// Output only. The display name of the schema.
     /// This will map to the name of the schema in the spec.
@@ -1002,7 +1004,7 @@ pub struct Schema {
     pub raw_value: ::prost::alloc::vec::Vec<u8>,
 }
 /// Owner details.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Owner {
     /// Optional. The name of the owner.
     #[prost(string, tag = "1")]
@@ -1012,7 +1014,7 @@ pub struct Owner {
     pub email: ::prost::alloc::string::String,
 }
 /// Documentation details.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Documentation {
     /// Optional. The uri of the externally hosted documentation.
     #[prost(string, tag = "1")]
@@ -1039,7 +1041,7 @@ pub mod attribute_values {
         pub values: ::prost::alloc::vec::Vec<super::attribute::AllowedValue>,
     }
     /// The attribute values of data type string or JSON.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct StringAttributeValues {
         /// Required. The attribute values in case attribute data type is string or
         /// JSON.
@@ -1065,9 +1067,9 @@ pub mod attribute_values {
 }
 /// A dependency resource defined in the API hub describes a dependency directed
 /// from a consumer to a supplier entity. A dependency can be defined between two
-/// [Operations][google.cloud.apihub.v1.Operation] or between
-/// an [Operation][google.cloud.apihub.v1.Operation] and [External
-/// API][google.cloud.apihub.v1.ExternalApi].
+/// \[Operations\]\[google.cloud.apihub.v1.Operation\] or between
+/// an \[Operation\]\[google.cloud.apihub.v1.Operation\] and \[External
+/// API\]\[google.cloud.apihub.v1.ExternalApi\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dependency {
     /// Identifier. The name of the dependency in the API Hub.
@@ -1198,7 +1200,7 @@ pub mod dependency {
     }
 }
 /// Reference to an entity participating in a dependency.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DependencyEntityReference {
     /// Output only. Display name of the entity.
     #[prost(string, tag = "1")]
@@ -1210,7 +1212,7 @@ pub struct DependencyEntityReference {
 /// Nested message and enum types in `DependencyEntityReference`.
 pub mod dependency_entity_reference {
     /// Required. Unique identifier for the participating entity.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Identifier {
         /// The resource name of an operation in the API Hub.
         ///
@@ -1227,7 +1229,7 @@ pub mod dependency_entity_reference {
     }
 }
 /// Details describing error condition of a dependency.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DependencyErrorDetail {
     /// Optional. Error in the dependency.
     #[prost(enumeration = "dependency_error_detail::Error", tag = "1")]
@@ -1307,7 +1309,7 @@ pub struct LintResponse {
 /// Nested message and enum types in `LintResponse`.
 pub mod lint_response {
     /// Count of issues with a given severity.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SummaryEntry {
         /// Required. Severity of the issue.
         #[prost(enumeration = "super::Severity", tag = "1")]
@@ -1318,7 +1320,7 @@ pub mod lint_response {
     }
 }
 /// Issue contains the details of a single issue found by the linter.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Issue {
     /// Required. Rule code unique to each rule defined in linter.
     #[prost(string, tag = "1")]
@@ -1338,7 +1340,7 @@ pub struct Issue {
     pub range: ::core::option::Option<Range>,
 }
 /// Object describing where in the file the issue was found.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Range {
     /// Required. Start of the issue.
     #[prost(message, optional, tag = "1")]
@@ -1348,7 +1350,7 @@ pub struct Range {
     pub end: ::core::option::Option<Point>,
 }
 /// Point within the file (line and character).
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Point {
     /// Required. Line number (zero-indexed).
     #[prost(int32, tag = "1")]
@@ -1358,7 +1360,7 @@ pub struct Point {
     pub character: i32,
 }
 /// Represents the metadata of the long-running operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -1377,8 +1379,8 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have been cancelled successfully
-    /// have [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+    /// have \[Operation.error\]\[\] value with a
+    /// \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -1425,7 +1427,7 @@ pub struct ApiHubInstance {
 /// Nested message and enum types in `ApiHubInstance`.
 pub mod api_hub_instance {
     /// Available configurations to provision an ApiHub Instance.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Config {
         /// Required. The Customer Managed Encryption Key (CMEK) used for data
         /// encryption. The CMEK name should follow the format of
@@ -1642,7 +1644,7 @@ impl Severity {
         }
     }
 }
-/// The [CreateApi][google.cloud.apihub.v1.ApiHub.CreateApi] method's request.
+/// The \[CreateApi\]\[google.cloud.apihub.v1.ApiHub.CreateApi\] method's request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateApiRequest {
     /// Required. The parent resource for the API resource.
@@ -1653,26 +1655,26 @@ pub struct CreateApiRequest {
     /// component of the API's resource name. This field is optional.
     ///
     /// * If provided, the same will be used. The service will throw an error if
-    /// the specified id is already used by another API resource in the API hub.
+    ///   the specified id is already used by another API resource in the API hub.
     /// * If not provided, a system generated id will be used.
     ///
     /// This value should be 4-500 characters, and valid characters
-    /// are /[a-z][A-Z][0-9]-_/.
+    /// are /\[a-z\]\[A-Z\]\[0-9\]-\_/.
     #[prost(string, tag = "2")]
     pub api_id: ::prost::alloc::string::String,
     /// Required. The API resource to create.
     #[prost(message, optional, tag = "3")]
     pub api: ::core::option::Option<Api>,
 }
-/// The [GetApi][google.cloud.apihub.v1.ApiHub.GetApi] method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// The \[GetApi\]\[google.cloud.apihub.v1.ApiHub.GetApi\] method's request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetApiRequest {
     /// Required. The name of the API resource to retrieve.
     /// Format: `projects/{project}/locations/{location}/apis/{api}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The [UpdateApi][google.cloud.apihub.v1.ApiHub.UpdateApi] method's request.
+/// The \[UpdateApi\]\[google.cloud.apihub.v1.ApiHub.UpdateApi\] method's request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateApiRequest {
     /// Required. The API resource to update.
@@ -1686,8 +1688,8 @@ pub struct UpdateApiRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// The [DeleteApi][google.cloud.apihub.v1.ApiHub.DeleteApi] method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// The \[DeleteApi\]\[google.cloud.apihub.v1.ApiHub.DeleteApi\] method's request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteApiRequest {
     /// Required. The name of the API resource to delete.
     /// Format: `projects/{project}/locations/{location}/apis/{api}`
@@ -1698,8 +1700,8 @@ pub struct DeleteApiRequest {
     #[prost(bool, tag = "2")]
     pub force: bool,
 }
-/// The [ListApis][google.cloud.apihub.v1.ApiHub.ListApis] method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// The \[ListApis\]\[google.cloud.apihub.v1.ApiHub.ListApis\] method's request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListApisRequest {
     /// Required. The parent, which owns this collection of API resources.
     /// Format: `projects/{project}/locations/{location}`
@@ -1714,43 +1716,43 @@ pub struct ListApisRequest {
     ///
     /// The following fields in the `ApiResource` are eligible for filtering:
     ///
-    ///    * `owner.email` - The email of the team which owns the ApiResource.
-    ///    Allowed comparison operators: `=`.
-    ///    * `create_time` - The time at which the ApiResource was created. The
-    ///    value should be in the (RFC3339)\[<https://tools.ietf.org/html/rfc3339\]>
-    ///    format. Allowed comparison operators: `>` and `<`.
-    ///    * `display_name` - The display name of the ApiResource. Allowed
-    ///    comparison operators: `=`.
-    ///    * `target_user.enum_values.values.id` - The allowed value id of the
-    ///    target users attribute associated with the ApiResource. Allowed
-    ///    comparison operator is `:`.
-    ///    * `target_user.enum_values.values.display_name` - The allowed value
-    ///    display name of the target users attribute associated with the
-    ///    ApiResource. Allowed comparison operator is `:`.
-    ///    * `team.enum_values.values.id` - The allowed value id of the team
-    ///    attribute associated with the ApiResource. Allowed comparison operator is
-    ///    `:`.
-    ///    * `team.enum_values.values.display_name` - The allowed value display name
-    ///    of the team attribute associated with the ApiResource. Allowed comparison
-    ///    operator is `:`.
-    ///    * `business_unit.enum_values.values.id` - The allowed value id of the
-    ///    business unit attribute associated with the ApiResource. Allowed
-    ///    comparison operator is `:`.
-    ///    * `business_unit.enum_values.values.display_name` - The allowed value
-    ///    display name of the business unit attribute associated with the
-    ///    ApiResource. Allowed comparison operator is `:`.
-    ///    * `maturity_level.enum_values.values.id` - The allowed value id of the
-    ///    maturity level attribute associated with the ApiResource. Allowed
-    ///    comparison operator is `:`.
-    ///    * `maturity_level.enum_values.values.display_name` - The allowed value
-    ///    display name of the maturity level attribute associated with the
-    ///    ApiResource. Allowed comparison operator is `:`.
-    ///    * `api_style.enum_values.values.id` - The allowed value id of the
-    ///    api style attribute associated with the ApiResource. Allowed
-    ///    comparison operator is `:`.
-    ///    * `api_style.enum_values.values.display_name` - The allowed value display
-    ///    name of the api style attribute associated with the ApiResource. Allowed
-    ///    comparison operator is `:`.
+    /// * `owner.email` - The email of the team which owns the ApiResource.
+    ///   Allowed comparison operators: `=`.
+    /// * `create_time` - The time at which the ApiResource was created. The
+    ///   value should be in the (RFC3339)\[<https://tools.ietf.org/html/rfc3339\]>
+    ///   format. Allowed comparison operators: `>` and `<`.
+    /// * `display_name` - The display name of the ApiResource. Allowed
+    ///   comparison operators: `=`.
+    /// * `target_user.enum_values.values.id` - The allowed value id of the
+    ///   target users attribute associated with the ApiResource. Allowed
+    ///   comparison operator is `:`.
+    /// * `target_user.enum_values.values.display_name` - The allowed value
+    ///   display name of the target users attribute associated with the
+    ///   ApiResource. Allowed comparison operator is `:`.
+    /// * `team.enum_values.values.id` - The allowed value id of the team
+    ///   attribute associated with the ApiResource. Allowed comparison operator is
+    ///   `:`.
+    /// * `team.enum_values.values.display_name` - The allowed value display name
+    ///   of the team attribute associated with the ApiResource. Allowed comparison
+    ///   operator is `:`.
+    /// * `business_unit.enum_values.values.id` - The allowed value id of the
+    ///   business unit attribute associated with the ApiResource. Allowed
+    ///   comparison operator is `:`.
+    /// * `business_unit.enum_values.values.display_name` - The allowed value
+    ///   display name of the business unit attribute associated with the
+    ///   ApiResource. Allowed comparison operator is `:`.
+    /// * `maturity_level.enum_values.values.id` - The allowed value id of the
+    ///   maturity level attribute associated with the ApiResource. Allowed
+    ///   comparison operator is `:`.
+    /// * `maturity_level.enum_values.values.display_name` - The allowed value
+    ///   display name of the maturity level attribute associated with the
+    ///   ApiResource. Allowed comparison operator is `:`.
+    /// * `api_style.enum_values.values.id` - The allowed value id of the
+    ///   api style attribute associated with the ApiResource. Allowed
+    ///   comparison operator is `:`.
+    /// * `api_style.enum_values.values.display_name` - The allowed value display
+    ///   name of the api style attribute associated with the ApiResource. Allowed
+    ///   comparison operator is `:`.
     ///
     /// Expressions are combined with either `AND` logic operator or `OR` logical
     /// operator but not both of them together i.e. only one of the `AND` or `OR`
@@ -1761,21 +1763,18 @@ pub struct ListApisRequest {
     ///
     /// Here are a few examples:
     ///
-    ///    * `owner.email = \"apihub@google.com\"` -  - The owner team email is
-    ///    _apihub@google.com_.
-    ///    * `owner.email = \"apihub@google.com\" AND create_time <
-    ///    \"2021-08-15T14:50:00Z\" AND create_time > \"2021-08-10T12:00:00Z\"` -
-    ///    The owner team email is _apihub@google.com_ and the api was created
-    ///    before _2021-08-15 14:50:00 UTC_ and after _2021-08-10 12:00:00 UTC_.
-    ///    * `owner.email = \"apihub@google.com\" OR team.enum_values.values.id:
-    ///    apihub-team-id` - The filter string specifies the APIs where the owner
-    ///    team email is _apihub@google.com_ or the id of the allowed value
-    ///    associated with the team attribute is _apihub-team-id_.
-    ///    * `owner.email = \"apihub@google.com\" OR
-    ///    team.enum_values.values.display_name: ApiHub Team` - The filter string
-    ///    specifies the APIs where the owner team email is _apihub@google.com_ or
-    ///    the display name of the allowed value associated with the team attribute
-    ///    is `ApiHub Team`.
+    /// * `owner.email = \"apihub@google.com\"` -  - The owner team email is
+    ///   *apihub@google.com*.
+    /// * `owner.email = \"apihub@google.com\" AND create_time <    \"2021-08-15T14:50:00Z\" AND create_time > \"2021-08-10T12:00:00Z\"` -
+    ///   The owner team email is *apihub@google.com* and the api was created
+    ///   before *2021-08-15 14:50:00 UTC* and after *2021-08-10 12:00:00 UTC*.
+    /// * `owner.email = \"apihub@google.com\" OR team.enum_values.values.id:    apihub-team-id` - The filter string specifies the APIs where the owner
+    ///   team email is *apihub@google.com* or the id of the allowed value
+    ///   associated with the team attribute is *apihub-team-id*.
+    /// * `owner.email = \"apihub@google.com\" OR    team.enum_values.values.display_name: ApiHub Team` - The filter string
+    ///   specifies the APIs where the owner team email is *apihub@google.com* or
+    ///   the display name of the allowed value associated with the team attribute
+    ///   is `ApiHub Team`.
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The maximum number of API resources to return. The service may
@@ -1792,7 +1791,7 @@ pub struct ListApisRequest {
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The [ListApis][google.cloud.apihub.v1.ApiHub.ListApis] method's response.
+/// The \[ListApis\]\[google.cloud.apihub.v1.ApiHub.ListApis\] method's response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListApisResponse {
     /// The API resources present in the API hub.
@@ -1803,7 +1802,7 @@ pub struct ListApisResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The [CreateVersion][google.cloud.apihub.v1.ApiHub.CreateVersion] method's
+/// The \[CreateVersion\]\[google.cloud.apihub.v1.ApiHub.CreateVersion\] method's
 /// request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateVersionRequest {
@@ -1815,19 +1814,19 @@ pub struct CreateVersionRequest {
     /// component of the version's resource name. This field is optional.
     ///
     /// * If provided, the same will be used. The service will throw an error if
-    /// the specified id is already used by another version in the API resource.
+    ///   the specified id is already used by another version in the API resource.
     /// * If not provided, a system generated id will be used.
     ///
     /// This value should be 4-500 characters, and valid characters
-    /// are /[a-z][A-Z][0-9]-_/.
+    /// are /\[a-z\]\[A-Z\]\[0-9\]-\_/.
     #[prost(string, tag = "2")]
     pub version_id: ::prost::alloc::string::String,
     /// Required. The version to create.
     #[prost(message, optional, tag = "3")]
     pub version: ::core::option::Option<Version>,
 }
-/// The [GetVersion][google.cloud.apihub.v1.ApiHub.GetVersion] method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// The \[GetVersion\]\[google.cloud.apihub.v1.ApiHub.GetVersion\] method's request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetVersionRequest {
     /// Required. The name of the API version to retrieve.
     /// Format:
@@ -1835,7 +1834,7 @@ pub struct GetVersionRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The [UpdateVersion][google.cloud.apihub.v1.ApiHub.UpdateVersion] method's
+/// The \[UpdateVersion\]\[google.cloud.apihub.v1.ApiHub.UpdateVersion\] method's
 /// request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateVersionRequest {
@@ -1850,9 +1849,9 @@ pub struct UpdateVersionRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// The [DeleteVersion][google.cloud.apihub.v1.ApiHub.DeleteVersion] method's
+/// The \[DeleteVersion\]\[google.cloud.apihub.v1.ApiHub.DeleteVersion\] method's
 /// request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteVersionRequest {
     /// Required. The name of the version to delete.
     /// Format:
@@ -1864,9 +1863,9 @@ pub struct DeleteVersionRequest {
     #[prost(bool, tag = "2")]
     pub force: bool,
 }
-/// The [ListVersions][google.cloud.apihub.v1.ApiHub.ListVersions] method's
+/// The \[ListVersions\]\[google.cloud.apihub.v1.ApiHub.ListVersions\] method's
 /// request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListVersionsRequest {
     /// Required. The parent which owns this collection of API versions i.e., the
     /// API resource Format: `projects/{project}/locations/{location}/apis/{api}`
@@ -1881,29 +1880,29 @@ pub struct ListVersionsRequest {
     ///
     /// The following fields in the `Version` are eligible for filtering:
     ///
-    ///    * `display_name` - The display name of the Version. Allowed
-    ///    comparison operators: `=`.
-    ///    * `create_time` - The time at which the Version was created. The
-    ///    value should be in the (RFC3339)\[<https://tools.ietf.org/html/rfc3339\]>
-    ///    format. Allowed comparison operators: `>` and `<`.
-    ///    * `lifecycle.enum_values.values.id` - The allowed value id of the
-    ///    lifecycle attribute associated with the Version. Allowed comparison
-    ///    operators: `:`.
-    ///    * `lifecycle.enum_values.values.display_name` - The allowed value display
-    ///    name of the lifecycle attribute associated with the Version. Allowed
-    ///    comparison operators: `:`.
-    ///    * `compliance.enum_values.values.id` -  The allowed value id of the
-    ///    compliances attribute associated with the Version. Allowed comparison
-    ///    operators: `:`.
-    ///    * `compliance.enum_values.values.display_name` -  The allowed value
-    ///    display name of the compliances attribute associated with the Version.
-    ///    Allowed comparison operators: `:`.
-    ///    * `accreditation.enum_values.values.id` - The allowed value id of the
-    ///    accreditations attribute associated with the Version. Allowed
-    ///    comparison operators: `:`.
-    ///    * `accreditation.enum_values.values.display_name` - The allowed value
-    ///    display name of the accreditations attribute associated with the Version.
-    ///    Allowed comparison operators: `:`.
+    /// * `display_name` - The display name of the Version. Allowed
+    ///   comparison operators: `=`.
+    /// * `create_time` - The time at which the Version was created. The
+    ///   value should be in the (RFC3339)\[<https://tools.ietf.org/html/rfc3339\]>
+    ///   format. Allowed comparison operators: `>` and `<`.
+    /// * `lifecycle.enum_values.values.id` - The allowed value id of the
+    ///   lifecycle attribute associated with the Version. Allowed comparison
+    ///   operators: `:`.
+    /// * `lifecycle.enum_values.values.display_name` - The allowed value display
+    ///   name of the lifecycle attribute associated with the Version. Allowed
+    ///   comparison operators: `:`.
+    /// * `compliance.enum_values.values.id` -  The allowed value id of the
+    ///   compliances attribute associated with the Version. Allowed comparison
+    ///   operators: `:`.
+    /// * `compliance.enum_values.values.display_name` -  The allowed value
+    ///   display name of the compliances attribute associated with the Version.
+    ///   Allowed comparison operators: `:`.
+    /// * `accreditation.enum_values.values.id` - The allowed value id of the
+    ///   accreditations attribute associated with the Version. Allowed
+    ///   comparison operators: `:`.
+    /// * `accreditation.enum_values.values.display_name` - The allowed value
+    ///   display name of the accreditations attribute associated with the Version.
+    ///   Allowed comparison operators: `:`.
     ///
     /// Expressions are combined with either `AND` logic operator or `OR` logical
     /// operator but not both of them together i.e. only one of the `AND` or `OR`
@@ -1915,22 +1914,20 @@ pub struct ListVersionsRequest {
     ///
     /// Here are a few examples:
     ///
-    ///    * `lifecycle.enum_values.values.id: preview-id` - The filter string
-    ///    specifies that the id of the allowed value associated with the lifecycle
-    ///    attribute of the Version is _preview-id_.
-    ///    * `lifecycle.enum_values.values.display_name: \"Preview Display Name\"` -
-    ///    The filter string specifies that the display name of the allowed value
-    ///    associated with the lifecycle attribute of the Version is `Preview
-    ///    Display Name`.
-    ///    * `lifecycle.enum_values.values.id: preview-id AND create_time <
-    ///    \"2021-08-15T14:50:00Z\" AND create_time > \"2021-08-10T12:00:00Z\"` -
-    ///    The id of the allowed value associated with the lifecycle attribute of
-    ///    the Version is _preview-id_ and it was created before _2021-08-15
-    ///    14:50:00 UTC_ and after _2021-08-10 12:00:00 UTC_.
-    ///    * `compliance.enum_values.values.id: gdpr-id OR
-    ///    compliance.enum_values.values.id: pci-dss-id`
-    ///    - The id of the allowed value associated with the compliance attribute is
-    ///    _gdpr-id_ or _pci-dss-id_.
+    /// * `lifecycle.enum_values.values.id: preview-id` - The filter string
+    ///   specifies that the id of the allowed value associated with the lifecycle
+    ///   attribute of the Version is *preview-id*.
+    /// * `lifecycle.enum_values.values.display_name: \"Preview Display Name\"` -
+    ///   The filter string specifies that the display name of the allowed value
+    ///   associated with the lifecycle attribute of the Version is `Preview    Display Name`.
+    /// * `lifecycle.enum_values.values.id: preview-id AND create_time <    \"2021-08-15T14:50:00Z\" AND create_time > \"2021-08-10T12:00:00Z\"` -
+    ///   The id of the allowed value associated with the lifecycle attribute of
+    ///   the Version is *preview-id* and it was created before *2021-08-15
+    ///   14:50:00 UTC* and after *2021-08-10 12:00:00 UTC*.
+    /// * `compliance.enum_values.values.id: gdpr-id OR    compliance.enum_values.values.id: pci-dss-id`
+    ///
+    /// * The id of the allowed value associated with the compliance attribute is
+    ///   *gdpr-id* or *pci-dss-id*.
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The maximum number of versions to return. The service may return
@@ -1947,7 +1944,7 @@ pub struct ListVersionsRequest {
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The [ListVersions][google.cloud.apihub.v1.ApiHub.ListVersions] method's
+/// The \[ListVersions\]\[google.cloud.apihub.v1.ApiHub.ListVersions\] method's
 /// response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVersionsResponse {
@@ -1959,7 +1956,7 @@ pub struct ListVersionsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The [CreateSpec][google.cloud.apihub.v1.ApiHub.CreateSpec] method's request.
+/// The \[CreateSpec\]\[google.cloud.apihub.v1.ApiHub.CreateSpec\] method's request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSpecRequest {
     /// Required. The parent resource for Spec.
@@ -1971,20 +1968,20 @@ pub struct CreateSpecRequest {
     /// of the spec's resource name. This field is optional.
     ///
     /// * If provided, the same will be used. The service will throw an error if
-    /// the specified id is already used by another spec in the API
-    /// resource.
+    ///   the specified id is already used by another spec in the API
+    ///   resource.
     /// * If not provided, a system generated id will be used.
     ///
     /// This value should be 4-500 characters, and valid characters
-    /// are /[a-z][A-Z][0-9]-_/.
+    /// are /\[a-z\]\[A-Z\]\[0-9\]-\_/.
     #[prost(string, tag = "2")]
     pub spec_id: ::prost::alloc::string::String,
     /// Required. The spec to create.
     #[prost(message, optional, tag = "3")]
     pub spec: ::core::option::Option<Spec>,
 }
-/// The [GetSpec][google.cloud.apihub.v1.ApiHub.GetSpec] method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// The \[GetSpec\]\[google.cloud.apihub.v1.ApiHub.GetSpec\] method's request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSpecRequest {
     /// Required. The name of the spec to retrieve.
     /// Format:
@@ -1992,7 +1989,7 @@ pub struct GetSpecRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The [UpdateSpec][google.cloud.apihub.v1.ApiHub.UpdateSpec] method's request.
+/// The \[UpdateSpec\]\[google.cloud.apihub.v1.ApiHub.UpdateSpec\] method's request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSpecRequest {
     /// Required. The spec to update.
@@ -2006,8 +2003,8 @@ pub struct UpdateSpecRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// The [DeleteSpec][google.cloud.apihub.v1.ApiHub.DeleteSpec] method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// The \[DeleteSpec\]\[google.cloud.apihub.v1.ApiHub.DeleteSpec\] method's request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSpecRequest {
     /// Required. The name of the spec  to delete.
     /// Format:
@@ -2015,8 +2012,8 @@ pub struct DeleteSpecRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The [ListSpecs][ListSpecs] method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// The \[ListSpecs\]\[ListSpecs\] method's request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSpecsRequest {
     /// Required. The parent, which owns this collection of specs.
     /// Format:
@@ -2032,22 +2029,22 @@ pub struct ListSpecsRequest {
     ///
     /// The following fields in the `Spec` are eligible for filtering:
     ///
-    ///    * `display_name` - The display name of the Spec. Allowed comparison
-    ///    operators: `=`.
-    ///    * `create_time` - The time at which the Spec was created. The
-    ///    value should be in the (RFC3339)\[<https://tools.ietf.org/html/rfc3339\]>
-    ///    format. Allowed comparison operators: `>` and `<`.
-    ///    * `spec_type.enum_values.values.id` - The allowed value id of the
-    ///    spec_type attribute associated with the Spec. Allowed comparison
-    ///    operators: `:`.
-    ///    * `spec_type.enum_values.values.display_name` - The allowed value display
-    ///    name of the spec_type attribute associated with the Spec. Allowed
-    ///    comparison operators: `:`.
-    ///    * `lint_response.json_values.values` - The json value of the
-    ///    lint_response attribute associated with the Spec. Allowed comparison
-    ///    operators: `:`.
-    ///    * `mime_type` - The MIME type of the Spec. Allowed comparison
-    ///    operators: `=`.
+    /// * `display_name` - The display name of the Spec. Allowed comparison
+    ///   operators: `=`.
+    /// * `create_time` - The time at which the Spec was created. The
+    ///   value should be in the (RFC3339)\[<https://tools.ietf.org/html/rfc3339\]>
+    ///   format. Allowed comparison operators: `>` and `<`.
+    /// * `spec_type.enum_values.values.id` - The allowed value id of the
+    ///   spec_type attribute associated with the Spec. Allowed comparison
+    ///   operators: `:`.
+    /// * `spec_type.enum_values.values.display_name` - The allowed value display
+    ///   name of the spec_type attribute associated with the Spec. Allowed
+    ///   comparison operators: `:`.
+    /// * `lint_response.json_values.values` - The json value of the
+    ///   lint_response attribute associated with the Spec. Allowed comparison
+    ///   operators: `:`.
+    /// * `mime_type` - The MIME type of the Spec. Allowed comparison
+    ///   operators: `=`.
     ///
     /// Expressions are combined with either `AND` logic operator or `OR` logical
     /// operator but not both of them together i.e. only one of the `AND` or `OR`
@@ -2059,21 +2056,20 @@ pub struct ListSpecsRequest {
     ///
     /// Here are a few examples:
     ///
-    ///    * `spec_type.enum_values.values.id: rest-id` -  The filter
-    ///    string specifies that the id of the allowed value associated with the
-    ///    spec_type attribute is _rest-id_.
-    ///    * `spec_type.enum_values.values.display_name: \"Rest Display Name\"` -
-    ///    The filter string specifies that the display name of the allowed value
-    ///    associated with the spec_type attribute is `Rest Display Name`.
-    ///    * `spec_type.enum_values.values.id: grpc-id AND create_time <
-    ///    \"2021-08-15T14:50:00Z\" AND create_time > \"2021-08-10T12:00:00Z\"` -
-    ///    The id of the allowed value associated with the spec_type attribute is
-    ///    _grpc-id_ and the spec was created before _2021-08-15 14:50:00 UTC_ and
-    ///    after _2021-08-10 12:00:00 UTC_.
-    ///    * `spec_type.enum_values.values.id: rest-id OR
-    ///    spec_type.enum_values.values.id: grpc-id`
-    ///    - The id of the allowed value associated with the spec_type attribute is
-    ///    _rest-id_ or _grpc-id_.
+    /// * `spec_type.enum_values.values.id: rest-id` -  The filter
+    ///   string specifies that the id of the allowed value associated with the
+    ///   spec_type attribute is *rest-id*.
+    /// * `spec_type.enum_values.values.display_name: \"Rest Display Name\"` -
+    ///   The filter string specifies that the display name of the allowed value
+    ///   associated with the spec_type attribute is `Rest Display Name`.
+    /// * `spec_type.enum_values.values.id: grpc-id AND create_time <    \"2021-08-15T14:50:00Z\" AND create_time > \"2021-08-10T12:00:00Z\"` -
+    ///   The id of the allowed value associated with the spec_type attribute is
+    ///   *grpc-id* and the spec was created before *2021-08-15 14:50:00 UTC* and
+    ///   after *2021-08-10 12:00:00 UTC*.
+    /// * `spec_type.enum_values.values.id: rest-id OR    spec_type.enum_values.values.id: grpc-id`
+    ///
+    /// * The id of the allowed value associated with the spec_type attribute is
+    ///   *rest-id* or *grpc-id*.
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The maximum number of specs to return. The service may return
@@ -2090,7 +2086,7 @@ pub struct ListSpecsRequest {
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The [ListSpecs][google.cloud.apihub.v1.ApiHub.ListSpecs] method's response.
+/// The \[ListSpecs\]\[google.cloud.apihub.v1.ApiHub.ListSpecs\] method's response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSpecsResponse {
     /// The specs corresponding to an API.
@@ -2101,9 +2097,9 @@ pub struct ListSpecsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The [GetSpecContents][google.cloud.apihub.v1.ApiHub.GetSpecContents] method's
+/// The \[GetSpecContents\]\[google.cloud.apihub.v1.ApiHub.GetSpecContents\] method's
 /// request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSpecContentsRequest {
     /// Required. The name of the spec whose contents need to be retrieved.
     /// Format:
@@ -2111,9 +2107,9 @@ pub struct GetSpecContentsRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The [GetApiOperation][google.cloud.apihub.v1.ApiHub.GetApiOperation] method's
+/// The \[GetApiOperation\]\[google.cloud.apihub.v1.ApiHub.GetApiOperation\] method's
 /// request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetApiOperationRequest {
     /// Required. The name of the operation to retrieve.
     /// Format:
@@ -2121,9 +2117,9 @@ pub struct GetApiOperationRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The [ListApiOperations][google.cloud.apihub.v1.ApiHub.ListApiOperations]
+/// The \[ListApiOperations\]\[google.cloud.apihub.v1.ApiHub.ListApiOperations\]
 /// method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListApiOperationsRequest {
     /// Required. The parent which owns this collection of operations i.e., the API
     /// version. Format:
@@ -2138,19 +2134,20 @@ pub struct ListApiOperationsRequest {
     /// `=`. Filters are not case sensitive.
     ///
     /// The following fields in the `ApiOperation` are eligible for filtering:
-    ///    * `name` - The ApiOperation resource name. Allowed comparison
-    ///    operators:
-    ///    `=`.
-    ///    * `details.http_operation.path.path` - The http operation's complete path
-    ///    relative to server endpoint. Allowed comparison operators: `=`.
-    ///    * `details.http_operation.method` - The http operation method type.
-    ///    Allowed comparison operators: `=`.
-    ///    * `details.deprecated` - Indicates if the ApiOperation is deprecated.
-    ///    Allowed values are True / False indicating the deprycation status of the
-    ///    ApiOperation. Allowed comparison operators: `=`.
-    ///    * `create_time` - The time at which the ApiOperation was created. The
-    ///    value should be in the (RFC3339)\[<https://tools.ietf.org/html/rfc3339\]>
-    ///    format. Allowed comparison operators: `>` and `<`.
+    ///
+    /// * `name` - The ApiOperation resource name. Allowed comparison
+    ///   operators:
+    ///   `=`.
+    /// * `details.http_operation.path.path` - The http operation's complete path
+    ///   relative to server endpoint. Allowed comparison operators: `=`.
+    /// * `details.http_operation.method` - The http operation method type.
+    ///   Allowed comparison operators: `=`.
+    /// * `details.deprecated` - Indicates if the ApiOperation is deprecated.
+    ///   Allowed values are True / False indicating the deprycation status of the
+    ///   ApiOperation. Allowed comparison operators: `=`.
+    /// * `create_time` - The time at which the ApiOperation was created. The
+    ///   value should be in the (RFC3339)\[<https://tools.ietf.org/html/rfc3339\]>
+    ///   format. Allowed comparison operators: `>` and `<`.
     ///
     /// Expressions are combined with either `AND` logic operator or `OR` logical
     /// operator but not both of them together i.e. only one of the `AND` or `OR`
@@ -2161,15 +2158,13 @@ pub struct ListApiOperationsRequest {
     ///
     /// Here are a few examples:
     ///
-    ///    * `details.deprecated = True` -  The ApiOperation is deprecated.
-    ///    * `details.http_operation.method = GET AND create_time <
-    ///    \"2021-08-15T14:50:00Z\" AND create_time > \"2021-08-10T12:00:00Z\"` -
-    ///    The method of the http operation of the ApiOperation is _GET_ and the
-    ///    spec was created before _2021-08-15 14:50:00 UTC_ and after _2021-08-10
-    ///    12:00:00 UTC_.
-    ///    * `details.http_operation.method = GET OR details.http_operation.method =
-    ///    POST`. - The http operation of the method of ApiOperation is _GET_ or
-    ///    _POST_.
+    /// * `details.deprecated = True` -  The ApiOperation is deprecated.
+    /// * `details.http_operation.method = GET AND create_time <    \"2021-08-15T14:50:00Z\" AND create_time > \"2021-08-10T12:00:00Z\"` -
+    ///   The method of the http operation of the ApiOperation is *GET* and the
+    ///   spec was created before *2021-08-15 14:50:00 UTC* and after *2021-08-10
+    ///   12:00:00 UTC*.
+    /// * `details.http_operation.method = GET OR details.http_operation.method =    POST`. - The http operation of the method of ApiOperation is *GET* or
+    ///   *POST*.
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The maximum number of operations to return. The service may
@@ -2186,7 +2181,7 @@ pub struct ListApiOperationsRequest {
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The [ListApiOperations][google.cloud.apihub.v1.ApiHub.ListApiOperations]
+/// The \[ListApiOperations\]\[google.cloud.apihub.v1.ApiHub.ListApiOperations\]
 /// method's response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListApiOperationsResponse {
@@ -2201,9 +2196,9 @@ pub struct ListApiOperationsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The [GetDefinition][google.cloud.apihub.v1.ApiHub.GetDefinition] method's
+/// The \[GetDefinition\]\[google.cloud.apihub.v1.ApiHub.GetDefinition\] method's
 /// request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDefinitionRequest {
     /// Required. The name of the definition to retrieve.
     /// Format:
@@ -2211,7 +2206,7 @@ pub struct GetDefinitionRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The [CreateDeployment][google.cloud.apihub.v1.ApiHub.CreateDeployment]
+/// The \[CreateDeployment\]\[google.cloud.apihub.v1.ApiHub.CreateDeployment\]
 /// method's request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDeploymentRequest {
@@ -2223,28 +2218,28 @@ pub struct CreateDeploymentRequest {
     /// final component of the deployment's resource name. This field is optional.
     ///
     /// * If provided, the same will be used. The service will throw an error if
-    /// the specified id is already used by another deployment resource in the API
-    /// hub.
+    ///   the specified id is already used by another deployment resource in the API
+    ///   hub.
     /// * If not provided, a system generated id will be used.
     ///
     /// This value should be 4-500 characters, and valid characters
-    /// are /[a-z][A-Z][0-9]-_/.
+    /// are /\[a-z\]\[A-Z\]\[0-9\]-\_/.
     #[prost(string, tag = "2")]
     pub deployment_id: ::prost::alloc::string::String,
     /// Required. The deployment resource to create.
     #[prost(message, optional, tag = "3")]
     pub deployment: ::core::option::Option<Deployment>,
 }
-/// The [GetDeployment][google.cloud.apihub.v1.ApiHub.GetDeployment] method's
+/// The \[GetDeployment\]\[google.cloud.apihub.v1.ApiHub.GetDeployment\] method's
 /// request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDeploymentRequest {
     /// Required. The name of the deployment resource to retrieve.
     /// Format: `projects/{project}/locations/{location}/deployments/{deployment}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The [UpdateDeployment][google.cloud.apihub.v1.ApiHub.UpdateDeployment]
+/// The \[UpdateDeployment\]\[google.cloud.apihub.v1.ApiHub.UpdateDeployment\]
 /// method's request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDeploymentRequest {
@@ -2259,18 +2254,18 @@ pub struct UpdateDeploymentRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// The [DeleteDeployment][google.cloud.apihub.v1.ApiHub.DeleteDeployment]
+/// The \[DeleteDeployment\]\[google.cloud.apihub.v1.ApiHub.DeleteDeployment\]
 /// method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDeploymentRequest {
     /// Required. The name of the deployment resource to delete.
     /// Format: `projects/{project}/locations/{location}/deployments/{deployment}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The [ListDeployments][google.cloud.apihub.v1.ApiHub.ListDeployments] method's
+/// The \[ListDeployments\]\[google.cloud.apihub.v1.ApiHub.ListDeployments\] method's
 /// request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDeploymentsRequest {
     /// Required. The parent, which owns this collection of deployment resources.
     /// Format: `projects/{project}/locations/{location}`
@@ -2285,30 +2280,30 @@ pub struct ListDeploymentsRequest {
     ///
     /// The following fields in the `Deployments` are eligible for filtering:
     ///
-    ///    * `display_name` - The display name of the Deployment. Allowed
-    ///    comparison operators: `=`.
-    ///    * `create_time` - The time at which the Deployment was created. The
-    ///    value should be in the (RFC3339)\[<https://tools.ietf.org/html/rfc3339\]>
-    ///    format. Allowed comparison operators: `>` and `<`.
-    ///    * `resource_uri` - A URI to the deployment resource. Allowed
-    ///    comparison operators: `=`.
-    ///    * `api_versions` - The API versions linked to this deployment. Allowed
-    ///    comparison operators: `:`.
-    ///    * `deployment_type.enum_values.values.id` - The allowed value id of the
-    ///    deployment_type attribute associated with the Deployment. Allowed
-    ///    comparison operators: `:`.
-    ///    * `deployment_type.enum_values.values.display_name` - The allowed value
-    ///    display name of the deployment_type attribute associated with the
-    ///    Deployment. Allowed comparison operators: `:`.
-    ///    * `slo.string_values.values` -The allowed string value of the slo
-    ///    attribute associated with the deployment. Allowed comparison
-    ///    operators: `:`.
-    ///    * `environment.enum_values.values.id` - The allowed value id of the
-    ///    environment attribute associated with the deployment. Allowed
-    ///    comparison operators: `:`.
-    ///    * `environment.enum_values.values.display_name` - The allowed value
-    ///    display name of the environment attribute associated with the deployment.
-    ///    Allowed comparison operators: `:`.
+    /// * `display_name` - The display name of the Deployment. Allowed
+    ///   comparison operators: `=`.
+    /// * `create_time` - The time at which the Deployment was created. The
+    ///   value should be in the (RFC3339)\[<https://tools.ietf.org/html/rfc3339\]>
+    ///   format. Allowed comparison operators: `>` and `<`.
+    /// * `resource_uri` - A URI to the deployment resource. Allowed
+    ///   comparison operators: `=`.
+    /// * `api_versions` - The API versions linked to this deployment. Allowed
+    ///   comparison operators: `:`.
+    /// * `deployment_type.enum_values.values.id` - The allowed value id of the
+    ///   deployment_type attribute associated with the Deployment. Allowed
+    ///   comparison operators: `:`.
+    /// * `deployment_type.enum_values.values.display_name` - The allowed value
+    ///   display name of the deployment_type attribute associated with the
+    ///   Deployment. Allowed comparison operators: `:`.
+    /// * `slo.string_values.values` -The allowed string value of the slo
+    ///   attribute associated with the deployment. Allowed comparison
+    ///   operators: `:`.
+    /// * `environment.enum_values.values.id` - The allowed value id of the
+    ///   environment attribute associated with the deployment. Allowed
+    ///   comparison operators: `:`.
+    /// * `environment.enum_values.values.display_name` - The allowed value
+    ///   display name of the environment attribute associated with the deployment.
+    ///   Allowed comparison operators: `:`.
     ///
     /// Expressions are combined with either `AND` logic operator or `OR` logical
     /// operator but not both of them together i.e. only one of the `AND` or `OR`
@@ -2319,21 +2314,20 @@ pub struct ListDeploymentsRequest {
     ///
     /// Here are a few examples:
     ///
-    ///    * `environment.enum_values.values.id: staging-id` - The allowed value id
-    ///    of the environment attribute associated with the Deployment is
-    ///    _staging-id_.
-    ///    * `environment.enum_values.values.display_name: \"Staging Deployment\"` -
-    ///    The allowed value display name of the environment attribute associated
-    ///    with the Deployment is `Staging Deployment`.
-    ///    * `environment.enum_values.values.id: production-id AND create_time <
-    ///    \"2021-08-15T14:50:00Z\" AND create_time > \"2021-08-10T12:00:00Z\"` -
-    ///    The allowed value id of the environment attribute associated with the
-    ///    Deployment is _production-id_ and Deployment was created before
-    ///    _2021-08-15 14:50:00 UTC_ and after _2021-08-10 12:00:00 UTC_.
-    ///    * `environment.enum_values.values.id: production-id OR
-    ///    slo.string_values.values: \"99.99%\"`
-    ///    - The allowed value id of the environment attribute Deployment is
-    ///    _production-id_ or string value of the slo attribute is _99.99%_.
+    /// * `environment.enum_values.values.id: staging-id` - The allowed value id
+    ///   of the environment attribute associated with the Deployment is
+    ///   *staging-id*.
+    /// * `environment.enum_values.values.display_name: \"Staging Deployment\"` -
+    ///   The allowed value display name of the environment attribute associated
+    ///   with the Deployment is `Staging Deployment`.
+    /// * `environment.enum_values.values.id: production-id AND create_time <    \"2021-08-15T14:50:00Z\" AND create_time > \"2021-08-10T12:00:00Z\"` -
+    ///   The allowed value id of the environment attribute associated with the
+    ///   Deployment is *production-id* and Deployment was created before
+    ///   *2021-08-15 14:50:00 UTC* and after *2021-08-10 12:00:00 UTC*.
+    /// * `environment.enum_values.values.id: production-id OR    slo.string_values.values: \"99.99%\"`
+    ///
+    /// * The allowed value id of the environment attribute Deployment is
+    ///   *production-id* or string value of the slo attribute is *99.99%*.
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The maximum number of deployment resources to return. The service
@@ -2350,7 +2344,7 @@ pub struct ListDeploymentsRequest {
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The [ListDeployments][google.cloud.apihub.v1.ApiHub.ListDeployments] method's
+/// The \[ListDeployments\]\[google.cloud.apihub.v1.ApiHub.ListDeployments\] method's
 /// response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDeploymentsResponse {
@@ -2362,7 +2356,7 @@ pub struct ListDeploymentsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The [CreateAttribute][google.cloud.apihub.v1.ApiHub.CreateAttribute] method's
+/// The \[CreateAttribute\]\[google.cloud.apihub.v1.ApiHub.CreateAttribute\] method's
 /// request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAttributeRequest {
@@ -2374,21 +2368,21 @@ pub struct CreateAttributeRequest {
     /// component of the attribute's resource name. This field is optional.
     ///
     /// * If provided, the same will be used. The service will throw an error if
-    /// the specified id is already used by another attribute resource in the API
-    /// hub.
+    ///   the specified id is already used by another attribute resource in the API
+    ///   hub.
     /// * If not provided, a system generated id will be used.
     ///
     /// This value should be 4-500 characters, and valid characters
-    /// are /[a-z][A-Z][0-9]-_/.
+    /// are /\[a-z\]\[A-Z\]\[0-9\]-\_/.
     #[prost(string, tag = "2")]
     pub attribute_id: ::prost::alloc::string::String,
     /// Required. The attribute to create.
     #[prost(message, optional, tag = "3")]
     pub attribute: ::core::option::Option<Attribute>,
 }
-/// The [GetAttribute][google.cloud.apihub.v1.ApiHub.GetAttribute] method's
+/// The \[GetAttribute\]\[google.cloud.apihub.v1.ApiHub.GetAttribute\] method's
 /// request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAttributeRequest {
     /// Required. The name of the attribute to retrieve.
     /// Format:
@@ -2396,7 +2390,7 @@ pub struct GetAttributeRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The [UpdateAttribute][google.cloud.apihub.v1.ApiHub.UpdateAttribute] method's
+/// The \[UpdateAttribute\]\[google.cloud.apihub.v1.ApiHub.UpdateAttribute\] method's
 /// request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAttributeRequest {
@@ -2411,9 +2405,9 @@ pub struct UpdateAttributeRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// The [DeleteAttribute][google.cloud.apihub.v1.ApiHub.DeleteAttribute] method's
+/// The \[DeleteAttribute\]\[google.cloud.apihub.v1.ApiHub.DeleteAttribute\] method's
 /// request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAttributeRequest {
     /// Required. The name of the attribute to delete.
     /// Format:
@@ -2421,9 +2415,9 @@ pub struct DeleteAttributeRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The [ListAttributes][google.cloud.apihub.v1.ApiHub.ListAttributes] method's
+/// The \[ListAttributes\]\[google.cloud.apihub.v1.ApiHub.ListAttributes\] method's
 /// request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAttributesRequest {
     /// Required. The parent resource for Attribute.
     /// Format: `projects/{project}/locations/{location}`
@@ -2438,19 +2432,19 @@ pub struct ListAttributesRequest {
     ///
     /// The following fields in the `Attribute` are eligible for filtering:
     ///
-    ///    * `display_name` - The display name of the Attribute. Allowed
-    ///    comparison operators: `=`.
-    ///    * `definition_type` - The definition type of the attribute. Allowed
-    ///    comparison operators: `=`.
-    ///    * `scope` - The scope of the attribute. Allowed comparison operators:
-    ///    `=`.
-    ///    * `data_type` - The type of the data of the attribute. Allowed
-    ///    comparison operators: `=`.
-    ///    * `mandatory` - Denotes whether the attribute is mandatory or not.
-    ///    Allowed comparison operators: `=`.
-    ///    * `create_time` - The time at which the Attribute was created. The
-    ///    value should be in the (RFC3339)\[<https://tools.ietf.org/html/rfc3339\]>
-    ///    format. Allowed comparison operators: `>` and `<`.
+    /// * `display_name` - The display name of the Attribute. Allowed
+    ///   comparison operators: `=`.
+    /// * `definition_type` - The definition type of the attribute. Allowed
+    ///   comparison operators: `=`.
+    /// * `scope` - The scope of the attribute. Allowed comparison operators:
+    ///   `=`.
+    /// * `data_type` - The type of the data of the attribute. Allowed
+    ///   comparison operators: `=`.
+    /// * `mandatory` - Denotes whether the attribute is mandatory or not.
+    ///   Allowed comparison operators: `=`.
+    /// * `create_time` - The time at which the Attribute was created. The
+    ///   value should be in the (RFC3339)\[<https://tools.ietf.org/html/rfc3339\]>
+    ///   format. Allowed comparison operators: `>` and `<`.
     ///
     /// Expressions are combined with either `AND` logic operator or `OR` logical
     /// operator but not both of them together i.e. only one of the `AND` or `OR`
@@ -2462,16 +2456,15 @@ pub struct ListAttributesRequest {
     ///
     /// Here are a few examples:
     ///
-    ///    * `display_name = production` -  - The display name of the attribute is
-    ///    _production_.
-    ///    * `(display_name = production) AND (create_time <
-    ///    \"2021-08-15T14:50:00Z\") AND (create_time > \"2021-08-10T12:00:00Z\")` -
-    ///    The display name of the attribute is _production_ and the attribute was
-    ///    created before _2021-08-15 14:50:00 UTC_ and after _2021-08-10 12:00:00
-    ///    UTC_.
-    ///    * `display_name = production OR scope = api` -
-    ///    The attribute where the display name is _production_ or the scope is
-    ///    _api_.
+    /// * `display_name = production` -  - The display name of the attribute is
+    ///   *production*.
+    /// * `(display_name = production) AND (create_time <    \"2021-08-15T14:50:00Z\") AND (create_time > \"2021-08-10T12:00:00Z\")` -
+    ///   The display name of the attribute is *production* and the attribute was
+    ///   created before *2021-08-15 14:50:00 UTC* and after *2021-08-10 12:00:00
+    ///   UTC*.
+    /// * `display_name = production OR scope = api` -
+    ///   The attribute where the display name is *production* or the scope is
+    ///   *api*.
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The maximum number of attribute resources to return. The service
@@ -2488,7 +2481,7 @@ pub struct ListAttributesRequest {
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The [ListAttributes][google.cloud.apihub.v1.ApiHub.ListAttributes] method's
+/// The \[ListAttributes\]\[google.cloud.apihub.v1.ApiHub.ListAttributes\] method's
 /// response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAttributesResponse {
@@ -2500,9 +2493,9 @@ pub struct ListAttributesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The [SearchResources][google.cloud.apihub.v1.ApiHub.SearchResources] method's
+/// The \[SearchResources\]\[google.cloud.apihub.v1.ApiHub.SearchResources\] method's
 /// request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchResourcesRequest {
     /// Required. The resource name of the location which will be of the type
     /// `projects/{project_id}/locations/{location_id}`. This field is used to
@@ -2522,14 +2515,14 @@ pub struct SearchResourcesRequest {
     /// sensitive.
     ///
     /// The following field names are eligible for filtering:
-    ///     * `resource_type` - The type of resource in the search results.
-    ///     Must be one of the following: `Api`, `ApiOperation`, `Deployment`,
-    ///     `Definition`, `Spec` or `Version`. This field can only be specified once
-    ///     in the filter.
+    /// \* `resource_type` - The type of resource in the search results.
+    /// Must be one of the following: `Api`, `ApiOperation`, `Deployment`,
+    /// `Definition`, `Spec` or `Version`. This field can only be specified once
+    /// in the filter.
     ///
     /// Here are is an example:
     ///
-    ///    * `resource_type = Api` - The resource_type is _Api_.
+    /// * `resource_type = Api` - The resource_type is *Api*.
     #[prost(string, tag = "3")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The maximum number of search results to return. The service may
@@ -2541,12 +2534,12 @@ pub struct SearchResourcesRequest {
     #[prost(int32, tag = "4")]
     pub page_size: i32,
     /// Optional. A page token, received from a previous
-    /// [SearchResources][SearchResources]
+    /// \[SearchResources\]\[SearchResources\]
     /// call. Specify this parameter to retrieve the next page of transactions.
     ///
     /// When paginating, you must specify the `page_token` parameter and all the
     /// other parameters except
-    /// [page_size][google.cloud.apihub.v1.SearchResourcesRequest.page_size]
+    /// \[page_size\]\[google.cloud.apihub.v1.SearchResourcesRequest.page_size\]
     /// should be specified with the same value which was used in the previous
     /// call. If the other fields are set with a different value than the previous
     /// call then `INVALID_ARGUMENT` error is returned.
@@ -2599,7 +2592,7 @@ pub struct SearchResult {
     pub resource: ::core::option::Option<ApiHubResource>,
 }
 /// Response for the
-/// [SearchResources][google.cloud.apihub.v1.ApiHub.SearchResources] method.
+/// \[SearchResources\]\[google.cloud.apihub.v1.ApiHub.SearchResources\] method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchResourcesResponse {
     /// List of search results according to the filter and search query specified.
@@ -2607,14 +2600,14 @@ pub struct SearchResourcesResponse {
     #[prost(message, repeated, tag = "1")]
     pub search_results: ::prost::alloc::vec::Vec<SearchResult>,
     /// Pass this token in the
-    /// [SearchResourcesRequest][google.cloud.apihub.v1.SearchResourcesRequest]
+    /// \[SearchResourcesRequest\]\[google.cloud.apihub.v1.SearchResourcesRequest\]
     /// to continue to list results. If all results have been returned, this field
     /// is an empty string or not present in the response.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The
-/// [CreateDependency][google.cloud.apihub.v1.ApiHubDependencies.CreateDependency]
+/// \[CreateDependency\]\[google.cloud.apihub.v1.ApiHubDependencies.CreateDependency\]
 /// method's request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDependencyRequest {
@@ -2624,8 +2617,9 @@ pub struct CreateDependencyRequest {
     pub parent: ::prost::alloc::string::String,
     /// Optional. The ID to use for the dependency resource, which will become the
     /// final component of the dependency's resource name. This field is optional.
+    ///
     /// * If provided, the same will be used. The service will throw an error if
-    /// duplicate id is provided by the client.
+    ///   duplicate id is provided by the client.
     /// * If not provided, a system generated id will be used.
     ///
     /// This value should be 4-500 characters, and valid characters
@@ -2636,9 +2630,9 @@ pub struct CreateDependencyRequest {
     #[prost(message, optional, tag = "3")]
     pub dependency: ::core::option::Option<Dependency>,
 }
-/// The [GetDependency][.ApiHubDependencies.GetDependency]
+/// The \[GetDependency\]\[.ApiHubDependencies.GetDependency\]
 /// method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDependencyRequest {
     /// Required. The name of the dependency resource to retrieve.
     /// Format: `projects/{project}/locations/{location}/dependencies/{dependency}`
@@ -2646,7 +2640,7 @@ pub struct GetDependencyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The
-/// [UpdateDependency][google.cloud.apihub.v1.ApiHubDependencies.UpdateDependency]
+/// \[UpdateDependency\]\[google.cloud.apihub.v1.ApiHubDependencies.UpdateDependency\]
 /// method's request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDependencyRequest {
@@ -2661,9 +2655,9 @@ pub struct UpdateDependencyRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The
-/// [DeleteDependency][google.cloud.apihub.v1.ApiHubDependencies.DeleteDependency]
+/// \[DeleteDependency\]\[google.cloud.apihub.v1.ApiHubDependencies.DeleteDependency\]
 /// method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDependencyRequest {
     /// Required. The name of the dependency resource to delete.
     /// Format: `projects/{project}/locations/{location}/dependencies/{dependency}`
@@ -2671,9 +2665,9 @@ pub struct DeleteDependencyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The
-/// [ListDependencies][google.cloud.apihub.v1.ApiHubDependencies.ListDependencies]
+/// \[ListDependencies\]\[google.cloud.apihub.v1.ApiHubDependencies.ListDependencies\]
 /// method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDependenciesRequest {
     /// Required. The parent which owns this collection of dependency resources.
     /// Format: `projects/{project}/locations/{location}`
@@ -2687,18 +2681,18 @@ pub struct ListDependenciesRequest {
     ///
     /// The following fields in the `Dependency` are eligible for filtering:
     ///
-    ///    * `consumer.operation_resource_name` - The operation resource name for
-    ///    the consumer entity involved in a dependency. Allowed comparison
-    ///    operators: `=`.
-    ///    * `consumer.external_api_resource_name` - The external api resource name
-    ///    for the consumer entity involved in a dependency. Allowed comparison
-    ///    operators: `=`.
-    ///    * `supplier.operation_resource_name` - The operation resource name for
-    ///    the supplier entity involved in a dependency. Allowed comparison
-    ///    operators: `=`.
-    ///    * `supplier.external_api_resource_name` - The external api resource name
-    ///    for the supplier entity involved in a dependency. Allowed comparison
-    ///    operators: `=`.
+    /// * `consumer.operation_resource_name` - The operation resource name for
+    ///   the consumer entity involved in a dependency. Allowed comparison
+    ///   operators: `=`.
+    /// * `consumer.external_api_resource_name` - The external api resource name
+    ///   for the consumer entity involved in a dependency. Allowed comparison
+    ///   operators: `=`.
+    /// * `supplier.operation_resource_name` - The operation resource name for
+    ///   the supplier entity involved in a dependency. Allowed comparison
+    ///   operators: `=`.
+    /// * `supplier.external_api_resource_name` - The external api resource name
+    ///   for the supplier entity involved in a dependency. Allowed comparison
+    ///   operators: `=`.
     ///
     /// Expressions are combined with either `AND` logic operator or `OR` logical
     /// operator but not both of them together i.e. only one of the `AND` or `OR`
@@ -2707,12 +2701,9 @@ pub struct ListDependenciesRequest {
     /// three filter fields are allowed in the filter string and if provided
     /// more than that then `INVALID_ARGUMENT` error is returned by the API.
     ///
-    /// For example, `consumer.operation_resource_name =
-    /// \"projects/p1/locations/global/apis/a1/versions/v1/operations/o1\" OR
-    /// supplier.operation_resource_name =
-    /// \"projects/p1/locations/global/apis/a1/versions/v1/operations/o1\"` - The
+    /// For example, `consumer.operation_resource_name =  \"projects/p1/locations/global/apis/a1/versions/v1/operations/o1\" OR  supplier.operation_resource_name =  \"projects/p1/locations/global/apis/a1/versions/v1/operations/o1\"` - The
     /// dependencies with either consumer or supplier operation resource name as
-    /// _projects/p1/locations/global/apis/a1/versions/v1/operations/o1_.
+    /// *projects/p1/locations/global/apis/a1/versions/v1/operations/o1*.
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The maximum number of dependency resources to return. The service
@@ -2730,7 +2721,7 @@ pub struct ListDependenciesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The
-/// [ListDependencies][google.cloud.apihub.v1.ApiHubDependencies.ListDependencies]
+/// \[ListDependencies\]\[google.cloud.apihub.v1.ApiHubDependencies.ListDependencies\]
 /// method's response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDependenciesResponse {
@@ -2743,7 +2734,7 @@ pub struct ListDependenciesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The [CreateExternalApi][google.cloud.apihub.v1.ApiHub.CreateExternalApi]
+/// The \[CreateExternalApi\]\[google.cloud.apihub.v1.ApiHub.CreateExternalApi\]
 /// method's request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateExternalApiRequest {
@@ -2756,21 +2747,21 @@ pub struct CreateExternalApiRequest {
     /// optional.
     ///
     /// * If provided, the same will be used. The service will throw an error if
-    /// the specified id is already used by another External API resource in the
-    /// API hub.
+    ///   the specified id is already used by another External API resource in the
+    ///   API hub.
     /// * If not provided, a system generated id will be used.
     ///
     /// This value should be 4-500 characters, and valid characters
-    /// are /[a-z][A-Z][0-9]-_/.
+    /// are /\[a-z\]\[A-Z\]\[0-9\]-\_/.
     #[prost(string, tag = "2")]
     pub external_api_id: ::prost::alloc::string::String,
     /// Required. The External API resource to create.
     #[prost(message, optional, tag = "3")]
     pub external_api: ::core::option::Option<ExternalApi>,
 }
-/// The [GetExternalApi][google.cloud.apihub.v1.ApiHub.GetExternalApi] method's
+/// The \[GetExternalApi\]\[google.cloud.apihub.v1.ApiHub.GetExternalApi\] method's
 /// request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetExternalApiRequest {
     /// Required. The name of the External API resource to retrieve.
     /// Format:
@@ -2778,7 +2769,7 @@ pub struct GetExternalApiRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The [UpdateExternalApi][google.cloud.apihub.v1.ApiHub.UpdateExternalApi]
+/// The \[UpdateExternalApi\]\[google.cloud.apihub.v1.ApiHub.UpdateExternalApi\]
 /// method's request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateExternalApiRequest {
@@ -2793,9 +2784,9 @@ pub struct UpdateExternalApiRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// The [DeleteExternalApi][google.cloud.apihub.v1.ApiHub.DeleteExternalApi]
+/// The \[DeleteExternalApi\]\[google.cloud.apihub.v1.ApiHub.DeleteExternalApi\]
 /// method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteExternalApiRequest {
     /// Required. The name of the External API resource to delete.
     /// Format:
@@ -2803,9 +2794,9 @@ pub struct DeleteExternalApiRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The [ListExternalApis][google.cloud.apihub.v1.ApiHub.ListExternalApis]
+/// The \[ListExternalApis\]\[google.cloud.apihub.v1.ApiHub.ListExternalApis\]
 /// method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListExternalApisRequest {
     /// Required. The parent, which owns this collection of External API resources.
     /// Format: `projects/{project}/locations/{location}`
@@ -2825,7 +2816,7 @@ pub struct ListExternalApisRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The [ListExternalApis][google.cloud.apihub.v1.ApiHub.ListExternalApis]
+/// The \[ListExternalApis\]\[google.cloud.apihub.v1.ApiHub.ListExternalApis\]
 /// method's response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExternalApisResponse {
@@ -2945,7 +2936,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/CreateApi",
             );
@@ -2967,7 +2958,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/GetApi",
             );
@@ -2992,7 +2983,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/ListApis",
             );
@@ -3002,20 +2993,20 @@ pub mod api_hub_client {
             self.inner.unary(req, path, codec).await
         }
         /// Update an API resource in the API hub. The following fields in the
-        /// [API][] can be updated:
+        /// \[API\]\[\] can be updated:
         ///
-        /// * [display_name][google.cloud.apihub.v1.Api.display_name]
-        /// * [description][google.cloud.apihub.v1.Api.description]
-        /// * [owner][google.cloud.apihub.v1.Api.owner]
-        /// * [documentation][google.cloud.apihub.v1.Api.documentation]
-        /// * [target_user][google.cloud.apihub.v1.Api.target_user]
-        /// * [team][google.cloud.apihub.v1.Api.team]
-        /// * [business_unit][google.cloud.apihub.v1.Api.business_unit]
-        /// * [maturity_level][google.cloud.apihub.v1.Api.maturity_level]
-        /// * [attributes][google.cloud.apihub.v1.Api.attributes]
+        /// * \[display_name\]\[google.cloud.apihub.v1.Api.display_name\]
+        /// * \[description\]\[google.cloud.apihub.v1.Api.description\]
+        /// * \[owner\]\[google.cloud.apihub.v1.Api.owner\]
+        /// * \[documentation\]\[google.cloud.apihub.v1.Api.documentation\]
+        /// * \[target_user\]\[google.cloud.apihub.v1.Api.target_user\]
+        /// * \[team\]\[google.cloud.apihub.v1.Api.team\]
+        /// * \[business_unit\]\[google.cloud.apihub.v1.Api.business_unit\]
+        /// * \[maturity_level\]\[google.cloud.apihub.v1.Api.maturity_level\]
+        /// * \[attributes\]\[google.cloud.apihub.v1.Api.attributes\]
         ///
         /// The
-        /// [update_mask][google.cloud.apihub.v1.UpdateApiRequest.update_mask]
+        /// \[update_mask\]\[google.cloud.apihub.v1.UpdateApiRequest.update_mask\]
         /// should be used to specify the fields being updated.
         ///
         /// Updating the owner field requires complete owner message
@@ -3032,7 +3023,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/UpdateApi",
             );
@@ -3055,7 +3046,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/DeleteApi",
             );
@@ -3077,7 +3068,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/CreateVersion",
             );
@@ -3103,7 +3094,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/GetVersion",
             );
@@ -3128,7 +3119,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/ListVersions",
             );
@@ -3140,19 +3131,19 @@ pub mod api_hub_client {
             self.inner.unary(req, path, codec).await
         }
         /// Update API version. The following fields in the
-        /// [version][google.cloud.apihub.v1.Version] can be updated currently:
+        /// \[version\]\[google.cloud.apihub.v1.Version\] can be updated currently:
         ///
-        /// * [display_name][google.cloud.apihub.v1.Version.display_name]
-        /// * [description][google.cloud.apihub.v1.Version.description]
-        /// * [documentation][google.cloud.apihub.v1.Version.documentation]
-        /// * [deployments][google.cloud.apihub.v1.Version.deployments]
-        /// * [lifecycle][google.cloud.apihub.v1.Version.lifecycle]
-        /// * [compliance][google.cloud.apihub.v1.Version.compliance]
-        /// * [accreditation][google.cloud.apihub.v1.Version.accreditation]
-        /// * [attributes][google.cloud.apihub.v1.Version.attributes]
+        /// * \[display_name\]\[google.cloud.apihub.v1.Version.display_name\]
+        /// * \[description\]\[google.cloud.apihub.v1.Version.description\]
+        /// * \[documentation\]\[google.cloud.apihub.v1.Version.documentation\]
+        /// * \[deployments\]\[google.cloud.apihub.v1.Version.deployments\]
+        /// * \[lifecycle\]\[google.cloud.apihub.v1.Version.lifecycle\]
+        /// * \[compliance\]\[google.cloud.apihub.v1.Version.compliance\]
+        /// * \[accreditation\]\[google.cloud.apihub.v1.Version.accreditation\]
+        /// * \[attributes\]\[google.cloud.apihub.v1.Version.attributes\]
         ///
         /// The
-        /// [update_mask][google.cloud.apihub.v1.UpdateVersionRequest.update_mask]
+        /// \[update_mask\]\[google.cloud.apihub.v1.UpdateVersionRequest.update_mask\]
         /// should be used to specify the fields being updated.
         pub async fn update_version(
             &mut self,
@@ -3166,7 +3157,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/UpdateVersion",
             );
@@ -3191,7 +3182,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/DeleteVersion",
             );
@@ -3217,11 +3208,11 @@ pub mod api_hub_client {
         /// currently.
         ///
         /// In order to access the information parsed from the spec, use the
-        /// [GetSpec][google.cloud.apihub.v1.ApiHub.GetSpec] method.
+        /// \[GetSpec\]\[google.cloud.apihub.v1.ApiHub.GetSpec\] method.
         /// In order to access the raw contents for a particular spec, use the
-        /// [GetSpecContents][google.cloud.apihub.v1.ApiHub.GetSpecContents] method.
+        /// \[GetSpecContents\]\[google.cloud.apihub.v1.ApiHub.GetSpecContents\] method.
         /// In order to access the operations parsed from the spec, use the
-        /// [ListAPIOperations][google.cloud.apihub.v1.ApiHub.ListApiOperations]
+        /// \[ListAPIOperations\]\[google.cloud.apihub.v1.ApiHub.ListApiOperations\]
         /// method.
         pub async fn create_spec(
             &mut self,
@@ -3235,7 +3226,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/CreateSpec",
             );
@@ -3246,7 +3237,7 @@ pub mod api_hub_client {
         }
         /// Get details about the information parsed from a spec.
         /// Note that this method does not return the raw spec contents.
-        /// Use [GetSpecContents][google.cloud.apihub.v1.ApiHub.GetSpecContents] method
+        /// Use \[GetSpecContents\]\[google.cloud.apihub.v1.ApiHub.GetSpecContents\] method
         /// to retrieve the same.
         pub async fn get_spec(
             &mut self,
@@ -3260,7 +3251,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/GetSpec",
             );
@@ -3282,7 +3273,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/GetSpecContents",
             );
@@ -3309,7 +3300,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/ListSpecs",
             );
@@ -3319,26 +3310,27 @@ pub mod api_hub_client {
             self.inner.unary(req, path, codec).await
         }
         /// Update spec. The following fields in the
-        /// [spec][google.cloud.apihub.v1.Spec] can be updated:
+        /// \[spec\]\[google.cloud.apihub.v1.Spec\] can be updated:
         ///
-        /// * [display_name][google.cloud.apihub.v1.Spec.display_name]
-        /// * [source_uri][google.cloud.apihub.v1.Spec.source_uri]
-        /// * [lint_response][google.cloud.apihub.v1.Spec.lint_response]
-        /// * [attributes][google.cloud.apihub.v1.Spec.attributes]
-        /// * [contents][google.cloud.apihub.v1.Spec.contents]
-        /// * [spec_type][google.cloud.apihub.v1.Spec.spec_type]
+        /// * \[display_name\]\[google.cloud.apihub.v1.Spec.display_name\]
+        /// * \[source_uri\]\[google.cloud.apihub.v1.Spec.source_uri\]
+        /// * \[lint_response\]\[google.cloud.apihub.v1.Spec.lint_response\]
+        /// * \[attributes\]\[google.cloud.apihub.v1.Spec.attributes\]
+        /// * \[contents\]\[google.cloud.apihub.v1.Spec.contents\]
+        /// * \[spec_type\]\[google.cloud.apihub.v1.Spec.spec_type\]
         ///
         /// In case of an OAS spec, updating spec contents can lead to:
+        ///
         /// 1. Creation, deletion and update of operations.
-        /// 2. Creation, deletion and update of definitions.
-        /// 3. Update of other info parsed out from the new spec.
+        /// 1. Creation, deletion and update of definitions.
+        /// 1. Update of other info parsed out from the new spec.
         ///
         /// In case of contents or source_uri being present in update mask, spec_type
         /// must also be present. Also, spec_type can not be present in update mask if
         /// contents or source_uri is not present.
         ///
         /// The
-        /// [update_mask][google.cloud.apihub.v1.UpdateSpecRequest.update_mask]
+        /// \[update_mask\]\[google.cloud.apihub.v1.UpdateSpecRequest.update_mask\]
         /// should be used to specify the fields being updated.
         pub async fn update_spec(
             &mut self,
@@ -3352,7 +3344,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/UpdateSpec",
             );
@@ -3376,7 +3368,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/DeleteSpec",
             );
@@ -3398,7 +3390,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/GetApiOperation",
             );
@@ -3425,7 +3417,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/ListApiOperations",
             );
@@ -3449,7 +3441,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/GetDefinition",
             );
@@ -3475,7 +3467,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/CreateDeployment",
             );
@@ -3499,7 +3491,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/GetDeployment",
             );
@@ -3526,7 +3518,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/ListDeployments",
             );
@@ -3538,21 +3530,21 @@ pub mod api_hub_client {
             self.inner.unary(req, path, codec).await
         }
         /// Update a deployment resource in the API hub. The following fields in the
-        /// [deployment resource][google.cloud.apihub.v1.Deployment] can be
+        /// \[deployment resource\]\[google.cloud.apihub.v1.Deployment\] can be
         /// updated:
         ///
-        /// * [display_name][google.cloud.apihub.v1.Deployment.display_name]
-        /// * [description][google.cloud.apihub.v1.Deployment.description]
-        /// * [documentation][google.cloud.apihub.v1.Deployment.documentation]
-        /// * [deployment_type][google.cloud.apihub.v1.Deployment.deployment_type]
-        /// * [resource_uri][google.cloud.apihub.v1.Deployment.resource_uri]
-        /// * [endpoints][google.cloud.apihub.v1.Deployment.endpoints]
-        /// * [slo][google.cloud.apihub.v1.Deployment.slo]
-        /// * [environment][google.cloud.apihub.v1.Deployment.environment]
-        /// * [attributes][google.cloud.apihub.v1.Deployment.attributes]
+        /// * \[display_name\]\[google.cloud.apihub.v1.Deployment.display_name\]
+        /// * \[description\]\[google.cloud.apihub.v1.Deployment.description\]
+        /// * \[documentation\]\[google.cloud.apihub.v1.Deployment.documentation\]
+        /// * \[deployment_type\]\[google.cloud.apihub.v1.Deployment.deployment_type\]
+        /// * \[resource_uri\]\[google.cloud.apihub.v1.Deployment.resource_uri\]
+        /// * \[endpoints\]\[google.cloud.apihub.v1.Deployment.endpoints\]
+        /// * \[slo\]\[google.cloud.apihub.v1.Deployment.slo\]
+        /// * \[environment\]\[google.cloud.apihub.v1.Deployment.environment\]
+        /// * \[attributes\]\[google.cloud.apihub.v1.Deployment.attributes\]
         ///
         /// The
-        /// [update_mask][google.cloud.apihub.v1.UpdateDeploymentRequest.update_mask]
+        /// \[update_mask\]\[google.cloud.apihub.v1.UpdateDeploymentRequest.update_mask\]
         /// should be used to specify the fields being updated.
         pub async fn update_deployment(
             &mut self,
@@ -3566,7 +3558,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/UpdateDeployment",
             );
@@ -3590,7 +3582,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/DeleteDeployment",
             );
@@ -3605,9 +3597,9 @@ pub mod api_hub_client {
         ///
         /// Certain pre defined attributes are already created by the API hub. These
         /// attributes will have type as `SYSTEM_DEFINED` and can be listed via
-        /// [ListAttributes][google.cloud.apihub.v1.ApiHub.ListAttributes] method.
+        /// \[ListAttributes\]\[google.cloud.apihub.v1.ApiHub.ListAttributes\] method.
         /// Allowed values for the same can be updated via
-        /// [UpdateAttribute][google.cloud.apihub.v1.ApiHub.UpdateAttribute] method.
+        /// \[UpdateAttribute\]\[google.cloud.apihub.v1.ApiHub.UpdateAttribute\] method.
         pub async fn create_attribute(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAttributeRequest>,
@@ -3620,7 +3612,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/CreateAttribute",
             );
@@ -3644,7 +3636,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/GetAttribute",
             );
@@ -3656,27 +3648,27 @@ pub mod api_hub_client {
             self.inner.unary(req, path, codec).await
         }
         /// Update the attribute.  The following fields in the
-        /// [Attribute resource][google.cloud.apihub.v1.Attribute] can be updated:
+        /// \[Attribute resource\]\[google.cloud.apihub.v1.Attribute\] can be updated:
         ///
-        /// * [display_name][google.cloud.apihub.v1.Attribute.display_name]
-        /// The display name can be updated for user defined attributes only.
-        /// * [description][google.cloud.apihub.v1.Attribute.description]
-        /// The description can be updated for user defined attributes only.
-        /// * [allowed_values][google.cloud.apihub.v1.Attribute.allowed_values]
-        /// To update the list of allowed values, clients need to use the fetched list
-        /// of allowed values and add or remove values to or from the same list.
-        /// The mutable allowed values can be updated for both user defined and System
-        /// defined attributes. The immutable allowed values cannot be updated or
-        /// deleted. The updated list of allowed values cannot be empty. If an allowed
-        /// value that is already used by some resource's attribute is deleted, then
-        /// the association between the resource and the attribute value will also be
-        /// deleted.
-        /// * [cardinality][google.cloud.apihub.v1.Attribute.cardinality]
-        /// The cardinality can be updated for user defined attributes only.
-        /// Cardinality can only be increased during an update.
+        /// * \[display_name\]\[google.cloud.apihub.v1.Attribute.display_name\]
+        ///  The display name can be updated for user defined attributes only.
+        /// * \[description\]\[google.cloud.apihub.v1.Attribute.description\]
+        ///  The description can be updated for user defined attributes only.
+        /// * \[allowed_values\]\[google.cloud.apihub.v1.Attribute.allowed_values\]
+        ///  To update the list of allowed values, clients need to use the fetched list
+        ///  of allowed values and add or remove values to or from the same list.
+        ///  The mutable allowed values can be updated for both user defined and System
+        ///  defined attributes. The immutable allowed values cannot be updated or
+        ///  deleted. The updated list of allowed values cannot be empty. If an allowed
+        ///  value that is already used by some resource's attribute is deleted, then
+        ///  the association between the resource and the attribute value will also be
+        ///  deleted.
+        /// * \[cardinality\]\[google.cloud.apihub.v1.Attribute.cardinality\]
+        ///  The cardinality can be updated for user defined attributes only.
+        ///  Cardinality can only be increased during an update.
         ///
         /// The
-        /// [update_mask][google.cloud.apihub.v1.UpdateAttributeRequest.update_mask]
+        /// \[update_mask\]\[google.cloud.apihub.v1.UpdateAttributeRequest.update_mask\]
         /// should be used to specify the fields being updated.
         pub async fn update_attribute(
             &mut self,
@@ -3690,7 +3682,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/UpdateAttribute",
             );
@@ -3718,7 +3710,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/DeleteAttribute",
             );
@@ -3745,7 +3737,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/ListAttributes",
             );
@@ -3772,7 +3764,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/SearchResources",
             );
@@ -3796,7 +3788,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/CreateExternalApi",
             );
@@ -3820,7 +3812,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/GetExternalApi",
             );
@@ -3834,14 +3826,14 @@ pub mod api_hub_client {
         /// Update an External API resource in the API hub. The following fields can be
         /// updated:
         ///
-        /// * [display_name][google.cloud.apihub.v1.ExternalApi.display_name]
-        /// * [description][google.cloud.apihub.v1.ExternalApi.description]
-        /// * [documentation][google.cloud.apihub.v1.ExternalApi.documentation]
-        /// * [endpoints][google.cloud.apihub.v1.ExternalApi.endpoints]
-        /// * [paths][google.cloud.apihub.v1.ExternalApi.paths]
+        /// * \[display_name\]\[google.cloud.apihub.v1.ExternalApi.display_name\]
+        /// * \[description\]\[google.cloud.apihub.v1.ExternalApi.description\]
+        /// * \[documentation\]\[google.cloud.apihub.v1.ExternalApi.documentation\]
+        /// * \[endpoints\]\[google.cloud.apihub.v1.ExternalApi.endpoints\]
+        /// * \[paths\]\[google.cloud.apihub.v1.ExternalApi.paths\]
         ///
         /// The
-        /// [update_mask][google.cloud.apihub.v1.UpdateExternalApiRequest.update_mask]
+        /// \[update_mask\]\[google.cloud.apihub.v1.UpdateExternalApiRequest.update_mask\]
         /// should be used to specify the fields being updated.
         pub async fn update_external_api(
             &mut self,
@@ -3855,7 +3847,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/UpdateExternalApi",
             );
@@ -3879,7 +3871,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/DeleteExternalApi",
             );
@@ -3906,7 +3898,7 @@ pub mod api_hub_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHub/ListExternalApis",
             );
@@ -3931,7 +3923,7 @@ pub mod api_hub_dependencies_client {
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// This service provides methods for various operations related to a
-    /// [Dependency][google.cloud.apihub.v1.Dependency] in the API hub.
+    /// \[Dependency\]\[google.cloud.apihub.v1.Dependency\] in the API hub.
     #[derive(Debug, Clone)]
     pub struct ApiHubDependenciesClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -4025,7 +4017,7 @@ pub mod api_hub_dependencies_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHubDependencies/CreateDependency",
             );
@@ -4052,7 +4044,7 @@ pub mod api_hub_dependencies_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHubDependencies/GetDependency",
             );
@@ -4067,12 +4059,13 @@ pub mod api_hub_dependencies_client {
             self.inner.unary(req, path, codec).await
         }
         /// Update a dependency based on the
-        /// [update_mask][google.cloud.apihub.v1.UpdateDependencyRequest.update_mask]
+        /// \[update_mask\]\[google.cloud.apihub.v1.UpdateDependencyRequest.update_mask\]
         /// provided in the request.
         ///
-        /// The following fields in the [dependency][google.cloud.apihub.v1.Dependency]
+        /// The following fields in the \[dependency\]\[google.cloud.apihub.v1.Dependency\]
         /// can be updated:
-        /// * [description][google.cloud.apihub.v1.Dependency.description]
+        ///
+        /// * \[description\]\[google.cloud.apihub.v1.Dependency.description\]
         pub async fn update_dependency(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDependencyRequest>,
@@ -4085,7 +4078,7 @@ pub mod api_hub_dependencies_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHubDependencies/UpdateDependency",
             );
@@ -4112,7 +4105,7 @@ pub mod api_hub_dependencies_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHubDependencies/DeleteDependency",
             );
@@ -4142,7 +4135,7 @@ pub mod api_hub_dependencies_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHubDependencies/ListDependencies",
             );
@@ -4159,9 +4152,9 @@ pub mod api_hub_dependencies_client {
     }
 }
 /// The
-/// [CreateHostProjectRegistration][google.cloud.apihub.v1.HostProjectRegistrationService.CreateHostProjectRegistration]
+/// \[CreateHostProjectRegistration\]\[google.cloud.apihub.v1.HostProjectRegistrationService.CreateHostProjectRegistration\]
 /// method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateHostProjectRegistrationRequest {
     /// Required. The parent resource for the host project.
     /// Format: `projects/{project}/locations/{location}`
@@ -4178,9 +4171,9 @@ pub struct CreateHostProjectRegistrationRequest {
     pub host_project_registration: ::core::option::Option<HostProjectRegistration>,
 }
 /// The
-/// [GetHostProjectRegistration][google.cloud.apihub.v1.HostProjectRegistrationService.GetHostProjectRegistration]
+/// \[GetHostProjectRegistration\]\[google.cloud.apihub.v1.HostProjectRegistrationService.GetHostProjectRegistration\]
 /// method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetHostProjectRegistrationRequest {
     /// Required. Host project registration resource name.
     /// projects/{project}/locations/{location}/hostProjectRegistrations/{host_project_registration_id}
@@ -4188,9 +4181,9 @@ pub struct GetHostProjectRegistrationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The
-/// [ListHostProjectRegistrations][google.cloud.apihub.v1.HostProjectRegistrationService.ListHostProjectRegistrations]
+/// \[ListHostProjectRegistrations\]\[google.cloud.apihub.v1.HostProjectRegistrationService.ListHostProjectRegistrations\]
 /// method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListHostProjectRegistrationsRequest {
     /// Required. The parent, which owns this collection of host projects.
     /// Format: `projects/*/locations/*`
@@ -4221,12 +4214,12 @@ pub struct ListHostProjectRegistrationsRequest {
     /// The following fields in the `HostProjectRegistration` are eligible for
     /// filtering:
     ///
-    ///    * `name` - The name of the HostProjectRegistration.
-    ///    * `create_time` - The time at which the HostProjectRegistration was
-    ///    created. The value should be in the
-    ///    (RFC3339)\[<https://tools.ietf.org/html/rfc3339\]> format.
-    ///    * `gcp_project` - The Google cloud project associated with the
-    ///    HostProjectRegistration.
+    /// * `name` - The name of the HostProjectRegistration.
+    /// * `create_time` - The time at which the HostProjectRegistration was
+    ///   created. The value should be in the
+    ///   (RFC3339)\[<https://tools.ietf.org/html/rfc3339\]> format.
+    /// * `gcp_project` - The Google cloud project associated with the
+    ///   HostProjectRegistration.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Hint for how to order the results.
@@ -4234,7 +4227,7 @@ pub struct ListHostProjectRegistrationsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// The
-/// [ListHostProjectRegistrations][google.cloud.apihub.v1.HostProjectRegistrationService.ListHostProjectRegistrations]
+/// \[ListHostProjectRegistrations\]\[google.cloud.apihub.v1.HostProjectRegistrationService.ListHostProjectRegistrations\]
 /// method's response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHostProjectRegistrationsResponse {
@@ -4251,7 +4244,7 @@ pub struct ListHostProjectRegistrationsResponse {
 /// provisioned. It acts as the consumer project for the Api Hub instance
 /// provisioned. Multiple runtime projects can be attached to the host project
 /// and these attachments define the scope of Api Hub.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HostProjectRegistration {
     /// Identifier. The name of the host project registration.
     /// Format:
@@ -4382,7 +4375,7 @@ pub mod host_project_registration_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.HostProjectRegistrationService/CreateHostProjectRegistration",
             );
@@ -4412,7 +4405,7 @@ pub mod host_project_registration_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.HostProjectRegistrationService/GetHostProjectRegistration",
             );
@@ -4442,7 +4435,7 @@ pub mod host_project_registration_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.HostProjectRegistrationService/ListHostProjectRegistrations",
             );
@@ -4458,8 +4451,8 @@ pub mod host_project_registration_service_client {
         }
     }
 }
-/// The [GetStyleGuide][ApiHub.GetStyleGuide] method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// The \[GetStyleGuide\]\[ApiHub.GetStyleGuide\] method's request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetStyleGuideRequest {
     /// Required. The name of the spec to retrieve.
     /// Format:
@@ -4467,8 +4460,8 @@ pub struct GetStyleGuideRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The [UpdateStyleGuide][ApiHub.UpdateStyleGuide] method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// The \[UpdateStyleGuide\]\[ApiHub.UpdateStyleGuide\] method's request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateStyleGuideRequest {
     /// Required. The Style guide resource to update.
     #[prost(message, optional, tag = "1")]
@@ -4477,8 +4470,8 @@ pub struct UpdateStyleGuideRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// The [GetStyleGuideContents][ApiHub.GetStyleGuideContents] method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// The \[GetStyleGuideContents\]\[ApiHub.GetStyleGuideContents\] method's request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetStyleGuideContentsRequest {
     /// Required. The name of the StyleGuide whose contents need to be retrieved.
     /// There is exactly one style guide resource per project per location.
@@ -4487,8 +4480,8 @@ pub struct GetStyleGuideContentsRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The [LintSpec][ApiHub.LintSpec] method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// The \[LintSpec\]\[ApiHub.LintSpec\] method's request.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LintSpecRequest {
     /// Required. The name of the spec to be linted.
     /// Format:
@@ -4497,7 +4490,7 @@ pub struct LintSpecRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The style guide contents.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StyleGuideContents {
     /// Required. The contents of the style guide.
     #[prost(bytes = "vec", tag = "1")]
@@ -4508,7 +4501,7 @@ pub struct StyleGuideContents {
 }
 /// Represents a singleton style guide resource to be used for linting Open API
 /// specs.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StyleGuide {
     /// Identifier. The name of the style guide.
     ///
@@ -4628,7 +4621,7 @@ pub mod linting_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.LintingService/GetStyleGuide",
             );
@@ -4655,7 +4648,7 @@ pub mod linting_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.LintingService/UpdateStyleGuide",
             );
@@ -4685,7 +4678,7 @@ pub mod linting_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.LintingService/GetStyleGuideContents",
             );
@@ -4714,7 +4707,7 @@ pub mod linting_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.LintingService/LintSpec",
             );
@@ -4804,27 +4797,27 @@ pub mod plugin {
         }
     }
 }
-/// The [GetPlugin][google.cloud.apihub.v1.ApiHubPlugin.GetPlugin] method's
+/// The \[GetPlugin\]\[google.cloud.apihub.v1.ApiHubPlugin.GetPlugin\] method's
 /// request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPluginRequest {
     /// Required. The name of the plugin to retrieve.
     /// Format: `projects/{project}/locations/{location}/plugins/{plugin}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The [EnablePlugin][google.cloud.apihub.v1.ApiHubPlugin.EnablePlugin] method's
+/// The \[EnablePlugin\]\[google.cloud.apihub.v1.ApiHubPlugin.EnablePlugin\] method's
 /// request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnablePluginRequest {
     /// Required. The name of the plugin to enable.
     /// Format: `projects/{project}/locations/{location}/plugins/{plugin}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The [DisablePlugin][google.cloud.apihub.v1.ApiHubPlugin.DisablePlugin]
+/// The \[DisablePlugin\]\[google.cloud.apihub.v1.ApiHubPlugin.DisablePlugin\]
 /// method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisablePluginRequest {
     /// Required. The name of the plugin to disable.
     /// Format: `projects/{project}/locations/{location}/plugins/{plugin}`.
@@ -4936,7 +4929,7 @@ pub mod api_hub_plugin_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHubPlugin/GetPlugin",
             );
@@ -4961,7 +4954,7 @@ pub mod api_hub_plugin_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHubPlugin/EnablePlugin",
             );
@@ -4989,7 +4982,7 @@ pub mod api_hub_plugin_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.ApiHubPlugin/DisablePlugin",
             );
@@ -5006,7 +4999,7 @@ pub mod api_hub_plugin_client {
     }
 }
 /// The
-/// [CreateApiHubInstance][google.cloud.apihub.v1.Provisioning.CreateApiHubInstance]
+/// \[CreateApiHubInstance\]\[google.cloud.apihub.v1.Provisioning.CreateApiHubInstance\]
 /// method's request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateApiHubInstanceRequest {
@@ -5027,9 +5020,9 @@ pub struct CreateApiHubInstanceRequest {
     pub api_hub_instance: ::core::option::Option<ApiHubInstance>,
 }
 /// The
-/// [GetApiHubInstance][google.cloud.apihub.v1.Provisioning.GetApiHubInstance]
+/// \[GetApiHubInstance\]\[google.cloud.apihub.v1.Provisioning.GetApiHubInstance\]
 /// method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetApiHubInstanceRequest {
     /// Required. The name of the Api Hub instance to retrieve.
     /// Format:
@@ -5038,9 +5031,9 @@ pub struct GetApiHubInstanceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The
-/// [LookupApiHubInstance][google.cloud.apihub.v1.Provisioning.LookupApiHubInstance]
+/// \[LookupApiHubInstance\]\[google.cloud.apihub.v1.Provisioning.LookupApiHubInstance\]
 /// method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LookupApiHubInstanceRequest {
     /// Required. There will always be only one Api Hub instance for a GCP project
     /// across all locations.
@@ -5050,8 +5043,8 @@ pub struct LookupApiHubInstanceRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// The
-/// [LookupApiHubInstance][google.cloud.apihub.v1.Provisioning.LookupApiHubInstance]
-/// method's response.`
+/// \[LookupApiHubInstance\]\[google.cloud.apihub.v1.Provisioning.LookupApiHubInstance\]
+/// method's response.\`
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupApiHubInstanceResponse {
     /// API Hub instance for a project if it exists, empty otherwise.
@@ -5166,7 +5159,7 @@ pub mod provisioning_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.Provisioning/CreateApiHubInstance",
             );
@@ -5193,7 +5186,7 @@ pub mod provisioning_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.Provisioning/GetApiHubInstance",
             );
@@ -5224,7 +5217,7 @@ pub mod provisioning_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.Provisioning/LookupApiHubInstance",
             );
@@ -5241,9 +5234,9 @@ pub mod provisioning_client {
     }
 }
 /// The
-/// [CreateRuntimeProjectAttachment][google.cloud.apihub.v1.RuntimeProjectAttachmentService.CreateRuntimeProjectAttachment]
+/// \[CreateRuntimeProjectAttachment\]\[google.cloud.apihub.v1.RuntimeProjectAttachmentService.CreateRuntimeProjectAttachment\]
 /// method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateRuntimeProjectAttachmentRequest {
     /// Required. The parent resource for the Runtime Project Attachment.
     /// Format: `projects/{project}/locations/{location}`
@@ -5260,9 +5253,9 @@ pub struct CreateRuntimeProjectAttachmentRequest {
     pub runtime_project_attachment: ::core::option::Option<RuntimeProjectAttachment>,
 }
 /// The
-/// [GetRuntimeProjectAttachment][google.cloud.apihub.v1.RuntimeProjectAttachmentService.GetRuntimeProjectAttachment]
+/// \[GetRuntimeProjectAttachment\]\[google.cloud.apihub.v1.RuntimeProjectAttachmentService.GetRuntimeProjectAttachment\]
 /// method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRuntimeProjectAttachmentRequest {
     /// Required. The name of the API resource to retrieve.
     /// Format:
@@ -5271,9 +5264,9 @@ pub struct GetRuntimeProjectAttachmentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The
-/// [ListRuntimeProjectAttachments][google.cloud.apihub.v1.RuntimeProjectAttachmentService.ListRuntimeProjectAttachments]
+/// \[ListRuntimeProjectAttachments\]\[google.cloud.apihub.v1.RuntimeProjectAttachmentService.ListRuntimeProjectAttachments\]
 /// method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRuntimeProjectAttachmentsRequest {
     /// Required. The parent, which owns this collection of runtime project
     /// attachments. Format: `projects/{project}/locations/{location}`
@@ -5304,12 +5297,12 @@ pub struct ListRuntimeProjectAttachmentsRequest {
     /// The following fields in the `RuntimeProjectAttachment` are eligible for
     /// filtering:
     ///
-    ///    * `name` - The name of the RuntimeProjectAttachment.
-    ///    * `create_time` - The time at which the RuntimeProjectAttachment was
-    ///    created. The value should be in the
-    ///    (RFC3339)\[<https://tools.ietf.org/html/rfc3339\]> format.
-    ///    * `runtime_project` - The Google cloud project associated with the
-    ///    RuntimeProjectAttachment.
+    /// * `name` - The name of the RuntimeProjectAttachment.
+    /// * `create_time` - The time at which the RuntimeProjectAttachment was
+    ///   created. The value should be in the
+    ///   (RFC3339)\[<https://tools.ietf.org/html/rfc3339\]> format.
+    /// * `runtime_project` - The Google cloud project associated with the
+    ///   RuntimeProjectAttachment.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Hint for how to order the results.
@@ -5317,7 +5310,7 @@ pub struct ListRuntimeProjectAttachmentsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// The
-/// [ListRuntimeProjectAttachments][google.cloud.apihub.v1.RuntimeProjectAttachmentService.ListRuntimeProjectAttachments]
+/// \[ListRuntimeProjectAttachments\]\[google.cloud.apihub.v1.RuntimeProjectAttachmentService.ListRuntimeProjectAttachments\]
 /// method's response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRuntimeProjectAttachmentsResponse {
@@ -5330,9 +5323,9 @@ pub struct ListRuntimeProjectAttachmentsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The
-/// [DeleteRuntimeProjectAttachment][google.cloud.apihub.v1.RuntimeProjectAttachmentService.DeleteRuntimeProjectAttachment]
+/// \[DeleteRuntimeProjectAttachment\]\[google.cloud.apihub.v1.RuntimeProjectAttachmentService.DeleteRuntimeProjectAttachment\]
 /// method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRuntimeProjectAttachmentRequest {
     /// Required. The name of the Runtime Project Attachment to delete.
     /// Format:
@@ -5341,9 +5334,9 @@ pub struct DeleteRuntimeProjectAttachmentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The
-/// [LookupRuntimeProjectAttachment][google.cloud.apihub.v1.RuntimeProjectAttachmentService.LookupRuntimeProjectAttachment]
+/// \[LookupRuntimeProjectAttachment\]\[google.cloud.apihub.v1.RuntimeProjectAttachmentService.LookupRuntimeProjectAttachment\]
 /// method's request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LookupRuntimeProjectAttachmentRequest {
     /// Required. Runtime project ID to look up runtime project attachment for.
     /// Lookup happens across all regions. Expected format:
@@ -5352,9 +5345,9 @@ pub struct LookupRuntimeProjectAttachmentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The
-/// [ListRuntimeProjectAttachments][google.cloud.apihub.v1.RuntimeProjectAttachmentService.ListRuntimeProjectAttachments]
+/// \[ListRuntimeProjectAttachments\]\[google.cloud.apihub.v1.RuntimeProjectAttachmentService.ListRuntimeProjectAttachments\]
 /// method's response.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LookupRuntimeProjectAttachmentResponse {
     /// Runtime project attachment for a project if exists, empty otherwise.
     #[prost(message, optional, tag = "1")]
@@ -5364,7 +5357,7 @@ pub struct LookupRuntimeProjectAttachmentResponse {
 /// to the host project. Api Hub looks for deployments in the attached runtime
 /// projects and creates corresponding resources in Api Hub for the discovered
 /// deployments.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RuntimeProjectAttachment {
     /// Identifier. The resource name of a runtime project attachment. Format:
     /// "projects/{project}/locations/{location}/runtimeProjectAttachments/{runtime_project_attachment}".
@@ -5492,7 +5485,7 @@ pub mod runtime_project_attachment_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.RuntimeProjectAttachmentService/CreateRuntimeProjectAttachment",
             );
@@ -5522,7 +5515,7 @@ pub mod runtime_project_attachment_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.RuntimeProjectAttachmentService/GetRuntimeProjectAttachment",
             );
@@ -5552,7 +5545,7 @@ pub mod runtime_project_attachment_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.RuntimeProjectAttachmentService/ListRuntimeProjectAttachments",
             );
@@ -5582,7 +5575,7 @@ pub mod runtime_project_attachment_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.RuntimeProjectAttachmentService/DeleteRuntimeProjectAttachment",
             );
@@ -5615,7 +5608,7 @@ pub mod runtime_project_attachment_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apihub.v1.RuntimeProjectAttachmentService/LookupRuntimeProjectAttachment",
             );

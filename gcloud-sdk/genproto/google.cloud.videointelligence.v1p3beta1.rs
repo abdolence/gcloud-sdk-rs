@@ -6,11 +6,11 @@ pub struct AnnotateVideoRequest {
     /// [Cloud Storage](<https://cloud.google.com/storage/>) URIs are
     /// supported. URIs must be specified in the following format:
     /// `gs://bucket-id/object-id` (other URI formats return
-    /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]). For
+    /// \[google.rpc.Code.INVALID_ARGUMENT\]\[google.rpc.Code.INVALID_ARGUMENT\]). For
     /// more information, see [Request
     /// URIs](<https://cloud.google.com/storage/docs/request-endpoints>). To identify
     /// multiple videos, a video URI may include wildcards in the `object-id`.
-    /// Supported wildcards: '*' to match 0 or more characters;
+    /// Supported wildcards: '\*' to match 0 or more characters;
     /// '?' to match 1 character. If unset, the input video should be embedded
     /// in the request as `input_content`. If set, `input_content` must be unset.
     #[prost(string, tag = "1")]
@@ -30,7 +30,7 @@ pub struct AnnotateVideoRequest {
     /// Currently, only [Cloud Storage](<https://cloud.google.com/storage/>)
     /// URIs are supported. These must be specified in the following format:
     /// `gs://bucket-id/object-id` (other URI formats return
-    /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]). For
+    /// \[google.rpc.Code.INVALID_ARGUMENT\]\[google.rpc.Code.INVALID_ARGUMENT\]). For
     /// more information, see [Request
     /// URIs](<https://cloud.google.com/storage/docs/request-endpoints>).
     #[prost(string, tag = "4")]
@@ -113,7 +113,7 @@ pub struct LabelDetectionConfig {
     pub video_confidence_threshold: f32,
 }
 /// Config for SHOT_CHANGE_DETECTION.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ShotChangeDetectionConfig {
     /// Model to use for shot change detection.
     /// Supported values: "builtin/stable" (the default if unset) and
@@ -122,7 +122,7 @@ pub struct ShotChangeDetectionConfig {
     pub model: ::prost::alloc::string::String,
 }
 /// Config for OBJECT_TRACKING.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ObjectTrackingConfig {
     /// Model to use for object tracking.
     /// Supported values: "builtin/stable" (the default if unset) and
@@ -131,7 +131,7 @@ pub struct ObjectTrackingConfig {
     pub model: ::prost::alloc::string::String,
 }
 /// Config for EXPLICIT_CONTENT_DETECTION.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExplicitContentDetectionConfig {
     /// Model to use for explicit content detection.
     /// Supported values: "builtin/stable" (the default if unset) and
@@ -140,7 +140,7 @@ pub struct ExplicitContentDetectionConfig {
     pub model: ::prost::alloc::string::String,
 }
 /// Config for FACE_DETECTION.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FaceDetectionConfig {
     /// Model to use for face detection.
     /// Supported values: "builtin/stable" (the default if unset) and
@@ -156,7 +156,7 @@ pub struct FaceDetectionConfig {
     pub include_attributes: bool,
 }
 /// Config for PERSON_DETECTION.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PersonDetectionConfig {
     /// Whether bounding boxes are included in the person detection annotation
     /// output.
@@ -174,7 +174,7 @@ pub struct PersonDetectionConfig {
     pub include_attributes: bool,
 }
 /// Config for TEXT_DETECTION.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TextDetectionConfig {
     /// Language hint can be specified if the language to be detected is known a
     /// priori. It can increase the accuracy of the detection. Language hint must
@@ -190,7 +190,7 @@ pub struct TextDetectionConfig {
     pub model: ::prost::alloc::string::String,
 }
 /// Video segment.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VideoSegment {
     /// Time-offset, relative to the beginning of the video,
     /// corresponding to the start of the segment (inclusive).
@@ -223,7 +223,7 @@ pub struct LabelFrame {
     pub confidence: f32,
 }
 /// Detected entity from video analysis.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Entity {
     /// Opaque entity ID. Some IDs may be available in
     /// [Google Knowledge Graph Search
@@ -257,7 +257,7 @@ pub struct LabelAnnotation {
     pub frames: ::prost::alloc::vec::Vec<LabelFrame>,
 }
 /// Video frame level annotation results for explicit content.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExplicitContentFrame {
     /// Time-offset, relative to the beginning of the video, corresponding to the
     /// video frame for this location.
@@ -345,7 +345,7 @@ pub struct DetectedAttribute {
     pub value: ::prost::alloc::string::String,
 }
 /// Celebrity definition.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Celebrity {
     /// The resource name of the celebrity. Have the format
     /// `video-intelligence/kg-mid` indicates a celebrity from preloaded gallery.
@@ -512,7 +512,7 @@ pub struct AnnotateVideoResponse {
     pub annotation_results: ::prost::alloc::vec::Vec<VideoAnnotationResults>,
 }
 /// Annotation progress for a single video.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VideoAnnotationProgress {
     /// Video file location in
     /// [Cloud Storage](<https://cloud.google.com/storage/>).
@@ -565,7 +565,7 @@ pub struct SpeechTranscriptionConfig {
     pub max_alternatives: i32,
     /// Optional. If set to `true`, the server will attempt to filter out
     /// profanities, replacing all but the initial character in each filtered word
-    /// with asterisks, e.g. "f***". If set to `false` or omitted, profanities
+    /// with asterisks, e.g. "f\*\*\*". If set to `false` or omitted, profanities
     /// won't be filtered out.
     #[prost(bool, tag = "3")]
     pub filter_profanity: bool,
@@ -606,7 +606,7 @@ pub struct SpeechTranscriptionConfig {
 }
 /// Provides "hints" to the speech recognizer to favor specific words and phrases
 /// in the results.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SpeechContext {
     /// Optional. A list of strings containing words and phrases "hints" so that
     /// the speech recognition is more likely to recognize them. This can be used
@@ -703,15 +703,15 @@ pub struct NormalizedVertex {
 /// Contains list of the corner points in clockwise order starting from
 /// top-left corner. For example, for a rectangular bounding box:
 /// When the text is horizontal it might look like:
-///          0----1
-///          |    |
-///          3----2
+/// 0----1
+/// \|    |
+/// 3----2
 ///
 /// When it's clockwise rotated 180 degrees around the top-left corner it
 /// becomes:
-///          2----3
-///          |    |
-///          1----0
+/// 2----3
+/// \|    |
+/// 1----0
 ///
 /// and the vertex order will still be (0, 1, 2, 3). Note that values can be less
 /// than 0, or greater than 1 due to trignometric calculations for location of
@@ -795,7 +795,7 @@ pub struct ObjectTrackingAnnotation {
 pub mod object_tracking_annotation {
     /// Different representation of tracking info in non-streaming batch
     /// and streaming modes.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum TrackInfo {
         /// Non-streaming batch mode ONLY.
         /// Each object track corresponds to one video segment where it appears.
@@ -831,7 +831,7 @@ pub struct LogoRecognitionAnnotation {
 /// method. Multiple `StreamingAnnotateVideoRequest` messages are sent.
 /// The first message must only contain a `StreamingVideoConfig` message.
 /// All subsequent messages must only contain `input_content` data.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamingAnnotateVideoRequest {
     /// *Required* The streaming request, which is either a streaming config or
     /// video content.
@@ -844,7 +844,7 @@ pub struct StreamingAnnotateVideoRequest {
 pub mod streaming_annotate_video_request {
     /// *Required* The streaming request, which is either a streaming config or
     /// video content.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum StreamingRequest {
         /// Provides information to the annotator, specifing how to process the
         /// request. The first `AnnotateStreamingVideoRequest` message must only
@@ -864,7 +864,7 @@ pub mod streaming_annotate_video_request {
 }
 /// Provides information to the annotator that specifies how to process the
 /// request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamingVideoConfig {
     /// Requested annotation feature.
     #[prost(enumeration = "StreamingFeature", tag = "1")]
@@ -884,7 +884,7 @@ pub struct StreamingVideoConfig {
 /// Nested message and enum types in `StreamingVideoConfig`.
 pub mod streaming_video_config {
     /// Config for requested annotation feature.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum StreamingConfig {
         /// Config for STREAMING_SHOT_CHANGE_DETECTION.
         #[prost(message, tag = "2")]
@@ -914,7 +914,7 @@ pub mod streaming_video_config {
 /// `StreamingAnnotateVideoResponse` messages are streamed back to the client.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingAnnotateVideoResponse {
-    /// If set, returns a [google.rpc.Status][google.rpc.Status] message that
+    /// If set, returns a \[google.rpc.Status\]\[google.rpc.Status\] message that
     /// specifies the error for the operation.
     #[prost(message, optional, tag = "1")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
@@ -946,10 +946,10 @@ pub struct StreamingVideoAnnotationResults {
     pub object_annotations: ::prost::alloc::vec::Vec<ObjectTrackingAnnotation>,
 }
 /// Config for STREAMING_SHOT_CHANGE_DETECTION.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamingShotChangeDetectionConfig {}
 /// Config for STREAMING_LABEL_DETECTION.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamingLabelDetectionConfig {
     /// Whether the video has been captured from a stationary (i.e. non-moving)
     /// camera. When set to true, might improve detection accuracy for moving
@@ -958,13 +958,13 @@ pub struct StreamingLabelDetectionConfig {
     pub stationary_camera: bool,
 }
 /// Config for STREAMING_EXPLICIT_CONTENT_DETECTION.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamingExplicitContentDetectionConfig {}
 /// Config for STREAMING_OBJECT_TRACKING.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamingObjectTrackingConfig {}
 /// Config for STREAMING_AUTOML_ACTION_RECOGNITION.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamingAutomlActionRecognitionConfig {
     /// Resource name of AutoML model.
     /// Format: `projects/{project_id}/locations/{location_id}/models/{model_id}`
@@ -972,7 +972,7 @@ pub struct StreamingAutomlActionRecognitionConfig {
     pub model_name: ::prost::alloc::string::String,
 }
 /// Config for STREAMING_AUTOML_CLASSIFICATION.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamingAutomlClassificationConfig {
     /// Resource name of AutoML model.
     /// Format:
@@ -981,7 +981,7 @@ pub struct StreamingAutomlClassificationConfig {
     pub model_name: ::prost::alloc::string::String,
 }
 /// Config for STREAMING_AUTOML_OBJECT_TRACKING.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamingAutomlObjectTrackingConfig {
     /// Resource name of AutoML model.
     /// Format: `projects/{project_id}/locations/{location_id}/models/{model_id}`
@@ -989,7 +989,7 @@ pub struct StreamingAutomlObjectTrackingConfig {
     pub model_name: ::prost::alloc::string::String,
 }
 /// Config for streaming storage option.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamingStorageConfig {
     /// Enable streaming storage. Default: false.
     #[prost(bool, tag = "1")]
@@ -1332,7 +1332,7 @@ pub mod video_intelligence_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.videointelligence.v1p3beta1.VideoIntelligenceService/AnnotateVideo",
             );
@@ -1464,7 +1464,7 @@ pub mod streaming_video_intelligence_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.videointelligence.v1p3beta1.StreamingVideoIntelligenceService/StreamingAnnotateVideo",
             );

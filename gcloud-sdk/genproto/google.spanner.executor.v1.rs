@@ -261,9 +261,9 @@ pub mod key_range {
         Unspecified = 0,
         /// \[start,limit\]
         ClosedClosed = 1,
-        /// [start,limit)
+        /// \[start,limit)
         ClosedOpen = 2,
-        /// (start,limit]
+        /// (start,limit\]
         OpenClosed = 3,
         /// (start,limit)
         OpenOpen = 4,
@@ -405,7 +405,7 @@ pub struct PartitionedUpdateAction {
 }
 /// Nested message and enum types in `PartitionedUpdateAction`.
 pub mod partitioned_update_action {
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ExecutePartitionedUpdateOptions {
         /// RPC Priority
         #[prost(
@@ -510,14 +510,14 @@ pub struct ColumnMetadata {
     pub r#type: ::core::option::Option<super::super::v1::Type>,
 }
 /// Options for executing the transaction.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TransactionExecutionOptions {
     /// Whether optimistic concurrency should be used to execute this transaction.
     #[prost(bool, tag = "1")]
     pub optimistic: bool,
 }
 /// FinishTransactionAction defines an action of finishing a transaction.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FinishTransactionAction {
     /// Defines how exactly the transaction should be completed, e.g. with
     /// commit or abortion.
@@ -710,7 +710,7 @@ pub struct UpdateUserInstanceConfigAction {
     >,
 }
 /// Action that gets a user instance config.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCloudInstanceConfigAction {
     /// Instance config ID (not path), e.g. "custom-config".
     #[prost(string, tag = "1")]
@@ -720,7 +720,7 @@ pub struct GetCloudInstanceConfigAction {
     pub project_id: ::prost::alloc::string::String,
 }
 /// Action that deletes a user instance configs.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteUserInstanceConfigAction {
     /// User instance config ID (not path), e.g. "custom-config".
     #[prost(string, tag = "1")]
@@ -730,7 +730,7 @@ pub struct DeleteUserInstanceConfigAction {
     pub project_id: ::prost::alloc::string::String,
 }
 /// Action that lists user instance configs.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCloudInstanceConfigsAction {
     /// Cloud project ID, e.g. "spanner-cloud-systest".
     #[prost(string, tag = "1")]
@@ -812,7 +812,7 @@ pub struct UpdateCloudInstanceAction {
     >,
 }
 /// Action that deletes a Cloud Spanner instance.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteCloudInstanceAction {
     /// Cloud instance ID (not path), e.g. "test-instance".
     #[prost(string, tag = "1")]
@@ -822,7 +822,7 @@ pub struct DeleteCloudInstanceAction {
     pub project_id: ::prost::alloc::string::String,
 }
 /// Action that creates a Cloud Spanner database.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateCloudDatabaseAction {
     /// Cloud instance ID (not path), e.g. "test-instance".
     #[prost(string, tag = "1")]
@@ -849,7 +849,7 @@ pub struct CreateCloudDatabaseAction {
     pub proto_descriptors: ::core::option::Option<::prost::alloc::vec::Vec<u8>>,
 }
 /// Action that updates the schema of a Cloud Spanner database.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateCloudDatabaseDdlAction {
     /// Cloud instance ID (not path), e.g. "test-instance".
     #[prost(string, tag = "1")]
@@ -872,7 +872,7 @@ pub struct UpdateCloudDatabaseDdlAction {
     pub proto_descriptors: ::core::option::Option<::prost::alloc::vec::Vec<u8>>,
 }
 /// Action that updates a Cloud Spanner database.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateCloudDatabaseAction {
     /// Cloud instance ID (not path), e.g. "test-instance".
     #[prost(string, tag = "1")]
@@ -889,7 +889,7 @@ pub struct UpdateCloudDatabaseAction {
     pub enable_drop_protection: bool,
 }
 /// Action that drops a Cloud Spanner database.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DropCloudDatabaseAction {
     /// Cloud instance ID (not path), e.g. "test-instance".
     #[prost(string, tag = "1")]
@@ -902,7 +902,7 @@ pub struct DropCloudDatabaseAction {
     pub database_id: ::prost::alloc::string::String,
 }
 /// Action that changes quorum of a Cloud Spanner database.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ChangeQuorumCloudDatabaseAction {
     /// The fully qualified uri of the database whose quorum has to be changed.
     #[prost(string, optional, tag = "1")]
@@ -912,7 +912,7 @@ pub struct ChangeQuorumCloudDatabaseAction {
     pub serving_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Action that lists Cloud Spanner databases.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCloudDatabasesAction {
     /// Cloud project ID, e.g. "spanner-cloud-systest".
     #[prost(string, tag = "1")]
@@ -931,7 +931,7 @@ pub struct ListCloudDatabasesAction {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Action that lists Cloud Spanner databases.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCloudInstancesAction {
     /// Cloud project ID, e.g. "spanner-cloud-systest".
     #[prost(string, tag = "1")]
@@ -955,7 +955,7 @@ pub struct ListCloudInstancesAction {
     pub page_token: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Action that retrieves a Cloud Spanner instance.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCloudInstanceAction {
     /// Cloud project ID, e.g. "spanner-cloud-systest".
     #[prost(string, tag = "1")]
@@ -966,7 +966,7 @@ pub struct GetCloudInstanceAction {
     pub instance_id: ::prost::alloc::string::String,
 }
 /// Action that lists Cloud Spanner database operations.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCloudDatabaseOperationsAction {
     /// Cloud project ID, e.g. "spanner-cloud-systest".
     #[prost(string, tag = "1")]
@@ -994,7 +994,7 @@ pub struct ListCloudDatabaseOperationsAction {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Action that restores a Cloud Spanner database from a backup.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RestoreCloudDatabaseAction {
     /// Cloud project ID, e.g. "spanner-cloud-systest".
     #[prost(string, tag = "1")]
@@ -1021,7 +1021,7 @@ pub struct RestoreCloudDatabaseAction {
     >,
 }
 /// Action that gets a Cloud Spanner database.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCloudDatabaseAction {
     /// Cloud project ID, e.g. "spanner-cloud-systest".
     #[prost(string, tag = "1")]
@@ -1034,7 +1034,7 @@ pub struct GetCloudDatabaseAction {
     pub database_id: ::prost::alloc::string::String,
 }
 /// Action that creates a Cloud Spanner database backup.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateCloudBackupAction {
     /// Cloud project ID, e.g. "spanner-cloud-systest".
     #[prost(string, tag = "1")]
@@ -1067,7 +1067,7 @@ pub struct CreateCloudBackupAction {
     >,
 }
 /// Action that copies a Cloud Spanner database backup.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CopyCloudBackupAction {
     /// Cloud project ID, e.g. "spanner-cloud-systest".
     #[prost(string, tag = "1")]
@@ -1080,7 +1080,7 @@ pub struct CopyCloudBackupAction {
     pub backup_id: ::prost::alloc::string::String,
     /// The fully qualified uri of the source backup from which this
     /// backup was copied. eg.
-    /// "projects/<project_id>/instances/<instance_id>/backups/<backup_id>".
+    /// "projects/\<project_id>/instances/\<instance_id>/backups/\<backup_id>".
     #[prost(string, tag = "4")]
     pub source_backup: ::prost::alloc::string::String,
     /// Output only. The expiration time of the backup, which must be at least 6
@@ -1089,7 +1089,7 @@ pub struct CopyCloudBackupAction {
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Action that gets a Cloud Spanner database backup.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCloudBackupAction {
     /// Cloud project ID, e.g. "spanner-cloud-systest".
     #[prost(string, tag = "1")]
@@ -1102,7 +1102,7 @@ pub struct GetCloudBackupAction {
     pub backup_id: ::prost::alloc::string::String,
 }
 /// Action that updates a Cloud Spanner database backup.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateCloudBackupAction {
     /// Cloud project ID, e.g. "spanner-cloud-systest".
     #[prost(string, tag = "1")]
@@ -1119,7 +1119,7 @@ pub struct UpdateCloudBackupAction {
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Action that deletes a Cloud Spanner database backup.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteCloudBackupAction {
     /// Cloud project ID, e.g. "spanner-cloud-systest".
     #[prost(string, tag = "1")]
@@ -1132,7 +1132,7 @@ pub struct DeleteCloudBackupAction {
     pub backup_id: ::prost::alloc::string::String,
 }
 /// Action that lists Cloud Spanner database backups.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCloudBackupsAction {
     /// Cloud project ID, e.g. "spanner-cloud-systest".
     #[prost(string, tag = "1")]
@@ -1157,7 +1157,7 @@ pub struct ListCloudBackupsAction {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Action that lists Cloud Spanner database backup operations.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCloudBackupOperationsAction {
     /// Cloud project ID, e.g. "spanner-cloud-systest".
     #[prost(string, tag = "1")]
@@ -1184,7 +1184,7 @@ pub struct ListCloudBackupOperationsAction {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Action that gets an operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetOperationAction {
     /// The name of the operation resource.
     #[prost(string, tag = "1")]
@@ -1192,7 +1192,7 @@ pub struct GetOperationAction {
 }
 /// Query cancellation action defines the long running query and the cancel query
 /// format depening on the Cloud database dialect.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct QueryCancellationAction {
     /// Long running query.
     #[prost(string, tag = "1")]
@@ -1202,7 +1202,7 @@ pub struct QueryCancellationAction {
     pub cancel_query: ::prost::alloc::string::String,
 }
 /// Action that cancels an operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelOperationAction {
     /// The name of the operation resource to be cancelled.
     #[prost(string, tag = "1")]
@@ -1213,19 +1213,21 @@ pub struct CancelOperationAction {
 /// the same transaction in other Executors to parallelize partition processing.
 ///
 /// Example of a batch read flow:
+///
 /// 1. Start batch transaction with a timestamp (StartBatchTransactionAction)
-/// 2. Generate database partitions for a read or query
-/// (GenerateDbPartitionsForReadAction/GenerateDbPartitionsForQueryAction)
-/// 3. Call ExecutePartitionAction for some or all partitions, process rows
-/// 4. Clean up the transaction (CloseBatchTransactionAction).
+/// 1. Generate database partitions for a read or query
+///    (GenerateDbPartitionsForReadAction/GenerateDbPartitionsForQueryAction)
+/// 1. Call ExecutePartitionAction for some or all partitions, process rows
+/// 1. Clean up the transaction (CloseBatchTransactionAction).
 ///
 /// More sophisticated example, with parallel processing:
+///
 /// 1. Start batch transaction with a timestamp (StartBatchTransactionAction),
-/// note the returned BatchTransactionId
-/// 2. Generate database partitions for a read or query
-/// (GenerateDbPartitionsForReadAction/GenerateDbPartitionsForQueryAction)
-/// 3. Distribute the partitions over a pool of workers, along with the
-/// transaction ID.
+///    note the returned BatchTransactionId
+/// 1. Generate database partitions for a read or query
+///    (GenerateDbPartitionsForReadAction/GenerateDbPartitionsForQueryAction)
+/// 1. Distribute the partitions over a pool of workers, along with the
+///    transaction ID.
 ///
 /// In each worker:
 /// 4-1. StartBatchTransactionAction with the given transaction ID
@@ -1240,7 +1242,7 @@ pub struct CancelOperationAction {
 /// with the ID, then clean it up right away.
 ///
 /// Cleaning up is optional, but recommended.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StartBatchTransactionAction {
     /// Database role to assume while performing this action. Setting the
     /// database_role will enforce additional role-based access checks on this
@@ -1258,7 +1260,7 @@ pub mod start_batch_transaction_action {
     /// To start a new transaction, specify an exact timestamp. Alternatively, an
     /// existing batch transaction ID can be used. Either one of two must be
     /// set.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Param {
         /// The exact timestamp to start the batch transaction.
         #[prost(message, tag = "1")]
@@ -1279,7 +1281,7 @@ pub mod start_batch_transaction_action {
 ///
 /// When a transaction is cleaned up, it becomes globally invalid. Cleaning up is
 /// optional, but recommended.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloseBatchTransactionAction {
     /// Indicates whether the transaction needs to be cleaned up.
     #[prost(bool, tag = "1")]
@@ -1318,7 +1320,7 @@ pub struct GenerateDbPartitionsForQueryAction {
 }
 /// Identifies a database partition generated for a particular read or query. To
 /// read rows from the partition, use ExecutePartitionAction.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BatchPartition {
     /// Serialized Partition instance.
     #[prost(bytes = "vec", tag = "1")]
@@ -1337,14 +1339,14 @@ pub struct BatchPartition {
 /// Performs a read or query for the given partitions. This action must be
 /// executed in the context of the same transaction that was used to generate
 /// given partitions.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExecutePartitionAction {
     /// Batch partition to execute on.
     #[prost(message, optional, tag = "1")]
     pub partition: ::core::option::Option<BatchPartition>,
 }
 /// Execute a change stream TVF query.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExecuteChangeStreamQuery {
     /// Name for this change stream.
     #[prost(string, tag = "1")]
@@ -1639,7 +1641,7 @@ pub struct DataChangeRecord {
 /// Nested message and enum types in `DataChangeRecord`.
 pub mod data_change_record {
     /// Column types.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ColumnType {
         /// Column name.
         #[prost(string, tag = "1")]
@@ -1655,7 +1657,7 @@ pub mod data_change_record {
         pub ordinal_position: i64,
     }
     /// Describes the changes that were made.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Mod {
         /// The primary key values in JSON.
         #[prost(string, tag = "1")]
@@ -1692,7 +1694,7 @@ pub struct ChildPartitionsRecord {
 /// Nested message and enum types in `ChildPartitionsRecord`.
 pub mod child_partitions_record {
     /// A single child partition.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ChildPartition {
         /// Partition token string used to identify the child partition in queries.
         #[prost(string, tag = "1")]
@@ -1705,21 +1707,21 @@ pub mod child_partitions_record {
     }
 }
 /// ChangeStream heartbeat record.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HeartbeatRecord {
     /// Timestamp for this heartbeat check.
     #[prost(message, optional, tag = "1")]
     pub heartbeat_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Options for Cloud Spanner Service.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SpannerOptions {
     /// Options for configuring the session pool
     #[prost(message, optional, tag = "1")]
     pub session_pool_options: ::core::option::Option<SessionPoolOptions>,
 }
 /// Options for the session pool used by the DatabaseClient.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SessionPoolOptions {
     /// passing this as true, will make applicable RPCs use multiplexed sessions
     /// instead of regular sessions
@@ -1844,7 +1846,7 @@ pub mod spanner_executor_proxy_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.spanner.executor.v1.SpannerExecutorProxy/ExecuteActionAsync",
             );

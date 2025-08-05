@@ -17,14 +17,14 @@ pub struct ParsedExpr {
 /// calls. This makes it easy to represent new operators into the existing AST.
 ///
 /// All references within expressions must resolve to a
-/// [Decl][google.api.expr.v1alpha1.Decl] provided at type-check for an
+/// \[Decl\]\[google.api.expr.v1alpha1.Decl\] provided at type-check for an
 /// expression to be valid. A reference may either be a bare identifier `name` or
 /// a qualified identifier `google.api.name`. References may either refer to a
 /// value or a function declaration.
 ///
 /// For example, the expression `google.api.name.startsWith('expr')` references
 /// the declaration `google.api.name` within a
-/// [Expr.Select][google.api.expr.v1alpha1.Expr.Select] expression, and the
+/// \[Expr.Select\]\[google.api.expr.v1alpha1.Expr.Select\] expression, and the
 /// function declaration `startsWith`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Expr {
@@ -40,13 +40,13 @@ pub struct Expr {
 /// Nested message and enum types in `Expr`.
 pub mod expr {
     /// An identifier expression. e.g. `request`.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Ident {
         /// Required. Holds a single, unqualified identifier, possibly preceded by a
         /// '.'.
         ///
         /// Qualified names are represented by the
-        /// [Expr.Select][google.api.expr.v1alpha1.Expr.Select] expression.
+        /// \[Expr.Select\]\[google.api.expr.v1alpha1.Expr.Select\] expression.
         #[prost(string, tag = "1")]
         pub name: ::prost::alloc::string::String,
     }
@@ -170,31 +170,29 @@ pub mod expr {
     /// Aggregate type macros may be applied to all elements in a list or all keys
     /// in a map:
     ///
-    /// *  `all`, `exists`, `exists_one` -  test a predicate expression against
-    ///     the inputs and return `true` if the predicate is satisfied for all,
-    ///     any, or only one value `list.all(x, x < 10)`.
-    /// *  `filter` - test a predicate expression against the inputs and return
-    ///     the subset of elements which satisfy the predicate:
-    ///     `payments.filter(p, p > 1000)`.
-    /// *  `map` - apply an expression to all elements in the input and return the
-    ///     output aggregate type: `\[1, 2, 3\].map(i, i * i)`.
+    /// * `all`, `exists`, `exists_one` -  test a predicate expression against
+    ///   the inputs and return `true` if the predicate is satisfied for all,
+    ///   any, or only one value `list.all(x, x < 10)`.
+    /// * `filter` - test a predicate expression against the inputs and return
+    ///   the subset of elements which satisfy the predicate:
+    ///   `payments.filter(p, p > 1000)`.
+    /// * `map` - apply an expression to all elements in the input and return the
+    ///   output aggregate type: `\[1, 2, 3\].map(i, i * i)`.
     ///
     /// The `has(m.x)` macro tests whether the property `x` is present in struct
     /// `m`. The semantics of this macro depend on the type of `m`. For proto2
-    /// messages `has(m.x)` is defined as 'defined, but not set`. For proto3, the
-    /// macro tests whether the property is set to its default. For map and struct
-    /// types, the macro tests whether the property `x` is defined on `m`.
+    /// messages `has(m.x)` is defined as 'defined, but not set`. For proto3, the  macro tests whether the property is set to its default. For map and struct  types, the macro tests whether the property `x`is defined on`m\`.
     ///
     /// Comprehensions for the standard environment macros evaluation can be best
     /// visualized as the following pseudocode:
     ///
-    /// ```
+    /// ```text,
     /// let `accu_var` = `accu_init`
     /// for (let `iter_var` in `iter_range`) {
-    ///    if (!`loop_condition`) {
-    ///      break
-    ///    }
-    ///    `accu_var` = `loop_step`
+    ///   if (!`loop_condition`) {
+    ///     break
+    ///   }
+    ///   `accu_var` = `loop_step`
     /// }
     /// return `result`
     /// ```
@@ -204,13 +202,13 @@ pub mod expr {
     /// they expose both the key or index in addition to the value for each list
     /// or map entry:
     ///
-    /// ```
+    /// ```text,
     /// let `accu_var` = `accu_init`
     /// for (let `iter_var`, `iter_var2` in `iter_range`) {
-    ///    if (!`loop_condition`) {
-    ///      break
-    ///    }
-    ///    `accu_var` = `loop_step`
+    ///   if (!`loop_condition`) {
+    ///     break
+    ///   }
+    ///   `accu_var` = `loop_step`
     /// }
     /// return `result`
     /// ```
@@ -290,7 +288,7 @@ pub mod expr {
 /// primitives.
 ///
 /// Lists and structs are not included as constants as these aggregate types may
-/// contain [Expr][google.api.expr.v1alpha1.Expr] elements which require
+/// contain \[Expr\]\[google.api.expr.v1alpha1.Expr\] elements which require
 /// evaluation and are thus not constant.
 ///
 /// Examples of literals include: `"hello"`, `b'bytes'`, `1u`, `4.2`, `-2`,
@@ -387,7 +385,7 @@ pub struct SourceInfo {
 /// Nested message and enum types in `SourceInfo`.
 pub mod source_info {
     /// An extension that was requested for the source expression.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Extension {
         /// Identifier for the extension. Example: constant_folding
         #[prost(string, tag = "1")]
@@ -406,7 +404,7 @@ pub mod source_info {
     /// Nested message and enum types in `Extension`.
     pub mod extension {
         /// Version
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Version {
             /// Major version changes indicate different required support level from
             /// the required components.
@@ -469,7 +467,7 @@ pub mod source_info {
     }
 }
 /// A specific position in source.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SourcePosition {
     /// The soucre location name (e.g. file name).
     #[prost(string, tag = "1")]
@@ -493,17 +491,17 @@ pub struct CheckedExpr {
     ///
     /// The following entries are in this table:
     ///
-    /// - An Ident or Select expression is represented here if it resolves to a
-    ///    declaration. For instance, if `a.b.c` is represented by
-    ///    `select(select(id(a), b), c)`, and `a.b` resolves to a declaration,
-    ///    while `c` is a field selection, then the reference is attached to the
-    ///    nested select expression (but not to the id or or the outer select).
-    ///    In turn, if `a` resolves to a declaration and `b.c` are field selections,
-    ///    the reference is attached to the ident expression.
-    /// - Every Call expression has an entry here, identifying the function being
-    ///    called.
-    /// - Every CreateStruct expression for a message has an entry, identifying
-    ///    the message.
+    /// * An Ident or Select expression is represented here if it resolves to a
+    ///   declaration. For instance, if `a.b.c` is represented by
+    ///   `select(select(id(a), b), c)`, and `a.b` resolves to a declaration,
+    ///   while `c` is a field selection, then the reference is attached to the
+    ///   nested select expression (but not to the id or or the outer select).
+    ///   In turn, if `a` resolves to a declaration and `b.c` are field selections,
+    ///   the reference is attached to the ident expression.
+    /// * Every Call expression has an entry here, identifying the function being
+    ///   called.
+    /// * Every CreateStruct expression for a message has an entry, identifying
+    ///   the message.
     #[prost(map = "int64, message", tag = "2")]
     pub reference_map: ::std::collections::HashMap<i64, Reference>,
     /// A map from expression ids to types.
@@ -766,10 +764,10 @@ pub struct Decl {
     /// to the declaration in its container, as in `google.api.expr.Decl`.
     ///
     /// Declarations used as
-    /// [FunctionDecl.Overload][google.api.expr.v1alpha1.Decl.FunctionDecl.Overload]
+    /// \[FunctionDecl.Overload\]\[google.api.expr.v1alpha1.Decl.FunctionDecl.Overload\]
     /// parameters may or may not have a name depending on whether the overload is
     /// function declaration or a function definition containing a result
-    /// [Expr][google.api.expr.v1alpha1.Expr].
+    /// \[Expr\]\[google.api.expr.v1alpha1.Expr\].
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The declaration kind.
@@ -812,7 +810,7 @@ pub mod decl {
     pub mod function_decl {
         /// An overload indicates a function's parameter types and return type, and
         /// may optionally include a function body described in terms of
-        /// [Expr][google.api.expr.v1alpha1.Expr] values.
+        /// \[Expr\]\[google.api.expr.v1alpha1.Expr\] values.
         ///
         /// Functions overloads are declared in either a function or method
         /// call-style. For methods, the `params\[0\]` is the expected type of the
@@ -825,12 +823,12 @@ pub mod decl {
             /// Required. Globally unique overload name of the function which reflects
             /// the function name and argument types.
             ///
-            /// This will be used by a [Reference][google.api.expr.v1alpha1.Reference]
+            /// This will be used by a \[Reference\]\[google.api.expr.v1alpha1.Reference\]
             /// to indicate the `overload_id` that was resolved for the function
             /// `name`.
             #[prost(string, tag = "1")]
             pub overload_id: ::prost::alloc::string::String,
-            /// List of function parameter [Type][google.api.expr.v1alpha1.Type]
+            /// List of function parameter \[Type\]\[google.api.expr.v1alpha1.Type\]
             /// values.
             ///
             /// Param types are disjoint after generic type parameters have been
@@ -890,7 +888,7 @@ pub struct Reference {
     /// type checker attempts to narrow down this list as much as possible.
     ///
     /// Empty if this is not a reference to a
-    /// [Decl.FunctionDecl][google.api.expr.v1alpha1.Decl.FunctionDecl].
+    /// \[Decl.FunctionDecl\]\[google.api.expr.v1alpha1.Decl.FunctionDecl\].
     #[prost(string, repeated, tag = "3")]
     pub overload_id: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// For references to constants, this may contain the value of the
@@ -952,7 +950,7 @@ pub mod value {
     }
 }
 /// An enum value.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnumValue {
     /// The fully qualified name of the enum type.
     #[prost(string, tag = "1")]
@@ -1018,7 +1016,7 @@ pub struct EvalState {
 /// Nested message and enum types in `EvalState`.
 pub mod eval_state {
     /// A single evalution result.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Result {
         /// The id of the expression this result if for.
         #[prost(int64, tag = "1")]
@@ -1069,22 +1067,28 @@ pub mod expr_value {
         /// unknowns *might* be included included when evaluation could result in
         /// different unknowns. For example:
         ///
-        ///      (<unknown\[1\]> || true) && <unknown\[2\]> -> <unknown\[2\]>
-        ///      <unknown\[1\]> || <unknown\[2\]> -> <unknown\[1,2\]>
-        ///      <unknown\[1\]>.foo -> <unknown\[1\]>
-        ///      foo(<unknown\[1\]>) -> <unknown\[1\]>
-        ///      <unknown\[1\]> + <unknown\[2\]> -> <unknown\[1\]> or <unknown[2[>
+        /// ```text
+        /// (<unknown\[1\]> || true) && <unknown\[2\]> -> <unknown\[2\]>
+        /// <unknown\[1\]> || <unknown\[2\]> -> <unknown\[1,2\]>
+        /// <unknown\[1\]>.foo -> <unknown\[1\]>
+        /// foo(<unknown\[1\]>) -> <unknown\[1\]>
+        /// <unknown\[1\]> + <unknown\[2\]> -> <unknown\[1\]> or <unknown[2[>
+        /// ```
         ///
         /// Unknown takes precidence over Error in cases where a `Value` can short
         /// circuit the result:
         ///
-        ///      <error> || <unknown> -> <unknown>
-        ///      <error> && <unknown> -> <unknown>
+        /// ```text
+        /// <error> || <unknown> -> <unknown>
+        /// <error> && <unknown> -> <unknown>
+        /// ```
         ///
         /// Errors take precidence in all other cases:
         ///
-        ///      <unknown> + <error> -> <error>
-        ///      foo(<unknown>, <error>) -> <error>
+        /// ```text
+        /// <unknown> + <error> -> <error>
+        /// foo(<unknown>, <error>) -> <error>
+        /// ```
         #[prost(message, tag = "3")]
         Unknown(super::UnknownSet),
     }
@@ -1101,7 +1105,7 @@ pub struct ErrorSet {
 /// A set of expressions for which the value is unknown.
 ///
 /// The unknowns included depend on the context. See `ExprValue.unknown`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UnknownSet {
     /// The ids of the expressions with unknown values.
     #[prost(int64, repeated, tag = "1")]
@@ -1128,7 +1132,7 @@ pub struct Explain {
 /// Nested message and enum types in `Explain`.
 pub mod explain {
     /// ID and value index of one step.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ExprStep {
         /// ID of corresponding Expr node.
         #[prost(int64, tag = "1")]

@@ -35,7 +35,7 @@ pub struct CloudEvent {
 /// Nested message and enum types in `CloudEvent`.
 pub mod cloud_event {
     /// The following abstract data types are available for use in attributes.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CloudEventAttributeValue {
         /// The value of the attribute.
         #[prost(
@@ -47,7 +47,7 @@ pub mod cloud_event {
     /// Nested message and enum types in `CloudEventAttributeValue`.
     pub mod cloud_event_attribute_value {
         /// The value of the attribute.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Attr {
             /// Boolean value.
             #[prost(bool, tag = "1")]
@@ -76,7 +76,7 @@ pub mod cloud_event {
     /// specified by the 'datacontenttype' attribute (e.g. application/json), and
     /// adheres to the dataschema format when those respective attributes are
     /// present.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Data {
         /// Optional. Binary data.
         #[prost(bytes, tag = "6")]
@@ -109,7 +109,7 @@ pub struct PublishChannelConnectionEventsRequest {
     pub text_events: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The response message for the PublishChannelConnectionEvents method.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PublishChannelConnectionEventsResponse {}
 /// The request message for the PublishEvents method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -131,7 +131,7 @@ pub struct PublishEventsRequest {
     pub text_events: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The response message for the PublishEvents method.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PublishEventsResponse {}
 /// The request message for the Publish method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -165,7 +165,7 @@ pub mod publish_request {
     }
 }
 /// The response message for the Publish method.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PublishResponse {}
 /// Generated client implementations.
 pub mod publisher_client {
@@ -305,7 +305,7 @@ pub mod publisher_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.publishing.v1.Publisher/PublishChannelConnectionEvents",
             );
@@ -335,7 +335,7 @@ pub mod publisher_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.publishing.v1.Publisher/PublishEvents",
             );
@@ -365,7 +365,7 @@ pub mod publisher_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.eventarc.publishing.v1.Publisher/Publish",
             );

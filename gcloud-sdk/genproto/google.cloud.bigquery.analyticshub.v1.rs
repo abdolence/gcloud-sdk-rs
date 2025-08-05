@@ -25,7 +25,7 @@ pub struct PubSubSubscription {
     /// Optional. The approximate amount of time (on a best-effort basis) Pub/Sub
     /// waits for the subscriber to acknowledge receipt before resending the
     /// message. In the interval after the message is delivered and before it is
-    /// acknowledged, it is considered to be _outstanding_. During that time
+    /// acknowledged, it is considered to be *outstanding*. During that time
     /// period, the message will not be redelivered (on a best-effort basis).
     ///
     /// For pull subscriptions, this value is used as the initial value for the ack
@@ -119,7 +119,7 @@ pub struct PubSubSubscription {
     /// subscription:
     ///
     /// * The message sent to a subscriber is guaranteed not to be resent
-    /// before the message's acknowledgement deadline expires.
+    ///   before the message's acknowledgement deadline expires.
     /// * An acknowledged message will not be resent to a subscriber.
     ///
     /// Note that subscribers may still receive multiple copies of a message
@@ -144,7 +144,7 @@ pub struct PubSubSubscription {
 /// Retry Policy is implemented on a best effort basis. At times, the delay
 /// between consecutive deliveries may not match the configuration. That is,
 /// delay can be more or less than configured backoff.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RetryPolicy {
     /// Optional. The minimum delay between consecutive deliveries of a given
     /// message. Value should be between 0 and 600 seconds. Defaults to 10 seconds.
@@ -161,7 +161,7 @@ pub struct RetryPolicy {
 ///
 /// If validation on any of the fields fails at subscription creation/updation,
 /// the create/update subscription request will fail.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeadLetterPolicy {
     /// Optional. The name of the topic to which dead letter messages should be
     /// published. Format is `projects/{project}/topics/{topic}`.The Pub/Sub
@@ -192,7 +192,7 @@ pub struct DeadLetterPolicy {
 }
 /// A policy that specifies the conditions for resource expiration (i.e.,
 /// automatic resource deletion).
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExpirationPolicy {
     /// Optional. Specifies the "time-to-live" duration for an associated resource.
     /// The resource expires if it is not active for a period of `ttl`. The
@@ -253,7 +253,7 @@ pub mod push_config {
     /// Contains information needed for generating an
     /// [OpenID Connect
     /// token](<https://developers.google.com/identity/protocols/OpenIDConnect>).
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct OidcToken {
         /// Optional. [Service account
         /// email](<https://cloud.google.com/iam/docs/service-accounts>)
@@ -275,10 +275,10 @@ pub mod push_config {
     /// The payload to the push endpoint is in the form of the JSON representation
     /// of a PubsubMessage
     /// (<https://cloud.google.com/pubsub/docs/reference/rpc/google.pubsub.v1#pubsubmessage>).
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PubsubWrapper {}
     /// Sets the `data` field as the HTTP body for delivery.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct NoWrapper {
         /// Optional. When true, writes the Pub/Sub message metadata to
         /// `x-goog-pubsub-<KEY>:<VAL>` headers of the HTTP request. Writes the
@@ -291,7 +291,7 @@ pub mod push_config {
     /// default to allow requests only from the Pub/Sub system, for example.
     /// This field is optional and should be set only by users interested in
     /// authenticated push.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum AuthenticationMethod {
         /// Optional. If specified, Pub/Sub will generate and attach an OIDC JWT
         /// token as an `Authorization` header in the HTTP request for every pushed
@@ -301,7 +301,7 @@ pub mod push_config {
     }
     /// The format of the delivered message to the push endpoint is defined by
     /// the chosen wrapper. When unset, `PubsubWrapper` is used.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Wrapper {
         /// Optional. When set, the payload to the push endpoint is in the form of
         /// the JSON representation of a PubsubMessage
@@ -314,7 +314,7 @@ pub mod push_config {
     }
 }
 /// Configuration for a BigQuery subscription.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BigQueryConfig {
     /// Optional. The name of the table to which to write data, of the form
     /// {projectId}.{datasetId}.{tableId}
@@ -354,12 +354,12 @@ pub struct BigQueryConfig {
     pub service_account_email: ::prost::alloc::string::String,
 }
 /// Configuration for a Cloud Storage subscription.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloudStorageConfig {
     /// Required. User-provided name for the Cloud Storage bucket.
     /// The bucket must be created by the user. The bucket name must be without
-    /// any prefix like "gs://". See the [bucket naming
-    /// requirements] (<https://cloud.google.com/storage/docs/buckets#naming>).
+    /// any prefix like "gs://". See the \[bucket naming
+    /// requirements\] (<https://cloud.google.com/storage/docs/buckets#naming>).
     #[prost(string, tag = "1")]
     pub bucket: ::prost::alloc::string::String,
     /// Optional. User-provided prefix for Cloud Storage filename. See the [object
@@ -412,11 +412,11 @@ pub mod cloud_storage_config {
     /// Configuration for writing message data in text format.
     /// Message payloads will be written to files as raw text, separated by a
     /// newline.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TextConfig {}
     /// Configuration for writing message data in Avro format.
     /// Message payloads and metadata will be written to files as an Avro binary.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AvroConfig {
         /// Optional. When true, write the subscription name, message_id,
         /// publish_time, attributes, and ordering_key as additional fields in the
@@ -432,7 +432,7 @@ pub mod cloud_storage_config {
         pub use_topic_schema: bool,
     }
     /// Defaults to text format.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum OutputFormat {
         /// Optional. If set, message data will be written to Cloud Storage in text
         /// format.
@@ -445,7 +445,7 @@ pub mod cloud_storage_config {
     }
 }
 /// All supported message transforms types.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MessageTransform {
     /// Optional. This field is deprecated, use the `disabled` field to disable
     /// transforms.
@@ -463,7 +463,7 @@ pub struct MessageTransform {
 /// Nested message and enum types in `MessageTransform`.
 pub mod message_transform {
     /// The type of transform to apply to messages.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Transform {
         /// Optional. JavaScript User Defined Function. If multiple JavaScriptUDF's
         /// are specified on a resource, each must have a unique `function_name`.
@@ -473,7 +473,7 @@ pub mod message_transform {
 }
 /// User-defined JavaScript function that can transform or filter a Pub/Sub
 /// message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct JavaScriptUdf {
     /// Required. Name of the JavasScript function that should applied to Pub/Sub
     /// messages.
@@ -482,32 +482,32 @@ pub struct JavaScriptUdf {
     /// Required. JavaScript code that contains a function `function_name` with the
     /// below signature:
     ///
-    /// ```
-    ///    /**
-    ///    * Transforms a Pub/Sub message.
+    /// ```text,
+    ///   /**
+    ///   * Transforms a Pub/Sub message.
     ///
-    ///    * @return {(Object<string, (string | Object<string, string>)>|null)} - To
-    ///    * filter a message, return `null`. To transform a message return a map
-    ///    * with the following keys:
-    ///    *   - (required) 'data' : {string}
-    ///    *   - (optional) 'attributes' : {Object<string, string>}
-    ///    * Returning empty `attributes` will remove all attributes from the
-    ///    * message.
-    ///    *
-    ///    * @param  {(Object<string, (string | Object<string, string>)>} Pub/Sub
-    ///    * message. Keys:
-    ///    *   - (required) 'data' : {string}
-    ///    *   - (required) 'attributes' : {Object<string, string>}
-    ///    *
-    ///    * @param  {Object<string, any>} metadata - Pub/Sub message metadata.
-    ///    * Keys:
-    ///    *   - (required) 'message_id'  : {string}
-    ///    *   - (optional) 'publish_time': {string} YYYY-MM-DDTHH:MM:SSZ format
-    ///    *   - (optional) 'ordering_key': {string}
-    ///    */
+    ///   * @return {(Object<string, (string | Object<string, string>)>|null)} - To
+    ///   * filter a message, return `null`. To transform a message return a map
+    ///   * with the following keys:
+    ///   *   - (required) 'data' : {string}
+    ///   *   - (optional) 'attributes' : {Object<string, string>}
+    ///   * Returning empty `attributes` will remove all attributes from the
+    ///   * message.
+    ///   *
+    ///   * @param  {(Object<string, (string | Object<string, string>)>} Pub/Sub
+    ///   * message. Keys:
+    ///   *   - (required) 'data' : {string}
+    ///   *   - (required) 'attributes' : {Object<string, string>}
+    ///   *
+    ///   * @param  {Object<string, any>} metadata - Pub/Sub message metadata.
+    ///   * Keys:
+    ///   *   - (required) 'message_id'  : {string}
+    ///   *   - (optional) 'publish_time': {string} YYYY-MM-DDTHH:MM:SSZ format
+    ///   *   - (optional) 'ordering_key': {string}
+    ///   */
     ///
-    ///    function <function_name>(message, metadata) {
-    ///    }
+    ///   function <function_name>(message, metadata) {
+    ///   }
     /// ```
     #[prost(string, tag = "2")]
     pub code: ::prost::alloc::string::String,
@@ -515,14 +515,14 @@ pub struct JavaScriptUdf {
 /// A data exchange is a container that lets you share data. Along with the
 /// descriptive information about the data exchange, it contains listings that
 /// reference shared datasets.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataExchange {
     /// Output only. The resource name of the data exchange.
     /// e.g. `projects/myproject/locations/us/dataExchanges/123`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Human-readable display name of the data exchange. The display
-    /// name must contain only Unicode letters, numbers (0-9), underscores (_),
+    /// name must contain only Unicode letters, numbers (0-9), underscores (\_),
     /// dashes (-), spaces ( ), ampersands (&) and must not start or end with
     /// spaces. Default value is an empty string. Max length: 63 bytes.
     #[prost(string, tag = "2")]
@@ -566,7 +566,7 @@ pub struct DataExchange {
 }
 /// Sharing environment is a behavior model for sharing data within a
 /// data exchange. This option is configurable for a data exchange.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SharingEnvironmentConfig {
     #[prost(oneof = "sharing_environment_config::Environment", tags = "1, 2")]
     pub environment: ::core::option::Option<sharing_environment_config::Environment>,
@@ -574,10 +574,10 @@ pub struct SharingEnvironmentConfig {
 /// Nested message and enum types in `SharingEnvironmentConfig`.
 pub mod sharing_environment_config {
     /// Default Analytics Hub data exchange, used for secured data sharing.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DefaultExchangeConfig {}
     /// Data Clean Room (DCR), used for privacy-safe and secured data sharing.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DcrExchangeConfig {
         /// Output only. If True, this DCR restricts the contributors to sharing
         /// only a single resource in a Listing. And no two resources should have the
@@ -595,7 +595,7 @@ pub mod sharing_environment_config {
         #[prost(bool, optional, tag = "2")]
         pub single_linked_dataset_per_cleanroom: ::core::option::Option<bool>,
     }
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Environment {
         /// Default Analytics Hub data exchange, used for secured data sharing.
         #[prost(message, tag = "1")]
@@ -606,7 +606,7 @@ pub mod sharing_environment_config {
     }
 }
 /// Contains details of the data provider.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataProvider {
     /// Optional. Name of the data provider.
     #[prost(string, tag = "1")]
@@ -617,7 +617,7 @@ pub struct DataProvider {
     pub primary_contact: ::prost::alloc::string::String,
 }
 /// Contains details of the listing publisher.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Publisher {
     /// Optional. Name of the listing publisher.
     #[prost(string, tag = "1")]
@@ -627,10 +627,10 @@ pub struct Publisher {
     #[prost(string, tag = "2")]
     pub primary_contact: ::prost::alloc::string::String,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DestinationDatasetReference {
     /// Required. A unique ID for this dataset, without the project name. The ID
-    /// must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_).
+    /// must contain only letters (a-z, A-Z), numbers (0-9), or underscores (\_).
     /// The maximum length is 1,024 characters.
     #[prost(string, tag = "1")]
     pub dataset_id: ::prost::alloc::string::String,
@@ -684,7 +684,7 @@ pub struct Listing {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Human-readable display name of the listing. The display name must
-    /// contain only Unicode letters, numbers (0-9), underscores (_), dashes (-),
+    /// contain only Unicode letters, numbers (0-9), underscores (\_), dashes (-),
     /// spaces ( ), ampersands (&) and can't start or end with spaces. Default
     /// value is an empty string. Max length: 63 bytes.
     #[prost(string, tag = "2")]
@@ -763,7 +763,7 @@ pub mod listing {
     /// When subscriber's subscribe to a listing, Analytics Hub creates a linked
     /// dataset in
     /// the subscriber's project. A Linked dataset is an opaque, read-only BigQuery
-    /// dataset that serves as a _symbolic link_ to a shared dataset.
+    /// dataset that serves as a *symbolic link* to a shared dataset.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BigQueryDatasetSource {
         /// Optional. Resource name of the dataset source for this listing.
@@ -786,14 +786,14 @@ pub mod listing {
     /// Nested message and enum types in `BigQueryDatasetSource`.
     pub mod big_query_dataset_source {
         /// Resource in this dataset that is selectively shared.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct SelectedResource {
             #[prost(oneof = "selected_resource::Resource", tags = "1, 2")]
             pub resource: ::core::option::Option<selected_resource::Resource>,
         }
         /// Nested message and enum types in `SelectedResource`.
         pub mod selected_resource {
-            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum Resource {
                 /// Optional. Format:
                 /// For table:
@@ -811,7 +811,7 @@ pub mod listing {
         }
         /// Restricted export policy used to configure restricted export on linked
         /// dataset.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct RestrictedExportPolicy {
             /// Optional. If true, enable restricted export.
             #[prost(message, optional, tag = "1")]
@@ -827,7 +827,7 @@ pub mod listing {
         }
     }
     /// Pub/Sub topic source.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PubSubTopicSource {
         /// Required. Resource name of the Pub/Sub topic source for this listing.
         /// e.g. projects/myproject/topics/topicId
@@ -843,7 +843,7 @@ pub mod listing {
     }
     /// Restricted export config, used to configure restricted export on linked
     /// dataset.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RestrictedExportConfig {
         /// Optional. If true, enable restricted export.
         #[prost(bool, tag = "3")]
@@ -859,7 +859,7 @@ pub mod listing {
     }
     /// Commercial info contains the information about the commercial data products
     /// associated with the listing.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CommercialInfo {
         /// Output only. Details of the Marketplace Data Product associated with the
         /// Listing.
@@ -872,7 +872,7 @@ pub mod listing {
     pub mod commercial_info {
         /// Specifies the details of the Marketplace Data Product associated with the
         /// Listing.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct GoogleCloudMarketplaceInfo {
             /// Output only. Resource name of the commercial service associated with
             /// the Marketplace Data Product. e.g. example.com
@@ -1147,7 +1147,7 @@ pub struct Subscription {
 /// Nested message and enum types in `Subscription`.
 pub mod subscription {
     /// Reference to a linked resource tracked by this Subscription.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct LinkedResource {
         /// Output only. Listing for which linked resource is created.
         #[prost(string, tag = "2")]
@@ -1157,7 +1157,7 @@ pub mod subscription {
     }
     /// Nested message and enum types in `LinkedResource`.
     pub mod linked_resource {
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Reference {
             /// Output only. Name of the linked dataset, e.g.
             /// projects/subscriberproject/datasets/linked_dataset
@@ -1170,7 +1170,7 @@ pub mod subscription {
         }
     }
     /// Commercial info metadata for this subscription.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CommercialInfo {
         /// Output only. This is set when the subscription is commercialised via
         /// Cloud Marketplace.
@@ -1182,7 +1182,7 @@ pub mod subscription {
     /// Nested message and enum types in `CommercialInfo`.
     pub mod commercial_info {
         /// Cloud Marketplace commercial metadata for this subscription.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct GoogleCloudMarketplaceInfo {
             /// Resource name of the Marketplace Order.
             #[prost(string, tag = "1")]
@@ -1238,7 +1238,7 @@ pub mod subscription {
             }
         }
     }
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ResourceName {
         /// Output only. Resource name of the source Listing.
         /// e.g. projects/123/locations/us/dataExchanges/456/listings/789
@@ -1251,7 +1251,7 @@ pub mod subscription {
     }
 }
 /// Message for requesting the list of data exchanges.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDataExchangesRequest {
     /// Required. The parent resource path of the data exchanges.
     /// e.g. `projects/myproject/locations/us`.
@@ -1278,7 +1278,7 @@ pub struct ListDataExchangesResponse {
 }
 /// Message for requesting the list of data exchanges from projects in an
 /// organization and location.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListOrgDataExchangesRequest {
     /// Required. The organization resource path of the projects containing
     /// DataExchanges. e.g. `organizations/myorg/locations/us`.
@@ -1305,7 +1305,7 @@ pub struct ListOrgDataExchangesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Message for getting a data exchange.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDataExchangeRequest {
     /// Required. The resource name of the data exchange.
     /// e.g. `projects/myproject/locations/us/dataExchanges/123`.
@@ -1313,14 +1313,14 @@ pub struct GetDataExchangeRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Message for creating a data exchange.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateDataExchangeRequest {
     /// Required. The parent resource path of the data exchange.
     /// e.g. `projects/myproject/locations/us`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The ID of the data exchange.
-    /// Must contain only Unicode letters, numbers (0-9), underscores (_).
+    /// Must contain only Unicode letters, numbers (0-9), underscores (\_).
     /// Max length: 100 bytes.
     #[prost(string, tag = "2")]
     pub data_exchange_id: ::prost::alloc::string::String,
@@ -1329,7 +1329,7 @@ pub struct CreateDataExchangeRequest {
     pub data_exchange: ::core::option::Option<DataExchange>,
 }
 /// Message for updating a data exchange.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateDataExchangeRequest {
     /// Required. Field mask specifies the fields to update in the data exchange
     /// resource. The fields specified in the
@@ -1341,7 +1341,7 @@ pub struct UpdateDataExchangeRequest {
     pub data_exchange: ::core::option::Option<DataExchange>,
 }
 /// Message for deleting a data exchange.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDataExchangeRequest {
     /// Required. The full name of the data exchange resource that you want to
     /// delete. For example, `projects/myproject/locations/us/dataExchanges/123`.
@@ -1349,7 +1349,7 @@ pub struct DeleteDataExchangeRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Message for requesting the list of listings.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListListingsRequest {
     /// Required. The parent resource path of the listing.
     /// e.g. `projects/myproject/locations/us/dataExchanges/123`.
@@ -1375,7 +1375,7 @@ pub struct ListListingsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Message for getting a listing.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetListingRequest {
     /// Required. The resource name of the listing.
     /// e.g. `projects/myproject/locations/us/dataExchanges/123/listings/456`.
@@ -1390,7 +1390,7 @@ pub struct CreateListingRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The ID of the listing to create.
-    /// Must contain only Unicode letters, numbers (0-9), underscores (_).
+    /// Must contain only Unicode letters, numbers (0-9), underscores (\_).
     /// Max length: 100 bytes.
     #[prost(string, tag = "2")]
     pub listing_id: ::prost::alloc::string::String,
@@ -1411,7 +1411,7 @@ pub struct UpdateListingRequest {
     pub listing: ::core::option::Option<Listing>,
 }
 /// Message for deleting a listing.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteListingRequest {
     /// Required. Resource name of the listing to delete.
     /// e.g. `projects/myproject/locations/us/dataExchanges/123/listings/456`.
@@ -1485,7 +1485,7 @@ pub struct SubscribeDataExchangeResponse {
     pub subscription: ::core::option::Option<Subscription>,
 }
 /// Message for refreshing a subscription.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RefreshSubscriptionRequest {
     /// Required. Resource name of the Subscription to refresh.
     /// e.g. `projects/subscriberproject/locations/us/subscriptions/123`
@@ -1500,7 +1500,7 @@ pub struct RefreshSubscriptionResponse {
     pub subscription: ::core::option::Option<Subscription>,
 }
 /// Message for getting a subscription.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSubscriptionRequest {
     /// Required. Resource name of the subscription.
     /// e.g. projects/123/locations/us/subscriptions/456
@@ -1508,7 +1508,7 @@ pub struct GetSubscriptionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Message for listing subscriptions.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSubscriptionsRequest {
     /// Required. The parent resource path of the subscription.
     /// e.g. projects/myproject/locations/us
@@ -1517,8 +1517,8 @@ pub struct ListSubscriptionsRequest {
     /// An expression for filtering the results of the request. Eligible
     /// fields for filtering are:
     ///
-    ///   + `listing`
-    ///   + `data_exchange`
+    /// * `listing`
+    /// * `data_exchange`
     ///
     /// Alternatively, a literal wrapped in double quotes may be provided.
     /// This will be checked for an exact match against both fields above.
@@ -1526,9 +1526,9 @@ pub struct ListSubscriptionsRequest {
     /// In all cases, the full Data Exchange or Listing resource name must
     /// be provided. Some example of using filters:
     ///
-    ///   + data_exchange="projects/myproject/locations/us/dataExchanges/123"
-    ///   + listing="projects/123/locations/us/dataExchanges/456/listings/789"
-    ///   + "projects/myproject/locations/us/dataExchanges/123"
+    /// * data_exchange="projects/myproject/locations/us/dataExchanges/123"
+    /// * listing="projects/123/locations/us/dataExchanges/456/listings/789"
+    /// * "projects/myproject/locations/us/dataExchanges/123"
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// The maximum number of results to return in a single response page.
@@ -1549,7 +1549,7 @@ pub struct ListSubscriptionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Message for listing subscriptions of a shared resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSharedResourceSubscriptionsRequest {
     /// Required. Resource name of the requested target. This resource may be
     /// either a Listing or a DataExchange. e.g.
@@ -1579,7 +1579,7 @@ pub struct ListSharedResourceSubscriptionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Message for revoking a subscription.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RevokeSubscriptionRequest {
     /// Required. Resource name of the subscription to revoke.
     /// e.g. projects/123/locations/us/subscriptions/456
@@ -1593,10 +1593,10 @@ pub struct RevokeSubscriptionRequest {
 }
 /// Message for response when you revoke a subscription.
 /// Empty for now.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RevokeSubscriptionResponse {}
 /// Message for deleting a subscription.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSubscriptionRequest {
     /// Required. Resource name of the subscription to delete.
     /// e.g. projects/123/locations/us/subscriptions/456
@@ -1604,7 +1604,7 @@ pub struct DeleteSubscriptionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Represents the metadata of a long-running operation in Analytics Hub.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -1623,8 +1623,8 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+    /// have \[Operation.error\]\[\] value with a
+    /// \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -1815,7 +1815,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/ListDataExchanges",
             );
@@ -1846,7 +1846,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/ListOrgDataExchanges",
             );
@@ -1873,7 +1873,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/GetDataExchange",
             );
@@ -1900,7 +1900,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/CreateDataExchange",
             );
@@ -1927,7 +1927,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/UpdateDataExchange",
             );
@@ -1954,7 +1954,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/DeleteDataExchange",
             );
@@ -1984,7 +1984,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/ListListings",
             );
@@ -2011,7 +2011,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/GetListing",
             );
@@ -2038,7 +2038,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/CreateListing",
             );
@@ -2065,7 +2065,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/UpdateListing",
             );
@@ -2092,7 +2092,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/DeleteListing",
             );
@@ -2127,7 +2127,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/SubscribeListing",
             );
@@ -2160,7 +2160,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/SubscribeDataExchange",
             );
@@ -2192,7 +2192,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/RefreshSubscription",
             );
@@ -2219,7 +2219,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/GetSubscription",
             );
@@ -2249,7 +2249,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/ListSubscriptions",
             );
@@ -2281,7 +2281,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/ListSharedResourceSubscriptions",
             );
@@ -2311,7 +2311,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/RevokeSubscription",
             );
@@ -2341,7 +2341,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/DeleteSubscription",
             );
@@ -2373,7 +2373,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/GetIamPolicy",
             );
@@ -2405,7 +2405,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/SetIamPolicy",
             );
@@ -2439,7 +2439,7 @@ pub mod analytics_hub_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/TestIamPermissions",
             );

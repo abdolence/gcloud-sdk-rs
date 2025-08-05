@@ -54,7 +54,7 @@ pub struct SecurityCenterService {
 /// Nested message and enum types in `SecurityCenterService`.
 pub mod security_center_service {
     /// The settings for individual modules.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ModuleSettings {
         /// Optional. The intended enablement state for the module at its level of
         /// the resource hierarchy.
@@ -204,8 +204,8 @@ pub mod effective_security_health_analytics_custom_module {
     }
 }
 /// Request message for
-/// [SecurityCenterManagement.ListEffectiveSecurityHealthAnalyticsCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEffectiveSecurityHealthAnalyticsCustomModules].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[SecurityCenterManagement.ListEffectiveSecurityHealthAnalyticsCustomModules\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEffectiveSecurityHealthAnalyticsCustomModules\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListEffectiveSecurityHealthAnalyticsCustomModulesRequest {
     /// Required. Name of parent to list effective custom modules, in one of the
     /// following formats:
@@ -228,7 +228,7 @@ pub struct ListEffectiveSecurityHealthAnalyticsCustomModulesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [SecurityCenterManagement.ListEffectiveSecurityHealthAnalyticsCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEffectiveSecurityHealthAnalyticsCustomModules].
+/// \[SecurityCenterManagement.ListEffectiveSecurityHealthAnalyticsCustomModules\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEffectiveSecurityHealthAnalyticsCustomModules\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEffectiveSecurityHealthAnalyticsCustomModulesResponse {
     /// The list of effective Security Health Analytics custom modules.
@@ -242,8 +242,8 @@ pub struct ListEffectiveSecurityHealthAnalyticsCustomModulesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [SecurityCenterManagement.GetEffectiveSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.GetEffectiveSecurityHealthAnalyticsCustomModule].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[SecurityCenterManagement.GetEffectiveSecurityHealthAnalyticsCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.GetEffectiveSecurityHealthAnalyticsCustomModule\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEffectiveSecurityHealthAnalyticsCustomModuleRequest {
     /// Required. The full resource name of the custom module, specified in one of
     /// the following formats:
@@ -400,7 +400,7 @@ pub mod custom_config {
     /// Nested message and enum types in `CustomOutputSpec`.
     pub mod custom_output_spec {
         /// An individual name-value pair that defines a custom source property.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Property {
             /// Optional. Name of the property for the custom output.
             #[prost(string, tag = "1")]
@@ -415,7 +415,7 @@ pub mod custom_config {
         }
     }
     /// Resource for selecting resource type.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ResourceSelector {
         /// Optional. The resource types to run the detector on.
         #[prost(string, repeated, tag = "1")]
@@ -474,8 +474,8 @@ pub mod custom_config {
     }
 }
 /// Request message for
-/// [SecurityCenterManagement.ListSecurityHealthAnalyticsCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListSecurityHealthAnalyticsCustomModules].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[SecurityCenterManagement.ListSecurityHealthAnalyticsCustomModules\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListSecurityHealthAnalyticsCustomModules\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSecurityHealthAnalyticsCustomModulesRequest {
     /// Required. Name of the parent organization, folder, or project in which to
     /// list custom modules, in one of the following formats:
@@ -498,7 +498,7 @@ pub struct ListSecurityHealthAnalyticsCustomModulesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [SecurityCenterManagement.ListSecurityHealthAnalyticsCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListSecurityHealthAnalyticsCustomModules].
+/// \[SecurityCenterManagement.ListSecurityHealthAnalyticsCustomModules\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListSecurityHealthAnalyticsCustomModules\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSecurityHealthAnalyticsCustomModulesResponse {
     /// The list of Security Health Analytics custom modules.
@@ -512,8 +512,8 @@ pub struct ListSecurityHealthAnalyticsCustomModulesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [SecurityCenterManagement.ListDescendantSecurityHealthAnalyticsCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListDescendantSecurityHealthAnalyticsCustomModules].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[SecurityCenterManagement.ListDescendantSecurityHealthAnalyticsCustomModules\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListDescendantSecurityHealthAnalyticsCustomModules\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDescendantSecurityHealthAnalyticsCustomModulesRequest {
     /// Required. Name of the parent organization, folder, or project in which to
     /// list custom modules, in one of the following formats:
@@ -536,7 +536,7 @@ pub struct ListDescendantSecurityHealthAnalyticsCustomModulesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [SecurityCenterManagement.ListDescendantSecurityHealthAnalyticsCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListDescendantSecurityHealthAnalyticsCustomModules].
+/// \[SecurityCenterManagement.ListDescendantSecurityHealthAnalyticsCustomModules\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListDescendantSecurityHealthAnalyticsCustomModules\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDescendantSecurityHealthAnalyticsCustomModulesResponse {
     /// The list of SecurityHealthAnalyticsCustomModules
@@ -550,8 +550,8 @@ pub struct ListDescendantSecurityHealthAnalyticsCustomModulesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [SecurityCenterManagement.GetSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.GetSecurityHealthAnalyticsCustomModule].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[SecurityCenterManagement.GetSecurityHealthAnalyticsCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.GetSecurityHealthAnalyticsCustomModule\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSecurityHealthAnalyticsCustomModuleRequest {
     /// Required. Name of the resource, in the format
     /// `projects/{project}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}`.
@@ -559,7 +559,7 @@ pub struct GetSecurityHealthAnalyticsCustomModuleRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [SecurityCenterManagement.CreateSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.CreateSecurityHealthAnalyticsCustomModule].
+/// \[SecurityCenterManagement.CreateSecurityHealthAnalyticsCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.CreateSecurityHealthAnalyticsCustomModule\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSecurityHealthAnalyticsCustomModuleRequest {
     /// Required. Name of the parent organization, folder, or project of the
@@ -583,16 +583,16 @@ pub struct CreateSecurityHealthAnalyticsCustomModuleRequest {
     /// If the request is valid, a subsequent request to create the module could
     /// still fail for one of the following reasons:
     ///
-    /// *  The state of your cloud resources changed; for example, you lost a
-    ///     required IAM permission
-    /// *  An error occurred during creation of the module
+    /// * The state of your cloud resources changed; for example, you lost a
+    ///   required IAM permission
+    /// * An error occurred during creation of the module
     ///
     /// Defaults to `false`.
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
 }
 /// Request message for
-/// [SecurityCenterManagement.UpdateSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.UpdateSecurityHealthAnalyticsCustomModule].
+/// \[SecurityCenterManagement.UpdateSecurityHealthAnalyticsCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.UpdateSecurityHealthAnalyticsCustomModule\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSecurityHealthAnalyticsCustomModuleRequest {
     /// Required. The fields to update. The following values are valid:
@@ -617,24 +617,24 @@ pub struct UpdateSecurityHealthAnalyticsCustomModuleRequest {
     /// If the request is valid, a subsequent request to update the module could
     /// still fail for one of the following reasons:
     ///
-    /// *  The state of your cloud resources changed; for example, you lost a
-    ///     required IAM permission
-    /// *  An error occurred during creation of the module
+    /// * The state of your cloud resources changed; for example, you lost a
+    ///   required IAM permission
+    /// * An error occurred during creation of the module
     ///
     /// Defaults to `false`.
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
 }
 /// Request message for
-/// [SecurityCenterManagement.DeleteSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.DeleteSecurityHealthAnalyticsCustomModule].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[SecurityCenterManagement.DeleteSecurityHealthAnalyticsCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.DeleteSecurityHealthAnalyticsCustomModule\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSecurityHealthAnalyticsCustomModuleRequest {
     /// Required. The resource name of the SHA custom module, in one of the
     /// following formats:
     ///
-    ///    * `organizations/{organization}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}`
-    ///    * `folders/{folder}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}`
-    ///    * `projects/{project}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}`
+    /// * `organizations/{organization}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}`
+    /// * `folders/{folder}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}`
+    /// * `projects/{project}/locations/{location}/securityHealthAnalyticsCustomModules/{custom_module}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. When set to `true`, the request will be validated (including IAM
@@ -645,16 +645,16 @@ pub struct DeleteSecurityHealthAnalyticsCustomModuleRequest {
     /// If the request is valid, a subsequent request to delete the module could
     /// still fail for one of the following reasons:
     ///
-    /// *  The state of your cloud resources changed; for example, you lost a
-    ///     required IAM permission
-    /// *  An error occurred during deletion of the module
+    /// * The state of your cloud resources changed; for example, you lost a
+    ///   required IAM permission
+    /// * An error occurred during deletion of the module
     ///
     /// Defaults to `false`.
     #[prost(bool, tag = "2")]
     pub validate_only: bool,
 }
 /// Request message for
-/// [SecurityCenterManagement.SimulateSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.SimulateSecurityHealthAnalyticsCustomModule].
+/// \[SecurityCenterManagement.SimulateSecurityHealthAnalyticsCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.SimulateSecurityHealthAnalyticsCustomModule\].
 /// The maximum size of the request is 4 MiB.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SimulateSecurityHealthAnalyticsCustomModuleRequest {
@@ -964,7 +964,7 @@ pub mod simulated_finding {
     }
 }
 /// Response message for
-/// [SecurityCenterManagement.SimulateSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.SimulateSecurityHealthAnalyticsCustomModule].
+/// \[SecurityCenterManagement.SimulateSecurityHealthAnalyticsCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.SimulateSecurityHealthAnalyticsCustomModule\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SimulateSecurityHealthAnalyticsCustomModuleResponse {
     /// Result for test case in the corresponding request.
@@ -1001,7 +1001,7 @@ pub mod simulate_security_health_analytics_custom_module_response {
     }
 }
 /// The representation of an
-/// [EventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.EventThreatDetectionCustomModule]
+/// \[EventThreatDetectionCustomModule\]\[google.cloud.securitycentermanagement.v1.EventThreatDetectionCustomModule\]
 /// at a given level, taking hierarchy into account and resolving various fields
 /// accordingly. For example, if the module is enabled at the ancestor level,
 /// then effective modules at all descendant levels will have their enablement
@@ -1084,8 +1084,8 @@ pub mod effective_event_threat_detection_custom_module {
     }
 }
 /// Request message for
-/// [SecurityCenterManagement.ListEffectiveEventThreatDetectionCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEffectiveEventThreatDetectionCustomModules].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[SecurityCenterManagement.ListEffectiveEventThreatDetectionCustomModules\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEffectiveEventThreatDetectionCustomModules\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListEffectiveEventThreatDetectionCustomModulesRequest {
     /// Required. Name of parent to list effective custom modules, in one of the
     /// following formats:
@@ -1108,7 +1108,7 @@ pub struct ListEffectiveEventThreatDetectionCustomModulesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [SecurityCenterManagement.ListEffectiveEventThreatDetectionCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEffectiveEventThreatDetectionCustomModules].
+/// \[SecurityCenterManagement.ListEffectiveEventThreatDetectionCustomModules\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEffectiveEventThreatDetectionCustomModules\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEffectiveEventThreatDetectionCustomModulesResponse {
     /// The list of effective Event Threat Detection custom modules.
@@ -1122,8 +1122,8 @@ pub struct ListEffectiveEventThreatDetectionCustomModulesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [SecurityCenterManagement.GetEffectiveEventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.GetEffectiveEventThreatDetectionCustomModule].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[SecurityCenterManagement.GetEffectiveEventThreatDetectionCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.GetEffectiveEventThreatDetectionCustomModule\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEffectiveEventThreatDetectionCustomModuleRequest {
     /// Required. The resource name of the Event Threat Detection custom module, in
     /// one of the following formats:
@@ -1236,8 +1236,8 @@ pub mod event_threat_detection_custom_module {
     }
 }
 /// Request message for
-/// [SecurityCenterManagement.ListEventThreatDetectionCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEventThreatDetectionCustomModules].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[SecurityCenterManagement.ListEventThreatDetectionCustomModules\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEventThreatDetectionCustomModules\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListEventThreatDetectionCustomModulesRequest {
     /// Required. Name of parent to list custom modules, in one of the following
     /// formats:
@@ -1261,7 +1261,7 @@ pub struct ListEventThreatDetectionCustomModulesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [SecurityCenterManagement.ListEventThreatDetectionCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEventThreatDetectionCustomModules].
+/// \[SecurityCenterManagement.ListEventThreatDetectionCustomModules\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListEventThreatDetectionCustomModules\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEventThreatDetectionCustomModulesResponse {
     /// The list of custom modules.
@@ -1275,8 +1275,8 @@ pub struct ListEventThreatDetectionCustomModulesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [SecurityCenterManagement.ListDescendantEventThreatDetectionCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListDescendantEventThreatDetectionCustomModules].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[SecurityCenterManagement.ListDescendantEventThreatDetectionCustomModules\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListDescendantEventThreatDetectionCustomModules\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDescendantEventThreatDetectionCustomModulesRequest {
     /// Required. Name of parent to list custom modules, in one of the following
     /// formats:
@@ -1300,7 +1300,7 @@ pub struct ListDescendantEventThreatDetectionCustomModulesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [SecurityCenterManagement.ListDescendantEventThreatDetectionCustomModules][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListDescendantEventThreatDetectionCustomModules].
+/// \[SecurityCenterManagement.ListDescendantEventThreatDetectionCustomModules\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListDescendantEventThreatDetectionCustomModules\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDescendantEventThreatDetectionCustomModulesResponse {
     /// The list of custom modules.
@@ -1314,8 +1314,8 @@ pub struct ListDescendantEventThreatDetectionCustomModulesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [SecurityCenterManagement.GetEventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.GetEventThreatDetectionCustomModule].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[SecurityCenterManagement.GetEventThreatDetectionCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.GetEventThreatDetectionCustomModule\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEventThreatDetectionCustomModuleRequest {
     /// Required. The resource name of the Event Threat Detection custom module, in
     /// one of the following formats:
@@ -1327,7 +1327,7 @@ pub struct GetEventThreatDetectionCustomModuleRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [SecurityCenterManagement.CreateEventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.CreateEventThreatDetectionCustomModule].
+/// \[SecurityCenterManagement.CreateEventThreatDetectionCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.CreateEventThreatDetectionCustomModule\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEventThreatDetectionCustomModuleRequest {
     /// Required. Name of parent for the module, in one of the following formats:
@@ -1338,7 +1338,7 @@ pub struct CreateEventThreatDetectionCustomModuleRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The module to create. The
-    /// [EventThreatDetectionCustomModule.name][google.cloud.securitycentermanagement.v1.EventThreatDetectionCustomModule.name]
+    /// \[EventThreatDetectionCustomModule.name\]\[google.cloud.securitycentermanagement.v1.EventThreatDetectionCustomModule.name\]
     /// field is ignored; Security Command Center generates the name.
     #[prost(message, optional, tag = "3")]
     pub event_threat_detection_custom_module: ::core::option::Option<
@@ -1352,9 +1352,9 @@ pub struct CreateEventThreatDetectionCustomModuleRequest {
     /// If the request is valid, a subsequent request to create the module could
     /// still fail for one of the following reasons:
     ///
-    /// *  The state of your cloud resources changed; for example, you lost a
-    ///     required IAM permission
-    /// *  An error occurred during creation of the module
+    /// * The state of your cloud resources changed; for example, you lost a
+    ///   required IAM permission
+    /// * An error occurred during creation of the module
     ///
     /// Defaults to `false`.
     #[prost(bool, tag = "4")]
@@ -1379,17 +1379,17 @@ pub struct UpdateEventThreatDetectionCustomModuleRequest {
     /// If the request is valid, a subsequent request to update the module could
     /// still fail for one of the following reasons:
     ///
-    /// *  The state of your cloud resources changed; for example, you lost a
-    ///     required IAM permission
-    /// *  An error occurred during creation of the module
+    /// * The state of your cloud resources changed; for example, you lost a
+    ///   required IAM permission
+    /// * An error occurred during creation of the module
     ///
     /// Defaults to `false`.
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
 }
 /// Request message for
-/// [SecurityCenterManagement.DeleteEventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.DeleteEventThreatDetectionCustomModule].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[SecurityCenterManagement.DeleteEventThreatDetectionCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.DeleteEventThreatDetectionCustomModule\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteEventThreatDetectionCustomModuleRequest {
     /// Required. The resource name of the Event Threat Detection custom module, in
     /// one of the following formats:
@@ -1407,17 +1407,17 @@ pub struct DeleteEventThreatDetectionCustomModuleRequest {
     /// If the request is valid, a subsequent request to delete the module could
     /// still fail for one of the following reasons:
     ///
-    /// *  The state of your cloud resources changed; for example, you lost a
-    ///     required IAM permission
-    /// *  An error occurred during creation of the module
+    /// * The state of your cloud resources changed; for example, you lost a
+    ///   required IAM permission
+    /// * An error occurred during creation of the module
     ///
     /// Defaults to `false`.
     #[prost(bool, tag = "2")]
     pub validate_only: bool,
 }
 /// Request message for
-/// [SecurityCenterManagement.ValidateEventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ValidateEventThreatDetectionCustomModule].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[SecurityCenterManagement.ValidateEventThreatDetectionCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ValidateEventThreatDetectionCustomModule\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ValidateEventThreatDetectionCustomModuleRequest {
     /// Required. Resource name of the parent to validate the custom modules under,
     /// in one of the following formats:
@@ -1434,7 +1434,7 @@ pub struct ValidateEventThreatDetectionCustomModuleRequest {
     pub r#type: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [SecurityCenterManagement.ValidateEventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ValidateEventThreatDetectionCustomModule].
+/// \[SecurityCenterManagement.ValidateEventThreatDetectionCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ValidateEventThreatDetectionCustomModule\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValidateEventThreatDetectionCustomModuleResponse {
     /// A list of errors returned by the validator. If the list is empty, there
@@ -1448,7 +1448,7 @@ pub struct ValidateEventThreatDetectionCustomModuleResponse {
 pub mod validate_event_threat_detection_custom_module_response {
     /// An error encountered while validating the uploaded configuration of an
     /// Event Threat Detection custom module.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CustomModuleValidationError {
         /// A human-readable description of the error.
         #[prost(string, tag = "1")]
@@ -1470,7 +1470,7 @@ pub mod validate_event_threat_detection_custom_module_response {
         pub end: ::core::option::Option<Position>,
     }
     /// A position in the uploaded text version of a module.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Position {
         /// The line position in the text.
         #[prost(int32, tag = "1")]
@@ -1481,8 +1481,8 @@ pub mod validate_event_threat_detection_custom_module_response {
     }
 }
 /// Request message for
-/// [SecurityCenterManagement.GetSecurityCenterService][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.GetSecurityCenterService].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[SecurityCenterManagement.GetSecurityCenterService\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.GetSecurityCenterService\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSecurityCenterServiceRequest {
     /// Required. The Security Command Center service to retrieve, in one of the
     /// following formats:
@@ -1506,8 +1506,8 @@ pub struct GetSecurityCenterServiceRequest {
     pub show_eligible_modules_only: bool,
 }
 /// Request message for
-/// [SecurityCenterManagement.ListSecurityCenterServices][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListSecurityCenterServices].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[SecurityCenterManagement.ListSecurityCenterServices\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListSecurityCenterServices\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSecurityCenterServicesRequest {
     /// Required. The name of the parent to list Security Command Center services,
     /// in one of the following formats:
@@ -1534,7 +1534,7 @@ pub struct ListSecurityCenterServicesRequest {
     pub show_eligible_modules_only: bool,
 }
 /// Response message for
-/// [SecurityCenterManagement.ListSecurityCenterServices][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListSecurityCenterServices].
+/// \[SecurityCenterManagement.ListSecurityCenterServices\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.ListSecurityCenterServices\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSecurityCenterServicesResponse {
     /// The list of services.
@@ -1546,7 +1546,7 @@ pub struct ListSecurityCenterServicesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [SecurityCenterManagement.UpdateSecurityCenterService][google.cloud.securitycentermanagement.v1.SecurityCenterManagement.UpdateSecurityCenterService].
+/// \[SecurityCenterManagement.UpdateSecurityCenterService\]\[google.cloud.securitycentermanagement.v1.SecurityCenterManagement.UpdateSecurityCenterService\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSecurityCenterServiceRequest {
     /// Required. The updated service.
@@ -1568,9 +1568,9 @@ pub struct UpdateSecurityCenterServiceRequest {
     /// If the request is valid, a subsequent request to update the service could
     /// still fail for one of the following reasons:
     ///
-    /// *  The state of your cloud resources changed; for example, you lost a
-    ///     required IAM permission
-    /// *  An error occurred during update of the service
+    /// * The state of your cloud resources changed; for example, you lost a
+    ///   required IAM permission
+    /// * An error occurred during update of the service
     ///
     /// Defaults to `false`.
     #[prost(bool, tag = "3")]
@@ -1671,7 +1671,7 @@ pub mod security_center_management_client {
             self
         }
         /// Returns a list of all
-        /// [EffectiveSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.EffectiveSecurityHealthAnalyticsCustomModule]
+        /// \[EffectiveSecurityHealthAnalyticsCustomModule\]\[google.cloud.securitycentermanagement.v1.EffectiveSecurityHealthAnalyticsCustomModule\]
         /// resources for the given parent. This includes resident modules defined at
         /// the scope of the parent, and inherited modules, inherited from ancestor
         /// organizations, folders, and projects (no descendants).
@@ -1694,7 +1694,7 @@ pub mod security_center_management_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListEffectiveSecurityHealthAnalyticsCustomModules",
             );
@@ -1709,7 +1709,7 @@ pub mod security_center_management_client {
             self.inner.unary(req, path, codec).await
         }
         /// Gets details of a single
-        /// [EffectiveSecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.EffectiveSecurityHealthAnalyticsCustomModule].
+        /// \[EffectiveSecurityHealthAnalyticsCustomModule\]\[google.cloud.securitycentermanagement.v1.EffectiveSecurityHealthAnalyticsCustomModule\].
         pub async fn get_effective_security_health_analytics_custom_module(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -1727,7 +1727,7 @@ pub mod security_center_management_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetEffectiveSecurityHealthAnalyticsCustomModule",
             );
@@ -1742,7 +1742,7 @@ pub mod security_center_management_client {
             self.inner.unary(req, path, codec).await
         }
         /// Returns a list of all
-        /// [SecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule]
+        /// \[SecurityHealthAnalyticsCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule\]
         /// resources for the given parent. This includes resident modules defined at
         /// the scope of the parent, and inherited modules, inherited from ancestor
         /// organizations, folders, and projects (no descendants).
@@ -1763,7 +1763,7 @@ pub mod security_center_management_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListSecurityHealthAnalyticsCustomModules",
             );
@@ -1778,7 +1778,7 @@ pub mod security_center_management_client {
             self.inner.unary(req, path, codec).await
         }
         /// Returns a list of all resident
-        /// [SecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule]
+        /// \[SecurityHealthAnalyticsCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule\]
         /// resources under the given organization, folder, or project and all of its
         /// descendants.
         pub async fn list_descendant_security_health_analytics_custom_modules(
@@ -1800,7 +1800,7 @@ pub mod security_center_management_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListDescendantSecurityHealthAnalyticsCustomModules",
             );
@@ -1815,7 +1815,7 @@ pub mod security_center_management_client {
             self.inner.unary(req, path, codec).await
         }
         /// Retrieves a
-        /// [SecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule].
+        /// \[SecurityHealthAnalyticsCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule\].
         pub async fn get_security_health_analytics_custom_module(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -1833,7 +1833,7 @@ pub mod security_center_management_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetSecurityHealthAnalyticsCustomModule",
             );
@@ -1848,7 +1848,7 @@ pub mod security_center_management_client {
             self.inner.unary(req, path, codec).await
         }
         /// Creates a resident
-        /// [SecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule]
+        /// \[SecurityHealthAnalyticsCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule\]
         /// at the scope of the given organization, folder, or project, and also
         /// creates inherited `SecurityHealthAnalyticsCustomModule` resources for all
         /// folders and projects that are descendants of the given parent. These
@@ -1870,7 +1870,7 @@ pub mod security_center_management_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/CreateSecurityHealthAnalyticsCustomModule",
             );
@@ -1885,7 +1885,7 @@ pub mod security_center_management_client {
             self.inner.unary(req, path, codec).await
         }
         /// Updates the
-        /// [SecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule]
+        /// \[SecurityHealthAnalyticsCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule\]
         /// under the given name based on the given update mask. Updating the
         /// enablement state is supported on both resident and inherited modules
         /// (though resident modules cannot have an enablement state of "inherited").
@@ -1908,7 +1908,7 @@ pub mod security_center_management_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/UpdateSecurityHealthAnalyticsCustomModule",
             );
@@ -1923,7 +1923,7 @@ pub mod security_center_management_client {
             self.inner.unary(req, path, codec).await
         }
         /// Deletes the specified
-        /// [SecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule]
+        /// \[SecurityHealthAnalyticsCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule\]
         /// and all of its descendants in the resource hierarchy. This method is only
         /// supported for resident custom modules.
         pub async fn delete_security_health_analytics_custom_module(
@@ -1940,7 +1940,7 @@ pub mod security_center_management_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/DeleteSecurityHealthAnalyticsCustomModule",
             );
@@ -1955,7 +1955,7 @@ pub mod security_center_management_client {
             self.inner.unary(req, path, codec).await
         }
         /// Simulates the result of using a
-        /// [SecurityHealthAnalyticsCustomModule][google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule]
+        /// \[SecurityHealthAnalyticsCustomModule\]\[google.cloud.securitycentermanagement.v1.SecurityHealthAnalyticsCustomModule\]
         /// to check a resource.
         pub async fn simulate_security_health_analytics_custom_module(
             &mut self,
@@ -1974,7 +1974,7 @@ pub mod security_center_management_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/SimulateSecurityHealthAnalyticsCustomModule",
             );
@@ -2010,7 +2010,7 @@ pub mod security_center_management_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListEffectiveEventThreatDetectionCustomModules",
             );
@@ -2027,9 +2027,9 @@ pub mod security_center_management_client {
         /// Gets the effective Event Threat Detection custom module at the given level.
         ///
         /// The difference between an
-        /// [EffectiveEventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.EffectiveEventThreatDetectionCustomModule]
+        /// \[EffectiveEventThreatDetectionCustomModule\]\[google.cloud.securitycentermanagement.v1.EffectiveEventThreatDetectionCustomModule\]
         /// and an
-        /// [EventThreatDetectionCustomModule][google.cloud.securitycentermanagement.v1.EventThreatDetectionCustomModule]
+        /// \[EventThreatDetectionCustomModule\]\[google.cloud.securitycentermanagement.v1.EventThreatDetectionCustomModule\]
         /// is that the fields for an `EffectiveEventThreatDetectionCustomModule` are
         /// computed from ancestors if needed. For example, the enablement state for an
         /// `EventThreatDetectionCustomModule` can be `ENABLED`, `DISABLED`, or
@@ -2053,7 +2053,7 @@ pub mod security_center_management_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetEffectiveEventThreatDetectionCustomModule",
             );
@@ -2087,7 +2087,7 @@ pub mod security_center_management_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListEventThreatDetectionCustomModules",
             );
@@ -2122,7 +2122,7 @@ pub mod security_center_management_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListDescendantEventThreatDetectionCustomModules",
             );
@@ -2154,7 +2154,7 @@ pub mod security_center_management_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetEventThreatDetectionCustomModule",
             );
@@ -2189,7 +2189,7 @@ pub mod security_center_management_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/CreateEventThreatDetectionCustomModule",
             );
@@ -2226,7 +2226,7 @@ pub mod security_center_management_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/UpdateEventThreatDetectionCustomModule",
             );
@@ -2257,7 +2257,7 @@ pub mod security_center_management_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/DeleteEventThreatDetectionCustomModule",
             );
@@ -2289,7 +2289,7 @@ pub mod security_center_management_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ValidateEventThreatDetectionCustomModule",
             );
@@ -2319,7 +2319,7 @@ pub mod security_center_management_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetSecurityCenterService",
             );
@@ -2350,7 +2350,7 @@ pub mod security_center_management_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListSecurityCenterServices",
             );
@@ -2380,7 +2380,7 @@ pub mod security_center_management_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/UpdateSecurityCenterService",
             );

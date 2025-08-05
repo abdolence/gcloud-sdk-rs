@@ -8,21 +8,21 @@
 ///
 /// Each encoding also defines the following properties:
 ///
-///   * Order-preserving: Does the encoded value sort consistently with the
-///     original typed value? Note that Bigtable will always sort data based on
-///     the raw encoded value, *not* the decoded type.
-///      - Example: BYTES values sort in the same order as their raw encodings.
-///      - Counterexample: Encoding INT64 as a fixed-width decimal string does
-///        *not* preserve sort order when dealing with negative numbers.
-///        `INT64(1) > INT64(-1)`, but `STRING("-00001") > STRING("00001)`.
-///   * Self-delimiting: If we concatenate two encoded values, can we always tell
-///     where the first one ends and the second one begins?
-///      - Example: If we encode INT64s to fixed-width STRINGs, the first value
-///        will always contain exactly N digits, possibly preceded by a sign.
-///      - Counterexample: If we concatenate two UTF-8 encoded STRINGs, we have
-///        no way to tell where the first one ends.
-///   * Compatibility: Which other systems have matching encoding schemes? For
-///     example, does this encoding have a GoogleSQL equivalent? HBase? Java?
+/// * Order-preserving: Does the encoded value sort consistently with the
+///   original typed value? Note that Bigtable will always sort data based on
+///   the raw encoded value, *not* the decoded type.
+///   * Example: BYTES values sort in the same order as their raw encodings.
+///   * Counterexample: Encoding INT64 as a fixed-width decimal string does
+///     *not* preserve sort order when dealing with negative numbers.
+///     `INT64(1) > INT64(-1)`, but `STRING("-00001") > STRING("00001)`.
+/// * Self-delimiting: If we concatenate two encoded values, can we always tell
+///   where the first one ends and the second one begins?
+///   * Example: If we encode INT64s to fixed-width STRINGs, the first value
+///     will always contain exactly N digits, possibly preceded by a sign.
+///   * Counterexample: If we concatenate two UTF-8 encoded STRINGs, we have
+///     no way to tell where the first one ends.
+/// * Compatibility: Which other systems have matching encoding schemes? For
+///   example, does this encoding have a GoogleSQL equivalent? HBase? Java?
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Type {
     /// The kind of type that this represents.
@@ -36,7 +36,7 @@ pub struct Type {
 pub mod r#type {
     /// Bytes
     /// Values of type `Bytes` are stored in `Value.bytes_value`.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Bytes {
         /// The encoding to use when converting to/from lower level types.
         #[prost(message, optional, tag = "1")]
@@ -45,7 +45,7 @@ pub mod r#type {
     /// Nested message and enum types in `Bytes`.
     pub mod bytes {
         /// Rules used to convert to/from lower level types.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Encoding {
             /// Which encoding to use.
             #[prost(oneof = "encoding::Encoding", tags = "1")]
@@ -54,13 +54,14 @@ pub mod r#type {
         /// Nested message and enum types in `Encoding`.
         pub mod encoding {
             /// Leaves the value "as-is"
+            ///
             /// * Order-preserving? Yes
             /// * Self-delimiting? No
             /// * Compatibility? N/A
-            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct Raw {}
             /// Which encoding to use.
-            #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+            #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum Encoding {
                 /// Use `Raw` encoding.
                 #[prost(message, tag = "1")]
@@ -70,7 +71,7 @@ pub mod r#type {
     }
     /// String
     /// Values of type `String` are stored in `Value.string_value`.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct String {
         /// The encoding to use when converting to/from lower level types.
         #[prost(message, optional, tag = "1")]
@@ -79,7 +80,7 @@ pub mod r#type {
     /// Nested message and enum types in `String`.
     pub mod string {
         /// Rules used to convert to/from lower level types.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Encoding {
             /// Which encoding to use.
             #[prost(oneof = "encoding::Encoding", tags = "1, 2")]
@@ -88,19 +89,20 @@ pub mod r#type {
         /// Nested message and enum types in `Encoding`.
         pub mod encoding {
             /// Deprecated: prefer the equivalent `Utf8Bytes`.
-            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct Utf8Raw {}
             /// UTF-8 encoding
+            ///
             /// * Order-preserving? Yes (code point order)
             /// * Self-delimiting? No
             /// * Compatibility?
-            ///     - BigQuery Federation `TEXT` encoding
-            ///     - HBase `Bytes.toBytes`
-            ///     - Java `String#getBytes(StandardCharsets.UTF_8)`
-            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+            ///   * BigQuery Federation `TEXT` encoding
+            ///   * HBase `Bytes.toBytes`
+            ///   * Java `String#getBytes(StandardCharsets.UTF_8)`
+            #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct Utf8Bytes {}
             /// Which encoding to use.
-            #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+            #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum Encoding {
                 /// Deprecated: if set, converts to an empty `utf8_bytes`.
                 #[prost(message, tag = "1")]
@@ -113,7 +115,7 @@ pub mod r#type {
     }
     /// Int64
     /// Values of type `Int64` are stored in `Value.int_value`.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Int64 {
         /// The encoding to use when converting to/from lower level types.
         #[prost(message, optional, tag = "1")]
@@ -122,7 +124,7 @@ pub mod r#type {
     /// Nested message and enum types in `Int64`.
     pub mod int64 {
         /// Rules used to convert to/from lower level types.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Encoding {
             /// Which encoding to use.
             #[prost(oneof = "encoding::Encoding", tags = "1")]
@@ -132,20 +134,21 @@ pub mod r#type {
         pub mod encoding {
             /// Encodes the value as an 8-byte big endian twos complement `Bytes`
             /// value.
+            ///
             /// * Order-preserving? No (positive values only)
             /// * Self-delimiting? Yes
             /// * Compatibility?
-            ///     - BigQuery Federation `BINARY` encoding
-            ///     - HBase `Bytes.toBytes`
-            ///     - Java `ByteBuffer.putLong()` with `ByteOrder.BIG_ENDIAN`
-            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+            ///   * BigQuery Federation `BINARY` encoding
+            ///   * HBase `Bytes.toBytes`
+            ///   * Java `ByteBuffer.putLong()` with `ByteOrder.BIG_ENDIAN`
+            #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct BigEndianBytes {
                 /// Deprecated: ignored if set.
                 #[prost(message, optional, tag = "1")]
                 pub bytes_type: ::core::option::Option<super::super::Bytes>,
             }
             /// Which encoding to use.
-            #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+            #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum Encoding {
                 /// Use `BigEndianBytes` encoding.
                 #[prost(message, tag = "1")]
@@ -155,23 +158,23 @@ pub mod r#type {
     }
     /// bool
     /// Values of type `Bool` are stored in `Value.bool_value`.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Bool {}
     /// Float32
     /// Values of type `Float32` are stored in `Value.float_value`.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Float32 {}
     /// Float64
     /// Values of type `Float64` are stored in `Value.float_value`.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Float64 {}
     /// Timestamp
     /// Values of type `Timestamp` are stored in `Value.timestamp_value`.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Timestamp {}
     /// Date
     /// Values of type `Date` are stored in `Value.date_value`.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Date {}
     /// A structured data value, consisting of fields which map to dynamically
     /// typed values.
@@ -199,7 +202,7 @@ pub mod r#type {
     }
     /// A protobuf message type.
     /// Values of type `Proto` are stored in `Value.bytes_value`.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Proto {
         /// The ID of the schema bundle that this proto is defined in.
         #[prost(string, tag = "1")]
@@ -211,7 +214,7 @@ pub mod r#type {
     }
     /// A protobuf enum type.
     /// Values of type `Enum` are stored in `Value.int_value`.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Enum {
         /// The ID of the schema bundle that this enum is defined in.
         #[prost(string, tag = "1")]
@@ -237,7 +240,7 @@ pub mod r#type {
     /// in that order).
     /// Normally encoded Map values won't have repeated keys, however, clients are
     /// expected to handle the case in which they do. If the same key appears
-    /// multiple times, the _last_ value takes precedence.
+    /// multiple times, the *last* value takes precedence.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Map {
         /// The type of a map key.
@@ -274,17 +277,17 @@ pub mod r#type {
         /// Computes the sum of the input values.
         /// Allowed input: `Int64`
         /// State: same as input
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Sum {}
         /// Computes the max of the input values.
         /// Allowed input: `Int64`
         /// State: same as input
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Max {}
         /// Computes the min of the input values.
         /// Allowed input: `Int64`
         /// State: same as input
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Min {}
         /// Computes an approximate unique count over the input values. When using
         /// raw data as input, be careful to use a consistent encoding. Otherwise
@@ -293,10 +296,10 @@ pub mod r#type {
         /// Input: Any, or omit for Raw
         /// State: TBD
         /// Special state conversions: `Int64` (the unique count estimate)
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct HyperLogLogPlusPlusUniqueCount {}
         /// Which aggregator function to use. The configured types must match.
-        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Aggregator {
             /// Sum aggregator.
             #[prost(message, tag = "4")]
@@ -405,7 +408,7 @@ pub struct Column {
     pub cells: ::prost::alloc::vec::Vec<Cell>,
 }
 /// Specifies (some of) the contents of a single row/column/timestamp of a table.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Cell {
     /// The cell's stored timestamp, which also uniquely identifies it within
     /// its column.
@@ -420,7 +423,7 @@ pub struct Cell {
     /// length.
     #[prost(bytes = "vec", tag = "2")]
     pub value: ::prost::alloc::vec::Vec<u8>,
-    /// Labels applied to the cell by a [RowFilter][google.bigtable.v2.RowFilter].
+    /// Labels applied to the cell by a \[RowFilter\]\[google.bigtable.v2.RowFilter\].
     #[prost(string, repeated, tag = "3")]
     pub labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -440,8 +443,7 @@ pub struct Value {
     ///
     /// When using composite types (Struct, Array, Map) only the outermost `Value`
     /// will specify the `type`. This top-level `type` will define the types for
-    /// any nested `Struct' fields, `Array` elements, or `Map` key/value pairs.
-    /// If a nested `Value` provides a `type` on write, the request will be
+    /// any nested `Struct' fields, `Array`elements, or`Map`key/value pairs.  If a nested`Value`provides a`type\` on write, the request will be
     /// rejected with INVALID_ARGUMENT.
     #[prost(message, optional, tag = "7")]
     pub r#type: ::core::option::Option<Type>,
@@ -511,7 +513,7 @@ pub struct ArrayValue {
     pub values: ::prost::alloc::vec::Vec<Value>,
 }
 /// Specifies a contiguous range of rows.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RowRange {
     /// The row key at which to start the range.
     /// If neither field is set, interpreted as the empty string, inclusive.
@@ -526,7 +528,7 @@ pub struct RowRange {
 pub mod row_range {
     /// The row key at which to start the range.
     /// If neither field is set, interpreted as the empty string, inclusive.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum StartKey {
         /// Used when giving an inclusive lower bound for the range.
         #[prost(bytes, tag = "1")]
@@ -537,7 +539,7 @@ pub mod row_range {
     }
     /// The row key at which to end the range.
     /// If neither field is set, interpreted as the infinite row key, exclusive.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum EndKey {
         /// Used when giving an exclusive upper bound for the range.
         #[prost(bytes, tag = "3")]
@@ -558,10 +560,10 @@ pub struct RowSet {
     pub row_ranges: ::prost::alloc::vec::Vec<RowRange>,
 }
 /// Specifies a contiguous range of columns within a single column family.
-/// The range spans from &lt;column_family&gt;:&lt;start_qualifier&gt; to
-/// &lt;column_family&gt;:&lt;end_qualifier&gt;, where both bounds can be either
+/// The range spans from \<column_family\>:\<start_qualifier\> to
+/// \<column_family\>:\<end_qualifier\>, where both bounds can be either
 /// inclusive or exclusive.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ColumnRange {
     /// The name of the column family within which this range falls.
     #[prost(string, tag = "1")]
@@ -579,7 +581,7 @@ pub struct ColumnRange {
 pub mod column_range {
     /// The column qualifier at which to start the range (within `column_family`).
     /// If neither field is set, interpreted as the empty string, inclusive.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum StartQualifier {
         /// Used when giving an inclusive lower bound for the range.
         #[prost(bytes, tag = "2")]
@@ -590,7 +592,7 @@ pub mod column_range {
     }
     /// The column qualifier at which to end the range (within `column_family`).
     /// If neither field is set, interpreted as the infinite string, exclusive.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum EndQualifier {
         /// Used when giving an inclusive upper bound for the range.
         #[prost(bytes, tag = "4")]
@@ -601,7 +603,7 @@ pub mod column_range {
     }
 }
 /// Specified a contiguous range of microsecond timestamps.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TimestampRange {
     /// Inclusive lower bound. If left empty, interpreted as 0.
     #[prost(int64, tag = "1")]
@@ -611,7 +613,7 @@ pub struct TimestampRange {
     pub end_timestamp_micros: i64,
 }
 /// Specifies a contiguous range of raw byte values.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ValueRange {
     /// The value at which to start the range.
     /// If neither field is set, interpreted as the empty string, inclusive.
@@ -626,7 +628,7 @@ pub struct ValueRange {
 pub mod value_range {
     /// The value at which to start the range.
     /// If neither field is set, interpreted as the empty string, inclusive.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum StartValue {
         /// Used when giving an inclusive lower bound for the range.
         #[prost(bytes, tag = "1")]
@@ -637,7 +639,7 @@ pub mod value_range {
     }
     /// The value at which to end the range.
     /// If neither field is set, interpreted as the infinite string, exclusive.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum EndValue {
         /// Used when giving an inclusive upper bound for the range.
         #[prost(bytes, tag = "3")]
@@ -660,22 +662,22 @@ pub mod value_range {
 /// (chains and interleaves). They work as follows:
 ///
 /// * True filters alter the input row by excluding some of its cells wholesale
-/// from the output row. An example of a true filter is the `value_regex_filter`,
-/// which excludes cells whose values don't match the specified pattern. All
-/// regex true filters use RE2 syntax (<https://github.com/google/re2/wiki/Syntax>)
-/// in raw byte mode (RE2::Latin1), and are evaluated as full matches. An
-/// important point to keep in mind is that `RE2(.)` is equivalent by default to
-/// `RE2(\[^\n\])`, meaning that it does not match newlines. When attempting to
-/// match an arbitrary byte, you should therefore use the escape sequence `\C`,
-/// which may need to be further escaped as `\\C` in your client language.
+///   from the output row. An example of a true filter is the `value_regex_filter`,
+///   which excludes cells whose values don't match the specified pattern. All
+///   regex true filters use RE2 syntax (<https://github.com/google/re2/wiki/Syntax>)
+///   in raw byte mode (RE2::Latin1), and are evaluated as full matches. An
+///   important point to keep in mind is that `RE2(.)` is equivalent by default to
+///   `RE2(\[^\n\])`, meaning that it does not match newlines. When attempting to
+///   match an arbitrary byte, you should therefore use the escape sequence `\C`,
+///   which may need to be further escaped as `\\C` in your client language.
 ///
 /// * Transformers alter the input row by changing the values of some of its
-/// cells in the output, without excluding them completely. Currently, the only
-/// supported transformer is the `strip_value_transformer`, which replaces every
-/// cell's value with the empty string.
+///   cells in the output, without excluding them completely. Currently, the only
+///   supported transformer is the `strip_value_transformer`, which replaces every
+///   cell's value with the empty string.
 ///
 /// * Chains and interleaves are described in more detail in the
-/// RowFilter.Chain and RowFilter.Interleave documentation.
+///   RowFilter.Chain and RowFilter.Interleave documentation.
 ///
 /// The total serialized size of a RowFilter message must not
 /// exceed 20480 bytes, and RowFilters may not be nested within each other
@@ -711,23 +713,25 @@ pub mod row_filter {
         /// they will all appear in the output row in an unspecified mutual order.
         /// Consider the following example, with three filters:
         ///
-        ///                                   input row
-        ///                                       |
-        ///             -----------------------------------------------------
-        ///             |                         |                         |
-        ///            f(0)                      f(1)                      f(2)
-        ///             |                         |                         |
-        ///      1: foo,bar,10,x             foo,bar,10,z              far,bar,7,a
-        ///      2: foo,blah,11,z            far,blah,5,x              far,blah,5,x
-        ///             |                         |                         |
-        ///             -----------------------------------------------------
-        ///                                       |
-        ///      1:                      foo,bar,10,z   // could have switched with #2
-        ///      2:                      foo,bar,10,x   // could have switched with #1
-        ///      3:                      foo,blah,11,z
-        ///      4:                      far,bar,7,a
-        ///      5:                      far,blah,5,x   // identical to #6
-        ///      6:                      far,blah,5,x   // identical to #5
+        /// ```text
+        ///                               input row
+        ///                                   |
+        ///         -----------------------------------------------------
+        ///         |                         |                         |
+        ///        f(0)                      f(1)                      f(2)
+        ///         |                         |                         |
+        /// 1: foo,bar,10,x             foo,bar,10,z              far,bar,7,a
+        /// 2: foo,blah,11,z            far,blah,5,x              far,blah,5,x
+        ///         |                         |                         |
+        ///         -----------------------------------------------------
+        ///                                   |
+        /// 1:                      foo,bar,10,z   // could have switched with #2
+        /// 2:                      foo,bar,10,x   // could have switched with #1
+        /// 3:                      foo,blah,11,z
+        /// 4:                      far,bar,7,a
+        /// 5:                      far,blah,5,x   // identical to #6
+        /// 6:                      far,blah,5,x   // identical to #5
+        /// ```
         ///
         /// All interleaved filters are executed atomically.
         #[prost(message, repeated, tag = "1")]
@@ -783,52 +787,54 @@ pub mod row_filter {
         /// the output of the read rather than to any parent filter. Consider the
         /// following example:
         ///
-        ///      Chain(
-        ///        FamilyRegex("A"),
-        ///        Interleave(
-        ///          All(),
-        ///          Chain(Label("foo"), Sink())
-        ///        ),
-        ///        QualifierRegex("B")
-        ///      )
+        /// ```text
+        /// Chain(
+        ///    FamilyRegex("A"),
+        ///    Interleave(
+        ///      All(),
+        ///      Chain(Label("foo"), Sink())
+        ///    ),
+        ///    QualifierRegex("B")
+        /// )
         ///
-        ///                          A,A,1,w
-        ///                          A,B,2,x
-        ///                          B,B,4,z
-        ///                             |
-        ///                      FamilyRegex("A")
-        ///                             |
-        ///                          A,A,1,w
-        ///                          A,B,2,x
-        ///                             |
-        ///                +------------+-------------+
-        ///                |                          |
-        ///              All()                    Label(foo)
-        ///                |                          |
-        ///             A,A,1,w              A,A,1,w,labels:\[foo\]
-        ///             A,B,2,x              A,B,2,x,labels:\[foo\]
-        ///                |                          |
-        ///                |                        Sink() --------------+
-        ///                |                          |                  |
-        ///                +------------+      x------+          A,A,1,w,labels:\[foo\]
-        ///                             |                        A,B,2,x,labels:\[foo\]
-        ///                          A,A,1,w                             |
-        ///                          A,B,2,x                             |
-        ///                             |                                |
-        ///                     QualifierRegex("B")                      |
-        ///                             |                                |
-        ///                          A,B,2,x                             |
-        ///                             |                                |
-        ///                             +--------------------------------+
-        ///                             |
-        ///                          A,A,1,w,labels:\[foo\]
-        ///                          A,B,2,x,labels:\[foo\]  // could be switched
-        ///                          A,B,2,x               // could be switched
+        ///                      A,A,1,w
+        ///                      A,B,2,x
+        ///                      B,B,4,z
+        ///                         |
+        ///                  FamilyRegex("A")
+        ///                         |
+        ///                      A,A,1,w
+        ///                      A,B,2,x
+        ///                         |
+        ///            +------------+-------------+
+        ///            |                          |
+        ///          All()                    Label(foo)
+        ///            |                          |
+        ///         A,A,1,w              A,A,1,w,labels:\[foo\]
+        ///         A,B,2,x              A,B,2,x,labels:\[foo\]
+        ///            |                          |
+        ///            |                        Sink() --------------+
+        ///            |                          |                  |
+        ///            +------------+      x------+          A,A,1,w,labels:\[foo\]
+        ///                         |                        A,B,2,x,labels:\[foo\]
+        ///                      A,A,1,w                             |
+        ///                      A,B,2,x                             |
+        ///                         |                                |
+        ///                 QualifierRegex("B")                      |
+        ///                         |                                |
+        ///                      A,B,2,x                             |
+        ///                         |                                |
+        ///                         +--------------------------------+
+        ///                         |
+        ///                      A,A,1,w,labels:\[foo\]
+        ///                      A,B,2,x,labels:\[foo\]  // could be switched
+        ///                      A,B,2,x               // could be switched
+        /// ```
         ///
         /// Despite being excluded by the qualifier filter, a copy of every cell
         /// that reaches the sink is present in the final result.
         ///
-        /// As with an [Interleave][google.bigtable.v2.RowFilter.Interleave],
+        /// As with an \[Interleave\]\[google.bigtable.v2.RowFilter.Interleave\],
         /// duplicate cells are possible, and appear in an unspecified mutual order.
         /// In this case we have a duplicate with column "A:B" and timestamp 2,
         /// because one copy passed through the all filter while the other was
@@ -836,7 +842,7 @@ pub mod row_filter {
         /// while the other does not.
         ///
         /// Cannot be used within the `predicate_filter`, `true_filter`, or
-        /// `false_filter` of a [Condition][google.bigtable.v2.RowFilter.Condition].
+        /// `false_filter` of a \[Condition\]\[google.bigtable.v2.RowFilter.Condition\].
         #[prost(bool, tag = "16")]
         Sink(bool),
         /// Matches all cells, regardless of input. Functionally equivalent to
@@ -940,7 +946,7 @@ pub struct Mutation {
 /// Nested message and enum types in `Mutation`.
 pub mod mutation {
     /// A Mutation which sets the value of the specified cell.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SetCell {
         /// The name of the family into which new data should be written.
         /// Must match `\[-_.a-zA-Z0-9\]+`
@@ -1007,7 +1013,7 @@ pub mod mutation {
     }
     /// A Mutation which deletes cells from the specified column, optionally
     /// restricting the deletions to a given timestamp range.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DeleteFromColumn {
         /// The name of the family from which cells should be deleted.
         /// Must match `\[-_.a-zA-Z0-9\]+`
@@ -1022,7 +1028,7 @@ pub mod mutation {
         pub time_range: ::core::option::Option<super::TimestampRange>,
     }
     /// A Mutation which deletes all cells from the specified column family.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DeleteFromFamily {
         /// The name of the family from which cells should be deleted.
         /// Must match `\[-_.a-zA-Z0-9\]+`
@@ -1030,7 +1036,7 @@ pub mod mutation {
         pub family_name: ::prost::alloc::string::String,
     }
     /// A Mutation which deletes all cells from the containing row.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DeleteFromRow {}
     /// Which of the possible Mutation types to apply.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1057,7 +1063,7 @@ pub mod mutation {
 }
 /// Specifies an atomic read/modify/write operation on the latest value of the
 /// specified column.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReadModifyWriteRule {
     /// The name of the family to which the read/modify/write should be applied.
     /// Must match `\[-_.a-zA-Z0-9\]+`
@@ -1077,7 +1083,7 @@ pub struct ReadModifyWriteRule {
 pub mod read_modify_write_rule {
     /// The rule used to determine the column's new latest value from its current
     /// latest value.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Rule {
         /// Rule specifying that `append_value` be appended to the existing value.
         /// If the targeted cell is unset, it will be treated as containing the
@@ -1094,10 +1100,10 @@ pub mod read_modify_write_rule {
 }
 /// NOTE: This API is intended to be used by Apache Beam BigtableIO.
 /// A partition of a change stream.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamPartition {
     /// The row range covered by this partition and is specified by
-    /// [`start_key_closed`, `end_key_open`).
+    /// \[`start_key_closed`, `end_key_open`).
     #[prost(message, optional, tag = "1")]
     pub row_range: ::core::option::Option<RowRange>,
 }
@@ -1113,7 +1119,7 @@ pub struct StreamContinuationTokens {
 /// NOTE: This API is intended to be used by Apache Beam BigtableIO.
 /// The information required to continue reading the data from a
 /// `StreamPartition` from where a previous read left off.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamContinuationToken {
     /// The partition that this token applies to.
     #[prost(message, optional, tag = "1")]
@@ -1124,7 +1130,7 @@ pub struct StreamContinuationToken {
 }
 /// Protocol buffers format descriptor, as described by Messages ProtoSchema and
 /// ProtoRows
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProtoFormat {}
 /// Describes a column in a Bigtable Query Language result set.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1176,7 +1182,7 @@ pub struct ProtoRows {
     pub values: ::prost::alloc::vec::Vec<Value>,
 }
 /// A part of a serialized `ProtoRows` message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProtoRowsBatch {
     /// Part of a serialized `ProtoRows` message.
     /// A complete, parseable ProtoRows message is constructed by
@@ -1194,32 +1200,33 @@ pub struct ProtoRowsBatch {
 /// `PartialResultSet` messages.
 ///
 /// Having:
-/// - queue of row results waiting to be returned `queue`
-/// - extensible buffer of bytes `buffer`
-/// - a place to keep track of the most recent `resume_token`
-/// for each PartialResultSet `p` received {
-///    if p.reset {
-///      ensure `queue` is empty
-///      ensure `buffer` is empty
-///    }
-///    if p.estimated_batch_size != 0 {
-///      (optional) ensure `buffer` is sized to at least `p.estimated_batch_size`
-///    }
-///    if `p.proto_rows_batch` is set {
-///      append `p.proto_rows_batch.bytes` to `buffer`
-///    }
-///    if p.batch_checksum is set and `buffer` is not empty {
-///      validate the checksum matches the contents of `buffer`
-///      (see comments on `batch_checksum`)
-///      parse `buffer` as `ProtoRows` message, clearing `buffer`
-///      add parsed rows to end of `queue`
-///    }
-///    if p.resume_token is set {
-///      release results in `queue`
-///      save `p.resume_token` in `resume_token`
-///    }
-/// }
-#[derive(Clone, PartialEq, ::prost::Message)]
+///
+/// * queue of row results waiting to be returned `queue`
+/// * extensible buffer of bytes `buffer`
+/// * a place to keep track of the most recent `resume_token`
+///   for each PartialResultSet `p` received {
+///   if p.reset {
+///   ensure `queue` is empty
+///   ensure `buffer` is empty
+///   }
+///   if p.estimated_batch_size != 0 {
+///   (optional) ensure `buffer` is sized to at least `p.estimated_batch_size`
+///   }
+///   if `p.proto_rows_batch` is set {
+///   append `p.proto_rows_batch.bytes` to `buffer`
+///   }
+///   if p.batch_checksum is set and `buffer` is not empty {
+///   validate the checksum matches the contents of `buffer`
+///   (see comments on `batch_checksum`)
+///   parse `buffer` as `ProtoRows` message, clearing `buffer`
+///   add parsed rows to end of `queue`
+///   }
+///   if p.resume_token is set {
+///   release results in `queue`
+///   save `p.resume_token` in `resume_token`
+///   }
+///   }
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PartialResultSet {
     /// CRC32C checksum of concatenated `partial_rows` data for the current batch.
     ///
@@ -1295,7 +1302,7 @@ pub mod partial_result_set {
     /// response. The client should buffer data constructed from the fields in
     /// `partial_rows` until a non-empty `resume_token` is received. Each
     /// sub-message documents the appropriate way to combine results.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum PartialRows {
         /// Partial rows in serialized ProtoRows format.
         #[prost(message, tag = "3")]
@@ -1305,7 +1312,7 @@ pub mod partial_result_set {
 /// Parameters on mutations where clients want to ensure idempotency (i.e.
 /// at-most-once semantics). This is currently only needed for certain aggregate
 /// types.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Idempotency {
     /// Unique token used to identify replays of this mutation.
     /// Must be at least 8 bytes long.
@@ -1323,7 +1330,7 @@ pub struct Idempotency {
 /// ReadIterationStats captures information about the iteration of rows or cells
 /// over the course of a read, e.g. how many results were scanned in a read
 /// operation versus the results returned.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReadIterationStats {
     /// The rows seen (scanned) as part of the request. This includes the count of
     /// rows returned, as captured below.
@@ -1343,7 +1350,7 @@ pub struct ReadIterationStats {
 /// RequestLatencyStats provides a measurement of the latency of the request as
 /// it interacts with different systems over its lifetime, e.g. how long the
 /// request took to execute within a frontend server.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RequestLatencyStats {
     /// The latency measured by the frontend server handling this request, from
     /// when the request was received, to when this value is sent back in the
@@ -1366,7 +1373,7 @@ pub struct RequestLatencyStats {
     pub frontend_server_latency: ::core::option::Option<::prost_types::Duration>,
 }
 /// FullReadStatsView captures all known information about a read.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FullReadStatsView {
     /// Iteration stats describe how efficient the read is, e.g. comparing
     /// rows seen vs. rows returned or cells seen vs cells returned can provide an
@@ -1382,7 +1389,7 @@ pub struct FullReadStatsView {
 /// RequestStats is the container for additional information pertaining to a
 /// single request, helpful for evaluating the performance of the sent request.
 /// Currently, the following method is supported: google.bigtable.v2.ReadRows
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RequestStats {
     /// Information pertaining to each request type received. The type is chosen
     /// based on the requested view.
@@ -1397,7 +1404,7 @@ pub mod request_stats {
     /// based on the requested view.
     ///
     /// See the messages above for additional context.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum StatsView {
         /// Available with the ReadRowsRequest.RequestStatsView.REQUEST_STATS_FULL
         /// view, see package google.bigtable.v2.
@@ -1453,10 +1460,12 @@ pub struct ReadRowsRequest {
     ///
     /// Example result set:
     ///
-    ///      [
-    ///        {key: "k2", "f:col1": "v1", "f:col2": "v1"},
-    ///        {key: "k1", "f:col1": "v2", "f:col2": "v2"}
-    ///      ]
+    /// ```text
+    /// [
+    ///    {key: "k2", "f:col1": "v1", "f:col2": "v1"},
+    ///    {key: "k1", "f:col1": "v2", "f:col2": "v2"}
+    /// ]
+    /// ```
     #[prost(bool, tag = "7")]
     pub reversed: bool,
 }
@@ -1537,7 +1546,7 @@ pub struct ReadRowsResponse {
 pub mod read_rows_response {
     /// Specifies a piece of a row's contents returned as part of the read
     /// response stream.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CellChunk {
         /// The row key for this chunk of data.  If the row key is empty,
         /// this CellChunk is a continuation of the same row as the previous
@@ -1571,7 +1580,7 @@ pub mod read_rows_response {
         #[prost(int64, tag = "4")]
         pub timestamp_micros: i64,
         /// Labels applied to the cell by a
-        /// [RowFilter][google.bigtable.v2.RowFilter].  Labels are only set
+        /// \[RowFilter\]\[google.bigtable.v2.RowFilter\].  Labels are only set
         /// on the first CellChunk per cell.
         #[prost(string, repeated, tag = "5")]
         pub labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -1595,7 +1604,7 @@ pub mod read_rows_response {
     /// Nested message and enum types in `CellChunk`.
     pub mod cell_chunk {
         /// Signals to the client concerning previous CellChunks received.
-        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum RowStatus {
             /// Indicates that the client should drop all previous chunks for
             /// `row_key`, as it will be re-read from the beginning.
@@ -1609,7 +1618,7 @@ pub mod read_rows_response {
     }
 }
 /// Request message for Bigtable.SampleRowKeys.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SampleRowKeysRequest {
     /// Optional. The unique name of the table from which to sample row keys.
     ///
@@ -1636,7 +1645,7 @@ pub struct SampleRowKeysRequest {
     pub app_profile_id: ::prost::alloc::string::String,
 }
 /// Response message for Bigtable.SampleRowKeys.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SampleRowKeysResponse {
     /// Sorted streamed sequence of sample row keys in the table. The table might
     /// have contents before the first row key in the list and after the last one,
@@ -1689,7 +1698,7 @@ pub struct MutateRowRequest {
     pub idempotency: ::core::option::Option<Idempotency>,
 }
 /// Response message for Bigtable.MutateRow.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MutateRowResponse {}
 /// Request message for BigtableService.MutateRows.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1838,7 +1847,7 @@ pub struct CheckAndMutateRowRequest {
     pub false_mutations: ::prost::alloc::vec::Vec<Mutation>,
 }
 /// Response message for Bigtable.CheckAndMutateRow.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CheckAndMutateRowResponse {
     /// Whether or not the request's `predicate_filter` yielded any results for
     /// the specified row.
@@ -1846,7 +1855,7 @@ pub struct CheckAndMutateRowResponse {
     pub predicate_matched: bool,
 }
 /// Request message for client connection keep-alive and warming.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PingAndWarmRequest {
     /// Required. The unique name of the instance to check permissions for as well
     /// as respond. Values are of the form
@@ -1859,7 +1868,7 @@ pub struct PingAndWarmRequest {
     pub app_profile_id: ::prost::alloc::string::String,
 }
 /// Response message for Bigtable.PingAndWarm connection keepalive and warming.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PingAndWarmResponse {}
 /// Request message for Bigtable.ReadModifyWriteRow.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1902,7 +1911,7 @@ pub struct ReadModifyWriteRowResponse {
 }
 /// NOTE: This API is intended to be used by Apache Beam BigtableIO.
 /// Request message for Bigtable.GenerateInitialChangeStreamPartitions.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateInitialChangeStreamPartitionsRequest {
     /// Required. The unique name of the table from which to get change stream
     /// partitions. Values are of the form
@@ -1918,7 +1927,7 @@ pub struct GenerateInitialChangeStreamPartitionsRequest {
 }
 /// NOTE: This API is intended to be used by Apache Beam BigtableIO.
 /// Response message for Bigtable.GenerateInitialChangeStreamPartitions.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateInitialChangeStreamPartitionsResponse {
     /// A partition of the change stream.
     #[prost(message, optional, tag = "1")]
@@ -2008,7 +2017,7 @@ pub mod read_change_stream_response {
         /// Information about the chunking of this mutation.
         /// Only `SetCell` mutations can be chunked, and all chunks for a `SetCell`
         /// will be delivered contiguously with no other mutation types interleaved.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct ChunkInfo {
             /// The total value size of all the chunks that make up the `SetCell`.
             #[prost(int32, tag = "1")]
@@ -2129,7 +2138,7 @@ pub mod read_change_stream_response {
     }
     /// A periodic message with information that can be used to checkpoint
     /// the state of a stream.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Heartbeat {
         /// A token that can be provided to a subsequent `ReadChangeStream` call
         /// to pick up reading at the current stream position.
@@ -2151,21 +2160,23 @@ pub mod read_change_stream_response {
     /// partitioning requires the client to open a new stream for each token to
     /// resume reading. Example:
     ///
-    ///                                       [B,      D) ends
-    ///                                            |
-    ///                                            v
-    ///                    new_partitions:  [A,  C) [C,  E)
-    ///      continuation_tokens.partitions:  [B,C) [C,D)
-    ///                                       ^---^ ^---^
-    ///                                       ^     ^
-    ///                                       |     |
-    ///                                       |     StreamContinuationToken 2
-    ///                                       |
-    ///                                       StreamContinuationToken 1
+    /// ```text
+    ///                                   [B,      D) ends
+    ///                                        |
+    ///                                        v
+    ///                new_partitions:  [A,  C) [C,  E)
+    /// continuation_tokens.partitions:  [B,C) [C,D)
+    ///                                   ^---^ ^---^
+    ///                                   ^     ^
+    ///                                   |     |
+    ///                                   |     StreamContinuationToken 2
+    ///                                   |
+    ///                                   StreamContinuationToken 1
+    /// ```
     ///
-    /// To read the new partition [A,C), supply the continuation tokens whose
-    /// ranges cover the new partition, for example ContinuationToken[A,B) &
-    /// ContinuationToken[B,C).
+    /// To read the new partition \[A,C), supply the continuation tokens whose
+    /// ranges cover the new partition, for example ContinuationToken\[A,B) &
+    /// ContinuationToken\[B,C).
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CloseStream {
         /// The status of the stream.
@@ -2222,9 +2233,10 @@ pub struct ExecuteQueryRequest {
     /// or neither is an `INVALID_ARGUMENT`.
     ///
     /// Setting this field also places restrictions on several other fields:
-    /// - `data_format` must be empty.
-    /// - `validate_only` must be false.
-    /// - `params` must match the `param_types` set in the `PrepareQueryRequest`.
+    ///
+    /// * `data_format` must be empty.
+    /// * `validate_only` must be false.
+    /// * `params` must match the `param_types` set in the `PrepareQueryRequest`.
     #[prost(bytes = "vec", tag = "9")]
     pub prepared_query: ::prost::alloc::vec::Vec<u8>,
     /// Optional. If this request is resuming a previously interrupted query
@@ -2276,7 +2288,7 @@ pub mod execute_query_request {
     /// If `prepared_query` is set, then the `data_format` is fixed by the
     /// `PrepareQueryRequest`, and a non-empty `data_format` in the
     /// `ExecuteQueryRequest` will be rejected with `INVALID_ARGUMENT`.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum DataFormat {
         /// Protocol buffer format as described by ProtoSchema and ProtoRows
         /// messages.
@@ -2358,7 +2370,7 @@ pub mod prepare_query_request {
     /// Required. Requested data format for the response. Note that the selected
     /// data format is binding for all `ExecuteQuery` rpcs that use the prepared
     /// query.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum DataFormat {
         /// Protocol buffer format as described by ProtoSchema and ProtoRows
         /// messages.
@@ -2495,7 +2507,7 @@ pub mod bigtable_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.bigtable.v2.Bigtable/ReadRows",
             );
@@ -2523,7 +2535,7 @@ pub mod bigtable_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.bigtable.v2.Bigtable/SampleRowKeys",
             );
@@ -2549,7 +2561,7 @@ pub mod bigtable_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.bigtable.v2.Bigtable/MutateRow",
             );
@@ -2576,7 +2588,7 @@ pub mod bigtable_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.bigtable.v2.Bigtable/MutateRows",
             );
@@ -2601,7 +2613,7 @@ pub mod bigtable_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.bigtable.v2.Bigtable/CheckAndMutateRow",
             );
@@ -2629,7 +2641,7 @@ pub mod bigtable_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.bigtable.v2.Bigtable/PingAndWarm",
             );
@@ -2658,7 +2670,7 @@ pub mod bigtable_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.bigtable.v2.Bigtable/ReadModifyWriteRow",
             );
@@ -2694,7 +2706,7 @@ pub mod bigtable_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.bigtable.v2.Bigtable/GenerateInitialChangeStreamPartitions",
             );
@@ -2727,7 +2739,7 @@ pub mod bigtable_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.bigtable.v2.Bigtable/ReadChangeStream",
             );
@@ -2754,7 +2766,7 @@ pub mod bigtable_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.bigtable.v2.Bigtable/PrepareQuery",
             );
@@ -2779,7 +2791,7 @@ pub mod bigtable_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.bigtable.v2.Bigtable/ExecuteQuery",
             );
@@ -2798,7 +2810,7 @@ pub mod bigtable_client {
 /// HTTP2's HPACK compression, the request overhead will be tiny.
 /// This is an internal implementation detail and should not be used by end users
 /// directly.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FeatureFlags {
     /// Notify the server that the client supports reverse scans. The server will
     /// reject ReadRowsRequests with the reverse bit set when this is absent.
@@ -2837,7 +2849,7 @@ pub struct FeatureFlags {
     pub direct_access_requested: bool,
 }
 /// Response metadata proto
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResponseParams {
     /// The cloud bigtable zone associated with the cluster.
     #[prost(string, optional, tag = "1")]

@@ -2,7 +2,7 @@
 /// Traffic density indicator on a contiguous segment of a path. Given a path
 /// with points P_0, P_1, ... , P_N (zero-based index), the SpeedReadingInterval
 /// defines an interval and describes its traffic using the following categories.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SpeedReadingInterval {
     /// The starting index of this interval in the path.
     /// In JSON, when the index is 0, the field will appear to be unpopulated.
@@ -82,7 +82,7 @@ pub struct ConsumableTrafficPolyline {
 }
 /// Deprecated: TerminalPoints are no longer supported in Fleet Engine. Use
 /// `TerminalLocation.point` instead.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TerminalPointId {
     /// Deprecated.
     #[deprecated]
@@ -95,7 +95,7 @@ pub struct TerminalPointId {
 /// Nested message and enum types in `TerminalPointId`.
 pub mod terminal_point_id {
     /// Deprecated.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Id {
         /// Deprecated.
         #[prost(string, tag = "2")]
@@ -227,7 +227,7 @@ pub struct VehicleLocation {
     #[prost(message, optional, tag = "22")]
     pub latlng_accuracy: ::core::option::Option<f64>,
     /// Direction the vehicle is moving in degrees.  0 represents North.
-    /// The valid range is [0,360).
+    /// The valid range is \[0,360).
     #[prost(message, optional, tag = "2")]
     pub heading: ::core::option::Option<i32>,
     /// Deprecated: Use `heading_accuracy` instead.
@@ -311,7 +311,7 @@ pub struct VehicleLocation {
     #[prost(message, optional, tag = "31")]
     pub flp_latlng_accuracy_meters: ::core::option::Option<f64>,
     /// Direction the vehicle is moving in degrees, as determined by the Fused
-    /// Location Provider. 0 represents North. The valid range is [0,360).
+    /// Location Provider. 0 represents North. The valid range is \[0,360).
     #[prost(message, optional, tag = "32")]
     pub flp_heading_degrees: ::core::option::Option<i32>,
     /// Supplemental location provided by the integrating app.
@@ -576,7 +576,7 @@ impl LocationSensor {
     }
 }
 /// A RequestHeader contains fields common to all Fleet Engine RPC requests.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RequestHeader {
     /// The BCP-47 language code, such as en-US or sr-Latn. For more information,
     /// see <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.> If none
@@ -1092,9 +1092,9 @@ pub struct CreateTripRequest {
     /// * Must be a valid Unicode string.
     /// * Limited to a maximum length of 64 characters.
     /// * Normalized according to \[Unicode Normalization Form C\]
-    /// (<http://www.unicode.org/reports/tr15/>).
+    ///   (<http://www.unicode.org/reports/tr15/>).
     /// * May not contain any of the following ASCII characters: '/', ':', '?',
-    /// ',', or '#'.
+    ///   ',', or '#'.
     #[prost(string, tag = "5")]
     pub trip_id: ::prost::alloc::string::String,
     /// Required. Trip entity to create.
@@ -1136,7 +1136,7 @@ pub struct CreateTripRequest {
     pub trip: ::core::option::Option<Trip>,
 }
 /// GetTrip request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTripRequest {
     /// The standard Fleet Engine request header.
     #[prost(message, optional, tag = "1")]
@@ -1190,7 +1190,7 @@ pub struct GetTripRequest {
     >,
 }
 /// DeleteTrip request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteTripRequest {
     /// Optional. The standard Fleet Engine request header.
     #[prost(message, optional, tag = "1")]
@@ -1203,7 +1203,7 @@ pub struct DeleteTripRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// ReportBillableTrip request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReportBillableTripRequest {
     /// Required. Must be in the format
     /// `providers/{provider}/billableTrips/{billable_trip}`. The
@@ -1339,7 +1339,7 @@ pub struct UpdateTripRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// SearchTrips request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchTripsRequest {
     /// The standard Fleet Engine request header.
     #[prost(message, optional, tag = "1")]
@@ -1492,7 +1492,7 @@ pub mod trip_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.TripService/CreateTrip",
             );
@@ -1516,7 +1516,7 @@ pub mod trip_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.TripService/GetTrip",
             );
@@ -1541,7 +1541,7 @@ pub mod trip_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.TripService/DeleteTrip",
             );
@@ -1565,7 +1565,7 @@ pub mod trip_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.TripService/ReportBillableTrip",
             );
@@ -1595,7 +1595,7 @@ pub mod trip_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.TripService/SearchTrips",
             );
@@ -1619,7 +1619,7 @@ pub mod trip_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.TripService/UpdateTrip",
             );
@@ -1751,7 +1751,7 @@ pub struct Vehicle {
 /// Nested message and enum types in `Vehicle`.
 pub mod vehicle {
     /// The type of vehicle.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct VehicleType {
         /// Vehicle type category
         #[prost(enumeration = "vehicle_type::Category", tag = "1")]
@@ -1854,7 +1854,7 @@ pub struct DeviceSettings {
 /// The license plate information of the Vehicle.  To avoid storing
 /// personally-identifiable information, only the minimum information
 /// about the license plate is stored as part of the entity.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LicensePlate {
     /// Required. CLDR Country/Region Code.  For example, `US` for United States,
     /// or `IN` for India.
@@ -1887,13 +1887,12 @@ pub struct VisualTrafficReportPolylineRendering {
 /// Nested message and enum types in `VisualTrafficReportPolylineRendering`.
 pub mod visual_traffic_report_polyline_rendering {
     /// One road stretch that should be rendered.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RoadStretch {
         /// Required. The style to apply.
         #[prost(enumeration = "road_stretch::Style", tag = "1")]
         pub style: i32,
-        /// Required. The style should be applied between `[offset_meters,
-        /// offset_meters + length_meters)`.
+        /// Required. The style should be applied between `[offset_meters,  offset_meters + length_meters)`.
         #[prost(int32, tag = "2")]
         pub offset_meters: i32,
         /// Required. The length of the path where to apply the style.
@@ -2159,9 +2158,9 @@ pub struct CreateVehicleRequest {
     /// * Must be a valid Unicode string.
     /// * Limited to a maximum length of 64 characters.
     /// * Normalized according to \[Unicode Normalization Form C\]
-    /// (<http://www.unicode.org/reports/tr15/>).
+    ///   (<http://www.unicode.org/reports/tr15/>).
     /// * May not contain any of the following ASCII characters: '/', ':', '?',
-    /// ',', or '#'.
+    ///   ',', or '#'.
     #[prost(string, tag = "4")]
     pub vehicle_id: ::prost::alloc::string::String,
     /// Required. The Vehicle entity to create. When creating a Vehicle, the
@@ -2194,7 +2193,7 @@ pub struct CreateVehicleRequest {
     pub vehicle: ::core::option::Option<Vehicle>,
 }
 /// `GetVehicle` request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetVehicleRequest {
     /// The standard Fleet Engine request header.
     #[prost(message, optional, tag = "1")]
@@ -2221,7 +2220,7 @@ pub struct GetVehicleRequest {
     pub waypoints_version: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// DeleteVehicle request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteVehicleRequest {
     /// Optional. The standard Fleet Engine request header.
     #[prost(message, optional, tag = "1")]
@@ -2234,7 +2233,7 @@ pub struct DeleteVehicleRequest {
     #[prost(string, tag = "2")]
     pub name: ::prost::alloc::string::String,
 }
-/// `UpdateVehicle request message.
+/// \`UpdateVehicle request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateVehicleRequest {
     /// The standard Fleet Engine request header.
@@ -2352,7 +2351,7 @@ pub struct SearchVehiclesRequest {
     /// message which allows a list of lists. In combination, the two fields allow
     /// the composition of this expression:
     ///
-    /// ```
+    /// ```text,
     /// (required_attributes\[0\] AND required_attributes\[1\] AND ...)
     /// AND
     /// (required_one_of_attributes[0][0] OR required_one_of_attributes[0][1] OR
@@ -2381,17 +2380,17 @@ pub struct SearchVehiclesRequest {
     /// uses a message which allows a list of lists, allowing expressions such as
     /// this one:
     ///
-    /// ```
+    /// ```text,
     /// (required_attributes\[0\] AND required_attributes\[1\] AND ...)
     /// AND
     /// (
-    ///    (required_one_of_attribute_sets[0][0] AND
-    ///    required_one_of_attribute_sets[0][1] AND
-    ///    ...)
-    ///    OR
-    ///    (required_one_of_attribute_sets[1][0] AND
-    ///    required_one_of_attribute_sets[1][1] AND
-    ///    ...)
+    ///   (required_one_of_attribute_sets[0][0] AND
+    ///   required_one_of_attribute_sets[0][1] AND
+    ///   ...)
+    ///   OR
+    ///   (required_one_of_attribute_sets[1][0] AND
+    ///   required_one_of_attribute_sets[1][1] AND
+    ///   ...)
     /// )
     /// ```
     ///
@@ -2438,8 +2437,7 @@ pub struct SearchVehiclesRequest {
     /// such as `minimum_capacity` or `vehicle_types`.
     ///
     /// Note that the only queries supported are on vehicle attributes (for
-    /// example, `attributes.<key> = <value>` or `attributes.<key1> = <value1> AND
-    /// attributes.<key2> = <value2>`). The maximum number of restrictions allowed
+    /// example, `attributes.<key> = <value>` or `attributes.<key1> = <value1> AND  attributes.<key2> = <value2>`). The maximum number of restrictions allowed
     /// in a filter query is 50.
     ///
     /// Also, all attributes are stored as strings, so the only supported
@@ -2624,7 +2622,7 @@ pub struct ListVehiclesRequest {
     /// message which allows a list of lists. In combination, the two fields allow
     /// the composition of this expression:
     ///
-    /// ```
+    /// ```text,
     /// (required_attributes\[0\] AND required_attributes\[1\] AND ...)
     /// AND
     /// (required_one_of_attributes[0][0] OR required_one_of_attributes[0][1] OR
@@ -2657,17 +2655,17 @@ pub struct ListVehiclesRequest {
     /// uses a message which allows a list of lists, allowing expressions such as
     /// this one:
     ///
-    /// ```
+    /// ```text,
     /// (required_attributes\[0\] AND required_attributes\[1\] AND ...)
     /// AND
     /// (
-    ///    (required_one_of_attribute_sets[0][0] AND
-    ///    required_one_of_attribute_sets[0][1] AND
-    ///    ...)
-    ///    OR
-    ///    (required_one_of_attribute_sets[1][0] AND
-    ///    required_one_of_attribute_sets[1][1] AND
-    ///    ...)
+    ///   (required_one_of_attribute_sets[0][0] AND
+    ///   required_one_of_attribute_sets[0][1] AND
+    ///   ...)
+    ///   OR
+    ///   (required_one_of_attribute_sets[1][0] AND
+    ///   required_one_of_attribute_sets[1][1] AND
+    ///   ...)
     /// )
     /// ```
     ///
@@ -2700,8 +2698,7 @@ pub struct ListVehiclesRequest {
     /// such as `vehicle_state` or `on_trip_only`.
     ///
     /// Note that the only queries supported are on vehicle attributes (for
-    /// example, `attributes.<key> = <value>` or `attributes.<key1> = <value1> AND
-    /// attributes.<key2> = <value2>`). The maximum number of restrictions allowed
+    /// example, `attributes.<key> = <value>` or `attributes.<key1> = <value1> AND  attributes.<key2> = <value2>`). The maximum number of restrictions allowed
     /// in a filter query is 50.
     ///
     /// Also, all attributes are stored as strings, so the only supported
@@ -3012,7 +3009,7 @@ pub mod vehicle_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.VehicleService/CreateVehicle",
             );
@@ -3039,7 +3036,7 @@ pub mod vehicle_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.VehicleService/GetVehicle",
             );
@@ -3066,7 +3063,7 @@ pub mod vehicle_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.VehicleService/DeleteVehicle",
             );
@@ -3109,7 +3106,7 @@ pub mod vehicle_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.VehicleService/UpdateVehicle",
             );
@@ -3143,7 +3140,7 @@ pub mod vehicle_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.VehicleService/UpdateVehicleAttributes",
             );
@@ -3174,7 +3171,7 @@ pub mod vehicle_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.VehicleService/ListVehicles",
             );
@@ -3201,7 +3198,7 @@ pub mod vehicle_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.v1.VehicleService/SearchVehicles",
             );

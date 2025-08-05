@@ -378,10 +378,10 @@ pub mod annotate_assessment_request {
     }
 }
 /// Empty response for AnnotateAssessment.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AnnotateAssessmentResponse {}
 /// Password leak verification info.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PasswordLeakVerification {
     /// Optional. Scrypt hash of the username+password that the customer wants to
     /// verify against a known password leak.
@@ -606,9 +606,9 @@ pub struct TransactionData {
     /// * debit-card
     /// * gift-card
     /// * processor-{name} (If a third-party is used, for example,
-    /// processor-paypal)
+    ///   processor-paypal)
     /// * custom-{name} (If an alternative method is used, for example,
-    /// custom-crypto)
+    ///   custom-crypto)
     #[prost(string, tag = "1")]
     pub payment_method: ::prost::alloc::string::String,
     /// The Bank Identification Number - generally the first 6 or 8 digits of the
@@ -649,7 +649,7 @@ pub struct TransactionData {
 /// Nested message and enum types in `TransactionData`.
 pub mod transaction_data {
     /// Structured address format for billing and shipping addresses.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Address {
         /// The recipient name, potentially including information such as "care of".
         #[prost(string, tag = "1")]
@@ -673,7 +673,7 @@ pub mod transaction_data {
         pub postal_code: ::prost::alloc::string::String,
     }
     /// Details about a user's account involved in the transaction.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct User {
         /// Unique account identifier for this user. If using account defender,
         /// this should match the hashed_account_id field. Otherwise, a unique and
@@ -717,7 +717,7 @@ pub mod transaction_data {
         pub merchant_account_id: ::prost::alloc::string::String,
     }
     /// Details about the transaction from the gateway.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct GatewayInfo {
         /// Name of the gateway service (for example, stripe, square, paypal).
         #[prost(string, tag = "1")]
@@ -735,7 +735,7 @@ pub mod transaction_data {
         pub cvv_response_code: ::prost::alloc::string::String,
     }
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TokenProperties {
     /// Whether the provided user response token is valid. When valid = false, the
     /// reason could be specified in invalid_reason or it could also be due to
@@ -882,7 +882,7 @@ pub mod fraud_prevention_assessment {
     }
 }
 /// Account defender risk assessment.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccountDefenderAssessment {
     /// Labels for this request.
     #[prost(
@@ -1057,7 +1057,7 @@ pub mod recaptcha_enterprise_service_v1_beta1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recaptchaenterprise.v1beta1.RecaptchaEnterpriseServiceV1Beta1/CreateAssessment",
             );
@@ -1088,7 +1088,7 @@ pub mod recaptcha_enterprise_service_v1_beta1_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recaptchaenterprise.v1beta1.RecaptchaEnterpriseServiceV1Beta1/AnnotateAssessment",
             );

@@ -6,11 +6,11 @@ pub struct AnnotateVideoRequest {
     /// [Google Cloud Storage](<https://cloud.google.com/storage/>) URIs are
     /// supported, which must be specified in the following format:
     /// `gs://bucket-id/object-id` (other URI formats return
-    /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]). For
+    /// \[google.rpc.Code.INVALID_ARGUMENT\]\[google.rpc.Code.INVALID_ARGUMENT\]). For
     /// more information, see [Request
     /// URIs](<https://cloud.google.com/storage/docs/request-endpoints>). A video URI
     /// may include wildcards in `object-id`, and thus identify multiple videos.
-    /// Supported wildcards: '*' to match 0 or more characters;
+    /// Supported wildcards: '\*' to match 0 or more characters;
     /// '?' to match 1 character. If unset, the input video should be embedded
     /// in the request as `input_content`. If set, `input_content` should be unset.
     #[prost(string, tag = "1")]
@@ -30,7 +30,7 @@ pub struct AnnotateVideoRequest {
     /// Currently, only [Google Cloud Storage](<https://cloud.google.com/storage/>)
     /// URIs are supported, which must be specified in the following format:
     /// `gs://bucket-id/object-id` (other URI formats return
-    /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]). For
+    /// \[google.rpc.Code.INVALID_ARGUMENT\]\[google.rpc.Code.INVALID_ARGUMENT\]). For
     /// more information, see [Request
     /// URIs](<https://cloud.google.com/storage/docs/request-endpoints>).
     #[prost(string, tag = "4")]
@@ -65,7 +65,7 @@ pub struct VideoContext {
     pub face_detection_config: ::core::option::Option<FaceDetectionConfig>,
 }
 /// Config for LABEL_DETECTION.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LabelDetectionConfig {
     /// What labels should be detected with LABEL_DETECTION, in addition to
     /// video-level labels or segment-level labels.
@@ -84,7 +84,7 @@ pub struct LabelDetectionConfig {
     pub model: ::prost::alloc::string::String,
 }
 /// Config for SHOT_CHANGE_DETECTION.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ShotChangeDetectionConfig {
     /// Model to use for shot change detection.
     /// Supported values: "builtin/stable" (the default if unset) and
@@ -93,7 +93,7 @@ pub struct ShotChangeDetectionConfig {
     pub model: ::prost::alloc::string::String,
 }
 /// Config for EXPLICIT_CONTENT_DETECTION.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExplicitContentDetectionConfig {
     /// Model to use for explicit content detection.
     /// Supported values: "builtin/stable" (the default if unset) and
@@ -102,7 +102,7 @@ pub struct ExplicitContentDetectionConfig {
     pub model: ::prost::alloc::string::String,
 }
 /// Config for FACE_DETECTION.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FaceDetectionConfig {
     /// Model to use for face detection.
     /// Supported values: "builtin/stable" (the default if unset) and
@@ -114,7 +114,7 @@ pub struct FaceDetectionConfig {
     pub include_bounding_boxes: bool,
 }
 /// Video segment.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VideoSegment {
     /// Time-offset, relative to the beginning of the video,
     /// corresponding to the start of the segment (inclusive).
@@ -147,7 +147,7 @@ pub struct LabelFrame {
     pub confidence: f32,
 }
 /// Detected entity from video analysis.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Entity {
     /// Opaque entity ID. Some IDs may be available in
     /// [Google Knowledge Graph Search
@@ -181,7 +181,7 @@ pub struct LabelAnnotation {
     pub frames: ::prost::alloc::vec::Vec<LabelFrame>,
 }
 /// Video frame level annotation results for explicit content.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExplicitContentFrame {
     /// Time-offset, relative to the beginning of the video, corresponding to the
     /// video frame for this location.
@@ -219,7 +219,7 @@ pub struct NormalizedBoundingBox {
     pub bottom: f32,
 }
 /// Video segment level annotation results for face detection.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FaceSegment {
     /// Video segment where a face was detected.
     #[prost(message, optional, tag = "1")]
@@ -294,7 +294,7 @@ pub struct AnnotateVideoResponse {
     pub annotation_results: ::prost::alloc::vec::Vec<VideoAnnotationResults>,
 }
 /// Annotation progress for a single video.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VideoAnnotationProgress {
     /// Video file location in
     /// [Google Cloud Storage](<https://cloud.google.com/storage/>).
@@ -556,7 +556,7 @@ pub mod video_intelligence_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.videointelligence.v1beta2.VideoIntelligenceService/AnnotateVideo",
             );

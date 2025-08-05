@@ -10,16 +10,20 @@ pub struct AuditLog {
     /// For API calls, this should be the name of the API method.
     /// For example,
     ///
-    ///      "google.cloud.bigquery.v2.TableService.InsertTable"
-    ///      "google.logging.v2.ConfigServiceV2.CreateSink"
+    /// ```text
+    /// "google.cloud.bigquery.v2.TableService.InsertTable"
+    /// "google.logging.v2.ConfigServiceV2.CreateSink"
+    /// ```
     #[prost(string, tag = "8")]
     pub method_name: ::prost::alloc::string::String,
     /// The resource or collection that is the target of the operation.
     /// The name is a scheme-less URI, not including the API service name.
     /// For example:
     ///
-    ///      "projects/PROJECT_ID/zones/us-central1-a/instances"
-    ///      "projects/PROJECT_ID/datasets/DATASET_ID"
+    /// ```text
+    /// "projects/PROJECT_ID/zones/us-central1-a/instances"
+    /// "projects/PROJECT_ID/datasets/DATASET_ID"
+    /// ```
     #[prost(string, tag = "11")]
     pub resource_name: ::prost::alloc::string::String,
     /// The resource location information.
@@ -132,9 +136,12 @@ pub struct AuthorizationInfo {
     /// The resource being accessed, as a REST-style or cloud resource string.
     /// For example:
     ///
-    ///      bigquery.googleapis.com/projects/PROJECTID/datasets/DATASETID
+    /// ```text
+    /// bigquery.googleapis.com/projects/PROJECTID/datasets/DATASETID
+    /// ```
+    ///
     /// or
-    ///      projects/PROJECTID/datasets/DATASETID
+    /// projects/PROJECTID/datasets/DATASETID
     #[prost(string, tag = "1")]
     pub resource: ::prost::alloc::string::String,
     /// The required IAM permission.
@@ -234,13 +241,12 @@ pub struct RequestMetadata {
     /// This information is not authenticated and should be treated accordingly.
     /// For example:
     ///
-    /// +   `google-api-python-client/1.4.0`:
-    ///      The request was made by the Google API client for Python.
-    /// +   `Cloud SDK Command Line Tool apitools-client/1.0 gcloud/0.9.62`:
-    ///      The request was made by the Google Cloud SDK CLI (gcloud).
-    /// +   `AppEngine-Google; (+<http://code.google.com/appengine;> appid:
-    /// s~my-project`:
-    ///      The request was made from the `my-project` App Engine app.
+    /// * `google-api-python-client/1.4.0`:
+    ///   The request was made by the Google API client for Python.
+    /// * `Cloud SDK Command Line Tool apitools-client/1.0 gcloud/0.9.62`:
+    ///   The request was made by the Google Cloud SDK CLI (gcloud).
+    /// * `AppEngine-Google; (+<http://code.google.com/appengine;> appid:  s~my-project`:
+    ///   The request was made from the `my-project` App Engine app.
     #[prost(string, tag = "2")]
     pub caller_supplied_user_agent: ::prost::alloc::string::String,
     /// The network of the caller.
@@ -249,13 +255,14 @@ pub struct RequestMetadata {
     /// See <https://cloud.google.com/compute/docs/vpc/> for more information.
     /// This is a scheme-less URI full resource name. For example:
     ///
-    ///      "//compute.googleapis.com/projects/PROJECT_ID/global/networks/NETWORK_ID"
+    /// ```text
+    /// "//compute.googleapis.com/projects/PROJECT_ID/global/networks/NETWORK_ID"
+    /// ```
     #[prost(string, tag = "3")]
     pub caller_network: ::prost::alloc::string::String,
     /// Request attributes used in IAM condition evaluation. This field contains
     /// request attributes like request time and access levels associated with
     /// the request.
-    ///
     ///
     /// To get the whole view of the attributes used in IAM
     /// condition evaluation, the user must also look into
@@ -275,16 +282,18 @@ pub struct RequestMetadata {
     >,
 }
 /// Location information about a resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourceLocation {
     /// The locations of a resource after the execution of the operation.
     /// Requests to create or delete a location based resource must populate
     /// the 'current_locations' field and not the 'original_locations' field.
     /// For example:
     ///
-    ///      "europe-west1-a"
-    ///      "us-east1"
-    ///      "nam3"
+    /// ```text
+    /// "europe-west1-a"
+    /// "us-east1"
+    /// "nam3"
+    /// ```
     #[prost(string, repeated, tag = "1")]
     pub current_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The locations of a resource prior to the execution of the operation.
@@ -292,9 +301,11 @@ pub struct ResourceLocation {
     /// 'original_locations' as well as the 'current_locations' fields.
     /// For example:
     ///
-    ///      "europe-west1-a"
-    ///      "us-east1"
-    ///      "nam3"
+    /// ```text
+    /// "europe-west1-a"
+    /// "us-east1"
+    /// "nam3"
+    /// ```
     #[prost(string, repeated, tag = "2")]
     pub original_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -305,8 +316,7 @@ pub struct ServiceAccountDelegationInfo {
     /// For most identities, the format will be
     /// `principal://iam.googleapis.com/{identity pool name}/subject/{subject)`
     /// except for some GKE identities (GKE_WORKLOAD, FREEFORM, GKE_HUB_WORKLOAD)
-    /// that are still in the legacy format `serviceAccount:{identity pool
-    /// name}\[{subject}\]`
+    /// that are still in the legacy format `serviceAccount:{identity pool  name}\[{subject}\]`
     #[prost(string, tag = "3")]
     pub principal_subject: ::prost::alloc::string::String,
     /// Entity that creates credentials for service account and assumes its
@@ -381,7 +391,7 @@ pub struct OrgPolicyViolationInfo {
     pub violation_info: ::prost::alloc::vec::Vec<ViolationInfo>,
 }
 /// Provides information about the Policy violation info for this request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ViolationInfo {
     /// Optional. Constraint name
     #[prost(string, tag = "1")]
@@ -449,7 +459,6 @@ pub mod violation_info {
     }
 }
 /// Audit log format for BigQuery cloud audit logs metadata.
-///
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryAuditMetadata {
     /// First party (Google) application specific metadata.
@@ -536,7 +545,7 @@ pub mod big_query_audit_metadata {
         pub job: ::core::option::Option<Job>,
     }
     /// Job deletion event.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct JobDeletion {
         /// Job URI.
         ///
@@ -718,7 +727,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Dataset deletion event.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DatasetDeletion {
         /// Describes how the dataset was deleted.
         #[prost(enumeration = "dataset_deletion::Reason", tag = "1")]
@@ -901,7 +910,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Routine creation event.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RoutineCreation {
         /// Created routine.
         #[prost(message, optional, tag = "1")]
@@ -962,7 +971,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Table data read event.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TableDataRead {
         /// List of the accessed fields. Entire list is truncated if the record size
         /// exceeds 100K.
@@ -1192,7 +1201,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Routine change event.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RoutineChange {
         /// Updated routine.
         #[prost(message, optional, tag = "1")]
@@ -1253,7 +1262,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Table data change event.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TableDataChange {
         /// Number of deleted rows.
         #[prost(int64, tag = "1")]
@@ -1334,7 +1343,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Model data change event.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ModelDataChange {
         /// Describes how the model data was changed.
         #[prost(enumeration = "model_data_change::Reason", tag = "1")]
@@ -1388,7 +1397,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Model data read event.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ModelDataRead {
         /// Describes how the model data was read.
         #[prost(enumeration = "model_data_read::Reason", tag = "1")]
@@ -1442,7 +1451,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Table deletion event.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TableDeletion {
         /// Describes how table was deleted.
         #[prost(enumeration = "table_deletion::Reason", tag = "1")]
@@ -1505,7 +1514,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Model deletion event.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ModelDeletion {
         /// Describes how the model was deleted.
         #[prost(enumeration = "model_deletion::Reason", tag = "1")]
@@ -1568,7 +1577,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Routine deletion event.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RoutineDeletion {
         /// Deleted routine.
         #[prost(message, optional, tag = "1")]
@@ -1630,7 +1639,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Row access policy creation event.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RowAccessPolicyCreation {
         /// The row access policy created by this event.
         #[prost(message, optional, tag = "1")]
@@ -1642,7 +1651,7 @@ pub mod big_query_audit_metadata {
         pub job_name: ::prost::alloc::string::String,
     }
     /// Row access policy change event.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RowAccessPolicyChange {
         /// The row access policy that was changed by this event.
         #[prost(message, optional, tag = "1")]
@@ -1671,7 +1680,7 @@ pub mod big_query_audit_metadata {
         pub all_row_access_policies_dropped: bool,
     }
     /// Unlink linked dataset from its source dataset event
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct UnlinkDataset {
         /// The linked dataset URI which is unlinked from its source.
         ///
@@ -1851,7 +1860,7 @@ pub mod big_query_audit_metadata {
             }
         }
         /// Load job configuration.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Load {
             /// URIs for the data to be imported. Entire list is truncated if exceeds
             /// 40K.
@@ -1884,7 +1893,7 @@ pub mod big_query_audit_metadata {
             >,
         }
         /// Extract job configuration.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Extract {
             /// URIs where extracted data should be written. Entire list is truncated
             /// if exceeds 50K.
@@ -1900,7 +1909,7 @@ pub mod big_query_audit_metadata {
         }
         /// Nested message and enum types in `Extract`.
         pub mod extract {
-            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum Source {
                 /// The source table.
                 #[prost(string, tag = "2")]
@@ -1911,7 +1920,7 @@ pub mod big_query_audit_metadata {
             }
         }
         /// Table copy job configuration.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct TableCopy {
             /// Source tables. Entire list is truncated if exceeds 50K.
             #[prost(string, repeated, tag = "1")]
@@ -2013,7 +2022,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Definition of an external data source used in a query.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TableDefinition {
         /// Name of the table, used in queries.
         #[prost(string, tag = "1")]
@@ -2073,7 +2082,7 @@ pub mod big_query_audit_metadata {
     /// Nested message and enum types in `JobStats`.
     pub mod job_stats {
         /// Query job statistics.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Query {
             /// Total bytes processed by the query job.
             #[prost(int64, tag = "1")]
@@ -2107,21 +2116,21 @@ pub mod big_query_audit_metadata {
             pub cache_hit: bool,
         }
         /// Load job statistics.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Load {
             /// Total bytes loaded by the import job.
             #[prost(int64, tag = "1")]
             pub total_output_bytes: i64,
         }
         /// Extract job statistics.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Extract {
             /// Total bytes exported by the extract job.
             #[prost(int64, tag = "1")]
             pub total_input_bytes: i64,
         }
         /// Job resource usage breakdown by reservation.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct ReservationResourceUsage {
             /// Reservation name or "unreserved" for on-demand resources usage.
             #[prost(string, tag = "1")]
@@ -2131,7 +2140,7 @@ pub mod big_query_audit_metadata {
             pub slot_ms: i64,
         }
         /// Statistics specific to the job type.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Extended {
             /// Query job statistics.
             #[prost(message, tag = "8")]
@@ -2206,7 +2215,7 @@ pub mod big_query_audit_metadata {
         pub encryption: ::core::option::Option<EncryptionInfo>,
     }
     /// User Defined Function (UDF) or Stored Procedure.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Routine {
         /// Routine URI.
         ///
@@ -2238,7 +2247,7 @@ pub mod big_query_audit_metadata {
         >,
     }
     /// View definition.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TableViewDefinition {
         /// SQL query defining the view. Truncated if exceeds 40K.
         #[prost(string, tag = "1")]
@@ -2292,7 +2301,7 @@ pub mod big_query_audit_metadata {
         pub authorized_views: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Encryption properties for a table or a job
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct EncryptionInfo {
         /// Cloud kms key identifier.
         ///
@@ -2302,7 +2311,7 @@ pub mod big_query_audit_metadata {
         pub kms_key_name: ::prost::alloc::string::String,
     }
     /// BigQuery row access policy.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RowAccessPolicy {
         /// Row access policy URI.
         ///
@@ -2312,14 +2321,14 @@ pub mod big_query_audit_metadata {
         pub row_access_policy_name: ::prost::alloc::string::String,
     }
     /// First party (Google) application specific request metadata.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct FirstPartyAppMetadata {
         #[prost(oneof = "first_party_app_metadata::Metadata", tags = "1")]
         pub metadata: ::core::option::Option<first_party_app_metadata::Metadata>,
     }
     /// Nested message and enum types in `FirstPartyAppMetadata`.
     pub mod first_party_app_metadata {
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Metadata {
             /// Google Sheets metadata.
             #[prost(message, tag = "1")]
@@ -2327,7 +2336,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Google Sheets specific request metadata.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SheetsMetadata {
         /// The ID of the spreadsheet from which the request is sent.
         #[prost(string, tag = "1")]
@@ -2537,78 +2546,78 @@ pub mod big_query_audit_metadata {
     pub enum QueryStatementType {
         /// Unknown.
         Unspecified = 0,
-        /// SELECT ... FROM &lt;Table list&gt; ...
+        /// SELECT ... FROM \<Table list\> ...
         Select = 1,
-        /// ASSERT &lt;condition&gt; AS 'description'
+        /// ASSERT \<condition\> AS 'description'
         Assert = 23,
-        /// INSERT INTO &lt;Table&gt; ....
+        /// INSERT INTO \<Table\> ....
         Insert = 2,
-        /// UPDATE &lt;Table&gt; SET ...
+        /// UPDATE \<Table\> SET ...
         Update = 3,
-        /// DELETE &lt;Table&gt; ...
+        /// DELETE \<Table\> ...
         Delete = 4,
-        /// MERGE INTO &lt;Table&gt; ....
+        /// MERGE INTO \<Table\> ....
         Merge = 5,
-        /// CREATE TABLE &lt;Table&gt; &lt;column list&gt;
+        /// CREATE TABLE \<Table\> \<column list\>
         CreateTable = 6,
-        /// CREATE TABLE &lt;Table&gt; AS SELECT
+        /// CREATE TABLE \<Table\> AS SELECT
         CreateTableAsSelect = 7,
-        /// CREATE VIEW &lt;View&gt;
+        /// CREATE VIEW \<View\>
         CreateView = 8,
-        /// CREATE MODEL &lt;Model&gt; AS &lt;Query&gt;
+        /// CREATE MODEL \<Model\> AS \<Query\>
         CreateModel = 9,
-        /// CREATE MATERIALIZED VIEW &lt;View&gt; AS ...
+        /// CREATE MATERIALIZED VIEW \<View\> AS ...
         CreateMaterializedView = 13,
-        /// CREATE FUNCTION &lt;Function&gt;(&lt;Signature&gt;) AS ...
+        /// CREATE FUNCTION \<Function\>(\<Signature\>) AS ...
         CreateFunction = 14,
-        /// CREATE TABLE FUNCTION &lt;Function&gt;(&lt;Signature&gt;) AS ...
+        /// CREATE TABLE FUNCTION \<Function\>(\<Signature\>) AS ...
         CreateTableFunction = 56,
-        /// CREATE PROCEDURE &lt;Procedure&gt;
+        /// CREATE PROCEDURE \<Procedure\>
         CreateProcedure = 20,
-        /// CREATE ROW ACCESS POLICY &lt;RowAccessPolicy&gt ON &lt;Table&gt;
+        /// CREATE ROW ACCESS POLICY \<RowAccessPolicy&gt ON \<Table\>
         CreateRowAccessPolicy = 24,
-        /// CREATE SCHEMA &lt;Schema&gt;
+        /// CREATE SCHEMA \<Schema\>
         CreateSchema = 53,
-        /// CREATE SNAPSHOT TABLE &lt;Snapshot&gt CLONE &lt;Table&gt;
+        /// CREATE SNAPSHOT TABLE \<Snapshot&gt CLONE \<Table\>
         CreateSnapshotTable = 59,
-        /// DROP TABLE &lt;Table&gt;
+        /// DROP TABLE \<Table\>
         DropTable = 10,
-        /// DROP EXTERNAL TABLE &lt;Table&gt;
+        /// DROP EXTERNAL TABLE \<Table\>
         DropExternalTable = 33,
-        /// DROP VIEW &lt;View&gt;
+        /// DROP VIEW \<View\>
         DropView = 11,
-        /// DROP MODEL &lt;Model&gt;
+        /// DROP MODEL \<Model\>
         DropModel = 12,
-        /// DROP MATERIALIZED VIEW &lt;View&gt;
+        /// DROP MATERIALIZED VIEW \<View\>
         DropMaterializedView = 15,
-        /// DROP FUNCTION &lt;Function&gt;
+        /// DROP FUNCTION \<Function\>
         DropFunction = 16,
-        /// DROP PROCEDURE &lt;Procedure&gt;
+        /// DROP PROCEDURE \<Procedure\>
         DropProcedure = 21,
-        /// DROP SCHEMA &lt;Schema&gt;
+        /// DROP SCHEMA \<Schema\>
         DropSchema = 54,
-        /// DROP ROW ACCESS POLICY &lt;RowAccessPolicy&gt ON &lt;Table&gt; <or> DROP
-        /// ALL ROW ACCESS POLICIES ON ON &lt;Table&gt;
+        /// DROP ROW ACCESS POLICY \<RowAccessPolicy&gt ON \<Table\> <or> DROP
+        /// ALL ROW ACCESS POLICIES ON ON \<Table\>
         DropRowAccessPolicy = 25,
-        /// DROP SNAPSHOT TABLE &lt;Snapshot&gt;
+        /// DROP SNAPSHOT TABLE \<Snapshot\>
         DropSnapshotTable = 62,
-        /// ALTER TABLE &lt;Table&gt;
+        /// ALTER TABLE \<Table\>
         AlterTable = 17,
-        /// ALTER VIEW &lt;View&gt;
+        /// ALTER VIEW \<View\>
         AlterView = 18,
-        /// ALTER MATERIALIZED_VIEW &lt;view&gt;
+        /// ALTER MATERIALIZED_VIEW \<view\>
         AlterMaterializedView = 22,
-        /// ALTER SCHEMA &lt;Schema&gt;
+        /// ALTER SCHEMA \<Schema\>
         AlterSchema = 55,
         /// Script
         Script = 19,
-        /// TRUNCATE TABLE &lt;Table&gt;
+        /// TRUNCATE TABLE \<Table\>
         TruncateTable = 26,
-        /// CREATE EXTERNAL TABLE &lt;TABLE&gt;
+        /// CREATE EXTERNAL TABLE \<TABLE\>
         CreateExternalTable = 27,
         /// EXPORT DATA;
         ExportData = 28,
-        /// CALL &lt;stored procedure&gt;
+        /// CALL \<stored procedure\>
         Call = 29,
     }
     impl QueryStatementType {

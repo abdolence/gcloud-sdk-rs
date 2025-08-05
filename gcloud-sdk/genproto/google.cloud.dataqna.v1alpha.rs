@@ -4,26 +4,26 @@
 ///
 /// User Query:
 ///
-///    top countries by population in Africa
+/// top countries by population in Africa
 ///
-///    0   4         14 17         28 31    37
+/// 0   4         14 17         28 31    37
 ///
 /// Table Data:
 ///
-/// + "country" - dimension
-/// + "population" - metric
-/// + "Africa" - value in the "continent" column
+/// * "country" - dimension
+/// * "population" - metric
+/// * "Africa" - value in the "continent" column
 ///
 /// text_formatted = `"top countries by population in Africa"`
 ///
 /// html_formatted =
-///    `"top <b>countries</b> by <b>population</b> in <i>Africa</i>"`
+/// `"top <b>countries</b> by <b>population</b> in <i>Africa</i>"`
 ///
-/// ```
+/// ```text,
 /// markups = [
-///    {DIMENSION, 4, 12}, // 'countries'
-///    {METRIC, 17, 26}, // 'population'
-///    {FILTER, 31, 36}  // 'Africa'
+///   {DIMENSION, 4, 12}, // 'countries'
+///   {METRIC, 17, 26}, // 'population'
+///   {FILTER, 31, 36}  // 'Africa'
 /// ]
 /// ```
 ///
@@ -45,7 +45,7 @@ pub struct AnnotatedString {
 pub mod annotated_string {
     /// Semantic markup denotes a substring (by index and length) with markup
     /// information.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SemanticMarkup {
         /// The semantic type of the markup substring.
         #[prost(enumeration = "SemanticMarkupType", tag = "1")]
@@ -118,7 +118,7 @@ pub mod annotated_string {
     }
 }
 /// Request for query suggestions.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SuggestQueriesRequest {
     /// Required. The parent of the suggestion query is the resource denoting the project and
     /// location.
@@ -151,7 +151,7 @@ pub struct Suggestion {
     pub suggestion_info: ::core::option::Option<SuggestionInfo>,
     /// The score of the suggestion. This can be used to define ordering in UI.
     /// The score represents confidence in the suggestion where higher is better.
-    /// All score values must be in the range [0, 1).
+    /// All score values must be in the range \[0, 1).
     #[prost(double, tag = "2")]
     pub ranking_score: f64,
     /// The type of the suggestion.
@@ -180,22 +180,22 @@ pub mod suggestion_info {
     /// Example:
     /// user query: `top products`
     ///
-    /// ```
+    /// ```text,
     /// annotated_suggestion {
-    ///   text_formatted = "top product_group"
-    ///   html_formatted = "top <b>product_group</b>"
-    ///   markups {
-    ///    {type: TEXT, start_char_index: 0, length: 3}
-    ///    {type: DIMENSION, start_char_index: 4, length: 13}
-    ///   }
+    /// text_formatted = "top product_group"
+    /// html_formatted = "top <b>product_group</b>"
+    /// markups {
+    ///   {type: TEXT, start_char_index: 0, length: 3}
+    ///   {type: DIMENSION, start_char_index: 4, length: 13}
+    /// }
     /// }
     ///
     /// query_matches {
-    ///   { start_char_index: 0, length: 3 }
-    ///   { start_char_index: 4, length: 7}
+    /// { start_char_index: 0, length: 3 }
+    /// { start_char_index: 4, length: 7}
     /// }
     /// ```
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct MatchInfo {
         /// Unicode character index of the string annotation.
         #[prost(int32, tag = "1")]
@@ -267,59 +267,61 @@ pub mod auto_suggestion_service_client {
     /// and TEMPLATE for full sentences. By default, both types are returned.
     ///
     /// Example Request:
-    /// ```
+    ///
+    /// ```text,
     /// GetSuggestions({
-    ///   parent: "locations/us/projects/my-project"
-    ///   scopes:
-    ///   "//bigquery.googleapis.com/projects/my-project/datasets/my-dataset/tables/my-table"
-    ///   query: "top it"
+    ///  parent: "locations/us/projects/my-project"
+    ///  scopes:
+    ///  "//bigquery.googleapis.com/projects/my-project/datasets/my-dataset/tables/my-table"
+    ///  query: "top it"
     /// })
     /// ```
     ///
     /// The service will retrieve information based on the given scope(s) and give
     /// suggestions based on that (e.g. "top item" for "top it" if "item" is a known
     /// dimension for the provided scope).
-    /// ```
+    ///
+    /// ```text,
     /// suggestions {
-    ///   suggestion_info {
-    ///     annotated_suggestion {
-    ///       text_formatted: "top item by sum of usd_revenue_net"
-    ///       markups {
-    ///         type: DIMENSION
-    ///         start_char_index: 4
-    ///         length: 4
-    ///       }
-    ///       markups {
-    ///         type: METRIC
-    ///         start_char_index: 19
-    ///         length: 15
-    ///       }
-    ///     }
-    ///     query_matches {
-    ///       start_char_index: 0
-    ///       length: 6
-    ///     }
-    ///   }
-    ///   suggestion_type: TEMPLATE
-    ///   ranking_score: 0.9
+    ///  suggestion_info {
+    ///    annotated_suggestion {
+    ///      text_formatted: "top item by sum of usd_revenue_net"
+    ///      markups {
+    ///        type: DIMENSION
+    ///        start_char_index: 4
+    ///        length: 4
+    ///      }
+    ///      markups {
+    ///        type: METRIC
+    ///        start_char_index: 19
+    ///        length: 15
+    ///      }
+    ///    }
+    ///    query_matches {
+    ///      start_char_index: 0
+    ///      length: 6
+    ///    }
+    ///  }
+    ///  suggestion_type: TEMPLATE
+    ///  ranking_score: 0.9
     /// }
     /// suggestions {
-    ///   suggestion_info {
-    ///     annotated_suggestion {
-    ///       text_formatted: "item"
-    ///       markups {
-    ///         type: DIMENSION
-    ///         start_char_index: 4
-    ///         length: 2
-    ///       }
-    ///     }
-    ///     query_matches {
-    ///       start_char_index: 0
-    ///       length: 6
-    ///     }
-    ///   }
-    ///   suggestion_type: ENTITY
-    ///   ranking_score: 0.8
+    ///  suggestion_info {
+    ///    annotated_suggestion {
+    ///      text_formatted: "item"
+    ///      markups {
+    ///        type: DIMENSION
+    ///        start_char_index: 4
+    ///        length: 2
+    ///      }
+    ///    }
+    ///    query_matches {
+    ///      start_char_index: 0
+    ///      length: 6
+    ///    }
+    ///  }
+    ///  suggestion_type: ENTITY
+    ///  ranking_score: 0.8
     /// }
     /// ```
     #[derive(Debug, Clone)]
@@ -419,7 +421,7 @@ pub mod auto_suggestion_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataqna.v1alpha.AutoSuggestionService/SuggestQueries",
             );
@@ -492,7 +494,7 @@ pub struct Question {
     pub debug_info: ::core::option::Option<::prost_types::Any>,
 }
 /// Details on the failure to interpret the question.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InterpretError {
     /// Error message explaining why this question could not be interpreted.
     #[prost(string, tag = "1")]
@@ -507,7 +509,7 @@ pub struct InterpretError {
 /// Nested message and enum types in `InterpretError`.
 pub mod interpret_error {
     /// Details on interpretation failure.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct InterpretErrorDetails {
         /// Populated if parts of the query are unsupported.
         #[prost(message, optional, tag = "1")]
@@ -522,7 +524,7 @@ pub mod interpret_error {
         pub ambiguity_details: ::core::option::Option<InterpretAmbiguityDetails>,
     }
     /// Details about unsupported parts in a query.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct InterpretUnsupportedDetails {
         /// Unsupported operators. For example: median.
         #[prost(string, repeated, tag = "1")]
@@ -532,7 +534,7 @@ pub mod interpret_error {
         pub intent: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Details about an incomplete query.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct InterpretIncompleteQueryDetails {
         /// List of missing interpret entities.
         #[prost(enumeration = "super::InterpretEntity", repeated, tag = "1")]
@@ -540,7 +542,7 @@ pub mod interpret_error {
     }
     /// Details about a query that was too ambiguous. Currently, the message
     /// has no fields and its presence signals that there was ambiguity.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct InterpretAmbiguityDetails {}
     /// The interpret error code provides an error category why the interpretation
     /// failed.
@@ -669,7 +671,7 @@ pub mod execution_info {
 /// BigQuery job information. This can be used to query the BigQuery API and
 /// retrieve the current job's status (using
 /// [jobs.get](<https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get>)).
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BigQueryJob {
     /// The job ID.
     #[prost(string, tag = "1")]
@@ -693,7 +695,7 @@ pub struct Interpretation {
     #[prost(double, tag = "2")]
     pub confidence: f64,
     /// A list of unused phrases. Clients should display a Did You Mean (DYM)
-    ///   dialog if this is non-empty, even if this is the only interpretation.
+    /// dialog if this is non-empty, even if this is the only interpretation.
     #[prost(string, repeated, tag = "3")]
     pub unused_phrases: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Human readable representation of the query.
@@ -717,7 +719,7 @@ pub struct Interpretation {
 /// to trigger the execution. Using the `execute` RPC is needed in order to
 /// track the state of a question and report on it correctly to the data
 /// administrators.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataQuery {
     /// The generated SQL query to be sent to the backend.
     #[prost(string, tag = "1")]
@@ -753,7 +755,7 @@ pub struct InterpretationStructure {
 /// Nested message and enum types in `InterpretationStructure`.
 pub mod interpretation_structure {
     /// Information about a column.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ColumnInfo {
         /// The alias of the output column as used by the backend. For example, the
         /// field name in the schema provided in the query response in BigQuery.
@@ -862,7 +864,7 @@ pub mod interpretation_structure {
     }
 }
 /// Configuriation of debug flags.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DebugFlags {
     /// Whether to include the original VAQuery.
     #[prost(bool, tag = "1")]
@@ -880,7 +882,7 @@ pub struct DebugFlags {
     /// The time in milliseconds from Unix epoch to be used
     /// to process the query. This is useful for testing
     /// the queries at different time period.
-    /// If not set or time_override <= 0, then the current
+    /// If not set or time_override \<= 0, then the current
     /// time is used.
     #[prost(int64, tag = "5")]
     pub time_override: i64,
@@ -943,7 +945,7 @@ impl InterpretEntity {
     }
 }
 /// Feedback provided by a user.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UserFeedback {
     /// Required. The unique identifier for the user feedback.
     /// User feedback is a singleton resource on a Question.
@@ -1004,7 +1006,7 @@ pub mod user_feedback {
     }
 }
 /// A request to get a previously created question.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetQuestionRequest {
     /// Required. The unique identifier for the question.
     /// Example: `projects/foo/locations/bar/questions/1234`
@@ -1026,7 +1028,7 @@ pub struct CreateQuestionRequest {
     pub question: ::core::option::Option<Question>,
 }
 /// Request to execute an interpretation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExecuteQuestionRequest {
     /// Required. The unique identifier for the question.
     /// Example: `projects/foo/locations/bar/questions/1234`
@@ -1037,7 +1039,7 @@ pub struct ExecuteQuestionRequest {
     pub interpretation_index: i32,
 }
 /// Request to get user feedback.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetUserFeedbackRequest {
     /// Required. The unique identifier for the user feedback.
     /// User feedback is a singleton resource on a Question.
@@ -1046,7 +1048,7 @@ pub struct GetUserFeedbackRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to updates user feedback.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateUserFeedbackRequest {
     /// Required. The user feedback to update. This can be called even if there is no
     /// user feedback so far.
@@ -1177,7 +1179,7 @@ pub mod question_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataqna.v1alpha.QuestionService/GetQuestion",
             );
@@ -1204,7 +1206,7 @@ pub mod question_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataqna.v1alpha.QuestionService/CreateQuestion",
             );
@@ -1231,7 +1233,7 @@ pub mod question_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataqna.v1alpha.QuestionService/ExecuteQuestion",
             );
@@ -1258,7 +1260,7 @@ pub mod question_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataqna.v1alpha.QuestionService/GetUserFeedback",
             );
@@ -1286,7 +1288,7 @@ pub mod question_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataqna.v1alpha.QuestionService/UpdateUserFeedback",
             );

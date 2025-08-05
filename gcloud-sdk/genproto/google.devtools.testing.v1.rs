@@ -21,14 +21,14 @@ pub mod device_message {
     }
 }
 /// A message to an ADB server.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AdbMessage {
     #[prost(oneof = "adb_message::Contents", tags = "1, 2")]
     pub contents: ::core::option::Option<adb_message::Contents>,
 }
 /// Nested message and enum types in `AdbMessage`.
 pub mod adb_message {
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Contents {
         /// Open a new stream.
         #[prost(message, tag = "1")]
@@ -129,7 +129,7 @@ pub mod status_update {
     }
 }
 /// The result of a stream.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamStatus {
     /// The unique ID of this stream, assigned by the client.
     #[prost(int32, tag = "1")]
@@ -141,7 +141,7 @@ pub struct StreamStatus {
 /// Nested message and enum types in `StreamStatus`.
 pub mod stream_status {
     /// The result of the stream. Either "Okay" for success or "Fail" for failure.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Status {
         /// Okay for success.
         #[prost(message, tag = "2")]
@@ -152,7 +152,7 @@ pub mod stream_status {
     }
 }
 /// Message for opening a new stream.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Open {
     /// The unique ID that will be used to talk to this stream. This should
     /// probably just be a number that increments for each new Open request.
@@ -163,7 +163,7 @@ pub struct Open {
     pub service: ::prost::alloc::string::String,
 }
 /// Data for a stream.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamData {
     /// The unique ID of this stream, assigned by the client.
     #[prost(int32, tag = "1")]
@@ -177,7 +177,7 @@ pub struct StreamData {
 pub mod stream_data {
     /// The data of the stream, either bytes or "Close", indicating that the stream
     /// is done.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Contents {
         /// Data in the stream.
         #[prost(bytes, tag = "2")]
@@ -188,17 +188,17 @@ pub mod stream_data {
     }
 }
 /// Message signifying that the stream is open
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Okay {}
 /// Message signifying that the stream failed to open
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Fail {
     /// A user-displayable failure reason.
     #[prost(string, tag = "1")]
     pub reason: ::prost::alloc::string::String,
 }
 /// Message signifying that the stream closed.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Close {}
 /// TestMatrix captures all details about a test. It contains the environment
 /// configuration, test specification, test executions and overall state and
@@ -266,7 +266,7 @@ pub struct TestMatrix {
     pub fail_fast: bool,
 }
 /// Describes a single error or issue with a matrix.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MatrixErrorDetail {
     /// Output only. The reason for the error. This is a constant value in
     /// UPPER_SNAKE_CASE that identifies the cause of the error.
@@ -370,7 +370,7 @@ pub mod test_specification {
         IosRoboTest(super::IosRoboTest),
     }
 }
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SystraceSetup {
     /// Systrace duration in seconds.
     /// Should be between 1 and 30 seconds. 0 disables systrace.
@@ -452,7 +452,7 @@ pub struct IosTestSetup {
     pub pull_directories: ::prost::alloc::vec::Vec<IosDeviceFile>,
 }
 /// A key-value pair passed as an environment variable to the test.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnvironmentVariable {
     /// Key for the environment variable.
     #[prost(string, tag = "1")]
@@ -462,7 +462,7 @@ pub struct EnvironmentVariable {
     pub value: ::prost::alloc::string::String,
 }
 /// Identifies an account and how to log into it.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Account {
     /// Required. The type of account, based what it's for (e.g. Google) and what
     /// its login mechanism is (e.g. username and password).
@@ -473,7 +473,7 @@ pub struct Account {
 pub mod account {
     /// Required. The type of account, based what it's for (e.g. Google) and what
     /// its login mechanism is (e.g. username and password).
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum AccountType {
         /// An automatic google login account.
         #[prost(message, tag = "1")]
@@ -487,10 +487,10 @@ pub mod account {
 /// Many applications show their full set of functionalities when an account is
 /// present on the device. Logging into the device with these generated accounts
 /// allows testing more functionalities.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GoogleAuto {}
 /// An Android package file to install.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Apk {
     /// The path to an APK to be installed on the device before the test begins.
     #[prost(message, optional, tag = "1")]
@@ -502,9 +502,10 @@ pub struct Apk {
 }
 /// An Android App Bundle file format, containing a BundleConfig.pb file,
 /// a base module directory, zero or more dynamic feature module directories.
+///
 /// <p>See <https://developer.android.com/guide/app-bundle/build> for guidance on
 /// building App Bundles.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AppBundle {
     /// Required. Bundle location information.
     #[prost(oneof = "app_bundle::Bundle", tags = "1")]
@@ -513,7 +514,7 @@ pub struct AppBundle {
 /// Nested message and enum types in `AppBundle`.
 pub mod app_bundle {
     /// Required. Bundle location information.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Bundle {
         /// .aab file representing the app bundle under test.
         #[prost(message, tag = "1")]
@@ -521,7 +522,7 @@ pub mod app_bundle {
     }
 }
 /// A single device file description.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeviceFile {
     /// Required.
     #[prost(oneof = "device_file::DeviceFile", tags = "1, 2")]
@@ -530,7 +531,7 @@ pub struct DeviceFile {
 /// Nested message and enum types in `DeviceFile`.
 pub mod device_file {
     /// Required.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum DeviceFile {
         /// A reference to an opaque binary blob file.
         #[prost(message, tag = "1")]
@@ -541,13 +542,13 @@ pub mod device_file {
     }
 }
 /// An opaque binary blob file to install on the device before the test starts.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ObbFile {
     /// Required. OBB file name which must conform to the format as specified by
     /// Android
     /// e.g. \[main|patch\].0300110.com.example.android.obb
     /// which will be installed into
-    ///    \<shared-storage\>/Android/obb/\<package-name\>/
+    /// \<shared-storage\>/Android/obb/\<package-name\>/
     /// on the device.
     #[prost(string, tag = "1")]
     pub obb_file_name: ::prost::alloc::string::String,
@@ -556,7 +557,7 @@ pub struct ObbFile {
     pub obb: ::core::option::Option<FileReference>,
 }
 /// A file or directory to install on the device before the test starts.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RegularFile {
     /// Required. The source file.
     #[prost(message, optional, tag = "1")]
@@ -565,6 +566,7 @@ pub struct RegularFile {
     /// allowlisted path. If the file exists, it will be replaced.
     /// The following device-side directories and any of their subdirectories are
     /// allowlisted:
+    ///
     /// <p>${EXTERNAL_STORAGE}, /sdcard, or /storage</p>
     /// <p>${ANDROID_DATA}/local/tmp, or /data/local/tmp</p>
     /// <p>Specifying a path outside of these directory trees is invalid.
@@ -582,7 +584,7 @@ pub struct RegularFile {
     pub device_path: ::prost::alloc::string::String,
 }
 /// A file or directory to install on the device before the test starts.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IosDeviceFile {
     /// The source file
     #[prost(message, optional, tag = "1")]
@@ -600,7 +602,7 @@ pub struct IosDeviceFile {
 /// A test of an Android Application with a Test Loop.
 /// The intent \<intent-name\> will be implicitly added, since Games is the only
 /// user of this api, for the time being.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AndroidTestLoop {
     /// The java package for the application under test.
     /// The default is determined by examining the application's manifest.
@@ -627,7 +629,7 @@ pub struct AndroidTestLoop {
 /// Nested message and enum types in `AndroidTestLoop`.
 pub mod android_test_loop {
     /// Required. The Android package to test.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum AppUnderTest {
         /// The APK for the application under test.
         #[prost(message, tag = "1")]
@@ -643,7 +645,7 @@ pub mod android_test_loop {
 /// etc). This test type accepts a zip file containing the .xctestrun file and
 /// the corresponding contents of the Build/Products directory that contains all
 /// the binaries needed to run the tests.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IosXcTest {
     /// Required. The .zip containing the .xctestrun file and the contents of the
     /// DerivedData/Build/Products directory.
@@ -674,7 +676,7 @@ pub struct IosXcTest {
 /// A test of an iOS application that implements one or more game loop scenarios.
 /// This test type accepts an archived application (.ipa file) and a list of
 /// integer scenarios that will be executed on the app sequentially.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IosTestLoop {
     /// Required. The .ipa of the application to test.
     #[prost(message, optional, tag = "1")]
@@ -688,7 +690,7 @@ pub struct IosTestLoop {
     pub app_bundle_id: ::prost::alloc::string::String,
 }
 /// A test that explores an iOS application on an iOS device.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IosRoboTest {
     /// Required. The ipa stored at this file should be used to run the test.
     #[prost(message, optional, tag = "1")]
@@ -733,22 +735,22 @@ pub struct AndroidInstrumentationTest {
     /// Each target must be fully qualified with the package name or class name,
     /// in one of these formats:
     ///
-    ///   - "package package_name"
-    ///   - "class package_name.class_name"
-    ///   - "class package_name.class_name#method_name"
+    /// * "package package_name"
+    /// * "class package_name.class_name"
+    /// * "class package_name.class_name#method_name"
     ///
     /// If empty, all targets in the module will be run.
     #[prost(string, repeated, tag = "6")]
     pub test_targets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The option of whether running each test within its own invocation of
     /// instrumentation with Android Test Orchestrator or not.
-    /// ** Orchestrator is only compatible with AndroidJUnitRunner version 1.1 or
+    /// \** Orchestrator is only compatible with AndroidJUnitRunner version 1.1 or
     /// higher! **
     /// Orchestrator offers the following benefits:
     ///
-    ///   - No shared state
-    ///   - Crashes are isolated
-    ///   - Logs are scoped per test
+    /// * No shared state
+    /// * Crashes are isolated
+    /// * Logs are scoped per test
     ///
     /// See
     /// <<https://developer.android.com/training/testing/junit-runner.html#using-android-test-orchestrator>>
@@ -769,7 +771,7 @@ pub struct AndroidInstrumentationTest {
 /// Nested message and enum types in `AndroidInstrumentationTest`.
 pub mod android_instrumentation_test {
     /// Required.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum AppUnderTest {
         /// The APK for the application under test.
         #[prost(message, tag = "1")]
@@ -827,7 +829,7 @@ pub struct AndroidRoboTest {
 /// Nested message and enum types in `AndroidRoboTest`.
 pub mod android_robo_test {
     /// Required.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum AppUnderTest {
         /// The APK for the application under test.
         #[prost(message, tag = "1")]
@@ -839,12 +841,12 @@ pub mod android_robo_test {
 }
 /// Directs Robo to interact with a specific UI element if it is encountered
 /// during the crawl. Currently, Robo can perform text entry or element click.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RoboDirective {
     /// Required. The android resource name of the target UI element.
     /// For example,
-    ///     in Java: R.string.foo
-    ///     in xml: @string/foo
+    /// in Java: R.string.foo
+    /// in xml: @string/foo
     /// Only the "foo" part is needed.
     /// Reference doc:
     /// <https://developer.android.com/guide/topics/resources/accessing-resources.html>
@@ -860,7 +862,7 @@ pub struct RoboDirective {
     pub action_type: i32,
 }
 /// Message for specifying the start activities to crawl.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RoboStartingIntent {
     /// Timeout in seconds for each intent.
     #[prost(message, optional, tag = "3")]
@@ -872,7 +874,7 @@ pub struct RoboStartingIntent {
 /// Nested message and enum types in `RoboStartingIntent`.
 pub mod robo_starting_intent {
     /// Required. Intent details to start an activity.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum StartingIntent {
         /// An intent that starts the main launcher activity.
         #[prost(message, tag = "1")]
@@ -886,10 +888,10 @@ pub mod robo_starting_intent {
     }
 }
 /// Specifies an intent that starts the main launcher activity.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LauncherActivityIntent {}
 /// A starting intent specified by an action, uri, and categories.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StartActivityIntent {
     /// Action name.
     /// Required for START_ACTIVITY.
@@ -903,7 +905,7 @@ pub struct StartActivityIntent {
     pub categories: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Skips the starting activity
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NoActivityIntent {}
 /// The matrix of environments in which the test is to be executed.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -951,7 +953,7 @@ pub struct IosDeviceList {
 ///
 /// Only supported permutations will be instantiated.  Invalid permutations
 /// (e.g., incompatible models/versions) are ignored.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AndroidMatrix {
     /// Required. The ids of the set of Android device to be used.
     /// Use the TestEnvironmentDiscoveryService to get supported options.
@@ -982,7 +984,7 @@ pub struct ClientInfo {
 }
 /// Key-value pair of detailed information about the client which invoked the
 /// test. Examples: {'Version', '1.0'}, {'Release Track', 'BETA'}.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ClientInfoDetail {
     /// Required. The key of detailed client information.
     #[prost(string, tag = "1")]
@@ -992,7 +994,7 @@ pub struct ClientInfoDetail {
     pub value: ::prost::alloc::string::String,
 }
 /// Locations where the results of running the test are stored.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResultStorage {
     /// Required.
     #[prost(message, optional, tag = "1")]
@@ -1011,7 +1013,7 @@ pub struct ResultStorage {
     pub results_url: ::prost::alloc::string::String,
 }
 /// Represents a tool results history resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ToolResultsHistory {
     /// Required. The cloud project that owns the tool results history.
     #[prost(string, tag = "1")]
@@ -1023,7 +1025,7 @@ pub struct ToolResultsHistory {
 /// Represents a tool results execution resource.
 ///
 /// This has the results of a TestMatrix.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ToolResultsExecution {
     /// Output only. The cloud project that owns the tool results execution.
     #[prost(string, tag = "1")]
@@ -1038,7 +1040,7 @@ pub struct ToolResultsExecution {
 /// Represents a tool results step resource.
 ///
 /// This has the results of a TestExecution.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ToolResultsStep {
     /// Output only. The cloud project that owns the tool results step.
     #[prost(string, tag = "1")]
@@ -1054,7 +1056,7 @@ pub struct ToolResultsStep {
     pub step_id: ::prost::alloc::string::String,
 }
 /// A storage location within Google cloud storage (GCS).
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GoogleCloudStorage {
     /// Required. The path to a directory in GCS that will
     /// eventually contain the results for this test.
@@ -1064,7 +1066,7 @@ pub struct GoogleCloudStorage {
     pub gcs_path: ::prost::alloc::string::String,
 }
 /// A reference to a file, used for user inputs.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FileReference {
     /// Required. The file reference.
     #[prost(oneof = "file_reference::File", tags = "1")]
@@ -1073,7 +1075,7 @@ pub struct FileReference {
 /// Nested message and enum types in `FileReference`.
 pub mod file_reference {
     /// Required. The file reference.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum File {
         /// A path to a file in Google Cloud Storage.
         /// Example: gs://build-app-1414623860166/app%40debug-unaligned.apk
@@ -1083,7 +1085,7 @@ pub mod file_reference {
     }
 }
 /// The environment in which the test is run.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Environment {
     /// Required. The environment.
     #[prost(oneof = "environment::Environment", tags = "1, 2")]
@@ -1092,7 +1094,7 @@ pub struct Environment {
 /// Nested message and enum types in `Environment`.
 pub mod environment {
     /// Required. The environment.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Environment {
         /// An Android device which must be used with an Android test.
         #[prost(message, tag = "1")]
@@ -1103,7 +1105,7 @@ pub mod environment {
     }
 }
 /// A single Android device.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AndroidDevice {
     /// Required. The id of the Android device to be used.
     /// Use the TestEnvironmentDiscoveryService to get supported options.
@@ -1123,7 +1125,7 @@ pub struct AndroidDevice {
     pub orientation: ::prost::alloc::string::String,
 }
 /// A single iOS device.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IosDevice {
     /// Required. The id of the iOS device to be used.
     /// Use the TestEnvironmentDiscoveryService to get supported options.
@@ -1143,7 +1145,7 @@ pub struct IosDevice {
     pub orientation: ::prost::alloc::string::String,
 }
 /// Additional details about the progress of the running test.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestDetails {
     /// Output only. Human-readable, detailed descriptions of the test's progress.
     /// For example: "Provisioning a device", "Starting Test".
@@ -1158,7 +1160,7 @@ pub struct TestDetails {
     pub error_message: ::prost::alloc::string::String,
 }
 /// Details behind an invalid request.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InvalidRequestDetail {
     /// The reason behind the error.
     #[prost(enumeration = "invalid_request_detail::Reason", tag = "1")]
@@ -1259,13 +1261,13 @@ pub mod sharding_option {
 ///
 /// Based on the sharding mechanism AndroidJUnitRunner uses, there is no
 /// guarantee that test cases will be distributed uniformly across all shards.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UniformSharding {
     /// Required. The total number of shards to create. This must always be a
     /// positive number that is no greater than the total number of test cases.
     /// When you select one or more physical devices, the number of shards must be
-    /// <= 50. When you select one or more ARM virtual devices, it must be <= 200.
-    /// When you select only x86 virtual devices, it must be <= 500.
+    /// \<= 50. When you select one or more ARM virtual devices, it must be \<= 200.
+    /// When you select only x86 virtual devices, it must be \<= 500.
     #[prost(int32, tag = "1")]
     pub num_shards: i32,
 }
@@ -1279,14 +1281,14 @@ pub struct ManualSharding {
     /// Required. Group of packages, classes, and/or test methods to be run for
     /// each manually-created shard. You must specify at least one shard if this
     /// field is present. When you select one or more physical devices, the number
-    /// of repeated test_targets_for_shard must be <= 50. When you select one or
-    /// more ARM virtual devices, it must be <= 200. When you select only x86
-    /// virtual devices, it must be <= 500.
+    /// of repeated test_targets_for_shard must be \<= 50. When you select one or
+    /// more ARM virtual devices, it must be \<= 200. When you select only x86
+    /// virtual devices, it must be \<= 500.
     #[prost(message, repeated, tag = "1")]
     pub test_targets_for_shard: ::prost::alloc::vec::Vec<TestTargetsForShard>,
 }
 /// Test targets for a shard.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TestTargetsForShard {
     /// Group of packages, classes, and/or test methods to be run for each shard.
     /// The targets need to be specified in AndroidJUnitRunner argument format. For
@@ -1297,7 +1299,7 @@ pub struct TestTargetsForShard {
     pub test_targets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Shards test based on previous test case timing records.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SmartSharding {
     /// The amount of time tests within a shard should take.
     ///
@@ -1309,20 +1311,20 @@ pub struct SmartSharding {
     /// shard, the number of shards will not exceed the number of test cases. Shard
     /// duration will be exceeded if:
     ///
-    /// - The maximum shard limit is reached and there is more calculated test time
-    /// remaining to allocate into shards.
-    /// - Any individual test is estimated to be longer than the targeted shard
-    /// duration.
+    /// * The maximum shard limit is reached and there is more calculated test time
+    ///   remaining to allocate into shards.
+    /// * Any individual test is estimated to be longer than the targeted shard
+    ///   duration.
     ///
     /// Shard duration is not guaranteed because smart sharding uses test case
     /// history and default durations which may not be accurate. The rules for
     /// finding the test case timing records are:
     ///
-    /// - If the service has processed a test case in the last 30 days, the record
+    /// * If the service has processed a test case in the last 30 days, the record
     ///   of the latest successful test case will be used.
-    /// - For new test cases, the average duration of other known test cases will
+    /// * For new test cases, the average duration of other known test cases will
     ///   be used.
-    /// - If there are no previous test case timing records available, the default
+    /// * If there are no previous test case timing records available, the default
     ///   test case duration is 15 seconds.
     ///
     /// Because the actual shard duration can exceed the targeted shard duration,
@@ -1333,16 +1335,16 @@ pub struct SmartSharding {
     /// finish.
     ///
     /// Note that there is a limit for maximum number of shards. When you select
-    /// one or more physical devices, the number of shards must be <= 50. When you
-    /// select one or more ARM virtual devices, it must be <= 200. When you select
-    /// only x86 virtual devices, it must be <= 500. To guarantee at least one test
+    /// one or more physical devices, the number of shards must be \<= 50. When you
+    /// select one or more ARM virtual devices, it must be \<= 200. When you select
+    /// only x86 virtual devices, it must be \<= 500. To guarantee at least one test
     /// case for per shard, the number of shards will not exceed the number of test
     /// cases. Each shard created counts toward daily test quota.
     #[prost(message, optional, tag = "1")]
     pub targeted_shard_duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Output only. Details about the shard.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Shard {
     /// Output only. The index of the shard among all the shards.
     #[prost(int32, tag = "1")]
@@ -1377,7 +1379,7 @@ pub struct CreateTestMatrixRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request to get the Test Matrix with the given id.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTestMatrixRequest {
     /// Cloud project that owns the test matrix.
     #[prost(string, tag = "1")]
@@ -1387,7 +1389,7 @@ pub struct GetTestMatrixRequest {
     pub test_matrix_id: ::prost::alloc::string::String,
 }
 /// Request to stop running all of the tests in the specified matrix.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelTestMatrixRequest {
     /// Cloud project that owns the test.
     #[prost(string, tag = "1")]
@@ -1397,7 +1399,7 @@ pub struct CancelTestMatrixRequest {
     pub test_matrix_id: ::prost::alloc::string::String,
 }
 /// Response containing the current state of the specified test matrix.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelTestMatrixResponse {
     /// The current rolled-up state of the test matrix.
     /// If this state is already final, then the cancelation request will
@@ -1416,7 +1418,7 @@ pub enum OrchestratorOption {
     /// offers.
     Unspecified = 0,
     /// Run test using orchestrator.
-    /// ** Only compatible with AndroidJUnitRunner version 1.1 or higher! **
+    /// \** Only compatible with AndroidJUnitRunner version 1.1 or higher! **
     /// Recommended.
     UseOrchestrator = 1,
     /// Run test without using orchestrator.
@@ -1554,9 +1556,9 @@ pub enum InvalidMatrixDetails {
     /// or in the manifest file. This can be caused by one of the following
     /// reasons:
     ///
-    /// - the user provided a runner class name that's incorrect, or
-    /// - the test runner isn't built into the test APK (might be in the app APK
-    /// instead).
+    /// * the user provided a runner class name that's incorrect, or
+    /// * the test runner isn't built into the test APK (might be in the app APK
+    ///   instead).
     NoTestRunnerClass = 19,
     /// A main launcher activity could not be found.
     NoLauncherActivity = 8,
@@ -1828,14 +1830,14 @@ pub enum OutcomeSummary {
     Unspecified = 0,
     /// The test matrix run was successful, for instance:
     ///
-    /// - All the test cases passed.
-    /// - Robo did not detect a crash of the application under test.
+    /// * All the test cases passed.
+    /// * Robo did not detect a crash of the application under test.
     Success = 1,
     /// A run failed, for instance:
     ///
-    /// - One or more test cases failed.
-    /// - A test timed out.
-    /// - The application under test crashed.
+    /// * One or more test cases failed.
+    /// * A test timed out.
+    /// * The application under test crashed.
     Failure = 2,
     /// Something unexpected happened. The run should still be considered
     /// unsuccessful but this is likely a transient problem and re-running the
@@ -1843,7 +1845,7 @@ pub enum OutcomeSummary {
     Inconclusive = 3,
     /// All tests were skipped, for instance:
     ///
-    /// - All device configurations were incompatible.
+    /// * All device configurations were incompatible.
     Skipped = 4,
 }
 impl OutcomeSummary {
@@ -1896,13 +1898,13 @@ pub mod test_execution_service_client {
     ///
     /// The TestExecutionService models this behavior using two resource types:
     ///
-    /// - TestMatrix: a group of one or more TestExecutions, built by taking a
-    ///   product of values over a pre-defined set of axes. In the case of Android
-    ///   Tests, for example, device model and OS version are two axes of the matrix.
+    /// * TestMatrix: a group of one or more TestExecutions, built by taking a
+    ///  product of values over a pre-defined set of axes. In the case of Android
+    ///  Tests, for example, device model and OS version are two axes of the matrix.
     ///
-    /// - TestExecution: a single execution of one or more test targets on a
-    ///   single device. These are created automatically when a TestMatrix is
-    ///   created.
+    /// * TestExecution: a single execution of one or more test targets on a
+    ///  single device. These are created automatically when a TestMatrix is
+    ///  created.
     ///
     /// This service returns any error codes from the canonical error space (i.e.
     /// google.rpc.Code). The errors which may be returned are specified on each
@@ -1997,9 +1999,9 @@ pub mod test_execution_service_client {
         ///
         /// May return any of the following canonical error codes:
         ///
-        /// - PERMISSION_DENIED - if the user is not authorized to write to project
-        /// - INVALID_ARGUMENT - if the request is malformed or if the matrix tries
-        ///                      to use too many simultaneous devices.
+        /// * PERMISSION_DENIED - if the user is not authorized to write to project
+        /// * INVALID_ARGUMENT - if the request is malformed or if the matrix tries
+        ///  to use too many simultaneous devices.
         pub async fn create_test_matrix(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateTestMatrixRequest>,
@@ -2012,7 +2014,7 @@ pub mod test_execution_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.testing.v1.TestExecutionService/CreateTestMatrix",
             );
@@ -2036,9 +2038,9 @@ pub mod test_execution_service_client {
         ///
         /// May return any of the following canonical error codes:
         ///
-        /// - PERMISSION_DENIED - if the user is not authorized to read project
-        /// - INVALID_ARGUMENT - if the request is malformed
-        /// - NOT_FOUND - if the Test Matrix does not exist
+        /// * PERMISSION_DENIED - if the user is not authorized to read project
+        /// * INVALID_ARGUMENT - if the request is malformed
+        /// * NOT_FOUND - if the Test Matrix does not exist
         pub async fn get_test_matrix(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTestMatrixRequest>,
@@ -2051,7 +2053,7 @@ pub mod test_execution_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.testing.v1.TestExecutionService/GetTestMatrix",
             );
@@ -2071,9 +2073,9 @@ pub mod test_execution_service_client {
         ///
         /// May return any of the following canonical error codes:
         ///
-        /// - PERMISSION_DENIED - if the user is not authorized to read project
-        /// - INVALID_ARGUMENT - if the request is malformed
-        /// - NOT_FOUND - if the Test Matrix does not exist
+        /// * PERMISSION_DENIED - if the user is not authorized to read project
+        /// * INVALID_ARGUMENT - if the request is malformed
+        /// * NOT_FOUND - if the Test Matrix does not exist
         pub async fn cancel_test_matrix(
             &mut self,
             request: impl tonic::IntoRequest<super::CancelTestMatrixRequest>,
@@ -2089,7 +2091,7 @@ pub mod test_execution_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.testing.v1.TestExecutionService/CancelTestMatrix",
             );
@@ -2157,7 +2159,7 @@ pub struct ApkManifest {
 }
 /// The <uses-permission> tag within a manifest.
 /// <https://developer.android.com/guide/topics/manifest/uses-permission-element.html>
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UsesPermissionTag {
     /// The android:name value
     #[prost(string, tag = "1")]
@@ -2179,7 +2181,7 @@ pub struct Service {
 }
 /// The <intent-filter> section of an <activity> tag.
 /// <https://developer.android.com/guide/topics/manifest/intent-filter-element.html>
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IntentFilter {
     /// The android:name value of the <action> tag.
     #[prost(string, repeated, tag = "1")]
@@ -2193,7 +2195,7 @@ pub struct IntentFilter {
 }
 /// A <meta-data> tag within a manifest.
 /// <https://developer.android.com/guide/topics/manifest/meta-data-element.html>
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Metadata {
     /// The android:name value
     #[prost(string, tag = "1")]
@@ -2204,7 +2206,7 @@ pub struct Metadata {
 }
 /// A <uses-feature> tag within a manifest.
 /// <https://developer.android.com/guide/topics/manifest/uses-feature-element.html>
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UsesFeature {
     /// The android:name value
     #[prost(string, tag = "1")]
@@ -2214,7 +2216,7 @@ pub struct UsesFeature {
     pub is_required: bool,
 }
 /// A request to get the details of an Android application.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetApkDetailsRequest {
     /// Optional. The APK to be parsed for details.
     #[prost(message, optional, tag = "1")]
@@ -2341,7 +2343,7 @@ pub mod application_detail_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.testing.v1.ApplicationDetailService/GetApkDetails",
             );
@@ -2370,7 +2372,7 @@ pub struct CreateDeviceSessionRequest {
 }
 /// Request a list of device sessions in the provided parent matching the given
 /// filter.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDeviceSessionsRequest {
     /// Required. The name of the parent to request, e.g. "projects/{project_id}"
     #[prost(string, tag = "4")]
@@ -2398,7 +2400,7 @@ pub struct ListDeviceSessionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request object for a Device Session.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDeviceSessionRequest {
     /// Required. Name of the DeviceSession, e.g.
     /// "projects/{project_id}/deviceSessions/{session_id}"
@@ -2406,7 +2408,7 @@ pub struct GetDeviceSessionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request object for cancelling a Device Session.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelDeviceSessionRequest {
     /// Required. Name of the DeviceSession, e.g.
     /// "projects/{project_id}/deviceSessions/{session_id}"
@@ -2462,7 +2464,7 @@ pub struct DeviceSession {
 pub mod device_session {
     /// A message encapsulating a series of Session states and the time that the
     /// DeviceSession first entered those states.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SessionStateEvent {
         /// Output only. The session_state tracked by this event
         #[prost(enumeration = "SessionState", tag = "1")]
@@ -2547,7 +2549,7 @@ pub mod device_session {
             }
         }
     }
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Expiration {
         /// Optional. The amount of time that a device will be initially allocated
         /// for. This can eventually be extended with the UpdateDeviceSession RPC.
@@ -2679,7 +2681,7 @@ pub mod direct_access_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.testing.v1.DirectAccessService/CreateDeviceSession",
             );
@@ -2710,7 +2712,7 @@ pub mod direct_access_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.testing.v1.DirectAccessService/ListDeviceSessions",
             );
@@ -2740,7 +2742,7 @@ pub mod direct_access_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.testing.v1.DirectAccessService/GetDeviceSession",
             );
@@ -2771,7 +2773,7 @@ pub mod direct_access_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.testing.v1.DirectAccessService/CancelDeviceSession",
             );
@@ -2801,7 +2803,7 @@ pub mod direct_access_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.testing.v1.DirectAccessService/UpdateDeviceSession",
             );
@@ -2835,7 +2837,7 @@ pub mod direct_access_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.testing.v1.DirectAccessService/AdbConnect",
             );
@@ -2852,7 +2854,7 @@ pub mod direct_access_service_client {
     }
 }
 /// A single device IP block
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeviceIpBlock {
     /// An IP address block in CIDR notation eg: 34.68.194.64/29
     #[prost(string, tag = "1")]
@@ -2865,7 +2867,7 @@ pub struct DeviceIpBlock {
     pub added_date: ::core::option::Option<super::super::super::r#type::Date>,
 }
 /// Request to list the currently supported values for an environment type.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetTestEnvironmentCatalogRequest {
     /// Required. The type of environment that should be listed.
     #[prost(
@@ -3150,7 +3152,7 @@ pub struct AndroidVersion {
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A version-specific information of an Android model.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PerAndroidVersionInfo {
     /// An Android version.
     #[prost(string, tag = "1")]
@@ -3174,7 +3176,7 @@ pub struct PerAndroidVersionInfo {
 /// DirectAccessService is currently available as a preview to select developers.
 /// You can register today on behalf of you and your team at
 /// <https://developer.android.com/studio/preview/android-device-streaming>
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DirectAccessVersionInfo {
     /// Whether direct access is supported at all. Clients are expected to
     /// filter down the device list to only android models and versions which
@@ -3201,7 +3203,7 @@ pub struct Distribution {
     pub market_share: f64,
 }
 /// Lab specific information for a device.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LabInfo {
     /// Lab name where the device is hosted.
     /// If empty, the device is hosted in a Google owned lab.
@@ -3278,7 +3280,7 @@ pub struct IosModel {
     pub per_version_info: ::prost::alloc::vec::Vec<PerIosVersionInfo>,
 }
 /// An iOS version.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IosVersion {
     /// An opaque id for this iOS version.
     /// Use this id to invoke the TestExecutionService.
@@ -3303,7 +3305,7 @@ pub struct IosVersion {
     >,
 }
 /// A version-specific information of an iOS model.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PerIosVersionInfo {
     /// An iOS version.
     #[prost(string, tag = "1")]
@@ -3313,7 +3315,7 @@ pub struct PerIosVersionInfo {
     pub device_capacity: i32,
 }
 /// A location/region designation for language.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Locale {
     /// The id for this locale.
     /// Example: "en_US".
@@ -3333,7 +3335,7 @@ pub struct Locale {
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Screen orientation of the device.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Orientation {
     /// The id for this orientation.
     /// Example: "portrait".
@@ -3349,7 +3351,7 @@ pub struct Orientation {
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// An Xcode version that an iOS version is compatible with.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct XcodeVersion {
     /// The id for this version.
     /// Example: "9.2".
@@ -3397,7 +3399,7 @@ pub struct TrafficRule {
     pub burst: f32,
 }
 /// The currently provided software environment on the devices under test.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProvidedSoftwareCatalog {
     /// Deprecated: Use AndroidX Test Orchestrator going forward.
     ///
@@ -3510,9 +3512,10 @@ pub enum DeviceCapacity {
     ///
     /// Please note that high capacity devices do not guarantee short wait times
     /// due to several factors:
+    ///
     /// 1. Traffic (how heavily they are used at any given moment)
-    /// 2. High capacity devices are prioritized for certain usages, which may
-    /// cause user tests to be slower than selecting other similar device types.
+    /// 1. High capacity devices are prioritized for certain usages, which may
+    ///    cause user tests to be slower than selecting other similar device types.
     High = 1,
     /// Devices that are medium in capacity (The lab has a decent number of these
     /// devices, though not as many as high capacity devices).
@@ -3580,30 +3583,30 @@ pub mod test_environment_discovery_service_client {
     ///
     /// It defines the following resource model:
     ///
-    /// - The API a collection of [TestEnvironmentCatalog]
-    ///   [google.devtools.test.v1.TestEnvironmentCatalog] resources, named
-    ///   `testEnvironmentCatalog/*`
+    /// * The API a collection of \[TestEnvironmentCatalog\]
+    ///  \[google.devtools.test.v1.TestEnvironmentCatalog\] resources, named
+    ///  `testEnvironmentCatalog/*`
     ///
-    /// - Each TestEnvironmentCatalog resource describes a set of supported
-    ///   environments.
+    /// * Each TestEnvironmentCatalog resource describes a set of supported
+    ///  environments.
     ///
-    /// - An [AndroidDeviceCatalog][google.devtools.test.v1.AndroidDeviceCatalog]
-    ///   describes supported Android devices. It contains lists of supported
-    ///   [AndroidModels][google.devtools.test.v1.AndroidModel] and
-    ///   [AndroidVersions][google.devtools.test.v1.AndroidVersion] along with a
-    ///   [AndroidRuntimeConfiguration][google.devtools.test.v1.AndroidRuntimeConfiguration].
-    ///   Each AndroidModel contains a list of Versions it supports. All
-    ///   models support all locales and orientations described by the
-    ///   AndroidRuntimeConfiguration
+    /// * An \[AndroidDeviceCatalog\]\[google.devtools.test.v1.AndroidDeviceCatalog\]
+    ///  describes supported Android devices. It contains lists of supported
+    ///  \[AndroidModels\]\[google.devtools.test.v1.AndroidModel\] and
+    ///  \[AndroidVersions\]\[google.devtools.test.v1.AndroidVersion\] along with a
+    ///  \[AndroidRuntimeConfiguration\]\[google.devtools.test.v1.AndroidRuntimeConfiguration\].
+    ///  Each AndroidModel contains a list of Versions it supports. All
+    ///  models support all locales and orientations described by the
+    ///  AndroidRuntimeConfiguration
     ///
-    /// - An [IosDeviceCatalog][google.devtools.test.v1.IosDeviceCatalog]
-    ///   describes supported iOS devices. It contains lists of supported
-    ///   [IosModels][google.devtools.test.v1.IosModel] and
-    ///   [IosVersions][google.devtools.test.v1.IosVersion] along with a
-    ///   [IosRuntimeConfiguration][google.devtools.test.v1.IosRuntimeConfiguration].
-    ///   Each IosModel contains a list of Versions it supports. All
-    ///   models support all locales and orientations described by the
-    ///   IosRuntimeConfiguration.
+    /// * An \[IosDeviceCatalog\]\[google.devtools.test.v1.IosDeviceCatalog\]
+    ///  describes supported iOS devices. It contains lists of supported
+    ///  \[IosModels\]\[google.devtools.test.v1.IosModel\] and
+    ///  \[IosVersions\]\[google.devtools.test.v1.IosVersion\] along with a
+    ///  \[IosRuntimeConfiguration\]\[google.devtools.test.v1.IosRuntimeConfiguration\].
+    ///  Each IosModel contains a list of Versions it supports. All
+    ///  models support all locales and orientations described by the
+    ///  IosRuntimeConfiguration.
     #[derive(Debug, Clone)]
     pub struct TestEnvironmentDiscoveryServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -3690,9 +3693,9 @@ pub mod test_environment_discovery_service_client {
         ///
         /// May return any of the following canonical error codes:
         ///
-        /// - INVALID_ARGUMENT - if the request is malformed
-        /// - NOT_FOUND - if the environment type does not exist
-        /// - INTERNAL - if an internal error occurred
+        /// * INVALID_ARGUMENT - if the request is malformed
+        /// * NOT_FOUND - if the environment type does not exist
+        /// * INTERNAL - if an internal error occurred
         pub async fn get_test_environment_catalog(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTestEnvironmentCatalogRequest>,
@@ -3708,7 +3711,7 @@ pub mod test_environment_discovery_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.testing.v1.TestEnvironmentDiscoveryService/GetTestEnvironmentCatalog",
             );

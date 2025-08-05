@@ -79,7 +79,7 @@ pub mod complete_deployment_event {
     }
 }
 /// This message is used when the CompleteDeploymentEvent has a value.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CompleteDeploymentResult {
     /// This is the Deployment that completed.
     /// Format is projects/{project}/locations/{location}/deployments/{name}.

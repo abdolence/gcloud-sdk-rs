@@ -90,7 +90,7 @@ pub mod restrictions {
     }
 }
 /// The HTTP referrers (websites) that are allowed to use the key.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BrowserKeyRestrictions {
     /// A list of regular expressions for the referrer URLs that are allowed
     /// to make API calls with this key.
@@ -98,7 +98,7 @@ pub struct BrowserKeyRestrictions {
     pub allowed_referrers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The IP addresses of callers that are allowed to use the key.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServerKeyRestrictions {
     /// A list of the caller IP addresses that are allowed to make API calls
     /// with this key.
@@ -114,7 +114,7 @@ pub struct AndroidKeyRestrictions {
     pub allowed_applications: ::prost::alloc::vec::Vec<AndroidApplication>,
 }
 /// Identifier of an Android application for key use.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AndroidApplication {
     /// The SHA1 fingerprint of the application. For example, both sha1 formats are
     /// acceptable : DA:39:A3:EE:5E:6B:4B:0D:32:55:BF:EF:95:60:18:90:AF:D8:07:09 or
@@ -127,7 +127,7 @@ pub struct AndroidApplication {
     pub package_name: ::prost::alloc::string::String,
 }
 /// The iOS apps that are allowed to use the key.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IosKeyRestrictions {
     /// A list of bundle IDs that are allowed when making API calls with this key.
     #[prost(string, repeated, tag = "1")]
@@ -135,7 +135,7 @@ pub struct IosKeyRestrictions {
 }
 /// A restriction for a specific service and optionally one or multiple
 /// specific methods. Both fields are case insensitive.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ApiTarget {
     /// The service for this restriction. It should be the canonical
     /// service name, for example: `translate.googleapis.com`.
@@ -145,12 +145,12 @@ pub struct ApiTarget {
     pub service: ::prost::alloc::string::String,
     /// Optional. List of one or more methods that can be called.
     /// If empty, all methods for the service are allowed. A wildcard
-    /// (*) can be used as the last symbol.
+    /// (\*) can be used as the last symbol.
     /// Valid examples:
-    ///    `google.cloud.translate.v2.TranslateService.GetSupportedLanguage`
-    ///    `TranslateText`
-    ///    `Get*`
-    ///    `translate.googleapis.com.Get*`
+    /// `google.cloud.translate.v2.TranslateService.GetSupportedLanguage`
+    /// `TranslateText`
+    /// `Get*`
+    /// `translate.googleapis.com.Get*`
     #[prost(string, repeated, tag = "2")]
     pub methods: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -178,7 +178,7 @@ pub struct CreateKeyRequest {
     pub key_id: ::prost::alloc::string::String,
 }
 /// Request message for `ListKeys` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListKeysRequest {
     /// Required. Lists all API keys associated with this project.
     #[prost(string, tag = "1")]
@@ -205,21 +205,21 @@ pub struct ListKeysResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for `GetKey` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetKeyRequest {
     /// Required. The resource name of the API key to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for `GetKeyString` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetKeyStringRequest {
     /// Required. The resource name of the API key to be retrieved.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Response message for `GetKeyString` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetKeyStringResponse {
     /// An encrypted and signed value of the key.
     #[prost(string, tag = "1")]
@@ -238,13 +238,13 @@ pub struct UpdateKeyRequest {
     /// Mutable fields are: `display_name`, `restrictions`, and `annotations`.
     /// If an update mask is not provided, the service treats it as an implied mask
     /// equivalent to all allowed fields that are set on the wire. If the field
-    /// mask has a special value "*", the service treats it equivalent to replace
+    /// mask has a special value "\*", the service treats it equivalent to replace
     /// all allowed mutable fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for `DeleteKey` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteKeyRequest {
     /// Required. The resource name of the API key to be deleted.
     #[prost(string, tag = "1")]
@@ -255,21 +255,21 @@ pub struct DeleteKeyRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request message for `UndeleteKey` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UndeleteKeyRequest {
     /// Required. The resource name of the API key to be undeleted.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for `LookupKey` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LookupKeyRequest {
     /// Required. Finds the project that owns the key string value.
     #[prost(string, tag = "1")]
     pub key_string: ::prost::alloc::string::String,
 }
 /// Response message for `LookupKey` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LookupKeyResponse {
     /// The project that owns the key with the value specified in the request.
     #[prost(string, tag = "1")]
@@ -390,7 +390,7 @@ pub mod api_keys_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.apikeys.v2.ApiKeys/CreateKey",
             );
@@ -419,7 +419,7 @@ pub mod api_keys_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.apikeys.v2.ApiKeys/ListKeys",
             );
@@ -445,7 +445,7 @@ pub mod api_keys_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.apikeys.v2.ApiKeys/GetKey",
             );
@@ -473,7 +473,7 @@ pub mod api_keys_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.apikeys.v2.ApiKeys/GetKeyString",
             );
@@ -504,7 +504,7 @@ pub mod api_keys_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.apikeys.v2.ApiKeys/UpdateKey",
             );
@@ -533,7 +533,7 @@ pub mod api_keys_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.apikeys.v2.ApiKeys/DeleteKey",
             );
@@ -561,7 +561,7 @@ pub mod api_keys_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.apikeys.v2.ApiKeys/UndeleteKey",
             );
@@ -590,7 +590,7 @@ pub mod api_keys_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.api.apikeys.v2.ApiKeys/LookupKey",
             );

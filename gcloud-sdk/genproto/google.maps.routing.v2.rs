@@ -2,7 +2,7 @@
 /// Information related to how and why a fallback result was used. If this field
 /// is set, then it means the server used a different routing mode from your
 /// preferred mode as fallback.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FallbackInfo {
     /// Routing mode used for the response. If fallback was triggered, the mode
     /// may be different from routing preference set in the original client
@@ -59,11 +59,11 @@ pub enum FallbackRoutingMode {
     /// Not used.
     Unspecified = 0,
     /// Indicates the `TRAFFIC_UNAWARE`
-    /// [`RoutingPreference`][google.maps.routing.v2.RoutingPreference] was used to
+    /// \[`RoutingPreference`\]\[google.maps.routing.v2.RoutingPreference\] was used to
     /// compute the response.
     FallbackTrafficUnaware = 1,
     /// Indicates the `TRAFFIC_AWARE`
-    /// [`RoutingPreference`][google.maps.routing.v2.RoutingPreference] was used to
+    /// \[`RoutingPreference`\]\[google.maps.routing.v2.RoutingPreference\] was used to
     /// compute the response.
     FallbackTrafficAware = 2,
 }
@@ -89,7 +89,7 @@ impl FallbackRoutingMode {
         }
     }
 }
-/// Contains [`GeocodedWaypoints`][google.maps.routing.v2.GeocodedWaypoint] for
+/// Contains \[`GeocodedWaypoints`\]\[google.maps.routing.v2.GeocodedWaypoint\] for
 /// origin, destination and intermediate waypoints. Only populated for address
 /// waypoints.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -135,7 +135,7 @@ pub struct GeocodedWaypoint {
     pub place_id: ::prost::alloc::string::String,
 }
 /// Localized description of time.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LocalizedTime {
     /// The time specified as a string in a given time zone.
     #[prost(message, optional, tag = "1")]
@@ -157,7 +157,7 @@ pub struct Location {
     /// values can be from 0 to 360, where 0 specifies a heading of due North, 90
     /// specifies a heading of due East, and so on. You can use this field only for
     /// `DRIVE` and `TWO_WHEELER`
-    /// [`RouteTravelMode`][google.maps.routing.v2.RouteTravelMode].
+    /// \[`RouteTravelMode`\]\[google.maps.routing.v2.RouteTravelMode\].
     #[prost(message, optional, tag = "2")]
     pub heading: ::core::option::Option<i32>,
 }
@@ -268,8 +268,8 @@ impl Maneuver {
     }
 }
 /// Encapsulates navigation instructions for a
-/// [`RouteLegStep`][google.maps.routing.v2.RouteLegStep].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[`RouteLegStep`\]\[google.maps.routing.v2.RouteLegStep\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NavigationInstruction {
     /// Encapsulates the navigation instructions for the current step (for example,
     /// turn left, merge, or straight). This field determines which icon to
@@ -392,7 +392,7 @@ pub mod polyline_details {
     /// Encapsulates the start and end indexes for a polyline detail.
     /// For instances where the data corresponds to a single point, `start_index`
     /// and `end_index` will be equal.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PolylinePointIndex {
         /// The start index of this detail in the polyline.
         #[prost(int32, optional, tag = "1")]
@@ -402,7 +402,7 @@ pub mod polyline_details {
         pub end_index: ::core::option::Option<i32>,
     }
     /// Encapsulates information about flyovers along the polyline.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct FlyoverInfo {
         /// Output only. Denotes whether a flyover exists for a given stretch of the
         /// polyline.
@@ -413,7 +413,7 @@ pub mod polyline_details {
         pub polyline_point_index: ::core::option::Option<PolylinePointIndex>,
     }
     /// Encapsulates information about narrow roads along the polyline.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct NarrowRoadInfo {
         /// Output only. Denotes whether a narrow road exists for a given stretch of
         /// the polyline.
@@ -467,7 +467,7 @@ pub mod polyline_details {
         }
     }
 }
-/// Labels for the [`Route`][google.maps.routing.v2.Route] that are useful to
+/// Labels for the \[`Route`\]\[google.maps.routing.v2.Route\] that are useful to
 /// identify specific properties of the route to compare against others.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -478,7 +478,7 @@ pub enum RouteLabel {
     DefaultRoute = 1,
     /// An alternative to the default "best" route. Routes like this will be
     /// returned when
-    /// [`compute_alternative_routes`][google.maps.routing.v2.ComputeRoutesRequest.compute_alternative_routes]
+    /// \[`compute_alternative_routes`\]\[google.maps.routing.v2.ComputeRoutesRequest.compute_alternative_routes\]
     /// is specified.
     DefaultRouteAlternate = 2,
     /// Fuel efficient route. Routes labeled with this value are determined to be
@@ -567,7 +567,7 @@ impl RouteTravelMode {
 /// Given a path with points P_0, P_1, ... , P_N (zero-based index), the
 /// `SpeedReadingInterval` defines an interval and describes its traffic using
 /// the following categories.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SpeedReadingInterval {
     /// The starting index of this interval in the polyline.
     #[prost(int32, optional, tag = "1")]
@@ -627,20 +627,20 @@ pub mod speed_reading_interval {
             }
         }
     }
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum SpeedType {
         /// Traffic speed in this interval.
         #[prost(enumeration = "Speed", tag = "3")]
         Speed(i32),
     }
 }
-/// Encapsulates toll information on a [`Route`][google.maps.routing.v2.Route] or
-/// on a [`RouteLeg`][google.maps.routing.v2.RouteLeg].
+/// Encapsulates toll information on a \[`Route`\]\[google.maps.routing.v2.Route\] or
+/// on a \[`RouteLeg`\]\[google.maps.routing.v2.RouteLeg\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TollInfo {
     /// The monetary amount of tolls for the corresponding
-    /// [`Route`][google.maps.routing.v2.Route] or
-    /// [`RouteLeg`][google.maps.routing.v2.RouteLeg]. This list contains a money
+    /// \[`Route`\]\[google.maps.routing.v2.Route\] or
+    /// \[`RouteLeg`\]\[google.maps.routing.v2.RouteLeg\]. This list contains a money
     /// amount for each currency that is expected to be charged by the toll
     /// stations. Typically this list will contain only one item for routes with
     /// tolls in one currency. For international trips, this list may contain
@@ -649,7 +649,7 @@ pub struct TollInfo {
     pub estimated_price: ::prost::alloc::vec::Vec<super::super::super::r#type::Money>,
 }
 /// A transit agency that operates a transit line.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TransitAgency {
     /// The name of this transit agency.
     #[prost(string, tag = "1")]
@@ -703,7 +703,7 @@ pub struct TransitStop {
     pub location: ::core::option::Option<Location>,
 }
 /// Information about a vehicle used in transit routes.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TransitVehicle {
     /// The name of this vehicle, capitalized.
     #[prost(message, optional, tag = "1")]
@@ -843,7 +843,7 @@ pub struct Route {
     pub route_labels: ::prost::alloc::vec::Vec<i32>,
     /// A collection of legs (path segments between waypoints) that make up the
     /// route. Each leg corresponds to the trip between two non-`via`
-    /// [`Waypoints`][google.maps.routing.v2.Waypoint]. For example, a route with
+    /// \[`Waypoints`\]\[google.maps.routing.v2.Waypoint\]. For example, a route with
     /// no intermediate waypoints has only one leg. A route that includes one
     /// non-`via` intermediate waypoint has two legs. A route that includes one
     /// `via` intermediate waypoint has one leg. The order of the legs matches the
@@ -881,7 +881,7 @@ pub struct Route {
     #[prost(message, optional, tag = "9")]
     pub travel_advisory: ::core::option::Option<RouteTravelAdvisory>,
     /// If you set
-    /// [`optimize_waypoint_order`][google.maps.routing.v2.ComputeRoutesRequest.optimize_waypoint_order]
+    /// \[`optimize_waypoint_order`\]\[google.maps.routing.v2.ComputeRoutesRequest.optimize_waypoint_order\]
     /// to true, this field contains the optimized ordering of intermediate
     /// waypoints. Otherwise, this field is empty.
     /// For example, if you give an input of Origin: LA; Intermediate waypoints:
@@ -914,7 +914,7 @@ pub struct Route {
 /// Nested message and enum types in `Route`.
 pub mod route {
     /// Text representations of certain properties.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RouteLocalizedValues {
         /// Travel distance represented in text form.
         #[prost(message, optional, tag = "1")]
@@ -961,8 +961,10 @@ pub struct RouteTravelAdvisory {
     ///
     /// Example:
     ///
-    ///      polyline: A ---- B ---- C ---- D ---- E ---- F ---- G
-    ///      speed_reading_intervals: [A,C), [C,D), [D,G).
+    /// ```text
+    /// polyline: A ---- B ---- C ---- D ---- E ---- F ---- G
+    /// speed_reading_intervals: [A,C), [C,D), [D,G).
+    /// ```
     #[prost(message, repeated, tag = "3")]
     pub speed_reading_intervals: ::prost::alloc::vec::Vec<SpeedReadingInterval>,
     /// The predicted fuel consumption in microliters.
@@ -998,8 +1000,10 @@ pub struct RouteLegTravelAdvisory {
     ///
     /// Example:
     ///
-    ///      polyline: A ---- B ---- C ---- D ---- E ---- F ---- G
-    ///      speed_reading_intervals: [A,C), [C,D), [D,G).
+    /// ```text
+    /// polyline: A ---- B ---- C ---- D ---- E ---- F ---- G
+    /// speed_reading_intervals: [A,C), [C,D), [D,G).
+    /// ```
     #[prost(message, repeated, tag = "2")]
     pub speed_reading_intervals: ::prost::alloc::vec::Vec<SpeedReadingInterval>,
 }
@@ -1061,7 +1065,7 @@ pub struct RouteLeg {
 /// Nested message and enum types in `RouteLeg`.
 pub mod route_leg {
     /// Text representations of certain properties.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RouteLegLocalizedValues {
         /// Travel distance represented in text form.
         #[prost(message, optional, tag = "1")]
@@ -1101,7 +1105,7 @@ pub mod route_leg {
         /// contiguous `RouteLegStep` that have the same `RouteTravelMode`.
         /// This field is not populated if the `RouteLeg` does not contain any
         /// multi-modal segments in the steps.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct MultiModalSegment {
             /// The corresponding `RouteLegStep` index that is the start of a
             /// multi-modal segment.
@@ -1122,7 +1126,7 @@ pub mod route_leg {
         }
     }
 }
-/// Contains a segment of a [`RouteLeg`][google.maps.routing.v2.RouteLeg]. A
+/// Contains a segment of a \[`RouteLeg`\]\[google.maps.routing.v2.RouteLeg\]. A
 /// step corresponds to a single navigation instruction. Route legs are made up
 /// of steps.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1167,7 +1171,7 @@ pub struct RouteLegStep {
 /// Nested message and enum types in `RouteLegStep`.
 pub mod route_leg_step {
     /// Text representations of certain properties.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RouteLegStepLocalizedValues {
         /// Travel distance represented in text form.
         #[prost(message, optional, tag = "1")]
@@ -1240,7 +1244,7 @@ pub mod route_leg_step_transit_details {
         pub departure_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// Localized descriptions of values for `RouteTransitDetails`.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TransitDetailsLocalizedValues {
         /// Time in its formatted text representation with a corresponding time zone.
         #[prost(message, optional, tag = "1")]
@@ -1294,9 +1298,10 @@ pub enum TollPass {
     /// Indonesia.
     /// E-card provided by multiple banks used to pay for tolls. All e-cards
     /// via banks are charged the same so only one enum value is needed. E.g.
-    /// - Bank Mandiri <https://www.bankmandiri.co.id/e-money>
-    /// - BCA <https://www.bca.co.id/flazz>
-    /// - BNI <https://www.bni.co.id/id-id/ebanking/tapcash>
+    ///
+    /// * Bank Mandiri <https://www.bankmandiri.co.id/e-money>
+    /// * BCA <https://www.bca.co.id/flazz>
+    /// * BNI <https://www.bni.co.id/id-id/ebanking/tapcash>
     IdEToll = 16,
     /// India.
     InFastag = 78,
@@ -1318,7 +1323,7 @@ pub enum TollPass {
     /// <https://www.pase.com.mx>
     MxPase = 91,
     /// Mexico
-    ///   <https://operadoravial.com/quick-pass/>
+    /// <https://operadoravial.com/quick-pass/>
     MxQuickpass = 93,
     /// <http://appsh.chihuahua.gob.mx/transparencia/?doc=/ingresos/TelepeajeFormato4.pdf>
     MxSistemaTelepeajeChihuahua = 89,
@@ -1715,7 +1720,7 @@ impl TollPass {
 }
 /// A set of values describing the vehicle's emission type.
 /// Applies only to the `DRIVE`
-/// [`RouteTravelMode`][google.maps.routing.v2.RouteTravelMode].
+/// \[`RouteTravelMode`\]\[google.maps.routing.v2.RouteTravelMode\].
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum VehicleEmissionType {
@@ -1757,36 +1762,36 @@ impl VehicleEmissionType {
     }
 }
 /// Contains the vehicle information, such as the vehicle emission type.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VehicleInfo {
     /// Describes the vehicle's emission type.
     /// Applies only to the `DRIVE`
-    /// [`RouteTravelMode`][google.maps.routing.v2.RouteTravelMode].
+    /// \[`RouteTravelMode`\]\[google.maps.routing.v2.RouteTravelMode\].
     #[prost(enumeration = "VehicleEmissionType", tag = "2")]
     pub emission_type: i32,
 }
 /// Encapsulates a set of optional conditions to satisfy when calculating the
 /// routes.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RouteModifiers {
     /// When set to true, avoids toll roads where reasonable, giving preference to
     /// routes not containing toll roads. Applies only to the `DRIVE` and
-    /// `TWO_WHEELER` [`RouteTravelMode`][google.maps.routing.v2.RouteTravelMode].
+    /// `TWO_WHEELER` \[`RouteTravelMode`\]\[google.maps.routing.v2.RouteTravelMode\].
     #[prost(bool, tag = "1")]
     pub avoid_tolls: bool,
     /// When set to true, avoids highways where reasonable, giving preference to
     /// routes not containing highways. Applies only to the `DRIVE` and
-    /// `TWO_WHEELER` [`RouteTravelMode`][google.maps.routing.v2.RouteTravelMode].
+    /// `TWO_WHEELER` \[`RouteTravelMode`\]\[google.maps.routing.v2.RouteTravelMode\].
     #[prost(bool, tag = "2")]
     pub avoid_highways: bool,
     /// When set to true, avoids ferries where reasonable, giving preference to
     /// routes not containing ferries. Applies only to the `DRIVE` and`TWO_WHEELER`
-    /// [`RouteTravelMode`][google.maps.routing.v2.RouteTravelMode].
+    /// \[`RouteTravelMode`\]\[google.maps.routing.v2.RouteTravelMode\].
     #[prost(bool, tag = "3")]
     pub avoid_ferries: bool,
     /// When set to true, avoids navigating indoors where reasonable, giving
     /// preference to routes not containing indoor navigation. Applies only to the
-    /// `WALK` [`RouteTravelMode`][google.maps.routing.v2.RouteTravelMode].
+    /// `WALK` \[`RouteTravelMode`\]\[google.maps.routing.v2.RouteTravelMode\].
     #[prost(bool, tag = "4")]
     pub avoid_indoor: bool,
     /// Specifies the vehicle information.
@@ -1797,7 +1802,7 @@ pub struct RouteModifiers {
     /// toll passes are not provided, the API treats the toll pass as unknown and
     /// tries to return the cash price.
     /// Applies only to the `DRIVE` and `TWO_WHEELER`
-    /// [`RouteTravelMode`][google.maps.routing.v2.RouteTravelMode].
+    /// \[`RouteTravelMode`\]\[google.maps.routing.v2.RouteTravelMode\].
     #[prost(enumeration = "TollPass", repeated, tag = "6")]
     pub toll_passes: ::prost::alloc::vec::Vec<i32>,
 }
@@ -1811,7 +1816,7 @@ pub enum RoutingPreference {
     /// Computes routes without taking live traffic conditions into consideration.
     /// Suitable when traffic conditions don't matter or are not applicable.
     /// Using this value produces the lowest latency.
-    /// Note: For [`RouteTravelMode`][google.maps.routing.v2.RouteTravelMode]
+    /// Note: For \[`RouteTravelMode`\]\[google.maps.routing.v2.RouteTravelMode\]
     /// `DRIVE` and `TWO_WHEELER`, the route and duration chosen are based on road
     /// network and average time-independent traffic conditions, not current road
     /// conditions. Consequently, routes may include roads that are temporarily
@@ -1903,7 +1908,7 @@ impl TrafficModel {
 }
 /// Preferences for `TRANSIT` based routes that influence the route that is
 /// returned.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TransitPreferences {
     /// A set of travel modes to use when getting a `TRANSIT` route. Defaults to
     /// all supported modes of travel.
@@ -2058,7 +2063,7 @@ impl Units {
 pub struct Waypoint {
     /// Marks this waypoint as a milestone rather a stopping point. For
     /// each non-via waypoint in the request, the response appends an entry to the
-    /// [`legs`][google.maps.routing.v2.Route.legs]
+    /// \[`legs`\]\[google.maps.routing.v2.Route.legs\]
     /// array to provide the details for stopovers on that leg of the trip. Set
     /// this value to true when you want the route to pass through this waypoint
     /// without stopping over. Via waypoints don't cause an entry to be added to
@@ -2074,7 +2079,7 @@ pub struct Waypoint {
     /// calculated route won't include non-`via` waypoints on roads that are
     /// unsuitable for pickup and drop-off. This option works only for `DRIVE` and
     /// `TWO_WHEELER` travel modes, and when the `location_type` is
-    /// [`Location`][google.maps.routing.v2.Location].
+    /// \[`Location`\]\[google.maps.routing.v2.Location\].
     #[prost(bool, tag = "4")]
     pub vehicle_stopover: bool,
     /// Indicates that the location of this waypoint is meant to have a preference
@@ -2082,7 +2087,7 @@ pub struct Waypoint {
     /// value, the route will pass through the location so that the vehicle can
     /// stop at the side of road that the location is biased towards from the
     /// center of the road. This option works only for `DRIVE` and `TWO_WHEELER`
-    /// [`RouteTravelMode`][google.maps.routing.v2.RouteTravelMode].
+    /// \[`RouteTravelMode`\]\[google.maps.routing.v2.RouteTravelMode\].
     #[prost(bool, tag = "5")]
     pub side_of_road: bool,
     /// Different ways to represent a location.
@@ -2126,7 +2131,7 @@ pub struct ComputeRoutesRequest {
     pub travel_mode: i32,
     /// Optional. Specifies how to compute the route. The server
     /// attempts to use the selected routing preference to compute the route. If
-    ///   the routing preference results in an error or an extra long latency, then
+    /// the routing preference results in an error or an extra long latency, then
     /// an error is returned. You can specify this option only when the
     /// `travel_mode` is `DRIVE` or `TWO_WHEELER`, otherwise the request fails.
     #[prost(enumeration = "RoutingPreference", tag = "5")]
@@ -2140,14 +2145,14 @@ pub struct ComputeRoutesRequest {
     /// Optional. The departure time. If you don't set this value, then this value
     /// defaults to the time that you made the request.
     /// NOTE: You can only specify a `departure_time` in the past when
-    /// [`RouteTravelMode`][google.maps.routing.v2.RouteTravelMode] is set to
+    /// \[`RouteTravelMode`\]\[google.maps.routing.v2.RouteTravelMode\] is set to
     /// `TRANSIT`. Transit trips are available for up to 7 days in the past or 100
     /// days in the future.
     #[prost(message, optional, tag = "7")]
     pub departure_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. The arrival time.
     /// NOTE: Can only be set when
-    /// [RouteTravelMode][google.maps.routing.v2.RouteTravelMode] is set to
+    /// \[RouteTravelMode\]\[google.maps.routing.v2.RouteTravelMode\] is set to
     /// `TRANSIT`. You can specify either `departure_time` or `arrival_time`, but
     /// not both. Transit trips are available for up to 7 days in the past or 100
     /// days in the future.
@@ -2178,7 +2183,7 @@ pub struct ComputeRoutesRequest {
     pub region_code: ::prost::alloc::string::String,
     /// Optional. Specifies the units of measure for the display fields. These
     /// fields include the `instruction` field in
-    /// [`NavigationInstruction`][google.maps.routing.v2.NavigationInstruction].
+    /// \[`NavigationInstruction`\]\[google.maps.routing.v2.NavigationInstruction\].
     /// The units of measure used for the route, leg, step distance, and duration
     /// are not affected by this value. If you don't provide this value, then the
     /// display units are inferred from the location of the first origin.
@@ -2202,7 +2207,7 @@ pub struct ComputeRoutesRequest {
     /// a `FUEL_EFFICIENT` reference route calculation takes into account various
     /// parameters that would generate an optimal fuel efficient route. When using
     /// this feature, look for
-    /// [`route_labels`][google.maps.routing.v2.Route.route_labels] on the
+    /// \[`route_labels`\]\[google.maps.routing.v2.Route.route_labels\] on the
     /// resulting routes.
     #[prost(
         enumeration = "compute_routes_request::ReferenceRoute",
@@ -2225,20 +2230,20 @@ pub struct ComputeRoutesRequest {
     /// Optional. Specifies the assumptions to use when calculating time in
     /// traffic. This setting affects the value returned in the duration field in
     /// the
-    /// [`Route`][google.maps.routing.v2.Route] and
-    /// [`RouteLeg`][google.maps.routing.v2.RouteLeg] which contains the predicted
+    /// \[`Route`\]\[google.maps.routing.v2.Route\] and
+    /// \[`RouteLeg`\]\[google.maps.routing.v2.RouteLeg\] which contains the predicted
     /// time in traffic based on historical averages.
     /// `TrafficModel` is only available for requests that have set
-    /// [`RoutingPreference`][google.maps.routing.v2.RoutingPreference] to
+    /// \[`RoutingPreference`\]\[google.maps.routing.v2.RoutingPreference\] to
     /// `TRAFFIC_AWARE_OPTIMAL` and
-    /// [`RouteTravelMode`][google.maps.routing.v2.RouteTravelMode] to `DRIVE`.
+    /// \[`RouteTravelMode`\]\[google.maps.routing.v2.RouteTravelMode\] to `DRIVE`.
     /// Defaults to `BEST_GUESS` if traffic is requested and `TrafficModel` is not
     /// specified.
     #[prost(enumeration = "TrafficModel", tag = "18")]
     pub traffic_model: i32,
     /// Optional. Specifies preferences that influence the route returned for
     /// `TRANSIT` routes. NOTE: You can only specify a `transit_preferences` when
-    /// [`RouteTravelMode`][google.maps.routing.v2.RouteTravelMode] is set to
+    /// \[`RouteTravelMode`\]\[google.maps.routing.v2.RouteTravelMode\] is set to
     /// `TRANSIT`.
     #[prost(message, optional, tag = "20")]
     pub transit_preferences: ::core::option::Option<TransitPreferences>,
@@ -2404,13 +2409,13 @@ pub struct ComputeRouteMatrixRequest {
     /// destinations:
     ///
     /// * The sum of the number of origins + the number of destinations specified
-    /// as either `place_id` or `address` must be no greater than 50.
+    ///   as either `place_id` or `address` must be no greater than 50.
     /// * The product of number of origins × number of destinations must be no
-    /// greater than 625 in any case.
+    ///   greater than 625 in any case.
     /// * The product of the number of origins × number of destinations must be no
-    /// greater than 100 if routing_preference is set to `TRAFFIC_AWARE_OPTIMAL`.
+    ///   greater than 100 if routing_preference is set to `TRAFFIC_AWARE_OPTIMAL`.
     /// * The product of the number of origins × number of destinations must be no
-    /// greater than 100 if travel_mode is set to `TRANSIT`.
+    ///   greater than 100 if travel_mode is set to `TRANSIT`.
     #[prost(message, repeated, tag = "1")]
     pub origins: ::prost::alloc::vec::Vec<RouteMatrixOrigin>,
     /// Required. Array of destinations, which determines the columns of the
@@ -2430,13 +2435,13 @@ pub struct ComputeRouteMatrixRequest {
     /// Optional. The departure time. If you don't set this value, then this value
     /// defaults to the time that you made the request.
     /// NOTE: You can only specify a `departure_time` in the past when
-    /// [`RouteTravelMode`][google.maps.routing.v2.RouteTravelMode] is set to
+    /// \[`RouteTravelMode`\]\[google.maps.routing.v2.RouteTravelMode\] is set to
     /// `TRANSIT`.
     #[prost(message, optional, tag = "5")]
     pub departure_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. The arrival time.
     /// NOTE: Can only be set when
-    /// [`RouteTravelMode`][google.maps.routing.v2.RouteTravelMode] is set to
+    /// \[`RouteTravelMode`\]\[google.maps.routing.v2.RouteTravelMode\] is set to
     /// `TRANSIT`. You can specify either `departure_time` or `arrival_time`, but
     /// not both.
     #[prost(message, optional, tag = "11")]
@@ -2471,18 +2476,18 @@ pub struct ComputeRouteMatrixRequest {
     pub extra_computations: ::prost::alloc::vec::Vec<i32>,
     /// Optional. Specifies the assumptions to use when calculating time in
     /// traffic. This setting affects the value returned in the duration field in
-    /// the [RouteMatrixElement][google.maps.routing.v2.RouteMatrixElement] which
+    /// the \[RouteMatrixElement\]\[google.maps.routing.v2.RouteMatrixElement\] which
     /// contains the predicted time in traffic based on historical averages.
-    /// [RoutingPreference][google.maps.routing.v2.RoutingPreference] to
+    /// \[RoutingPreference\]\[google.maps.routing.v2.RoutingPreference\] to
     /// `TRAFFIC_AWARE_OPTIMAL` and
-    /// [RouteTravelMode][google.maps.routing.v2.RouteTravelMode] to `DRIVE`.
+    /// \[RouteTravelMode\]\[google.maps.routing.v2.RouteTravelMode\] to `DRIVE`.
     /// Defaults to `BEST_GUESS` if traffic is requested and `TrafficModel` is not
     /// specified.
     #[prost(enumeration = "TrafficModel", tag = "10")]
     pub traffic_model: i32,
     /// Optional. Specifies preferences that influence the route returned for
     /// `TRANSIT` routes. NOTE: You can only specify a `transit_preferences` when
-    /// [RouteTravelMode][google.maps.routing.v2.RouteTravelMode] is set to
+    /// \[RouteTravelMode\]\[google.maps.routing.v2.RouteTravelMode\] is set to
     /// `TRANSIT`.
     #[prost(message, optional, tag = "12")]
     pub transit_preferences: ::core::option::Option<TransitPreferences>,
@@ -2566,7 +2571,7 @@ pub struct RouteMatrixElement {
     #[prost(int32, tag = "4")]
     pub distance_meters: i32,
     /// The length of time needed to navigate the route. If you set the
-    /// [routing_preference][google.maps.routing.v2.ComputeRouteMatrixRequest.routing_preference]
+    /// \[routing_preference\]\[google.maps.routing.v2.ComputeRouteMatrixRequest.routing_preference\]
     /// to `TRAFFIC_UNAWARE`, then this value is the same as `static_duration`. If
     /// you set the `routing_preference` to either `TRAFFIC_AWARE` or
     /// `TRAFFIC_AWARE_OPTIMAL`, then this value is calculated taking traffic
@@ -2595,7 +2600,7 @@ pub struct RouteMatrixElement {
 /// Nested message and enum types in `RouteMatrixElement`.
 pub mod route_matrix_element {
     /// Text representations of certain properties.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct LocalizedValues {
         /// Travel distance represented in text form.
         #[prost(message, optional, tag = "1")]
@@ -2764,26 +2769,25 @@ pub mod routes_client {
         /// For example, in this method:
         ///
         /// * Field mask of all available fields (for manual inspection):
-        ///   `X-Goog-FieldMask: *`
+        ///  `X-Goog-FieldMask: *`
         /// * Field mask of Route-level duration, distance, and polyline (an example
-        /// production setup):
-        ///   `X-Goog-FieldMask:
-        ///   routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline`
+        ///  production setup):
+        ///  `X-Goog-FieldMask: routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline`
         ///
         /// Google discourage the use of the wildcard (`*`) response field mask, or
         /// specifying the field mask at the top level (`routes`), because:
         ///
         /// * Selecting only the fields that you need helps our server save computation
-        /// cycles, allowing us to return the result to you with a lower latency.
+        ///  cycles, allowing us to return the result to you with a lower latency.
         /// * Selecting only the fields that you need
-        /// in your production job ensures stable latency performance. We might add
-        /// more response fields in the future, and those new fields might require
-        /// extra computation time. If you select all fields, or if you select all
-        /// fields at the top level, then you might experience performance degradation
-        /// because any new field we add will be automatically included in the
-        /// response.
+        ///  in your production job ensures stable latency performance. We might add
+        ///  more response fields in the future, and those new fields might require
+        ///  extra computation time. If you select all fields, or if you select all
+        ///  fields at the top level, then you might experience performance degradation
+        ///  because any new field we add will be automatically included in the
+        ///  response.
         /// * Selecting only the fields that you need results in a smaller response
-        /// size, and thus higher network throughput.
+        ///  size, and thus higher network throughput.
         pub async fn compute_routes(
             &mut self,
             request: impl tonic::IntoRequest<super::ComputeRoutesRequest>,
@@ -2799,7 +2803,7 @@ pub mod routes_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.routing.v2.Routes/ComputeRoutes",
             );
@@ -2825,26 +2829,25 @@ pub mod routes_client {
         /// For example, in this method:
         ///
         /// * Field mask of all available fields (for manual inspection):
-        ///   `X-Goog-FieldMask: *`
+        ///  `X-Goog-FieldMask: *`
         /// * Field mask of route durations, distances, element status, condition, and
-        ///   element indices (an example production setup):
-        ///   `X-Goog-FieldMask:
-        ///   originIndex,destinationIndex,status,condition,distanceMeters,duration`
+        ///  element indices (an example production setup):
+        ///  `X-Goog-FieldMask: originIndex,destinationIndex,status,condition,distanceMeters,duration`
         ///
         /// It is critical that you include `status` in your field mask as otherwise
         /// all messages will appear to be OK. Google discourages the use of the
         /// wildcard (`*`) response field mask, because:
         ///
         /// * Selecting only the fields that you need helps our server save computation
-        /// cycles, allowing us to return the result to you with a lower latency.
+        ///  cycles, allowing us to return the result to you with a lower latency.
         /// * Selecting only the fields that you need in your production job ensures
-        /// stable latency performance. We might add more response fields in the
-        /// future, and those new fields might require extra computation time. If you
-        /// select all fields, or if you select all fields at the top level, then you
-        /// might experience performance degradation because any new field we add will
-        /// be automatically included in the response.
+        ///  stable latency performance. We might add more response fields in the
+        ///  future, and those new fields might require extra computation time. If you
+        ///  select all fields, or if you select all fields at the top level, then you
+        ///  might experience performance degradation because any new field we add will
+        ///  be automatically included in the response.
         /// * Selecting only the fields that you need results in a smaller response
-        /// size, and thus higher network throughput.
+        ///  size, and thus higher network throughput.
         pub async fn compute_route_matrix(
             &mut self,
             request: impl tonic::IntoRequest<super::ComputeRouteMatrixRequest>,
@@ -2860,7 +2863,7 @@ pub mod routes_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.routing.v2.Routes/ComputeRouteMatrix",
             );

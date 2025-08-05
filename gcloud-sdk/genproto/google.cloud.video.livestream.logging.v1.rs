@@ -38,7 +38,7 @@ pub mod channel_activity {
     }
 }
 /// StreamingStateChange records when the channel streaming state changes.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamingStateChange {
     /// New streaming state of the channel.
     #[prost(enumeration = "super::super::v1::channel::StreamingState", tag = "1")]
@@ -121,7 +121,7 @@ pub struct VideoFormat {
     pub frame_rate: f64,
 }
 /// Properties of the audio stream.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AudioStream {
     /// Index of this audio stream.
     #[prost(int32, tag = "1")]
@@ -131,7 +131,7 @@ pub struct AudioStream {
     pub audio_format: ::core::option::Option<AudioFormat>,
 }
 /// Properties of the audio format.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AudioFormat {
     /// Audio codec used in this audio stream.
     #[prost(string, tag = "1")]
@@ -144,7 +144,7 @@ pub struct AudioFormat {
     pub channel_layout: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// InputDisconnect records when an input stream disconnects.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InputDisconnect {
     /// ID of the input stream.
     #[prost(string, tag = "1")]
@@ -154,7 +154,7 @@ pub struct InputDisconnect {
     pub input_attachment: ::prost::alloc::string::String,
 }
 /// EventStateChange records when an Event state changes.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EventStateChange {
     /// Resource name of the event.
     #[prost(string, tag = "1")]
@@ -177,7 +177,7 @@ pub struct Scte35Command {
 pub mod scte35_command {
     /// SpliceTime contains information about the execution time of the splice
     /// insert.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SpliceTime {
         /// If true, the execution time of the splice insert is specified.
         #[prost(bool, tag = "1")]
@@ -188,7 +188,7 @@ pub mod scte35_command {
     }
     /// BreakDuration contains information about the duration of the splice
     /// insert.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct BreakDuration {
         /// If true, the splice insert will automatically return upon finishing.
         #[prost(bool, tag = "1")]
@@ -199,7 +199,7 @@ pub mod scte35_command {
     }
     /// Fine grained control on the scte command insertion for a specific
     /// elementary stream. This is ignored if program_splice_flag is true.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Component {
         /// Elementary stream PID that the scte command should be inserted into.
         #[prost(int32, tag = "1")]

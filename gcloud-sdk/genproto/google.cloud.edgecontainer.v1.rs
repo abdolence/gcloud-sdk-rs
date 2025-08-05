@@ -100,7 +100,7 @@ pub struct Cluster {
 /// Nested message and enum types in `Cluster`.
 pub mod cluster {
     /// Configuration of the cluster control plane.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ControlPlane {
         #[prost(oneof = "control_plane::Config", tags = "1, 2")]
         pub config: ::core::option::Option<control_plane::Config>,
@@ -108,7 +108,7 @@ pub mod cluster {
     /// Nested message and enum types in `ControlPlane`.
     pub mod control_plane {
         /// Configuration specific to clusters with a control plane hosted remotely.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Remote {}
         /// Configuration specific to clusters with a control plane hosted locally.
         ///
@@ -117,7 +117,7 @@ pub mod cluster {
         /// project with any other type of clusters, including non-GDCE clusters.
         /// Mixing local control plane GDCE clusters with any other type of
         /// clusters in the same project can result in data loss.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Local {
             /// Name of the Google Distributed Cloud Edge zones where this node pool
             /// will be created. For example: `us-central1-edge-customer-a`.
@@ -188,7 +188,7 @@ pub mod cluster {
                 }
             }
         }
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Config {
             /// Remote control plane configuration.
             #[prost(message, tag = "1")]
@@ -205,7 +205,7 @@ pub mod cluster {
         }
     }
     /// Config that customers are allowed to define for GDCE system add-ons.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SystemAddonsConfig {
         /// Optional. Config for Ingress.
         #[prost(message, optional, tag = "1")]
@@ -221,7 +221,7 @@ pub mod cluster {
         /// Config for the Ingress add-on which allows customers to create an Ingress
         /// object to manage external access to the servers in a cluster. The add-on
         /// consists of istiod and istio-ingress.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct Ingress {
             /// Optional. Whether Ingress is disabled.
             #[prost(bool, tag = "1")]
@@ -231,7 +231,7 @@ pub mod cluster {
             pub ipv4_vip: ::prost::alloc::string::String,
         }
         /// VMServiceConfig defines the configuration for GDCE VM Service.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct VmServiceConfig {
             /// Optional. Whether VMM is enabled.
             #[prost(bool, tag = "1")]
@@ -271,7 +271,7 @@ pub mod cluster {
     /// to the cluster workloads, including Google-driven or user-initiated cluster
     /// upgrades, user-initiated cluster configuration changes that require
     /// restarting nodes, etc.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct MaintenanceEvent {
         /// Output only. UUID of the maintenance event.
         #[prost(string, tag = "1")]
@@ -280,7 +280,7 @@ pub mod cluster {
         #[prost(string, tag = "2")]
         pub target_version: ::prost::alloc::string::String,
         /// Output only. The operation for running the maintenance event. Specified
-        /// in the format projects/*/locations/*/operations/*. If the maintenance
+        /// in the format projects/*/locations/*/operations/\*. If the maintenance
         /// event is split into multiple operations (e.g. due to maintenance
         /// windows), the latest one is recorded.
         #[prost(string, tag = "3")]
@@ -443,7 +443,7 @@ pub mod cluster {
     }
     /// Configuration of the cluster survivability, e.g., for the case when network
     /// connectivity is lost.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SurvivabilityConfig {
         /// Optional. Time period that allows the cluster nodes to be rebooted and
         /// become functional without network connectivity to Google. The default 0
@@ -453,7 +453,7 @@ pub mod cluster {
     }
     /// ConnectionState holds the current connection state from the cluster to
     /// Google.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ConnectionState {
         /// Output only. The current connection state.
         #[prost(enumeration = "connection_state::State", tag = "1")]
@@ -614,7 +614,7 @@ pub mod cluster {
     }
 }
 /// Cluster-wide networking configuration.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ClusterNetworking {
     /// Required. All pods in the cluster are assigned an RFC1918 IPv4 address from
     /// these blocks. Only a single block is supported. This field cannot be
@@ -636,7 +636,7 @@ pub struct ClusterNetworking {
 /// Fleets are a Google Cloud concept for logically organizing clusters,
 /// letting you use and manage multi-cluster capabilities and apply
 /// consistent policies across your systems.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Fleet {
     /// Required. The name of the Fleet host project where this cluster will be
     /// registered.
@@ -654,14 +654,14 @@ pub struct Fleet {
     pub membership: ::prost::alloc::string::String,
 }
 /// A user principal for an RBAC policy.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ClusterUser {
     /// Required. An active Google username.
     #[prost(string, tag = "1")]
     pub username: ::prost::alloc::string::String,
 }
 /// RBAC policy that will be applied and managed by GEC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Authorization {
     /// Required. User that will be granted the cluster-admin role on the cluster,
     /// providing full access to the cluster. Currently, this is a singular field,
@@ -786,7 +786,7 @@ pub struct Machine {
     ///
     /// For control plane nodes hosted on edge machines, this will return
     /// the following format:
-    ///    "projects/{project}/locations/{location}/clusters/{cluster_id}/controlPlaneNodes/{node}".
+    /// "projects/{project}/locations/{location}/clusters/{cluster_id}/controlPlaneNodes/{node}".
     #[prost(string, tag = "5")]
     pub hosted_node: ::prost::alloc::string::String,
     /// The Google Distributed Cloud Edge zone of this machine.
@@ -852,7 +852,7 @@ pub struct VpnConnection {
 /// Nested message and enum types in `VpnConnection`.
 pub mod vpn_connection {
     /// Project detail of the VPC network.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct VpcProject {
         /// The project of the VPC to connect to. If not specified, it is the same as
         /// the cluster project.
@@ -882,14 +882,14 @@ pub mod vpn_connection {
     /// Nested message and enum types in `Details`.
     pub mod details {
         /// The Cloud Router info.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct CloudRouter {
             /// The associated Cloud Router name.
             #[prost(string, tag = "1")]
             pub name: ::prost::alloc::string::String,
         }
         /// The Cloud VPN info.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct CloudVpn {
             /// The created Cloud VPN gateway name.
             #[prost(string, tag = "1")]
@@ -988,7 +988,7 @@ pub mod vpn_connection {
     }
 }
 /// Metadata for a given
-/// [google.cloud.location.Location][google.cloud.location.Location].
+/// \[google.cloud.location.Location\]\[google.cloud.location.Location\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationMetadata {
     /// The set of available Google Distributed Cloud Edge zones in the location.
@@ -1061,7 +1061,7 @@ pub mod zone_metadata {
     }
 }
 /// Config data holds all the config related data for the zone.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ConfigData {
     /// list of available v4 ip pools for external loadbalancer
     #[prost(string, repeated, tag = "1")]
@@ -1101,14 +1101,14 @@ pub struct MaintenancePolicy {
     pub maintenance_exclusions: ::prost::alloc::vec::Vec<MaintenanceExclusionWindow>,
 }
 /// Maintenance window configuration
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MaintenanceWindow {
     /// Configuration of a recurring maintenance window.
     #[prost(message, optional, tag = "1")]
     pub recurring_window: ::core::option::Option<RecurringTimeWindow>,
 }
 /// Represents an arbitrary window of time that recurs.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RecurringTimeWindow {
     /// The window of the first recurrence.
     #[prost(message, optional, tag = "1")]
@@ -1120,7 +1120,7 @@ pub struct RecurringTimeWindow {
     pub recurrence: ::prost::alloc::string::String,
 }
 /// Represents a maintenance exclusion window.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MaintenanceExclusionWindow {
     /// Optional. The time window.
     #[prost(message, optional, tag = "1")]
@@ -1130,7 +1130,7 @@ pub struct MaintenanceExclusionWindow {
     pub id: ::prost::alloc::string::String,
 }
 /// Represents an arbitrary window of time.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TimeWindow {
     /// The time that the window first starts.
     #[prost(message, optional, tag = "1")]
@@ -1157,14 +1157,14 @@ pub struct ServerConfig {
     pub default_version: ::prost::alloc::string::String,
 }
 /// Configuration for a release channel.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ChannelConfig {
     /// Output only. Default version for this release channel, e.g.: "1.4.0".
     #[prost(string, tag = "1")]
     pub default_version: ::prost::alloc::string::String,
 }
 /// Version of a cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Version {
     /// Output only. Name of the version, e.g.: "1.4.0".
     #[prost(string, tag = "1")]
@@ -1239,7 +1239,7 @@ impl ResourceState {
     }
 }
 /// Long-running operation metadata for Edge Container API methods.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -1257,8 +1257,8 @@ pub struct OperationMetadata {
     #[prost(string, tag = "5")]
     pub status_message: ::prost::alloc::string::String,
     /// Identifies whether the user has requested cancellation of the operation.
-    /// Operations that have successfully been cancelled have [Operation.error][]
-    /// value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// Operations that have successfully been cancelled have \[Operation.error\]\[\]
+    /// value with a \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -1316,7 +1316,7 @@ pub mod operation_metadata {
     }
 }
 /// Lists clusters in a location.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListClustersRequest {
     /// Required. The parent location, which owns this collection of clusters.
     #[prost(string, tag = "1")]
@@ -1349,7 +1349,7 @@ pub struct ListClustersResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Gets a cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetClusterRequest {
     /// Required. The resource name of the cluster.
     #[prost(string, tag = "1")]
@@ -1393,7 +1393,7 @@ pub struct UpdateClusterRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Upgrades a cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpgradeClusterRequest {
     /// Required. The resource name of the cluster.
     #[prost(string, tag = "1")]
@@ -1455,7 +1455,7 @@ pub mod upgrade_cluster_request {
     }
 }
 /// Deletes a cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteClusterRequest {
     /// Required. The resource name of the cluster.
     #[prost(string, tag = "1")]
@@ -1467,14 +1467,14 @@ pub struct DeleteClusterRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Generates an access token for a cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateAccessTokenRequest {
     /// Required. The resource name of the cluster.
     #[prost(string, tag = "1")]
     pub cluster: ::prost::alloc::string::String,
 }
 /// An access token for a cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateAccessTokenResponse {
     /// Output only. Access token to authenticate to k8s api-server.
     #[prost(string, tag = "1")]
@@ -1484,14 +1484,14 @@ pub struct GenerateAccessTokenResponse {
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Generates an offline credential(offline) for a cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateOfflineCredentialRequest {
     /// Required. The resource name of the cluster.
     #[prost(string, tag = "1")]
     pub cluster: ::prost::alloc::string::String,
 }
 /// An offline credential for a cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateOfflineCredentialResponse {
     /// Output only. Client certificate to authenticate to k8s api-server.
     #[prost(string, tag = "1")]
@@ -1507,7 +1507,7 @@ pub struct GenerateOfflineCredentialResponse {
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Lists node pools in a cluster.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNodePoolsRequest {
     /// Required. The parent cluster, which owns this collection of node pools.
     #[prost(string, tag = "1")]
@@ -1539,7 +1539,7 @@ pub struct ListNodePoolsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Gets a node pool.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetNodePoolRequest {
     /// Required. The resource name of the node pool.
     #[prost(string, tag = "1")]
@@ -1583,7 +1583,7 @@ pub struct UpdateNodePoolRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Deletes a node pool.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteNodePoolRequest {
     /// Required. The resource name of the node pool.
     #[prost(string, tag = "1")]
@@ -1595,7 +1595,7 @@ pub struct DeleteNodePoolRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Lists machines in a site.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListMachinesRequest {
     /// Required. The parent site, which owns this collection of machines.
     #[prost(string, tag = "1")]
@@ -1627,14 +1627,14 @@ pub struct ListMachinesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Gets a machine.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetMachineRequest {
     /// Required. The resource name of the machine.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Lists VPN connections.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListVpnConnectionsRequest {
     /// Required. The parent location, which owns this collection of VPN
     /// connections.
@@ -1667,7 +1667,7 @@ pub struct ListVpnConnectionsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Gets a VPN connection.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetVpnConnectionRequest {
     /// Required. The resource name of the vpn connection.
     #[prost(string, tag = "1")]
@@ -1692,7 +1692,7 @@ pub struct CreateVpnConnectionRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Deletes a vpn connection.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteVpnConnectionRequest {
     /// Required. The resource name of the vpn connection.
     #[prost(string, tag = "1")]
@@ -1704,7 +1704,7 @@ pub struct DeleteVpnConnectionRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Gets the server config.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetServerConfigRequest {
     /// Required. The name (project and location) of the server config to get,
     /// specified in the format `projects/*/locations/*`.
@@ -1820,7 +1820,7 @@ pub mod edge_container_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/ListClusters",
             );
@@ -1847,7 +1847,7 @@ pub mod edge_container_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/GetCluster",
             );
@@ -1877,7 +1877,7 @@ pub mod edge_container_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/CreateCluster",
             );
@@ -1907,7 +1907,7 @@ pub mod edge_container_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/UpdateCluster",
             );
@@ -1937,7 +1937,7 @@ pub mod edge_container_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/UpgradeCluster",
             );
@@ -1967,7 +1967,7 @@ pub mod edge_container_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/DeleteCluster",
             );
@@ -1997,7 +1997,7 @@ pub mod edge_container_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/GenerateAccessToken",
             );
@@ -2027,7 +2027,7 @@ pub mod edge_container_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/GenerateOfflineCredential",
             );
@@ -2057,7 +2057,7 @@ pub mod edge_container_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/ListNodePools",
             );
@@ -2084,7 +2084,7 @@ pub mod edge_container_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/GetNodePool",
             );
@@ -2114,7 +2114,7 @@ pub mod edge_container_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/CreateNodePool",
             );
@@ -2144,7 +2144,7 @@ pub mod edge_container_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/UpdateNodePool",
             );
@@ -2174,7 +2174,7 @@ pub mod edge_container_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/DeleteNodePool",
             );
@@ -2204,7 +2204,7 @@ pub mod edge_container_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/ListMachines",
             );
@@ -2231,7 +2231,7 @@ pub mod edge_container_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/GetMachine",
             );
@@ -2261,7 +2261,7 @@ pub mod edge_container_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/ListVpnConnections",
             );
@@ -2288,7 +2288,7 @@ pub mod edge_container_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/GetVpnConnection",
             );
@@ -2318,7 +2318,7 @@ pub mod edge_container_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/CreateVpnConnection",
             );
@@ -2348,7 +2348,7 @@ pub mod edge_container_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/DeleteVpnConnection",
             );
@@ -2375,7 +2375,7 @@ pub mod edge_container_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/GetServerConfig",
             );

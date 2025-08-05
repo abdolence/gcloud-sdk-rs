@@ -28,7 +28,7 @@ pub struct Vertex {
     pub y: f64,
 }
 /// Annotation details specific to image classification.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImageClassificationAnnotation {
     /// The resource Id of the AnnotationSpec that this Annotation pertains to.
     #[prost(string, tag = "1")]
@@ -124,7 +124,7 @@ pub mod image_segmentation_annotation {
     }
 }
 /// Annotation details specific to text classification.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TextClassificationAnnotation {
     /// The resource Id of the AnnotationSpec that this Annotation pertains to.
     #[prost(string, tag = "1")]
@@ -134,7 +134,7 @@ pub struct TextClassificationAnnotation {
     pub display_name: ::prost::alloc::string::String,
 }
 /// Annotation details specific to text extraction.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TextExtractionAnnotation {
     /// The segment of the text content.
     #[prost(message, optional, tag = "1")]
@@ -147,7 +147,7 @@ pub struct TextExtractionAnnotation {
     pub display_name: ::prost::alloc::string::String,
 }
 /// The text segment inside of DataItem.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TextSegment {
     /// Zero-based character index of the first character of the text
     /// segment (counting characters from the beginning of the text).
@@ -163,7 +163,7 @@ pub struct TextSegment {
     pub content: ::prost::alloc::string::String,
 }
 /// Annotation details specific to text sentiment.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TextSentimentAnnotation {
     /// The sentiment score for text.
     #[prost(int32, tag = "1")]
@@ -179,7 +179,7 @@ pub struct TextSentimentAnnotation {
     pub display_name: ::prost::alloc::string::String,
 }
 /// Annotation details specific to video classification.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VideoClassificationAnnotation {
     /// This Annotation applies to the time period represented by the TimeSegment.
     /// If it's not set, the Annotation applies to the whole video.
@@ -193,7 +193,7 @@ pub struct VideoClassificationAnnotation {
     pub display_name: ::prost::alloc::string::String,
 }
 /// A time period inside of a DataItem that has a time dimension (e.g. video).
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TimeSegment {
     /// Start of the time segment (inclusive), represented as the duration since
     /// the start of the DataItem.
@@ -235,7 +235,7 @@ pub struct VideoObjectTrackingAnnotation {
     pub display_name: ::prost::alloc::string::String,
 }
 /// Annotation details specific to video action recognition.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VideoActionRecognitionAnnotation {
     /// This Annotation applies to the time period represented by the TimeSegment.
     /// If it's not set, the Annotation applies to the whole video.
@@ -249,7 +249,7 @@ pub struct VideoActionRecognitionAnnotation {
     pub display_name: ::prost::alloc::string::String,
 }
 /// Payload of Image DataItem.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImageDataItem {
     /// Required. Google Cloud Storage URI points to the original image in user's bucket.
     /// The image is up to 30MB in size.
@@ -257,18 +257,19 @@ pub struct ImageDataItem {
     pub gcs_uri: ::prost::alloc::string::String,
     /// Output only. The mime type of the content of the image. Only the images in below listed
     /// mime types are supported.
-    /// - image/jpeg
-    /// - image/gif
-    /// - image/png
-    /// - image/webp
-    /// - image/bmp
-    /// - image/tiff
-    /// - image/vnd.microsoft.icon
+    ///
+    /// * image/jpeg
+    /// * image/gif
+    /// * image/png
+    /// * image/webp
+    /// * image/bmp
+    /// * image/tiff
+    /// * image/vnd.microsoft.icon
     #[prost(string, tag = "2")]
     pub mime_type: ::prost::alloc::string::String,
 }
 /// Payload of Video DataItem.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VideoDataItem {
     /// Required. Google Cloud Storage URI points to the original video in user's bucket.
     /// The video is up to 50 GB in size and up to 3 hour in duration.
@@ -277,14 +278,15 @@ pub struct VideoDataItem {
     /// Output only. The mime type of the content of the video. Only the videos in below listed
     /// mime types are supported.
     /// Supported mime_type:
-    /// - video/mp4
-    /// - video/avi
-    /// - video/quicktime
+    ///
+    /// * video/mp4
+    /// * video/avi
+    /// * video/quicktime
     #[prost(string, tag = "2")]
     pub mime_type: ::prost::alloc::string::String,
 }
 /// Payload of Text DataItem.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TextDataItem {
     /// Output only. Google Cloud Storage URI points to the original text in user's bucket.
     /// The text file is up to 10MB in size.
@@ -292,7 +294,7 @@ pub struct TextDataItem {
     pub gcs_uri: ::prost::alloc::string::String,
 }
 /// The metadata of Datasets that contain Image DataItems.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImageDatasetMetadata {
     /// Points to a YAML file stored on Google Cloud Storage describing payload of
     /// the Image DataItems that belong to this Dataset.
@@ -304,7 +306,7 @@ pub struct ImageDatasetMetadata {
     pub gcs_bucket: ::prost::alloc::string::String,
 }
 /// The metadata of Datasets that contain Text DataItems.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TextDatasetMetadata {
     /// Points to a YAML file stored on Google Cloud Storage describing payload of
     /// the Text DataItems that belong to this Dataset.
@@ -316,7 +318,7 @@ pub struct TextDatasetMetadata {
     pub gcs_bucket: ::prost::alloc::string::String,
 }
 /// The metadata of Datasets that contain Video DataItems.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VideoDatasetMetadata {
     /// Points to a YAML file stored on Google Cloud Storage describing payload of
     /// the Video DataItems that belong to this Dataset.
@@ -328,7 +330,7 @@ pub struct VideoDatasetMetadata {
     pub gcs_bucket: ::prost::alloc::string::String,
 }
 /// The metadata of Datasets that contain tables data.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TablesDatasetMetadata {
     #[prost(message, optional, tag = "1")]
     pub input_config: ::core::option::Option<tables_dataset_metadata::InputConfig>,
@@ -337,14 +339,14 @@ pub struct TablesDatasetMetadata {
 pub mod tables_dataset_metadata {
     /// The tables Dataset's data source. The Dataset doesn't store the data
     /// directly, but only pointer(s) to its data.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct InputConfig {
         #[prost(oneof = "input_config::Source", tags = "1, 2")]
         pub source: ::core::option::Option<input_config::Source>,
     }
     /// Nested message and enum types in `InputConfig`.
     pub mod input_config {
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Source {
             #[prost(message, tag = "1")]
             GcsSource(super::GcsSource),
@@ -352,7 +354,7 @@ pub mod tables_dataset_metadata {
             BigquerySource(super::BigQuerySource),
         }
     }
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct GcsSource {
         /// Cloud Storage URI of one or more files. Only CSV files are supported.
         /// The first line of the CSV file is used as the header.
@@ -362,7 +364,7 @@ pub mod tables_dataset_metadata {
         #[prost(string, repeated, tag = "1")]
         pub uri: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct BigQuerySource {
         /// The URI of a BigQuery table.
         /// e.g. bq://projectId.bqDatasetId.bqTableId
@@ -371,7 +373,7 @@ pub mod tables_dataset_metadata {
     }
 }
 /// The metadata of Datasets that contain time series data.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TimeSeriesDatasetMetadata {
     #[prost(message, optional, tag = "1")]
     pub input_config: ::core::option::Option<time_series_dataset_metadata::InputConfig>,
@@ -388,14 +390,14 @@ pub struct TimeSeriesDatasetMetadata {
 pub mod time_series_dataset_metadata {
     /// The time series Dataset's data source. The Dataset doesn't store the data
     /// directly, but only pointer(s) to its data.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct InputConfig {
         #[prost(oneof = "input_config::Source", tags = "1, 2")]
         pub source: ::core::option::Option<input_config::Source>,
     }
     /// Nested message and enum types in `InputConfig`.
     pub mod input_config {
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Source {
             #[prost(message, tag = "1")]
             GcsSource(super::GcsSource),
@@ -403,7 +405,7 @@ pub mod time_series_dataset_metadata {
             BigquerySource(super::BigQuerySource),
         }
     }
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct GcsSource {
         /// Cloud Storage URI of one or more files. Only CSV files are supported.
         /// The first line of the CSV file is used as the header.
@@ -413,7 +415,7 @@ pub mod time_series_dataset_metadata {
         #[prost(string, repeated, tag = "1")]
         pub uri: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct BigQuerySource {
         /// The URI of a BigQuery table.
         #[prost(string, tag = "1")]
@@ -441,7 +443,7 @@ pub struct PredictionResult {
 }
 /// Nested message and enum types in `PredictionResult`.
 pub mod prediction_result {
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Error {
         /// Error status. This will be serialized into the enum name e.g.
         /// "NOT_FOUND".

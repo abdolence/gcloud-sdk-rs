@@ -77,7 +77,7 @@ pub struct NamedQuery {
     pub read_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Metadata describing a Firestore document saved in the bundle.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BundledDocumentMetadata {
     /// The document key of a bundled document.
     #[prost(string, tag = "1")]
@@ -93,7 +93,7 @@ pub struct BundledDocumentMetadata {
     pub queries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Metadata describing the bundle file/stream.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BundleMetadata {
     /// The ID of the bundle.
     #[prost(string, tag = "1")]

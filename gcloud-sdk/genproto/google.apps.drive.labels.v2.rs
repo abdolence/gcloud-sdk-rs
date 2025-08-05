@@ -12,12 +12,12 @@
 /// The published and disabled states have some distinct characteristics:
 ///
 /// * Published—Some kinds of changes might be made to an object in this state,
-///    in which case `has_unpublished_changes` will be true. Also, some kinds of
-///    changes are not permitted. Generally, any change that would invalidate or
-///    cause new restrictions on existing metadata related to the label are
-///    rejected.
+///   in which case `has_unpublished_changes` will be true. Also, some kinds of
+///   changes are not permitted. Generally, any change that would invalidate or
+///   cause new restrictions on existing metadata related to the label are
+///   rejected.
 /// * Disabled—When disabled, the configured `DisabledPolicy` takes effect.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Lifecycle {
     /// Output only. The state of the object associated with this lifecycle.
     #[prost(enumeration = "lifecycle::State", tag = "1")]
@@ -35,20 +35,20 @@ pub struct Lifecycle {
 pub mod lifecycle {
     /// The policy that governs how to treat a disabled label, field, or selection
     /// choice in different contexts.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DisabledPolicy {
         /// Whether to hide this disabled object in the search menu for Drive items.
         ///
         /// * When `false`, the object is generally shown in the UI as disabled but
-        /// it appears in the search results when searching for Drive items.
+        ///   it appears in the search results when searching for Drive items.
         /// * When `true`, the object is generally hidden in the UI when
-        ///    searching for Drive items.
+        ///   searching for Drive items.
         #[prost(bool, tag = "1")]
         pub hide_in_search: bool,
         /// Whether to show this disabled object in the apply menu on Drive items.
         ///
         /// * When `true`, the object is generally shown in the UI as disabled
-        ///    and is unselectable.
+        ///   and is unselectable.
         /// * When `false`, the object is generally hidden in the UI.
         #[prost(bool, tag = "2")]
         pub show_in_apply: bool,
@@ -111,7 +111,7 @@ pub mod lifecycle {
     }
 }
 /// Information about a user.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UserInfo {
     /// The identifier for this user that can be used with the People API to get
     /// more information.
@@ -152,7 +152,7 @@ pub struct BadgeColors {
 }
 /// Contains information about whether a label component should be considered
 /// locked.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LockStatus {
     /// Output only. Indicates whether this label component is the (direct) target
     /// of a LabelLock.  A label component can be implicitly locked even if it's
@@ -172,7 +172,7 @@ pub struct InvalidArgument {
 /// Nested message and enum types in `InvalidArgument`.
 pub mod invalid_argument {
     /// Describes the Field in which the violation occurred.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct FieldViolation {
         /// The path to the field where this violation occurred. This path is
         /// specified using `FieldMask` format:
@@ -265,7 +265,7 @@ pub struct PreconditionFailure {
 /// Nested message and enum types in `PreconditionFailure`.
 pub mod precondition_failure {
     /// Specific failure reason.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Violation {
         /// The path to the field where this violation occurred. This path is
         /// specified using `FieldMask` format:
@@ -383,7 +383,7 @@ pub mod precondition_failure {
     }
 }
 /// Exception detail.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExceptionDetail {
     /// The type of exception that occurred. Required.
     #[prost(enumeration = "ExceptionType", tag = "1")]
@@ -608,7 +608,7 @@ pub struct Field {
 /// Nested message and enum types in `Field`.
 pub mod field {
     /// The basic properties of the field.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Properties {
         /// Required. The display text to show in the UI identifying this field.
         #[prost(string, tag = "1")]
@@ -622,7 +622,7 @@ pub mod field {
         pub insert_before_field: ::prost::alloc::string::String,
     }
     /// UI display hints for rendering a field.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DisplayHints {
         /// Whether the field should be shown as required in the UI.
         #[prost(bool, tag = "1")]
@@ -640,7 +640,7 @@ pub mod field {
         pub shown_in_apply: bool,
     }
     /// The capabilities related to this field when editing the field.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SchemaCapabilities {
         /// Whether the user can change this field.
         #[prost(bool, tag = "1")]
@@ -660,7 +660,7 @@ pub mod field {
         pub can_enable: bool,
     }
     /// The capabilities related to this field on applied metadata.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AppliedCapabilities {
         /// Whether the user can read related applied metadata on items.
         #[prost(bool, tag = "1")]
@@ -673,14 +673,14 @@ pub mod field {
         pub can_write: bool,
     }
     /// Options for a multi-valued variant of an associated field type.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ListOptions {
         /// Maximum number of entries permitted.
         #[prost(int32, tag = "1")]
         pub max_entries: i32,
     }
     /// Options for the Text field type.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TextOptions {
         /// Output only. The minimum valid length of values for the text field.
         #[prost(int32, tag = "1")]
@@ -690,7 +690,7 @@ pub mod field {
         pub max_length: i32,
     }
     /// Options for the Integer field type.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct IntegerOptions {
         /// Output only. The minimum valid value for the integer field.
         #[prost(int64, tag = "1")]
@@ -700,7 +700,7 @@ pub mod field {
         pub max_value: i64,
     }
     /// Options for the date field type.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DateOptions {
         /// Localized date formatting option. Field values are rendered in
         /// this format according to their locale.
@@ -900,7 +900,7 @@ pub mod field {
                 pub badge_priority: i64,
             }
             /// The capabilities related to this choice when editing the choice.
-            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct SchemaCapabilities {
                 /// Whether the user can update this choice.
                 #[prost(bool, tag = "1")]
@@ -916,7 +916,7 @@ pub mod field {
                 pub can_enable: bool,
             }
             /// The capabilities related to this choice on applied metadata.
-            #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+            #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct AppliedCapabilities {
                 /// Whether the user can read related applied metadata on items.
                 #[prost(bool, tag = "1")]
@@ -931,7 +931,7 @@ pub mod field {
         }
     }
     /// Options for the user field type.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct UserOptions {
         /// When specified, indicates that this field supports a list of values.
         /// Once the field is published, this cannot be changed.
@@ -1049,7 +1049,7 @@ pub struct Label {
 /// Nested message and enum types in `Label`.
 pub mod label {
     /// Basic properties of the label.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Properties {
         /// Required. Title of the label.
         #[prost(string, tag = "1")]
@@ -1059,7 +1059,7 @@ pub mod label {
         pub description: ::prost::alloc::string::String,
     }
     /// UI display hints for rendering the label.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DisplayHints {
         /// Whether the label should be shown in the UI as disabled.
         #[prost(bool, tag = "1")]
@@ -1077,7 +1077,7 @@ pub mod label {
         pub priority: i64,
     }
     /// The capabilities a user has on this label's applied metadata.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AppliedCapabilities {
         /// Whether the user can read applied metadata related to this label.
         #[prost(bool, tag = "1")]
@@ -1090,7 +1090,7 @@ pub mod label {
         pub can_remove: bool,
     }
     /// The capabilities related to this label when editing the label.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SchemaCapabilities {
         /// Whether the user can change this label.
         #[prost(bool, tag = "1")]
@@ -1110,7 +1110,7 @@ pub mod label {
         pub can_enable: bool,
     }
     /// Behavior of this label when it's applied to Drive items.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AppliedLabelPolicy {
         /// Indicates how the applied label and field values should be copied when
         /// a Drive item is copied.
@@ -1224,7 +1224,7 @@ pub mod label {
 }
 /// Label constraints governing the structure of a Label; such as, the maximum
 /// number of Fields allowed and maximum length of the label title.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LabelLimits {
     /// Resource name.
     #[prost(string, tag = "1")]
@@ -1251,7 +1251,7 @@ pub struct LabelLimits {
 }
 /// Field constants governing the structure of a Field; such as, the maximum
 /// title length, minimum and maximum field values or length, etc.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FieldLimits {
     /// Max length for the id.
     #[prost(int32, tag = "1")]
@@ -1283,14 +1283,14 @@ pub struct FieldLimits {
     pub selection_limits: ::core::option::Option<SelectionLimits>,
 }
 /// Limits for list-variant of a Field type.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListLimits {
     /// Maximum number of values allowed for the Field type.
     #[prost(int32, tag = "1")]
     pub max_entries: i32,
 }
 /// Limits for text Field type.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TextLimits {
     /// Minimum length allowed for a text Field type.
     #[prost(int32, tag = "1")]
@@ -1300,7 +1300,7 @@ pub struct TextLimits {
     pub max_length: i32,
 }
 /// Limits for long text Field type.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LongTextLimits {
     /// Minimum length allowed for a long text Field type.
     #[prost(int32, tag = "1")]
@@ -1310,7 +1310,7 @@ pub struct LongTextLimits {
     pub max_length: i32,
 }
 /// Limits for integer Field type.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IntegerLimits {
     /// Minimum value for an integer Field type.
     #[prost(int64, tag = "1")]
@@ -1320,7 +1320,7 @@ pub struct IntegerLimits {
     pub max_value: i64,
 }
 /// Limits for date Field type.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DateLimits {
     /// Minimum value for the date Field type.
     #[prost(message, optional, tag = "1")]
@@ -1330,7 +1330,7 @@ pub struct DateLimits {
     pub max_value: ::core::option::Option<super::super::super::super::r#type::Date>,
 }
 /// Limits for selection Field type.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SelectionLimits {
     /// Limits for list-variant of a Field type.
     #[prost(message, optional, tag = "1")]
@@ -1349,14 +1349,14 @@ pub struct SelectionLimits {
     pub max_deleted_choices: i32,
 }
 /// Limits for Field.Type.USER.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UserLimits {
     /// Limits for list-variant of a Field type.
     #[prost(message, optional, tag = "1")]
     pub list_limits: ::core::option::Option<ListLimits>,
 }
 /// A Lock that can be applied to a Label, Field, or Choice.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LabelLock {
     /// Output only. Resource name of this LabelLock.
     #[prost(string, tag = "1")]
@@ -1392,7 +1392,7 @@ pub struct LabelLock {
 /// Nested message and enum types in `LabelLock`.
 pub mod label_lock {
     /// A description of a user's capabilities on a LabelLock.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Capabilities {
         /// True if the user is authorized to view the policy.
         #[prost(bool, tag = "1")]
@@ -1445,7 +1445,7 @@ pub mod label_lock {
 }
 /// The permission that applies to a principal (user, group, audience) on a
 /// label.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LabelPermission {
     /// Resource name of this permission.
     #[prost(string, tag = "1")]
@@ -1462,6 +1462,7 @@ pub struct LabelPermission {
     /// The principal this permission applies to. Must be either an email, user,
     /// group, or audience.
     /// Example:
+    ///
     /// * people/12345
     /// * groups/45678
     /// * audiences/default
@@ -1528,10 +1529,11 @@ pub mod label_permission {
     /// The principal this permission applies to. Must be either an email, user,
     /// group, or audience.
     /// Example:
+    ///
     /// * people/12345
     /// * groups/45678
     /// * audiences/default
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Principal {
         /// Person resource name.
         #[prost(string, tag = "3")]
@@ -1548,7 +1550,7 @@ pub mod label_permission {
 }
 /// Provides control over how write requests are executed. When not specified,
 /// the last write wins.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WriteControl {
     /// Determines the revision of the label to write to and how the request
     /// should behave if that revision is not the current revision of the
@@ -1561,9 +1563,9 @@ pub mod write_control {
     /// Determines the revision of the label to write to and how the request
     /// should behave if that revision is not the current revision of the
     /// label.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Control {
-        /// The [revision_id][google.apps.drive.labels.v1.Label.revision_id] of the
+        /// The \[revision_id\]\[google.apps.drive.labels.v1.Label.revision_id\] of the
         /// label that the write request will be applied to. If this is not the
         /// latest revision of the label, the request will not be processed and will
         /// return a 400 Bad Request error.
@@ -1572,7 +1574,7 @@ pub mod write_control {
     }
 }
 /// Request to get the capabilities for a user.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetUserCapabilitiesRequest {
     /// Required. The resource name of the user. Only "users/me/capabilities" is
     /// supported.
@@ -1601,7 +1603,7 @@ pub struct CreateLabelRequest {
     pub language_code: ::prost::alloc::string::String,
 }
 /// Request to get a label by resource name.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetLabelRequest {
     /// Required. Label resource name.
     ///
@@ -1708,7 +1710,7 @@ pub mod delta_update_label_request {
         }
     }
     /// Updates basic properties of a Label.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct UpdateLabelPropertiesRequest {
         /// The fields that should be updated. At least one field must be specified.
         /// The root `label_properties` is implied and should not be specified. A
@@ -1720,7 +1722,7 @@ pub mod delta_update_label_request {
         pub properties: ::core::option::Option<super::label::Properties>,
     }
     /// Request to disable the Field.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DisableFieldRequest {
         /// The fields that should be updated. At least one field must be specified.
         /// The root `disabled_policy` is implied and should not be specified. A
@@ -1735,14 +1737,14 @@ pub mod delta_update_label_request {
         pub disabled_policy: ::core::option::Option<super::lifecycle::DisabledPolicy>,
     }
     /// Request to enable the Field.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct EnableFieldRequest {
         /// Required. ID of the Field to enable.
         #[prost(string, tag = "1")]
         pub id: ::prost::alloc::string::String,
     }
     /// Request to delete the Field.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DeleteFieldRequest {
         /// Required. ID of the Field to delete.
         #[prost(string, tag = "1")]
@@ -1756,7 +1758,7 @@ pub mod delta_update_label_request {
         pub field: ::core::option::Option<super::Field>,
     }
     /// Request to update Field properties.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct UpdateFieldPropertiesRequest {
         /// The fields that should be updated. At least one field must be specified.
         /// The root `properties` is implied and should not be specified. A single
@@ -1839,7 +1841,7 @@ pub mod delta_update_label_request {
         >,
     }
     /// Request to delete a Choice.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DeleteSelectionChoiceRequest {
         /// Required. The Selection Field from which a Choice will be deleted.
         #[prost(string, tag = "1")]
@@ -1849,7 +1851,7 @@ pub mod delta_update_label_request {
         pub id: ::prost::alloc::string::String,
     }
     /// Request to disable a Choice.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DisableSelectionChoiceRequest {
         /// The fields that should be updated. At least one field must be specified.
         /// The root `disabled_policy` is implied and should not be specified. A
@@ -1867,7 +1869,7 @@ pub mod delta_update_label_request {
         pub disabled_policy: ::core::option::Option<super::lifecycle::DisabledPolicy>,
     }
     /// Request to enable a Choice.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct EnableSelectionChoiceRequest {
         /// Required. The Selection Field in which a Choice will be enabled.
         #[prost(string, tag = "1")]
@@ -1893,7 +1895,7 @@ pub struct DeltaUpdateLabelResponse {
 /// Nested message and enum types in `DeltaUpdateLabelResponse`.
 pub mod delta_update_label_response {
     /// A single response from an update.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Response {
         /// The response for the corresponding request.
         #[prost(
@@ -1905,7 +1907,7 @@ pub mod delta_update_label_response {
     /// Nested message and enum types in `Response`.
     pub mod response {
         /// The response for the corresponding request.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Response {
             /// Updated basic properties of a Label.
             #[prost(message, tag = "1")]
@@ -1948,10 +1950,10 @@ pub mod delta_update_label_response {
         }
     }
     /// Response following update to Label properties.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct UpdateLabelPropertiesResponse {}
     /// Response following Field create.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CreateFieldResponse {
         /// The field of the created field. When left blank in a create request,
         /// a key will be autogenerated and can be identified here.
@@ -1963,7 +1965,7 @@ pub mod delta_update_label_response {
         pub priority: i32,
     }
     /// Response following update to Field properties.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct UpdateFieldPropertiesResponse {
         /// The priority of the updated field. The priority may change from what
         /// was specified to assure contiguous priorities between fields (1-n).
@@ -1971,19 +1973,19 @@ pub mod delta_update_label_response {
         pub priority: i32,
     }
     /// Response following update to Field type.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct UpdateFieldTypeResponse {}
     /// Response following Field enable.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct EnableFieldResponse {}
     /// Response following Field disable.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DisableFieldResponse {}
     /// Response following Field delete.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DeleteFieldResponse {}
     /// Response following Selection Choice create.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CreateSelectionChoiceResponse {
         /// The server-generated id of the field.
         #[prost(string, tag = "1")]
@@ -1993,7 +1995,7 @@ pub mod delta_update_label_response {
         pub id: ::prost::alloc::string::String,
     }
     /// Response following update to Selection Choice properties.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct UpdateSelectionChoicePropertiesResponse {
         /// The priority of the updated choice. The priority may change from what
         /// was specified to assure contiguous priorities between choices (1-n).
@@ -2001,19 +2003,19 @@ pub mod delta_update_label_response {
         pub priority: i32,
     }
     /// Response following Choice enable.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct EnableSelectionChoiceResponse {}
     /// Response following Choice disable.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DisableSelectionChoiceResponse {}
     /// Response following Choice delete.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DeleteSelectionChoiceResponse {}
 }
 /// Request to update the `CopyMode` of the given Label. Changes to this policy
 /// are not revisioned, do not require publishing, and take effect immediately.
-/// \
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \\
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateLabelCopyModeRequest {
     /// Required. The resource name of the Label to update.
     #[prost(string, tag = "1")]
@@ -2036,7 +2038,7 @@ pub struct UpdateLabelCopyModeRequest {
     pub view: i32,
 }
 /// Request to get the limits for a Label.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetLabelLimitsRequest {
     /// Required. Label revision resource name
     /// Must be: "limits/label"
@@ -2044,16 +2046,16 @@ pub struct GetLabelLimitsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to list labels available to the current user.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListLabelsRequest {
     /// Whether to include only published labels in the results.
     ///
     /// * When `true`, only the current published label revisions are returned.
-    ///    Disabled labels are included. Returned label resource names
-    ///    reference the published revision (`labels/{id}/{revision_id}`).
+    ///   Disabled labels are included. Returned label resource names
+    ///   reference the published revision (`labels/{id}/{revision_id}`).
     /// * When `false`, the current label revisions are returned, which might not
-    ///    be published. Returned label resource names don't reference a specific
-    ///    revision (`labels/{id}`).
+    ///   be published. Returned label resource names don't reference a specific
+    ///   revision (`labels/{id}`).
     #[prost(bool, tag = "1")]
     pub published_only: bool,
     /// The customer to scope this list request to.
@@ -2080,7 +2082,7 @@ pub struct ListLabelsRequest {
 }
 /// Nested message and enum types in `ListLabelsRequest`.
 pub mod list_labels_request {
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Access {
         /// Set to `true` in order to use the user's admin credentials. This will
         /// return all Labels within the customer.
@@ -2105,7 +2107,7 @@ pub struct ListLabelsResponse {
 }
 /// Creates or updates a permission on the Label. Permissions affect the Label
 /// resource as a whole, are not revisioned, and do not require publishing.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateLabelPermissionRequest {
     /// Required. The parent Label resource name on the Label Permission is
     /// created. Format: labels/{label}
@@ -2120,7 +2122,7 @@ pub struct CreateLabelPermissionRequest {
     pub use_admin_access: bool,
 }
 /// Request to list the permissions on a Label.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListLabelPermissionsRequest {
     /// Required. The parent Label resource name on which Label Permission are
     /// listed. Format: labels/{label}
@@ -2149,7 +2151,7 @@ pub struct ListLabelPermissionsResponse {
 }
 /// Updates a Label Permission. Permissions affect the Label resource as a whole,
 /// are not revisioned, and do not require publishing.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateLabelPermissionRequest {
     /// Required. The parent Label resource name.
     #[prost(string, tag = "1")]
@@ -2164,7 +2166,7 @@ pub struct UpdateLabelPermissionRequest {
 }
 /// Deletes a Label Permission. Permissions affect the Label resource as a whole,
 /// are not revisioned, and do not require publishing.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteLabelPermissionRequest {
     /// Required. Label Permission resource name.
     #[prost(string, tag = "1")]
@@ -2222,7 +2224,7 @@ pub struct BatchDeleteLabelPermissionsRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// Request to deprecate a published Label.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisableLabelRequest {
     /// The fields that should be updated. At least one field must be specified.
     /// The root `disabled_policy` is implied and should not be specified. A
@@ -2249,7 +2251,7 @@ pub struct DisableLabelRequest {
     pub language_code: ::prost::alloc::string::String,
 }
 /// Request to publish a label.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PublishLabelRequest {
     /// Required. Label resource name.
     #[prost(string, tag = "1")]
@@ -2268,7 +2270,7 @@ pub struct PublishLabelRequest {
     pub language_code: ::prost::alloc::string::String,
 }
 /// Request to enable a label.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnableLabelRequest {
     /// Required. Label resource name.
     #[prost(string, tag = "1")]
@@ -2287,7 +2289,7 @@ pub struct EnableLabelRequest {
     pub language_code: ::prost::alloc::string::String,
 }
 /// Request to delete a label.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteLabelRequest {
     /// Required. Label resource name.
     #[prost(string, tag = "1")]
@@ -2302,7 +2304,7 @@ pub struct DeleteLabelRequest {
     pub write_control: ::core::option::Option<WriteControl>,
 }
 /// A request to list the LabelLocks on a Label.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListLabelLocksRequest {
     /// Required. Label on which Locks are applied.
     /// Format: labels/{label}
@@ -2327,7 +2329,7 @@ pub struct ListLabelLocksResponse {
 }
 /// Resource view that can be applied to label responses. The default value
 /// `LABEL_VIEW_BASIC` implies the field mask:
-/// `name,id,revision_id,label_type,properties.*`\
+/// `name,id,revision_id,label_type,properties.*`\\
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum LabelView {
@@ -2358,7 +2360,7 @@ impl LabelView {
     }
 }
 /// The capabilities of a user.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UserCapabilities {
     /// Output only. Resource name for the user capabilities.
     #[prost(string, tag = "1")]
@@ -2486,7 +2488,7 @@ pub mod label_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2.LabelService/GetUserCapabilities",
             );
@@ -2516,7 +2518,7 @@ pub mod label_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2.LabelService/ListLabels",
             );
@@ -2536,9 +2538,9 @@ pub mod label_service_client {
         /// * `labels/{id}` - See `labels/{id}@latest`
         /// * `labels/{id}@latest` - Gets the latest revision of the label.
         /// * `labels/{id}@published` - Gets the current published revision of the
-        ///   label.
+        ///  label.
         /// * `labels/{id}@{revision_id}` - Gets the label at the specified revision
-        ///   ID.
+        ///  ID.
         pub async fn get_label(
             &mut self,
             request: impl tonic::IntoRequest<super::GetLabelRequest>,
@@ -2551,7 +2553,7 @@ pub mod label_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2.LabelService/GetLabel",
             );
@@ -2579,7 +2581,7 @@ pub mod label_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2.LabelService/GetLabelLimits",
             );
@@ -2606,7 +2608,7 @@ pub mod label_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2.LabelService/CreateLabel",
             );
@@ -2639,7 +2641,7 @@ pub mod label_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2.LabelService/DeltaUpdateLabel",
             );
@@ -2667,7 +2669,7 @@ pub mod label_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2.LabelService/UpdateLabelCopyMode",
             );
@@ -2693,11 +2695,12 @@ pub mod label_service_client {
         /// that would invalidate or cause new restrictions on existing metadata
         /// related to the Label will be rejected. For example, the following changes
         /// to a Label will be rejected after the Label is published:
+        ///
         /// * The label cannot be directly deleted. It must be disabled first, then
-        ///   deleted.
+        ///  deleted.
         /// * Field.FieldType cannot be changed.
         /// * Changes to Field validation options cannot reject something that was
-        ///   previously accepted.
+        ///  previously accepted.
         /// * Reducing the max entries.
         pub async fn publish_label(
             &mut self,
@@ -2711,7 +2714,7 @@ pub mod label_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2.LabelService/PublishLabel",
             );
@@ -2744,7 +2747,7 @@ pub mod label_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2.LabelService/DisableLabel",
             );
@@ -2774,7 +2777,7 @@ pub mod label_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2.LabelService/EnableLabel",
             );
@@ -2804,7 +2807,7 @@ pub mod label_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2.LabelService/DeleteLabel",
             );
@@ -2834,7 +2837,7 @@ pub mod label_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2.LabelService/ListLabelPermissions",
             );
@@ -2867,7 +2870,7 @@ pub mod label_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2.LabelService/CreateLabelPermission",
             );
@@ -2900,7 +2903,7 @@ pub mod label_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2.LabelService/UpdateLabelPermission",
             );
@@ -2928,7 +2931,7 @@ pub mod label_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2.LabelService/DeleteLabelPermission",
             );
@@ -2961,7 +2964,7 @@ pub mod label_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2.LabelService/BatchUpdateLabelPermissions",
             );
@@ -2989,7 +2992,7 @@ pub mod label_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2.LabelService/BatchDeleteLabelPermissions",
             );
@@ -3019,7 +3022,7 @@ pub mod label_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.apps.drive.labels.v2.LabelService/ListLabelLocks",
             );

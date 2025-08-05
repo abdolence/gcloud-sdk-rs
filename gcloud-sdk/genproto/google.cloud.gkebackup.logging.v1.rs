@@ -110,14 +110,14 @@ pub struct LoggedBackupChannel {
     pub description: ::prost::alloc::string::String,
 }
 /// Namespaces, list of namespaces
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Namespaces {
     /// namespaces
     #[prost(string, repeated, tag = "1")]
     pub namespaces: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// NamespacedName
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NamespacedName {
     /// the namespace of the resource in Kubernetes
     #[prost(string, tag = "1")]
@@ -135,7 +135,7 @@ pub struct NamespacedNames {
 }
 /// Encryption key.
 /// This only contains the key metadata, and no key material.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EncryptionKey {
     /// Google KMS encryption key in the format:
     /// projects/<project>/locations/<location>/keyRings/<key-ring>/cryptoKeys/<key>
@@ -181,10 +181,11 @@ pub struct LoggedBackupPlan {
 /// Nested message and enum types in `LoggedBackupPlan`.
 pub mod logged_backup_plan {
     /// RentionPolicy is an inner message type to define:
+    ///
     /// 1. When to automatically delete Backups created under this BackupPlan
-    /// 2. A plan level minimum Backup retain days which blocks deletion
-    /// 3. Lock to disallow any policy updates
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    /// 1. A plan level minimum Backup retain days which blocks deletion
+    /// 1. Lock to disallow any policy updates
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RetentionPolicy {
         /// Number of days during which deletion of a Backup created under this
         /// BackupPlan will be blocked.
@@ -204,7 +205,7 @@ pub mod logged_backup_plan {
         pub locked: bool,
     }
     /// Schedule, an inner message type defines a cron schedule.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Schedule {
         /// A cron style string schedule on which an operation will be executed.
         #[prost(string, tag = "1")]
@@ -249,7 +250,7 @@ pub mod logged_backup_plan {
 /// LoggedBackupPlanMetadata as stored in Platform log. It's used to log the
 /// details of a BackupPlan, which are not provided by users, but are filled
 /// by the service.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LoggedBackupPlanMetadata {
     /// The name of the backup channel if any.
     #[prost(string, tag = "1")]
@@ -384,15 +385,16 @@ pub struct LoggedRestorePlan {
     pub description: ::prost::alloc::string::String,
     /// The BackupPlan from which Backups may be used as the source
     /// for Restores created via this RestorePlan.
-    /// Format: projects/*/locations/*/backupPlans/*.
+    /// Format: projects/*/locations/*/backupPlans/\*.
     #[prost(string, tag = "2")]
     pub backup_plan: ::prost::alloc::string::String,
     /// The target cluster into which Restores created via this RestorePlan
     /// will restore data. NOTE: the cluster's region must be the same as the
     /// RestorePlan.
     /// Possible formats:
-    ///    1. projects/*/locations/*/clusters/*
-    ///    2. projects/*/zones/*/clusters/*
+    ///
+    /// 1. projects/*/locations/*/clusters/\*
+    /// 1. projects/*/zones/*/clusters/\*
     #[prost(string, tag = "3")]
     pub cluster: ::prost::alloc::string::String,
     /// Configuration of Restores created via this RestorePlan.
@@ -464,7 +466,7 @@ pub mod restore_config {
     /// This is a direct map to the Kubernetes GroupKind type
     /// [GroupKind](<https://godoc.org/k8s.io/apimachinery/pkg/runtime/schema#GroupKind>)
     /// and is used for identifying specific "types" of resources to restore.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct GroupKind {
         /// API group string of a Kubernetes resource, e.g.
         /// "apiextensions.k8s.io", "storage.k8s.io", etc.
@@ -482,19 +484,21 @@ pub mod restore_config {
     /// Some group kinds are not reasonable choices for a restore, and will cause
     /// an error if selected here. Any scope selection that would restore
     /// "all valid" resources automatically excludes these group kinds.
-    /// - gkebackup.gke.io/BackupJob
-    /// - gkebackup.gke.io/RestoreJob
-    /// - metrics.k8s.io/NodeMetrics
-    /// - migration.k8s.io/StorageState
-    /// - migration.k8s.io/StorageVersionMigration
-    /// - Node
-    /// - snapshot.storage.k8s.io/VolumeSnapshotContent
-    /// - storage.k8s.io/CSINode
+    ///
+    /// * gkebackup.gke.io/BackupJob
+    /// * gkebackup.gke.io/RestoreJob
+    /// * metrics.k8s.io/NodeMetrics
+    /// * migration.k8s.io/StorageState
+    /// * migration.k8s.io/StorageVersionMigration
+    /// * Node
+    /// * snapshot.storage.k8s.io/VolumeSnapshotContent
+    /// * storage.k8s.io/CSINode
     ///
     /// Some group kinds are driven by restore configuration elsewhere,
     /// and will cause an error if selected here.
-    /// - Namespace
-    /// - PersistentVolume
+    ///
+    /// * Namespace
+    /// * PersistentVolume
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ClusterResourceRestoreScope {
         /// A list of cluster-scoped resource group kinds to restore from the
@@ -567,7 +571,7 @@ pub mod restore_config {
     }
     /// TransformationRuleAction defines a TransformationRule action based on the
     /// JSON Patch RFC (<https://www.rfc-editor.org/rfc/rfc6902>)
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TransformationRuleAction {
         /// op specifies the operation to perform.
         #[prost(enumeration = "transformation_rule_action::Op", tag = "1")]
@@ -613,12 +617,13 @@ pub mod restore_config {
             Copy = 3,
             /// The "add" operation performs one of the following functions,
             /// depending upon what the target location references:
+            ///
             /// 1. If the target location specifies an array index, a new value is
-            /// inserted into the array at the specified index.
-            /// 2. If the target location specifies an object member that does not
-            /// already exist, a new member is added to the object.
-            /// 3. If the target location specifies an object member that does exist,
-            /// that member's value is replaced.
+            ///    inserted into the array at the specified index.
+            /// 1. If the target location specifies an object member that does not
+            ///    already exist, a new member is added to the object.
+            /// 1. If the target location specifies an object member that does exist,
+            ///    that member's value is replaced.
             Add = 4,
             /// The "test" operation tests that a value at the target location is
             /// equal to a specified value.
@@ -854,14 +859,15 @@ pub mod restore_config {
         /// exists, this mode will restore/reconnect the volume without overwriting
         /// the PVC. It is similar to MERGE_SKIP_ON_CONFLICT except that it will
         /// apply the volume data policy for the conflicting PVCs:
-        /// - RESTORE_VOLUME_DATA_FROM_BACKUP: restore data only and respect the
-        ///    reclaim policy of the original PV;
-        /// - REUSE_VOLUME_HANDLE_FROM_BACKUP: reconnect and respect the reclaim
-        ///    policy of the original PV;
-        /// - NO_VOLUME_DATA_RESTORATION: new provision and respect the reclaim
-        ///    policy of the original PV.
-        /// Note that this mode could cause data loss as the original PV can be
-        /// retained or deleted depending on its reclaim policy.
+        ///
+        /// * RESTORE_VOLUME_DATA_FROM_BACKUP: restore data only and respect the
+        ///   reclaim policy of the original PV;
+        /// * REUSE_VOLUME_HANDLE_FROM_BACKUP: reconnect and respect the reclaim
+        ///   policy of the original PV;
+        /// * NO_VOLUME_DATA_RESTORATION: new provision and respect the reclaim
+        ///   policy of the original PV.
+        ///   Note that this mode could cause data loss as the original PV can be
+        ///   retained or deleted depending on its reclaim policy.
         MergeReplaceVolumeOnConflict = 4,
         /// This mode merges the backup and the target cluster and replaces the
         /// conflicting resources with the ones in the backup. If a single resource
@@ -936,7 +942,7 @@ pub mod restore_config {
 /// LoggedRestorePlanMetadata as stored in Platform log. It's used to log the
 /// details of a RestorePlan, which are not provided by users, but are filled
 /// by the service.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LoggedRestorePlanMetadata {
     /// The name of the restore channel if any.
     #[prost(string, tag = "1")]
@@ -1004,7 +1010,7 @@ pub struct BackupChange {
 pub struct RestorePlanChange {
     /// The full name of the RestorePlan resource that is being modified.
     /// Empty for creation.
-    /// Format: projects/*/locations/*/restorePlans/*
+    /// Format: projects/*/locations/*/restorePlans/\*
     #[prost(string, tag = "1")]
     pub restore_plan: ::prost::alloc::string::String,
     /// Type of the change is being made.

@@ -85,7 +85,7 @@ pub mod attribute_context {
     /// This message defines attributes associated with API operations, such as
     /// a network API request. The terminology is based on the conventions used
     /// by Google APIs, Istio, and OpenAPI.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Api {
         /// The API service name. It is a logical identifier for a networked API,
         /// such as "pubsub.googleapis.com". The naming syntax depends on the
@@ -123,12 +123,12 @@ pub mod attribute_context {
         /// value(s) depends on the `issuer`, but typically include one or more of
         /// the following pieces of information:
         ///
-        /// *  The services intended to receive the credential. For example,
-        ///     \["<https://pubsub.googleapis.com/",> "<https://storage.googleapis.com/"\].>
-        /// *  A set of service-based scopes. For example,
-        ///     \["<https://www.googleapis.com/auth/cloud-platform"\].>
-        /// *  The client id of an app, such as the Firebase project id for JWTs
-        ///     from Firebase Auth.
+        /// * The services intended to receive the credential. For example,
+        ///   \["<https://pubsub.googleapis.com/",> "<https://storage.googleapis.com/"\].>
+        /// * A set of service-based scopes. For example,
+        ///   \["<https://www.googleapis.com/auth/cloud-platform"\].>
+        /// * The client id of an app, such as the Firebase project id for JWTs
+        ///   from Firebase Auth.
         ///
         /// Consult the documentation for the credential issuer to determine the
         /// information provided.
@@ -145,13 +145,15 @@ pub mod attribute_context {
         /// is a subset of the standard required and optional claims that would
         /// typically be presented for a Google-based JWT:
         ///
-        ///     {'iss': 'accounts.google.com',
-        ///      'sub': '113289723416554971153',
-        ///      'aud': \['123456789012', 'pubsub.googleapis.com'\],
-        ///      'azp': '123456789012.apps.googleusercontent.com',
-        ///      'email': 'jsmith@example.com',
-        ///      'iat': 1353601026,
-        ///      'exp': 1353604926}
+        /// ```text
+        /// {'iss': 'accounts.google.com',
+        /// 'sub': '113289723416554971153',
+        /// 'aud': \['123456789012', 'pubsub.googleapis.com'\],
+        /// 'azp': '123456789012.apps.googleusercontent.com',
+        /// 'email': 'jsmith@example.com',
+        /// 'iat': 1353601026,
+        /// 'exp': 1353604926}
+        /// ```
         ///
         /// SAML assertions are similarly specified, but with an identity provider
         /// dependent structure.
@@ -266,12 +268,12 @@ pub mod attribute_context {
         /// can be logically identified as "//{resource.service}/{resource.name}".
         /// The differences between a resource name and a URI are:
         ///
-        /// *   Resource name is a logical identifier, independent of network
-        ///      protocol and API version. For example,
-        ///      `//pubsub.googleapis.com/projects/123/topics/news-feed`.
-        /// *   URI often includes protocol and version information, so it can
-        ///      be used directly by applications. For example,
-        ///      `<https://pubsub.googleapis.com/v1/projects/123/topics/news-feed`.>
+        /// * Resource name is a logical identifier, independent of network
+        ///   protocol and API version. For example,
+        ///   `//pubsub.googleapis.com/projects/123/topics/news-feed`.
+        /// * URI often includes protocol and version information, so it can
+        ///   be used directly by applications. For example,
+        ///   `<https://pubsub.googleapis.com/v1/projects/123/topics/news-feed`.>
         ///
         /// See <https://cloud.google.com/apis/design/resource_names> for details.
         #[prost(string, tag = "2")]
@@ -308,7 +310,7 @@ pub mod attribute_context {
             ::prost::alloc::string::String,
             ::prost::alloc::string::String,
         >,
-        /// Mutable. The display name set by clients. Must be <= 63 characters.
+        /// Mutable. The display name set by clients. Must be \<= 63 characters.
         #[prost(string, tag = "7")]
         pub display_name: ::prost::alloc::string::String,
         /// Output only. The timestamp when the resource was created. This may

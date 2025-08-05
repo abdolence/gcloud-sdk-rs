@@ -448,7 +448,7 @@ pub struct Tax {
     /// The postal code range that the tax rate applies to, represented by
     /// a ZIP code, a ZIP code prefix using * wildcard, a range between two ZIP
     /// codes or two ZIP code prefixes of equal length.
-    /// Examples: 94114, 94*, 94002-95460, 94*-95*.
+    /// Examples: 94114, 94\*, 94002-95460, 94\*-95\*.
     #[prost(string, tag = "6")]
     pub postal_code: ::prost::alloc::string::String,
 }
@@ -475,7 +475,7 @@ pub struct ShippingDimension {
     pub unit: ::prost::alloc::string::String,
 }
 /// The UnitPricingBaseMeasure of the product.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UnitPricingBaseMeasure {
     /// The denominator of the unit price.
     #[prost(int64, tag = "1")]
@@ -495,12 +495,13 @@ pub struct UnitPricingMeasure {
     pub unit: ::prost::alloc::string::String,
 }
 /// The SubscriptionCost of the product.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SubscriptionCost {
     /// The type of subscription period.
     /// Supported values are:
-    ///    * "`month`"
-    ///    * "`year`"
+    ///
+    /// * "`month`"
+    /// * "`year`"
     #[prost(enumeration = "SubscriptionPeriod", tag = "1")]
     pub period: i32,
     /// The number of subscription periods the buyer has to pay.
@@ -511,7 +512,7 @@ pub struct SubscriptionCost {
     pub amount: ::core::option::Option<super::super::super::r#type::Price>,
 }
 /// A message that represents installment.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Installment {
     /// The number of installments the buyer has to pay.
     #[prost(int64, tag = "1")]
@@ -524,8 +525,9 @@ pub struct Installment {
     pub downpayment: ::core::option::Option<super::super::super::r#type::Price>,
     /// Type of installment payments.
     /// Supported values are:
-    ///    * "`finance`"
-    ///    * "`lease`"
+    ///
+    /// * "`finance`"
+    /// * "`lease`"
     #[prost(string, optional, tag = "4")]
     pub credit_type: ::core::option::Option<::prost::alloc::string::String>,
 }
@@ -546,7 +548,7 @@ pub struct LoyaltyPoints {
     pub ratio: f64,
 }
 /// A message that represents loyalty program.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LoyaltyProgram {
     /// The label of the loyalty program. This is an internal label that uniquely
     /// identifies the relationship between a business entity and a loyalty
@@ -586,7 +588,7 @@ pub struct LoyaltyProgram {
     pub shipping_label: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// The Shipping of the product.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Shipping {
     /// Fixed shipping price, represented as a number.
     #[prost(message, optional, tag = "1")]
@@ -621,54 +623,54 @@ pub struct Shipping {
     /// Minimum handling time (inclusive) between when the order is received and
     /// shipped in business days. 0 means that the order is shipped on the same
     /// day as it is received if it happens before the cut-off time.
-    /// [minHandlingTime][google.shopping.merchant.products.v1beta.Shipping.min_handling_time]
+    /// \[minHandlingTime\]\[google.shopping.merchant.products.v1beta.Shipping.min_handling_time\]
     /// can only be present together with
-    /// [maxHandlingTime][google.shopping.merchant.products.v1beta.Shipping.max_handling_time];
+    /// \[maxHandlingTime\]\[google.shopping.merchant.products.v1beta.Shipping.max_handling_time\];
     /// but it is not required if
-    /// [maxHandlingTime][google.shopping.merchant.products.v1beta.Shipping.max_handling_time]
+    /// \[maxHandlingTime\]\[google.shopping.merchant.products.v1beta.Shipping.max_handling_time\]
     /// is present.
     #[prost(int64, optional, tag = "8")]
     pub min_handling_time: ::core::option::Option<i64>,
     /// Maximum handling time (inclusive) between when the order is received and
     /// shipped in business days. 0 means that the order is shipped on the same
     /// day as it is received if it happens before the cut-off time. Both
-    /// [maxHandlingTime][google.shopping.merchant.products.v1beta.Shipping.max_handling_time]
+    /// \[maxHandlingTime\]\[google.shopping.merchant.products.v1beta.Shipping.max_handling_time\]
     /// and
-    /// [maxTransitTime][google.shopping.merchant.products.v1beta.Shipping.max_transit_time]
+    /// \[maxTransitTime\]\[google.shopping.merchant.products.v1beta.Shipping.max_transit_time\]
     /// are required if providing shipping speeds.
-    /// [minHandlingTime][google.shopping.merchant.products.v1beta.Shipping.min_handling_time]
+    /// \[minHandlingTime\]\[google.shopping.merchant.products.v1beta.Shipping.min_handling_time\]
     /// is optional if
-    /// [maxHandlingTime][google.shopping.merchant.products.v1beta.Shipping.max_handling_time]
+    /// \[maxHandlingTime\]\[google.shopping.merchant.products.v1beta.Shipping.max_handling_time\]
     /// is present.
     #[prost(int64, optional, tag = "9")]
     pub max_handling_time: ::core::option::Option<i64>,
     /// Minimum transit time (inclusive) between when the order has shipped and
     /// when it is delivered in business days. 0 means that the order is
     /// delivered on the same day as it ships.
-    /// [minTransitTime][google.shopping.merchant.products.v1beta.Shipping.min_transit_time]
+    /// \[minTransitTime\]\[google.shopping.merchant.products.v1beta.Shipping.min_transit_time\]
     /// can only be present together with
-    /// [maxTransitTime][google.shopping.merchant.products.v1beta.Shipping.max_transit_time];
+    /// \[maxTransitTime\]\[google.shopping.merchant.products.v1beta.Shipping.max_transit_time\];
     /// but it is not required if
-    /// [maxTransitTime][google.shopping.merchant.products.v1beta.Shipping.max_transit_time]
+    /// \[maxTransitTime\]\[google.shopping.merchant.products.v1beta.Shipping.max_transit_time\]
     /// is present.
     #[prost(int64, optional, tag = "10")]
     pub min_transit_time: ::core::option::Option<i64>,
     /// Maximum transit time (inclusive) between when the order has shipped and
     /// when it is delivered in business days. 0 means that the order is
     /// delivered on the same day as it ships. Both
-    /// [maxHandlingTime][google.shopping.merchant.products.v1beta.Shipping.max_handling_time]
+    /// \[maxHandlingTime\]\[google.shopping.merchant.products.v1beta.Shipping.max_handling_time\]
     /// and
-    /// [maxTransitTime][google.shopping.merchant.products.v1beta.Shipping.max_transit_time]
+    /// \[maxTransitTime\]\[google.shopping.merchant.products.v1beta.Shipping.max_transit_time\]
     /// are required if providing shipping speeds.
-    /// [minTransitTime][google.shopping.merchant.products.v1beta.Shipping.min_transit_time]
+    /// \[minTransitTime\]\[google.shopping.merchant.products.v1beta.Shipping.min_transit_time\]
     /// is optional if
-    /// [maxTransitTime][google.shopping.merchant.products.v1beta.Shipping.max_transit_time]
+    /// \[maxTransitTime\]\[google.shopping.merchant.products.v1beta.Shipping.max_transit_time\]
     /// is present.
     #[prost(int64, optional, tag = "11")]
     pub max_transit_time: ::core::option::Option<i64>,
 }
 /// Conditions to be met for a product to have free shipping.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FreeShippingThreshold {
     /// The [CLDR territory
     /// code](<http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml>)
@@ -681,7 +683,7 @@ pub struct FreeShippingThreshold {
     pub price_threshold: ::core::option::Option<super::super::super::r#type::Price>,
 }
 /// The product details.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProductDetail {
     /// The section header used to group a set of product details.
     #[prost(string, tag = "1")]
@@ -697,7 +699,7 @@ pub struct ProductDetail {
 /// [certification](<https://support.google.com/merchants/answer/13528839>),
 /// initially introduced for EU energy efficiency labeling compliance using the
 /// EU EPREL database.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Certification {
     /// The certification authority, for example "European_Commission".
     /// Maximum length is 2000 characters.
@@ -718,7 +720,7 @@ pub struct Certification {
     pub certification_value: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Structured title, for algorithmically (AI)-generated titles.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProductStructuredTitle {
     /// The digital source type, for example "trained_algorithmic_media".
     /// Following [IPTC](<https://cv.iptc.org/newscodes/digitalsourcetype>).
@@ -731,7 +733,7 @@ pub struct ProductStructuredTitle {
     pub content: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Structured description, for algorithmically (AI)-generated descriptions.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProductStructuredDescription {
     /// The digital source type, for example "trained_algorithmic_media".
     /// Following [IPTC](<https://cv.iptc.org/newscodes/digitalsourcetype>).
@@ -752,8 +754,9 @@ pub struct ProductDimension {
     pub value: f64,
     /// Required. The dimension units.
     /// Acceptable values are:
-    ///    * "`in`"
-    ///    * "`cm`"
+    ///
+    /// * "`in`"
+    /// * "`cm`"
     #[prost(string, tag = "2")]
     pub unit: ::prost::alloc::string::String,
 }
@@ -766,10 +769,11 @@ pub struct ProductWeight {
     pub value: f64,
     /// Required. The weight unit.
     /// Acceptable values are:
-    ///    * "`g`"
-    ///    * "`kg`"
-    ///    * "`oz`"
-    ///    * "`lb`"
+    ///
+    /// * "`g`"
+    /// * "`kg`"
+    /// * "`oz`"
+    /// * "`lb`"
     #[prost(string, tag = "2")]
     pub unit: ::prost::alloc::string::String,
 }
@@ -801,7 +805,7 @@ pub struct ProductStatus {
 /// Nested message and enum types in `ProductStatus`.
 pub mod product_status {
     /// The destination status of the product status.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DestinationStatus {
         /// The name of the reporting context.
         #[prost(
@@ -824,7 +828,7 @@ pub mod product_status {
         >,
     }
     /// The ItemLevelIssue of the product status.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ItemLevelIssue {
         /// The error code of the issue.
         #[prost(string, tag = "1")]
@@ -1029,7 +1033,7 @@ pub mod product_sustainability_incentive {
     }
 }
 /// Information regarding Automated Discounts.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AutomatedDiscounts {
     /// The price prior to the application of the first price reduction.
     /// Absent if the information about the prior price of the product is not
@@ -1083,31 +1087,31 @@ impl SubscriptionPeriod {
     }
 }
 /// This resource represents input data you submit for a product, not the
-///   processed product that you see in Merchant Center, in Shopping ads, or
-///   across Google surfaces. Product inputs, rules and supplemental data source
-///   data are combined to create the processed
-///   [Product][google.shopping.merchant.products.v1beta.Product]. For more
-///   information, see [Manage products](/merchant/api/guides/products/overview).
+/// processed product that you see in Merchant Center, in Shopping ads, or
+/// across Google surfaces. Product inputs, rules and supplemental data source
+/// data are combined to create the processed
+/// \[Product\]\[google.shopping.merchant.products.v1beta.Product\]. For more
+/// information, see [Manage products](/merchant/api/guides/products/overview).
 ///
-///   Required product input attributes to pass data validation checks are
-///   primarily defined in the [Products Data
-///   Specification](<https://support.google.com/merchants/answer/188494>).
+/// Required product input attributes to pass data validation checks are
+/// primarily defined in the [Products Data
+/// Specification](<https://support.google.com/merchants/answer/188494>).
 ///
-///   The following attributes are required:
-///   [feedLabel][google.shopping.merchant.products.v1beta.Product.feed_label],
-///   [contentLanguage][google.shopping.merchant.products.v1beta.Product.content_language]
-///   and [offerId][google.shopping.merchant.products.v1beta.Product.offer_id].
+/// The following attributes are required:
+/// \[feedLabel\]\[google.shopping.merchant.products.v1beta.Product.feed_label\],
+/// \[contentLanguage\]\[google.shopping.merchant.products.v1beta.Product.content_language\]
+/// and \[offerId\]\[google.shopping.merchant.products.v1beta.Product.offer_id\].
 ///
-///   After inserting, updating, or deleting a product input, it may take several
-///   minutes before the processed product can be retrieved.
+/// After inserting, updating, or deleting a product input, it may take several
+/// minutes before the processed product can be retrieved.
 ///
-///   All fields in the product input and its sub-messages match the English name
-///   of their corresponding attribute in the [Products Data
-///   Specification](<https://support.google.com/merchants/answer/188494>) with
-///   [some exceptions](<https://support.google.com/merchants/answer/7052112>).
-///   The following reference documentation lists the field names in the
-///   **camelCase** casing style while the Products Data Specification lists the
-///   names in the **snake_case** casing style.
+/// All fields in the product input and its sub-messages match the English name
+/// of their corresponding attribute in the [Products Data
+/// Specification](<https://support.google.com/merchants/answer/188494>) with
+/// [some exceptions](<https://support.google.com/merchants/answer/7052112>).
+/// The following reference documentation lists the field names in the
+/// **camelCase** casing style while the Products Data Specification lists the
+/// names in the **snake_case** casing style.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductInput {
     /// Identifier. The name of the product input.
@@ -1233,7 +1237,7 @@ pub struct UpdateProductInputRequest {
     /// To specify the update mask for custom attributes you need to add the
     /// `custom_attribute.` prefix.
     ///
-    /// Providing special "*" value for full product replacement is not supported.
+    /// Providing special "\*" value for full product replacement is not supported.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. The primary or supplemental product data source where
@@ -1247,7 +1251,7 @@ pub struct UpdateProductInputRequest {
     pub data_source: ::prost::alloc::string::String,
 }
 /// Request message for the DeleteProductInput method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteProductInputRequest {
     /// Required. The name of the product input resource to delete.
     /// Format: `accounts/{account}/productInputs/{product}`
@@ -1380,7 +1384,7 @@ pub mod product_inputs_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.products.v1beta.ProductInputsService/InsertProductInput",
             );
@@ -1410,7 +1414,7 @@ pub mod product_inputs_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.products.v1beta.ProductInputsService/UpdateProductInput",
             );
@@ -1440,7 +1444,7 @@ pub mod product_inputs_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.products.v1beta.ProductInputsService/DeleteProductInput",
             );
@@ -1456,8 +1460,8 @@ pub mod product_inputs_service_client {
         }
     }
 }
-/// The processed product, built from multiple [product
-/// inputs][google.shopping.merchant.products.v1main.ProductInput]
+/// The processed product, built from multiple \[product
+/// inputs\]\[google.shopping.merchant.products.v1main.ProductInput\]
 /// after applying rules and supplemental data sources. This processed product
 /// matches what is shown in your Merchant Center account. Each product is built
 /// from exactly one primary data source product input, and multiple supplemental
@@ -1547,7 +1551,7 @@ pub struct Product {
     pub automated_discounts: ::core::option::Option<AutomatedDiscounts>,
 }
 /// Request message for the GetProduct method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetProductRequest {
     /// Required. The name of the product to retrieve.
     /// Format: `accounts/{account}/products/{product}`
@@ -1559,7 +1563,7 @@ pub struct GetProductRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the ListProducts method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListProductsRequest {
     /// Required. The account to list processed products for.
     /// Format: `accounts/{account}`
@@ -1699,7 +1703,7 @@ pub mod products_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.products.v1beta.ProductsService/GetProduct",
             );
@@ -1734,7 +1738,7 @@ pub mod products_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.products.v1beta.ProductsService/ListProducts",
             );

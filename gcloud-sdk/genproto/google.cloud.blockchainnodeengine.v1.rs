@@ -45,7 +45,7 @@ pub struct BlockchainNode {
 pub mod blockchain_node {
     /// The connection information through which to interact with a blockchain
     /// node.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ConnectionInfo {
         /// Output only. The endpoint information through which to interact with a
         /// blockchain node.
@@ -61,7 +61,7 @@ pub mod blockchain_node {
     pub mod connection_info {
         /// Contains endpoint information through which to interact with a blockchain
         /// node.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct EndpointInfo {
             /// Output only. The assigned URL for the node JSON-RPC API endpoint.
             #[prost(string, tag = "1")]
@@ -72,7 +72,7 @@ pub mod blockchain_node {
         }
     }
     /// Ethereum-specific blockchain node details.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct EthereumDetails {
         /// Immutable. The Ethereum environment being accessed.
         #[prost(enumeration = "ethereum_details::Network", optional, tag = "1")]
@@ -116,7 +116,7 @@ pub mod blockchain_node {
         /// See [Command-line
         /// Options](<https://geth.ethereum.org/docs/fundamentals/command-line-options>)
         /// for more details.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct GethDetails {
             /// Immutable. Blockchain garbage collection mode.
             #[prost(
@@ -181,7 +181,7 @@ pub mod blockchain_node {
             }
         }
         /// Contains endpoint information specific to Ethereum nodes.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct EthereumEndpoints {
             /// Output only. The assigned URL for the node's Beacon API endpoint.
             #[prost(string, tag = "1")]
@@ -199,7 +199,7 @@ pub mod blockchain_node {
         }
         /// Configuration for validator-related parameters on the beacon client,
         /// and for any GCP-managed validator client.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct ValidatorConfig {
             /// URLs for MEV-relay services to use for block building. When set, a
             /// GCP-managed MEV-boost service is configured on the beacon client.
@@ -439,7 +439,7 @@ pub mod blockchain_node {
             }
         }
         /// Options for the execution client.
-        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum ExecutionClientDetails {
             /// Details for the Geth execution client.
             #[prost(message, tag = "8")]
@@ -554,7 +554,7 @@ pub mod blockchain_node {
         }
     }
     /// Information that is specific to a particular blockchain type.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum BlockchainTypeDetails {
         /// Ethereum-specific blockchain node details.
         #[prost(message, tag = "7")]
@@ -562,7 +562,7 @@ pub mod blockchain_node {
     }
 }
 /// Message for requesting list of blockchain nodes.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListBlockchainNodesRequest {
     /// Required. Parent value for `ListNodesRequest`.
     #[prost(string, tag = "1")]
@@ -595,7 +595,7 @@ pub struct ListBlockchainNodesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a blockchain node.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetBlockchainNodeRequest {
     /// Required. The fully qualified name of the blockchain node to fetch.
     /// e.g. `projects/my-project/locations/us-central1/blockchainNodes/my-node`.
@@ -660,7 +660,7 @@ pub struct UpdateBlockchainNodeRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting a blockchain node.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteBlockchainNodeRequest {
     /// Required. The fully qualified name of the blockchain node to delete.
     /// e.g. `projects/my-project/locations/us-central1/blockchainNodes/my-node`.
@@ -683,7 +683,7 @@ pub struct DeleteBlockchainNodeRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -820,7 +820,7 @@ pub mod blockchain_node_engine_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.blockchainnodeengine.v1.BlockchainNodeEngine/ListBlockchainNodes",
             );
@@ -847,7 +847,7 @@ pub mod blockchain_node_engine_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.blockchainnodeengine.v1.BlockchainNodeEngine/GetBlockchainNode",
             );
@@ -877,7 +877,7 @@ pub mod blockchain_node_engine_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.blockchainnodeengine.v1.BlockchainNodeEngine/CreateBlockchainNode",
             );
@@ -907,7 +907,7 @@ pub mod blockchain_node_engine_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.blockchainnodeengine.v1.BlockchainNodeEngine/UpdateBlockchainNode",
             );
@@ -937,7 +937,7 @@ pub mod blockchain_node_engine_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.blockchainnodeengine.v1.BlockchainNodeEngine/DeleteBlockchainNode",
             );

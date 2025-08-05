@@ -50,7 +50,7 @@ pub struct Insight {
 /// Nested message and enum types in `Insight`.
 pub mod insight {
     /// Reference to an associated recommendation.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct RecommendationReference {
         /// Recommendation resource name, e.g.
         /// projects/\[PROJECT_NUMBER\]/locations/\[LOCATION\]/recommenders/\[RECOMMENDER_ID\]/recommendations/\[RECOMMENDATION_ID\]
@@ -255,8 +255,8 @@ pub struct Recommendation {
     /// to see a list of subtypes for a given Recommender.
     ///
     /// Examples:
-    ///    For recommender = "google.iam.policy.Recommender",
-    ///    recommender_subtype can be one of "REMOVE_ROLE"/"REPLACE_ROLE"
+    /// For recommender = "google.iam.policy.Recommender",
+    /// recommender_subtype can be one of "REMOVE_ROLE"/"REPLACE_ROLE"
     #[prost(string, tag = "12")]
     pub recommender_subtype: ::prost::alloc::string::String,
     /// Last time this recommendation was refreshed by the system that created it
@@ -298,7 +298,7 @@ pub struct Recommendation {
 /// Nested message and enum types in `Recommendation`.
 pub mod recommendation {
     /// Reference to an associated insight.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct InsightReference {
         /// Insight resource name, e.g.
         /// projects/\[PROJECT_NUMBER\]/locations/\[LOCATION\]/insightTypes/\[INSIGHT_TYPE_ID\]/insights/\[INSIGHT_ID\]
@@ -383,9 +383,9 @@ pub struct OperationGroup {
 /// * Custom filters for describing partial array patch.
 /// * Extended path values for describing nested arrays.
 /// * Custom fields for describing the resource for which the operation is being
-///    described.
+///   described.
 /// * Allows extension to custom operations not natively supported by RFC6902.
-/// See <https://tools.ietf.org/html/rfc6902> for details on the original RFC.
+///   See <https://tools.ietf.org/html/rfc6902> for details on the original RFC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Operation {
     /// Type of this operation. Contains one of 'add', 'remove', 'replace', 'move',
@@ -424,26 +424,32 @@ pub struct Operation {
     /// matching, use path_value_matchers.
     ///
     /// * Example:
-    /// ```
+    ///
+    /// ```text,
     /// {
-    ///    "/versions/*/name" : "it-123"
-    ///    "/versions/*/targetSize/percent": 20
+    ///   "/versions/*/name" : "it-123"
+    ///   "/versions/*/targetSize/percent": 20
     /// }
     /// ```
+    ///
     /// * Example:
-    /// ```
+    ///
+    /// ```text,
     /// {
-    ///    "/bindings/*/role": "roles/owner"
-    ///    "/bindings/*/condition" : null
+    ///   "/bindings/*/role": "roles/owner"
+    ///   "/bindings/*/condition" : null
     /// }
     /// ```
+    ///
     /// * Example:
-    /// ```
+    ///
+    /// ```text,
     /// {
-    ///    "/bindings/*/role": "roles/owner"
-    ///    "/bindings/*/members/*" : \["x@example.com", "y@example.com"\]
+    ///   "/bindings/*/role": "roles/owner"
+    ///   "/bindings/*/members/*" : \["x@example.com", "y@example.com"\]
     /// }
     /// ```
+    ///
     /// When both path_filters and path_value_matchers are set, an implicit AND
     /// must be performed.
     #[prost(map = "string, message", tag = "8")]
@@ -484,14 +490,14 @@ pub mod operation {
     }
 }
 /// Contains various matching options for values for a GCP resource field.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ValueMatcher {
     #[prost(oneof = "value_matcher::MatchVariant", tags = "1")]
     pub match_variant: ::core::option::Option<value_matcher::MatchVariant>,
 }
 /// Nested message and enum types in `ValueMatcher`.
 pub mod value_matcher {
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum MatchVariant {
         /// To be used for full regex matching. The regular expression is using the
         /// Google RE2 syntax (<https://github.com/google/re2/wiki/Syntax>), so to be
@@ -501,7 +507,7 @@ pub mod value_matcher {
     }
 }
 /// Contains metadata about how much money a recommendation can save or incur.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CostProjection {
     /// An approximate projection on amount saved or amount incurred. Negative cost
     /// units indicate cost savings and positive cost units indicate increase.
@@ -807,7 +813,7 @@ pub struct InsightTypeConfig {
     /// separated by a slash (/).
     /// Prefix must be a DNS subdomain.
     /// Name must be 63 characters or less, begin and end with alphanumerics,
-    /// with dashes (-), underscores (_), dots (.), and alphanumerics between.
+    /// with dashes (-), underscores (\_), dots (.), and alphanumerics between.
     #[prost(map = "string, string", tag = "6")]
     pub annotations: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -861,7 +867,7 @@ pub struct RecommenderConfig {
     /// separated by a slash (/).
     /// Prefix must be a DNS subdomain.
     /// Name must be 63 characters or less, begin and end with alphanumerics,
-    /// with dashes (-), underscores (_), dots (.), and alphanumerics between.
+    /// with dashes (-), underscores (\_), dots (.), and alphanumerics between.
     #[prost(map = "string, string", tag = "6")]
     pub annotations: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -883,7 +889,7 @@ pub struct RecommenderGenerationConfig {
     pub params: ::core::option::Option<::prost_types::Struct>,
 }
 /// Request for the `ListInsights` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInsightsRequest {
     /// Required. The container resource on which to execute the request.
     /// Acceptable formats:
@@ -934,8 +940,7 @@ pub struct ListInsightsRequest {
     ///
     /// * `severity = CRITICAL OR severity = HIGH`
     ///
-    /// * `targetResources :
-    /// //compute.googleapis.com/projects/1234/zones/us-central1-a/instances/instance-1`
+    /// * `targetResources :  //compute.googleapis.com/projects/1234/zones/us-central1-a/instances/instance-1`
     ///
     /// * `stateInfo.state = ACTIVE AND (severity = CRITICAL OR severity = HIGH)`
     ///
@@ -958,7 +963,7 @@ pub struct ListInsightsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to the `GetInsight` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInsightRequest {
     /// Required. Name of the insight.
     #[prost(string, tag = "1")]
@@ -982,7 +987,7 @@ pub struct MarkInsightAcceptedRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request for the `ListRecommendations` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRecommendationsRequest {
     /// Required. The container resource on which to execute the request.
     /// Acceptable formats:
@@ -1033,8 +1038,7 @@ pub struct ListRecommendationsRequest {
     ///
     /// * `priority = P1 OR priority = P2`
     ///
-    /// * `targetResources :
-    /// //compute.googleapis.com/projects/1234/zones/us-central1-a/instances/instance-1`
+    /// * `targetResources :  //compute.googleapis.com/projects/1234/zones/us-central1-a/instances/instance-1`
     ///
     /// * `stateInfo.state = ACTIVE AND (priority = P1 OR priority = P2)`
     ///
@@ -1057,14 +1061,14 @@ pub struct ListRecommendationsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to the `GetRecommendation` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRecommendationRequest {
     /// Required. Name of the recommendation.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `MarkRecommendationDismissed` Method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MarkRecommendationDismissedRequest {
     /// Required. Name of the recommendation.
     #[prost(string, tag = "1")]
@@ -1130,8 +1134,8 @@ pub struct MarkRecommendationFailedRequest {
     #[prost(string, tag = "3")]
     pub etag: ::prost::alloc::string::String,
 }
-/// Request for the GetRecommenderConfig` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Request for the GetRecommenderConfig\` method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRecommenderConfigRequest {
     /// Required. Name of the Recommendation Config to get.
     ///
@@ -1161,8 +1165,8 @@ pub struct UpdateRecommenderConfigRequest {
     #[prost(bool, tag = "3")]
     pub validate_only: bool,
 }
-/// Request for the GetInsightTypeConfig` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Request for the GetInsightTypeConfig\` method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInsightTypeConfigRequest {
     /// Required. Name of the InsightTypeConfig to get.
     ///
@@ -1288,7 +1292,7 @@ pub mod recommender_client {
             self
         }
         /// Lists insights for the specified Cloud Resource. Requires the
-        /// recommender.*.list IAM permission for the specified insight type.
+        /// recommender.\*.list IAM permission for the specified insight type.
         pub async fn list_insights(
             &mut self,
             request: impl tonic::IntoRequest<super::ListInsightsRequest>,
@@ -1304,7 +1308,7 @@ pub mod recommender_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommender.v1.Recommender/ListInsights",
             );
@@ -1318,7 +1322,7 @@ pub mod recommender_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Gets the requested insight. Requires the recommender.*.get IAM permission
+        /// Gets the requested insight. Requires the recommender.\*.get IAM permission
         /// for the specified insight type.
         pub async fn get_insight(
             &mut self,
@@ -1332,7 +1336,7 @@ pub mod recommender_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommender.v1.Recommender/GetInsight",
             );
@@ -1351,7 +1355,7 @@ pub mod recommender_client {
         /// on the insight. This stops the insight content from being updated.
         ///
         /// MarkInsightAccepted can be applied to insights in ACTIVE state. Requires
-        /// the recommender.*.update IAM permission for the specified insight.
+        /// the recommender.\*.update IAM permission for the specified insight.
         pub async fn mark_insight_accepted(
             &mut self,
             request: impl tonic::IntoRequest<super::MarkInsightAcceptedRequest>,
@@ -1364,7 +1368,7 @@ pub mod recommender_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommender.v1.Recommender/MarkInsightAccepted",
             );
@@ -1379,7 +1383,7 @@ pub mod recommender_client {
             self.inner.unary(req, path, codec).await
         }
         /// Lists recommendations for the specified Cloud Resource. Requires the
-        /// recommender.*.list IAM permission for the specified recommender.
+        /// recommender.\*.list IAM permission for the specified recommender.
         pub async fn list_recommendations(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRecommendationsRequest>,
@@ -1395,7 +1399,7 @@ pub mod recommender_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommender.v1.Recommender/ListRecommendations",
             );
@@ -1409,7 +1413,7 @@ pub mod recommender_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Gets the requested recommendation. Requires the recommender.*.get
+        /// Gets the requested recommendation. Requires the recommender.\*.get
         /// IAM permission for the specified recommender.
         pub async fn get_recommendation(
             &mut self,
@@ -1423,7 +1427,7 @@ pub mod recommender_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommender.v1.Recommender/GetRecommendation",
             );
@@ -1444,7 +1448,7 @@ pub mod recommender_client {
         /// MarkRecommendationDismissed can be applied to recommendations in ACTIVE
         /// state.
         ///
-        /// Requires the recommender.*.update IAM permission for the specified
+        /// Requires the recommender.\*.update IAM permission for the specified
         /// recommender.
         pub async fn mark_recommendation_dismissed(
             &mut self,
@@ -1458,7 +1462,7 @@ pub mod recommender_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommender.v1.Recommender/MarkRecommendationDismissed",
             );
@@ -1480,7 +1484,7 @@ pub mod recommender_client {
         /// MarkRecommendationClaimed can be applied to recommendations in CLAIMED,
         /// SUCCEEDED, FAILED, or ACTIVE state.
         ///
-        /// Requires the recommender.*.update IAM permission for the specified
+        /// Requires the recommender.\*.update IAM permission for the specified
         /// recommender.
         pub async fn mark_recommendation_claimed(
             &mut self,
@@ -1494,7 +1498,7 @@ pub mod recommender_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommender.v1.Recommender/MarkRecommendationClaimed",
             );
@@ -1517,7 +1521,7 @@ pub mod recommender_client {
         /// MarkRecommendationSucceeded can be applied to recommendations in ACTIVE,
         /// CLAIMED, SUCCEEDED, or FAILED state.
         ///
-        /// Requires the recommender.*.update IAM permission for the specified
+        /// Requires the recommender.\*.update IAM permission for the specified
         /// recommender.
         pub async fn mark_recommendation_succeeded(
             &mut self,
@@ -1531,7 +1535,7 @@ pub mod recommender_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommender.v1.Recommender/MarkRecommendationSucceeded",
             );
@@ -1554,7 +1558,7 @@ pub mod recommender_client {
         /// MarkRecommendationFailed can be applied to recommendations in ACTIVE,
         /// CLAIMED, SUCCEEDED, or FAILED state.
         ///
-        /// Requires the recommender.*.update IAM permission for the specified
+        /// Requires the recommender.\*.update IAM permission for the specified
         /// recommender.
         pub async fn mark_recommendation_failed(
             &mut self,
@@ -1568,7 +1572,7 @@ pub mod recommender_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommender.v1.Recommender/MarkRecommendationFailed",
             );
@@ -1599,7 +1603,7 @@ pub mod recommender_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommender.v1.Recommender/GetRecommenderConfig",
             );
@@ -1630,7 +1634,7 @@ pub mod recommender_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommender.v1.Recommender/UpdateRecommenderConfig",
             );
@@ -1661,7 +1665,7 @@ pub mod recommender_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommender.v1.Recommender/GetInsightTypeConfig",
             );
@@ -1692,7 +1696,7 @@ pub mod recommender_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.recommender.v1.Recommender/UpdateInsightTypeConfig",
             );

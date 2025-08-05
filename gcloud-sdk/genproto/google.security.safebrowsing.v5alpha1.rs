@@ -8,7 +8,7 @@
 /// states of the hash lists in their local database. This is for improved
 /// privacy. Furthermore, clients don't need to send which threat types they are
 /// interested in.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchHashesRequest {
     /// Required. The hash prefixes to be looked up. Clients MUST NOT send more
     /// than 1000 hash prefixes. However, following the URL processing procedure,
@@ -33,8 +33,7 @@ pub struct SearchHashesRequest {
     /// type. The identifier `"ThreatType"` refers to the collection of all
     /// possible threat types.
     ///
-    /// The filter `"threat_type in [ ThreatType.UNWANTED_SOFTWARE,
-    /// ThreatType.MALWARE ]"` requires that the threat type must be either
+    /// The filter `"threat_type in \[ ThreatType.UNWANTED_SOFTWARE,  ThreatType.MALWARE \]"` requires that the threat type must be either
     /// `UNWANTED_SOFTWARE` or `MALWARE`.
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
@@ -100,7 +99,7 @@ pub mod full_hash {
     /// responsibility to check for the validity of all `ThreatType` and
     /// `ThreatAttribute` enum values; if any value is considered invalid, the
     /// client MUST disregard the entire `FullHashDetail` message.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct FullHashDetail {
         /// The type of threat. This field will never be empty.
         #[prost(enumeration = "super::ThreatType", tag = "1")]
@@ -127,7 +126,7 @@ pub mod full_hash {
 /// many client implementations: all hashes in a list now have a single length,
 /// permitting much more efficient client implementations. Constraints have been
 /// simplified, and compression type is removed (compression is always applied).
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetHashListRequest {
     /// Required. The name of this particular hash list. It may be a threat list,
     /// or it may be the Global Cache.
@@ -149,7 +148,7 @@ pub struct GetHashListRequest {
     pub size_constraints: ::core::option::Option<SizeConstraints>,
 }
 /// The constraints on the sizes of the hash lists.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SizeConstraints {
     /// The maximum size in number of entries. The update will not contain more
     /// entries than this value, but it is possible that the update will contain
@@ -181,7 +180,7 @@ pub struct SizeConstraints {
 /// is now available with hash prefixes longer than 4 bytes; secondly, the
 /// encoded data are now treated as big-endian so as to avoid a costly sorting
 /// step.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RiceDeltaEncoded32Bit {
     /// The first entry in the encoded data (hashes or indices), or, if only a
     /// single hash prefix or index was encoded, that entry's value. If the field
@@ -202,7 +201,7 @@ pub struct RiceDeltaEncoded32Bit {
     pub encoded_data: ::prost::alloc::vec::Vec<u8>,
 }
 /// Same as `RiceDeltaEncoded32Bit` except this encodes 64-bit numbers.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RiceDeltaEncoded64Bit {
     /// The first entry in the encoded data (hashes), or, if only a single
     /// hash prefix was encoded, that entry's value. If the field is empty, the
@@ -223,7 +222,7 @@ pub struct RiceDeltaEncoded64Bit {
     pub encoded_data: ::prost::alloc::vec::Vec<u8>,
 }
 /// Same as `RiceDeltaEncoded32Bit` except this encodes 128-bit numbers.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RiceDeltaEncoded128Bit {
     /// The upper 64 bits of the first entry in the encoded data (hashes). If the
     /// field is empty, the upper 64 bits are all zero.
@@ -247,7 +246,7 @@ pub struct RiceDeltaEncoded128Bit {
     pub encoded_data: ::prost::alloc::vec::Vec<u8>,
 }
 /// Same as `RiceDeltaEncoded32Bit` except this encodes 256-bit numbers.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RiceDeltaEncoded256Bit {
     /// The first 64 bits of the first entry in the encoded data (hashes). If the
     /// field is empty, the first 64 bits are all zero.
@@ -279,7 +278,7 @@ pub struct RiceDeltaEncoded256Bit {
     pub encoded_data: ::prost::alloc::vec::Vec<u8>,
 }
 /// Metadata about a particular hash list.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HashListMetadata {
     /// Unordered list. If not empty, this specifies that the hash list is a kind
     /// of threat list, and this enumerates the kind of threats associated with
@@ -359,7 +358,7 @@ pub mod hash_list_metadata {
     }
 }
 /// A list of hashes identified by its name.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HashList {
     /// The name of the hash list. Note that the Global Cache is also just a hash
     /// list and can be referred to here.
@@ -413,7 +412,7 @@ pub struct HashList {
 pub mod hash_list {
     /// The Rice-delta encoded version of additions. The hash prefix lengths of
     /// additions are uniform across all additions in the list.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum CompressedAdditions {
         /// The 4-byte additions.
         #[prost(message, tag = "4")]
@@ -430,7 +429,7 @@ pub mod hash_list {
     }
 }
 /// The request to get multiple hash lists at the same time.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BatchGetHashListsRequest {
     /// Required. The names of the particular hash lists. The list MAY be a threat
     /// list, or it may be the Global Cache. The names MUST NOT contain duplicates;
@@ -466,7 +465,7 @@ pub struct BatchGetHashListsResponse {
     pub hash_lists: ::prost::alloc::vec::Vec<HashList>,
 }
 /// The request to list the available hash lists.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListHashListsRequest {
     /// The maximum number of hash lists to return. The service may return fewer
     /// than this value. If unspecified, the server will choose a page size, which
@@ -750,7 +749,7 @@ pub mod safe_browsing_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.security.safebrowsing.v5alpha1.SafeBrowsing/SearchHashes",
             );
@@ -781,7 +780,7 @@ pub mod safe_browsing_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.security.safebrowsing.v5alpha1.SafeBrowsing/GetHashList",
             );
@@ -818,7 +817,7 @@ pub mod safe_browsing_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.security.safebrowsing.v5alpha1.SafeBrowsing/ListHashLists",
             );
@@ -854,7 +853,7 @@ pub mod safe_browsing_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.security.safebrowsing.v5alpha1.SafeBrowsing/BatchGetHashLists",
             );

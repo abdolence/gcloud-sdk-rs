@@ -95,7 +95,7 @@ pub struct Reservation {
 /// Nested message and enum types in `Reservation`.
 pub mod reservation {
     /// Auto scaling settings.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Autoscale {
         /// Output only. The slot capacity added to this reservation when autoscale
         /// happens. Will be between \[0, max_slots\]. Note: after users reduce
@@ -343,7 +343,7 @@ pub mod capacity_commitment {
     }
 }
 /// The request for
-/// [ReservationService.CreateReservation][google.cloud.bigquery.reservation.v1.ReservationService.CreateReservation].
+/// \[ReservationService.CreateReservation\]\[google.cloud.bigquery.reservation.v1.ReservationService.CreateReservation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateReservationRequest {
     /// Required. Project, location. E.g.,
@@ -360,11 +360,11 @@ pub struct CreateReservationRequest {
     pub reservation: ::core::option::Option<Reservation>,
 }
 /// The request for
-/// [ReservationService.ListReservations][google.cloud.bigquery.reservation.v1.ReservationService.ListReservations].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[ReservationService.ListReservations\]\[google.cloud.bigquery.reservation.v1.ReservationService.ListReservations\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListReservationsRequest {
     /// Required. The parent resource name containing project and location, e.g.:
-    ///    `projects/myproject/locations/US`
+    /// `projects/myproject/locations/US`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return per page.
@@ -375,7 +375,7 @@ pub struct ListReservationsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for
-/// [ReservationService.ListReservations][google.cloud.bigquery.reservation.v1.ReservationService.ListReservations].
+/// \[ReservationService.ListReservations\]\[google.cloud.bigquery.reservation.v1.ReservationService.ListReservations\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReservationsResponse {
     /// List of reservations visible to the user.
@@ -387,25 +387,25 @@ pub struct ListReservationsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for
-/// [ReservationService.GetReservation][google.cloud.bigquery.reservation.v1.ReservationService.GetReservation].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[ReservationService.GetReservation\]\[google.cloud.bigquery.reservation.v1.ReservationService.GetReservation\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetReservationRequest {
     /// Required. Resource name of the reservation to retrieve. E.g.,
-    ///     `projects/myproject/locations/US/reservations/team1-prod`
+    /// `projects/myproject/locations/US/reservations/team1-prod`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request for
-/// [ReservationService.DeleteReservation][google.cloud.bigquery.reservation.v1.ReservationService.DeleteReservation].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[ReservationService.DeleteReservation\]\[google.cloud.bigquery.reservation.v1.ReservationService.DeleteReservation\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteReservationRequest {
     /// Required. Resource name of the reservation to retrieve. E.g.,
-    ///     `projects/myproject/locations/US/reservations/team1-prod`
+    /// `projects/myproject/locations/US/reservations/team1-prod`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request for
-/// [ReservationService.UpdateReservation][google.cloud.bigquery.reservation.v1.ReservationService.UpdateReservation].
+/// \[ReservationService.UpdateReservation\]\[google.cloud.bigquery.reservation.v1.ReservationService.UpdateReservation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateReservationRequest {
     /// Content of the reservation to update.
@@ -416,19 +416,19 @@ pub struct UpdateReservationRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request for ReservationService.FailoverReservation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FailoverReservationRequest {
     /// Required. Resource name of the reservation to failover. E.g.,
-    ///     `projects/myproject/locations/US/reservations/team1-prod`
+    /// `projects/myproject/locations/US/reservations/team1-prod`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request for
-/// [ReservationService.CreateCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.CreateCapacityCommitment].
+/// \[ReservationService.CreateCapacityCommitment\]\[google.cloud.bigquery.reservation.v1.ReservationService.CreateCapacityCommitment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCapacityCommitmentRequest {
     /// Required. Resource name of the parent reservation. E.g.,
-    ///     `projects/myproject/locations/US`
+    /// `projects/myproject/locations/US`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Content of the capacity commitment to create.
@@ -447,11 +447,11 @@ pub struct CreateCapacityCommitmentRequest {
     pub capacity_commitment_id: ::prost::alloc::string::String,
 }
 /// The request for
-/// [ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.ListCapacityCommitments].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[ReservationService.ListCapacityCommitments\]\[google.cloud.bigquery.reservation.v1.ReservationService.ListCapacityCommitments\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCapacityCommitmentsRequest {
     /// Required. Resource name of the parent reservation. E.g.,
-    ///     `projects/myproject/locations/US`
+    /// `projects/myproject/locations/US`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
@@ -462,7 +462,7 @@ pub struct ListCapacityCommitmentsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for
-/// [ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.ListCapacityCommitments].
+/// \[ReservationService.ListCapacityCommitments\]\[google.cloud.bigquery.reservation.v1.ReservationService.ListCapacityCommitments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCapacityCommitmentsResponse {
     /// List of capacity commitments visible to the user.
@@ -474,20 +474,20 @@ pub struct ListCapacityCommitmentsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for
-/// [ReservationService.GetCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.GetCapacityCommitment].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[ReservationService.GetCapacityCommitment\]\[google.cloud.bigquery.reservation.v1.ReservationService.GetCapacityCommitment\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetCapacityCommitmentRequest {
     /// Required. Resource name of the capacity commitment to retrieve. E.g.,
-    ///     `projects/myproject/locations/US/capacityCommitments/123`
+    /// `projects/myproject/locations/US/capacityCommitments/123`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request for
-/// [ReservationService.DeleteCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.DeleteCapacityCommitment].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[ReservationService.DeleteCapacityCommitment\]\[google.cloud.bigquery.reservation.v1.ReservationService.DeleteCapacityCommitment\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteCapacityCommitmentRequest {
     /// Required. Resource name of the capacity commitment to delete. E.g.,
-    ///     `projects/myproject/locations/US/capacityCommitments/123`
+    /// `projects/myproject/locations/US/capacityCommitments/123`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Can be used to force delete commitments even if assignments exist. Deleting
@@ -497,7 +497,7 @@ pub struct DeleteCapacityCommitmentRequest {
     pub force: bool,
 }
 /// The request for
-/// [ReservationService.UpdateCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.UpdateCapacityCommitment].
+/// \[ReservationService.UpdateCapacityCommitment\]\[google.cloud.bigquery.reservation.v1.ReservationService.UpdateCapacityCommitment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCapacityCommitmentRequest {
     /// Content of the capacity commitment to update.
@@ -508,11 +508,11 @@ pub struct UpdateCapacityCommitmentRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request for
-/// [ReservationService.SplitCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.SplitCapacityCommitment].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[ReservationService.SplitCapacityCommitment\]\[google.cloud.bigquery.reservation.v1.ReservationService.SplitCapacityCommitment\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SplitCapacityCommitmentRequest {
     /// Required. The resource name e.g.,:
-    ///   `projects/myproject/locations/US/capacityCommitments/123`
+    /// `projects/myproject/locations/US/capacityCommitments/123`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Number of slots in the capacity commitment after the split.
@@ -520,7 +520,7 @@ pub struct SplitCapacityCommitmentRequest {
     pub slot_count: i64,
 }
 /// The response for
-/// [ReservationService.SplitCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.SplitCapacityCommitment].
+/// \[ReservationService.SplitCapacityCommitment\]\[google.cloud.bigquery.reservation.v1.ReservationService.SplitCapacityCommitment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SplitCapacityCommitmentResponse {
     /// First capacity commitment, result of a split.
@@ -531,11 +531,11 @@ pub struct SplitCapacityCommitmentResponse {
     pub second: ::core::option::Option<CapacityCommitment>,
 }
 /// The request for
-/// [ReservationService.MergeCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.MergeCapacityCommitments].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[ReservationService.MergeCapacityCommitments\]\[google.cloud.bigquery.reservation.v1.ReservationService.MergeCapacityCommitments\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MergeCapacityCommitmentsRequest {
     /// Parent resource that identifies admin project and location e.g.,
-    ///   `projects/myproject/locations/us`
+    /// `projects/myproject/locations/us`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Ids of capacity commitments to merge.
@@ -550,7 +550,7 @@ pub struct MergeCapacityCommitmentsRequest {
 }
 /// An assignment allows a project to submit jobs
 /// of a certain type using slots from the specified reservation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Assignment {
     /// Output only. Name of the resource. E.g.:
     /// `projects/myproject/locations/US/reservations/team1-prod/assignments/123`.
@@ -687,10 +687,10 @@ pub mod assignment {
     }
 }
 /// The request for
-/// [ReservationService.CreateAssignment][google.cloud.bigquery.reservation.v1.ReservationService.CreateAssignment].
+/// \[ReservationService.CreateAssignment\]\[google.cloud.bigquery.reservation.v1.ReservationService.CreateAssignment\].
 /// Note: "bigquery.reservationAssignments.create" permission is required on the
 /// related assignee.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateAssignmentRequest {
     /// Required. The parent resource name of the assignment
     /// E.g. `projects/myproject/locations/US/reservations/team1-prod`
@@ -707,8 +707,8 @@ pub struct CreateAssignmentRequest {
     pub assignment_id: ::prost::alloc::string::String,
 }
 /// The request for
-/// [ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1.ReservationService.ListAssignments].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[ReservationService.ListAssignments\]\[google.cloud.bigquery.reservation.v1.ReservationService.ListAssignments\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAssignmentsRequest {
     /// Required. The parent resource name e.g.:
     ///
@@ -727,7 +727,7 @@ pub struct ListAssignmentsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for
-/// [ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1.ReservationService.ListAssignments].
+/// \[ReservationService.ListAssignments\]\[google.cloud.bigquery.reservation.v1.ReservationService.ListAssignments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssignmentsResponse {
     /// List of assignments visible to the user.
@@ -739,25 +739,25 @@ pub struct ListAssignmentsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for
-/// [ReservationService.DeleteAssignment][google.cloud.bigquery.reservation.v1.ReservationService.DeleteAssignment].
+/// \[ReservationService.DeleteAssignment\]\[google.cloud.bigquery.reservation.v1.ReservationService.DeleteAssignment\].
 /// Note: "bigquery.reservationAssignments.delete" permission is required on the
 /// related assignee.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAssignmentRequest {
     /// Required. Name of the resource, e.g.
-    ///    `projects/myproject/locations/US/reservations/team1-prod/assignments/123`
+    /// `projects/myproject/locations/US/reservations/team1-prod/assignments/123`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request for
-/// [ReservationService.SearchAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAssignments].
+/// \[ReservationService.SearchAssignments\]\[google.cloud.bigquery.reservation.v1.ReservationService.SearchAssignments\].
 /// Note: "bigquery.reservationAssignments.search" permission is required on the
 /// related assignee.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchAssignmentsRequest {
     /// Required. The resource name of the admin project(containing project and
     /// location), e.g.:
-    ///    `projects/myproject/locations/US`.
+    /// `projects/myproject/locations/US`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Please specify resource name as assignee in the query.
@@ -777,14 +777,14 @@ pub struct SearchAssignmentsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The request for
-/// [ReservationService.SearchAllAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAllAssignments].
+/// \[ReservationService.SearchAllAssignments\]\[google.cloud.bigquery.reservation.v1.ReservationService.SearchAllAssignments\].
 /// Note: "bigquery.reservationAssignments.search" permission is required on the
 /// related assignee.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchAllAssignmentsRequest {
     /// Required. The resource name with location (project name could be the
     /// wildcard '-'), e.g.:
-    ///    `projects/-/locations/US`.
+    /// `projects/-/locations/US`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Please specify resource name as assignee in the query.
@@ -804,7 +804,7 @@ pub struct SearchAllAssignmentsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for
-/// [ReservationService.SearchAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAssignments].
+/// \[ReservationService.SearchAssignments\]\[google.cloud.bigquery.reservation.v1.ReservationService.SearchAssignments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAssignmentsResponse {
     /// List of assignments visible to the user.
@@ -816,7 +816,7 @@ pub struct SearchAssignmentsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The response for
-/// [ReservationService.SearchAllAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAllAssignments].
+/// \[ReservationService.SearchAllAssignments\]\[google.cloud.bigquery.reservation.v1.ReservationService.SearchAllAssignments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAllAssignmentsResponse {
     /// List of assignments visible to the user.
@@ -828,7 +828,7 @@ pub struct SearchAllAssignmentsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for
-/// [ReservationService.MoveAssignment][google.cloud.bigquery.reservation.v1.ReservationService.MoveAssignment].
+/// \[ReservationService.MoveAssignment\]\[google.cloud.bigquery.reservation.v1.ReservationService.MoveAssignment\].
 ///
 /// **Note**: "bigquery.reservationAssignments.create" permission is required on
 /// the destination_id.
@@ -836,7 +836,7 @@ pub struct SearchAllAssignmentsResponse {
 /// **Note**: "bigquery.reservationAssignments.create" and
 /// "bigquery.reservationAssignments.delete" permission are required on the
 /// related assignee.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MoveAssignmentRequest {
     /// Required. The resource name of the assignment,
     /// e.g.
@@ -844,7 +844,7 @@ pub struct MoveAssignmentRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The new reservation ID, e.g.:
-    ///    `projects/myotherproject/locations/US/reservations/team2-prod`
+    /// `projects/myotherproject/locations/US/reservations/team2-prod`
     #[prost(string, tag = "3")]
     pub destination_id: ::prost::alloc::string::String,
     /// The optional assignment ID. A new assignment name is generated if this
@@ -856,8 +856,8 @@ pub struct MoveAssignmentRequest {
     pub assignment_id: ::prost::alloc::string::String,
 }
 /// The request for
-/// [ReservationService.UpdateAssignment][google.cloud.bigquery.reservation.v1.ReservationService.UpdateAssignment].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[ReservationService.UpdateAssignment\]\[google.cloud.bigquery.reservation.v1.ReservationService.UpdateAssignment\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateAssignmentRequest {
     /// Content of the assignment to update.
     #[prost(message, optional, tag = "1")]
@@ -868,7 +868,7 @@ pub struct UpdateAssignmentRequest {
 }
 /// Fully qualified reference to BigQuery table.
 /// Internally stored as google.cloud.bi.v1.BqTableReference.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TableReference {
     /// The assigned project ID of the project.
     #[prost(string, tag = "1")]
@@ -899,7 +899,7 @@ pub struct BiReservation {
     pub preferred_tables: ::prost::alloc::vec::Vec<TableReference>,
 }
 /// A request to get a singleton BI reservation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetBiReservationRequest {
     /// Required. Name of the requested reservation, for example:
     /// `projects/{project_id}/locations/{location_id}/biReservation`
@@ -974,13 +974,13 @@ pub mod reservation_service_client {
     /// parallelism. In a scan of a multi-partitioned table, a single slot operates
     /// on a single partition of the table. A reservation resource exists as a child
     /// resource of the admin project and location, e.g.:
-    ///   `projects/myproject/locations/US/reservations/reservationName`.
+    /// `projects/myproject/locations/US/reservations/reservationName`.
     ///
     /// A capacity commitment is a way to purchase compute capacity for BigQuery jobs
     /// (in the form of slots) with some committed period of usage. A capacity
     /// commitment resource exists as a child resource of the admin project and
     /// location, e.g.:
-    ///   `projects/myproject/locations/US/capacityCommitments/id`.
+    /// `projects/myproject/locations/US/capacityCommitments/id`.
     #[derive(Debug, Clone)]
     pub struct ReservationServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -1074,7 +1074,7 @@ pub mod reservation_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/CreateReservation",
             );
@@ -1104,7 +1104,7 @@ pub mod reservation_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/ListReservations",
             );
@@ -1131,7 +1131,7 @@ pub mod reservation_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/GetReservation",
             );
@@ -1160,7 +1160,7 @@ pub mod reservation_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/DeleteReservation",
             );
@@ -1187,7 +1187,7 @@ pub mod reservation_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/UpdateReservation",
             );
@@ -1218,7 +1218,7 @@ pub mod reservation_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/FailoverReservation",
             );
@@ -1248,7 +1248,7 @@ pub mod reservation_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/CreateCapacityCommitment",
             );
@@ -1278,7 +1278,7 @@ pub mod reservation_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/ListCapacityCommitments",
             );
@@ -1308,7 +1308,7 @@ pub mod reservation_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/GetCapacityCommitment",
             );
@@ -1337,7 +1337,7 @@ pub mod reservation_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/DeleteCapacityCommitment",
             );
@@ -1373,7 +1373,7 @@ pub mod reservation_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/UpdateCapacityCommitment",
             );
@@ -1410,7 +1410,7 @@ pub mod reservation_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/SplitCapacityCommitment",
             );
@@ -1446,7 +1446,7 @@ pub mod reservation_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/MergeCapacityCommitments",
             );
@@ -1479,10 +1479,10 @@ pub mod reservation_service_client {
         /// Example:
         ///
         /// * The organization `organizationA` contains two projects, `project1`
-        ///   and `project2`.
+        ///  and `project2`.
         /// * Assignments for all three entities (`organizationA`, `project1`, and
-        ///   `project2`) could all be created and mapped to the same or different
-        ///   reservations.
+        ///  `project2`) could all be created and mapped to the same or different
+        ///  reservations.
         ///
         /// "None" assignments represent an absence of the assignment. Projects
         /// assigned to None use on-demand pricing. To create a "None" assignment, use
@@ -1507,7 +1507,7 @@ pub mod reservation_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/CreateAssignment",
             );
@@ -1528,11 +1528,11 @@ pub mod reservation_service_client {
         /// Example:
         ///
         /// * Organization `organizationA` contains two projects, `project1` and
-        ///   `project2`.
+        ///  `project2`.
         /// * Reservation `res1` exists and was created previously.
         /// * CreateAssignment was used previously to define the following
-        ///   associations between entities and reservations: `<organizationA, res1>`
-        ///   and `<project1, res1>`
+        ///  associations between entities and reservations: `<organizationA, res1>`
+        ///  and `<project1, res1>`
         ///
         /// In this example, ListAssignments will just return the above two assignments
         /// for reservation `res1`, and no expansion/merge will happen.
@@ -1557,7 +1557,7 @@ pub mod reservation_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/ListAssignments",
             );
@@ -1576,11 +1576,11 @@ pub mod reservation_service_client {
         /// Example:
         ///
         /// * Organization `organizationA` contains two projects, `project1` and
-        ///   `project2`.
+        ///  `project2`.
         /// * Reservation `res1` exists and was created previously.
         /// * CreateAssignment was used previously to define the following
-        ///   associations between entities and reservations: `<organizationA, res1>`
-        ///   and `<project1, res1>`
+        ///  associations between entities and reservations: `<organizationA, res1>`
+        ///  and `<project1, res1>`
         ///
         /// In this example, deletion of the `<organizationA, res1>` assignment won't
         /// affect the other assignment `<project1, res1>`. After said deletion,
@@ -1598,7 +1598,7 @@ pub mod reservation_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/DeleteAssignment",
             );
@@ -1616,9 +1616,9 @@ pub mod reservation_service_client {
         /// region. If the request is about a project:
         ///
         /// 1. Assignments created on the project will be returned if they exist.
-        /// 2. Otherwise assignments created on the closest ancestor will be
-        ///    returned.
-        /// 3. Assignments for different JobTypes will all be returned.
+        /// 1. Otherwise assignments created on the closest ancestor will be
+        ///   returned.
+        /// 1. Assignments for different JobTypes will all be returned.
         ///
         /// The same logic applies if the request is about a folder.
         ///
@@ -1629,9 +1629,9 @@ pub mod reservation_service_client {
         /// differences:
         ///
         /// 1. permission on the assignee will be verified in this API.
-        /// 2. Hierarchy lookup (project->folder->organization) happens in this API.
-        /// 3. Parent here is `projects/*/locations/*`, instead of
-        ///    `projects/*/locations/*reservations/*`.
+        /// 1. Hierarchy lookup (project->folder->organization) happens in this API.
+        /// 1. Parent here is `projects/*/locations/*`, instead of
+        ///   `projects/*/locations/*reservations/*`.
         ///
         /// **Note** "-" cannot be used for projects
         /// nor locations.
@@ -1651,7 +1651,7 @@ pub mod reservation_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/SearchAssignments",
             );
@@ -1669,9 +1669,9 @@ pub mod reservation_service_client {
         /// If the request is about a project:
         ///
         /// 1. Assignments created on the project will be returned if they exist.
-        /// 2. Otherwise assignments created on the closest ancestor will be
-        ///    returned.
-        /// 3. Assignments for different JobTypes will all be returned.
+        /// 1. Otherwise assignments created on the closest ancestor will be
+        ///   returned.
+        /// 1. Assignments for different JobTypes will all be returned.
         ///
         /// The same logic applies if the request is about a folder.
         ///
@@ -1682,9 +1682,9 @@ pub mod reservation_service_client {
         /// differences:
         ///
         /// 1. permission on the assignee will be verified in this API.
-        /// 2. Hierarchy lookup (project->folder->organization) happens in this API.
-        /// 3. Parent here is `projects/*/locations/*`, instead of
-        ///    `projects/*/locations/*reservations/*`.
+        /// 1. Hierarchy lookup (project->folder->organization) happens in this API.
+        /// 1. Parent here is `projects/*/locations/*`, instead of
+        ///   `projects/*/locations/*reservations/*`.
         pub async fn search_all_assignments(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchAllAssignmentsRequest>,
@@ -1700,7 +1700,7 @@ pub mod reservation_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/SearchAllAssignments",
             );
@@ -1731,7 +1731,7 @@ pub mod reservation_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/MoveAssignment",
             );
@@ -1760,7 +1760,7 @@ pub mod reservation_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/UpdateAssignment",
             );
@@ -1787,7 +1787,7 @@ pub mod reservation_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/GetBiReservation",
             );
@@ -1821,7 +1821,7 @@ pub mod reservation_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/UpdateBiReservation",
             );

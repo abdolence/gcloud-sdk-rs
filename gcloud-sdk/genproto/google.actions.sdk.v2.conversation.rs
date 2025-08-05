@@ -60,7 +60,7 @@ pub struct Canvas {
     pub enable_full_screen: bool,
 }
 /// An image displayed in the card.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Image {
     /// The source url of the image. Images can be JPG, PNG and GIF (animated and
     /// non-animated). For example,`<https://www.agentx.com/logo.png`.> Required.
@@ -138,7 +138,7 @@ pub mod image {
     }
 }
 /// Link content.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Link {
     /// Name of the link
     #[prost(string, tag = "1")]
@@ -148,10 +148,11 @@ pub struct Link {
     pub open: ::core::option::Option<OpenUrl>,
 }
 /// Action taken when a user opens a link.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OpenUrl {
     /// The url field which could be any of:
-    /// - http/https urls for opening an App-linked App or a webpage
+    ///
+    /// * http/https urls for opening an App-linked App or a webpage
     #[prost(string, tag = "1")]
     pub url: ::prost::alloc::string::String,
     /// Indicates a hint for the url type.
@@ -189,7 +190,7 @@ impl UrlHint {
     }
 }
 /// A basic card for displaying some information, e.g. an image and/or text.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Card {
     /// Overall title of the card.
     /// Optional.
@@ -234,7 +235,7 @@ pub struct Collection {
 /// Nested message and enum types in `Collection`.
 pub mod collection {
     /// An item in the collection
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CollectionItem {
         /// Required. The NLU key that matches the entry key name in the associated
         /// Type.
@@ -258,7 +259,7 @@ pub struct List {
 /// Nested message and enum types in `List`.
 pub mod list {
     /// An item in the list
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ListItem {
         /// Required. The NLU key that matches the entry key name in the associated
         /// Type.
@@ -377,7 +378,7 @@ pub mod media {
     }
 }
 /// Represents a single media object
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MediaObject {
     /// Name of this media object.
     #[prost(string, tag = "1")]
@@ -393,7 +394,7 @@ pub struct MediaObject {
     pub image: ::core::option::Option<MediaImage>,
 }
 /// Image to show with the media card.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MediaImage {
     /// Image.
     #[prost(oneof = "media_image::Image", tags = "1, 2")]
@@ -402,7 +403,7 @@ pub struct MediaImage {
 /// Nested message and enum types in `MediaImage`.
 pub mod media_image {
     /// Image.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Image {
         /// A large image, such as the cover of the album, etc.
         #[prost(message, tag = "1")]
@@ -440,7 +441,7 @@ pub struct Table {
     pub button: ::core::option::Option<Link>,
 }
 /// Describes a column in a table.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TableColumn {
     /// Header text for the column.
     #[prost(string, tag = "1")]
@@ -501,7 +502,7 @@ pub mod table_column {
     }
 }
 /// Describes a cell in a row.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TableCell {
     /// Text content of the cell.
     #[prost(string, tag = "1")]
@@ -555,7 +556,7 @@ pub mod content {
     }
 }
 /// Represents a simple prompt to be send to a user.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Simple {
     /// Optional. Represents the speech to be spoken to the user. Can be SSML or
     /// text to speech.
@@ -572,7 +573,7 @@ pub struct Simple {
     pub text: ::prost::alloc::string::String,
 }
 /// Input suggestion to be presented to the user.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Suggestion {
     /// Required. The text shown in the suggestion chip. When tapped, this text will be
     /// posted back to the conversation verbatim as if the user had typed it.

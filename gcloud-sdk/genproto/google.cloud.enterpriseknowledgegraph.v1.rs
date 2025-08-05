@@ -61,7 +61,7 @@ impl JobState {
     }
 }
 /// The common metadata for long running operations.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CommonOperationMetadata {
     /// The state of the operation.
     #[prost(enumeration = "common_operation_metadata::State", tag = "1")]
@@ -219,7 +219,7 @@ pub mod input_config {
     }
 }
 /// The input config for BigQuery tables.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BigQueryInputConfig {
     /// Required. Format is `projects/*/datasets/*/tables/*`.
     #[prost(string, tag = "1")]
@@ -229,7 +229,7 @@ pub struct BigQueryInputConfig {
     pub gcs_uri: ::prost::alloc::string::String,
 }
 /// The desired output location and metadata.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OutputConfig {
     /// Format is “projects/*/datasets/*”.
     #[prost(string, tag = "1")]
@@ -251,20 +251,20 @@ pub struct ReconConfig {
 /// Nested message and enum types in `ReconConfig`.
 pub mod recon_config {
     /// Options for experimental changes on entity clustering behavior.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Options {
         /// If true, separate clusters by their geographic region (from geocoding).
         /// Uses the following entity features:
         ///
-        /// - schema.org/addressLocality
-        /// - schema.org/addressRegion
-        /// - schema.org/addressCountry
-        /// Warning: processing will no longer be regionalized!
+        /// * schema.org/addressLocality
+        /// * schema.org/addressRegion
+        /// * schema.org/addressCountry
+        ///   Warning: processing will no longer be regionalized!
         #[prost(bool, tag = "100")]
         pub enable_geocoding_separation: bool,
     }
     /// Model Configs
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ModelConfig {
         /// Model name. Refer to external documentation for valid names.
         /// If unspecified, it defaults to the one mentioned in the documentation.
@@ -294,14 +294,14 @@ pub struct ConnectedComponentsConfig {
     pub weight_threshold: f32,
 }
 /// Options for affinity clustering.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AffinityClusteringConfig {
     /// Number of iterations to perform. Default value is 1.
     #[prost(int64, tag = "1")]
     pub compression_round_count: i64,
 }
 /// Details of operations that perform deletes of any entities.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteOperationMetadata {
     /// The common part of the operation metadata.
     #[prost(message, optional, tag = "1")]
@@ -320,7 +320,7 @@ pub struct CreateEntityReconciliationJobRequest {
     pub entity_reconciliation_job: ::core::option::Option<EntityReconciliationJob>,
 }
 /// Request message for GetEntityReconciliationJob.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEntityReconciliationJobRequest {
     /// Required. The name of the EntityReconciliationJob resource.
     /// Format:
@@ -329,8 +329,8 @@ pub struct GetEntityReconciliationJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [EnterpriseKnowledgeGraphService.ListEntityReconciliationJobs][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.ListEntityReconciliationJobs].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[EnterpriseKnowledgeGraphService.ListEntityReconciliationJobs\]\[google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.ListEntityReconciliationJobs\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListEntityReconciliationJobsRequest {
     /// Required. The name of the EntityReconciliationJob's parent resource.
     /// Format: `projects/{project}/locations/{location}`
@@ -348,7 +348,7 @@ pub struct ListEntityReconciliationJobsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [EnterpriseKnowledgeGraphService.ListEntityReconciliationJobs][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.ListEntityReconciliationJobs].
+/// \[EnterpriseKnowledgeGraphService.ListEntityReconciliationJobs\]\[google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.ListEntityReconciliationJobs\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEntityReconciliationJobsResponse {
     /// A list of EntityReconciliationJobs that matches the specified filter in the
@@ -360,7 +360,7 @@ pub struct ListEntityReconciliationJobsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for CancelEntityReconciliationJob.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CancelEntityReconciliationJobRequest {
     /// Required. The name of the EntityReconciliationJob resource.
     /// Format:
@@ -369,7 +369,7 @@ pub struct CancelEntityReconciliationJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for DeleteEntityReconciliationJob.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteEntityReconciliationJobRequest {
     /// Required. The name of the EntityReconciliationJob resource.
     /// Format:
@@ -413,8 +413,8 @@ pub struct EntityReconciliationJob {
     pub recon_config: ::core::option::Option<ReconConfig>,
 }
 /// Request message for
-/// [EnterpriseKnowledgeGraphService.Lookup][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Lookup].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[EnterpriseKnowledgeGraphService.Lookup\]\[google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Lookup\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LookupRequest {
     /// Required. The name of the Entity's parent resource.
     /// Format:
@@ -430,7 +430,7 @@ pub struct LookupRequest {
     pub languages: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Response message for
-/// [EnterpriseKnowledgeGraphService.Lookup][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Lookup].
+/// \[EnterpriseKnowledgeGraphService.Lookup\]\[google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Lookup\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupResponse {
     /// The local context applicable for the response. See more details at
@@ -445,8 +445,8 @@ pub struct LookupResponse {
     pub item_list_element: ::core::option::Option<::prost_types::ListValue>,
 }
 /// Request message for
-/// [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[EnterpriseKnowledgeGraphService.Search\]\[google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchRequest {
     /// Required. The name of the Entity's parent resource.
     /// Format:
@@ -470,7 +470,7 @@ pub struct SearchRequest {
     pub limit: ::core::option::Option<i32>,
 }
 /// Response message for
-/// [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
+/// \[EnterpriseKnowledgeGraphService.Search\]\[google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchResponse {
     /// The local context applicable for the response. See more details at
@@ -485,8 +485,8 @@ pub struct SearchResponse {
     pub item_list_element: ::core::option::Option<::prost_types::ListValue>,
 }
 /// Request message for
-/// [EnterpriseKnowledgeGraphService.LookupPublicKg][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.LookupPublicKg].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[EnterpriseKnowledgeGraphService.LookupPublicKg\]\[google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.LookupPublicKg\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LookupPublicKgRequest {
     /// Required. The name of the Entity's parent resource.
     /// Format:
@@ -502,7 +502,7 @@ pub struct LookupPublicKgRequest {
     pub languages: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Response message for
-/// [EnterpriseKnowledgeGraphService.LookupPublicKg][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.LookupPublicKg].
+/// \[EnterpriseKnowledgeGraphService.LookupPublicKg\]\[google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.LookupPublicKg\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupPublicKgResponse {
     /// The local context applicable for the response. See more details at
@@ -517,8 +517,8 @@ pub struct LookupPublicKgResponse {
     pub item_list_element: ::core::option::Option<::prost_types::ListValue>,
 }
 /// Request message for
-/// [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[EnterpriseKnowledgeGraphService.Search\]\[google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchPublicKgRequest {
     /// Required. The name of the Entity's parent resource.
     /// Format:
@@ -542,7 +542,7 @@ pub struct SearchPublicKgRequest {
     pub limit: ::core::option::Option<i32>,
 }
 /// Response message for
-/// [EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search].
+/// \[EnterpriseKnowledgeGraphService.Search\]\[google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchPublicKgResponse {
     /// The local context applicable for the response. See more details at
@@ -667,7 +667,7 @@ pub mod enterprise_knowledge_graph_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/CreateEntityReconciliationJob",
             );
@@ -697,7 +697,7 @@ pub mod enterprise_knowledge_graph_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/GetEntityReconciliationJob",
             );
@@ -727,7 +727,7 @@ pub mod enterprise_knowledge_graph_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/ListEntityReconciliationJobs",
             );
@@ -755,7 +755,7 @@ pub mod enterprise_knowledge_graph_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/CancelEntityReconciliationJob",
             );
@@ -784,7 +784,7 @@ pub mod enterprise_knowledge_graph_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/DeleteEntityReconciliationJob",
             );
@@ -811,7 +811,7 @@ pub mod enterprise_knowledge_graph_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/Lookup",
             );
@@ -838,7 +838,7 @@ pub mod enterprise_knowledge_graph_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/Search",
             );
@@ -868,7 +868,7 @@ pub mod enterprise_knowledge_graph_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/LookupPublicKg",
             );
@@ -898,7 +898,7 @@ pub mod enterprise_knowledge_graph_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/SearchPublicKg",
             );

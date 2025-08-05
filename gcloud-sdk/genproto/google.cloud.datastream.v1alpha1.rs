@@ -25,7 +25,7 @@ pub struct OracleProfile {
     >,
 }
 /// MySQL database profile.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MysqlProfile {
     /// Required. Hostname for the MySQL connection.
     #[prost(string, tag = "1")]
@@ -44,7 +44,7 @@ pub struct MysqlProfile {
     pub ssl_config: ::core::option::Option<MysqlSslConfig>,
 }
 /// Cloud Storage bucket profile.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GcsProfile {
     /// Required. The full project and resource path for Cloud Storage bucket including the
     /// name.
@@ -55,13 +55,13 @@ pub struct GcsProfile {
     pub root_path: ::prost::alloc::string::String,
 }
 /// No connectivity settings.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NoConnectivitySettings {}
 /// Static IP address connectivity.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StaticServiceIpConnectivity {}
 /// Forward SSH Tunnel connectivity.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ForwardSshTunnelConnectivity {
     /// Required. Hostname for the SSH tunnel.
     #[prost(string, tag = "1")]
@@ -82,7 +82,7 @@ pub struct ForwardSshTunnelConnectivity {
 }
 /// Nested message and enum types in `ForwardSshTunnelConnectivity`.
 pub mod forward_ssh_tunnel_connectivity {
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum AuthenticationMethod {
         /// Input only. SSH password.
         #[prost(string, tag = "100")]
@@ -94,7 +94,7 @@ pub mod forward_ssh_tunnel_connectivity {
 }
 /// The VPC Peering configuration is used to create VPC peering between
 /// Datastream and the consumer's VPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VpcPeeringConfig {
     /// Required. fully qualified name of the VPC Datastream will peer to.
     #[prost(string, tag = "1")]
@@ -185,7 +185,7 @@ pub mod private_connection {
     }
 }
 /// Private Connectivity
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PrivateConnectivity {
     #[prost(string, tag = "1")]
     pub private_connection_name: ::prost::alloc::string::String,
@@ -220,7 +220,7 @@ pub struct Route {
     pub destination_port: i32,
 }
 /// MySQL SSL configuration information.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MysqlSslConfig {
     /// Input only. PEM-encoded private key associated with the Client Certificate.
     /// If this field is used then the 'client_certificate' and the
@@ -289,7 +289,7 @@ pub mod connection_profile {
         MysqlProfile(super::MysqlProfile),
     }
     /// Connectivity options used to establish a connection to the profile.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Connectivity {
         /// No connectivity option chosen.
         #[prost(message, tag = "200")]
@@ -306,7 +306,7 @@ pub mod connection_profile {
     }
 }
 /// Oracle Column.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OracleColumn {
     /// Column name.
     #[prost(string, tag = "1")]
@@ -376,7 +376,7 @@ pub struct OracleSourceConfig {
     pub rejectlist: ::core::option::Option<OracleRdbms>,
 }
 /// MySQL Column.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MysqlColumn {
     /// Column name.
     #[prost(string, tag = "1")]
@@ -464,10 +464,10 @@ pub mod source_config {
     }
 }
 /// AVRO file format configuration.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AvroFileFormat {}
 /// JSON file format configuration.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct JsonFileFormat {
     /// The schema file format along JSON data files.
     #[prost(enumeration = "SchemaFileFormat", tag = "1")]
@@ -523,7 +523,7 @@ pub mod json_file_format {
     }
 }
 /// Google Cloud Storage destination configuration
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GcsDestinationConfig {
     /// Path inside the Cloud Storage bucket to write data to.
     #[prost(string, tag = "1")]
@@ -547,7 +547,7 @@ pub struct GcsDestinationConfig {
 /// Nested message and enum types in `GcsDestinationConfig`.
 pub mod gcs_destination_config {
     /// File Format that the data should be written in.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum FileFormat {
         /// AVRO file format configuration.
         #[prost(message, tag = "100")]
@@ -558,7 +558,7 @@ pub mod gcs_destination_config {
     }
 }
 /// The configuration of the stream destination.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DestinationConfig {
     /// Required. Destination connection profile identifier.
     #[prost(string, tag = "1")]
@@ -572,7 +572,7 @@ pub struct DestinationConfig {
 /// Nested message and enum types in `DestinationConfig`.
 pub mod destination_config {
     /// Stream configuration that is specific to the data destination type.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum DestinationStreamConfig {
         #[prost(message, tag = "100")]
         GcsDestinationConfig(super::GcsDestinationConfig),
@@ -640,7 +640,7 @@ pub mod stream {
         }
     }
     /// Backfill strategy to disable automatic backfill for the Stream's objects.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct BackfillNoneStrategy {}
     /// Stream state.
     #[derive(
@@ -981,7 +981,7 @@ pub mod discover_connection_profile_request {
         #[prost(string, tag = "201")]
         ConnectionProfileName(::prost::alloc::string::String),
     }
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Depth {
         /// Whether to retrieve the full hierarchy of data objects (TRUE) or only the
         /// current level (FALSE).
@@ -1027,7 +1027,7 @@ pub mod discover_connection_profile_response {
     }
 }
 /// Request message for 'FetchStaticIps' request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FetchStaticIpsRequest {
     /// Required. The name resource of the Response type. Must be in the
     /// format `projects/*/locations/*`.
@@ -1042,7 +1042,7 @@ pub struct FetchStaticIpsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for a 'FetchStaticIps' response.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FetchStaticIpsResponse {
     /// list of static ips by account
     #[prost(string, repeated, tag = "1")]
@@ -1053,7 +1053,7 @@ pub struct FetchStaticIpsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for 'FetchErrors' request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FetchErrorsRequest {
     /// Name of the Stream resource for which to fetch any errors.
     #[prost(string, tag = "1")]
@@ -1066,7 +1066,7 @@ pub struct FetchErrorsResponse {
     #[prost(message, repeated, tag = "1")]
     pub errors: ::prost::alloc::vec::Vec<Error>,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListConnectionProfilesRequest {
     /// Required. The parent that owns the collection of connection profiles.
     #[prost(string, tag = "1")]
@@ -1103,7 +1103,7 @@ pub struct ListConnectionProfilesResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetConnectionProfileRequest {
     /// Required. The name of the connection profile resource to get.
     #[prost(string, tag = "1")]
@@ -1164,7 +1164,7 @@ pub struct UpdateConnectionProfileRequest {
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteConnectionProfileRequest {
     /// Required. The name of the connection profile resource to delete.
     #[prost(string, tag = "1")]
@@ -1185,7 +1185,7 @@ pub struct DeleteConnectionProfileRequest {
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListStreamsRequest {
     /// Required. The parent that owns the collection of streams.
     #[prost(string, tag = "1")]
@@ -1222,7 +1222,7 @@ pub struct ListStreamsResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetStreamRequest {
     /// Required. The name of the stream resource to get.
     #[prost(string, tag = "1")]
@@ -1297,7 +1297,7 @@ pub struct UpdateStreamRequest {
     #[prost(bool, tag = "5")]
     pub force: bool,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteStreamRequest {
     /// Required. The name of the stream resource to delete.
     #[prost(string, tag = "1")]
@@ -1338,7 +1338,7 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// have \[Operation.error\]\[\] value with a \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -1376,7 +1376,7 @@ pub struct CreatePrivateConnectionRequest {
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListPrivateConnectionsRequest {
     /// Required. The parent that owns the collection of private connectivity configurations.
     #[prost(string, tag = "1")]
@@ -1415,7 +1415,7 @@ pub struct ListPrivateConnectionsResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeletePrivateConnectionRequest {
     /// Required. The name of the private connectivity configuration to delete.
     #[prost(string, tag = "1")]
@@ -1440,7 +1440,7 @@ pub struct DeletePrivateConnectionRequest {
     #[prost(bool, tag = "3")]
     pub force: bool,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetPrivateConnectionRequest {
     /// Required. The name of the  private connectivity configuration to get.
     #[prost(string, tag = "1")]
@@ -1475,7 +1475,7 @@ pub struct CreateRouteRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// route list request
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRoutesRequest {
     /// Required. The parent that owns the collection of Routess.
     #[prost(string, tag = "1")]
@@ -1516,7 +1516,7 @@ pub struct ListRoutesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// route deletion request
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteRouteRequest {
     /// Required. The name of the Route resource to delete.
     #[prost(string, tag = "1")]
@@ -1538,7 +1538,7 @@ pub struct DeleteRouteRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// route get request
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRouteRequest {
     /// Required. The name of the Route resource to get.
     #[prost(string, tag = "1")]
@@ -1653,7 +1653,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1alpha1.Datastream/ListConnectionProfiles",
             );
@@ -1683,7 +1683,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1alpha1.Datastream/GetConnectionProfile",
             );
@@ -1713,7 +1713,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1alpha1.Datastream/CreateConnectionProfile",
             );
@@ -1743,7 +1743,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1alpha1.Datastream/UpdateConnectionProfile",
             );
@@ -1773,7 +1773,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1alpha1.Datastream/DeleteConnectionProfile",
             );
@@ -1806,7 +1806,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1alpha1.Datastream/DiscoverConnectionProfile",
             );
@@ -1836,7 +1836,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1alpha1.Datastream/ListStreams",
             );
@@ -1863,7 +1863,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1alpha1.Datastream/GetStream",
             );
@@ -1893,7 +1893,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1alpha1.Datastream/CreateStream",
             );
@@ -1923,7 +1923,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1alpha1.Datastream/UpdateStream",
             );
@@ -1953,7 +1953,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1alpha1.Datastream/DeleteStream",
             );
@@ -1983,7 +1983,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1alpha1.Datastream/FetchErrors",
             );
@@ -2015,7 +2015,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1alpha1.Datastream/FetchStaticIps",
             );
@@ -2045,7 +2045,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1alpha1.Datastream/CreatePrivateConnection",
             );
@@ -2075,7 +2075,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1alpha1.Datastream/GetPrivateConnection",
             );
@@ -2106,7 +2106,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1alpha1.Datastream/ListPrivateConnections",
             );
@@ -2136,7 +2136,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1alpha1.Datastream/DeletePrivateConnection",
             );
@@ -2167,7 +2167,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1alpha1.Datastream/CreateRoute",
             );
@@ -2194,7 +2194,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1alpha1.Datastream/GetRoute",
             );
@@ -2225,7 +2225,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1alpha1.Datastream/ListRoutes",
             );
@@ -2255,7 +2255,7 @@ pub mod datastream_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datastream.v1alpha1.Datastream/DeleteRoute",
             );

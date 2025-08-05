@@ -40,7 +40,7 @@ pub struct ErrorGroup {
     pub resolution_status: i32,
 }
 /// Information related to tracking the progress on resolving the error.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TrackingIssue {
     /// A URL pointing to a related entry in an issue tracking system.
     /// Example: `<https://github.com/user/project/issues/4`>
@@ -48,7 +48,7 @@ pub struct TrackingIssue {
     pub url: ::prost::alloc::string::String,
 }
 /// An error event which is returned by the Error Reporting system.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ErrorEvent {
     /// Time when the event occurred as provided in the error report.
     /// If the report did not contain a timestamp, the time the error was received
@@ -67,7 +67,7 @@ pub struct ErrorEvent {
 }
 /// Describes a running service that sends errors.
 /// Its version changes over time and multiple versions can run in parallel.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServiceContext {
     /// An identifier of the service, such as the name of the
     /// executable, job, or Google App Engine service name. This field is expected
@@ -96,7 +96,7 @@ pub struct ServiceContext {
 /// This data should be provided by the application when reporting an error,
 /// unless the
 /// error report has been generated automatically from Google App Engine logs.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ErrorContext {
     /// The HTTP request which was processed when the error was
     /// triggered.
@@ -124,7 +124,7 @@ pub struct ErrorContext {
 /// This data should be provided by the application when reporting an error,
 /// unless the
 /// error report has been generated automatically from Google App Engine logs.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HttpRequestContext {
     /// The type of HTTP request, such as `GET`, `POST`, etc.
     #[prost(string, tag = "1")]
@@ -152,7 +152,7 @@ pub struct HttpRequestContext {
 /// reported. `functionName` must be provided by the application when reporting
 /// an error, unless the error report contains a `message` with a supported
 /// exception stack trace. All fields are optional for the later case.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SourceLocation {
     /// The source code filename, which can include a truncated relative
     /// path, or a full path from a production machine.
@@ -212,7 +212,7 @@ impl ResolutionStatus {
     }
 }
 /// A request to return an individual group.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetGroupRequest {
     /// Required. The group resource name. Written as either
     /// `projects/{projectID}/groups/{group_id}` or
@@ -348,7 +348,7 @@ pub mod error_group_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.clouderrorreporting.v1beta1.ErrorGroupService/GetGroup",
             );
@@ -376,7 +376,7 @@ pub mod error_group_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.clouderrorreporting.v1beta1.ErrorGroupService/UpdateGroup",
             );
@@ -393,7 +393,7 @@ pub mod error_group_service_client {
     }
 }
 /// Specifies a set of `ErrorGroupStats` to return.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListGroupStatsRequest {
     /// Required. The resource name of the Google Cloud Platform project. Written
     /// as `projects/{projectID}` or `projects/{projectNumber}`, where
@@ -520,9 +520,9 @@ pub struct ErrorGroupStats {
     /// Approximate number of occurrences over time.
     /// Timed counts returned by ListGroups are guaranteed to be:
     ///
-    /// - Inside the requested time interval
-    /// - Non-overlapping, and
-    /// - Ordered by ascending time.
+    /// * Inside the requested time interval
+    /// * Non-overlapping, and
+    /// * Ordered by ascending time.
     #[prost(message, repeated, tag = "4")]
     pub timed_counts: ::prost::alloc::vec::Vec<TimedCount>,
     /// Approximate first occurrence that was ever seen for this group
@@ -555,7 +555,7 @@ pub struct ErrorGroupStats {
 /// The number of errors in a given time period.
 /// All numbers are approximate since the error events are sampled
 /// before counting them.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TimedCount {
     /// Approximate number of occurrences in the given time period.
     #[prost(int64, tag = "1")]
@@ -568,7 +568,7 @@ pub struct TimedCount {
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Specifies a set of error events to return.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListEventsRequest {
     /// Required. The resource name of the Google Cloud Platform project. Written
     /// as `projects/{projectID}` or `projects/{projectID}/locations/{location}`,
@@ -632,7 +632,7 @@ pub struct ListEventsResponse {
 ///
 /// Requests might be rejected or the resulting timed count durations might be
 /// adjusted for lower durations.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct QueryTimeRange {
     /// Restricts the query to the specified time range.
     #[prost(enumeration = "query_time_range::Period", tag = "1")]
@@ -705,7 +705,7 @@ pub mod query_time_range {
 /// The fields in the filter correspond to the fields in `ServiceContext`.
 /// Only exact, case-sensitive matches are supported.
 /// If a field is unset or empty, it matches arbitrary values.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServiceContextFilter {
     /// Optional. The exact value to match against
     /// [`ServiceContext.service`](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.service).
@@ -721,7 +721,7 @@ pub struct ServiceContextFilter {
     pub resource_type: ::prost::alloc::string::String,
 }
 /// Deletes all events in the project.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteEventsRequest {
     /// Required. The resource name of the Google Cloud Platform project. Written
     /// as `projects/{projectID}` or `projects/{projectID}/locations/{location}`,
@@ -739,7 +739,7 @@ pub struct DeleteEventsRequest {
     pub project_name: ::prost::alloc::string::String,
 }
 /// Response message for deleting error events.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteEventsResponse {}
 /// Specifies how the time periods of error group counts are aligned.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -942,7 +942,7 @@ pub mod error_stats_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.clouderrorreporting.v1beta1.ErrorStatsService/ListGroupStats",
             );
@@ -972,7 +972,7 @@ pub mod error_stats_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.clouderrorreporting.v1beta1.ErrorStatsService/ListEvents",
             );
@@ -1002,7 +1002,7 @@ pub mod error_stats_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.clouderrorreporting.v1beta1.ErrorStatsService/DeleteEvents",
             );
@@ -1019,7 +1019,7 @@ pub mod error_stats_service_client {
     }
 }
 /// A request for reporting an individual error event.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReportErrorEventRequest {
     /// Required. The resource name of the Google Cloud Platform project. Written
     /// as `projects/{projectId}`, where `{projectId}` is the
@@ -1035,10 +1035,10 @@ pub struct ReportErrorEventRequest {
 }
 /// Response for reporting an individual error event.
 /// Data may be added to this message in the future.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReportErrorEventResponse {}
 /// An error event which is reported to the Error Reporting system.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ReportedErrorEvent {
     /// Optional. Time when the event occurred.
     /// If not provided, the time when the event was received by the
@@ -1061,21 +1061,20 @@ pub struct ReportedErrorEvent {
     /// Supported stack trace formats are:
     ///
     /// * **Java**: Must be the return value of
-    /// [`Throwable.printStackTrace()`](<https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html#printStackTrace%28%29>).
+    ///   [`Throwable.printStackTrace()`](<https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html#printStackTrace%28%29>).
     /// * **Python**: Must be the return value of
-    /// [`traceback.format_exc()`](<https://docs.python.org/2/library/traceback.html#traceback.format_exc>).
+    ///   [`traceback.format_exc()`](<https://docs.python.org/2/library/traceback.html#traceback.format_exc>).
     /// * **JavaScript**: Must be the value of
-    /// [`error.stack`](<https://github.com/v8/v8/wiki/Stack-Trace-API>) as returned
-    /// by V8.
+    ///   [`error.stack`](<https://github.com/v8/v8/wiki/Stack-Trace-API>) as returned
+    ///   by V8.
     /// * **Ruby**: Must contain frames returned by
-    /// [`Exception.backtrace`](<https://ruby-doc.org/core-2.2.0/Exception.html#method-i-backtrace>).
+    ///   [`Exception.backtrace`](<https://ruby-doc.org/core-2.2.0/Exception.html#method-i-backtrace>).
     /// * **C#**: Must be the return value of
-    /// [`Exception.ToString()`](<https://msdn.microsoft.com/en-us/library/system.exception.tostring.aspx>).
-    /// * **PHP**: Must be prefixed with `"PHP (Notice|Parse error|Fatal
-    /// error|Warning): "` and contain the result of
-    /// [`(string)$exception`](<https://php.net/manual/en/exception.tostring.php>).
+    ///   [`Exception.ToString()`](<https://msdn.microsoft.com/en-us/library/system.exception.tostring.aspx>).
+    /// * **PHP**: Must be prefixed with `"PHP (Notice|Parse error|Fatal  error|Warning): "` and contain the result of
+    ///   [`(string)$exception`](<https://php.net/manual/en/exception.tostring.php>).
     /// * **Go**: Must be the return value of
-    /// [`runtime.Stack()`](<https://golang.org/pkg/runtime/debug/#Stack>).
+    ///   [`runtime.Stack()`](<https://golang.org/pkg/runtime/debug/#Stack>).
     #[prost(string, tag = "3")]
     pub message: ::prost::alloc::string::String,
     /// Optional. A description of the context in which the error occurred.
@@ -1181,19 +1180,18 @@ pub mod report_errors_service_client {
         /// for authentication. To use an API key, append it to the URL as the value of
         /// a `key` parameter. For example:
         ///
-        /// `POST
-        /// https://clouderrorreporting.googleapis.com/v1beta1/{projectName}/events:report?key=123ABC456`
+        /// `POST  https://clouderrorreporting.googleapis.com/v1beta1/{projectName}/events:report?key=123ABC456`
         ///
-        /// **Note:** [Error Reporting] (https://cloud.google.com/error-reporting)
+        /// **Note:** \[Error Reporting\] (https://cloud.google.com/error-reporting)
         /// is a service built on Cloud Logging and can analyze log entries when all of
         /// the following are true:
         ///
         /// * Customer-managed encryption keys (CMEK) are disabled on the log bucket.
         /// * The log bucket satisfies one of the following:
-        ///     * The log bucket is stored in the same project where the logs
-        ///     originated.
-        ///     * The logs were routed to a project, and then that project stored those
-        ///     logs in a log bucket that it owns.
+        ///  * The log bucket is stored in the same project where the logs
+        ///    originated.
+        ///  * The logs were routed to a project, and then that project stored those
+        ///    logs in a log bucket that it owns.
         pub async fn report_error_event(
             &mut self,
             request: impl tonic::IntoRequest<super::ReportErrorEventRequest>,
@@ -1209,7 +1207,7 @@ pub mod report_errors_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.clouderrorreporting.v1beta1.ReportErrorsService/ReportErrorEvent",
             );

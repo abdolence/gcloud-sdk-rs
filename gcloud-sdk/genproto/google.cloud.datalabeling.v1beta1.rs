@@ -30,7 +30,7 @@ pub struct AnnotationSpecSet {
 /// in a labeling task. For example, an image classification task where images
 /// are labeled as `dog` or `cat` must reference an AnnotationSpec for `dog` and
 /// an AnnotationSpec for `cat`.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AnnotationSpec {
     /// Required. The display name of the AnnotationSpec. Maximum of 64 characters.
     #[prost(string, tag = "1")]
@@ -109,7 +109,7 @@ pub mod annotation_value {
     }
 }
 /// Image classification annotation definition.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImageClassificationAnnotation {
     /// Label of image.
     #[prost(message, optional, tag = "1")]
@@ -117,7 +117,7 @@ pub struct ImageClassificationAnnotation {
 }
 /// A vertex represents a 2D point in the image.
 /// NOTE: the vertex coordinates are in the same scale as the original image.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Vertex {
     /// X coordinate.
     #[prost(int32, tag = "1")]
@@ -230,14 +230,14 @@ pub struct ImageSegmentationAnnotation {
     pub image_bytes: ::prost::alloc::vec::Vec<u8>,
 }
 /// Text classification annotation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TextClassificationAnnotation {
     /// Label of the text.
     #[prost(message, optional, tag = "1")]
     pub annotation_spec: ::core::option::Option<AnnotationSpec>,
 }
 /// Text entity extraction annotation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TextEntityExtractionAnnotation {
     /// Label of the text entities.
     #[prost(message, optional, tag = "1")]
@@ -247,7 +247,7 @@ pub struct TextEntityExtractionAnnotation {
     pub sequential_segment: ::core::option::Option<SequentialSegment>,
 }
 /// Start and end position in a sequence (e.g. text segment).
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SequentialSegment {
     /// Start position (inclusive).
     #[prost(int32, tag = "1")]
@@ -257,7 +257,7 @@ pub struct SequentialSegment {
     pub end: i32,
 }
 /// A time period inside of an example that has a time dimension (e.g. video).
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TimeSegment {
     /// Start of the time segment (inclusive), represented as the duration since
     /// the example start.
@@ -269,7 +269,7 @@ pub struct TimeSegment {
     pub end_time_offset: ::core::option::Option<::prost_types::Duration>,
 }
 /// Video classification annotation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VideoClassificationAnnotation {
     /// The time segment of the video to which the annotation applies.
     #[prost(message, optional, tag = "1")]
@@ -313,7 +313,7 @@ pub struct VideoObjectTrackingAnnotation {
     pub object_tracking_frames: ::prost::alloc::vec::Vec<ObjectTrackingFrame>,
 }
 /// Video event annotation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VideoEventAnnotation {
     /// Label of the event in this annotation.
     #[prost(message, optional, tag = "1")]
@@ -503,7 +503,7 @@ impl AnnotationType {
     }
 }
 /// Container of information about an image.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImagePayload {
     /// Image format.
     #[prost(string, tag = "1")]
@@ -519,14 +519,14 @@ pub struct ImagePayload {
     pub signed_uri: ::prost::alloc::string::String,
 }
 /// Container of information about a piece of text.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TextPayload {
     /// Text content.
     #[prost(string, tag = "1")]
     pub text_content: ::prost::alloc::string::String,
 }
 /// Container of information of a video thumbnail.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VideoThumbnail {
     /// A byte string of the video frame.
     #[prost(bytes = "vec", tag = "1")]
@@ -556,7 +556,7 @@ pub struct VideoPayload {
     pub signed_uri: ::prost::alloc::string::String,
 }
 /// Configuration for how human labeling task should be done.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct HumanAnnotationConfig {
     /// Required. Instruction resource name.
     #[prost(string, tag = "1")]
@@ -604,7 +604,7 @@ pub struct HumanAnnotationConfig {
     pub user_email_address: ::prost::alloc::string::String,
 }
 /// Config for image classification human labeling task.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImageClassificationConfig {
     /// Required. Annotation spec set resource name.
     #[prost(string, tag = "1")]
@@ -618,7 +618,7 @@ pub struct ImageClassificationConfig {
     pub answer_aggregation_type: i32,
 }
 /// Config for image bounding poly (and bounding box) human labeling task.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BoundingPolyConfig {
     /// Required. Annotation spec set resource name.
     #[prost(string, tag = "1")]
@@ -628,7 +628,7 @@ pub struct BoundingPolyConfig {
     pub instruction_message: ::prost::alloc::string::String,
 }
 /// Config for image polyline human labeling task.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PolylineConfig {
     /// Required. Annotation spec set resource name.
     #[prost(string, tag = "1")]
@@ -638,7 +638,7 @@ pub struct PolylineConfig {
     pub instruction_message: ::prost::alloc::string::String,
 }
 /// Config for image segmentation
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SegmentationConfig {
     /// Required. Annotation spec set resource name. format:
     /// projects/{project_id}/annotationSpecSets/{annotation_spec_set_id}
@@ -650,9 +650,10 @@ pub struct SegmentationConfig {
 }
 /// Config for video classification human labeling task.
 /// Currently two types of video classification are supported:
+///
 /// 1. Assign labels on the entire video.
-/// 2. Split the video into multiple video clips based on camera shot, and
-/// assign labels on each video clip.
+/// 1. Split the video into multiple video clips based on camera shot, and
+///    assign labels on each video clip.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoClassificationConfig {
     /// Required. The list of annotation spec set configs.
@@ -672,7 +673,7 @@ pub struct VideoClassificationConfig {
 /// Nested message and enum types in `VideoClassificationConfig`.
 pub mod video_classification_config {
     /// Annotation spec set with the setting of allowing multi labels or not.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AnnotationSpecSetConfig {
         /// Required. Annotation spec set resource name.
         #[prost(string, tag = "1")]
@@ -698,14 +699,14 @@ pub struct ObjectDetectionConfig {
     pub extraction_frame_rate: f64,
 }
 /// Config for video object tracking human labeling task.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ObjectTrackingConfig {
     /// Required. Annotation spec set resource name.
     #[prost(string, tag = "1")]
     pub annotation_spec_set: ::prost::alloc::string::String,
 }
 /// Config for video event human labeling task.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EventConfig {
     /// Required. The list of annotation spec set resource name. Similar to video
     /// classification, we support selecting event from multiple AnnotationSpecSet
@@ -714,7 +715,7 @@ pub struct EventConfig {
     pub annotation_spec_sets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Config for text classification human labeling task.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TextClassificationConfig {
     /// Optional. If allow_multi_label is true, contributors are able to choose
     /// multiple labels for one text segment.
@@ -728,7 +729,7 @@ pub struct TextClassificationConfig {
     pub sentiment_config: ::core::option::Option<SentimentConfig>,
 }
 /// Config for setting up sentiments.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SentimentConfig {
     /// If set to true, contributors will have the option to select sentiment of
     /// the label they selected, to mark it as negative or positive label. Default
@@ -737,7 +738,7 @@ pub struct SentimentConfig {
     pub enable_label_sentiment_selection: bool,
 }
 /// Config for text entity extraction human labeling task.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TextEntityExtractionConfig {
     /// Required. Annotation spec set resource name.
     #[prost(string, tag = "1")]
@@ -810,18 +811,18 @@ pub struct Dataset {
     pub data_item_count: i64,
 }
 /// The configuration of input data, including data type, location, etc.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InputConfig {
     /// Required. Data type must be specifed when user tries to import data.
     #[prost(enumeration = "DataType", tag = "1")]
     pub data_type: i32,
     /// Optional. The type of annotation to be performed on this data. You must
     /// specify this field if you are using this InputConfig in an
-    /// [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob].
+    /// \[EvaluationJob\]\[google.cloud.datalabeling.v1beta1.EvaluationJob\].
     #[prost(enumeration = "AnnotationType", tag = "3")]
     pub annotation_type: i32,
     /// Optional. Metadata about annotations for the input. You must specify this
-    /// field if you are using this InputConfig in an [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob] for a
+    /// field if you are using this InputConfig in an \[EvaluationJob\]\[google.cloud.datalabeling.v1beta1.EvaluationJob\] for a
     /// model version that performs classification.
     #[prost(message, optional, tag = "4")]
     pub classification_metadata: ::core::option::Option<ClassificationMetadata>,
@@ -835,26 +836,26 @@ pub struct InputConfig {
 /// Nested message and enum types in `InputConfig`.
 pub mod input_config {
     /// Optional. The metadata associated with each data type.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum DataTypeMetadata {
         /// Required for text import, as language code must be specified.
         #[prost(message, tag = "6")]
         TextMetadata(super::TextMetadata),
     }
     /// Required. Where the data is from.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Source {
         /// Source located in Cloud Storage.
         #[prost(message, tag = "2")]
         GcsSource(super::GcsSource),
         /// Source located in BigQuery. You must specify this field if you are using
-        /// this InputConfig in an [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob].
+        /// this InputConfig in an \[EvaluationJob\]\[google.cloud.datalabeling.v1beta1.EvaluationJob\].
         #[prost(message, tag = "5")]
         BigquerySource(super::BigQuerySource),
     }
 }
 /// Metadata for the text.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct TextMetadata {
     /// The language of this text, as a
     /// [BCP-47](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>).
@@ -863,14 +864,14 @@ pub struct TextMetadata {
     pub language_code: ::prost::alloc::string::String,
 }
 /// Metadata for classification annotations.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ClassificationMetadata {
     /// Whether the classification task is multi-label or not.
     #[prost(bool, tag = "1")]
     pub is_multi_label: bool,
 }
 /// Source of the Cloud Storage file to be imported.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GcsSource {
     /// Required. The input URI of source file. This must be a Cloud Storage path
     /// (`gs://...`).
@@ -880,15 +881,15 @@ pub struct GcsSource {
     #[prost(string, tag = "2")]
     pub mime_type: ::prost::alloc::string::String,
 }
-/// The BigQuery location for input data. If used in an [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob], this
+/// The BigQuery location for input data. If used in an \[EvaluationJob\]\[google.cloud.datalabeling.v1beta1.EvaluationJob\], this
 /// is where the service saves the prediction input and output sampled from the
 /// model version.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BigQuerySource {
     /// Required. BigQuery URI to a table, up to 2,000 characters long. If you
     /// specify the URI of a table that does not exist, Data Labeling Service
     /// creates a table at the URI with the correct schema when you create your
-    /// [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob]. If you specify the URI of a table that already exists,
+    /// \[EvaluationJob\]\[google.cloud.datalabeling.v1beta1.EvaluationJob\]. If you specify the URI of a table that already exists,
     /// it must have the
     /// [correct
     /// schema](/ml-engine/docs/continuous-evaluation/create-job#table-schema).
@@ -903,7 +904,7 @@ pub struct BigQuerySource {
     pub input_uri: ::prost::alloc::string::String,
 }
 /// The configuration of output data.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OutputConfig {
     /// Required. Location to output data to.
     #[prost(oneof = "output_config::Destination", tags = "1, 2")]
@@ -912,7 +913,7 @@ pub struct OutputConfig {
 /// Nested message and enum types in `OutputConfig`.
 pub mod output_config {
     /// Required. Location to output data to.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Destination {
         /// Output to a file in Cloud Storage. Should be used for labeling output
         /// other than image segmentation.
@@ -926,7 +927,7 @@ pub mod output_config {
 }
 /// Export destination of the data.Only gcs path is allowed in
 /// output_uri.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GcsDestination {
     /// Required. The output uri of destination file.
     #[prost(string, tag = "1")]
@@ -938,7 +939,7 @@ pub struct GcsDestination {
     pub mime_type: ::prost::alloc::string::String,
 }
 /// Export folder destination of the data.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GcsFolderDestination {
     /// Required. Cloud Storage directory to export data to.
     #[prost(string, tag = "1")]
@@ -1155,7 +1156,7 @@ impl DataType {
     }
 }
 /// Describes an evaluation between a machine learning model's predictions and
-/// ground truth labels. Created when an [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob] runs successfully.
+/// ground truth labels. Created when an \[EvaluationJob\]\[google.cloud.datalabeling.v1beta1.EvaluationJob\] runs successfully.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Evaluation {
     /// Output only. Resource name of an evaluation. The name has the following
@@ -1181,7 +1182,7 @@ pub struct Evaluation {
     /// Output only. Type of task that the model version being evaluated performs,
     /// as defined in the
     ///
-    /// [evaluationJobConfig.inputConfig.annotationType][google.cloud.datalabeling.v1beta1.EvaluationJobConfig.input_config]
+    /// \[evaluationJobConfig.inputConfig.annotationType\]\[google.cloud.datalabeling.v1beta1.EvaluationJobConfig.input_config\]
     /// field of the evaluation job that created this evaluation.
     #[prost(enumeration = "AnnotationType", tag = "6")]
     pub annotation_type: i32,
@@ -1192,7 +1193,7 @@ pub struct Evaluation {
     pub evaluated_item_count: i64,
 }
 /// Configuration details used for calculating evaluation metrics and creating an
-/// [Evaluation][google.cloud.datalabeling.v1beta1.Evaluation].
+/// \[Evaluation\]\[google.cloud.datalabeling.v1beta1.Evaluation\].
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct EvaluationConfig {
     /// Vertical specific options for general metrics.
@@ -1215,9 +1216,9 @@ pub mod evaluation_config {
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct BoundingBoxEvaluationOptions {
     /// Minimum
-    /// [intersection-over-union
+    /// \[intersection-over-union
     ///
-    /// (IOU)](/vision/automl/object-detection/docs/evaluate#intersection-over-union)
+    /// (IOU)\](/vision/automl/object-detection/docs/evaluate#intersection-over-union)
     /// required for 2 bounding boxes to be considered a match. This must be a
     /// number between 0 and 1.
     #[prost(float, tag = "1")]
@@ -1291,9 +1292,9 @@ pub mod pr_curve {
         /// threshold.
         ///
         /// For image object detection (bounding box) tasks, this is the
-        /// [intersection-over-union
+        /// \[intersection-over-union
         ///
-        /// (IOU)](/vision/automl/object-detection/docs/evaluate#intersection-over-union)
+        /// (IOU)\](/vision/automl/object-detection/docs/evaluate#intersection-over-union)
         /// threshold for the context of this point on the PR curve.
         #[prost(float, tag = "1")]
         pub confidence_threshold: f32,
@@ -1312,7 +1313,7 @@ pub mod pr_curve {
         /// Precision value for entries with label that has highest score.
         #[prost(float, tag = "6")]
         pub precision_at1: f32,
-        /// The harmonic mean of [recall_at1][google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.recall_at1] and [precision_at1][google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.precision_at1].
+        /// The harmonic mean of \[recall_at1\]\[google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.recall_at1\] and \[precision_at1\]\[google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.precision_at1\].
         #[prost(float, tag = "7")]
         pub f1_score_at1: f32,
         /// Recall value for entries with label that has highest 5 scores.
@@ -1321,7 +1322,7 @@ pub mod pr_curve {
         /// Precision value for entries with label that has highest 5 scores.
         #[prost(float, tag = "9")]
         pub precision_at5: f32,
-        /// The harmonic mean of [recall_at5][google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.recall_at5] and [precision_at5][google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.precision_at5].
+        /// The harmonic mean of \[recall_at5\]\[google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.recall_at5\] and \[precision_at5\]\[google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.precision_at5\].
         #[prost(float, tag = "10")]
         pub f1_score_at5: f32,
     }
@@ -1336,7 +1337,7 @@ pub struct ConfusionMatrix {
 }
 /// Nested message and enum types in `ConfusionMatrix`.
 pub mod confusion_matrix {
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ConfusionMatrixEntry {
         /// The annotation spec of a predicted label.
         #[prost(message, optional, tag = "1")]
@@ -1360,7 +1361,7 @@ pub mod confusion_matrix {
     }
 }
 /// Defines an evaluation job that runs periodically to generate
-/// [Evaluations][google.cloud.datalabeling.v1beta1.Evaluation]. [Creating an evaluation
+/// \[Evaluations\]\[google.cloud.datalabeling.v1beta1.Evaluation\]. [Creating an evaluation
 /// job](/ml-engine/docs/continuous-evaluation/create-job) is the starting point
 /// for using continuous evaluation.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1404,7 +1405,7 @@ pub struct EvaluationJob {
     /// Required. Configuration details for the evaluation job.
     #[prost(message, optional, tag = "6")]
     pub evaluation_job_config: ::core::option::Option<EvaluationJobConfig>,
-    /// Required. Name of the [AnnotationSpecSet][google.cloud.datalabeling.v1beta1.AnnotationSpecSet] describing all the
+    /// Required. Name of the \[AnnotationSpecSet\]\[google.cloud.datalabeling.v1beta1.AnnotationSpecSet\] describing all the
     /// labels that your machine learning model outputs. You must create this
     /// resource before you create an evaluation job and provide its name in the
     /// following format:
@@ -1444,9 +1445,9 @@ pub mod evaluation_job {
     #[repr(i32)]
     pub enum State {
         Unspecified = 0,
-        /// The job is scheduled to run at the [configured interval][google.cloud.datalabeling.v1beta1.EvaluationJob.schedule]. You
-        /// can [pause][google.cloud.datalabeling.v1beta1.DataLabelingService.PauseEvaluationJob] or
-        /// [delete][google.cloud.datalabeling.v1beta1.DataLabelingService.DeleteEvaluationJob] the job.
+        /// The job is scheduled to run at the \[configured interval\]\[google.cloud.datalabeling.v1beta1.EvaluationJob.schedule\]. You
+        /// can \[pause\]\[google.cloud.datalabeling.v1beta1.DataLabelingService.PauseEvaluationJob\] or
+        /// \[delete\]\[google.cloud.datalabeling.v1beta1.DataLabelingService.DeleteEvaluationJob\] the job.
         ///
         /// When the job is in this state, it samples prediction input and output
         /// from your model version into your BigQuery table as predictions occur.
@@ -1455,24 +1456,24 @@ pub mod evaluation_job {
         /// does several things:
         ///
         /// 1. If you have configured your job to use Data Labeling Service for
-        ///     ground truth labeling, the service creates a
-        ///     [Dataset][google.cloud.datalabeling.v1beta1.Dataset] and a labeling task for all data sampled
-        ///     since the last time the job ran. Human labelers provide ground truth
-        ///     labels for your data. Human labeling may take hours, or even days,
-        ///     depending on how much data has been sampled. The job remains in the
-        ///     `RUNNING` state during this time, and it can even be running multiple
-        ///     times in parallel if it gets triggered again (for example 24 hours
-        ///     later) before the earlier run has completed. When human labelers have
-        ///     finished labeling the data, the next step occurs.
-        ///     <br><br>
-        ///     If you have configured your job to provide your own ground truth
-        ///     labels, Data Labeling Service still creates a [Dataset][google.cloud.datalabeling.v1beta1.Dataset] for newly
-        ///     sampled data, but it expects that you have already added ground truth
-        ///     labels to the BigQuery table by this time. The next step occurs
-        ///     immediately.
+        ///    ground truth labeling, the service creates a
+        ///    \[Dataset\]\[google.cloud.datalabeling.v1beta1.Dataset\] and a labeling task for all data sampled
+        ///    since the last time the job ran. Human labelers provide ground truth
+        ///    labels for your data. Human labeling may take hours, or even days,
+        ///    depending on how much data has been sampled. The job remains in the
+        ///    `RUNNING` state during this time, and it can even be running multiple
+        ///    times in parallel if it gets triggered again (for example 24 hours
+        ///    later) before the earlier run has completed. When human labelers have
+        ///    finished labeling the data, the next step occurs.
+        ///    <br><br>
+        ///    If you have configured your job to provide your own ground truth
+        ///    labels, Data Labeling Service still creates a \[Dataset\]\[google.cloud.datalabeling.v1beta1.Dataset\] for newly
+        ///    sampled data, but it expects that you have already added ground truth
+        ///    labels to the BigQuery table by this time. The next step occurs
+        ///    immediately.
         ///
-        /// 2. Data Labeling Service creates an [Evaluation][google.cloud.datalabeling.v1beta1.Evaluation] by comparing your
-        ///     model version's predictions with the ground truth labels.
+        /// 1. Data Labeling Service creates an \[Evaluation\]\[google.cloud.datalabeling.v1beta1.Evaluation\] by comparing your
+        ///    model version's predictions with the ground truth labels.
         ///
         /// If the job remains in this state for a long time, it continues to sample
         /// prediction data into your BigQuery table and will run again at the next
@@ -1480,7 +1481,7 @@ pub mod evaluation_job {
         Running = 2,
         /// The job is not sampling prediction input and output into your BigQuery
         /// table and it will not run according to its schedule. You can
-        /// [resume][google.cloud.datalabeling.v1beta1.DataLabelingService.ResumeEvaluationJob] the job.
+        /// \[resume\]\[google.cloud.datalabeling.v1beta1.DataLabelingService.ResumeEvaluationJob\] the job.
         Paused = 3,
         /// The job has this state right before it is deleted.
         Stopped = 4,
@@ -1521,26 +1522,26 @@ pub struct EvaluationJobConfig {
     ///
     /// * `dataType` must be one of `IMAGE`, `TEXT`, or `GENERAL_DATA`.
     /// * `annotationType` must be one of `IMAGE_CLASSIFICATION_ANNOTATION`,
-    ///    `TEXT_CLASSIFICATION_ANNOTATION`, `GENERAL_CLASSIFICATION_ANNOTATION`,
-    ///    or `IMAGE_BOUNDING_BOX_ANNOTATION` (image object detection).
+    ///   `TEXT_CLASSIFICATION_ANNOTATION`, `GENERAL_CLASSIFICATION_ANNOTATION`,
+    ///   or `IMAGE_BOUNDING_BOX_ANNOTATION` (image object detection).
     /// * If your machine learning model performs classification, you must specify
-    ///    `classificationMetadata.isMultiLabel`.
+    ///   `classificationMetadata.isMultiLabel`.
     /// * You must specify `bigquerySource` (not `gcsSource`).
     #[prost(message, optional, tag = "1")]
     pub input_config: ::core::option::Option<InputConfig>,
     /// Required. Details for calculating evaluation metrics and creating
-    /// [Evaulations][google.cloud.datalabeling.v1beta1.Evaluation]. If your model version performs image object
+    /// \[Evaulations\]\[google.cloud.datalabeling.v1beta1.Evaluation\]. If your model version performs image object
     /// detection, you must specify the `boundingBoxEvaluationOptions` field within
     /// this configuration. Otherwise, provide an empty object for this
     /// configuration.
     #[prost(message, optional, tag = "2")]
     pub evaluation_config: ::core::option::Option<EvaluationConfig>,
     /// Optional. Details for human annotation of your data. If you set
-    /// [labelMissingGroundTruth][google.cloud.datalabeling.v1beta1.EvaluationJob.label_missing_ground_truth] to
+    /// \[labelMissingGroundTruth\]\[google.cloud.datalabeling.v1beta1.EvaluationJob.label_missing_ground_truth\] to
     /// `true` for this evaluation job, then you must specify this field. If you
     /// plan to provide your own ground truth labels, then omit this field.
     ///
-    /// Note that you must create an [Instruction][google.cloud.datalabeling.v1beta1.Instruction] resource before you can
+    /// Note that you must create an \[Instruction\]\[google.cloud.datalabeling.v1beta1.Instruction\] resource before you can
     /// specify this field. Provide the name of the instruction resource in the
     /// `instruction` field within this configuration.
     #[prost(message, optional, tag = "3")]
@@ -1554,13 +1555,13 @@ pub struct EvaluationJobConfig {
     /// You can provide the following entries in this field:
     ///
     /// * `data_json_key`: the data key for prediction input. You must provide
-    ///    either this key or `reference_json_key`.
+    ///   either this key or `reference_json_key`.
     /// * `reference_json_key`: the data reference key for prediction input. You
-    ///    must provide either this key or `data_json_key`.
+    ///   must provide either this key or `data_json_key`.
     /// * `label_json_key`: the label key for prediction output. Required.
     /// * `label_score_json_key`: the score key for prediction output. Required.
     /// * `bounding_box_json_key`: the bounding box key for prediction output.
-    ///    Required if your model version perform image object detection.
+    ///   Required if your model version perform image object detection.
     ///
     /// Learn [how to configure prediction
     /// keys](/ml-engine/docs/continuous-evaluation/create-job#prediction-keys).
@@ -1570,14 +1571,14 @@ pub struct EvaluationJobConfig {
         ::prost::alloc::string::String,
     >,
     /// Required. The maximum number of predictions to sample and save to BigQuery
-    /// during each [evaluation interval][google.cloud.datalabeling.v1beta1.EvaluationJob.schedule]. This limit
+    /// during each \[evaluation interval\]\[google.cloud.datalabeling.v1beta1.EvaluationJob.schedule\]. This limit
     /// overrides `example_sample_percentage`: even if the service has not sampled
     /// enough predictions to fulfill `example_sample_perecentage` during an
     /// interval, it stops sampling predictions when it meets this limit.
     #[prost(int32, tag = "10")]
     pub example_count: i32,
     /// Required. Fraction of predictions to sample and save to BigQuery during
-    /// each [evaluation interval][google.cloud.datalabeling.v1beta1.EvaluationJob.schedule]. For example, 0.1 means
+    /// each \[evaluation interval\]\[google.cloud.datalabeling.v1beta1.EvaluationJob.schedule\]. For example, 0.1 means
     /// 10% of predictions served by your model version get saved to BigQuery.
     #[prost(double, tag = "11")]
     pub example_sample_percentage: f64,
@@ -1600,30 +1601,30 @@ pub struct EvaluationJobConfig {
 pub mod evaluation_job_config {
     /// Required. Details for how you want human reviewers to provide ground truth
     /// labels.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum HumanAnnotationRequestConfig {
         /// Specify this field if your model version performs image classification or
         /// general classification.
         ///
         /// `annotationSpecSet` in this configuration must match
-        /// [EvaluationJob.annotationSpecSet][google.cloud.datalabeling.v1beta1.EvaluationJob.annotation_spec_set].
+        /// \[EvaluationJob.annotationSpecSet\]\[google.cloud.datalabeling.v1beta1.EvaluationJob.annotation_spec_set\].
         /// `allowMultiLabel` in this configuration must match
-        /// `classificationMetadata.isMultiLabel` in [input_config][google.cloud.datalabeling.v1beta1.EvaluationJobConfig.input_config].
+        /// `classificationMetadata.isMultiLabel` in \[input_config\]\[google.cloud.datalabeling.v1beta1.EvaluationJobConfig.input_config\].
         #[prost(message, tag = "4")]
         ImageClassificationConfig(super::ImageClassificationConfig),
         /// Specify this field if your model version performs image object detection
         /// (bounding box detection).
         ///
         /// `annotationSpecSet` in this configuration must match
-        /// [EvaluationJob.annotationSpecSet][google.cloud.datalabeling.v1beta1.EvaluationJob.annotation_spec_set].
+        /// \[EvaluationJob.annotationSpecSet\]\[google.cloud.datalabeling.v1beta1.EvaluationJob.annotation_spec_set\].
         #[prost(message, tag = "5")]
         BoundingPolyConfig(super::BoundingPolyConfig),
         /// Specify this field if your model version performs text classification.
         ///
         /// `annotationSpecSet` in this configuration must match
-        /// [EvaluationJob.annotationSpecSet][google.cloud.datalabeling.v1beta1.EvaluationJob.annotation_spec_set].
+        /// \[EvaluationJob.annotationSpecSet\]\[google.cloud.datalabeling.v1beta1.EvaluationJob.annotation_spec_set\].
         /// `allowMultiLabel` in this configuration must match
-        /// `classificationMetadata.isMultiLabel` in [input_config][google.cloud.datalabeling.v1beta1.EvaluationJobConfig.input_config].
+        /// `classificationMetadata.isMultiLabel` in \[input_config\]\[google.cloud.datalabeling.v1beta1.EvaluationJobConfig.input_config\].
         #[prost(message, tag = "8")]
         TextClassificationConfig(super::TextClassificationConfig),
     }
@@ -1638,7 +1639,7 @@ pub struct EvaluationJobAlertConfig {
     /// Required. A number between 0 and 1 that describes a minimum mean average
     /// precision threshold. When the evaluation job runs, if it calculates that
     /// your model version's predictions from the recent interval have
-    /// [meanAveragePrecision][google.cloud.datalabeling.v1beta1.PrCurve.mean_average_precision] below this
+    /// \[meanAveragePrecision\]\[google.cloud.datalabeling.v1beta1.PrCurve.mean_average_precision\] below this
     /// threshold, then it sends an alert to your specified email.
     #[prost(double, tag = "2")]
     pub min_acceptable_mean_average_precision: f64,
@@ -1654,7 +1655,7 @@ pub struct Attempt {
 }
 /// Instruction of how to perform the labeling task for human operators.
 /// Currently only PDF instruction is supported.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Instruction {
     /// Output only. Instruction resource name, format:
     /// projects/{project_id}/instructions/{instruction_id}
@@ -1696,14 +1697,14 @@ pub struct Instruction {
 }
 /// Deprecated: this instruction format is not supported any more.
 /// Instruction from a CSV file.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CsvInstruction {
     /// CSV file for the instruction. Only gcs path is allowed.
     #[prost(string, tag = "1")]
     pub gcs_file_uri: ::prost::alloc::string::String,
 }
 /// Instruction from a PDF file.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PdfInstruction {
     /// PDF file for the instruction. Only gcs path is allowed.
     #[prost(string, tag = "1")]
@@ -1721,7 +1722,7 @@ pub struct CreateDatasetRequest {
     pub dataset: ::core::option::Option<Dataset>,
 }
 /// Request message for GetDataSet.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDatasetRequest {
     /// Required. Dataset resource name, format:
     /// projects/{project_id}/datasets/{dataset_id}
@@ -1729,7 +1730,7 @@ pub struct GetDatasetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListDataset.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDatasetsRequest {
     /// Required. Dataset resource parent, format:
     /// projects/{project_id}
@@ -1744,7 +1745,7 @@ pub struct ListDatasetsRequest {
     pub page_size: i32,
     /// Optional. A token identifying a page of results for the server to return.
     /// Typically obtained by
-    /// [ListDatasetsResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListDatasetsResponse.next_page_token] of the previous
+    /// \[ListDatasetsResponse.next_page_token\]\[google.cloud.datalabeling.v1beta1.ListDatasetsResponse.next_page_token\] of the previous
     /// \[DataLabelingService.ListDatasets\] call.
     /// Returns the first page if empty.
     #[prost(string, tag = "4")]
@@ -1761,7 +1762,7 @@ pub struct ListDatasetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for DeleteDataset.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteDatasetRequest {
     /// Required. Dataset resource name, format:
     /// projects/{project_id}/datasets/{dataset_id}
@@ -1769,7 +1770,7 @@ pub struct DeleteDatasetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ImportData API.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportDataRequest {
     /// Required. Dataset resource name, format:
     /// projects/{project_id}/datasets/{dataset_id}
@@ -1784,7 +1785,7 @@ pub struct ImportDataRequest {
     pub user_email_address: ::prost::alloc::string::String,
 }
 /// Request message for ExportData API.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportDataRequest {
     /// Required. Dataset resource name, format:
     /// projects/{project_id}/datasets/{dataset_id}
@@ -1809,7 +1810,7 @@ pub struct ExportDataRequest {
     pub user_email_address: ::prost::alloc::string::String,
 }
 /// Request message for GetDataItem.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetDataItemRequest {
     /// Required. The name of the data item to get, format:
     /// projects/{project_id}/datasets/{dataset_id}/dataItems/{data_item_id}
@@ -1817,7 +1818,7 @@ pub struct GetDataItemRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListDataItems.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListDataItemsRequest {
     /// Required. Name of the dataset to list data items, format:
     /// projects/{project_id}/datasets/{dataset_id}
@@ -1832,7 +1833,7 @@ pub struct ListDataItemsRequest {
     pub page_size: i32,
     /// Optional. A token identifying a page of results for the server to return.
     /// Typically obtained by
-    /// [ListDataItemsResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListDataItemsResponse.next_page_token] of the previous
+    /// \[ListDataItemsResponse.next_page_token\]\[google.cloud.datalabeling.v1beta1.ListDataItemsResponse.next_page_token\] of the previous
     /// \[DataLabelingService.ListDataItems\] call.
     /// Return first page if empty.
     #[prost(string, tag = "4")]
@@ -1849,7 +1850,7 @@ pub struct ListDataItemsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetAnnotatedDataset.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAnnotatedDatasetRequest {
     /// Required. Name of the annotated dataset to get, format:
     /// projects/{project_id}/datasets/{dataset_id}/annotatedDatasets/
@@ -1858,7 +1859,7 @@ pub struct GetAnnotatedDatasetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListAnnotatedDatasets.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAnnotatedDatasetsRequest {
     /// Required. Name of the dataset to list annotated datasets, format:
     /// projects/{project_id}/datasets/{dataset_id}
@@ -1873,7 +1874,7 @@ pub struct ListAnnotatedDatasetsRequest {
     pub page_size: i32,
     /// Optional. A token identifying a page of results for the server to return.
     /// Typically obtained by
-    /// [ListAnnotatedDatasetsResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListAnnotatedDatasetsResponse.next_page_token] of the previous
+    /// \[ListAnnotatedDatasetsResponse.next_page_token\]\[google.cloud.datalabeling.v1beta1.ListAnnotatedDatasetsResponse.next_page_token\] of the previous
     /// \[DataLabelingService.ListAnnotatedDatasets\] call.
     /// Return first page if empty.
     #[prost(string, tag = "4")]
@@ -1890,7 +1891,7 @@ pub struct ListAnnotatedDatasetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for DeleteAnnotatedDataset.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAnnotatedDatasetRequest {
     /// Required. Name of the annotated dataset to delete, format:
     /// projects/{project_id}/datasets/{dataset_id}/annotatedDatasets/
@@ -1899,7 +1900,7 @@ pub struct DeleteAnnotatedDatasetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for starting an image labeling task.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LabelImageRequest {
     /// Required. Name of the dataset to request labeling task, format:
     /// projects/{project_id}/datasets/{dataset_id}
@@ -1982,7 +1983,7 @@ pub mod label_image_request {
     }
     /// Required. Config for labeling tasks. The type of request config must
     /// match the selected feature.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum RequestConfig {
         /// Configuration for image classification task.
         /// One of image_classification_config, bounding_poly_config,
@@ -2103,7 +2104,7 @@ pub mod label_video_request {
     }
 }
 /// Request message for LabelText.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LabelTextRequest {
     /// Required. Name of the data set to request labeling task, format:
     /// projects/{project_id}/datasets/{dataset_id}
@@ -2166,7 +2167,7 @@ pub mod label_text_request {
     }
     /// Required. Config for labeling tasks. The type of request config must
     /// match the selected feature.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum RequestConfig {
         /// Configuration for text classification task.
         /// One of text_classification_config and text_entity_extraction_config
@@ -2181,7 +2182,7 @@ pub mod label_text_request {
     }
 }
 /// Request message for GetExample
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetExampleRequest {
     /// Required. Name of example, format:
     /// projects/{project_id}/datasets/{dataset_id}/annotatedDatasets/
@@ -2195,7 +2196,7 @@ pub struct GetExampleRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Request message for ListExamples.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListExamplesRequest {
     /// Required. Example resource parent.
     #[prost(string, tag = "1")]
@@ -2212,7 +2213,7 @@ pub struct ListExamplesRequest {
     pub page_size: i32,
     /// Optional. A token identifying a page of results for the server to return.
     /// Typically obtained by
-    /// [ListExamplesResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListExamplesResponse.next_page_token] of the previous
+    /// \[ListExamplesResponse.next_page_token\]\[google.cloud.datalabeling.v1beta1.ListExamplesResponse.next_page_token\] of the previous
     /// \[DataLabelingService.ListExamples\] call.
     /// Return first page if empty.
     #[prost(string, tag = "4")]
@@ -2242,7 +2243,7 @@ pub struct CreateAnnotationSpecSetRequest {
     pub annotation_spec_set: ::core::option::Option<AnnotationSpecSet>,
 }
 /// Request message for GetAnnotationSpecSet.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAnnotationSpecSetRequest {
     /// Required. AnnotationSpecSet resource name, format:
     /// projects/{project_id}/annotationSpecSets/{annotation_spec_set_id}
@@ -2250,7 +2251,7 @@ pub struct GetAnnotationSpecSetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListAnnotationSpecSets.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAnnotationSpecSetsRequest {
     /// Required. Parent of AnnotationSpecSet resource, format:
     /// projects/{project_id}
@@ -2265,7 +2266,7 @@ pub struct ListAnnotationSpecSetsRequest {
     pub page_size: i32,
     /// Optional. A token identifying a page of results for the server to return.
     /// Typically obtained by
-    /// [ListAnnotationSpecSetsResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListAnnotationSpecSetsResponse.next_page_token] of the previous
+    /// \[ListAnnotationSpecSetsResponse.next_page_token\]\[google.cloud.datalabeling.v1beta1.ListAnnotationSpecSetsResponse.next_page_token\] of the previous
     /// \[DataLabelingService.ListAnnotationSpecSets\] call.
     /// Return first page if empty.
     #[prost(string, tag = "4")]
@@ -2282,7 +2283,7 @@ pub struct ListAnnotationSpecSetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for DeleteAnnotationSpecSet.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteAnnotationSpecSetRequest {
     /// Required. AnnotationSpec resource name, format:
     /// `projects/{project_id}/annotationSpecSets/{annotation_spec_set_id}`.
@@ -2290,7 +2291,7 @@ pub struct DeleteAnnotationSpecSetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateInstruction.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateInstructionRequest {
     /// Required. Instruction resource parent, format:
     /// projects/{project_id}
@@ -2301,7 +2302,7 @@ pub struct CreateInstructionRequest {
     pub instruction: ::core::option::Option<Instruction>,
 }
 /// Request message for GetInstruction.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInstructionRequest {
     /// Required. Instruction resource name, format:
     /// projects/{project_id}/instructions/{instruction_id}
@@ -2309,7 +2310,7 @@ pub struct GetInstructionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for DeleteInstruction.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteInstructionRequest {
     /// Required. Instruction resource name, format:
     /// projects/{project_id}/instructions/{instruction_id}
@@ -2317,7 +2318,7 @@ pub struct DeleteInstructionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListInstructions.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInstructionsRequest {
     /// Required. Instruction resource parent, format:
     /// projects/{project_id}
@@ -2332,7 +2333,7 @@ pub struct ListInstructionsRequest {
     pub page_size: i32,
     /// Optional. A token identifying a page of results for the server to return.
     /// Typically obtained by
-    /// [ListInstructionsResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListInstructionsResponse.next_page_token] of the previous
+    /// \[ListInstructionsResponse.next_page_token\]\[google.cloud.datalabeling.v1beta1.ListInstructionsResponse.next_page_token\] of the previous
     /// \[DataLabelingService.ListInstructions\] call.
     /// Return first page if empty.
     #[prost(string, tag = "4")]
@@ -2349,7 +2350,7 @@ pub struct ListInstructionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetEvaluation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEvaluationRequest {
     /// Required. Name of the evaluation. Format:
     ///
@@ -2358,7 +2359,7 @@ pub struct GetEvaluationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for SearchEvaluation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchEvaluationsRequest {
     /// Required. Evaluation search parent (project ID). Format:
     /// "projects/<var>{project_id}</var>"
@@ -2366,34 +2367,34 @@ pub struct SearchEvaluationsRequest {
     pub parent: ::prost::alloc::string::String,
     /// Optional. To search evaluations, you can filter by the following:
     ///
-    /// * evaluation<span>_</span>job.evaluation_job_id (the last part of
-    ///    [EvaluationJob.name][google.cloud.datalabeling.v1beta1.EvaluationJob.name])
-    /// * evaluation<span>_</span>job.model_id (the <var>{model_name}</var> portion
-    ///    of [EvaluationJob.modelVersion][google.cloud.datalabeling.v1beta1.EvaluationJob.model_version])
-    /// * evaluation<span>_</span>job.evaluation_job_run_time_start (Minimum
-    ///    threshold for the
-    ///    [evaluationJobRunTime][google.cloud.datalabeling.v1beta1.Evaluation.evaluation_job_run_time] that created
-    ///    the evaluation)
-    /// * evaluation<span>_</span>job.evaluation_job_run_time_end (Maximum
-    ///    threshold for the
-    ///    [evaluationJobRunTime][google.cloud.datalabeling.v1beta1.Evaluation.evaluation_job_run_time] that created
-    ///    the evaluation)
-    /// * evaluation<span>_</span>job.job_state ([EvaluationJob.state][google.cloud.datalabeling.v1beta1.EvaluationJob.state])
-    /// * annotation<span>_</span>spec.display_name (the Evaluation contains a
-    ///    metric for the annotation spec with this
-    ///    [displayName][google.cloud.datalabeling.v1beta1.AnnotationSpec.display_name])
+    /// * evaluation<span>\_</span>job.evaluation_job_id (the last part of
+    ///   \[EvaluationJob.name\]\[google.cloud.datalabeling.v1beta1.EvaluationJob.name\])
+    /// * evaluation<span>\_</span>job.model_id (the <var>{model_name}</var> portion
+    ///   of \[EvaluationJob.modelVersion\]\[google.cloud.datalabeling.v1beta1.EvaluationJob.model_version\])
+    /// * evaluation<span>\_</span>job.evaluation_job_run_time_start (Minimum
+    ///   threshold for the
+    ///   \[evaluationJobRunTime\]\[google.cloud.datalabeling.v1beta1.Evaluation.evaluation_job_run_time\] that created
+    ///   the evaluation)
+    /// * evaluation<span>\_</span>job.evaluation_job_run_time_end (Maximum
+    ///   threshold for the
+    ///   \[evaluationJobRunTime\]\[google.cloud.datalabeling.v1beta1.Evaluation.evaluation_job_run_time\] that created
+    ///   the evaluation)
+    /// * evaluation<span>\_</span>job.job_state (\[EvaluationJob.state\]\[google.cloud.datalabeling.v1beta1.EvaluationJob.state\])
+    /// * annotation<span>\_</span>spec.display_name (the Evaluation contains a
+    ///   metric for the annotation spec with this
+    ///   \[displayName\]\[google.cloud.datalabeling.v1beta1.AnnotationSpec.display_name\])
     ///
     /// To filter by multiple critiera, use the `AND` operator or the `OR`
     /// operator. The following examples shows a string that filters by several
     /// critiera:
     ///
-    /// "evaluation<span>_</span>job.evaluation_job_id =
-    /// <var>{evaluation_job_id}</var> AND evaluation<span>_</span>job.model_id =
+    /// "evaluation<span>*</span>job.evaluation_job_id =
+    /// <var>{evaluation_job_id}</var> AND evaluation<span>*</span>job.model_id =
     /// <var>{model_name}</var> AND
-    /// evaluation<span>_</span>job.evaluation_job_run_time_start =
+    /// evaluation<span>*</span>job.evaluation_job_run_time_start =
     /// <var>{timestamp_1}</var> AND
-    /// evaluation<span>_</span>job.evaluation_job_run_time_end =
-    /// <var>{timestamp_2}</var> AND annotation<span>_</span>spec.display_name =
+    /// evaluation<span>*</span>job.evaluation_job_run_time_end =
+    /// <var>{timestamp_2}</var> AND annotation<span>\_</span>spec.display_name =
     /// <var>{display_name}</var>"
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
@@ -2403,7 +2404,7 @@ pub struct SearchEvaluationsRequest {
     pub page_size: i32,
     /// Optional. A token identifying a page of results for the server to return.
     /// Typically obtained by the
-    /// [nextPageToken][google.cloud.datalabeling.v1beta1.SearchEvaluationsResponse.next_page_token] of the response
+    /// \[nextPageToken\]\[google.cloud.datalabeling.v1beta1.SearchEvaluationsResponse.next_page_token\] of the response
     /// to a previous search request.
     ///
     /// If you don't specify this field, the API call requests the first page of
@@ -2422,9 +2423,9 @@ pub struct SearchEvaluationsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message of SearchExampleComparisons.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SearchExampleComparisonsRequest {
-    /// Required. Name of the [Evaluation][google.cloud.datalabeling.v1beta1.Evaluation] resource to search for example
+    /// Required. Name of the \[Evaluation\]\[google.cloud.datalabeling.v1beta1.Evaluation\] resource to search for example
     /// comparisons from. Format:
     ///
     /// "projects/<var>{project_id}</var>/datasets/<var>{dataset_id}</var>/evaluations/<var>{evaluation_id}</var>"
@@ -2436,7 +2437,7 @@ pub struct SearchExampleComparisonsRequest {
     pub page_size: i32,
     /// Optional. A token identifying a page of results for the server to return.
     /// Typically obtained by the
-    /// [nextPageToken][SearchExampleComparisons.next_page_token] of the response
+    /// \[nextPageToken\]\[SearchExampleComparisons.next_page_token\] of the response
     /// to a previous search rquest.
     ///
     /// If you don't specify this field, the API call requests the first page of
@@ -2500,7 +2501,7 @@ pub struct UpdateEvaluationJobRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetEvaluationJob.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetEvaluationJobRequest {
     /// Required. Name of the evaluation job. Format:
     ///
@@ -2509,7 +2510,7 @@ pub struct GetEvaluationJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for PauseEvaluationJob.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PauseEvaluationJobRequest {
     /// Required. Name of the evaluation job that is going to be paused. Format:
     ///
@@ -2518,7 +2519,7 @@ pub struct PauseEvaluationJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message ResumeEvaluationJob.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResumeEvaluationJobRequest {
     /// Required. Name of the evaluation job that is going to be resumed. Format:
     ///
@@ -2527,7 +2528,7 @@ pub struct ResumeEvaluationJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message DeleteEvaluationJob.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteEvaluationJobRequest {
     /// Required. Name of the evaluation job that is going to be deleted. Format:
     ///
@@ -2536,7 +2537,7 @@ pub struct DeleteEvaluationJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListEvaluationJobs.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListEvaluationJobsRequest {
     /// Required. Evaluation job resource parent. Format:
     /// "projects/<var>{project_id}</var>"
@@ -2544,12 +2545,12 @@ pub struct ListEvaluationJobsRequest {
     pub parent: ::prost::alloc::string::String,
     /// Optional. You can filter the jobs to list by model_id (also known as
     /// model_name, as described in
-    /// [EvaluationJob.modelVersion][google.cloud.datalabeling.v1beta1.EvaluationJob.model_version]) or by
-    /// evaluation job state (as described in [EvaluationJob.state][google.cloud.datalabeling.v1beta1.EvaluationJob.state]). To filter
+    /// \[EvaluationJob.modelVersion\]\[google.cloud.datalabeling.v1beta1.EvaluationJob.model_version\]) or by
+    /// evaluation job state (as described in \[EvaluationJob.state\]\[google.cloud.datalabeling.v1beta1.EvaluationJob.state\]). To filter
     /// by both criteria, use the `AND` operator or the `OR` operator. For example,
     /// you can use the following string for your filter:
-    /// "evaluation<span>_</span>job.model_id = <var>{model_name}</var> AND
-    /// evaluation<span>_</span>job.state = <var>{evaluation_job_state}</var>"
+    /// "evaluation<span>*</span>job.model_id = <var>{model_name}</var> AND
+    /// evaluation<span>*</span>job.state = <var>{evaluation_job_state}</var>"
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Requested page size. Server may return fewer results than
@@ -2558,7 +2559,7 @@ pub struct ListEvaluationJobsRequest {
     pub page_size: i32,
     /// Optional. A token identifying a page of results for the server to return.
     /// Typically obtained by the
-    /// [nextPageToken][google.cloud.datalabeling.v1beta1.ListEvaluationJobsResponse.next_page_token] in the response
+    /// \[nextPageToken\]\[google.cloud.datalabeling.v1beta1.ListEvaluationJobsResponse.next_page_token\] in the response
     /// to the previous request. The request returns the first page if this is
     /// empty.
     #[prost(string, tag = "4")]
@@ -2679,7 +2680,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/CreateDataset",
             );
@@ -2706,7 +2707,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/GetDataset",
             );
@@ -2736,7 +2737,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/ListDatasets",
             );
@@ -2763,7 +2764,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/DeleteDataset",
             );
@@ -2797,7 +2798,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/ImportData",
             );
@@ -2827,7 +2828,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/ExportData",
             );
@@ -2855,7 +2856,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/GetDataItem",
             );
@@ -2886,7 +2887,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/ListDataItems",
             );
@@ -2916,7 +2917,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/GetAnnotatedDataset",
             );
@@ -2946,7 +2947,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/ListAnnotatedDatasets",
             );
@@ -2973,7 +2974,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/DeleteAnnotatedDataset",
             );
@@ -3004,7 +3005,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/LabelImage",
             );
@@ -3035,7 +3036,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/LabelVideo",
             );
@@ -3066,7 +3067,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/LabelText",
             );
@@ -3093,7 +3094,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/GetExample",
             );
@@ -3123,7 +3124,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/ListExamples",
             );
@@ -3153,7 +3154,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/CreateAnnotationSpecSet",
             );
@@ -3183,7 +3184,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/GetAnnotationSpecSet",
             );
@@ -3213,7 +3214,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/ListAnnotationSpecSets",
             );
@@ -3240,7 +3241,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/DeleteAnnotationSpecSet",
             );
@@ -3270,7 +3271,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/CreateInstruction",
             );
@@ -3297,7 +3298,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/GetInstruction",
             );
@@ -3327,7 +3328,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/ListInstructions",
             );
@@ -3354,7 +3355,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/DeleteInstruction",
             );
@@ -3369,7 +3370,7 @@ pub mod data_labeling_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Gets an evaluation by resource name (to search, use
-        /// [projects.evaluations.search][google.cloud.datalabeling.v1beta1.DataLabelingService.SearchEvaluations]).
+        /// \[projects.evaluations.search\]\[google.cloud.datalabeling.v1beta1.DataLabelingService.SearchEvaluations\]).
         pub async fn get_evaluation(
             &mut self,
             request: impl tonic::IntoRequest<super::GetEvaluationRequest>,
@@ -3382,7 +3383,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/GetEvaluation",
             );
@@ -3396,7 +3397,7 @@ pub mod data_labeling_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Searches [evaluations][google.cloud.datalabeling.v1beta1.Evaluation] within a project.
+        /// Searches \[evaluations\]\[google.cloud.datalabeling.v1beta1.Evaluation\] within a project.
         pub async fn search_evaluations(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchEvaluationsRequest>,
@@ -3412,7 +3413,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/SearchEvaluations",
             );
@@ -3444,7 +3445,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/SearchExampleComparisons",
             );
@@ -3471,7 +3472,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/CreateEvaluationJob",
             );
@@ -3486,7 +3487,7 @@ pub mod data_labeling_service_client {
             self.inner.unary(req, path, codec).await
         }
         /// Updates an evaluation job. You can only update certain fields of the job's
-        /// [EvaluationJobConfig][google.cloud.datalabeling.v1beta1.EvaluationJobConfig]: `humanAnnotationConfig.instruction`,
+        /// \[EvaluationJobConfig\]\[google.cloud.datalabeling.v1beta1.EvaluationJobConfig\]: `humanAnnotationConfig.instruction`,
         /// `exampleCount`, and `exampleSamplePercentage`.
         ///
         /// If you want to change any other aspect of the evaluation job, you must
@@ -3503,7 +3504,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/UpdateEvaluationJob",
             );
@@ -3530,7 +3531,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/GetEvaluationJob",
             );
@@ -3558,7 +3559,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/PauseEvaluationJob",
             );
@@ -3586,7 +3587,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/ResumeEvaluationJob",
             );
@@ -3613,7 +3614,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/DeleteEvaluationJob",
             );
@@ -3644,7 +3645,7 @@ pub mod data_labeling_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/ListEvaluationJobs",
             );
@@ -3661,7 +3662,7 @@ pub mod data_labeling_service_client {
     }
 }
 /// Response used for ImportData longrunning operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ImportDataOperationResponse {
     /// Ouptut only. The name of imported dataset.
     #[prost(string, tag = "1")]
@@ -3750,7 +3751,7 @@ pub struct LabelOperationMetadata {
 /// Nested message and enum types in `LabelOperationMetadata`.
 pub mod label_operation_metadata {
     /// Ouptut only. Details of specific label operation.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Details {
         /// Details of label image classification operation.
         #[prost(message, tag = "3")]
@@ -3793,84 +3794,84 @@ pub mod label_operation_metadata {
     }
 }
 /// Metadata of a LabelImageClassification operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LabelImageClassificationOperationMetadata {
     /// Basic human annotation config used in labeling request.
     #[prost(message, optional, tag = "1")]
     pub basic_config: ::core::option::Option<HumanAnnotationConfig>,
 }
 /// Details of a LabelImageBoundingBox operation metadata.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LabelImageBoundingBoxOperationMetadata {
     /// Basic human annotation config used in labeling request.
     #[prost(message, optional, tag = "1")]
     pub basic_config: ::core::option::Option<HumanAnnotationConfig>,
 }
 /// Details of a LabelImageOrientedBoundingBox operation metadata.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LabelImageOrientedBoundingBoxOperationMetadata {
     /// Basic human annotation config.
     #[prost(message, optional, tag = "1")]
     pub basic_config: ::core::option::Option<HumanAnnotationConfig>,
 }
 /// Details of LabelImageBoundingPoly operation metadata.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LabelImageBoundingPolyOperationMetadata {
     /// Basic human annotation config used in labeling request.
     #[prost(message, optional, tag = "1")]
     pub basic_config: ::core::option::Option<HumanAnnotationConfig>,
 }
 /// Details of LabelImagePolyline operation metadata.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LabelImagePolylineOperationMetadata {
     /// Basic human annotation config used in labeling request.
     #[prost(message, optional, tag = "1")]
     pub basic_config: ::core::option::Option<HumanAnnotationConfig>,
 }
 /// Details of a LabelImageSegmentation operation metadata.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LabelImageSegmentationOperationMetadata {
     /// Basic human annotation config.
     #[prost(message, optional, tag = "1")]
     pub basic_config: ::core::option::Option<HumanAnnotationConfig>,
 }
 /// Details of a LabelVideoClassification operation metadata.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LabelVideoClassificationOperationMetadata {
     /// Basic human annotation config used in labeling request.
     #[prost(message, optional, tag = "1")]
     pub basic_config: ::core::option::Option<HumanAnnotationConfig>,
 }
 /// Details of a LabelVideoObjectDetection operation metadata.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LabelVideoObjectDetectionOperationMetadata {
     /// Basic human annotation config used in labeling request.
     #[prost(message, optional, tag = "1")]
     pub basic_config: ::core::option::Option<HumanAnnotationConfig>,
 }
 /// Details of a LabelVideoObjectTracking operation metadata.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LabelVideoObjectTrackingOperationMetadata {
     /// Basic human annotation config used in labeling request.
     #[prost(message, optional, tag = "1")]
     pub basic_config: ::core::option::Option<HumanAnnotationConfig>,
 }
 /// Details of a LabelVideoEvent operation metadata.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LabelVideoEventOperationMetadata {
     /// Basic human annotation config used in labeling request.
     #[prost(message, optional, tag = "1")]
     pub basic_config: ::core::option::Option<HumanAnnotationConfig>,
 }
 /// Details of a LabelTextClassification operation metadata.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LabelTextClassificationOperationMetadata {
     /// Basic human annotation config used in labeling request.
     #[prost(message, optional, tag = "1")]
     pub basic_config: ::core::option::Option<HumanAnnotationConfig>,
 }
 /// Details of a LabelTextEntityExtraction operation metadata.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LabelTextEntityExtractionOperationMetadata {
     /// Basic human annotation config used in labeling request.
     #[prost(message, optional, tag = "1")]

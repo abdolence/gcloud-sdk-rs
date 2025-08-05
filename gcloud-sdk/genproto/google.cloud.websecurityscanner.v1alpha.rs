@@ -2,7 +2,7 @@
 /// A CrawledUrl resource represents a URL that was crawled during a ScanRun. Web
 /// Security Scanner Service crawls the web applications, following all links
 /// within the scope of sites, to find the URLs to test against.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CrawledUrl {
     /// Output only. The http method of the request that was used to visit the URL, in
     /// uppercase.
@@ -16,7 +16,7 @@ pub struct CrawledUrl {
     pub body: ::prost::alloc::string::String,
 }
 /// Information reported for an outdated library.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OutdatedLibrary {
     /// The name of the outdated library.
     #[prost(string, tag = "1")]
@@ -30,7 +30,7 @@ pub struct OutdatedLibrary {
 }
 /// Information regarding any resource causing the vulnerability such
 /// as JavaScript sources, image, audio files, etc.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ViolatingResource {
     /// The MIME type of this resource.
     #[prost(string, tag = "1")]
@@ -40,7 +40,7 @@ pub struct ViolatingResource {
     pub resource_url: ::prost::alloc::string::String,
 }
 /// Information about vulnerable request parameters.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VulnerableParameters {
     /// The vulnerable parameter names.
     #[prost(string, repeated, tag = "1")]
@@ -59,7 +59,7 @@ pub struct VulnerableHeaders {
 /// Nested message and enum types in `VulnerableHeaders`.
 pub mod vulnerable_headers {
     /// Describes a HTTP Header.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Header {
         /// Header name.
         #[prost(string, tag = "1")]
@@ -70,7 +70,7 @@ pub mod vulnerable_headers {
     }
 }
 /// Information reported for an XSS.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Xss {
     /// Stack traces leading to the point where the XSS occurred.
     #[prost(string, repeated, tag = "1")]
@@ -252,7 +252,7 @@ pub mod finding {
 }
 /// A FindingTypeStats resource represents stats regarding a specific FindingType
 /// of Findings under a given ScanRun.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FindingTypeStats {
     /// The finding type associated with the stats.
     #[prost(enumeration = "finding::FindingType", tag = "1")]
@@ -262,7 +262,7 @@ pub struct FindingTypeStats {
     pub finding_count: i32,
 }
 /// A ScanRun is a output-only resource representing an actual run of the scan.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ScanRun {
     /// The resource name of the ScanRun. The name follows the format of
     /// 'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}'.
@@ -404,7 +404,7 @@ pub mod scan_run {
 }
 /// A ScanConfig resource contains the configurations to launch a scan.
 /// next id: 12
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ScanConfig {
     /// The resource name of the ScanConfig. The name follows the format of
     /// 'projects/{projectId}/scanConfigs/{scanConfigId}'. The ScanConfig IDs are
@@ -448,7 +448,7 @@ pub struct ScanConfig {
 /// Nested message and enum types in `ScanConfig`.
 pub mod scan_config {
     /// Scan authentication configuration.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Authentication {
         /// Required.
         /// Authentication configuration
@@ -458,7 +458,7 @@ pub mod scan_config {
     /// Nested message and enum types in `Authentication`.
     pub mod authentication {
         /// Describes authentication configuration that uses a Google account.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct GoogleAccount {
             /// Required. The user name of the Google account.
             #[prost(string, tag = "1")]
@@ -469,7 +469,7 @@ pub mod scan_config {
             pub password: ::prost::alloc::string::String,
         }
         /// Describes authentication configuration that uses a custom account.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct CustomAccount {
             /// Required. The user name of the custom account.
             #[prost(string, tag = "1")]
@@ -484,7 +484,7 @@ pub mod scan_config {
         }
         /// Required.
         /// Authentication configuration
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Authentication {
             /// Authentication using a Google account.
             #[prost(message, tag = "1")]
@@ -495,7 +495,7 @@ pub mod scan_config {
         }
     }
     /// Scan schedule configuration.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Schedule {
         /// A timestamp indicates when the next run will be scheduled. The value is
         /// refreshed by the server after each run. If unspecified, it will default
@@ -600,7 +600,7 @@ pub mod scan_config {
     }
 }
 /// Request for the `CreateScanConfig` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateScanConfigRequest {
     /// Required. The parent resource name where the scan is created, which should be a
     /// project resource name in the format 'projects/{projectId}'.
@@ -611,7 +611,7 @@ pub struct CreateScanConfigRequest {
     pub scan_config: ::core::option::Option<ScanConfig>,
 }
 /// Request for the `DeleteScanConfig` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteScanConfigRequest {
     /// Required. The resource name of the ScanConfig to be deleted. The name follows the
     /// format of 'projects/{projectId}/scanConfigs/{scanConfigId}'.
@@ -619,7 +619,7 @@ pub struct DeleteScanConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `GetScanConfig` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetScanConfigRequest {
     /// Required. The resource name of the ScanConfig to be returned. The name follows the
     /// format of 'projects/{projectId}/scanConfigs/{scanConfigId}'.
@@ -627,7 +627,7 @@ pub struct GetScanConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `ListScanConfigs` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListScanConfigsRequest {
     /// Required. The parent resource name, which should be a project resource name in the
     /// format 'projects/{projectId}'.
@@ -645,7 +645,7 @@ pub struct ListScanConfigsRequest {
     pub page_size: i32,
 }
 /// Request for the `UpdateScanConfigRequest` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateScanConfigRequest {
     /// Required. The ScanConfig to be updated. The name field must be set to identify the
     /// resource to be updated. The values of fields not covered by the mask
@@ -670,7 +670,7 @@ pub struct ListScanConfigsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for the `StartScanRun` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StartScanRunRequest {
     /// Required. The resource name of the ScanConfig to be used. The name follows the
     /// format of 'projects/{projectId}/scanConfigs/{scanConfigId}'.
@@ -678,7 +678,7 @@ pub struct StartScanRunRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `GetScanRun` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetScanRunRequest {
     /// Required. The resource name of the ScanRun to be returned. The name follows the
     /// format of
@@ -687,7 +687,7 @@ pub struct GetScanRunRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `ListScanRuns` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListScanRunsRequest {
     /// Required. The parent resource name, which should be a scan resource name in the
     /// format 'projects/{projectId}/scanConfigs/{scanConfigId}'.
@@ -716,7 +716,7 @@ pub struct ListScanRunsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for the `StopScanRun` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StopScanRunRequest {
     /// Required. The resource name of the ScanRun to be stopped. The name follows the
     /// format of
@@ -725,7 +725,7 @@ pub struct StopScanRunRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `ListCrawledUrls` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListCrawledUrlsRequest {
     /// Required. The parent resource name, which should be a scan run resource name in the
     /// format
@@ -755,7 +755,7 @@ pub struct ListCrawledUrlsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for the `GetFinding` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetFindingRequest {
     /// Required. The resource name of the Finding to be returned. The name follows the
     /// format of
@@ -764,7 +764,7 @@ pub struct GetFindingRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `ListFindings` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFindingsRequest {
     /// Required. The parent resource name, which should be a scan run resource name in the
     /// format
@@ -800,7 +800,7 @@ pub struct ListFindingsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for the `ListFindingTypeStats` method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFindingTypeStatsRequest {
     /// Required. The parent resource name, which should be a scan run resource name in the
     /// format
@@ -922,7 +922,7 @@ pub mod web_security_scanner_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.websecurityscanner.v1alpha.WebSecurityScanner/CreateScanConfig",
             );
@@ -949,7 +949,7 @@ pub mod web_security_scanner_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.websecurityscanner.v1alpha.WebSecurityScanner/DeleteScanConfig",
             );
@@ -976,7 +976,7 @@ pub mod web_security_scanner_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.websecurityscanner.v1alpha.WebSecurityScanner/GetScanConfig",
             );
@@ -1006,7 +1006,7 @@ pub mod web_security_scanner_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.websecurityscanner.v1alpha.WebSecurityScanner/ListScanConfigs",
             );
@@ -1033,7 +1033,7 @@ pub mod web_security_scanner_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.websecurityscanner.v1alpha.WebSecurityScanner/UpdateScanConfig",
             );
@@ -1060,7 +1060,7 @@ pub mod web_security_scanner_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.websecurityscanner.v1alpha.WebSecurityScanner/StartScanRun",
             );
@@ -1087,7 +1087,7 @@ pub mod web_security_scanner_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.websecurityscanner.v1alpha.WebSecurityScanner/GetScanRun",
             );
@@ -1118,7 +1118,7 @@ pub mod web_security_scanner_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.websecurityscanner.v1alpha.WebSecurityScanner/ListScanRuns",
             );
@@ -1145,7 +1145,7 @@ pub mod web_security_scanner_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.websecurityscanner.v1alpha.WebSecurityScanner/StopScanRun",
             );
@@ -1175,7 +1175,7 @@ pub mod web_security_scanner_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.websecurityscanner.v1alpha.WebSecurityScanner/ListCrawledUrls",
             );
@@ -1202,7 +1202,7 @@ pub mod web_security_scanner_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.websecurityscanner.v1alpha.WebSecurityScanner/GetFinding",
             );
@@ -1232,7 +1232,7 @@ pub mod web_security_scanner_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.websecurityscanner.v1alpha.WebSecurityScanner/ListFindings",
             );
@@ -1262,7 +1262,7 @@ pub mod web_security_scanner_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.websecurityscanner.v1alpha.WebSecurityScanner/ListFindingTypeStats",
             );

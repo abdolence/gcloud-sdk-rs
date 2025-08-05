@@ -30,7 +30,7 @@ pub struct RunPipelineRequest {
 }
 /// The response to the RunPipeline method, returned in the operation's result
 /// field on success.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RunPipelineResponse {}
 /// Specifies a series of actions to execute, expressed as Docker containers.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -89,7 +89,7 @@ pub struct Action {
     /// If the specified image is not public, the service account specified for
     /// the Virtual Machine must have access to pull the images from GCR, or
     /// appropriate credentials must be specified in the
-    /// [google.cloud.lifesciences.v2beta.Action.credentials][google.cloud.lifesciences.v2beta.Action.credentials]
+    /// \[google.cloud.lifesciences.v2beta.Action.credentials\]\[google.cloud.lifesciences.v2beta.Action.credentials\]
     /// field.
     #[prost(string, tag = "2")]
     pub image_uri: ::prost::alloc::string::String,
@@ -104,7 +104,7 @@ pub struct Action {
     pub entrypoint: ::prost::alloc::string::String,
     /// The environment to pass into the container. This environment is merged
     /// with values specified in the
-    /// [google.cloud.lifesciences.v2beta.Pipeline][google.cloud.lifesciences.v2beta.Pipeline]
+    /// \[google.cloud.lifesciences.v2beta.Pipeline\]\[google.cloud.lifesciences.v2beta.Pipeline\]
     /// message, overwriting any duplicate values.
     ///
     /// In addition to the values passed here, a few other values are
@@ -126,7 +126,7 @@ pub struct Action {
     >,
     /// The encrypted environment to pass into the container. This environment is
     /// merged with values specified in the
-    /// [google.cloud.lifesciences.v2beta.Pipeline][google.cloud.lifesciences.v2beta.Pipeline]
+    /// \[google.cloud.lifesciences.v2beta.Pipeline\]\[google.cloud.lifesciences.v2beta.Pipeline\]
     /// message, overwriting any duplicate values.
     ///
     /// The secret must decrypt to a JSON-encoded dictionary where key-value pairs
@@ -240,7 +240,7 @@ pub struct Action {
 }
 /// Holds encrypted information that is only decrypted and stored in RAM
 /// by the worker VM when running the pipeline.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Secret {
     /// The name of the Cloud KMS key that will be used to decrypt the secret
     /// value. The VM service account must have the required permissions and
@@ -253,7 +253,7 @@ pub struct Secret {
     pub cipher_text: ::prost::alloc::string::String,
 }
 /// Carries information about a particular disk mount inside a container.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Mount {
     /// The name of the disk to mount, as specified in the resources section.
     #[prost(string, tag = "1")]
@@ -389,7 +389,7 @@ pub struct VirtualMachine {
     pub reservation: ::prost::alloc::string::String,
 }
 /// Carries information about a Google Cloud service account.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServiceAccount {
     /// Email address of the service account. If not specified, the default
     /// Compute Engine service account for the project will be used.
@@ -401,7 +401,7 @@ pub struct ServiceAccount {
     pub scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Carries information about an accelerator that can be attached to a VM.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Accelerator {
     /// The accelerator type string (for example, "nvidia-tesla-t4").
     ///
@@ -418,7 +418,7 @@ pub struct Accelerator {
     pub count: i64,
 }
 /// VM networking options.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Network {
     /// The network name to attach the VM's network interface to. The value will
     /// be prefixed with `global/networks/` unless it contains a `/`, in which
@@ -452,9 +452,9 @@ pub struct Network {
 /// See <https://cloud.google.com/compute/docs/disks/performance> for more
 /// information about disk type, size, and performance considerations.
 ///
-/// Specify either [`Volume`][google.cloud.lifesciences.v2beta.Volume] or
-/// [`Disk`][google.cloud.lifesciences.v2beta.Disk], but not both.
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Specify either \[`Volume`\]\[google.cloud.lifesciences.v2beta.Volume\] or
+/// \[`Disk`\]\[google.cloud.lifesciences.v2beta.Disk\], but not both.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Disk {
     /// A user-supplied name for the disk. Used when mounting the disk into
     /// actions. The name must contain only upper and lowercase alphanumeric
@@ -479,12 +479,12 @@ pub struct Disk {
 }
 /// Carries information about storage that can be attached to a VM.
 ///
-/// Specify either [`Volume`][google.cloud.lifesciences.v2beta.Volume] or
-/// [`Disk`][google.cloud.lifesciences.v2beta.Disk], but not both.
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Specify either \[`Volume`\]\[google.cloud.lifesciences.v2beta.Volume\] or
+/// \[`Disk`\]\[google.cloud.lifesciences.v2beta.Disk\], but not both.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Volume {
     /// A user-supplied name for the volume. Used when mounting the volume into
-    /// [`Actions`][google.cloud.lifesciences.v2beta.Action]. The name must contain
+    /// \[`Actions`\]\[google.cloud.lifesciences.v2beta.Action\]. The name must contain
     /// only upper and lowercase alphanumeric characters and hyphens and cannot
     /// start with a hyphen.
     #[prost(string, tag = "1")]
@@ -494,7 +494,7 @@ pub struct Volume {
 }
 /// Nested message and enum types in `Volume`.
 pub mod volume {
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Storage {
         /// Configuration for a persistent disk.
         #[prost(message, tag = "2")]
@@ -511,7 +511,7 @@ pub mod volume {
 ///
 /// See <https://cloud.google.com/compute/docs/disks/performance> for more
 /// information about disk type, size, and performance considerations.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PersistentDisk {
     /// The size, in GB, of the disk to attach. If the size is not
     /// specified, a default is chosen to ensure reasonable I/O performance.
@@ -530,7 +530,7 @@ pub struct PersistentDisk {
     pub source_image: ::prost::alloc::string::String,
 }
 /// Configuration for an existing disk to be attached to the VM.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExistingDisk {
     /// If `disk` contains slashes, the Cloud Life Sciences API assumes that it is
     /// a complete URL for the disk.  If `disk` does not contain slashes, the Cloud
@@ -546,9 +546,9 @@ pub struct ExistingDisk {
     pub disk: ::prost::alloc::string::String,
 }
 /// Configuration for an `NFSMount` to be attached to the VM.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NfsMount {
-    /// A target NFS mount. The target must be specified as `address:/mount".
+    /// A target NFS mount. The target must be specified as \`address:/mount".
     #[prost(string, tag = "1")]
     pub target: ::prost::alloc::string::String,
 }
@@ -604,50 +604,50 @@ pub mod event {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Details {
         /// See
-        /// [google.cloud.lifesciences.v2beta.DelayedEvent][google.cloud.lifesciences.v2beta.DelayedEvent].
+        /// \[google.cloud.lifesciences.v2beta.DelayedEvent\]\[google.cloud.lifesciences.v2beta.DelayedEvent\].
         #[prost(message, tag = "17")]
         Delayed(super::DelayedEvent),
         /// See
-        /// [google.cloud.lifesciences.v2beta.WorkerAssignedEvent][google.cloud.lifesciences.v2beta.WorkerAssignedEvent].
+        /// \[google.cloud.lifesciences.v2beta.WorkerAssignedEvent\]\[google.cloud.lifesciences.v2beta.WorkerAssignedEvent\].
         #[prost(message, tag = "18")]
         WorkerAssigned(super::WorkerAssignedEvent),
         /// See
-        /// [google.cloud.lifesciences.v2beta.WorkerReleasedEvent][google.cloud.lifesciences.v2beta.WorkerReleasedEvent].
+        /// \[google.cloud.lifesciences.v2beta.WorkerReleasedEvent\]\[google.cloud.lifesciences.v2beta.WorkerReleasedEvent\].
         #[prost(message, tag = "19")]
         WorkerReleased(super::WorkerReleasedEvent),
         /// See
-        /// [google.cloud.lifesciences.v2beta.PullStartedEvent][google.cloud.lifesciences.v2beta.PullStartedEvent].
+        /// \[google.cloud.lifesciences.v2beta.PullStartedEvent\]\[google.cloud.lifesciences.v2beta.PullStartedEvent\].
         #[prost(message, tag = "20")]
         PullStarted(super::PullStartedEvent),
         /// See
-        /// [google.cloud.lifesciences.v2beta.PullStoppedEvent][google.cloud.lifesciences.v2beta.PullStoppedEvent].
+        /// \[google.cloud.lifesciences.v2beta.PullStoppedEvent\]\[google.cloud.lifesciences.v2beta.PullStoppedEvent\].
         #[prost(message, tag = "21")]
         PullStopped(super::PullStoppedEvent),
         /// See
-        /// [google.cloud.lifesciences.v2beta.ContainerStartedEvent][google.cloud.lifesciences.v2beta.ContainerStartedEvent].
+        /// \[google.cloud.lifesciences.v2beta.ContainerStartedEvent\]\[google.cloud.lifesciences.v2beta.ContainerStartedEvent\].
         #[prost(message, tag = "22")]
         ContainerStarted(super::ContainerStartedEvent),
         /// See
-        /// [google.cloud.lifesciences.v2beta.ContainerStoppedEvent][google.cloud.lifesciences.v2beta.ContainerStoppedEvent].
+        /// \[google.cloud.lifesciences.v2beta.ContainerStoppedEvent\]\[google.cloud.lifesciences.v2beta.ContainerStoppedEvent\].
         #[prost(message, tag = "23")]
         ContainerStopped(super::ContainerStoppedEvent),
         /// See
-        /// [google.cloud.lifesciences.v2beta.ContainerKilledEvent][google.cloud.lifesciences.v2beta.ContainerKilledEvent].
+        /// \[google.cloud.lifesciences.v2beta.ContainerKilledEvent\]\[google.cloud.lifesciences.v2beta.ContainerKilledEvent\].
         #[prost(message, tag = "24")]
         ContainerKilled(super::ContainerKilledEvent),
         /// See
-        /// [google.cloud.lifesciences.v2beta.UnexpectedExitStatusEvent][google.cloud.lifesciences.v2beta.UnexpectedExitStatusEvent].
+        /// \[google.cloud.lifesciences.v2beta.UnexpectedExitStatusEvent\]\[google.cloud.lifesciences.v2beta.UnexpectedExitStatusEvent\].
         #[prost(message, tag = "25")]
         UnexpectedExitStatus(super::UnexpectedExitStatusEvent),
         /// See
-        /// [google.cloud.lifesciences.v2beta.FailedEvent][google.cloud.lifesciences.v2beta.FailedEvent].
+        /// \[google.cloud.lifesciences.v2beta.FailedEvent\]\[google.cloud.lifesciences.v2beta.FailedEvent\].
         #[prost(message, tag = "26")]
         Failed(super::FailedEvent),
     }
 }
 /// An event generated whenever a resource limitation or transient error
 /// delays execution of a pipeline that was otherwise ready to run.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DelayedEvent {
     /// A textual description of the cause of the delay. The string can change
     /// without notice because it is often generated by another service (such as
@@ -663,7 +663,7 @@ pub struct DelayedEvent {
 }
 /// An event generated after a worker VM has been assigned to run the
 /// pipeline.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WorkerAssignedEvent {
     /// The zone the worker is running in.
     #[prost(string, tag = "1")]
@@ -677,7 +677,7 @@ pub struct WorkerAssignedEvent {
 }
 /// An event generated when the worker VM that was assigned to the pipeline
 /// has been released (deleted).
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct WorkerReleasedEvent {
     /// The zone the worker was running in.
     #[prost(string, tag = "1")]
@@ -687,14 +687,14 @@ pub struct WorkerReleasedEvent {
     pub instance: ::prost::alloc::string::String,
 }
 /// An event generated when the worker starts pulling an image.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PullStartedEvent {
     /// The URI of the image that was pulled.
     #[prost(string, tag = "1")]
     pub image_uri: ::prost::alloc::string::String,
 }
 /// An event generated when the worker stops pulling an image.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PullStoppedEvent {
     /// The URI of the image that was pulled.
     #[prost(string, tag = "1")]
@@ -719,7 +719,7 @@ pub struct ContainerStartedEvent {
     pub ip_address: ::prost::alloc::string::String,
 }
 /// An event generated when a container exits.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ContainerStoppedEvent {
     /// The numeric ID of the action that started this container.
     #[prost(int32, tag = "1")]
@@ -742,7 +742,7 @@ pub struct ContainerStoppedEvent {
 /// non-zero exit status that was not otherwise ignored. Execution will
 /// continue, but only actions that are flagged as `ALWAYS_RUN` will be
 /// executed. Other actions will be skipped.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UnexpectedExitStatusEvent {
     /// The numeric ID of the action that started the container.
     #[prost(int32, tag = "1")]
@@ -754,7 +754,7 @@ pub struct UnexpectedExitStatusEvent {
 /// An event generated when a container is forcibly terminated by the
 /// worker. Currently, this only occurs when the container outlives the
 /// timeout specified by the user.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ContainerKilledEvent {
     /// The numeric ID of the action that started the container.
     #[prost(int32, tag = "1")]
@@ -762,7 +762,7 @@ pub struct ContainerKilledEvent {
 }
 /// An event generated when the execution of a pipeline has failed. Note
 /// that other events can continue to occur after this event.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct FailedEvent {
     /// The Google standard error code that best describes this failure.
     #[prost(enumeration = "super::super::super::rpc::Code", tag = "1")]
@@ -866,12 +866,12 @@ pub mod workflows_service_v2_beta_client {
             self.inner = self.inner.max_encoding_message_size(limit);
             self
         }
-        /// Runs a pipeline.  The returned Operation's [metadata]
-        /// [google.longrunning.Operation.metadata] field will contain a
-        /// [google.cloud.lifesciences.v2beta.Metadata][google.cloud.lifesciences.v2beta.Metadata]
+        /// Runs a pipeline.  The returned Operation's \[metadata\]
+        /// \[google.longrunning.Operation.metadata\] field will contain a
+        /// \[google.cloud.lifesciences.v2beta.Metadata\]\[google.cloud.lifesciences.v2beta.Metadata\]
         /// object describing the status of the pipeline execution. The
-        /// [response][google.longrunning.Operation.response] field will contain a
-        /// [google.cloud.lifesciences.v2beta.RunPipelineResponse][google.cloud.lifesciences.v2beta.RunPipelineResponse]
+        /// \[response\]\[google.longrunning.Operation.response\] field will contain a
+        /// \[google.cloud.lifesciences.v2beta.RunPipelineResponse\]\[google.cloud.lifesciences.v2beta.RunPipelineResponse\]
         /// object if the pipeline completes successfully.
         ///
         /// **Note:** Before you can use this method, the *Life Sciences Service Agent*
@@ -898,7 +898,7 @@ pub mod workflows_service_v2_beta_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.lifesciences.v2beta.WorkflowsServiceV2Beta/RunPipeline",
             );

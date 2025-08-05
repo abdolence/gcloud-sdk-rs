@@ -109,7 +109,7 @@ pub struct BdrProtectedResourceLog {
     #[prost(string, optional, tag = "9")]
     pub source_resource_location: ::core::option::Option<::prost::alloc::string::String>,
 }
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackupRuleDetail {
     /// Backup Rule Name.
     #[prost(string, optional, tag = "1")]
@@ -224,7 +224,7 @@ pub struct BdrBackupPlanJobLog {
 }
 /// Log entry for BDRBackupPlanAssociationJobLog for resources using BackupPlan
 /// based protection.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BdrBackupPlanAssociationJobLog {
     /// The job_id field displays the identifier of the job being reported.
     #[prost(string, optional, tag = "1")]
@@ -233,8 +233,8 @@ pub struct BdrBackupPlanAssociationJobLog {
     /// \[UPDATE\].
     #[prost(string, optional, tag = "2")]
     pub job_category: ::core::option::Option<::prost::alloc::string::String>,
-    /// The status field displays the status of the job. Can be one of [RUNNING,
-    /// QUEUED, SUCCESSFUL, FAILED, SKIPPED].
+    /// The status field displays the status of the job. Can be one of \[RUNNING,
+    /// QUEUED, SUCCESSFUL, FAILED, SKIPPED\].
     #[prost(string, optional, tag = "3")]
     pub job_status: ::core::option::Option<::prost::alloc::string::String>,
     /// Full resource name of the protected resource.
@@ -301,7 +301,7 @@ pub struct BdrBackupPlanAssociationJobLog {
     pub error_message: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// This is an event
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Event {
     /// The event_time field displays the time when the event was reported
     #[prost(string, tag = "1")]
@@ -478,7 +478,7 @@ pub struct BackupRecoveryJobReportLog {
 }
 /// This is a UnprotectedResourceLogReport published as part of GCBDR
 /// Reporting.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UnprotectedResourceReportLog {
     /// Required. Name of the host where the application/resource resides.
     #[prost(string, tag = "1")]
@@ -510,7 +510,7 @@ pub struct UnprotectedResourceReportLog {
 }
 /// This is a DailyScheduleComplianceReportLog published as part of GCBDR
 /// Reporting.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DailyScheduleComplianceReportLog {
     /// Required. Resource/App Name.
     #[prost(string, tag = "1")]
@@ -731,7 +731,7 @@ pub struct MountedImage {
     pub image_expiration_date: ::prost::alloc::string::String,
 }
 /// Holds information for the Connector Versions log
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ConnectorVersionReportLog {
     /// Required. Appliance Name.
     #[prost(string, tag = "1")]

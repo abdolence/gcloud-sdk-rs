@@ -30,7 +30,7 @@ pub struct UpdateWorkloadRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for restricting list of available resources in Workload environment.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RestrictAllowedResourcesRequest {
     /// Required. The resource name of the Workload. This is the workloads's
     /// relative path in the API, formatted as
@@ -97,10 +97,10 @@ pub mod restrict_allowed_resources_request {
     }
 }
 /// Response for restricting the list of allowed resources.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RestrictAllowedResourcesResponse {}
 /// Request for deleting a Workload.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteWorkloadRequest {
     /// Required. The `name` field is used to identify the workload.
     /// Format:
@@ -113,7 +113,7 @@ pub struct DeleteWorkloadRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request for fetching a workload.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetWorkloadRequest {
     /// Required. The resource name of the Workload to fetch. This is the workloads's
     /// relative path in the API, formatted as
@@ -125,7 +125,7 @@ pub struct GetWorkloadRequest {
 }
 /// A request to analyze a hypothetical move of a source project or project-based
 /// workload to a target (destination) folder-based workload.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AnalyzeWorkloadMoveRequest {
     /// Required. The resource ID of the folder-based destination workload. This workload is
     /// where the source project will hypothetically be moved to. Specify the
@@ -149,7 +149,7 @@ pub struct AnalyzeWorkloadMoveRequest {
 pub mod analyze_workload_move_request {
     /// The resource type to be moved to the destination workload. It can be either
     /// an existing project or a project-based workload.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ProjectOrWorkloadResource {
         /// The source type is a project-based workload. Specify the workloads's
         /// relative resource name, formatted as:
@@ -169,7 +169,7 @@ pub mod analyze_workload_move_request {
     }
 }
 /// A response that includes the analysis of the hypothetical resource move.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AnalyzeWorkloadMoveResponse {
     /// A list of blockers that should be addressed before moving the source
     /// project or project-based workload to the destination folder-based workload.
@@ -177,7 +177,7 @@ pub struct AnalyzeWorkloadMoveResponse {
     pub blockers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for fetching workloads in an organization.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListWorkloadsRequest {
     /// Required. Parent Resource to list workloads from.
     /// Must be of the form `organizations/{org_id}/locations/{location}`.
@@ -307,7 +307,7 @@ pub struct Workload {
 /// Nested message and enum types in `Workload`.
 pub mod workload {
     /// Represent the resources that are children of this Workload.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ResourceInfo {
         /// Resource identifier.
         /// For a project this represents project_number.
@@ -373,7 +373,7 @@ pub mod workload {
         }
     }
     /// Settings specific to the Key Management Service.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct KmsSettings {
         /// Required. Input only. Immutable. The time at which the Key Management Service will automatically create a
         /// new version of the crypto key and mark it as the primary.
@@ -386,35 +386,35 @@ pub mod workload {
         pub rotation_period: ::core::option::Option<::prost_types::Duration>,
     }
     /// Settings specific to resources needed for IL4.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Il4Settings {
         /// Input only. Immutable. Settings used to create a CMEK crypto key.
         #[prost(message, optional, tag = "1")]
         pub kms_settings: ::core::option::Option<KmsSettings>,
     }
     /// Settings specific to resources needed for CJIS.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CjisSettings {
         /// Input only. Immutable. Settings used to create a CMEK crypto key.
         #[prost(message, optional, tag = "1")]
         pub kms_settings: ::core::option::Option<KmsSettings>,
     }
     /// Settings specific to resources needed for FedRAMP High.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct FedrampHighSettings {
         /// Input only. Immutable. Settings used to create a CMEK crypto key.
         #[prost(message, optional, tag = "1")]
         pub kms_settings: ::core::option::Option<KmsSettings>,
     }
     /// Settings specific to resources needed for FedRAMP Moderate.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct FedrampModerateSettings {
         /// Input only. Immutable. Settings used to create a CMEK crypto key.
         #[prost(message, optional, tag = "1")]
         pub kms_settings: ::core::option::Option<KmsSettings>,
     }
     /// Represent the custom settings for the resources to be created.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ResourceSettings {
         /// Resource identifier.
         /// For a project this represents project_id. If the project is already
@@ -435,7 +435,7 @@ pub mod workload {
         pub display_name: ::prost::alloc::string::String,
     }
     /// Signed Access Approvals (SAA) enrollment response.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SaaEnrollmentResponse {
         /// Indicates SAA enrollment status of a given workload.
         #[prost(
@@ -683,7 +683,7 @@ pub mod workload {
         }
     }
     /// Settings specific to the selected \[compliance_regime\]
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ComplianceRegimeSettings {
         /// Input only. Immutable. Settings specific to resources needed for IL4.
         #[prost(message, tag = "7")]
@@ -830,7 +830,7 @@ pub mod assured_workloads_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/CreateWorkload",
             );
@@ -860,7 +860,7 @@ pub mod assured_workloads_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/UpdateWorkload",
             );
@@ -895,7 +895,7 @@ pub mod assured_workloads_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/RestrictAllowedResources",
             );
@@ -927,7 +927,7 @@ pub mod assured_workloads_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/DeleteWorkload",
             );
@@ -954,7 +954,7 @@ pub mod assured_workloads_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/GetWorkload",
             );
@@ -985,7 +985,7 @@ pub mod assured_workloads_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/AnalyzeWorkloadMove",
             );
@@ -1015,7 +1015,7 @@ pub mod assured_workloads_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/ListWorkloads",
             );

@@ -16,7 +16,7 @@ pub struct SourceContext {
 /// Nested message and enum types in `SourceContext`.
 pub mod source_context {
     /// A SourceContext can refer any one of the following types of repositories.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Context {
         /// A SourceContext referring to a revision in a Google Cloud Source Repo.
         #[prost(message, tag = "1")]
@@ -30,7 +30,7 @@ pub mod source_context {
     }
 }
 /// An alias to a repo revision.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AliasContext {
     /// The alias kind.
     #[prost(enumeration = "alias_context::Kind", tag = "1")]
@@ -92,7 +92,7 @@ pub mod alias_context {
 }
 /// A CloudRepoSourceContext denotes a particular revision in a Google Cloud
 /// Source Repo.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloudRepoSourceContext {
     /// The ID of the repo.
     #[prost(message, optional, tag = "1")]
@@ -106,7 +106,7 @@ pub struct CloudRepoSourceContext {
 pub mod cloud_repo_source_context {
     /// A revision in a Cloud Repo can be identified by either its revision ID or
     /// its alias.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Revision {
         /// A revision ID.
         #[prost(string, tag = "2")]
@@ -117,7 +117,7 @@ pub mod cloud_repo_source_context {
     }
 }
 /// A SourceContext referring to a Gerrit project.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GerritSourceContext {
     /// The URI of a running Gerrit instance.
     #[prost(string, tag = "1")]
@@ -136,7 +136,7 @@ pub struct GerritSourceContext {
 pub mod gerrit_source_context {
     /// A revision in a Gerrit project can be identified by either its revision ID
     /// or its alias.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Revision {
         /// A revision (commit) ID.
         #[prost(string, tag = "3")]
@@ -148,7 +148,7 @@ pub mod gerrit_source_context {
 }
 /// A GitSourceContext denotes a particular revision in a third party Git
 /// repository (e.g., GitHub).
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GitSourceContext {
     /// Git repository URL.
     #[prost(string, tag = "1")]
@@ -158,7 +158,7 @@ pub struct GitSourceContext {
     pub revision_id: ::prost::alloc::string::String,
 }
 /// A unique identifier for a Cloud Repo.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RepoId {
     /// A cloud repo can be identified by either its project ID and repository name
     /// combination, or its globally unique identifier.
@@ -169,7 +169,7 @@ pub struct RepoId {
 pub mod repo_id {
     /// A cloud repo can be identified by either its project ID and repository name
     /// combination, or its globally unique identifier.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Id {
         /// A combination of a project ID and a repo name.
         #[prost(message, tag = "1")]
@@ -181,7 +181,7 @@ pub mod repo_id {
 }
 /// Selects a repo using a Google Cloud Platform project ID (e.g.,
 /// winged-cargo-31) and a repo name within that project.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProjectRepoId {
     /// The ID of the project.
     #[prost(string, tag = "1")]

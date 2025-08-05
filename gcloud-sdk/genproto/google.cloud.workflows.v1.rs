@@ -19,9 +19,9 @@ pub struct Workflow {
     /// A new revision of a workflow is created as a result of updating the
     /// following properties of a workflow:
     ///
-    /// - [Service account][google.cloud.workflows.v1.Workflow.service_account]
-    /// - [Workflow code to be
-    /// executed][google.cloud.workflows.v1.Workflow.source_contents]
+    /// * \[Service account\]\[google.cloud.workflows.v1.Workflow.service_account\]
+    /// * \[Workflow code to be
+    ///   executed\]\[google.cloud.workflows.v1.Workflow.source_contents\]
     ///
     /// The format is "000001-a4d", where the first six characters define
     /// the zero-padded revision ordinal number. They are followed by a hyphen and
@@ -131,7 +131,7 @@ pub struct Workflow {
 /// Nested message and enum types in `Workflow`.
 pub mod workflow {
     /// Describes an error related to the current state of the workflow.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct StateError {
         /// Provides specifics about the error.
         #[prost(string, tag = "1")]
@@ -277,7 +277,7 @@ pub mod workflow {
     /// Required. Location of the workflow source code.
     /// Modifying this field for an existing workflow results in a new workflow
     /// revision.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum SourceCode {
         /// Workflow code to be executed. The size limit is 128KB.
         #[prost(string, tag = "10")]
@@ -285,9 +285,9 @@ pub mod workflow {
     }
 }
 /// Request for the
-/// [ListWorkflows][google.cloud.workflows.v1.Workflows.ListWorkflows]
+/// \[ListWorkflows\]\[google.cloud.workflows.v1.Workflows.ListWorkflows\]
 /// method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListWorkflowsRequest {
     /// Required. Project and location from which the workflows should be listed.
     /// Format: projects/{project}/locations/{location}
@@ -327,7 +327,7 @@ pub struct ListWorkflowsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response for the
-/// [ListWorkflows][google.cloud.workflows.v1.Workflows.ListWorkflows]
+/// \[ListWorkflows\]\[google.cloud.workflows.v1.Workflows.ListWorkflows\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkflowsResponse {
@@ -343,8 +343,8 @@ pub struct ListWorkflowsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for the
-/// [GetWorkflow][google.cloud.workflows.v1.Workflows.GetWorkflow] method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[GetWorkflow\]\[google.cloud.workflows.v1.Workflows.GetWorkflow\] method.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetWorkflowRequest {
     /// Required. Name of the workflow for which information should be retrieved.
     /// Format: projects/{project}/locations/{location}/workflows/{workflow}
@@ -359,7 +359,7 @@ pub struct GetWorkflowRequest {
     pub revision_id: ::prost::alloc::string::String,
 }
 /// Request for the
-/// [CreateWorkflow][google.cloud.workflows.v1.Workflows.CreateWorkflow]
+/// \[CreateWorkflow\]\[google.cloud.workflows.v1.Workflows.CreateWorkflow\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWorkflowRequest {
@@ -382,9 +382,9 @@ pub struct CreateWorkflowRequest {
     pub workflow_id: ::prost::alloc::string::String,
 }
 /// Request for the
-/// [DeleteWorkflow][google.cloud.workflows.v1.Workflows.DeleteWorkflow]
+/// \[DeleteWorkflow\]\[google.cloud.workflows.v1.Workflows.DeleteWorkflow\]
 /// method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteWorkflowRequest {
     /// Required. Name of the workflow to be deleted.
     /// Format: projects/{project}/locations/{location}/workflows/{workflow}
@@ -392,7 +392,7 @@ pub struct DeleteWorkflowRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the
-/// [UpdateWorkflow][google.cloud.workflows.v1.Workflows.UpdateWorkflow]
+/// \[UpdateWorkflow\]\[google.cloud.workflows.v1.Workflows.UpdateWorkflow\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateWorkflowRequest {
@@ -405,7 +405,7 @@ pub struct UpdateWorkflowRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Represents the metadata of the long-running operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -424,9 +424,9 @@ pub struct OperationMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// Request for the
-/// [ListWorkflowRevisions][google.cloud.workflows.v1.Workflows.ListWorkflowRevisions]
+/// \[ListWorkflowRevisions\]\[google.cloud.workflows.v1.Workflows.ListWorkflowRevisions\]
 /// method.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListWorkflowRevisionsRequest {
     /// Required. Workflow for which the revisions should be listed.
     /// Format: projects/{project}/locations/{location}/workflows/{workflow}
@@ -443,7 +443,7 @@ pub struct ListWorkflowRevisionsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response for the
-/// [ListWorkflowRevisions][google.cloud.workflows.v1.Workflows.ListWorkflowRevisions]
+/// \[ListWorkflowRevisions\]\[google.cloud.workflows.v1.Workflows.ListWorkflowRevisions\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkflowRevisionsResponse {
@@ -599,7 +599,7 @@ pub mod workflows_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workflows.v1.Workflows/ListWorkflows",
             );
@@ -626,7 +626,7 @@ pub mod workflows_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workflows.v1.Workflows/GetWorkflow",
             );
@@ -639,7 +639,7 @@ pub mod workflows_client {
         }
         /// Creates a new workflow. If a workflow with the specified name already
         /// exists in the specified project and location, the long running operation
-        /// returns a [ALREADY_EXISTS][google.rpc.Code.ALREADY_EXISTS] error.
+        /// returns a \[ALREADY_EXISTS\]\[google.rpc.Code.ALREADY_EXISTS\] error.
         pub async fn create_workflow(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateWorkflowRequest>,
@@ -655,7 +655,7 @@ pub mod workflows_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workflows.v1.Workflows/CreateWorkflow",
             );
@@ -687,7 +687,7 @@ pub mod workflows_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workflows.v1.Workflows/DeleteWorkflow",
             );
@@ -721,7 +721,7 @@ pub mod workflows_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workflows.v1.Workflows/UpdateWorkflow",
             );
@@ -751,7 +751,7 @@ pub mod workflows_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.workflows.v1.Workflows/ListWorkflowRevisions",
             );

@@ -70,7 +70,7 @@ pub struct OrderTrackingSignal {
 /// Nested message and enum types in `OrderTrackingSignal`.
 pub mod order_tracking_signal {
     /// The shipping information for the order.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ShippingInfo {
         /// Required. The shipment ID. This field will be hashed in returned
         /// OrderTrackingSignal creation response.
@@ -182,7 +182,7 @@ pub mod order_tracking_signal {
         }
     }
     /// The line items of the order.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct LineItemDetails {
         /// Required. The ID for this line item.
         #[prost(string, tag = "1")]
@@ -209,7 +209,7 @@ pub mod order_tracking_signal {
     }
     /// Represents how many items are in the shipment for the given shipment_id
     /// and line_item_id.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ShipmentLineItemMapping {
         /// Required. The shipment ID. This field will be hashed in returned
         /// OrderTrackingSignal creation response.
@@ -333,7 +333,7 @@ pub mod order_tracking_signals_service_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.shopping.merchant.ordertracking.v1beta.OrderTrackingSignalsService/CreateOrderTrackingSignal",
             );

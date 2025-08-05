@@ -70,7 +70,7 @@ impl WorkloadProfile {
     }
 }
 /// A storage volume logical unit number (LUN).
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Lun {
     /// Output only. The name of the LUN.
     #[prost(string, tag = "1")]
@@ -252,14 +252,14 @@ pub mod lun {
     }
 }
 /// Message for requesting storage lun information.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetLunRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message for requesting a list of storage volume luns.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListLunsRequest {
     /// Required. Parent value for ListLunsRequest.
     #[prost(string, tag = "1")]
@@ -286,7 +286,7 @@ pub struct ListLunsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for skip lun cooloff and delete it.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EvictLunRequest {
     /// Required. The name of the lun.
     #[prost(string, tag = "1")]
@@ -451,7 +451,7 @@ pub mod network {
     }
 }
 /// A reservation of one or more addresses in a network.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkAddressReservation {
     /// The first address of this reservation block.
     /// Must be specified as a single IPv4 address, e.g. 10.1.2.2.
@@ -577,7 +577,7 @@ pub struct LogicalInterface {
     pub logical_network_interfaces: ::prost::alloc::vec::Vec<
         logical_interface::LogicalNetworkInterface,
     >,
-    /// Interface name. This is of syntax <bond><bond_mode> or <nic> and
+    /// Interface name. This is of syntax <bond>\<bond_mode> or <nic> and
     /// forms part of the network template name.
     #[prost(string, tag = "2")]
     pub name: ::prost::alloc::string::String,
@@ -590,7 +590,7 @@ pub struct LogicalInterface {
 /// Nested message and enum types in `LogicalInterface`.
 pub mod logical_interface {
     /// Each logical network interface is effectively a network and IP pair.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct LogicalNetworkInterface {
         /// Name of the network
         #[prost(string, tag = "1")]
@@ -611,14 +611,14 @@ pub mod logical_interface {
     }
 }
 /// Message for requesting network information.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetNetworkRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message for requesting a list of networks.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNetworksRequest {
     /// Required. Parent value for ListNetworksRequest.
     #[prost(string, tag = "1")]
@@ -658,7 +658,7 @@ pub struct UpdateNetworkRequest {
     pub network: ::core::option::Option<Network>,
     /// The list of fields to update.
     /// The only currently supported fields are:
-    ///    `labels`, `reservations`, `vrf.vlan_attachments`
+    /// `labels`, `reservations`, `vrf.vlan_attachments`
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -673,7 +673,7 @@ pub struct NetworkUsage {
     pub used_ips: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request to get networks with IPs.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNetworkUsageRequest {
     /// Required. Parent value (project and location).
     #[prost(string, tag = "1")]
@@ -687,7 +687,7 @@ pub struct ListNetworkUsageResponse {
     pub networks: ::prost::alloc::vec::Vec<NetworkUsage>,
 }
 /// Mount point for a network.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkMountPoint {
     /// Instance to attach network to.
     #[prost(string, tag = "1")]
@@ -703,7 +703,7 @@ pub struct NetworkMountPoint {
     pub ip_address: ::prost::alloc::string::String,
 }
 /// Message requesting rename of a server.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RenameNetworkRequest {
     /// Required. The `name` field is used to identify the network.
     /// Format: projects/{project}/locations/{location}/networks/{network}
@@ -813,7 +813,7 @@ pub struct Volume {
 /// Nested message and enum types in `Volume`.
 pub mod volume {
     /// Details about snapshot space reservation and usage on the storage volume.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SnapshotReservationDetail {
         /// The space on this storage volume reserved for snapshots, shown in GiB.
         #[prost(int64, tag = "1")]
@@ -1073,14 +1073,14 @@ pub mod volume {
     }
 }
 /// Message for requesting storage volume information.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetVolumeRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message for requesting a list of storage volumes.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListVolumesRequest {
     /// Required. Parent value for ListVolumesRequest.
     #[prost(string, tag = "1")]
@@ -1120,12 +1120,12 @@ pub struct UpdateVolumeRequest {
     pub volume: ::core::option::Option<Volume>,
     /// The list of fields to update.
     /// The only currently supported fields are:
-    ///    'labels'
+    /// 'labels'
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Message requesting rename of a server.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RenameVolumeRequest {
     /// Required. The `name` field is used to identify the volume.
     /// Format: projects/{project}/locations/{location}/volumes/{volume}
@@ -1136,14 +1136,14 @@ pub struct RenameVolumeRequest {
     pub new_volume_id: ::prost::alloc::string::String,
 }
 /// Request for skip volume cooloff and delete it.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EvictVolumeRequest {
     /// Required. The name of the Volume.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for emergency resize Volume.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResizeVolumeRequest {
     /// Required. Volume to resize.
     #[prost(string, tag = "1")]
@@ -1214,7 +1214,7 @@ pub struct Instance {
     pub pod: ::prost::alloc::string::String,
     /// Instance network template name. For eg, bondaa-bondaa, bondab-nic, etc.
     /// Generally, the template name follows the syntax of
-    /// "bond<bond_mode>" or "nic".
+    /// "bond\<bond_mode>" or "nic".
     #[prost(string, tag = "14")]
     pub network_template: ::prost::alloc::string::String,
     /// List of logical interfaces for the instance. The number of logical
@@ -1303,14 +1303,14 @@ pub mod instance {
     }
 }
 /// Message for requesting server information.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetInstanceRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message for requesting the list of servers.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListInstancesRequest {
     /// Required. Parent value for ListInstancesRequest.
     #[prost(string, tag = "1")]
@@ -1350,14 +1350,14 @@ pub struct UpdateInstanceRequest {
     pub instance: ::core::option::Option<Instance>,
     /// The list of fields to update.
     /// The currently supported fields are:
-    ///    `labels`
-    ///    `hyperthreading_enabled`
-    ///    `os_image`
+    /// `labels`
+    /// `hyperthreading_enabled`
+    /// `os_image`
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Message requesting rename of a server.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RenameInstanceRequest {
     /// Required. The `name` field is used to identify the instance.
     /// Format: projects/{project}/locations/{location}/instances/{instance}
@@ -1368,54 +1368,54 @@ pub struct RenameInstanceRequest {
     pub new_instance_id: ::prost::alloc::string::String,
 }
 /// Message requesting to reset a server.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResetInstanceRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message requesting to start a server.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StartInstanceRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Response message from starting a server.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StartInstanceResponse {}
 /// Message requesting to stop a server.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StopInstanceRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Response message from stopping a server.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StopInstanceResponse {}
 /// Message for enabling the interactive serial console on an instance.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnableInteractiveSerialConsoleRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message for response of EnableInteractiveSerialConsole.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnableInteractiveSerialConsoleResponse {}
 /// Message for disabling the interactive serial console on an instance.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisableInteractiveSerialConsoleRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message for response of DisableInteractiveSerialConsole.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DisableInteractiveSerialConsoleResponse {}
 /// Message for detach specific LUN from an Instance.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DetachLunRequest {
     /// Required. Name of the instance.
     #[prost(string, tag = "1")]
@@ -1434,7 +1434,7 @@ pub struct ServerNetworkTemplate {
     /// pattern:
     /// `projects/{project}/locations/{location}/serverNetworkTemplate/{server_network_template}`
     /// Generally, the {server_network_template} follows the syntax of
-    /// "bond<interface_type_index><bond_mode>" or "nic<interface_type_index>".
+    /// "bond\<interface_type_index>\<bond_mode>" or "nic\<interface_type_index>".
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Instance types this template is applicable to.
@@ -1451,12 +1451,12 @@ pub struct ServerNetworkTemplate {
 /// Nested message and enum types in `ServerNetworkTemplate`.
 pub mod server_network_template {
     /// Logical interface.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct LogicalInterface {
         /// Interface name.
         /// This is not a globally unique identifier.
         /// Name is unique only inside the ServerNetworkTemplate. This is of syntax
-        /// <bond><interface_type_index><bond_mode> or <nic><interface_type_index>
+        /// <bond>\<interface_type_index>\<bond_mode> or <nic>\<interface_type_index>
         /// and forms part of the network template name.
         #[prost(string, tag = "1")]
         pub name: ::prost::alloc::string::String,
@@ -1554,7 +1554,7 @@ pub struct NfsShare {
 /// Nested message and enum types in `NfsShare`.
 pub mod nfs_share {
     /// Represents an 'access point' for the share.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AllowedClient {
         /// The network the access point sits on.
         #[prost(string, tag = "1")]
@@ -1725,14 +1725,14 @@ pub mod nfs_share {
     }
 }
 /// Message for requesting NFS share information.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetNfsShareRequest {
     /// Required. Name of the resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message for requesting a list of NFS shares.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNfsSharesRequest {
     /// Required. Parent value for ListNfsSharesRequest.
     #[prost(string, tag = "1")]
@@ -1772,13 +1772,13 @@ pub struct UpdateNfsShareRequest {
     pub nfs_share: ::core::option::Option<NfsShare>,
     /// The list of fields to update.
     /// The only currently supported fields are:
-    ///    `labels`
-    ///    `allowed_clients`
+    /// `labels`
+    /// `allowed_clients`
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Message requesting rename of a server.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RenameNfsShareRequest {
     /// Required. The `name` field is used to identify the nfsshare.
     /// Format: projects/{project}/locations/{location}/nfsshares/{nfsshare}
@@ -1799,14 +1799,14 @@ pub struct CreateNfsShareRequest {
     pub nfs_share: ::core::option::Option<NfsShare>,
 }
 /// Message for deleting an NFS share.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteNfsShareRequest {
     /// Required. The name of the NFS share to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Operation System image.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OsImage {
     /// Output only. OS Image's unique name.
     #[prost(string, tag = "1")]
@@ -1831,7 +1831,7 @@ pub struct OsImage {
     >,
 }
 /// Request for getting all available OS images.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListOsImagesRequest {
     /// Required. Parent value for ListProvisioningQuotasRequest.
     #[prost(string, tag = "1")]
@@ -2000,7 +2000,7 @@ pub struct SubmitProvisioningConfigResponse {
     pub provisioning_config: ::core::option::Option<ProvisioningConfig>,
 }
 /// A provisioning quota for a given project.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ProvisioningQuota {
     /// Output only. The name of the provisioning quota.
     #[prost(string, tag = "1")]
@@ -2074,14 +2074,14 @@ pub mod provisioning_quota {
         }
     }
     /// The quota of one asset type.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Quota {
         /// Instance quota.
         #[prost(message, tag = "6")]
         InstanceQuota(super::InstanceQuota),
     }
     /// Available quantity based on asset type.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Availability {
         /// Server count.
         #[prost(int64, tag = "7")]
@@ -2095,7 +2095,7 @@ pub mod provisioning_quota {
     }
 }
 /// Message for requesting the list of provisioning quotas.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListProvisioningQuotasRequest {
     /// Required. Parent value for ListProvisioningQuotasRequest.
     #[prost(string, tag = "1")]
@@ -2179,7 +2179,7 @@ pub struct InstanceConfig {
 /// Nested message and enum types in `InstanceConfig`.
 pub mod instance_config {
     /// A network.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct NetworkAddress {
         /// Id of the network to use, within the same ProvisioningConfig request.
         #[prost(string, tag = "1")]
@@ -2284,7 +2284,7 @@ pub struct VolumeConfig {
 /// Nested message and enum types in `VolumeConfig`.
 pub mod volume_config {
     /// A LUN(Logical Unit Number) range.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct LunRange {
         /// Number of LUNs to create.
         #[prost(int32, tag = "1")]
@@ -2294,7 +2294,7 @@ pub mod volume_config {
         pub size_gb: i32,
     }
     /// A NFS export entry.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct NfsExport {
         /// Network to use to publish the export.
         #[prost(string, tag = "1")]
@@ -2363,7 +2363,7 @@ pub mod volume_config {
             }
         }
         /// A client object.
-        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum Client {
             /// Either a single machine, identified by an ID, or a comma-separated
             /// list of machine IDs.
@@ -2505,7 +2505,7 @@ pub struct NetworkConfig {
 /// Nested message and enum types in `NetworkConfig`.
 pub mod network_config {
     /// A GCP vlan attachment.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct IntakeVlanAttachment {
         /// Identifier of the VLAN attachment.
         #[prost(string, tag = "1")]
@@ -2661,7 +2661,7 @@ pub mod network_config {
     }
 }
 /// A resource budget.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct InstanceQuota {
     /// Output only. The name of the instance quota.
     #[prost(string, tag = "1")]
@@ -2683,7 +2683,7 @@ pub struct InstanceQuota {
     pub available_machine_count: i32,
 }
 /// Request for GetProvisioningConfig.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetProvisioningConfigRequest {
     /// Required. Name of the ProvisioningConfig.
     #[prost(string, tag = "1")]
@@ -2719,7 +2719,7 @@ pub struct UpdateProvisioningConfigRequest {
     pub email: ::prost::alloc::string::String,
 }
 /// An SSH key, used for authorizing with the interactive serial console feature.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SshKey {
     /// Output only. The name of this SSH key.
     /// Currently, the only valid value for the location is "global".
@@ -2730,7 +2730,7 @@ pub struct SshKey {
     pub public_key: ::prost::alloc::string::String,
 }
 /// Message for listing the public SSH keys in a project.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSshKeysRequest {
     /// Required. The parent containing the SSH keys.
     /// Currently, the only valid value for the location is "global".
@@ -2755,7 +2755,7 @@ pub struct ListSshKeysResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Message for registering a public SSH key in a project.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateSshKeyRequest {
     /// Required. The parent containing the SSH keys.
     #[prost(string, tag = "1")]
@@ -2767,12 +2767,12 @@ pub struct CreateSshKeyRequest {
     /// of the key's resource name.
     ///
     /// This value must match the regex:
-    ///    \[a-zA-Z0-9@.\-_\]{1,64}
+    /// \[a-zA-Z0-9@.-\_\]{1,64}
     #[prost(string, tag = "3")]
     pub ssh_key_id: ::prost::alloc::string::String,
 }
 /// Message for deleting an SSH key from a project.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteSshKeyRequest {
     /// Required. The name of the SSH key to delete.
     /// Currently, the only valid value for the location is "global".
@@ -2780,7 +2780,7 @@ pub struct DeleteSshKeyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A snapshot of a volume. Only boot volumes can have snapshots.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct VolumeSnapshot {
     /// The name of the snapshot.
     #[prost(string, tag = "1")]
@@ -2849,14 +2849,14 @@ pub mod volume_snapshot {
     }
 }
 /// Message for requesting volume snapshot information.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetVolumeSnapshotRequest {
     /// Required. The name of the snapshot.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message for requesting a list of volume snapshots.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListVolumeSnapshotsRequest {
     /// Required. Parent value for ListVolumesRequest.
     #[prost(string, tag = "1")]
@@ -2883,14 +2883,14 @@ pub struct ListVolumeSnapshotsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for deleting named Volume snapshot.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteVolumeSnapshotRequest {
     /// Required. The name of the snapshot to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message for creating a volume snapshot.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateVolumeSnapshotRequest {
     /// Required. The volume to snapshot.
     #[prost(string, tag = "1")]
@@ -2900,7 +2900,7 @@ pub struct CreateVolumeSnapshotRequest {
     pub volume_snapshot: ::core::option::Option<VolumeSnapshot>,
 }
 /// Message for restoring a volume snapshot.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RestoreVolumeSnapshotRequest {
     /// Required. Name of the snapshot which will be used to restore its parent
     /// volume.
@@ -2908,7 +2908,7 @@ pub struct RestoreVolumeSnapshotRequest {
     pub volume_snapshot: ::prost::alloc::string::String,
 }
 /// Represents the metadata from a long-running operation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -2927,8 +2927,8 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user requested the cancellation
     /// of the operation. Operations that have been successfully cancelled
-    /// have [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+    /// have \[Operation.error\]\[\] value with a
+    /// \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -2937,7 +2937,7 @@ pub struct OperationMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// Response message from resetting a server.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResetInstanceResponse {}
 /// Generated client implementations.
 pub mod bare_metal_solution_client {
@@ -3054,7 +3054,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListInstances",
             );
@@ -3081,7 +3081,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetInstance",
             );
@@ -3111,7 +3111,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/UpdateInstance",
             );
@@ -3139,7 +3139,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/RenameInstance",
             );
@@ -3170,7 +3170,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ResetInstance",
             );
@@ -3200,7 +3200,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/StartInstance",
             );
@@ -3230,7 +3230,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/StopInstance",
             );
@@ -3262,7 +3262,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/EnableInteractiveSerialConsole",
             );
@@ -3294,7 +3294,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/DisableInteractiveSerialConsole",
             );
@@ -3324,7 +3324,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/DetachLun",
             );
@@ -3355,7 +3355,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListSSHKeys",
             );
@@ -3383,7 +3383,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/CreateSSHKey",
             );
@@ -3410,7 +3410,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/DeleteSSHKey",
             );
@@ -3440,7 +3440,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListVolumes",
             );
@@ -3467,7 +3467,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetVolume",
             );
@@ -3497,7 +3497,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/UpdateVolume",
             );
@@ -3525,7 +3525,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/RenameVolume",
             );
@@ -3556,7 +3556,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/EvictVolume",
             );
@@ -3586,7 +3586,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ResizeVolume",
             );
@@ -3616,7 +3616,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListNetworks",
             );
@@ -3647,7 +3647,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListNetworkUsage",
             );
@@ -3674,7 +3674,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetNetwork",
             );
@@ -3704,7 +3704,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/UpdateNetwork",
             );
@@ -3732,7 +3732,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/CreateVolumeSnapshot",
             );
@@ -3763,7 +3763,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/RestoreVolumeSnapshot",
             );
@@ -3791,7 +3791,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/DeleteVolumeSnapshot",
             );
@@ -3819,7 +3819,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetVolumeSnapshot",
             );
@@ -3851,7 +3851,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListVolumeSnapshots",
             );
@@ -3878,7 +3878,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetLun",
             );
@@ -3908,7 +3908,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListLuns",
             );
@@ -3939,7 +3939,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/EvictLun",
             );
@@ -3966,7 +3966,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetNfsShare",
             );
@@ -3996,7 +3996,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListNfsShares",
             );
@@ -4026,7 +4026,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/UpdateNfsShare",
             );
@@ -4056,7 +4056,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/CreateNfsShare",
             );
@@ -4084,7 +4084,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/RenameNfsShare",
             );
@@ -4114,7 +4114,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/DeleteNfsShare",
             );
@@ -4144,7 +4144,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListProvisioningQuotas",
             );
@@ -4174,7 +4174,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/SubmitProvisioningConfig",
             );
@@ -4204,7 +4204,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/GetProvisioningConfig",
             );
@@ -4234,7 +4234,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/CreateProvisioningConfig",
             );
@@ -4264,7 +4264,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/UpdateProvisioningConfig",
             );
@@ -4292,7 +4292,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/RenameNetwork",
             );
@@ -4322,7 +4322,7 @@ pub mod bare_metal_solution_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/ListOSImages",
             );

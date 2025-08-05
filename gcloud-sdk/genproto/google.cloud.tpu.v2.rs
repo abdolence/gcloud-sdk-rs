@@ -19,7 +19,7 @@ pub struct GuestAttributesValue {
     pub items: ::prost::alloc::vec::Vec<GuestAttributesEntry>,
 }
 /// A guest attributes namespace/key/value entry.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GuestAttributesEntry {
     /// Namespace for the guest attribute entry.
     #[prost(string, tag = "1")]
@@ -33,7 +33,7 @@ pub struct GuestAttributesEntry {
 }
 /// A node-attached disk resource.
 /// Next ID: 8;
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AttachedDisk {
     /// Specifies the full path to an existing disk.
     /// For example: "projects/my-project/zones/us-central1-c/disks/my-disk".
@@ -94,7 +94,7 @@ pub mod attached_disk {
     }
 }
 /// Sets the scheduling options for this node.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SchedulingConfig {
     /// Defines whether the node is preemptible.
     #[prost(bool, tag = "1")]
@@ -107,7 +107,7 @@ pub struct SchedulingConfig {
     pub spot: bool,
 }
 /// A network endpoint over which a TPU worker can be reached.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkEndpoint {
     /// The internal IP address of this network endpoint.
     #[prost(string, tag = "1")]
@@ -120,14 +120,14 @@ pub struct NetworkEndpoint {
     pub access_config: ::core::option::Option<AccessConfig>,
 }
 /// An access config attached to the TPU worker.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AccessConfig {
     /// Output only. An external IP address associated with the TPU worker.
     #[prost(string, tag = "1")]
     pub external_ip: ::prost::alloc::string::String,
 }
 /// Network related configurations.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NetworkConfig {
     /// The name of the network for the TPU node. It must be a preexisting Google
     /// Compute Engine network. If none is provided, "default" will be used.
@@ -154,7 +154,7 @@ pub struct NetworkConfig {
     pub queue_count: i32,
 }
 /// A service account.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServiceAccount {
     /// Email address of the service account. If empty, default Compute service
     /// account will be used.
@@ -532,7 +532,7 @@ pub mod queued_resource {
             /// Parameters to specify for multislice QueuedResource requests. This
             /// message must be populated in case of multislice requests instead of
             /// node_id.
-            #[derive(Clone, PartialEq, ::prost::Message)]
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
             pub struct MultisliceParams {
                 /// Required. Number of nodes with this spec. The system will attempt
                 /// to provision "node_count" nodes as part of the request.
@@ -548,7 +548,7 @@ pub mod queued_resource {
                 pub node_id_prefix: ::prost::alloc::string::String,
             }
             /// Either a node_id or multislice_params.
-            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
             pub enum NameStrategy {
                 /// Optional. The unqualified resource name. Should follow the
                 /// `^\[A-Za-z0-9_.~+%-\]+$` regex format. This is only specified when
@@ -563,10 +563,10 @@ pub mod queued_resource {
         }
     }
     /// Spot tier definition.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Spot {}
     /// Guaranteed tier definition.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Guaranteed {
         /// Optional. Defines the minimum duration of the guarantee. If specified,
         /// the requested resources will only be provisioned if they can be
@@ -575,7 +575,7 @@ pub mod queued_resource {
         pub min_duration: ::core::option::Option<::prost_types::Duration>,
     }
     /// Defines the policy of the QueuedRequest.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct QueueingPolicy {
         /// Time flexibility specification.
         #[prost(
@@ -589,7 +589,7 @@ pub mod queued_resource {
     /// Nested message and enum types in `QueueingPolicy`.
     pub mod queueing_policy {
         /// Time flexibility specification.
-        #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
         pub enum StartTimingConstraints {
             /// Optional. A relative time after which resources should not be created.
             /// If the request cannot be fulfilled by this time the request will be
@@ -621,7 +621,7 @@ pub mod queued_resource {
         Tpu(Tpu),
     }
     /// Tier specifies the required tier.
-    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Tier {
         /// Optional. The Spot tier.
         #[prost(message, tag = "3")]
@@ -649,13 +649,13 @@ pub struct QueuedResourceState {
 /// Nested message and enum types in `QueuedResourceState`.
 pub mod queued_resource_state {
     /// Further data for the creating state.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct CreatingData {}
     /// Further data for the accepted state.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AcceptedData {}
     /// Further data for the provisioning state.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ProvisioningData {}
     /// Further data for the failed state.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -666,16 +666,16 @@ pub mod queued_resource_state {
         pub error: ::core::option::Option<super::super::super::super::rpc::Status>,
     }
     /// Further data for the deleting state.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DeletingData {}
     /// Further data for the active state.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ActiveData {}
     /// Further data for the suspending state.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SuspendingData {}
     /// Further data for the suspended state.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SuspendedData {}
     /// Output only state of the request
     #[derive(
@@ -839,8 +839,8 @@ pub mod queued_resource_state {
         SuspendedData(SuspendedData),
     }
 }
-/// Request for [ListNodes][google.cloud.tpu.v2.Tpu.ListNodes].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Request for \[ListNodes\]\[google.cloud.tpu.v2.Tpu.ListNodes\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNodesRequest {
     /// Required. The parent resource name.
     #[prost(string, tag = "1")]
@@ -852,7 +852,7 @@ pub struct ListNodesRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response for [ListNodes][google.cloud.tpu.v2.Tpu.ListNodes].
+/// Response for \[ListNodes\]\[google.cloud.tpu.v2.Tpu.ListNodes\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNodesResponse {
     /// The listed nodes.
@@ -865,14 +865,14 @@ pub struct ListNodesResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Request for [GetNode][google.cloud.tpu.v2.Tpu.GetNode].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Request for \[GetNode\]\[google.cloud.tpu.v2.Tpu.GetNode\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetNodeRequest {
     /// Required. The resource name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for [CreateNode][google.cloud.tpu.v2.Tpu.CreateNode].
+/// Request for \[CreateNode\]\[google.cloud.tpu.v2.Tpu.CreateNode\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNodeRequest {
     /// Required. The parent resource name.
@@ -885,33 +885,33 @@ pub struct CreateNodeRequest {
     #[prost(message, optional, tag = "3")]
     pub node: ::core::option::Option<Node>,
 }
-/// Request for [DeleteNode][google.cloud.tpu.v2.Tpu.DeleteNode].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Request for \[DeleteNode\]\[google.cloud.tpu.v2.Tpu.DeleteNode\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteNodeRequest {
     /// Required. The resource name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for [StopNode][google.cloud.tpu.v2.Tpu.StopNode].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Request for \[StopNode\]\[google.cloud.tpu.v2.Tpu.StopNode\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StopNodeRequest {
     /// Required. The resource name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for [StartNode][google.cloud.tpu.v2.Tpu.StartNode].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Request for \[StartNode\]\[google.cloud.tpu.v2.Tpu.StartNode\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StartNodeRequest {
     /// Required. The resource name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for [UpdateNode][google.cloud.tpu.v2.Tpu.UpdateNode].
+/// Request for \[UpdateNode\]\[google.cloud.tpu.v2.Tpu.UpdateNode\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateNodeRequest {
-    /// Required. Mask of fields from [Node][Tpu.Node] to update.
-    /// Supported fields: [description, tags, labels, metadata,
-    /// network_config.enable_external_ips].
+    /// Required. Mask of fields from \[Node\]\[Tpu.Node\] to update.
+    /// Supported fields: \[description, tags, labels, metadata,
+    /// network_config.enable_external_ips\].
     #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. The node. Only fields specified in update_mask are updated.
@@ -919,8 +919,8 @@ pub struct UpdateNodeRequest {
     pub node: ::core::option::Option<Node>,
 }
 /// Request for
-/// [ListQueuedResources][google.cloud.tpu.v2.Tpu.ListQueuedResources].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[ListQueuedResources\]\[google.cloud.tpu.v2.Tpu.ListQueuedResources\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListQueuedResourcesRequest {
     /// Required. The parent resource name.
     #[prost(string, tag = "1")]
@@ -934,7 +934,7 @@ pub struct ListQueuedResourcesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response for
-/// [ListQueuedResources][google.cloud.tpu.v2.Tpu.ListQueuedResources].
+/// \[ListQueuedResources\]\[google.cloud.tpu.v2.Tpu.ListQueuedResources\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListQueuedResourcesResponse {
     /// The listed queued resources.
@@ -947,15 +947,15 @@ pub struct ListQueuedResourcesResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Request for [GetQueuedResource][google.cloud.tpu.v2.Tpu.GetQueuedResource]
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Request for \[GetQueuedResource\]\[google.cloud.tpu.v2.Tpu.GetQueuedResource\]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetQueuedResourceRequest {
     /// Required. The resource name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for
-/// [CreateQueuedResource][google.cloud.tpu.v2.Tpu.CreateQueuedResource].
+/// \[CreateQueuedResource\]\[google.cloud.tpu.v2.Tpu.CreateQueuedResource\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateQueuedResourceRequest {
     /// Required. The parent resource name.
@@ -973,8 +973,8 @@ pub struct CreateQueuedResourceRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for
-/// [DeleteQueuedResource][google.cloud.tpu.v2.Tpu.DeleteQueuedResource].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[DeleteQueuedResource\]\[google.cloud.tpu.v2.Tpu.DeleteQueuedResource\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteQueuedResourceRequest {
     /// Required. The resource name.
     #[prost(string, tag = "1")]
@@ -991,31 +991,31 @@ pub struct DeleteQueuedResourceRequest {
     pub force: bool,
 }
 /// Request for
-/// [ResetQueuedResource][google.cloud.tpu.v2.Tpu.ResetQueuedResource].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[ResetQueuedResource\]\[google.cloud.tpu.v2.Tpu.ResetQueuedResource\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResetQueuedResourceRequest {
     /// Required. The name of the queued resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The per-product per-project service identity for Cloud TPU service.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServiceIdentity {
     /// The email address of the service identity.
     #[prost(string, tag = "1")]
     pub email: ::prost::alloc::string::String,
 }
 /// Request for
-/// [GenerateServiceIdentity][google.cloud.tpu.v2.Tpu.GenerateServiceIdentity].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[GenerateServiceIdentity\]\[google.cloud.tpu.v2.Tpu.GenerateServiceIdentity\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateServiceIdentityRequest {
     /// Required. The parent resource name.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
 }
 /// Response for
-/// [GenerateServiceIdentity][google.cloud.tpu.v2.Tpu.GenerateServiceIdentity].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[GenerateServiceIdentity\]\[google.cloud.tpu.v2.Tpu.GenerateServiceIdentity\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GenerateServiceIdentityResponse {
     /// ServiceIdentity that was created or retrieved.
     #[prost(message, optional, tag = "1")]
@@ -1034,16 +1034,16 @@ pub struct AcceleratorType {
     #[prost(message, repeated, tag = "3")]
     pub accelerator_configs: ::prost::alloc::vec::Vec<AcceleratorConfig>,
 }
-/// Request for [GetAcceleratorType][google.cloud.tpu.v2.Tpu.GetAcceleratorType].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Request for \[GetAcceleratorType\]\[google.cloud.tpu.v2.Tpu.GetAcceleratorType\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetAcceleratorTypeRequest {
     /// Required. The resource name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for
-/// [ListAcceleratorTypes][google.cloud.tpu.v2.Tpu.ListAcceleratorTypes].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[ListAcceleratorTypes\]\[google.cloud.tpu.v2.Tpu.ListAcceleratorTypes\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAcceleratorTypesRequest {
     /// Required. The parent resource name.
     #[prost(string, tag = "1")]
@@ -1062,7 +1062,7 @@ pub struct ListAcceleratorTypesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response for
-/// [ListAcceleratorTypes][google.cloud.tpu.v2.Tpu.ListAcceleratorTypes].
+/// \[ListAcceleratorTypes\]\[google.cloud.tpu.v2.Tpu.ListAcceleratorTypes\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAcceleratorTypesResponse {
     /// The listed nodes.
@@ -1076,7 +1076,7 @@ pub struct ListAcceleratorTypesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A runtime version that a Node can be configured with.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct RuntimeVersion {
     /// The resource name.
     #[prost(string, tag = "1")]
@@ -1085,16 +1085,16 @@ pub struct RuntimeVersion {
     #[prost(string, tag = "2")]
     pub version: ::prost::alloc::string::String,
 }
-/// Request for [GetRuntimeVersion][google.cloud.tpu.v2.Tpu.GetRuntimeVersion].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Request for \[GetRuntimeVersion\]\[google.cloud.tpu.v2.Tpu.GetRuntimeVersion\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetRuntimeVersionRequest {
     /// Required. The resource name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for
-/// [ListRuntimeVersions][google.cloud.tpu.v2.Tpu.ListRuntimeVersions].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// \[ListRuntimeVersions\]\[google.cloud.tpu.v2.Tpu.ListRuntimeVersions\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListRuntimeVersionsRequest {
     /// Required. The parent resource name.
     #[prost(string, tag = "1")]
@@ -1113,7 +1113,7 @@ pub struct ListRuntimeVersionsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response for
-/// [ListRuntimeVersions][google.cloud.tpu.v2.Tpu.ListRuntimeVersions].
+/// \[ListRuntimeVersions\]\[google.cloud.tpu.v2.Tpu.ListRuntimeVersions\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRuntimeVersionsResponse {
     /// The listed nodes.
@@ -1126,8 +1126,8 @@ pub struct ListRuntimeVersionsResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Metadata describing an [Operation][google.longrunning.Operation]
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Metadata describing an \[Operation\]\[google.longrunning.Operation\]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OperationMetadata {
     /// The time the operation was created.
     #[prost(message, optional, tag = "1")]
@@ -1153,7 +1153,7 @@ pub struct OperationMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// A Symptom instance.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Symptom {
     /// Timestamp when the Symptom is created.
     #[prost(message, optional, tag = "1")]
@@ -1232,8 +1232,8 @@ pub mod symptom {
         }
     }
 }
-/// Request for [GetGuestAttributes][google.cloud.tpu.v2.Tpu.GetGuestAttributes].
-#[derive(Clone, PartialEq, ::prost::Message)]
+/// Request for \[GetGuestAttributes\]\[google.cloud.tpu.v2.Tpu.GetGuestAttributes\].
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetGuestAttributesRequest {
     /// Required. The resource name.
     #[prost(string, tag = "1")]
@@ -1247,7 +1247,7 @@ pub struct GetGuestAttributesRequest {
     pub worker_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Response for
-/// [GetGuestAttributes][google.cloud.tpu.v2.Tpu.GetGuestAttributes].
+/// \[GetGuestAttributes\]\[google.cloud.tpu.v2.Tpu.GetGuestAttributes\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGuestAttributesResponse {
     /// The guest attributes for the TPU workers.
@@ -1255,7 +1255,7 @@ pub struct GetGuestAttributesResponse {
     pub guest_attributes: ::prost::alloc::vec::Vec<GuestAttributes>,
 }
 /// A TPU accelerator configuration.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AcceleratorConfig {
     /// Required. Type of TPU.
     #[prost(enumeration = "accelerator_config::Type", tag = "1")]
@@ -1327,7 +1327,7 @@ pub mod accelerator_config {
     }
 }
 /// A set of Shielded Instance options.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ShieldedInstanceConfig {
     /// Defines whether the instance has Secure Boot enabled.
     #[prost(bool, tag = "1")]
@@ -1443,7 +1443,7 @@ pub mod tpu_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tpu.v2.Tpu/ListNodes",
             );
@@ -1465,7 +1465,7 @@ pub mod tpu_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tpu.v2.Tpu/GetNode",
             );
@@ -1490,7 +1490,7 @@ pub mod tpu_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tpu.v2.Tpu/CreateNode",
             );
@@ -1515,7 +1515,7 @@ pub mod tpu_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tpu.v2.Tpu/DeleteNode",
             );
@@ -1540,7 +1540,7 @@ pub mod tpu_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tpu.v2.Tpu/StopNode",
             );
@@ -1565,7 +1565,7 @@ pub mod tpu_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tpu.v2.Tpu/StartNode",
             );
@@ -1590,7 +1590,7 @@ pub mod tpu_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tpu.v2.Tpu/UpdateNode",
             );
@@ -1615,7 +1615,7 @@ pub mod tpu_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tpu.v2.Tpu/ListQueuedResources",
             );
@@ -1639,7 +1639,7 @@ pub mod tpu_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tpu.v2.Tpu/GetQueuedResource",
             );
@@ -1664,7 +1664,7 @@ pub mod tpu_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tpu.v2.Tpu/CreateQueuedResource",
             );
@@ -1691,7 +1691,7 @@ pub mod tpu_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tpu.v2.Tpu/DeleteQueuedResource",
             );
@@ -1718,7 +1718,7 @@ pub mod tpu_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tpu.v2.Tpu/ResetQueuedResource",
             );
@@ -1745,7 +1745,7 @@ pub mod tpu_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tpu.v2.Tpu/GenerateServiceIdentity",
             );
@@ -1772,7 +1772,7 @@ pub mod tpu_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tpu.v2.Tpu/ListAcceleratorTypes",
             );
@@ -1799,7 +1799,7 @@ pub mod tpu_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tpu.v2.Tpu/GetAcceleratorType",
             );
@@ -1826,7 +1826,7 @@ pub mod tpu_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tpu.v2.Tpu/ListRuntimeVersions",
             );
@@ -1850,7 +1850,7 @@ pub mod tpu_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tpu.v2.Tpu/GetRuntimeVersion",
             );
@@ -1875,7 +1875,7 @@ pub mod tpu_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.tpu.v2.Tpu/GetGuestAttributes",
             );

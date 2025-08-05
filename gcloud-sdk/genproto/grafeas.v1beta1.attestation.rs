@@ -2,15 +2,14 @@
 /// An attestation wrapper with a PGP-compatible signature. This message only
 /// supports `ATTACHED` signatures, where the payload that is signed is included
 /// alongside the signature itself in the same file.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct PgpSignedAttestation {
     /// Required. The raw content of the signature, as output by GNU Privacy Guard
     /// (GPG) or equivalent. Since this message only supports attached signatures,
     /// the payload that was signed must be attached. While the signature format
     /// supported is dependent on the verification implementation, currently only
     /// ASCII-armored (`--armor` to gpg), non-clearsigned (`--sign` rather than
-    /// `--clearsign` to gpg) are supported. Concretely, `gpg --sign --armor
-    /// --output=signature.gpg payload.json` will create the signature content
+    /// `--clearsign` to gpg) are supported. Concretely, `gpg --sign --armor  --output=signature.gpg payload.json` will create the signature content
     /// expected in this field in `signature.gpg` for the `payload.json`
     /// attestation payload.
     #[prost(string, tag = "1")]
@@ -84,7 +83,7 @@ pub mod pgp_signed_attestation {
     /// different ID that would verify the signature. Note that this ID should also
     /// be present in the signature content above, but that is not expected to be
     /// used by the verifier.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum KeyId {
         /// The cryptographic fingerprint of the key used to generate the signature,
         /// as output by, e.g. `gpg --list-keys`. This should be the version 4, full
@@ -94,13 +93,15 @@ pub mod pgp_signed_attestation {
         /// abbreviated key IDs, but only the full fingerprint is guaranteed to work.
         /// In gpg, the full fingerprint can be retrieved from the `fpr` field
         /// returned when calling --list-keys with --with-colons.  For example:
-        /// ```
+        ///
+        /// ```text,
         /// gpg --with-colons --with-fingerprint --force-v4-certs \
-        ///      --list-keys attester@example.com
+        ///     --list-keys attester@example.com
         /// tru::1:1513631572:0:3:1:5
         /// pub:...<SNIP>...
         /// fpr:::::::::24FF6481B76AC91E66A00AC657A93A81EF3AE6FB:
         /// ```
+        ///
         /// Above, the fingerprint is `24FF6481B76AC91E66A00AC657A93A81EF3AE6FB`.
         #[prost(string, tag = "2")]
         PgpKeyId(::prost::alloc::string::String),
@@ -183,7 +184,7 @@ pub mod generic_signed_attestation {
 /// to attach an occurrence to a given note. It also provides a single point of
 /// lookup to find all attached attestation occurrences, even if they don't all
 /// live in the same project.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Authority {
     /// Hint hints at the purpose of the attestation authority.
     #[prost(message, optional, tag = "1")]
@@ -198,7 +199,7 @@ pub mod authority {
     /// output. Note that these hints should not be used to look up authorities in
     /// security sensitive contexts, such as when looking up attestations to
     /// verify.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Hint {
         /// Required. The human readable name of this attestation authority, for
         /// example "qa".

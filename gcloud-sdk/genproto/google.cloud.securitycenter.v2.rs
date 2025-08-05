@@ -38,8 +38,7 @@ pub struct Access {
     /// principals. For most identities, the format is
     /// `principal://iam.googleapis.com/{identity pool name}/subject/{subject}`.
     /// Some GKE identities, such as GKE_WORKLOAD, FREEFORM, and GKE_HUB_WORKLOAD,
-    /// still use the legacy format `serviceAccount:{identity pool
-    /// name}\[{subject}\]`.
+    /// still use the legacy format `serviceAccount:{identity pool  name}\[{subject}\]`.
     #[prost(string, tag = "8")]
     pub principal_subject: ::prost::alloc::string::String,
     /// The name of the service account key that was used to create or exchange
@@ -47,7 +46,6 @@ pub struct Access {
     /// This is a scheme-less URI full resource name. For example:
     ///
     /// "//iam.googleapis.com/projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}/keys/{key}".
-    ///
     #[prost(string, tag = "9")]
     pub service_account_key_name: ::prost::alloc::string::String,
     /// The identity delegation history of an authenticated service account that
@@ -68,7 +66,7 @@ pub struct Access {
     pub user_name: ::prost::alloc::string::String,
 }
 /// Identity delegation history of an authenticated service account.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ServiceAccountDelegationInfo {
     /// The email address of a Google account.
     #[prost(string, tag = "1")]
@@ -76,29 +74,28 @@ pub struct ServiceAccountDelegationInfo {
     /// A string representing the principal_subject associated with the identity.
     /// As compared to `principal_email`, supports principals that aren't
     /// associated with email addresses, such as third party principals. For most
-    /// identities, the format will be `principal://iam.googleapis.com/{identity
-    /// pool name}/subjects/{subject}` except for some GKE identities
+    /// identities, the format will be `principal://iam.googleapis.com/{identity  pool name}/subjects/{subject}` except for some GKE identities
     /// (GKE_WORKLOAD, FREEFORM, GKE_HUB_WORKLOAD) that are still in the legacy
     /// format `serviceAccount:{identity pool name}\[{subject}\]`
     #[prost(string, tag = "2")]
     pub principal_subject: ::prost::alloc::string::String,
 }
 /// Represents a geographical location for a given access.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Geolocation {
     /// A CLDR.
     #[prost(string, tag = "1")]
     pub region_code: ::prost::alloc::string::String,
 }
 /// Details about resources affected by this finding.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AffectedResources {
     /// The count of resources affected by the finding.
     #[prost(int64, tag = "1")]
     pub count: i64,
 }
 /// Contains information about the AI model associated with the finding.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AiModel {
     /// The name of the AI model, for example, "gemini:1.0.0".
     #[prost(string, tag = "1")]
@@ -169,7 +166,7 @@ pub mod ai_model {
     }
 }
 /// Represents an application associated with a finding.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Application {
     /// The base URI that identifies the network location of the application in
     /// which the vulnerability was detected. For example, `<http://example.com`.>
@@ -263,7 +260,7 @@ pub mod attack_exposure {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttackPath {
     /// The attack path name, for example,
-    ///   `organizations/12/simulations/34/valuedResources/56/attackPaths/78`
+    /// `organizations/12/simulations/34/valuedResources/56/attackPaths/78`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// A list of nodes that exist in this attack path.
@@ -306,7 +303,7 @@ pub mod attack_path {
     /// Nested message and enum types in `AttackPathNode`.
     pub mod attack_path_node {
         /// A finding that is associated with this node in the attack path.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct PathNodeAssociatedFinding {
             /// Canonical name of the associated findings. Example:
             /// `organizations/123/sources/456/findings/789`
@@ -395,7 +392,7 @@ pub mod attack_path {
     }
     /// Represents a connection between a source node and a destination node in
     /// this attack path.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AttackPathEdge {
         /// The attack node uuid of the source node.
         #[prost(string, tag = "1")]
@@ -406,7 +403,7 @@ pub mod attack_path {
     }
 }
 /// Information related to Google Cloud Backup and DR Service findings.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BackupDisasterRecovery {
     /// The name of a Backup and DR template which comprises one or more backup
     /// policies. See the [Backup and DR
@@ -468,16 +465,19 @@ pub struct BackupDisasterRecovery {
     pub backup_create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Configures how to deliver Findings to BigQuery Instance.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BigQueryExport {
     /// Identifier. The relative resource name of this export. See:
     /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name.>
     /// The following list shows some examples:
     ///
-    /// +
+    /// *
+    ///
     /// `organizations/{organization_id}/locations/{location_id}/bigQueryExports/{export_id}`
-    /// + `folders/{folder_id}/locations/{location_id}/bigQueryExports/{export_id}`
-    /// +
+    ///
+    /// * `folders/{folder_id}/locations/{location_id}/bigQueryExports/{export_id}`
+    /// *
+    ///
     /// `projects/{project_id}/locations/{location_id}/bigQueryExports/{export_id}`
     ///
     /// This field is provided in responses, and is ignored when provided in create
@@ -512,7 +512,7 @@ pub struct BigQueryExport {
     /// The dataset to write findings' updates to. Its format is
     /// "projects/\[project_id\]/datasets/\[bigquery_dataset_id\]".
     /// BigQuery dataset unique ID  must contain only letters (a-z, A-Z), numbers
-    /// (0-9), or underscores (_).
+    /// (0-9), or underscores (\_).
     #[prost(string, tag = "4")]
     pub dataset: ::prost::alloc::string::String,
     /// Output only. The time at which the BigQuery export was created.
@@ -538,7 +538,7 @@ pub struct BigQueryExport {
 /// Contains details about a chokepoint, which is a resource or resource group
 /// where high-risk attack paths converge, based on \[attack path simulations\]
 /// (<https://cloud.google.com/security-command-center/docs/attack-exposure-learn#attack_path_simulations>).
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Chokepoint {
     /// List of resource names of findings associated with this chokepoint.
     /// For example, organizations/123/sources/456/findings/789.
@@ -580,7 +580,7 @@ pub struct CloudArmor {
 /// Information about the [Google Cloud Armor security
 /// policy](<https://cloud.google.com/armor/docs/security-policy-overview>)
 /// relevant to the finding.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SecurityPolicy {
     /// The name of the Google Cloud Armor security policy, for example,
     /// "my-security-policy".
@@ -626,7 +626,7 @@ pub struct AdaptiveProtection {
     pub confidence: f64,
 }
 /// Information about DDoS attack volume and classification.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Attack {
     /// Total PPS (packets per second) volume of attack.
     #[prost(int64, tag = "4")]
@@ -650,7 +650,7 @@ pub struct Attack {
 }
 /// The [data profile](<https://cloud.google.com/dlp/docs/data-profiles>)
 /// associated with the finding.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloudDlpDataProfile {
     /// Name of the data profile, for example,
     /// `projects/123/locations/europe/tableProfiles/8383929`.
@@ -709,7 +709,7 @@ pub mod cloud_dlp_data_profile {
 /// Details about the Cloud Data Loss Prevention (Cloud DLP) [inspection
 /// job](<https://cloud.google.com/dlp/docs/concepts-job-triggers>) that produced
 /// the finding.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloudDlpInspection {
     /// Name of the inspection job, for example,
     /// `projects/123/locations/europe/dlpJobs/i-8383929`.
@@ -730,7 +730,7 @@ pub struct CloudDlpInspection {
 }
 /// Contains compliance information about a security standard indicating unmet
 /// recommendations.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Compliance {
     /// Industry-wide compliance standards or benchmarks, such as CIS, PCI, and
     /// OWASP.
@@ -744,7 +744,7 @@ pub struct Compliance {
     pub ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Contains information about the IP connection associated with the finding.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Connection {
     /// Destination IP address. Not present for sockets that are listening and not
     /// connected.
@@ -830,7 +830,7 @@ pub struct ContactDetails {
     pub contacts: ::prost::alloc::vec::Vec<Contact>,
 }
 /// The email address of a contact.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Contact {
     /// An email address. For example, "`person123@company.com`".
     #[prost(string, tag = "1")]
@@ -840,7 +840,7 @@ pub struct Contact {
 /// fields to support filtering with the `contains()` function. For more
 /// information, see [Filtering on array-type
 /// fields](<https://cloud.google.com/security-command-center/docs/how-to-api-list-findings#array-contains-filtering>).
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Label {
     /// Name of the label.
     #[prost(string, tag = "1")]
@@ -872,7 +872,7 @@ pub struct Container {
 }
 /// Details about a data access attempt made by a principal not authorized under
 /// applicable data security policy.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataAccessEvent {
     /// Unique identifier for data access event.
     #[prost(string, tag = "1")]
@@ -941,7 +941,7 @@ pub mod data_access_event {
 /// Details about a data flow event, in which either the data is moved to or is
 /// accessed from a non-compliant geo-location, as defined in the applicable data
 /// security policy.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataFlowEvent {
     /// Unique identifier for data flow event.
     #[prost(string, tag = "1")]
@@ -1019,7 +1019,7 @@ pub mod data_flow_event {
 /// types: maximum storage length (max TTL) and minimum storage length (min TTL).
 /// Both are aimed at helping organizations meet regulatory and data management
 /// commitments.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DataRetentionDeletionEvent {
     /// Timestamp indicating when the event was detected.
     #[prost(message, optional, tag = "2")]
@@ -1091,7 +1091,7 @@ pub mod data_retention_deletion_event {
 /// name](<https://google.aip.dev/122#full-resource-names>) populated because these
 /// resource types, such as Cloud SQL databases, are not yet supported by Cloud
 /// Asset Inventory. In these cases only the display name is provided.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Database {
     /// Some database resources may not have the [full resource
     /// name](<https://google.aip.dev/122#full-resource-names>) populated because
@@ -1124,7 +1124,7 @@ pub struct Database {
     pub version: ::prost::alloc::string::String,
 }
 /// Contains information about the disk associated with the finding.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Disk {
     /// The name of the disk, for example,
     /// "<https://www.googleapis.com/compute/v1/projects/{project-id}/zones/{zone-id}/disks/{disk-id}".>
@@ -1151,7 +1151,7 @@ pub struct Exfiltration {
     pub total_exfiltrated_bytes: i64,
 }
 /// Resource where data was exfiltrated from or exfiltrated to.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExfilResource {
     /// The resource's [full resource
     /// name](<https://cloud.google.com/apis/design/resource_names#full_resource_name>).
@@ -1166,19 +1166,24 @@ pub struct ExfilResource {
     pub components: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Representation of third party SIEM/SOAR fields within SCC.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExternalSystem {
     /// Full resource name of the external system. The following list
     /// shows some examples:
     ///
-    /// + `organizations/1234/sources/5678/findings/123456/externalSystems/jira`
-    /// +
+    /// * `organizations/1234/sources/5678/findings/123456/externalSystems/jira`
+    /// *
+    ///
     /// `organizations/1234/sources/5678/locations/us/findings/123456/externalSystems/jira`
-    /// + `folders/1234/sources/5678/findings/123456/externalSystems/jira`
-    /// +
+    ///
+    /// * `folders/1234/sources/5678/findings/123456/externalSystems/jira`
+    /// *
+    ///
     /// `folders/1234/sources/5678/locations/us/findings/123456/externalSystems/jira`
-    /// + `projects/1234/sources/5678/findings/123456/externalSystems/jira`
-    /// +
+    ///
+    /// * `projects/1234/sources/5678/findings/123456/externalSystems/jira`
+    /// *
+    ///
     /// `projects/1234/sources/5678/locations/us/findings/123456/externalSystems/jira`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -1221,7 +1226,7 @@ pub struct ExternalSystem {
 pub mod external_system {
     /// Information about the ticket, if any, that is being used to track the
     /// resolution of the issue that is identified by this finding.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct TicketInfo {
         /// The identifier of the ticket in the ticket system.
         #[prost(string, tag = "1")]
@@ -1280,7 +1285,7 @@ pub struct File {
 /// Nested message and enum types in `File`.
 pub mod file {
     /// Path of the file in terms of underlying disk/partition identifiers.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct DiskPath {
         /// UUID of the partition (format
         /// <https://wiki.archlinux.org/title/persistent_block_device_naming#by-uuid>)
@@ -1292,7 +1297,7 @@ pub mod file {
         pub relative_path: ::prost::alloc::string::String,
     }
     /// Operation(s) performed on a file.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct FileOperation {
         /// The type of the operation
         #[prost(enumeration = "file_operation::OperationType", tag = "1")]
@@ -1359,7 +1364,7 @@ pub mod file {
 }
 /// Contains details about groups of which this finding is a member. A group is a
 /// collection of findings that are related in some way.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GroupMembership {
     /// Type of group.
     #[prost(enumeration = "group_membership::GroupType", tag = "1")]
@@ -1416,7 +1421,7 @@ pub mod group_membership {
 }
 /// Represents a particular IAM binding, which captures a member's role addition,
 /// removal, or state.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct IamBinding {
     /// The action that was performed on a Binding.
     #[prost(enumeration = "iam_binding::Action", tag = "1")]
@@ -1476,7 +1481,7 @@ pub mod iam_binding {
         }
     }
 }
-/// Represents what's commonly known as an _indicator of compromise_ (IoC) in
+/// Represents what's commonly known as an *indicator of compromise* (IoC) in
 /// computer forensics. This is an artifact observed on a network or in an
 /// operating system that, with high confidence, indicates a computer intrusion.
 /// For more information, see [Indicator of
@@ -1538,7 +1543,7 @@ pub mod indicator {
             }
         }
         /// A signature corresponding to a YARA rule.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct YaraRuleSignature {
             /// The name of the YARA rule.
             #[prost(string, tag = "5")]
@@ -1703,7 +1708,7 @@ pub mod ip_rule {
     /// Values are between 0 and 2^16-1. The max can be equal / must be not smaller
     /// than the min value. If min and max are equal this indicates that it is a
     /// single port.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PortRange {
         /// Minimum port value.
         #[prost(int64, tag = "1")]
@@ -1728,7 +1733,7 @@ pub struct Denied {
     pub ip_rules: ::prost::alloc::vec::Vec<IpRule>,
 }
 /// Describes a job
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Job {
     /// The fully-qualified name for a job.
     /// e.g. `projects/<project_id>/jobs/<job_id>`
@@ -1788,7 +1793,7 @@ impl JobState {
     }
 }
 /// Kernel mode rootkit signatures.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct KernelRootkit {
     /// Rootkit name, when available.
     #[prost(string, tag = "1")]
@@ -1882,7 +1887,7 @@ pub mod kubernetes {
         pub containers: ::prost::alloc::vec::Vec<super::Container>,
     }
     /// Kubernetes nodes associated with the finding.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Node {
         /// [Full resource name](<https://google.aip.dev/122#full-resource-names>) of
         /// the Compute Engine VM running the cluster node.
@@ -1900,7 +1905,7 @@ pub mod kubernetes {
         pub nodes: ::prost::alloc::vec::Vec<Node>,
     }
     /// Kubernetes Role or ClusterRole.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Role {
         /// Role type.
         #[prost(enumeration = "role::Kind", tag = "1")]
@@ -1976,7 +1981,7 @@ pub mod kubernetes {
         pub subjects: ::prost::alloc::vec::Vec<Subject>,
     }
     /// Represents a Kubernetes subject.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Subject {
         /// Authentication type for the subject.
         #[prost(enumeration = "subject::AuthType", tag = "1")]
@@ -2039,12 +2044,11 @@ pub mod kubernetes {
         }
     }
     /// Conveys information about a Kubernetes access review (such as one returned
-    /// by a [`kubectl auth
-    /// can-i`](<https://kubernetes.io/docs/reference/access-authn-authz/authorization/#checking-api-access>)
+    /// by a [`kubectl auth  can-i`](<https://kubernetes.io/docs/reference/access-authn-authz/authorization/#checking-api-access>)
     /// command) that was involved in a finding.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AccessReview {
-        /// The API group of the resource. "*" means all.
+        /// The API group of the resource. "\*" means all.
         #[prost(string, tag = "1")]
         pub group: ::prost::alloc::string::String,
         /// Namespace of the action being requested. Currently, there is no
@@ -2055,17 +2059,17 @@ pub mod kubernetes {
         /// The name of the resource being requested. Empty means all.
         #[prost(string, tag = "3")]
         pub name: ::prost::alloc::string::String,
-        /// The optional resource type requested. "*" means all.
+        /// The optional resource type requested. "\*" means all.
         #[prost(string, tag = "4")]
         pub resource: ::prost::alloc::string::String,
         /// The optional subresource type.
         #[prost(string, tag = "5")]
         pub subresource: ::prost::alloc::string::String,
         /// A Kubernetes resource API verb, like get, list, watch, create, update,
-        /// delete, proxy. "*" means all.
+        /// delete, proxy. "\*" means all.
         #[prost(string, tag = "6")]
         pub verb: ::prost::alloc::string::String,
-        /// The API version of the resource. "*" means all.
+        /// The API version of the resource. "\*" means all.
         #[prost(string, tag = "7")]
         pub version: ::prost::alloc::string::String,
     }
@@ -2096,14 +2100,14 @@ pub mod kubernetes {
 }
 /// Contains information related to the load balancer associated with the
 /// finding.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LoadBalancer {
     /// The name of the load balancer associated with the finding.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// An individual entry in a log.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct LogEntry {
     /// The log entry.
     #[prost(oneof = "log_entry::LogEntry", tags = "1")]
@@ -2112,7 +2116,7 @@ pub struct LogEntry {
 /// Nested message and enum types in `LogEntry`.
 pub mod log_entry {
     /// The log entry.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum LogEntry {
         /// An individual entry in a log stored in Cloud Logging.
         #[prost(message, tag = "1")]
@@ -2121,7 +2125,7 @@ pub mod log_entry {
 }
 /// Metadata taken from a [Cloud Logging
 /// LogEntry](<https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry>)
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CloudLoggingEntry {
     /// A unique identifier for the log entry.
     #[prost(string, tag = "1")]
@@ -2142,7 +2146,7 @@ pub struct CloudLoggingEntry {
 }
 /// MITRE ATT&CK tactics and techniques related to this finding.
 /// See: <https://attack.mitre.org>
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MitreAttack {
     /// The MITRE ATT&CK tactic most closely represented by this finding, if any.
     #[prost(enumeration = "mitre_attack::Tactic", tag = "1")]
@@ -2970,7 +2974,7 @@ pub mod mitre_attack {
     }
 }
 /// Contains information about a VPC network associated with the finding.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Network {
     /// The name of the VPC network resource, for example,
     /// `//compute.googleapis.com/projects/my-project/global/networks/my-network`.
@@ -2980,7 +2984,7 @@ pub struct Network {
 /// Represents a Jupyter notebook IPYNB file, such as a [Colab Enterprise
 /// notebook](<https://cloud.google.com/colab/docs/introduction>) file, that is
 /// associated with a finding.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Notebook {
     /// The name of the notebook.
     #[prost(string, tag = "1")]
@@ -2996,7 +3000,7 @@ pub struct Notebook {
     pub notebook_update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Contains information about the org policies associated with the finding.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct OrgPolicy {
     /// Identifier. The resource name of the org policy.
     /// Example:
@@ -3048,7 +3052,7 @@ pub struct Process {
 }
 /// A name-value pair representing an environment variable used in an operating
 /// system process.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct EnvironmentVariable {
     /// Environment variable name as a JSON encoded string.
     #[prost(string, tag = "1")]
@@ -3067,8 +3071,9 @@ pub struct SecurityMarks {
     /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// The following list shows some examples:
     ///
-    /// + `organizations/{organization_id}/assets/{asset_id}/securityMarks`
-    /// +
+    /// * `organizations/{organization_id}/assets/{asset_id}/securityMarks`
+    /// *
+    ///
     /// `organizations/{organization_id}/sources/{source_id}/findings/{finding_id}/securityMarks`
     /// +
     /// `organizations/{organization_id}/sources/{source_id}/locations/{location}/findings/{finding_id}/securityMarks`
@@ -3077,11 +3082,11 @@ pub struct SecurityMarks {
     /// Mutable user specified security marks belonging to the parent resource.
     /// Constraints are as follows:
     ///
-    ///    * Keys and values are treated as case insensitive
-    ///    * Keys must be between 1 - 256 characters (inclusive)
-    ///    * Keys must be letters, numbers, underscores, or dashes
-    ///    * Values have leading and trailing whitespace trimmed, remaining
-    ///      characters must be between 1 - 4096 characters (inclusive)
+    /// * Keys and values are treated as case insensitive
+    /// * Keys must be between 1 - 256 characters (inclusive)
+    /// * Keys must be letters, numbers, underscores, or dashes
+    /// * Values have leading and trailing whitespace trimmed, remaining
+    ///   characters must be between 1 - 4096 characters (inclusive)
     #[prost(map = "string, string", tag = "2")]
     pub marks: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -3089,18 +3094,23 @@ pub struct SecurityMarks {
     >,
     /// The canonical name of the marks. The following list shows some examples:
     ///
-    /// + `organizations/{organization_id}/assets/{asset_id}/securityMarks`
-    /// +
+    /// * `organizations/{organization_id}/assets/{asset_id}/securityMarks`
+    /// *
+    ///
     /// `organizations/{organization_id}/sources/{source_id}/findings/{finding_id}/securityMarks`
     /// +
     /// `organizations/{organization_id}/sources/{source_id}/locations/{location}/findings/{finding_id}/securityMarks`
-    /// + `folders/{folder_id}/assets/{asset_id}/securityMarks`
-    /// +
+    ///
+    /// * `folders/{folder_id}/assets/{asset_id}/securityMarks`
+    /// *
+    ///
     /// `folders/{folder_id}/sources/{source_id}/findings/{finding_id}/securityMarks`
     /// +
     /// `folders/{folder_id}/sources/{source_id}/locations/{location}/findings/{finding_id}/securityMarks`
-    /// + `projects/{project_number}/assets/{asset_id}/securityMarks`
-    /// +
+    ///
+    /// * `projects/{project_number}/assets/{asset_id}/securityMarks`
+    /// *
+    ///
     /// `projects/{project_number}/sources/{source_id}/findings/{finding_id}/securityMarks`
     /// +
     /// `projects/{project_number}/sources/{source_id}/locations/{location}/findings/{finding_id}/securityMarks`
@@ -3149,7 +3159,7 @@ pub struct SecurityPosture {
 pub mod security_posture {
     /// The policy field that violates the deployed posture and its expected and
     /// detected values.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct PolicyDriftDetails {
         /// The name of the updated field, for example
         /// constraint.implementation.policy_rules\[0\].enforce
@@ -3196,7 +3206,7 @@ pub struct VertexAi {
 /// Nested message and enum types in `VertexAi`.
 pub mod vertex_ai {
     /// Vertex AI dataset associated with the finding.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Dataset {
         /// Resource name of the dataset, e.g.
         /// projects/{project}/locations/{location}/datasets/2094040236064505856
@@ -3211,7 +3221,7 @@ pub mod vertex_ai {
         pub source: ::prost::alloc::string::String,
     }
     /// Vertex AI training pipeline associated with the finding.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Pipeline {
         /// Resource name of the pipeline, e.g.
         /// projects/{project}/locations/{location}/trainingPipelines/5253428229225578496
@@ -3408,7 +3418,7 @@ pub mod cve {
     }
 }
 /// Additional Links
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Reference {
     /// Source of the reference e.g. NVD
     #[prost(string, tag = "1")]
@@ -3769,7 +3779,7 @@ pub mod cvssv3 {
     }
 }
 /// Package is a generic definition of a package.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Package {
     /// The name of the package where the vulnerability was detected.
     #[prost(string, tag = "1")]
@@ -3785,7 +3795,7 @@ pub struct Package {
     pub package_version: ::prost::alloc::string::String,
 }
 /// SecurityBulletin are notifications of vulnerabilities of Google products.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SecurityBulletin {
     /// ID of the bulletin corresponding to the vulnerability.
     #[prost(string, tag = "1")]
@@ -3823,30 +3833,40 @@ pub struct Finding {
     /// name](<https://cloud.google.com/apis/design/resource_names#relative_resource_name>)
     /// of the finding. The following list shows some examples:
     ///
-    /// +
+    /// *
+    ///
     /// `organizations/{organization_id}/sources/{source_id}/findings/{finding_id}`
     /// +
     /// `organizations/{organization_id}/sources/{source_id}/locations/{location_id}/findings/{finding_id}`
-    /// + `folders/{folder_id}/sources/{source_id}/findings/{finding_id}`
-    /// +
+    ///
+    /// * `folders/{folder_id}/sources/{source_id}/findings/{finding_id}`
+    /// *
+    ///
     /// `folders/{folder_id}/sources/{source_id}/locations/{location_id}/findings/{finding_id}`
-    /// + `projects/{project_id}/sources/{source_id}/findings/{finding_id}`
-    /// +
+    ///
+    /// * `projects/{project_id}/sources/{source_id}/findings/{finding_id}`
+    /// *
+    ///
     /// `projects/{project_id}/sources/{source_id}/locations/{location_id}/findings/{finding_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The canonical name of the finding. The following list shows
     /// some examples:
     ///
-    /// +
+    /// *
+    ///
     /// `organizations/{organization_id}/sources/{source_id}/findings/{finding_id}`
     /// +
     /// `organizations/{organization_id}/sources/{source_id}/locations/{location_id}/findings/{finding_id}`
-    /// + `folders/{folder_id}/sources/{source_id}/findings/{finding_id}`
-    /// +
+    ///
+    /// * `folders/{folder_id}/sources/{source_id}/findings/{finding_id}`
+    /// *
+    ///
     /// `folders/{folder_id}/sources/{source_id}/locations/{location_id}/findings/{finding_id}`
-    /// + `projects/{project_id}/sources/{source_id}/findings/{finding_id}`
-    /// +
+    ///
+    /// * `projects/{project_id}/sources/{source_id}/findings/{finding_id}`
+    /// *
+    ///
     /// `projects/{project_id}/sources/{source_id}/locations/{location_id}/findings/{finding_id}`
     ///
     /// The prefix is the closest CRM ancestor of the resource associated with the
@@ -3859,13 +3879,15 @@ pub struct Finding {
     /// This field is immutable after creation time. The following list shows some
     /// examples:
     ///
-    /// + `organizations/{organization_id}/sources/{source_id}`
-    /// + `folders/{folders_id}/sources/{source_id}`
-    /// + `projects/{projects_id}/sources/{source_id}`
-    /// +
+    /// * `organizations/{organization_id}/sources/{source_id}`
+    /// * `folders/{folders_id}/sources/{source_id}`
+    /// * `projects/{projects_id}/sources/{source_id}`
+    /// *
+    ///
     /// `organizations/{organization_id}/sources/{source_id}/locations/{location_id}`
-    /// + `folders/{folders_id}/sources/{source_id}/locations/{location_id}`
-    /// + `projects/{projects_id}/sources/{source_id}/locations/{location_id}`
+    ///
+    /// * `folders/{folders_id}/sources/{source_id}/locations/{location_id}`
+    /// * `projects/{projects_id}/sources/{source_id}/locations/{location_id}`
     #[prost(string, tag = "3")]
     pub parent: ::prost::alloc::string::String,
     /// Immutable. For findings on Google Cloud resources, the full resource
@@ -3976,18 +3998,20 @@ pub struct Finding {
     /// all the contacts that pertain. Please refer to:
     /// <https://cloud.google.com/resource-manager/docs/managing-notification-contacts#notification-categories>
     ///
-    ///      {
-    ///        "security": {
-    ///          "contacts": [
-    ///            {
-    ///              "email": "person1@company.com"
-    ///            },
-    ///            {
-    ///              "email": "person2@company.com"
-    ///            }
-    ///          ]
+    /// ```text
+    /// {
+    ///    "security": {
+    ///      "contacts": [
+    ///        {
+    ///          "email": "person1@company.com"
+    ///        },
+    ///        {
+    ///          "email": "person2@company.com"
     ///        }
-    ///      }
+    ///      ]
+    ///    }
+    /// }
+    /// ```
     #[prost(map = "string, message", tag = "26")]
     pub contacts: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -4138,7 +4162,7 @@ pub mod finding {
         /// Information about the static mute state. A static mute state overrides
         /// any dynamic mute rules that apply to this finding. The static mute state
         /// can be set by a static mute rule or by muting the finding directly.
-        #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+        #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct StaticMute {
             /// The static mute state. If the value is `MUTED` or `UNMUTED`, then the
             /// finding's overall mute state will have the same value.
@@ -4149,7 +4173,7 @@ pub mod finding {
             pub apply_time: ::core::option::Option<::prost_types::Timestamp>,
         }
         /// The record of a dynamic mute rule that matches the finding.
-        #[derive(Clone, PartialEq, ::prost::Message)]
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
         pub struct DynamicMuteRecord {
             /// The relative resource name of the mute rule, represented by a mute
             /// config, that created this record, for example
@@ -4426,7 +4450,7 @@ pub mod finding {
 }
 /// Message that contains the resource name and display name of a folder
 /// resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Folder {
     /// Full resource name of this folder. See:
     /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
@@ -4438,18 +4462,20 @@ pub struct Folder {
 }
 /// A mute config is a Cloud SCC resource that contains the configuration
 /// to mute create/update events of findings.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MuteConfig {
     /// Identifier. This field will be ignored if provided on config creation. The
     /// following list shows some examples of the format:
     ///
-    /// + `organizations/{organization}/muteConfigs/{mute_config}`
-    /// +
+    /// * `organizations/{organization}/muteConfigs/{mute_config}`
+    /// *
+    ///
     /// `organizations/{organization}locations/{location}//muteConfigs/{mute_config}`
-    /// + `folders/{folder}/muteConfigs/{mute_config}`
-    /// + `folders/{folder}/locations/{location}/muteConfigs/{mute_config}`
-    /// + `projects/{project}/muteConfigs/{mute_config}`
-    /// + `projects/{project}/locations/{location}/muteConfigs/{mute_config}`
+    ///
+    /// * `folders/{folder}/muteConfigs/{mute_config}`
+    /// * `folders/{folder}/locations/{location}/muteConfigs/{mute_config}`
+    /// * `projects/{project}/muteConfigs/{mute_config}`
+    /// * `projects/{project}/locations/{location}/muteConfigs/{mute_config}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// A description of the mute config.
@@ -4559,7 +4585,7 @@ pub mod mute_config {
 ///
 /// A notification config is a Cloud SCC resource that contains the configuration
 /// to send notifications for create/update events of findings, assets and etc.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct NotificationConfig {
     /// Identifier. The relative resource name of this notification config. See:
     /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
@@ -4595,7 +4621,7 @@ pub struct NotificationConfig {
 pub mod notification_config {
     /// The config for streaming-based notifications, which send each event as soon
     /// as it is detected.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct StreamingConfig {
         /// Expression that defines the filter to apply across create/update events
         /// of assets or findings as specified by the event type. The expression is a
@@ -4622,7 +4648,7 @@ pub mod notification_config {
         pub filter: ::prost::alloc::string::String,
     }
     /// The config for triggering notifications.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum NotifyConfig {
         /// The config for triggering streaming-based notifications.
         #[prost(message, tag = "5")]
@@ -4733,7 +4759,7 @@ pub mod aws_metadata {
     /// An organization is a collection of accounts that are centrally managed
     /// together using consolidated billing, organized hierarchically with
     /// organizational units (OUs), and controlled with policies.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AwsOrganization {
         /// The unique identifier (ID) for the organization. The regex pattern for an
         /// organization ID string requires "o-" followed by from 10 to 32 lowercase
@@ -4744,7 +4770,7 @@ pub mod aws_metadata {
     /// An Organizational Unit (OU) is a container of AWS accounts within a root of
     /// an organization. Policies that are attached to an OU apply to all accounts
     /// contained in that OU and in any child OUs.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AwsOrganizationalUnit {
         /// The unique identifier (ID) associated with this OU. The regex pattern for
         /// an organizational unit ID string requires "ou-" followed by from 4 to 32
@@ -4758,7 +4784,7 @@ pub mod aws_metadata {
         pub name: ::prost::alloc::string::String,
     }
     /// An AWS account that is a member of an organization.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AwsAccount {
         /// The unique identifier (ID) of the account, containing exactly 12 digits.
         #[prost(string, tag = "1")]
@@ -4791,7 +4817,7 @@ pub struct AzureMetadata {
 /// Nested message and enum types in `AzureMetadata`.
 pub mod azure_metadata {
     /// Represents an Azure management group.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AzureManagementGroup {
         /// The UUID of the Azure management group, for example,
         /// `20000000-0001-0000-0000-000000000000`.
@@ -4802,7 +4828,7 @@ pub mod azure_metadata {
         pub display_name: ::prost::alloc::string::String,
     }
     /// Represents an Azure subscription.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AzureSubscription {
         /// The UUID of the Azure subscription, for example,
         /// `291bba3f-e0a5-47bc-a099-3bdcb2a50a05`.
@@ -4813,7 +4839,7 @@ pub mod azure_metadata {
         pub display_name: ::prost::alloc::string::String,
     }
     /// Represents an Azure resource group.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AzureResourceGroup {
         /// The ID of the Azure resource group.
         #[prost(string, tag = "2")]
@@ -4823,7 +4849,7 @@ pub mod azure_metadata {
         pub name: ::prost::alloc::string::String,
     }
     /// Represents a Microsoft Entra tenant.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct AzureTenant {
         /// The ID of the Microsoft Entra tenant, for example,
         /// "a11aaa11-aa11-1aa1-11aa-1aaa11a".
@@ -4847,7 +4873,7 @@ pub struct ResourcePath {
 pub mod resource_path {
     /// A node within the resource path. Each node represents a resource within the
     /// resource hierarchy.
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct ResourcePathNode {
         /// The type of resource this node represents.
         #[prost(enumeration = "ResourcePathNodeType", tag = "1")]
@@ -5006,8 +5032,7 @@ pub struct ResourceValueConfig {
     pub resource_value: i32,
     /// Tag values combined with `AND` to check against.
     /// For Google Cloud resources, they are tag value IDs in the form of
-    /// "tagValues/123". Example: `[ "tagValues/123", "tagValues/456",
-    /// "tagValues/789" ]`
+    /// "tagValues/123". Example: `\[ "tagValues/123", "tagValues/456",  "tagValues/789" \]`
     /// <https://cloud.google.com/resource-manager/docs/tags/tags-creating-and-managing>
     #[prost(string, repeated, tag = "3")]
     pub tag_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -5058,7 +5083,7 @@ pub mod resource_value_config {
     /// Resource value mapping for Sensitive Data Protection findings
     /// If any of these mappings have a resource value that is not unspecified,
     /// the resource_value field will be ignored when reading this configuration.
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct SensitiveDataProtectionMapping {
         /// Resource value mapping for high-sensitivity Sensitive Data Protection
         /// findings
@@ -5115,8 +5140,8 @@ impl ResourceValue {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValuedResource {
     /// Valued resource name, for example,
-    ///   e.g.:
-    ///   `organizations/123/simulations/456/valuedResources/789`
+    /// e.g.:
+    /// `organizations/123/simulations/456/valuedResources/789`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The
@@ -5198,7 +5223,7 @@ pub mod valued_resource {
     }
 }
 /// Metadata about a ResourceValueConfig. For example, id and name.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ResourceValueConfigMetadata {
     /// Resource value config name
     #[prost(string, tag = "1")]
@@ -5228,7 +5253,7 @@ pub struct Simulation {
 /// is an entity or a mechanism that can produce a finding. A source is like a
 /// container of findings that come from the same scanner, logger, monitor, and
 /// other tools.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct Source {
     /// The relative resource name of this source. See:
     /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
@@ -5283,21 +5308,22 @@ pub struct BatchCreateResourceValueConfigsResponse {
 /// Request message for bulk findings update.
 ///
 /// Note:
+///
 /// 1. If multiple bulk update requests match the same resource, the order in
-/// which they get executed is not defined.
-/// 2. Once a bulk operation is started, there is no way to stop it.
-#[derive(Clone, PartialEq, ::prost::Message)]
+///    which they get executed is not defined.
+/// 1. Once a bulk operation is started, there is no way to stop it.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BulkMuteFindingsRequest {
     /// Required. The parent, at which bulk action needs to be applied. If no
     /// location is specified, findings are updated in global. The following list
     /// shows some examples:
     ///
-    /// + `organizations/\[organization_id\]`
-    /// + `organizations/\[organization_id\]/locations/\[location_id\]`
-    /// + `folders/\[folder_id\]`
-    /// + `folders/\[folder_id\]/locations/\[location_id\]`
-    /// + `projects/\[project_id\]`
-    /// + `projects/\[project_id\]/locations/\[location_id\]`
+    /// * `organizations/\[organization_id\]`
+    /// * `organizations/\[organization_id\]/locations/\[location_id\]`
+    /// * `folders/\[folder_id\]`
+    /// * `folders/\[folder_id\]/locations/\[location_id\]`
+    /// * `projects/\[project_id\]`
+    /// * `projects/\[project_id\]/locations/\[location_id\]`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Expression that identifies findings that should be updated.
@@ -5375,10 +5401,10 @@ pub mod bulk_mute_findings_request {
     }
 }
 /// The response to a BulkMute request. Contains the LRO information.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BulkMuteFindingsResponse {}
 /// Request message for creating a BigQuery export.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateBigQueryExportRequest {
     /// Required. The name of the parent resource of the new BigQuery export. Its
     /// format is `organizations/\[organization_id\]/locations/\[location_id\]`,
@@ -5418,7 +5444,7 @@ pub struct CreateFindingRequest {
     pub finding: ::core::option::Option<Finding>,
 }
 /// Request message for creating a mute config.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateMuteConfigRequest {
     /// Required. Resource name of the new mute configs's parent. Its format is
     /// `organizations/\[organization_id\]/locations/\[location_id\]`,
@@ -5437,7 +5463,7 @@ pub struct CreateMuteConfigRequest {
     pub mute_config_id: ::prost::alloc::string::String,
 }
 /// Request message for creating a notification config.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateNotificationConfigRequest {
     /// Required. Resource name of the new notification config's parent. Its format
     /// is `organizations/\[organization_id\]/locations/\[location_id\]`,
@@ -5468,7 +5494,7 @@ pub struct CreateResourceValueConfigRequest {
     pub resource_value_config: ::core::option::Option<ResourceValueConfig>,
 }
 /// Request message for creating a source.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateSourceRequest {
     /// Required. Resource name of the new source's parent. Its format should be
     /// `organizations/\[organization_id\]`.
@@ -5480,42 +5506,47 @@ pub struct CreateSourceRequest {
     pub source: ::core::option::Option<Source>,
 }
 /// Request message for deleting a BigQuery export.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteBigQueryExportRequest {
     /// Required. The name of the BigQuery export to delete. The following list
     /// shows some examples of the format:
     ///
-    /// +
+    /// *
+    ///
     /// `organizations/{organization}/locations/{location}/bigQueryExports/{export_id}`
-    /// + `folders/{folder}/locations/{location}/bigQueryExports/{export_id}`
-    /// + `projects/{project}/locations/{location}/bigQueryExports/{export_id}`
+    ///
+    /// * `folders/{folder}/locations/{location}/bigQueryExports/{export_id}`
+    /// * `projects/{project}/locations/{location}/bigQueryExports/{export_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for deleting a mute config. If no location is specified,
 /// default is global.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteMuteConfigRequest {
     /// Required. Name of the mute config to delete. The following list shows some
     /// examples of the format:
     ///
-    /// + `organizations/{organization}/muteConfigs/{config_id}`
-    /// +
+    /// * `organizations/{organization}/muteConfigs/{config_id}`
+    /// *
+    ///
     /// `organizations/{organization}/locations/{location}/muteConfigs/{config_id}`
-    /// + `folders/{folder}/muteConfigs/{config_id}`
-    /// + `folders/{folder}/locations/{location}/muteConfigs/{config_id}`
-    /// + `projects/{project}/muteConfigs/{config_id}`
-    /// + `projects/{project}/locations/{location}/muteConfigs/{config_id}`
+    ///
+    /// * `folders/{folder}/muteConfigs/{config_id}`
+    /// * `folders/{folder}/locations/{location}/muteConfigs/{config_id}`
+    /// * `projects/{project}/muteConfigs/{config_id}`
+    /// * `projects/{project}/locations/{location}/muteConfigs/{config_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for deleting a notification config.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteNotificationConfigRequest {
     /// Required. Name of the notification config to delete. The following list
     /// shows some examples of the format:
     ///
-    /// +
+    /// *
+    ///
     /// `organizations/\[organization_id\]/locations/\[location_id\]/notificationConfigs/\[config_id\]`
     /// +
     /// `folders/\[folder_id\]/locations/\[location_id\]notificationConfigs/\[config_id\]`
@@ -5525,14 +5556,14 @@ pub struct DeleteNotificationConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message to delete resource value config
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct DeleteResourceValueConfigRequest {
     /// Required. Name of the ResourceValueConfig to delete
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The destination big query dataset to export findings to.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct BigQueryDestination {
     /// Required. The relative resource name of the destination dataset, in the
     /// form projects/{projectId}/datasets/{datasetId}.
@@ -5540,7 +5571,7 @@ pub struct BigQueryDestination {
     pub dataset: ::prost::alloc::string::String,
 }
 /// The LRO metadata for a ExportFindings request.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportFindingsMetadata {
     /// Optional. Timestamp at which export was started
     #[prost(message, optional, tag = "1")]
@@ -5552,7 +5583,7 @@ pub struct ExportFindingsMetadata {
 /// Nested message and enum types in `ExportFindingsMetadata`.
 pub mod export_findings_metadata {
     /// The destination to export findings to.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Destination {
         /// Required. The destination big query dataset to export findings to.
         #[prost(message, tag = "2")]
@@ -5560,45 +5591,50 @@ pub mod export_findings_metadata {
     }
 }
 /// The response to a ExportFindings request. Contains the LRO information.
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ExportFindingsResponse {}
 /// Request message for retrieving a BigQuery export.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetBigQueryExportRequest {
     /// Required. Name of the BigQuery export to retrieve. The following list shows
     /// some examples of the format:
     ///
-    /// +
+    /// *
+    ///
     /// `organizations/{organization}/locations/{location}/bigQueryExports/{export_id}`
-    /// + `folders/{folder}/locations/{location}/bigQueryExports/{export_id}`
-    /// + `projects/{project}locations/{location}//bigQueryExports/{export_id}`
+    ///
+    /// * `folders/{folder}/locations/{location}/bigQueryExports/{export_id}`
+    /// * `projects/{project}locations/{location}//bigQueryExports/{export_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for retrieving a mute config. If no location is specified,
 /// default is global.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetMuteConfigRequest {
     /// Required. Name of the mute config to retrieve. The following list shows
     /// some examples of the format:
     ///
-    /// + `organizations/{organization}/muteConfigs/{config_id}`
-    /// +
+    /// * `organizations/{organization}/muteConfigs/{config_id}`
+    /// *
+    ///
     /// `organizations/{organization}/locations/{location}/muteConfigs/{config_id}`
-    /// + `folders/{folder}/muteConfigs/{config_id}`
-    /// + `folders/{folder}/locations/{location}/muteConfigs/{config_id}`
-    /// + `projects/{project}/muteConfigs/{config_id}`
-    /// + `projects/{project}/locations/{location}/muteConfigs/{config_id}`
+    ///
+    /// * `folders/{folder}/muteConfigs/{config_id}`
+    /// * `folders/{folder}/locations/{location}/muteConfigs/{config_id}`
+    /// * `projects/{project}/muteConfigs/{config_id}`
+    /// * `projects/{project}/locations/{location}/muteConfigs/{config_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for getting a notification config.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetNotificationConfigRequest {
     /// Required. Name of the notification config to get. The following list shows
     /// some examples of the format:
     ///
-    /// +
+    /// *
+    ///
     /// `organizations/\[organization_id\]/locations/\[location_id\]/notificationConfigs/\[config_id\]`
     /// +
     /// `folders/\[folder_id\]/locations/\[location_id\]/notificationConfigs/\[config_id\]`
@@ -5608,7 +5644,7 @@ pub struct GetNotificationConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message to get resource value config
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetResourceValueConfigRequest {
     /// Required. Name of the resource value config to retrieve. Its format is
     /// organizations/{organization}/resourceValueConfigs/{config_id}.
@@ -5616,7 +5652,7 @@ pub struct GetResourceValueConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for getting a source.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSourceRequest {
     /// Required. Relative resource name of the source. Its format is
     /// `organizations/\[organization_id\]/source/\[source_id\]`.
@@ -5624,29 +5660,31 @@ pub struct GetSourceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for grouping by findings.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GroupFindingsRequest {
     /// Required. Name of the source to groupBy. If no location is specified,
     /// finding is assumed to be in global.
-    ///   The following list shows some examples:
+    /// The following list shows some examples:
     ///
-    /// + `organizations/\[organization_id\]/sources/\[source_id\]`
-    /// +
+    /// * `organizations/\[organization_id\]/sources/\[source_id\]`
+    /// *
+    ///
     /// `organizations/\[organization_id\]/sources/\[source_id\]/locations/\[location_id\]`
-    /// + `folders/\[folder_id\]/sources/\[source_id\]`
-    /// + `folders/\[folder_id\]/sources/\[source_id\]/locations/\[location_id\]`
-    /// + `projects/\[project_id\]/sources/\[source_id\]`
-    /// + `projects/\[project_id\]/sources/\[source_id\]/locations/\[location_id\]`
+    ///
+    /// * `folders/\[folder_id\]/sources/\[source_id\]`
+    /// * `folders/\[folder_id\]/sources/\[source_id\]/locations/\[location_id\]`
+    /// * `projects/\[project_id\]/sources/\[source_id\]`
+    /// * `projects/\[project_id\]/sources/\[source_id\]/locations/\[location_id\]`
     ///
     /// To groupBy across all sources provide a source_id of `-`. The following
     /// list shows some examples:
     ///
-    /// + `organizations/{organization_id}/sources/-`
-    /// + `organizations/{organization_id}/sources/-/locations/\[location_id\]`
-    /// + `folders/{folder_id}/sources/-`
-    /// + `folders/{folder_id}/sources/-/locations/\[location_id\]`
-    /// + `projects/{project_id}/sources/-`
-    /// + `projects/{project_id}/sources/-/locations/\[location_id\]`
+    /// * `organizations/{organization_id}/sources/-`
+    /// * `organizations/{organization_id}/sources/-/locations/\[location_id\]`
+    /// * `folders/{folder_id}/sources/-`
+    /// * `folders/{folder_id}/sources/-/locations/\[location_id\]`
+    /// * `projects/{project_id}/sources/-`
+    /// * `projects/{project_id}/sources/-/locations/\[location_id\]`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Expression that defines the filter to apply across findings.
@@ -5657,8 +5695,8 @@ pub struct GroupFindingsRequest {
     /// Restrictions have the form `<field> <operator> <value>` and may have a `-`
     /// character in front of them to indicate negation. Examples include:
     ///
-    ///   * name
-    ///   * security_marks.marks.marka
+    /// * name
+    /// * security_marks.marks.marka
     ///
     /// The supported operators are:
     ///
@@ -5675,27 +5713,36 @@ pub struct GroupFindingsRequest {
     /// The following field and operator combinations are supported:
     ///
     /// * name: `=`
+    ///
     /// * parent: `=`, `:`
+    ///
     /// * resource_name: `=`, `:`
+    ///
     /// * state: `=`, `:`
+    ///
     /// * category: `=`, `:`
+    ///
     /// * external_uri: `=`, `:`
+    ///
     /// * event_time: `=`, `>`, `<`, `>=`, `<=`
     ///
-    ///    Usage: This should be milliseconds since epoch or an RFC3339 string.
-    ///    Examples:
-    ///      `event_time = "2019-06-10T16:07:18-07:00"`
-    ///      `event_time = 1560208038000`
+    ///   Usage: This should be milliseconds since epoch or an RFC3339 string.
+    ///   Examples:
+    ///   `event_time = "2019-06-10T16:07:18-07:00"`
+    ///   `event_time = 1560208038000`
     ///
     /// * severity: `=`, `:`
+    ///
     /// * security_marks.marks: `=`, `:`
+    ///
     /// * resource:
-    ///    * resource.name: `=`, `:`
-    ///    * resource.parent_name: `=`, `:`
-    ///    * resource.parent_display_name: `=`, `:`
-    ///    * resource.project_name: `=`, `:`
-    ///    * resource.project_display_name: `=`, `:`
-    ///    * resource.type: `=`, `:`
+    ///
+    ///   * resource.name: `=`, `:`
+    ///   * resource.parent_name: `=`, `:`
+    ///   * resource.parent_display_name: `=`, `:`
+    ///   * resource.project_name: `=`, `:`
+    ///   * resource.project_display_name: `=`, `:`
+    ///   * resource.type: `=`, `:`
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Required. Expression that defines what assets fields to use for grouping.
@@ -5744,7 +5791,7 @@ pub struct GroupResult {
 }
 /// Request message for listing the attack paths for a given simulation or valued
 /// resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListAttackPathsRequest {
     /// Required. Name of parent to list attack paths.
     ///
@@ -5758,7 +5805,7 @@ pub struct ListAttackPathsRequest {
     /// The filter expression that filters the attack path in the response.
     /// Supported fields:
     ///
-    ///    * `valued_resources` supports =
+    /// * `valued_resources` supports =
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// The value returned by the last `ListAttackPathsResponse`; indicates
@@ -5786,7 +5833,7 @@ pub struct ListAttackPathsResponse {
 /// Request message for getting simulation.
 /// Simulation name can include "latest" to retrieve the latest simulation
 /// For example, "organizations/123/simulations/latest"
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetSimulationRequest {
     /// Required. The organization name or simulation name of this simulation
     ///
@@ -5797,7 +5844,7 @@ pub struct GetSimulationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for getting a valued resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GetValuedResourceRequest {
     /// Required. The name of this valued resource
     ///
@@ -5808,7 +5855,7 @@ pub struct GetValuedResourceRequest {
 }
 /// Request message for listing BigQuery exports at a given scope e.g.
 /// organization, folder or project.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListBigQueryExportsRequest {
     /// Required. The parent, which owns the collection of BigQuery exports. Its
     /// format is `organizations/\[organization_id\]/locations/\[location_id\]`,
@@ -5841,28 +5888,30 @@ pub struct ListBigQueryExportsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for listing findings.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFindingsRequest {
     /// Required. Name of the source the findings belong to. If no location is
     /// specified, the default is global. The following list shows some examples:
     ///
-    /// + `organizations/\[organization_id\]/sources/\[source_id\]`
-    /// +
+    /// * `organizations/\[organization_id\]/sources/\[source_id\]`
+    /// *
+    ///
     /// `organizations/\[organization_id\]/sources/\[source_id\]/locations/\[location_id\]`
-    /// + `folders/\[folder_id\]/sources/\[source_id\]`
-    /// + `folders/\[folder_id\]/sources/\[source_id\]/locations/\[location_id\]`
-    /// + `projects/\[project_id\]/sources/\[source_id\]`
-    /// + `projects/\[project_id\]/sources/\[source_id\]/locations/\[location_id\]`
+    ///
+    /// * `folders/\[folder_id\]/sources/\[source_id\]`
+    /// * `folders/\[folder_id\]/sources/\[source_id\]/locations/\[location_id\]`
+    /// * `projects/\[project_id\]/sources/\[source_id\]`
+    /// * `projects/\[project_id\]/sources/\[source_id\]/locations/\[location_id\]`
     ///
     /// To list across all sources provide a source_id of `-`. The following
     /// list shows some examples:
     ///
-    /// + `organizations/{organization_id}/sources/-`
-    /// + `organizations/{organization_id}/sources/-/locations/{location_id}`
-    /// + `folders/{folder_id}/sources/-`
-    /// + `folders/{folder_id}/sources/-locations/{location_id}`
-    /// + `projects/{projects_id}/sources/-`
-    /// + `projects/{projects_id}/sources/-/locations/{location_id}`
+    /// * `organizations/{organization_id}/sources/-`
+    /// * `organizations/{organization_id}/sources/-/locations/{location_id}`
+    /// * `folders/{folder_id}/sources/-`
+    /// * `folders/{folder_id}/sources/-locations/{location_id}`
+    /// * `projects/{projects_id}/sources/-`
+    /// * `projects/{projects_id}/sources/-/locations/{location_id}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Expression that defines the filter to apply across findings.
@@ -5873,8 +5922,8 @@ pub struct ListFindingsRequest {
     /// Restrictions have the form `<field> <operator> <value>` and may have a `-`
     /// character in front of them to indicate negation. Examples include:
     ///
-    ///   * name
-    ///   * security_marks.marks.marka
+    /// * name
+    /// * security_marks.marks.marka
     ///
     /// The supported operators are:
     ///
@@ -5891,29 +5940,38 @@ pub struct ListFindingsRequest {
     /// The following field and operator combinations are supported:
     ///
     /// * name: `=`
+    ///
     /// * parent: `=`, `:`
+    ///
     /// * resource_name: `=`, `:`
+    ///
     /// * state: `=`, `:`
+    ///
     /// * category: `=`, `:`
+    ///
     /// * external_uri: `=`, `:`
+    ///
     /// * event_time: `=`, `>`, `<`, `>=`, `<=`
     ///
-    ///    Usage: This should be milliseconds since epoch or an RFC3339 string.
-    ///    Examples:
-    ///      `event_time = "2019-06-10T16:07:18-07:00"`
-    ///      `event_time = 1560208038000`
+    ///   Usage: This should be milliseconds since epoch or an RFC3339 string.
+    ///   Examples:
+    ///   `event_time = "2019-06-10T16:07:18-07:00"`
+    ///   `event_time = 1560208038000`
     ///
     /// * severity: `=`, `:`
+    ///
     /// * security_marks.marks: `=`, `:`
+    ///
     /// * resource:
-    ///    * resource.name: `=`, `:`
-    ///    * resource.parent_name: `=`, `:`
-    ///    * resource.parent_display_name: `=`, `:`
-    ///    * resource.project_name: `=`, `:`
-    ///    * resource.project_display_name: `=`, `:`
-    ///    * resource.type: `=`, `:`
-    ///    * resource.folders.resource_folder: `=`, `:`
-    ///    * resource.display_name: `=`, `:`
+    ///
+    ///   * resource.name: `=`, `:`
+    ///   * resource.parent_name: `=`, `:`
+    ///   * resource.parent_display_name: `=`, `:`
+    ///   * resource.project_name: `=`, `:`
+    ///   * resource.project_display_name: `=`, `:`
+    ///   * resource.type: `=`, `:`
+    ///   * resource.folders.resource_folder: `=`, `:`
+    ///   * resource.display_name: `=`, `:`
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Expression that defines what fields and order to use for sorting. The
@@ -6044,7 +6102,7 @@ pub mod list_findings_response {
 /// Request message for listing  mute configs at a given scope e.g. organization,
 /// folder or project. If no location is specified, default is
 /// global.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListMuteConfigsRequest {
     /// Required. The parent, which owns the collection of mute configs. Its format
     /// is `organizations/\[organization_id\]", "folders/\[folder_id\]`,
@@ -6080,7 +6138,7 @@ pub struct ListMuteConfigsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for listing notification configs.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListNotificationConfigsRequest {
     /// Required. The name of the parent in which to list the notification
     /// configurations. Its format is
@@ -6111,7 +6169,7 @@ pub struct ListNotificationConfigsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message to list resource value configs of a parent
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListResourceValueConfigsRequest {
     /// Required. The parent, which owns the collection of resource value configs.
     /// Its format is
@@ -6147,7 +6205,7 @@ pub struct ListResourceValueConfigsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for listing sources.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListSourcesRequest {
     /// Required. Resource name of the parent of sources to list. Its format should
     /// be `organizations/\[organization_id\]`, `folders/\[folder_id\]`, or
@@ -6176,7 +6234,7 @@ pub struct ListSourcesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for listing the valued resources for a given simulation.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListValuedResourcesRequest {
     /// Required. Name of parent to list exposed resources.
     ///
@@ -6189,8 +6247,8 @@ pub struct ListValuedResourcesRequest {
     /// The filter expression that filters the valued resources in the response.
     /// Supported fields:
     ///
-    ///    * `resource_value` supports =
-    ///    * `resource_type` supports =
+    /// * `resource_value` supports =
+    /// * `resource_type` supports =
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// The value returned by the last `ListValuedResourcesResponse`; indicates
@@ -6206,11 +6264,11 @@ pub struct ListValuedResourcesRequest {
     ///
     /// Supported fields:
     ///
-    ///    * `exposed_score`
+    /// * `exposed_score`
     ///
-    ///    * `resource_value`
+    /// * `resource_value`
     ///
-    ///    * `resource_type`
+    /// * `resource_type`
     ///
     /// Values should be a comma separated list of fields. For example:
     /// `exposed_score,resource_value`.
@@ -6236,22 +6294,27 @@ pub struct ListValuedResourcesResponse {
     pub total_size: i32,
 }
 /// Request message for updating a finding's state.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetFindingStateRequest {
     /// Required. The [relative resource
     /// name](<https://cloud.google.com/apis/design/resource_names#relative_resource_name>)
     /// of the finding. If no location is specified, finding is assumed to be in
     /// global. The following list shows some examples:
     ///
-    /// +
+    /// *
+    ///
     /// `organizations/{organization_id}/sources/{source_id}/findings/{finding_id}`
     /// +
     /// `organizations/{organization_id}/sources/{source_id}/locations/{location_id}/findings/{finding_id}`
-    /// + `folders/{folder_id}/sources/{source_id}/findings/{finding_id}`
-    /// +
+    ///
+    /// * `folders/{folder_id}/sources/{source_id}/findings/{finding_id}`
+    /// *
+    ///
     /// `folders/{folder_id}/sources/{source_id}/locations/{location_id}/findings/{finding_id}`
-    /// + `projects/{project_id}/sources/{source_id}/findings/{finding_id}`
-    /// +
+    ///
+    /// * `projects/{project_id}/sources/{source_id}/findings/{finding_id}`
+    /// *
+    ///
     /// `projects/{project_id}/sources/{source_id}/locations/{location_id}/findings/{finding_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -6260,22 +6323,27 @@ pub struct SetFindingStateRequest {
     pub state: i32,
 }
 /// Request message for updating a finding's mute status.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct SetMuteRequest {
     /// Required. The [relative resource
     /// name](<https://cloud.google.com/apis/design/resource_names#relative_resource_name>)
     /// of the finding. If no location is specified, finding is assumed to be in
     /// global. The following list shows some examples:
     ///
-    /// +
+    /// *
+    ///
     /// `organizations/{organization_id}/sources/{source_id}/findings/{finding_id}`
     /// +
     /// `organizations/{organization_id}/sources/{source_id}/locations/{location_id}/findings/{finding_id}`
-    /// + `folders/{folder_id}/sources/{source_id}/findings/{finding_id}`
-    /// +
+    ///
+    /// * `folders/{folder_id}/sources/{source_id}/findings/{finding_id}`
+    /// *
+    ///
     /// `folders/{folder_id}/sources/{source_id}/locations/{location_id}/findings/{finding_id}`
-    /// + `projects/{project_id}/sources/{source_id}/findings/{finding_id}`
-    /// +
+    ///
+    /// * `projects/{project_id}/sources/{source_id}/findings/{finding_id}`
+    /// *
+    ///
     /// `projects/{project_id}/sources/{source_id}/locations/{location_id}/findings/{finding_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -6284,7 +6352,7 @@ pub struct SetMuteRequest {
     pub mute: i32,
 }
 /// Request message for updating a BigQuery export.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateBigQueryExportRequest {
     /// Required. The BigQuery export being updated.
     #[prost(message, optional, tag = "1")]
@@ -6295,7 +6363,7 @@ pub struct UpdateBigQueryExportRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for updating a ExternalSystem resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateExternalSystemRequest {
     /// Required. The external system resource to update.
     #[prost(message, optional, tag = "1")]
@@ -6328,7 +6396,7 @@ pub struct UpdateFindingRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for updating a mute config.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateMuteConfigRequest {
     /// Required. The mute config being updated.
     #[prost(message, optional, tag = "1")]
@@ -6339,7 +6407,7 @@ pub struct UpdateMuteConfigRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for updating a notification config.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateNotificationConfigRequest {
     /// Required. The notification config to update.
     #[prost(message, optional, tag = "1")]
@@ -6375,12 +6443,12 @@ pub struct UpdateSecurityMarksRequest {
     ///
     /// The field mask must not contain duplicate fields.
     /// If empty or set to "marks", all marks will be replaced.  Individual
-    /// marks can be updated using "marks.<mark_key>".
+    /// marks can be updated using "marks.\<mark_key>".
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for updating a source.
-#[derive(Clone, PartialEq, ::prost::Message)]
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateSourceRequest {
     /// Required. The source resource to update.
     #[prost(message, optional, tag = "1")]
@@ -6502,7 +6570,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/BatchCreateResourceValueConfigs",
             );
@@ -6535,7 +6603,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/BulkMuteFindings",
             );
@@ -6562,7 +6630,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/CreateBigQueryExport",
             );
@@ -6590,7 +6658,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/CreateFinding",
             );
@@ -6617,7 +6685,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/CreateMuteConfig",
             );
@@ -6647,7 +6715,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/CreateNotificationConfig",
             );
@@ -6674,7 +6742,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/CreateSource",
             );
@@ -6701,7 +6769,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/DeleteBigQueryExport",
             );
@@ -6729,7 +6797,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/DeleteMuteConfig",
             );
@@ -6756,7 +6824,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/DeleteNotificationConfig",
             );
@@ -6783,7 +6851,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/DeleteResourceValueConfig",
             );
@@ -6810,7 +6878,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/GetBigQueryExport",
             );
@@ -6838,7 +6906,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/GetSimulation",
             );
@@ -6865,7 +6933,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/GetValuedResource",
             );
@@ -6897,7 +6965,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/GetIamPolicy",
             );
@@ -6925,7 +6993,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/GetMuteConfig",
             );
@@ -6955,7 +7023,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/GetNotificationConfig",
             );
@@ -6985,7 +7053,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/GetResourceValueConfig",
             );
@@ -7012,7 +7080,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/GetSource",
             );
@@ -7033,13 +7101,15 @@ pub mod security_center_client {
         /// To group across all sources provide a `-` as the source id.
         /// The following list shows some examples:
         ///
-        /// + `/v2/organizations/{organization_id}/sources/-/findings`
-        /// +
+        /// * `/v2/organizations/{organization_id}/sources/-/findings`
+        /// *
+        ///
         /// `/v2/organizations/{organization_id}/sources/-/locations/{location_id}/findings`
-        /// + `/v2/folders/{folder_id}/sources/-/findings`
-        /// + `/v2/folders/{folder_id}/sources/-/locations/{location_id}/findings`
-        /// + `/v2/projects/{project_id}/sources/-/findings`
-        /// + `/v2/projects/{project_id}/sources/-/locations/{location_id}/findings`
+        ///
+        /// * `/v2/folders/{folder_id}/sources/-/findings`
+        /// * `/v2/folders/{folder_id}/sources/-/locations/{location_id}/findings`
+        /// * `/v2/projects/{project_id}/sources/-/findings`
+        /// * `/v2/projects/{project_id}/sources/-/locations/{location_id}/findings`
         pub async fn group_findings(
             &mut self,
             request: impl tonic::IntoRequest<super::GroupFindingsRequest>,
@@ -7055,7 +7125,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/GroupFindings",
             );
@@ -7086,7 +7156,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/ListAttackPaths",
             );
@@ -7120,7 +7190,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/ListBigQueryExports",
             );
@@ -7140,8 +7210,9 @@ pub mod security_center_client {
         /// id. If no location is specified, finding are assumed to be in global.
         /// The following list shows some examples:
         ///
-        /// + `/v2/organizations/{organization_id}/sources/-/findings`
-        /// +
+        /// * `/v2/organizations/{organization_id}/sources/-/findings`
+        /// *
+        ///
         /// `/v2/organizations/{organization_id}/sources/-/locations/{location_id}/findings`
         pub async fn list_findings(
             &mut self,
@@ -7158,7 +7229,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/ListFindings",
             );
@@ -7189,7 +7260,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/ListMuteConfigs",
             );
@@ -7219,7 +7290,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/ListNotificationConfigs",
             );
@@ -7249,7 +7320,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/ListResourceValueConfigs",
             );
@@ -7279,7 +7350,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/ListSources",
             );
@@ -7309,7 +7380,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/ListValuedResources",
             );
@@ -7337,7 +7408,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/SetFindingState",
             );
@@ -7369,7 +7440,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/SetIamPolicy",
             );
@@ -7397,7 +7468,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/SetMute",
             );
@@ -7431,7 +7502,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/TestIamPermissions",
             );
@@ -7458,7 +7529,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/UpdateBigQueryExport",
             );
@@ -7486,7 +7557,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/UpdateExternalSystem",
             );
@@ -7515,7 +7586,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/UpdateFinding",
             );
@@ -7543,7 +7614,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/UpdateMuteConfig",
             );
@@ -7574,7 +7645,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/UpdateNotificationConfig",
             );
@@ -7604,7 +7675,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/UpdateResourceValueConfig",
             );
@@ -7633,7 +7704,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/UpdateSecurityMarks",
             );
@@ -7660,7 +7731,7 @@ pub mod security_center_client {
                         format!("Service was not ready: {}", e.into()),
                     )
                 })?;
-            let codec = tonic::codec::ProstCodec::default();
+            let codec = tonic_prost::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v2.SecurityCenter/UpdateSource",
             );
