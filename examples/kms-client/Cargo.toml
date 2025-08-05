@@ -5,7 +5,7 @@ authors = ["me@abdolence.dev"]
 edition = "2021"
 
 [dependencies]
-gcloud-sdk = { path = "./../../gcloud-sdk", default-features = false, features = ["google-cloud-kms-v1", "google-longrunning"] }
+gcloud-sdk = { path = "./../../gcloud-sdk", default-features = false, features = ["google-cloud-kms-v1", "google-longrunning", "tls-webpki-roots"] }
 tokio = { version = "1.20", features = ["full"] }
 tracing = "0.1"
 tracing-subscriber = { version ="0.3", features = ["env-filter"] }
