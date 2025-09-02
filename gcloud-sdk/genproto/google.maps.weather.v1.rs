@@ -1035,6 +1035,766 @@ pub struct HistoryHour {
     #[prost(message, optional, tag = "19")]
     pub ice_thickness: ::core::option::Option<IceThickness>,
 }
+/// The type of the weather event.
+/// (-- Next available tag: 64 --)
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum WeatherEventType {
+    /// Unspecified weather event type.
+    Unspecified = 0,
+    /// Acid rain event.
+    AcidRain = 1,
+    /// Aftershock event.
+    Aftershock = 2,
+    /// Avalanche event.
+    Avalanche = 3,
+    /// Blizzard event.
+    Blizzard = 4,
+    /// Blowing snow event.
+    BlowingSnow = 5,
+    /// Bushfire event.
+    Bushfire = 6,
+    /// Coastal flood event.
+    CoastalFlood = 7,
+    /// Coastal hazard event.
+    CoastalHazard = 8,
+    /// Cold event.
+    Cold = 9,
+    /// Cyclone event.
+    Cyclone = 10,
+    /// Drought event.
+    Drought = 11,
+    /// Dust storm event.
+    DustStorm = 12,
+    /// Earthquake event.
+    Earthquake = 13,
+    /// Extra tropical cyclone event.
+    ExtratropicalCyclone = 14,
+    /// Fire event.
+    Fire = 15,
+    /// Fire weather event.
+    FireWeather = 16,
+    /// Flash flood event.
+    FlashFlood = 17,
+    /// Flood event.
+    Flood = 18,
+    /// Fog event.
+    Fog = 19,
+    /// Freezing event.
+    Freezing = 20,
+    /// Freezing air temperature event.
+    FreezingAirTemperature = 21,
+    /// Freezing drizzle event.
+    FreezingDrizzle = 22,
+    /// Freezing rain event.
+    FreezingRainEvent = 23,
+    /// Frost event.
+    Frost = 24,
+    /// Gale event.
+    Gale = 25,
+    /// Glaze event.
+    Glaze = 26,
+    /// Hail event.
+    Hail = 27,
+    /// Hazardous seas event.
+    HazardousSeas = 28,
+    /// Heat event.
+    Heat = 29,
+    /// Humidity event.
+    Humidity = 30,
+    /// Hurricane event.
+    Hurricane = 31,
+    /// Ice storm event.
+    IceStorm = 32,
+    /// Industrial fire event.
+    IndustrialFire = 33,
+    /// Lake effect snow event.
+    LakeEffectSnow = 34,
+    /// Landslide event.
+    Landslide = 35,
+    /// Monsoon event.
+    Monsoon = 36,
+    /// Muddy flood event.
+    MuddyFlood = 37,
+    /// Outflow event.
+    Outflow = 38,
+    /// Radiation event.
+    Radiation = 39,
+    /// Rain event.
+    RainEvent = 40,
+    /// River flooding event.
+    RiverFlooding = 41,
+    /// Severe thunderstorm warning event.
+    SevereThunderstormWarning = 42,
+    /// Snowsquall event.
+    Snowsquall = 43,
+    /// Snow event.
+    SnowEvent = 44,
+    /// Storm event.
+    Storm = 45,
+    /// Storm surge event.
+    StormSurge = 46,
+    /// Thunder event.
+    Thunder = 47,
+    /// Thunderstorm event.
+    Thunderstorm = 48,
+    /// Tornado event.
+    Tornado = 49,
+    /// Tornado warning event.
+    TornadoWarning = 50,
+    /// Tropical cyclone event.
+    TropicalCyclone = 51,
+    /// Tropical cyclone warnings and watches event.
+    TropicalCycloneWarningsAndWatches = 52,
+    /// Tropical disturbance event.
+    TropicalDisturbance = 53,
+    /// Tropical storm event.
+    TropicalStorm = 54,
+    /// Tsunami event.
+    Tsunami = 55,
+    /// Typhoon event.
+    Typhoon = 56,
+    /// Volcanic ash event.
+    VolcanicAsh = 57,
+    /// Volcanic eruption event.
+    VolcanicEruption = 58,
+    /// Wildfire event.
+    Wildfire = 59,
+    /// Wind event.
+    Wind = 60,
+    /// Wind chill event.
+    WindChill = 61,
+    /// Wind wave event.
+    WindWave = 62,
+    /// Winter storm event.
+    WinterStorm = 63,
+}
+impl WeatherEventType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "WEATHER_EVENT_TYPE_UNSPECIFIED",
+            Self::AcidRain => "ACID_RAIN",
+            Self::Aftershock => "AFTERSHOCK",
+            Self::Avalanche => "AVALANCHE",
+            Self::Blizzard => "BLIZZARD",
+            Self::BlowingSnow => "BLOWING_SNOW",
+            Self::Bushfire => "BUSHFIRE",
+            Self::CoastalFlood => "COASTAL_FLOOD",
+            Self::CoastalHazard => "COASTAL_HAZARD",
+            Self::Cold => "COLD",
+            Self::Cyclone => "CYCLONE",
+            Self::Drought => "DROUGHT",
+            Self::DustStorm => "DUST_STORM",
+            Self::Earthquake => "EARTHQUAKE",
+            Self::ExtratropicalCyclone => "EXTRATROPICAL_CYCLONE",
+            Self::Fire => "FIRE",
+            Self::FireWeather => "FIRE_WEATHER",
+            Self::FlashFlood => "FLASH_FLOOD",
+            Self::Flood => "FLOOD",
+            Self::Fog => "FOG",
+            Self::Freezing => "FREEZING",
+            Self::FreezingAirTemperature => "FREEZING_AIR_TEMPERATURE",
+            Self::FreezingDrizzle => "FREEZING_DRIZZLE",
+            Self::FreezingRainEvent => "FREEZING_RAIN_EVENT",
+            Self::Frost => "FROST",
+            Self::Gale => "GALE",
+            Self::Glaze => "GLAZE",
+            Self::Hail => "HAIL",
+            Self::HazardousSeas => "HAZARDOUS_SEAS",
+            Self::Heat => "HEAT",
+            Self::Humidity => "HUMIDITY",
+            Self::Hurricane => "HURRICANE",
+            Self::IceStorm => "ICE_STORM",
+            Self::IndustrialFire => "INDUSTRIAL_FIRE",
+            Self::LakeEffectSnow => "LAKE_EFFECT_SNOW",
+            Self::Landslide => "LANDSLIDE",
+            Self::Monsoon => "MONSOON",
+            Self::MuddyFlood => "MUDDY_FLOOD",
+            Self::Outflow => "OUTFLOW",
+            Self::Radiation => "RADIATION",
+            Self::RainEvent => "RAIN_EVENT",
+            Self::RiverFlooding => "RIVER_FLOODING",
+            Self::SevereThunderstormWarning => "SEVERE_THUNDERSTORM_WARNING",
+            Self::Snowsquall => "SNOWSQUALL",
+            Self::SnowEvent => "SNOW_EVENT",
+            Self::Storm => "STORM",
+            Self::StormSurge => "STORM_SURGE",
+            Self::Thunder => "THUNDER",
+            Self::Thunderstorm => "THUNDERSTORM",
+            Self::Tornado => "TORNADO",
+            Self::TornadoWarning => "TORNADO_WARNING",
+            Self::TropicalCyclone => "TROPICAL_CYCLONE",
+            Self::TropicalCycloneWarningsAndWatches => {
+                "TROPICAL_CYCLONE_WARNINGS_AND_WATCHES"
+            }
+            Self::TropicalDisturbance => "TROPICAL_DISTURBANCE",
+            Self::TropicalStorm => "TROPICAL_STORM",
+            Self::Tsunami => "TSUNAMI",
+            Self::Typhoon => "TYPHOON",
+            Self::VolcanicAsh => "VOLCANIC_ASH",
+            Self::VolcanicEruption => "VOLCANIC_ERUPTION",
+            Self::Wildfire => "WILDFIRE",
+            Self::Wind => "WIND",
+            Self::WindChill => "WIND_CHILL",
+            Self::WindWave => "WIND_WAVE",
+            Self::WinterStorm => "WINTER_STORM",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "WEATHER_EVENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "ACID_RAIN" => Some(Self::AcidRain),
+            "AFTERSHOCK" => Some(Self::Aftershock),
+            "AVALANCHE" => Some(Self::Avalanche),
+            "BLIZZARD" => Some(Self::Blizzard),
+            "BLOWING_SNOW" => Some(Self::BlowingSnow),
+            "BUSHFIRE" => Some(Self::Bushfire),
+            "COASTAL_FLOOD" => Some(Self::CoastalFlood),
+            "COASTAL_HAZARD" => Some(Self::CoastalHazard),
+            "COLD" => Some(Self::Cold),
+            "CYCLONE" => Some(Self::Cyclone),
+            "DROUGHT" => Some(Self::Drought),
+            "DUST_STORM" => Some(Self::DustStorm),
+            "EARTHQUAKE" => Some(Self::Earthquake),
+            "EXTRATROPICAL_CYCLONE" => Some(Self::ExtratropicalCyclone),
+            "FIRE" => Some(Self::Fire),
+            "FIRE_WEATHER" => Some(Self::FireWeather),
+            "FLASH_FLOOD" => Some(Self::FlashFlood),
+            "FLOOD" => Some(Self::Flood),
+            "FOG" => Some(Self::Fog),
+            "FREEZING" => Some(Self::Freezing),
+            "FREEZING_AIR_TEMPERATURE" => Some(Self::FreezingAirTemperature),
+            "FREEZING_DRIZZLE" => Some(Self::FreezingDrizzle),
+            "FREEZING_RAIN_EVENT" => Some(Self::FreezingRainEvent),
+            "FROST" => Some(Self::Frost),
+            "GALE" => Some(Self::Gale),
+            "GLAZE" => Some(Self::Glaze),
+            "HAIL" => Some(Self::Hail),
+            "HAZARDOUS_SEAS" => Some(Self::HazardousSeas),
+            "HEAT" => Some(Self::Heat),
+            "HUMIDITY" => Some(Self::Humidity),
+            "HURRICANE" => Some(Self::Hurricane),
+            "ICE_STORM" => Some(Self::IceStorm),
+            "INDUSTRIAL_FIRE" => Some(Self::IndustrialFire),
+            "LAKE_EFFECT_SNOW" => Some(Self::LakeEffectSnow),
+            "LANDSLIDE" => Some(Self::Landslide),
+            "MONSOON" => Some(Self::Monsoon),
+            "MUDDY_FLOOD" => Some(Self::MuddyFlood),
+            "OUTFLOW" => Some(Self::Outflow),
+            "RADIATION" => Some(Self::Radiation),
+            "RAIN_EVENT" => Some(Self::RainEvent),
+            "RIVER_FLOODING" => Some(Self::RiverFlooding),
+            "SEVERE_THUNDERSTORM_WARNING" => Some(Self::SevereThunderstormWarning),
+            "SNOWSQUALL" => Some(Self::Snowsquall),
+            "SNOW_EVENT" => Some(Self::SnowEvent),
+            "STORM" => Some(Self::Storm),
+            "STORM_SURGE" => Some(Self::StormSurge),
+            "THUNDER" => Some(Self::Thunder),
+            "THUNDERSTORM" => Some(Self::Thunderstorm),
+            "TORNADO" => Some(Self::Tornado),
+            "TORNADO_WARNING" => Some(Self::TornadoWarning),
+            "TROPICAL_CYCLONE" => Some(Self::TropicalCyclone),
+            "TROPICAL_CYCLONE_WARNINGS_AND_WATCHES" => {
+                Some(Self::TropicalCycloneWarningsAndWatches)
+            }
+            "TROPICAL_DISTURBANCE" => Some(Self::TropicalDisturbance),
+            "TROPICAL_STORM" => Some(Self::TropicalStorm),
+            "TSUNAMI" => Some(Self::Tsunami),
+            "TYPHOON" => Some(Self::Typhoon),
+            "VOLCANIC_ASH" => Some(Self::VolcanicAsh),
+            "VOLCANIC_ERUPTION" => Some(Self::VolcanicEruption),
+            "WILDFIRE" => Some(Self::Wildfire),
+            "WIND" => Some(Self::Wind),
+            "WIND_CHILL" => Some(Self::WindChill),
+            "WIND_WAVE" => Some(Self::WindWave),
+            "WINTER_STORM" => Some(Self::WinterStorm),
+            _ => None,
+        }
+    }
+}
+/// The publisher of the alert.
+/// (-- Next available tag: 52 --)
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum Publisher {
+    /// Publisher unspecified.
+    Unspecified = 0,
+    /// Australia
+    /// Australian Capital Territory
+    AustraliaActEsa = 1,
+    /// New South Wales
+    AustraliaNswRfs = 2,
+    /// Queensland
+    AustraliaQldQfes = 3,
+    /// South Australia
+    AustraliaSaCfs = 4,
+    /// Meteoalarm / EUMETNET
+    /// Austria
+    MeteoAlarmAt = 5,
+    /// Bosnia
+    MeteoAlarmBs = 6,
+    /// Brazil
+    /// Disaster Agency in Brazil
+    BrazilCenad = 7,
+    /// Meteorological Agency in Brazil
+    BrazilInmet = 8,
+    /// United Kingdom
+    UkEnvAgency = 9,
+    /// Meteoalarm / EUMETNET
+    /// Bulgaria
+    MeteoAlarmBg = 10,
+    /// Croatia
+    MeteoAlarmCr = 11,
+    /// Cyprus
+    MeteoAlarmCy = 12,
+    /// Czechia
+    MeteoAlarmCs = 13,
+    /// Denmark
+    MeteoAlarmDk = 14,
+    /// Ecuador
+    EcInamhi = 15,
+    /// Meteoalarm / EUMETNET
+    /// Finland
+    MeteoAlarmFi = 16,
+    /// France
+    MeteoAlarmFr = 17,
+    /// Germany
+    DeDwd = 18,
+    /// Meteoalarm / EUMETNET
+    /// Great Britain
+    MeteoAlarmGb = 19,
+    /// Greece
+    MeteoAlarmGr = 20,
+    /// Hungary
+    MeteoAlarmHu = 21,
+    /// Iceland
+    MeteoAlarmIs = 22,
+    /// Ireland
+    MeteoAlarmIe = 23,
+    /// Italy
+    MeteoAlarmIt = 24,
+    /// Jamaica
+    JmJms = 25,
+    /// Japan
+    Jma = 26,
+    /// Meteoalarm / EUMETNET
+    /// Netherlands
+    MeteoAlarmNl = 27,
+    /// Latvia
+    MeteoAlarmLv = 28,
+    /// Lithuania
+    MeteoAlarmLt = 29,
+    /// Luxembourg
+    MeteoAlarmLu = 30,
+    /// Mexico
+    /// Mexico CIRES
+    MexicoCires = 31,
+    /// New Zealand
+    /// New Zealand GeoNet
+    NzGeonet = 32,
+    /// MetService
+    NzNms = 33,
+    /// Meteoalarm / EUMETNET
+    /// North Macedonia
+    MeteoAlarmMk = 34,
+    /// Norway
+    MeteoAlarmNo = 35,
+    /// Philippines
+    PhilippinesPagasa = 36,
+    /// Meteoalarm / EUMETNET
+    /// Poland
+    MeteoAlarmPl = 37,
+    /// Portugal
+    MeteoAlarmPt = 38,
+    /// Romania
+    MeteoAlarmRo = 39,
+    /// Serbia
+    MeteoAlarmRs = 40,
+    /// Singapore
+    SgMss = 41,
+    /// Meteoalarm / EUMETNET
+    /// Slovakia
+    MeteoAlarmSk = 42,
+    /// Slovenia
+    MeteoAlarmSi = 43,
+    /// Solomon Islands
+    SbMet = 44,
+    /// Meteoalarm / EUMETNET
+    /// Spain
+    MeteoAlarmEs = 45,
+    /// Sweden
+    MeteoAlarmSe = 46,
+    /// Switzerland
+    MeteoAlarmCh = 47,
+    /// Taiwan
+    TaiwanNcdr = 48,
+    /// United States
+    /// NOAA
+    Noaa = 49,
+    /// National Tsunami Warning Center
+    Wcatwc = 50,
+}
+impl Publisher {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "PUBLISHER_UNSPECIFIED",
+            Self::AustraliaActEsa => "AUSTRALIA_ACT_ESA",
+            Self::AustraliaNswRfs => "AUSTRALIA_NSW_RFS",
+            Self::AustraliaQldQfes => "AUSTRALIA_QLD_QFES",
+            Self::AustraliaSaCfs => "AUSTRALIA_SA_CFS",
+            Self::MeteoAlarmAt => "METEO_ALARM_AT",
+            Self::MeteoAlarmBs => "METEO_ALARM_BS",
+            Self::BrazilCenad => "BRAZIL_CENAD",
+            Self::BrazilInmet => "BRAZIL_INMET",
+            Self::UkEnvAgency => "UK_ENV_AGENCY",
+            Self::MeteoAlarmBg => "METEO_ALARM_BG",
+            Self::MeteoAlarmCr => "METEO_ALARM_CR",
+            Self::MeteoAlarmCy => "METEO_ALARM_CY",
+            Self::MeteoAlarmCs => "METEO_ALARM_CS",
+            Self::MeteoAlarmDk => "METEO_ALARM_DK",
+            Self::EcInamhi => "EC_INAMHI",
+            Self::MeteoAlarmFi => "METEO_ALARM_FI",
+            Self::MeteoAlarmFr => "METEO_ALARM_FR",
+            Self::DeDwd => "DE_DWD",
+            Self::MeteoAlarmGb => "METEO_ALARM_GB",
+            Self::MeteoAlarmGr => "METEO_ALARM_GR",
+            Self::MeteoAlarmHu => "METEO_ALARM_HU",
+            Self::MeteoAlarmIs => "METEO_ALARM_IS",
+            Self::MeteoAlarmIe => "METEO_ALARM_IE",
+            Self::MeteoAlarmIt => "METEO_ALARM_IT",
+            Self::JmJms => "JM_JMS",
+            Self::Jma => "JMA",
+            Self::MeteoAlarmNl => "METEO_ALARM_NL",
+            Self::MeteoAlarmLv => "METEO_ALARM_LV",
+            Self::MeteoAlarmLt => "METEO_ALARM_LT",
+            Self::MeteoAlarmLu => "METEO_ALARM_LU",
+            Self::MexicoCires => "MEXICO_CIRES",
+            Self::NzGeonet => "NZ_GEONET",
+            Self::NzNms => "NZ_NMS",
+            Self::MeteoAlarmMk => "METEO_ALARM_MK",
+            Self::MeteoAlarmNo => "METEO_ALARM_NO",
+            Self::PhilippinesPagasa => "PHILIPPINES_PAGASA",
+            Self::MeteoAlarmPl => "METEO_ALARM_PL",
+            Self::MeteoAlarmPt => "METEO_ALARM_PT",
+            Self::MeteoAlarmRo => "METEO_ALARM_RO",
+            Self::MeteoAlarmRs => "METEO_ALARM_RS",
+            Self::SgMss => "SG_MSS",
+            Self::MeteoAlarmSk => "METEO_ALARM_SK",
+            Self::MeteoAlarmSi => "METEO_ALARM_SI",
+            Self::SbMet => "SB_MET",
+            Self::MeteoAlarmEs => "METEO_ALARM_ES",
+            Self::MeteoAlarmSe => "METEO_ALARM_SE",
+            Self::MeteoAlarmCh => "METEO_ALARM_CH",
+            Self::TaiwanNcdr => "TAIWAN_NCDR",
+            Self::Noaa => "NOAA",
+            Self::Wcatwc => "WCATWC",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "PUBLISHER_UNSPECIFIED" => Some(Self::Unspecified),
+            "AUSTRALIA_ACT_ESA" => Some(Self::AustraliaActEsa),
+            "AUSTRALIA_NSW_RFS" => Some(Self::AustraliaNswRfs),
+            "AUSTRALIA_QLD_QFES" => Some(Self::AustraliaQldQfes),
+            "AUSTRALIA_SA_CFS" => Some(Self::AustraliaSaCfs),
+            "METEO_ALARM_AT" => Some(Self::MeteoAlarmAt),
+            "METEO_ALARM_BS" => Some(Self::MeteoAlarmBs),
+            "BRAZIL_CENAD" => Some(Self::BrazilCenad),
+            "BRAZIL_INMET" => Some(Self::BrazilInmet),
+            "UK_ENV_AGENCY" => Some(Self::UkEnvAgency),
+            "METEO_ALARM_BG" => Some(Self::MeteoAlarmBg),
+            "METEO_ALARM_CR" => Some(Self::MeteoAlarmCr),
+            "METEO_ALARM_CY" => Some(Self::MeteoAlarmCy),
+            "METEO_ALARM_CS" => Some(Self::MeteoAlarmCs),
+            "METEO_ALARM_DK" => Some(Self::MeteoAlarmDk),
+            "EC_INAMHI" => Some(Self::EcInamhi),
+            "METEO_ALARM_FI" => Some(Self::MeteoAlarmFi),
+            "METEO_ALARM_FR" => Some(Self::MeteoAlarmFr),
+            "DE_DWD" => Some(Self::DeDwd),
+            "METEO_ALARM_GB" => Some(Self::MeteoAlarmGb),
+            "METEO_ALARM_GR" => Some(Self::MeteoAlarmGr),
+            "METEO_ALARM_HU" => Some(Self::MeteoAlarmHu),
+            "METEO_ALARM_IS" => Some(Self::MeteoAlarmIs),
+            "METEO_ALARM_IE" => Some(Self::MeteoAlarmIe),
+            "METEO_ALARM_IT" => Some(Self::MeteoAlarmIt),
+            "JM_JMS" => Some(Self::JmJms),
+            "JMA" => Some(Self::Jma),
+            "METEO_ALARM_NL" => Some(Self::MeteoAlarmNl),
+            "METEO_ALARM_LV" => Some(Self::MeteoAlarmLv),
+            "METEO_ALARM_LT" => Some(Self::MeteoAlarmLt),
+            "METEO_ALARM_LU" => Some(Self::MeteoAlarmLu),
+            "MEXICO_CIRES" => Some(Self::MexicoCires),
+            "NZ_GEONET" => Some(Self::NzGeonet),
+            "NZ_NMS" => Some(Self::NzNms),
+            "METEO_ALARM_MK" => Some(Self::MeteoAlarmMk),
+            "METEO_ALARM_NO" => Some(Self::MeteoAlarmNo),
+            "PHILIPPINES_PAGASA" => Some(Self::PhilippinesPagasa),
+            "METEO_ALARM_PL" => Some(Self::MeteoAlarmPl),
+            "METEO_ALARM_PT" => Some(Self::MeteoAlarmPt),
+            "METEO_ALARM_RO" => Some(Self::MeteoAlarmRo),
+            "METEO_ALARM_RS" => Some(Self::MeteoAlarmRs),
+            "SG_MSS" => Some(Self::SgMss),
+            "METEO_ALARM_SK" => Some(Self::MeteoAlarmSk),
+            "METEO_ALARM_SI" => Some(Self::MeteoAlarmSi),
+            "SB_MET" => Some(Self::SbMet),
+            "METEO_ALARM_ES" => Some(Self::MeteoAlarmEs),
+            "METEO_ALARM_SE" => Some(Self::MeteoAlarmSe),
+            "METEO_ALARM_CH" => Some(Self::MeteoAlarmCh),
+            "TAIWAN_NCDR" => Some(Self::TaiwanNcdr),
+            "NOAA" => Some(Self::Noaa),
+            "WCATWC" => Some(Self::Wcatwc),
+            _ => None,
+        }
+    }
+}
+/// The code denoting the urgency of the subject event of the alert message.
+/// (-- Next available tag: 5 --)
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum Urgency {
+    /// Urgency not known.
+    Unknown = 0,
+    /// Responsive action SHOULD be taken immediately.
+    Immediate = 1,
+    /// Responsive action SHOULD be taken soon (within next hour).
+    Expected = 2,
+    /// Responsive action SHOULD be taken in the near future.
+    Future = 3,
+    /// Responsive action is no longer required.
+    Past = 4,
+}
+impl Urgency {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unknown => "URGENCY_UNKNOWN",
+            Self::Immediate => "IMMEDIATE",
+            Self::Expected => "EXPECTED",
+            Self::Future => "FUTURE",
+            Self::Past => "PAST",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "URGENCY_UNKNOWN" => Some(Self::Unknown),
+            "IMMEDIATE" => Some(Self::Immediate),
+            "EXPECTED" => Some(Self::Expected),
+            "FUTURE" => Some(Self::Future),
+            "PAST" => Some(Self::Past),
+            _ => None,
+        }
+    }
+}
+/// The code denoting the severity of the subject event of the alert message.
+/// (-- Next available tag: 5 --)
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum Severity {
+    /// Severity not known.
+    Unknown = 0,
+    /// Extraordinary threat to life or property.
+    Extreme = 1,
+    /// Significant threat to life or property.
+    Severe = 2,
+    /// Possible threat to life or property.
+    Moderate = 3,
+    /// Minor threat to life or property.
+    Minor = 4,
+}
+impl Severity {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unknown => "SEVERITY_UNKNOWN",
+            Self::Extreme => "EXTREME",
+            Self::Severe => "SEVERE",
+            Self::Moderate => "MODERATE",
+            Self::Minor => "MINOR",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SEVERITY_UNKNOWN" => Some(Self::Unknown),
+            "EXTREME" => Some(Self::Extreme),
+            "SEVERE" => Some(Self::Severe),
+            "MODERATE" => Some(Self::Moderate),
+            "MINOR" => Some(Self::Minor),
+            _ => None,
+        }
+    }
+}
+/// The code denoting the certainty of the subject event of the alert message.
+/// (-- Next available tag: 6 --)
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum Certainty {
+    /// Certainty not known.
+    Unknown = 0,
+    /// Determined to have occurred or to be ongoing.
+    Observed = 1,
+    /// Very likely.
+    VeryLikely = 2,
+    /// Likely (p > ~50%).
+    Likely = 3,
+    /// Possible but not likely (p \<= ~50%).
+    Possible = 4,
+    /// Unlikely (p ~ 0%).
+    Unlikely = 5,
+}
+impl Certainty {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unknown => "CERTAINTY_UNKNOWN",
+            Self::Observed => "OBSERVED",
+            Self::VeryLikely => "VERY_LIKELY",
+            Self::Likely => "LIKELY",
+            Self::Possible => "POSSIBLE",
+            Self::Unlikely => "UNLIKELY",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CERTAINTY_UNKNOWN" => Some(Self::Unknown),
+            "OBSERVED" => Some(Self::Observed),
+            "VERY_LIKELY" => Some(Self::VeryLikely),
+            "LIKELY" => Some(Self::Likely),
+            "POSSIBLE" => Some(Self::Possible),
+            "UNLIKELY" => Some(Self::Unlikely),
+            _ => None,
+        }
+    }
+}
+/// Represents a link to a data source.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct DataSource {
+    /// The publisher of the alert.
+    #[prost(enumeration = "Publisher", tag = "1")]
+    pub publisher: i32,
+    /// Official publisher name. Please note that while this field should be
+    /// localized, it is not guaranteed that it will be.
+    #[prost(string, tag = "2")]
+    pub name: ::prost::alloc::string::String,
+    /// The URL of the authority's website.
+    #[prost(string, tag = "3")]
+    pub authority_uri: ::prost::alloc::string::String,
+}
+/// Represents a safety recommendation.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SafetyRecommendation {
+    /// A directive to the user. Please note that while this field should be
+    /// localized, it is not guaranteed that it will be.
+    #[prost(string, tag = "1")]
+    pub directive: ::prost::alloc::string::String,
+    /// An optional subtext for the directive, which may contain additional
+    /// context for the user. Please note that while this field should be
+    /// localized, it is not guaranteed that it will be.
+    #[prost(string, optional, tag = "2")]
+    pub subtext: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Represents the public weather alerts.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PublicAlerts {
+    /// The unique identifier for this alert.
+    #[prost(string, tag = "1")]
+    pub alert_id: ::prost::alloc::string::String,
+    /// The localized title for the alert.
+    #[prost(message, optional, tag = "2")]
+    pub alert_title: ::core::option::Option<super::super::super::r#type::LocalizedText>,
+    /// The type of weather event.
+    #[prost(enumeration = "WeatherEventType", tag = "3")]
+    pub event_type: i32,
+    /// The name of the area where the alert is issued.
+    #[prost(string, tag = "4")]
+    pub area_name: ::prost::alloc::string::String,
+    /// A GeoJSON representation of the areas where the alert is issued.
+    ///
+    /// The GeoJSON data must be in RFC 7946 format and represent either a
+    /// Polygon (for a single contiguous area) or a MultiPolygon (for multiple
+    /// distinct areas).
+    ///
+    /// Example:
+    ///
+    /// {
+    /// "type": "Polygon",
+    /// "coordinates": \[
+    /// \[
+    /// \[-1, -1\], \[-1, 0\], \[0, 0\], \[-1, -1\]
+    /// \]
+    /// \]
+    /// }
+    ///
+    /// A sample MultiPolygon GeoJson string looks like:
+    ///
+    /// {
+    /// "type": "MultiPolygon",
+    /// "coordinates": \[
+    /// \[
+    /// \[0, 0\], \[-1, 0\], \[-1, 1\], \[0, 0\]
+    /// \],
+    /// \[
+    /// \[0, 0\], \[-2, 0\], \[-2, 2\], \[0, 0\]
+    /// \]
+    /// \]
+    #[prost(string, optional, tag = "5")]
+    pub polygon: ::core::option::Option<::prost::alloc::string::String>,
+    /// The latest text describing the alert as issued by the official authority.
+    /// Please note that while this field should be localized, it is not guaranteed
+    /// that it will be.
+    #[prost(string, optional, tag = "6")]
+    pub description: ::core::option::Option<::prost::alloc::string::String>,
+    /// The severity level of the alert.
+    #[prost(enumeration = "Severity", tag = "7")]
+    pub severity: i32,
+    /// The certainty of the alert.
+    #[prost(enumeration = "Certainty", optional, tag = "8")]
+    pub certainty: ::core::option::Option<i32>,
+    /// The urgency of the alert.
+    #[prost(enumeration = "Urgency", optional, tag = "9")]
+    pub urgency: ::core::option::Option<i32>,
+    /// Instructions recommended by the publisher. Please note that while this
+    /// field should be localized, it is not guaranteed that it will be.
+    #[prost(string, repeated, tag = "10")]
+    pub instruction: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Safety recommendations directive to the user, these can be provided by the
+    /// publisher or other authorities.
+    #[prost(message, repeated, tag = "11")]
+    pub safety_recommendations: ::prost::alloc::vec::Vec<SafetyRecommendation>,
+    /// The timezone offset of the event, in +/-HH:MM format.
+    #[prost(string, tag = "12")]
+    pub timezone_offset: ::prost::alloc::string::String,
+    /// The start time of the event.
+    #[prost(message, optional, tag = "13")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The expiration time of the event.
+    #[prost(message, optional, tag = "14")]
+    pub expiration_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Details of the publisher that issued the alert.
+    #[prost(message, optional, tag = "15")]
+    pub data_source: ::core::option::Option<DataSource>,
+}
 /// Represents the units system used to measure values.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -1315,20 +2075,47 @@ pub struct LookupHistoryHoursResponse {
     #[prost(string, tag = "3")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// (-- Request for the LookupPublicAlerts RPC. --)
-/// (-- TODO (418938868): mikesky - Add request fields.
-/// Reason: We want to parallelize our work and creating a simple proto for
-/// quick approval could help us do other tasks while the larger proto is
-/// being approved. --)
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct LookupPublicAlertsRequest {}
-/// (-- Response for the LookupPublicAlerts RPC. --)
-/// (-- TODO(418938868): mikesky - Add public weather alert records to the
-/// response. Reason: We want to parallelize our work and creating a simple proto
-/// for quick approval could help us do other tasks while the larger proto is
-/// being approved. --)
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct LookupPublicAlertsResponse {}
+/// Request for the LookupPublicAlerts RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LookupPublicAlertsRequest {
+    /// Required. The location to get public weather alerts for. The service will
+    /// return alerts whose affected area intersects with this location.
+    #[prost(message, optional, tag = "1")]
+    pub location: ::core::option::Option<super::super::super::r#type::LatLng>,
+    /// Optional. Allows the client to choose the language for the response. If
+    /// data cannot be provided for that language, the API uses the closest match.
+    /// Allowed values rely on the IETF BCP-47 standard. The default value is "en".
+    #[prost(string, optional, tag = "2")]
+    pub language_code: ::core::option::Option<::prost::alloc::string::String>,
+    /// Optional. The maximum number of public weather alert records to return per
+    /// page.
+    #[prost(int32, tag = "3")]
+    pub page_size: i32,
+    /// Optional. A page token received from a previous
+    /// `LookupPublicAlerts` call. Provide this to retrieve the subsequent
+    /// page. When paginating, all other parameters provided to
+    /// `LookupPublicAlerts` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response for the LookupPublicAlerts RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LookupPublicAlertsResponse {
+    /// The public weather alert records, according to the number of alerts and
+    /// page size specified in the request.
+    #[prost(message, repeated, tag = "1")]
+    pub weather_alerts: ::prost::alloc::vec::Vec<PublicAlerts>,
+    /// The ISO_3166-1 alpha-2 code of the region corresponding to the
+    /// location provided in the request. The region is stated using
+    /// ISO_3166-1_alpha-2.
+    #[prost(string, tag = "2")]
+    pub region_code: ::prost::alloc::string::String,
+    /// A token that can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "3")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
 /// Generated client implementations.
 pub mod weather_client {
     #![allow(

@@ -3163,8 +3163,8 @@ pub struct Endpoint {
     /// used for protocol forwarding, Private Service Connect and other network
     /// services to provide forwarding information in the control plane. Applicable
     /// only to destination endpoint. Format:
-    /// projects/{project}/global/forwardingRules/{id} or
-    /// projects/{project}/regions/{region}/forwardingRules/{id}
+    /// `projects/{project}/global/forwardingRules/{id}` or
+    /// `projects/{project}/regions/{region}/forwardingRules/{id}`
     #[prost(string, tag = "13")]
     pub forwarding_rule: ::prost::alloc::string::String,
     /// Output only. Specifies the type of the target of the forwarding rule.
@@ -3257,9 +3257,14 @@ pub mod endpoint {
         /// A [Cloud Run](<https://cloud.google.com/run>)
         /// [revision](<https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get>)
         /// URI. The format is:
-        /// projects/{project}/locations/{location}/revisions/{revision}
+        /// `projects/{project}/locations/{location}/revisions/{revision}`
         #[prost(string, tag = "1")]
         pub uri: ::prost::alloc::string::String,
+        /// Output only. The URI of the Cloud Run service that the revision belongs
+        /// to. The format is:
+        /// `projects/{project}/locations/{location}/services/{service}`
+        #[prost(string, tag = "2")]
+        pub service_uri: ::prost::alloc::string::String,
     }
     /// The type definition of an endpoint's network. Use one of the
     /// following choices:

@@ -316,6 +316,9 @@ pub struct Input {
     /// Preprocessing configurations.
     #[prost(message, optional, tag = "3")]
     pub preprocessing_config: ::core::option::Option<PreprocessingConfig>,
+    /// Optional. Input Attributes.
+    #[prost(message, optional, tag = "4")]
+    pub attributes: ::core::option::Option<InputAttributes>,
 }
 /// Location of output file(s) in a Cloud Storage bucket.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -1079,6 +1082,37 @@ pub mod preprocessing_config {
             Bwdif(BwdifConfig),
         }
     }
+}
+/// Track definition for the input asset.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TrackDefinition {
+    /// The input track.
+    #[prost(int32, optional, tag = "1")]
+    pub input_track: ::core::option::Option<i32>,
+    /// Optional. A list of languages spoken in the input asset, represented by a
+    /// BCP 47 language code, such as "en-US" or "sr-Latn". For more information,
+    /// see <https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
+    #[prost(string, repeated, tag = "2")]
+    pub languages: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. Whether to automatically detect the languages present in the
+    /// track. If true, the system will attempt to identify all the languages
+    /// present in the track and populate the languages field.
+    #[prost(bool, tag = "3")]
+    pub detect_languages: bool,
+    /// Output only. A list of languages detected in the input asset, represented
+    /// by a BCP 47 language code, such as "en-US" or "sr-Latn". For more
+    /// information, see
+    /// <https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
+    /// This field is only populated if the detect_languages field is set to true.
+    #[prost(string, repeated, tag = "4")]
+    pub detected_languages: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Input attributes that provide additional information about the input asset.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InputAttributes {
+    /// Optional. A list of track definitions for the input asset.
+    #[prost(message, repeated, tag = "1")]
+    pub track_definitions: ::prost::alloc::vec::Vec<TrackDefinition>,
 }
 /// Video stream resource.
 #[derive(Clone, PartialEq, ::prost::Message)]

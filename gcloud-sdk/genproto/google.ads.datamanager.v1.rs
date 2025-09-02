@@ -370,10 +370,99 @@ pub struct ExperimentalField {
     #[prost(string, tag = "2")]
     pub value: ::prost::alloc::string::String,
 }
+/// Advertiser-assessed information about the user at the time that the event
+/// happened. See <https://support.google.com/google-ads/answer/14007601> for more
+/// details.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UserProperties {
+    /// Optional. Type of the customer associated with the event.
+    #[prost(enumeration = "CustomerType", tag = "1")]
+    pub customer_type: i32,
+    /// Optional. The advertiser-assessed value of the customer.
+    #[prost(enumeration = "CustomerValueBucket", tag = "2")]
+    pub customer_value_bucket: i32,
+}
+/// Type of the customer associated with the event.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum CustomerType {
+    /// Unspecified CustomerType. Should never be used.
+    Unspecified = 0,
+    /// The customer is new to the advertiser.
+    New = 1,
+    /// The customer is returning to the advertiser.
+    Returning = 2,
+    /// The customer has re-engaged with the advertiser.
+    Reengaged = 3,
+}
+impl CustomerType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "CUSTOMER_TYPE_UNSPECIFIED",
+            Self::New => "NEW",
+            Self::Returning => "RETURNING",
+            Self::Reengaged => "REENGAGED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CUSTOMER_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "NEW" => Some(Self::New),
+            "RETURNING" => Some(Self::Returning),
+            "REENGAGED" => Some(Self::Reengaged),
+            _ => None,
+        }
+    }
+}
+/// The advertiser-assessed value of the customer.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum CustomerValueBucket {
+    /// Unspecified CustomerValueBucket. Should never be used.
+    Unspecified = 0,
+    /// The customer is low value.
+    Low = 1,
+    /// The customer is medium value.
+    Medium = 2,
+    /// The customer is high value.
+    High = 3,
+}
+impl CustomerValueBucket {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "CUSTOMER_VALUE_BUCKET_UNSPECIFIED",
+            Self::Low => "LOW",
+            Self::Medium => "MEDIUM",
+            Self::High => "HIGH",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CUSTOMER_VALUE_BUCKET_UNSPECIFIED" => Some(Self::Unspecified),
+            "LOW" => Some(Self::Low),
+            "MEDIUM" => Some(Self::Medium),
+            "HIGH" => Some(Self::High),
+            _ => None,
+        }
+    }
+}
 /// An event representing a user interaction with an advertiser's website or app.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Event {
-    /// Optional. Reference string used to determine the destination.
+    /// Optional. Reference string used to determine the destination. If empty, the
+    /// event will be sent to all
+    /// \[destinations\]\[google.ads.datamanager.v1.IngestEventsRequest.destinations\]
+    /// in the request.
     #[prost(string, repeated, tag = "1")]
     pub destination_references: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. The unique identifier for this event.
@@ -424,6 +513,10 @@ pub struct Event {
     /// eventually be promoted to be part of the API.
     #[prost(message, repeated, tag = "14")]
     pub experimental_fields: ::prost::alloc::vec::Vec<ExperimentalField>,
+    /// Optional. Advertiser-assessed information about the user at the time that
+    /// the event happened.
+    #[prost(message, optional, tag = "15")]
+    pub user_properties: ::core::option::Option<UserProperties>,
 }
 /// Identifiers and other information used to match the conversion event with
 /// other online activity (such as ad clicks).
@@ -458,6 +551,13 @@ pub struct CustomVariable {
     /// Optional. The value to store for the custom variable.
     #[prost(string, tag = "2")]
     pub value: ::prost::alloc::string::String,
+    /// Optional. Reference string used to determine which of the
+    /// \[Event.destination_references\]\[google.ads.datamanager.v1.Event.destination_references\]
+    /// the custom variable should be sent to. If empty, the
+    /// \[Event.destination_references\]\[google.ads.datamanager.v1.Event.destination_references\]
+    /// will be used.
+    #[prost(string, repeated, tag = "3")]
+    pub destination_references: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The source of the event.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -467,6 +567,14 @@ pub enum EventSource {
     Unspecified = 0,
     /// The event was generated from a web browser.
     Web = 1,
+    /// The event was generated from an app.
+    App = 2,
+    /// The event was generated from an in-store transaction.
+    InStore = 3,
+    /// The event was generated from a phone call.
+    Phone = 4,
+    /// The event was generated from other sources.
+    Other = 5,
 }
 impl EventSource {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -477,6 +585,10 @@ impl EventSource {
         match self {
             Self::Unspecified => "EVENT_SOURCE_UNSPECIFIED",
             Self::Web => "WEB",
+            Self::App => "APP",
+            Self::InStore => "IN_STORE",
+            Self::Phone => "PHONE",
+            Self::Other => "OTHER",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -484,6 +596,10 @@ impl EventSource {
         match value {
             "EVENT_SOURCE_UNSPECIFIED" => Some(Self::Unspecified),
             "WEB" => Some(Self::Web),
+            "APP" => Some(Self::App),
+            "IN_STORE" => Some(Self::InStore),
+            "PHONE" => Some(Self::Phone),
+            "OTHER" => Some(Self::Other),
             _ => None,
         }
     }

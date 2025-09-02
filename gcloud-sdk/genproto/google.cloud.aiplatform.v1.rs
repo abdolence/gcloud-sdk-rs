@@ -4212,6 +4212,10 @@ pub struct Tool {
     /// Specialized retrieval tool that is powered by Google search.
     #[prost(message, optional, tag = "3")]
     pub google_search_retrieval: ::core::option::Option<GoogleSearchRetrieval>,
+    /// Optional. GoogleMaps tool type.
+    /// Tool to support Google Maps in Model.
+    #[prost(message, optional, tag = "5")]
+    pub google_maps: ::core::option::Option<GoogleMaps>,
     /// Optional. Tool to support searching public web data, powered by Vertex AI
     /// Search and Sec4 compliance.
     #[prost(message, optional, tag = "6")]
@@ -4638,6 +4642,9 @@ pub struct GoogleSearchRetrieval {
     #[prost(message, optional, tag = "2")]
     pub dynamic_retrieval_config: ::core::option::Option<DynamicRetrievalConfig>,
 }
+/// Tool to retrieve public maps data for grounding, powered by Google.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GoogleMaps {}
 /// Tool to search public web data, powered by Vertex AI Search and Sec4
 /// compliance.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -5568,7 +5575,14 @@ pub struct Content {
 /// of the media if `inline_data` or `file_data` field is filled with raw bytes.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Part {
-    #[prost(oneof = "part::Data", tags = "1, 2, 3, 5, 6, 8, 9, 10, 11")]
+    /// Indicates if the part is thought from the model.
+    #[prost(bool, tag = "10")]
+    pub thought: bool,
+    /// An opaque signature for the thought so it can be reused in subsequent
+    /// requests.
+    #[prost(bytes = "vec", tag = "11")]
+    pub thought_signature: ::prost::alloc::vec::Vec<u8>,
+    #[prost(oneof = "part::Data", tags = "1, 2, 3, 5, 6, 8, 9")]
     pub data: ::core::option::Option<part::Data>,
     #[prost(oneof = "part::Metadata", tags = "4")]
     pub metadata: ::core::option::Option<part::Metadata>,
@@ -5603,13 +5617,6 @@ pub mod part {
         /// Optional. Result of executing the \[ExecutableCode\].
         #[prost(message, tag = "9")]
         CodeExecutionResult(super::CodeExecutionResult),
-        /// Indicates if the part is thought from the model.
-        #[prost(bool, tag = "10")]
-        Thought(bool),
-        /// An opaque signature for the thought so it can be reused in subsequent
-        /// requests.
-        #[prost(bytes, tag = "11")]
-        ThoughtSignature(::prost::alloc::vec::Vec<u8>),
     }
     #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum Metadata {
@@ -6377,7 +6384,7 @@ pub struct Segment {
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GroundingChunk {
     /// Chunk type.
-    #[prost(oneof = "grounding_chunk::ChunkType", tags = "1, 2")]
+    #[prost(oneof = "grounding_chunk::ChunkType", tags = "1, 2, 3")]
     pub chunk_type: ::core::option::Option<grounding_chunk::ChunkType>,
 }
 /// Nested message and enum types in `GroundingChunk`.
@@ -6404,6 +6411,10 @@ pub mod grounding_chunk {
         /// Text of the attribution.
         #[prost(string, optional, tag = "3")]
         pub text: ::core::option::Option<::prost::alloc::string::String>,
+        /// Output only. The full document name for the referenced Vertex AI Search
+        /// document.
+        #[prost(string, optional, tag = "6")]
+        pub document_name: ::core::option::Option<::prost::alloc::string::String>,
         /// Tool-specific details about the retrieved context.
         #[prost(oneof = "retrieved_context::ContextDetails", tags = "4")]
         pub context_details: ::core::option::Option<retrieved_context::ContextDetails>,
@@ -6419,6 +6430,23 @@ pub mod grounding_chunk {
             RagChunk(super::super::RagChunk),
         }
     }
+    /// Chunk from Google Maps.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct Maps {
+        /// URI reference of the chunk.
+        #[prost(string, optional, tag = "1")]
+        pub uri: ::core::option::Option<::prost::alloc::string::String>,
+        /// Title of the chunk.
+        #[prost(string, optional, tag = "2")]
+        pub title: ::core::option::Option<::prost::alloc::string::String>,
+        /// Text of the chunk.
+        #[prost(string, optional, tag = "3")]
+        pub text: ::core::option::Option<::prost::alloc::string::String>,
+        /// This Place's resource name, in `places/{place_id}` format.  Can be used
+        /// to look up the Place.
+        #[prost(string, optional, tag = "4")]
+        pub place_id: ::core::option::Option<::prost::alloc::string::String>,
+    }
     /// Chunk type.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum ChunkType {
@@ -6428,6 +6456,9 @@ pub mod grounding_chunk {
         /// Grounding chunk from context retrieved by the retrieval tools.
         #[prost(message, tag = "2")]
         RetrievedContext(RetrievedContext),
+        /// Grounding chunk from Google Maps.
+        #[prost(message, tag = "3")]
+        Maps(Maps),
     }
 }
 /// Grounding support.
@@ -6466,6 +6497,13 @@ pub struct GroundingMetadata {
     /// Optional. Output only. Retrieval metadata.
     #[prost(message, optional, tag = "7")]
     pub retrieval_metadata: ::core::option::Option<RetrievalMetadata>,
+    /// Optional. Output only. Resource name of the Google Maps widget context
+    /// token to be used with the PlacesContextElement widget to render contextual
+    /// data. This is populated only for Google Maps grounding.
+    #[prost(string, optional, tag = "8")]
+    pub google_maps_widget_context_token: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
 }
 /// Google search entry point.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -7265,6 +7303,265 @@ pub mod scheduling {
                 "FLEX_START" => Some(Self::FlexStart),
                 _ => None,
             }
+        }
+    }
+}
+/// Request message for DataFoundryService.GenerateSyntheticData.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateSyntheticDataRequest {
+    /// Required. The resource name of the Location to run the job.
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub location: ::prost::alloc::string::String,
+    /// Required. The number of synthetic examples to generate.
+    /// For this stateless API, the count is limited to a small number.
+    #[prost(int32, tag = "2")]
+    pub count: i32,
+    /// Required. The schema of the desired output, defined by a list of fields.
+    #[prost(message, repeated, tag = "4")]
+    pub output_field_specs: ::prost::alloc::vec::Vec<OutputFieldSpec>,
+    /// Optional. A list of few-shot examples to guide the model's output style
+    /// and format.
+    #[prost(message, repeated, tag = "5")]
+    pub examples: ::prost::alloc::vec::Vec<SyntheticExample>,
+    /// The generation strategy to use.
+    #[prost(oneof = "generate_synthetic_data_request::Strategy", tags = "3")]
+    pub strategy: ::core::option::Option<generate_synthetic_data_request::Strategy>,
+}
+/// Nested message and enum types in `GenerateSyntheticDataRequest`.
+pub mod generate_synthetic_data_request {
+    /// The generation strategy to use.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum Strategy {
+        /// Generate data from a high-level task description.
+        #[prost(message, tag = "3")]
+        TaskDescription(super::TaskDescriptionStrategy),
+    }
+}
+/// Represents a single named field within a SyntheticExample.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SyntheticField {
+    /// Optional. The name of the field.
+    #[prost(string, tag = "1")]
+    pub field_name: ::prost::alloc::string::String,
+    /// Required. The content of the field.
+    #[prost(message, optional, tag = "2")]
+    pub content: ::core::option::Option<Content>,
+}
+/// Represents a single synthetic example, composed of multiple fields.
+/// Used for providing few-shot examples in the request and for returning
+/// generated examples in the response.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SyntheticExample {
+    /// Required. A list of fields that constitute an example.
+    #[prost(message, repeated, tag = "1")]
+    pub fields: ::prost::alloc::vec::Vec<SyntheticField>,
+}
+/// Defines a specification for a single output field.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct OutputFieldSpec {
+    /// Required. The name of the output field.
+    #[prost(string, tag = "1")]
+    pub field_name: ::prost::alloc::string::String,
+    /// Optional. Optional, but recommended. Additional guidance specific to this
+    /// field to provide targeted instructions for the LLM to generate the content
+    /// of a single output field. While the LLM can sometimes infer content from
+    /// the field name, providing explicit guidance is preferred.
+    #[prost(string, tag = "2")]
+    pub guidance: ::prost::alloc::string::String,
+    /// Optional. The data type of the field. Defaults to CONTENT if not set.
+    #[prost(enumeration = "output_field_spec::FieldType", tag = "3")]
+    pub field_type: i32,
+}
+/// Nested message and enum types in `OutputFieldSpec`.
+pub mod output_field_spec {
+    /// The data type of the field.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum FieldType {
+        /// Field type is unspecified.
+        Unspecified = 0,
+        /// Arbitrary content field type.
+        Content = 1,
+        /// Text field type.
+        Text = 2,
+        /// Image field type.
+        Image = 3,
+        /// Audio field type.
+        Audio = 4,
+    }
+    impl FieldType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "FIELD_TYPE_UNSPECIFIED",
+                Self::Content => "CONTENT",
+                Self::Text => "TEXT",
+                Self::Image => "IMAGE",
+                Self::Audio => "AUDIO",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FIELD_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CONTENT" => Some(Self::Content),
+                "TEXT" => Some(Self::Text),
+                "IMAGE" => Some(Self::Image),
+                "AUDIO" => Some(Self::Audio),
+                _ => None,
+            }
+        }
+    }
+}
+/// Defines a generation strategy based on a high-level task description.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct TaskDescriptionStrategy {
+    /// Required. A high-level description of the synthetic data to be generated.
+    #[prost(string, tag = "1")]
+    pub task_description: ::prost::alloc::string::String,
+}
+/// The response containing the generated data.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GenerateSyntheticDataResponse {
+    /// A list of generated synthetic examples.
+    #[prost(message, repeated, tag = "1")]
+    pub synthetic_examples: ::prost::alloc::vec::Vec<SyntheticExample>,
+}
+/// Generated client implementations.
+pub mod data_foundry_service_client {
+    #![allow(
+        unused_variables,
+        dead_code,
+        missing_docs,
+        clippy::wildcard_imports,
+        clippy::let_unit_value,
+    )]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service for generating and preparing datasets for Gen AI evaluation.
+    #[derive(Debug, Clone)]
+    pub struct DataFoundryServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl DataFoundryServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> DataFoundryServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::Body>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + std::marker::Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + std::marker::Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> DataFoundryServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::Body>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::Body>,
+            >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
+        {
+            DataFoundryServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Generates synthetic data based on the provided configuration.
+        pub async fn generate_synthetic_data(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GenerateSyntheticDataRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::GenerateSyntheticDataResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.DataFoundryService/GenerateSyntheticData",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.aiplatform.v1.DataFoundryService",
+                        "GenerateSyntheticData",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
         }
     }
 }
@@ -30825,6 +31122,15 @@ pub mod deploy_request {
         /// deploying. If not set, the default container spec will be used.
         #[prost(message, optional, tag = "5")]
         pub container_spec: ::core::option::Option<super::ModelContainerSpec>,
+        /// Optional. The ID to use for the uploaded Model, which will become the
+        /// final component of the model resource name. When not provided, Vertex AI
+        /// will generate a value for this ID. When Model Registry model is provided,
+        /// this field will be ignored.
+        ///
+        /// This value may be up to 63 characters, and valid characters are
+        /// `\[a-z0-9_-\]`. The first character cannot be a number or hyphen.
+        #[prost(string, tag = "6")]
+        pub model_user_id: ::prost::alloc::string::String,
     }
     /// The endpoint config to use for the deployment.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -30833,14 +31139,46 @@ pub mod deploy_request {
         /// default name will be used.
         #[prost(string, tag = "1")]
         pub endpoint_display_name: ::prost::alloc::string::String,
-        /// Optional. If true, the endpoint will be exposed through a dedicated
-        /// DNS \[Endpoint.dedicated_endpoint_dns\]. Your request to the dedicated DNS
-        /// will be isolated from other users' traffic and will have better
-        /// performance and reliability. Note: Once you enabled dedicated endpoint,
-        /// you won't be able to send request to the shared DNS
+        /// Optional. Deprecated. Use dedicated_endpoint_disabled instead.
+        /// If true, the endpoint will be exposed through a
+        /// dedicated DNS \[Endpoint.dedicated_endpoint_dns\]. Your request to the
+        /// dedicated DNS will be isolated from other users' traffic and will have
+        /// better performance and reliability. Note: Once you enabled dedicated
+        /// endpoint, you won't be able to send request to the shared DNS
         /// {region}-aiplatform.googleapis.com. The limitations will be removed soon.
+        #[deprecated]
         #[prost(bool, tag = "2")]
         pub dedicated_endpoint_enabled: bool,
+        /// Optional. By default, if dedicated endpoint is enabled, the endpoint will
+        /// be exposed through a dedicated DNS \[Endpoint.dedicated_endpoint_dns\].
+        /// Your request to the dedicated DNS will be isolated from other users'
+        /// traffic and will have better performance and reliability. Note: Once you
+        /// enabled dedicated endpoint, you won't be able to send request to the
+        /// shared DNS {region}-aiplatform.googleapis.com. The limitations will be
+        /// removed soon.
+        ///
+        /// If this field is set to true, the dedicated endpoint will be disabled
+        /// and the deployed model will be exposed through the shared DNS
+        /// {region}-aiplatform.googleapis.com.
+        #[prost(bool, tag = "4")]
+        pub dedicated_endpoint_disabled: bool,
+        /// Optional. Immutable. The ID to use for endpoint, which will become the
+        /// final component of the endpoint resource name. If not provided, Vertex AI
+        /// will generate a value for this ID.
+        ///
+        /// If the first character is a letter, this value may be up to 63
+        /// characters, and valid characters are `\[a-z0-9-\]`. The last character must
+        /// be a letter or number.
+        ///
+        /// If the first character is a number, this value may be up to 9 characters,
+        /// and valid characters are `\[0-9\]` with no leading zeros.
+        ///
+        /// When using HTTP/JSON, this field is populated
+        /// based on a query string argument, such as `?endpoint_id=12345`. This is
+        /// the fallback for fields that are not included in either the URI or the
+        /// body.
+        #[prost(string, tag = "3")]
+        pub endpoint_user_id: ::prost::alloc::string::String,
     }
     /// The deploy config to use for the deployment.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -36761,7 +37099,8 @@ pub struct ReasoningEngineSpec {
     #[prost(message, repeated, tag = "3")]
     pub class_methods: ::prost::alloc::vec::Vec<::prost_types::Struct>,
     /// Optional. The OSS agent framework used to develop the agent.
-    /// Currently supported values: "langchain", "langgraph", "ag2", "custom".
+    /// Currently supported values: "google-adk", "langchain", "langgraph", "ag2",
+    /// "llama-index", "custom".
     #[prost(string, tag = "5")]
     pub agent_framework: ::prost::alloc::string::String,
 }
@@ -36799,6 +37138,37 @@ pub mod reasoning_engine_spec {
         /// Service Agent.
         #[prost(message, repeated, tag = "2")]
         pub secret_env: ::prost::alloc::vec::Vec<super::SecretEnvVar>,
+        /// Optional. Configuration for PSC-I.
+        #[prost(message, optional, tag = "4")]
+        pub psc_interface_config: ::core::option::Option<super::PscInterfaceConfig>,
+        /// Optional. The minimum number of application instances that will be kept
+        /// running at all times. Defaults to 1. Range: \[0, 10\].
+        #[prost(int32, optional, tag = "5")]
+        pub min_instances: ::core::option::Option<i32>,
+        /// Optional. The maximum number of application instances that can be
+        /// launched to handle increased traffic. Defaults to 100. Range: \[1, 1000\].
+        ///
+        /// If VPC-SC or PSC-I is enabled, the acceptable range is \[1, 100\].
+        #[prost(int32, optional, tag = "6")]
+        pub max_instances: ::core::option::Option<i32>,
+        /// Optional. Resource limits for each container. Only 'cpu' and 'memory'
+        /// keys are supported. Defaults to {"cpu": "4", "memory": "4Gi"}.
+        ///
+        /// * The only supported values for CPU are '1', '2', '4', '6' and '8'. For
+        ///   more information, go to
+        ///   <https://cloud.google.com/run/docs/configuring/cpu.>
+        /// * The only supported values for memory are '1Gi', '2Gi', ... '32 Gi'.
+        /// * For required cpu on different memory values, go to
+        ///   <https://cloud.google.com/run/docs/configuring/memory-limits>
+        #[prost(map = "string, string", tag = "7")]
+        pub resource_limits: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
+        /// Optional. Concurrency for each container and agent server. Recommended
+        /// value: 2 * cpu + 1. Defaults to 9.
+        #[prost(int32, optional, tag = "8")]
+        pub container_concurrency: ::core::option::Option<i32>,
     }
 }
 /// ReasoningEngine provides a customizable runtime for models to determine
@@ -36806,6 +37176,8 @@ pub mod reasoning_engine_spec {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReasoningEngine {
     /// Identifier. The resource name of the ReasoningEngine.
+    /// Format:
+    /// `projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The display name of the ReasoningEngine.
@@ -36827,6 +37199,11 @@ pub struct ReasoningEngine {
     /// a blind "overwrite" update happens.
     #[prost(string, tag = "6")]
     pub etag: ::prost::alloc::string::String,
+    /// Customer-managed encryption key spec for a ReasoningEngine. If set, this
+    /// ReasoningEngine and all sub-resources of this ReasoningEngine will be
+    /// secured by this key.
+    #[prost(message, optional, tag = "11")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
 }
 /// Request message for \[ReasoningEngineExecutionService.Query\]\[\].
 #[derive(Clone, PartialEq, ::prost::Message)]

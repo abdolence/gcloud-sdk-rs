@@ -3858,10 +3858,14 @@ pub struct VulnerabilityReport {
     /// Output only. List of vulnerabilities affecting the VM.
     #[prost(message, repeated, tag = "2")]
     pub vulnerabilities: ::prost::alloc::vec::Vec<vulnerability_report::Vulnerability>,
-    /// Output only. The timestamp for when the last vulnerability report was generated for the
-    /// VM.
+    /// Output only. The timestamp for when the last vulnerability report was
+    /// generated for the VM.
     #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Highest level of severity among all the upgradable
+    /// vulnerabilities with CVEs attached.
+    #[prost(enumeration = "vulnerability_report::VulnerabilitySeverityLevel", tag = "4")]
+    pub highest_upgradable_cve_severity: i32,
 }
 /// Nested message and enum types in `VulnerabilityReport`.
 pub mod vulnerability_report {
@@ -3972,6 +3976,70 @@ pub mod vulnerability_report {
             pub upstream_fix: ::prost::alloc::string::String,
         }
     }
+    /// Severity levels for vulnerabilities.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum VulnerabilitySeverityLevel {
+        /// Default SeverityLevel. This value is unused.
+        Unspecified = 0,
+        /// Vulnerability has no severity level.
+        None = 1,
+        /// Vulnerability severity level is minimal. This is level below the low
+        /// severity level.
+        Minimal = 2,
+        /// Vulnerability severity level is low. This is level below the medium
+        /// severity level.
+        Low = 3,
+        /// Vulnerability severity level is medium. This is level below the high
+        /// severity level.
+        Medium = 4,
+        /// Vulnerability severity level is high. This is level below the critical
+        /// severity level.
+        High = 5,
+        /// Vulnerability severity level is critical. This is the highest severity
+        /// level.
+        Critical = 6,
+    }
+    impl VulnerabilitySeverityLevel {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "VULNERABILITY_SEVERITY_LEVEL_UNSPECIFIED",
+                Self::None => "NONE",
+                Self::Minimal => "MINIMAL",
+                Self::Low => "LOW",
+                Self::Medium => "MEDIUM",
+                Self::High => "HIGH",
+                Self::Critical => "CRITICAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VULNERABILITY_SEVERITY_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "MINIMAL" => Some(Self::Minimal),
+                "LOW" => Some(Self::Low),
+                "MEDIUM" => Some(Self::Medium),
+                "HIGH" => Some(Self::High),
+                "CRITICAL" => Some(Self::Critical),
+                _ => None,
+            }
+        }
+    }
 }
 /// A request message for getting the vulnerability report for the specified VM.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -4006,8 +4074,21 @@ pub struct ListVulnerabilityReportsRequest {
     /// should continue from.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// If provided, this field specifies the criteria that must be met by a
-    /// `vulnerabilityReport` API resource to be included in the response.
+    /// This field supports filtering by the severity level for the vulnerability.
+    /// For a list of severity levels, see [Severity levels for
+    /// vulnerabilities](<https://cloud.google.com/container-analysis/docs/container-scanning-overview#severity_levels_for_vulnerabilities>).
+    ///
+    /// The filter field follows the rules described in the
+    /// [AIP-160](<https://google.aip.dev/160>) guidelines as follows:
+    ///
+    /// * **Filter for a specific severity type**:  you can list reports that
+    ///   contain
+    ///   vulnerabilities that are classified as medium by specifying
+    ///   `vulnerabilities.details.severity:MEDIUM`.
+    ///
+    /// * **Filter for a range of severities** : you can list reports that have
+    ///   vulnerabilities that are classified as critical or high by specifying
+    ///   `vulnerabilities.details.severity:HIGH OR  vulnerabilities.details.severity:CRITICAL`
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }

@@ -2258,7 +2258,7 @@ pub mod change_history_change {
     pub struct ChangeHistoryResource {
         #[prost(
             oneof = "change_history_resource::Resource",
-            tags = "1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33"
+            tags = "1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34"
         )]
         pub resource: ::core::option::Option<change_history_resource::Resource>,
     }
@@ -2357,6 +2357,9 @@ pub mod change_history_change {
             /// A snapshot of a SubpropertySyncConfig resource in change history.
             #[prost(message, tag = "33")]
             SubpropertySyncConfig(super::super::SubpropertySyncConfig),
+            /// A snapshot of a ReportingIdentitySettings resource in change history.
+            #[prost(message, tag = "34")]
+            ReportingIdentitySettings(super::super::ReportingIdentitySettings),
         }
     }
 }
@@ -3682,18 +3685,6 @@ pub struct EnhancedMeasurementSettings {
     #[prost(string, tag = "11")]
     pub uri_query_parameter: ::prost::alloc::string::String,
 }
-/// Configuration for a specific Connected Site Tag.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct ConnectedSiteTag {
-    /// Required. User-provided display name for the connected site tag. Must be
-    /// less than 256 characters.
-    #[prost(string, tag = "1")]
-    pub display_name: ::prost::alloc::string::String,
-    /// Required. "Tag ID to forward events to. Also known as the Measurement ID,
-    /// or the "G-ID"  (For example: G-12345).
-    #[prost(string, tag = "2")]
-    pub tag_id: ::prost::alloc::string::String,
-}
 /// Settings for client-side data redaction. Singleton resource under a Web
 /// Stream.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -3883,16 +3874,16 @@ pub struct SubpropertySyncConfig {
     /// Example: properties/1234/subpropertySyncConfigs/5678
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. Immutable. Resource name of the Subproperty that these
+    /// Output only. Immutable. Resource name of the subproperty that these
     /// settings apply to.
     #[prost(string, tag = "2")]
     pub apply_to_property: ::prost::alloc::string::String,
     /// Required. Specifies the Custom Dimension / Metric synchronization mode for
-    /// the Subproperty.
+    /// the subproperty.
     ///
     /// If set to ALL, Custom Dimension / Metric synchronization will be
     /// immediately enabled.  Local configuration of Custom Dimensions / Metrics
-    /// will not be allowed on the Subproperty so long as the synchronization mode
+    /// will not be allowed on the subproperty so long as the synchronization mode
     /// is set to ALL.
     ///
     /// If set to NONE, Custom Dimensions / Metric synchronization is disabled.
@@ -3903,7 +3894,7 @@ pub struct SubpropertySyncConfig {
 }
 /// Nested message and enum types in `SubpropertySyncConfig`.
 pub mod subproperty_sync_config {
-    /// Synchronization modes for a Subproperty
+    /// Synchronization modes for a subproperty
     #[derive(
         Clone,
         Copy,
@@ -3920,10 +3911,10 @@ pub mod subproperty_sync_config {
         /// Synchronization mode unknown or not specified.
         Unspecified = 0,
         /// Entities are not synchronized.
-        /// Local edits are allowed on the Subproperty.
+        /// Local edits are allowed on the subproperty.
         None = 1,
-        /// Entities are synchronized from Parent Property.
-        /// Local mutations are not allowed on the Subproperty (Create / Update /
+        /// Entities are synchronized from parent property.
+        /// Local mutations are not allowed on the subproperty (Create / Update /
         /// Delete)
         All = 2,
     }
@@ -3945,6 +3936,73 @@ pub mod subproperty_sync_config {
                 "SYNCHRONIZATION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
                 "NONE" => Some(Self::None),
                 "ALL" => Some(Self::All),
+                _ => None,
+            }
+        }
+    }
+}
+/// A resource containing settings related to reporting identity.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct ReportingIdentitySettings {
+    /// Output only. Identifier. Resource name for this reporting identity settings
+    /// singleton resource. Format:
+    /// properties/{property_id}/reportingIdentitySettings Example:
+    /// "properties/1234/reportingIdentitySettings"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The strategy used for identifying user identities in reports.
+    #[prost(enumeration = "reporting_identity_settings::ReportingIdentity", tag = "2")]
+    pub reporting_identity: i32,
+}
+/// Nested message and enum types in `ReportingIdentitySettings`.
+pub mod reporting_identity_settings {
+    /// Various strategies for identifying user identities in reports.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ReportingIdentity {
+        /// Unspecified blending strategy.
+        IdentityBlendingStrategyUnspecified = 0,
+        /// Blended reporting identity strategy.
+        Blended = 1,
+        /// Observed reporting identity strategy.
+        Observed = 2,
+        /// Device-based reporting identity strategy.
+        DeviceBased = 3,
+    }
+    impl ReportingIdentity {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::IdentityBlendingStrategyUnspecified => {
+                    "IDENTITY_BLENDING_STRATEGY_UNSPECIFIED"
+                }
+                Self::Blended => "BLENDED",
+                Self::Observed => "OBSERVED",
+                Self::DeviceBased => "DEVICE_BASED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "IDENTITY_BLENDING_STRATEGY_UNSPECIFIED" => {
+                    Some(Self::IdentityBlendingStrategyUnspecified)
+                }
+                "BLENDED" => Some(Self::Blended),
+                "OBSERVED" => Some(Self::Observed),
+                "DEVICE_BASED" => Some(Self::DeviceBased),
                 _ => None,
             }
         }
@@ -4249,6 +4307,8 @@ pub enum ChangeHistoryResourceType {
     ReportingDataAnnotation = 32,
     /// SubpropertySyncConfig resource
     SubpropertySyncConfig = 33,
+    /// ReportingIdentitySettings resource
+    ReportingIdentitySettings = 34,
 }
 impl ChangeHistoryResourceType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -4290,6 +4350,7 @@ impl ChangeHistoryResourceType {
             Self::CalculatedMetric => "CALCULATED_METRIC",
             Self::ReportingDataAnnotation => "REPORTING_DATA_ANNOTATION",
             Self::SubpropertySyncConfig => "SUBPROPERTY_SYNC_CONFIG",
+            Self::ReportingIdentitySettings => "REPORTING_IDENTITY_SETTINGS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -4330,6 +4391,7 @@ impl ChangeHistoryResourceType {
             "CALCULATED_METRIC" => Some(Self::CalculatedMetric),
             "REPORTING_DATA_ANNOTATION" => Some(Self::ReportingDataAnnotation),
             "SUBPROPERTY_SYNC_CONFIG" => Some(Self::SubpropertySyncConfig),
+            "REPORTING_IDENTITY_SETTINGS" => Some(Self::ReportingIdentitySettings),
             _ => None,
         }
     }
@@ -6612,41 +6674,6 @@ pub struct ListChannelGroupsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Request for setting the opt out status for the automated GA4 setup process.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct SetAutomatedGa4ConfigurationOptOutRequest {
-    /// Required. The UA property to set the opt out status. Note this request uses
-    /// the internal property ID, not the tracking ID of the form UA-XXXXXX-YY.
-    /// Format: properties/{internalWebPropertyId}
-    /// Example: properties/1234
-    #[prost(string, tag = "1")]
-    pub property: ::prost::alloc::string::String,
-    /// The status to set.
-    #[prost(bool, tag = "2")]
-    pub opt_out: bool,
-}
-/// Response message for setting the opt out status for the automated GA4 setup
-/// process.
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct SetAutomatedGa4ConfigurationOptOutResponse {}
-/// Request for fetching the opt out status for the automated GA4 setup process.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct FetchAutomatedGa4ConfigurationOptOutRequest {
-    /// Required. The UA property to get the opt out status. Note this request uses
-    /// the internal property ID, not the tracking ID of the form UA-XXXXXX-YY.
-    /// Format: properties/{internalWebPropertyId}
-    /// Example: properties/1234
-    #[prost(string, tag = "1")]
-    pub property: ::prost::alloc::string::String,
-}
-/// Response message for fetching the opt out status for the automated GA4 setup
-/// process.
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct FetchAutomatedGa4ConfigurationOptOutResponse {
-    /// The opt out status for the UA property.
-    #[prost(bool, tag = "1")]
-    pub opt_out: bool,
-}
 /// Request message for CreateBigQueryLink RPC.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateBigQueryLinkRequest {
@@ -6770,54 +6797,6 @@ pub struct UpdateDataRedactionSettingsRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// Request message for CreateConnectedSiteTag RPC.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct CreateConnectedSiteTagRequest {
-    /// The Universal Analytics property to create connected site tags for.
-    /// This API does not support GA4 properties.
-    /// Format: properties/{universalAnalyticsPropertyId}
-    /// Example: properties/1234
-    #[prost(string, tag = "1")]
-    pub property: ::prost::alloc::string::String,
-    /// Required. The tag to add to the Universal Analytics property
-    #[prost(message, optional, tag = "2")]
-    pub connected_site_tag: ::core::option::Option<ConnectedSiteTag>,
-}
-/// Response message for CreateConnectedSiteTag RPC.
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct CreateConnectedSiteTagResponse {}
-/// Request message for DeleteConnectedSiteTag RPC.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct DeleteConnectedSiteTagRequest {
-    /// The Universal Analytics property to delete connected site tags for.
-    /// This API does not support GA4 properties.
-    /// Format: properties/{universalAnalyticsPropertyId}
-    /// Example: properties/1234
-    #[prost(string, tag = "1")]
-    pub property: ::prost::alloc::string::String,
-    /// Tag ID to forward events to. Also known as the Measurement ID, or the
-    /// "G-ID"  (For example: G-12345).
-    #[prost(string, tag = "2")]
-    pub tag_id: ::prost::alloc::string::String,
-}
-/// Request message for ListConnectedSiteTags RPC.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct ListConnectedSiteTagsRequest {
-    /// The Universal Analytics property to fetch connected site tags for.
-    /// This does not work on GA4 properties. A maximum of 20 connected site tags
-    /// will be returned.
-    /// Example Format: `properties/1234`
-    #[prost(string, tag = "1")]
-    pub property: ::prost::alloc::string::String,
-}
-/// Response message for ListConnectedSiteTags RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListConnectedSiteTagsResponse {
-    /// The site tags for the Universal Analytics property. A maximum of 20
-    /// connected site tags will be returned.
-    #[prost(message, repeated, tag = "1")]
-    pub connected_site_tags: ::prost::alloc::vec::Vec<ConnectedSiteTag>,
-}
 /// Request message to be passed to CreateAdSenseLink method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CreateAdSenseLinkRequest {
@@ -6879,27 +6858,6 @@ pub struct ListAdSenseLinksResponse {
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
-}
-/// Request for looking up GA4 property connected to a UA property.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct FetchConnectedGa4PropertyRequest {
-    /// Required. The UA property for which to look up the connected GA4 property.
-    /// Note this request uses the
-    /// internal property ID, not the tracking ID of the form UA-XXXXXX-YY.
-    /// Format: properties/{internal_web_property_id}
-    /// Example: properties/1234
-    #[prost(string, tag = "1")]
-    pub property: ::prost::alloc::string::String,
-}
-/// Response for looking up GA4 property connected to a UA property.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct FetchConnectedGa4PropertyResponse {
-    /// The GA4 property connected to the UA property. An empty string is returned
-    /// when there is no connected GA4 property.
-    /// Format: properties/{property_id}
-    /// Example: properties/1234
-    #[prost(string, tag = "1")]
-    pub property: ::prost::alloc::string::String,
 }
 /// Request message for CreateEventCreateRule RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -7391,8 +7349,20 @@ pub mod submit_user_deletion_request {
         /// ID](<https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.html#getAppInstanceId>).
         #[prost(string, tag = "4")]
         AppInstanceId(::prost::alloc::string::String),
-        /// The un-hashed, unencrypted, [user-provided
-        /// data](<https://support.google.com/analytics/answer/14077171>).
+        /// [User-provided
+        /// data](<https://support.google.com/analytics/answer/14077171>).  May contain
+        /// either one email address or one phone number.
+        ///
+        /// Email addresses should be normalized as such:
+        ///
+        /// * lowercase
+        /// * remove periods before @ for gmail.com/googlemail.com addresses
+        /// * remove all spaces
+        ///
+        /// Phone numbers should be normalized as such:
+        ///
+        /// * remove all non digit characters
+        /// * add + prefix
         #[prost(string, tag = "5")]
         UserProvidedData(::prost::alloc::string::String),
     }
@@ -7441,7 +7411,7 @@ pub struct ListSubpropertySyncConfigsRequest {
 /// Response message for ListSubpropertySyncConfigs RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSubpropertySyncConfigsResponse {
-    /// List of Subproperty Sync Configs.
+    /// List of `SubpropertySyncConfig` resources.
     #[prost(message, repeated, tag = "1")]
     pub subproperty_sync_configs: ::prost::alloc::vec::Vec<SubpropertySyncConfig>,
     /// A token, which can be sent as `page_token` to retrieve the next page. If
@@ -7452,7 +7422,7 @@ pub struct ListSubpropertySyncConfigsResponse {
 /// Request message for UpdateSubpropertySyncConfig RPC.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateSubpropertySyncConfigRequest {
-    /// Required. The SubpropertySyncConfig to update.
+    /// Required. The `SubpropertySyncConfig` to update.
     #[prost(message, optional, tag = "1")]
     pub subproperty_sync_config: ::core::option::Option<SubpropertySyncConfig>,
     /// Optional. The list of fields to update. Field names must be in snake case
@@ -7461,6 +7431,16 @@ pub struct UpdateSubpropertySyncConfigRequest {
     /// fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for GetReportingIdentitySettings RPC.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GetReportingIdentitySettingsRequest {
+    /// Required. The name of the settings to lookup.
+    /// Format:
+    /// properties/{property}/reportingIdentitySettings
+    /// Example: "properties/1000/reportingIdentitySettings"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod analytics_admin_service_client {
@@ -10673,74 +10653,6 @@ pub mod analytics_admin_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Sets the opt out status for the automated GA4 setup process for a UA
-        /// property.
-        /// Note: this has no effect on GA4 property.
-        pub async fn set_automated_ga4_configuration_opt_out(
-            &mut self,
-            request: impl tonic::IntoRequest<
-                super::SetAutomatedGa4ConfigurationOptOutRequest,
-            >,
-        ) -> std::result::Result<
-            tonic::Response<super::SetAutomatedGa4ConfigurationOptOutResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/SetAutomatedGa4ConfigurationOptOut",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "SetAutomatedGa4ConfigurationOptOut",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Fetches the opt out status for the automated GA4 setup process for a UA
-        /// property.
-        /// Note: this has no effect on GA4 property.
-        pub async fn fetch_automated_ga4_configuration_opt_out(
-            &mut self,
-            request: impl tonic::IntoRequest<
-                super::FetchAutomatedGa4ConfigurationOptOutRequest,
-            >,
-        ) -> std::result::Result<
-            tonic::Response<super::FetchAutomatedGa4ConfigurationOptOutResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/FetchAutomatedGa4ConfigurationOptOut",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "FetchAutomatedGa4ConfigurationOptOut",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
         /// Creates a BigQueryLink.
         pub async fn create_big_query_link(
             &mut self,
@@ -10943,129 +10855,6 @@ pub mod analytics_admin_service_client {
                     GrpcMethod::new(
                         "google.analytics.admin.v1alpha.AnalyticsAdminService",
                         "UpdateEnhancedMeasurementSettings",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Creates a connected site tag for a Universal Analytics property. You can
-        /// create a maximum of 20 connected site tags per property.
-        /// Note: This API cannot be used on GA4 properties.
-        pub async fn create_connected_site_tag(
-            &mut self,
-            request: impl tonic::IntoRequest<super::CreateConnectedSiteTagRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::CreateConnectedSiteTagResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateConnectedSiteTag",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "CreateConnectedSiteTag",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Deletes a connected site tag for a Universal Analytics property.
-        /// Note: this has no effect on GA4 properties.
-        pub async fn delete_connected_site_tag(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DeleteConnectedSiteTagRequest>,
-        ) -> std::result::Result<tonic::Response<()>, tonic::Status> {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteConnectedSiteTag",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "DeleteConnectedSiteTag",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Lists the connected site tags for a Universal Analytics property. A maximum
-        /// of 20 connected site tags will be returned. Note: this has no effect on GA4
-        /// property.
-        pub async fn list_connected_site_tags(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListConnectedSiteTagsRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::ListConnectedSiteTagsResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListConnectedSiteTags",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "ListConnectedSiteTags",
-                    ),
-                );
-            self.inner.unary(req, path, codec).await
-        }
-        /// Given a specified UA property, looks up the GA4 property connected to it.
-        /// Note: this cannot be used with GA4 properties.
-        pub async fn fetch_connected_ga4_property(
-            &mut self,
-            request: impl tonic::IntoRequest<super::FetchConnectedGa4PropertyRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::FetchConnectedGa4PropertyResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::unknown(
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic_prost::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/FetchConnectedGa4Property",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(
-                    GrpcMethod::new(
-                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
-                        "FetchConnectedGa4Property",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -12214,7 +12003,7 @@ pub mod analytics_admin_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// List all Subproperty Sync Configs on a property.
+        /// List all `SubpropertySyncConfig` resources for a property.
         pub async fn list_subproperty_sync_configs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSubpropertySyncConfigsRequest>,
@@ -12244,7 +12033,7 @@ pub mod analytics_admin_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Updates a Subproperty Sync Config.
+        /// Updates a `SubpropertySyncConfig`.
         pub async fn update_subproperty_sync_config(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateSubpropertySyncConfigRequest>,
@@ -12274,7 +12063,7 @@ pub mod analytics_admin_service_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Lookup for a single Subproperty Sync Config.
+        /// Lookup for a single `SubpropertySyncConfig`.
         pub async fn get_subproperty_sync_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSubpropertySyncConfigRequest>,
@@ -12300,6 +12089,36 @@ pub mod analytics_admin_service_client {
                     GrpcMethod::new(
                         "google.analytics.admin.v1alpha.AnalyticsAdminService",
                         "GetSubpropertySyncConfig",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Returns the singleton data retention settings for this property.
+        pub async fn get_reporting_identity_settings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetReportingIdentitySettingsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::ReportingIdentitySettings>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetReportingIdentitySettings",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.analytics.admin.v1alpha.AnalyticsAdminService",
+                        "GetReportingIdentitySettings",
                     ),
                 );
             self.inner.unary(req, path, codec).await

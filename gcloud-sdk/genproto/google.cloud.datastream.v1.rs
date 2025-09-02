@@ -212,6 +212,78 @@ pub mod salesforce_profile {
         Oauth2ClientCredentials(Oauth2ClientCredentials),
     }
 }
+/// MongoDB profile.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MongodbProfile {
+    /// Required. List of host addresses for a MongoDB cluster.
+    /// For SRV connection format, this list must contain exactly one DNS host
+    /// without a port. For Standard connection format, this list must contain all
+    /// the required hosts in the cluster with their respective ports.
+    #[prost(message, repeated, tag = "1")]
+    pub host_addresses: ::prost::alloc::vec::Vec<HostAddress>,
+    /// Optional. Name of the replica set. Only needed for self hosted replica set
+    /// type MongoDB cluster. For SRV connection format, this field must be empty.
+    /// For Standard connection format, this field must be specified.
+    #[prost(string, tag = "2")]
+    pub replica_set: ::prost::alloc::string::String,
+    /// Required. Username for the MongoDB connection.
+    #[prost(string, tag = "3")]
+    pub username: ::prost::alloc::string::String,
+    /// Optional. Password for the MongoDB connection. Mutually exclusive with the
+    /// `secret_manager_stored_password` field.
+    #[prost(string, tag = "4")]
+    pub password: ::prost::alloc::string::String,
+    /// Optional. A reference to a Secret Manager resource name storing the
+    /// SQLServer connection password. Mutually exclusive with the `password`
+    /// field.
+    #[prost(string, tag = "5")]
+    pub secret_manager_stored_password: ::prost::alloc::string::String,
+    /// Optional. SSL configuration for the MongoDB connection.
+    #[prost(message, optional, tag = "6")]
+    pub ssl_config: ::core::option::Option<MongodbSslConfig>,
+    /// MongoDB connection format.
+    /// Must specify either srv_connection_format or standard_connection_format.
+    #[prost(oneof = "mongodb_profile::MongodbConnectionFormat", tags = "101, 102")]
+    pub mongodb_connection_format: ::core::option::Option<
+        mongodb_profile::MongodbConnectionFormat,
+    >,
+}
+/// Nested message and enum types in `MongodbProfile`.
+pub mod mongodb_profile {
+    /// MongoDB connection format.
+    /// Must specify either srv_connection_format or standard_connection_format.
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Oneof)]
+    pub enum MongodbConnectionFormat {
+        /// Srv connection format.
+        #[prost(message, tag = "101")]
+        SrvConnectionFormat(super::SrvConnectionFormat),
+        /// Standard connection format.
+        #[prost(message, tag = "102")]
+        StandardConnectionFormat(super::StandardConnectionFormat),
+    }
+}
+/// A HostAddress represents a transport end point, which is the combination
+/// of an IP address or hostname and a port number.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct HostAddress {
+    /// Required. Hostname for the connection.
+    #[prost(string, tag = "1")]
+    pub hostname: ::prost::alloc::string::String,
+    /// Optional. Port for the connection.
+    #[prost(int32, tag = "2")]
+    pub port: i32,
+}
+/// Srv connection format.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct SrvConnectionFormat {}
+/// Standard connection format.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct StandardConnectionFormat {
+    /// Optional. Specifies whether the client connects directly to the host\[:port\]
+    /// in the connection URI.
+    #[prost(bool, tag = "1")]
+    pub direct_connection: bool,
+}
 /// Cloud Storage bucket profile.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct GcsProfile {
@@ -274,6 +346,16 @@ pub struct VpcPeeringConfig {
     #[prost(string, tag = "2")]
     pub subnet: ::prost::alloc::string::String,
 }
+/// The PSC Interface configuration is used to create PSC Interface between
+/// Datastream and the consumer's PSC.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct PscInterfaceConfig {
+    /// Required. Fully qualified name of the Network Attachment that Datastream
+    /// will connect to. Format:
+    /// `projects/{project}/regions/{region}/networkAttachments/{name}`
+    #[prost(string, tag = "1")]
+    pub network_attachment: ::prost::alloc::string::String,
+}
 /// The PrivateConnection resource is used to establish private connectivity
 /// between Datastream and a customer's network.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -312,6 +394,9 @@ pub struct PrivateConnection {
     /// VPC Peering Config.
     #[prost(message, optional, tag = "100")]
     pub vpc_peering_config: ::core::option::Option<VpcPeeringConfig>,
+    /// PSC Interface Config.
+    #[prost(message, optional, tag = "101")]
+    pub psc_interface_config: ::core::option::Option<PscInterfaceConfig>,
 }
 /// Nested message and enum types in `PrivateConnection`.
 pub mod private_connection {
@@ -408,6 +493,40 @@ pub struct Route {
     #[prost(int32, tag = "7")]
     pub destination_port: i32,
 }
+/// MongoDB SSL configuration information.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct MongodbSslConfig {
+    /// Optional. Input only. PEM-encoded private key associated with the Client
+    /// Certificate. If this field is used then the 'client_certificate' and the
+    /// 'ca_certificate' fields are mandatory.
+    #[prost(string, tag = "1")]
+    pub client_key: ::prost::alloc::string::String,
+    /// Output only. Indicates whether the client_key field is set.
+    #[prost(bool, tag = "2")]
+    pub client_key_set: bool,
+    /// Optional. Input only. PEM-encoded certificate that will be used by the
+    /// replica to authenticate against the source database server. If this field
+    /// is used then the 'client_key' and the 'ca_certificate' fields are
+    /// mandatory.
+    #[prost(string, tag = "3")]
+    pub client_certificate: ::prost::alloc::string::String,
+    /// Output only. Indicates whether the client_certificate field is set.
+    #[prost(bool, tag = "4")]
+    pub client_certificate_set: bool,
+    /// Optional. Input only. PEM-encoded certificate of the CA that signed the
+    /// source database server's certificate.
+    #[prost(string, tag = "5")]
+    pub ca_certificate: ::prost::alloc::string::String,
+    /// Output only. Indicates whether the ca_certificate field is set.
+    #[prost(bool, tag = "6")]
+    pub ca_certificate_set: bool,
+    /// Optional. Input only. A reference to a Secret Manager resource name storing
+    /// the PEM-encoded private key associated with the Client Certificate. If this
+    /// field is used then the 'client_certificate' and the 'ca_certificate' fields
+    /// are mandatory. Mutually exclusive with the `client_key` field.
+    #[prost(string, tag = "7")]
+    pub secret_manager_stored_client_key: ::prost::alloc::string::String,
+}
 /// MySQL SSL configuration information.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct MysqlSslConfig {
@@ -447,6 +566,13 @@ pub struct OracleSslConfig {
     /// this Connection-Profile.
     #[prost(bool, tag = "2")]
     pub ca_certificate_set: bool,
+    /// Optional. The distinguished name (DN) mentioned in the server
+    /// certificate. This corresponds to SSL_SERVER_CERT_DN sqlnet parameter.
+    /// Refer
+    /// <https://docs.oracle.com/en/database/oracle/oracle-database/19/netrf/local-naming-parameters-in-tns-ora-file.html#GUID-70AB0695-A9AA-4A94-B141-4C605236EEB7>
+    /// If this field is not provided, the DN matching is not enforced.
+    #[prost(string, tag = "3")]
+    pub server_certificate_distinguished_name: ::prost::alloc::string::String,
 }
 /// PostgreSQL SSL configuration information.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
@@ -470,6 +596,11 @@ pub mod postgresql_ssl_config {
         /// Required. Input only. PEM-encoded server root CA certificate.
         #[prost(string, tag = "1")]
         pub ca_certificate: ::prost::alloc::string::String,
+        /// Optional. The hostname mentioned in the Subject or SAN extension of the
+        /// server certificate. If this field is not provided, the hostname in the
+        /// server certificate is not validated.
+        #[prost(string, tag = "2")]
+        pub server_certificate_hostname: ::prost::alloc::string::String,
     }
     /// Message represents the option where Datastream will enforce the encryption
     /// and authenticate the server identity as well as the client identity.
@@ -494,6 +625,11 @@ pub mod postgresql_ssl_config {
         /// Required. Input only. PEM-encoded server root CA certificate.
         #[prost(string, tag = "3")]
         pub ca_certificate: ::prost::alloc::string::String,
+        /// Optional. The hostname mentioned in the Subject or SAN extension of the
+        /// server certificate. If this field is not provided, the hostname in the
+        /// server certificate is not validated.
+        #[prost(string, tag = "5")]
+        pub server_certificate_hostname: ::prost::alloc::string::String,
     }
     /// The encryption settings available for PostgreSQL connection profiles.
     /// This captures various SSL mode supported by PostgreSQL, which includes
@@ -543,7 +679,7 @@ pub struct ConnectionProfile {
     /// Connection configuration for the ConnectionProfile.
     #[prost(
         oneof = "connection_profile::Profile",
-        tags = "100, 101, 102, 103, 104, 105, 107"
+        tags = "100, 101, 102, 103, 104, 105, 107, 108"
     )]
     pub profile: ::core::option::Option<connection_profile::Profile>,
     /// Connectivity options used to establish a connection to the profile.
@@ -576,6 +712,9 @@ pub mod connection_profile {
         /// Salesforce Connection Profile configuration.
         #[prost(message, tag = "107")]
         SalesforceProfile(super::SalesforceProfile),
+        /// MongoDB Connection Profile configuration.
+        #[prost(message, tag = "108")]
+        MongodbProfile(super::MongodbProfile),
     }
     /// Connectivity options used to establish a connection to the profile.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
@@ -1067,6 +1206,55 @@ pub struct SalesforceField {
     #[prost(bool, tag = "3")]
     pub nillable: bool,
 }
+/// MongoDB source configuration.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MongodbSourceConfig {
+    /// MongoDB collections to include in the stream.
+    #[prost(message, optional, tag = "1")]
+    pub include_objects: ::core::option::Option<MongodbCluster>,
+    /// MongoDB collections to exclude from the stream.
+    #[prost(message, optional, tag = "2")]
+    pub exclude_objects: ::core::option::Option<MongodbCluster>,
+    /// Optional. Maximum number of concurrent backfill tasks. The number should be
+    /// non-negative and less than or equal to 50. If not set (or set to 0), the
+    /// system's default value is used
+    #[prost(int32, tag = "3")]
+    pub max_concurrent_backfill_tasks: i32,
+}
+/// MongoDB Cluster structure.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MongodbCluster {
+    /// MongoDB databases in the cluster.
+    #[prost(message, repeated, tag = "1")]
+    pub databases: ::prost::alloc::vec::Vec<MongodbDatabase>,
+}
+/// MongoDB Database.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MongodbDatabase {
+    /// Database name.
+    #[prost(string, tag = "1")]
+    pub database: ::prost::alloc::string::String,
+    /// Collections in the database.
+    #[prost(message, repeated, tag = "2")]
+    pub collections: ::prost::alloc::vec::Vec<MongodbCollection>,
+}
+/// MongoDB Collection.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MongodbCollection {
+    /// Collection name.
+    #[prost(string, tag = "1")]
+    pub collection: ::prost::alloc::string::String,
+    /// Fields in the collection.
+    #[prost(message, repeated, tag = "2")]
+    pub fields: ::prost::alloc::vec::Vec<MongodbField>,
+}
+/// MongoDB Field.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct MongodbField {
+    /// Field name.
+    #[prost(string, tag = "1")]
+    pub field: ::prost::alloc::string::String,
+}
 /// The configuration of the stream source.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SourceConfig {
@@ -1077,7 +1265,7 @@ pub struct SourceConfig {
     /// Stream configuration that is specific to the data source type.
     #[prost(
         oneof = "source_config::SourceStreamConfig",
-        tags = "100, 101, 102, 103, 104"
+        tags = "100, 101, 102, 103, 104, 105"
     )]
     pub source_stream_config: ::core::option::Option<source_config::SourceStreamConfig>,
 }
@@ -1101,6 +1289,9 @@ pub mod source_config {
         /// Salesforce data source configuration.
         #[prost(message, tag = "104")]
         SalesforceSourceConfig(super::SalesforceSourceConfig),
+        /// MongoDB data source configuration.
+        #[prost(message, tag = "105")]
+        MongodbSourceConfig(super::MongodbSourceConfig),
     }
 }
 /// AVRO file format configuration.
@@ -1276,6 +1467,10 @@ pub mod big_query_destination_config {
         pub dataset_template: ::core::option::Option<
             source_hierarchy_datasets::DatasetTemplate,
         >,
+        /// Optional. The project id of the BigQuery dataset. If not specified, the
+        /// project will be inferred from the stream resource.
+        #[prost(string, optional, tag = "3")]
+        pub project_id: ::core::option::Option<::prost::alloc::string::String>,
     }
     /// Nested message and enum types in `SourceHierarchyDatasets`.
     pub mod source_hierarchy_datasets {
@@ -1522,7 +1717,7 @@ pub mod stream {
         /// List of objects to exclude.
         #[prost(
             oneof = "backfill_all_strategy::ExcludedObjects",
-            tags = "1, 2, 3, 4, 5"
+            tags = "1, 2, 3, 4, 5, 6"
         )]
         pub excluded_objects: ::core::option::Option<
             backfill_all_strategy::ExcludedObjects,
@@ -1548,6 +1743,9 @@ pub mod stream {
             /// Salesforce data source objects to avoid backfilling
             #[prost(message, tag = "5")]
             SalesforceExcludedObjects(super::super::SalesforceOrg),
+            /// MongoDB data source objects to avoid backfilling
+            #[prost(message, tag = "6")]
+            MongodbExcludedObjects(super::super::MongodbCluster),
         }
     }
     /// Backfill strategy to disable automatic backfill for the Stream's objects.
@@ -1667,7 +1865,7 @@ pub struct SourceObjectIdentifier {
     /// The identifier for an object in the data source.
     #[prost(
         oneof = "source_object_identifier::SourceIdentifier",
-        tags = "1, 2, 3, 4, 5"
+        tags = "1, 2, 3, 4, 5, 6"
     )]
     pub source_identifier: ::core::option::Option<
         source_object_identifier::SourceIdentifier,
@@ -1722,6 +1920,16 @@ pub mod source_object_identifier {
         #[prost(string, tag = "1")]
         pub object_name: ::prost::alloc::string::String,
     }
+    /// MongoDB data source object identifier.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct MongodbObjectIdentifier {
+        /// Required. The database name.
+        #[prost(string, tag = "1")]
+        pub database: ::prost::alloc::string::String,
+        /// Required. The collection name.
+        #[prost(string, tag = "2")]
+        pub collection: ::prost::alloc::string::String,
+    }
     /// The identifier for an object in the data source.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum SourceIdentifier {
@@ -1740,6 +1948,9 @@ pub mod source_object_identifier {
         /// Salesforce data source object identifier.
         #[prost(message, tag = "5")]
         SalesforceIdentifier(SalesforceObjectIdentifier),
+        /// MongoDB data source object identifier.
+        #[prost(message, tag = "6")]
+        MongodbIdentifier(MongodbObjectIdentifier),
     }
 }
 /// Represents a backfill job on a specific stream object.
@@ -2152,7 +2363,7 @@ pub struct DiscoverConnectionProfileRequest {
     /// The data object to populate with child data objects and metadata.
     #[prost(
         oneof = "discover_connection_profile_request::DataObject",
-        tags = "100, 101, 102, 103"
+        tags = "100, 101, 102, 103, 104, 105"
     )]
     pub data_object: ::core::option::Option<
         discover_connection_profile_request::DataObject,
@@ -2196,6 +2407,12 @@ pub mod discover_connection_profile_request {
         /// SQLServer RDBMS to enrich with child data objects and metadata.
         #[prost(message, tag = "103")]
         SqlServerRdbms(super::SqlServerRdbms),
+        /// Salesforce organization to enrich with child data objects and metadata.
+        #[prost(message, tag = "104")]
+        SalesforceOrg(super::SalesforceOrg),
+        /// MongoDB cluster to enrich with child data objects and metadata.
+        #[prost(message, tag = "105")]
+        MongodbCluster(super::MongodbCluster),
     }
 }
 /// Response from a discover request.
@@ -2204,7 +2421,7 @@ pub struct DiscoverConnectionProfileResponse {
     /// The data object that has been enriched by the discover API call.
     #[prost(
         oneof = "discover_connection_profile_response::DataObject",
-        tags = "100, 101, 102, 103"
+        tags = "100, 101, 102, 103, 104, 105"
     )]
     pub data_object: ::core::option::Option<
         discover_connection_profile_response::DataObject,
@@ -2227,6 +2444,12 @@ pub mod discover_connection_profile_response {
         /// Enriched SQLServer RDBMS object.
         #[prost(message, tag = "103")]
         SqlServerRdbms(super::SqlServerRdbms),
+        /// Enriched Salesforce organization.
+        #[prost(message, tag = "104")]
+        SalesforceOrg(super::SalesforceOrg),
+        /// Enriched MongoDB cluster.
+        #[prost(message, tag = "105")]
+        MongodbCluster(super::MongodbCluster),
     }
 }
 /// Request message for 'FetchStaticIps' request.
@@ -2689,6 +2912,11 @@ pub struct CreatePrivateConnectionRequest {
     /// Optional. If set to true, will skip validations.
     #[prost(bool, tag = "6")]
     pub force: bool,
+    /// Optional. When supplied with PSC Interface config, will get/create the
+    /// tenant project required for the customer to allow list and won't actually
+    /// create the private connection.
+    #[prost(bool, tag = "8")]
+    pub validate_only: bool,
 }
 /// Request for listing private connections.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]

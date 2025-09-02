@@ -53,10 +53,13 @@ pub struct Content {
 ///
 /// A `Part` must have a fixed IANA MIME type identifying the type and subtype
 /// of the media if the `inline_data` field is filled with raw bytes.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Part {
     #[prost(oneof = "part::Data", tags = "2, 3")]
     pub data: ::core::option::Option<part::Data>,
+    /// Controls extra preprocessing of data.
+    #[prost(oneof = "part::Metadata", tags = "14")]
+    pub metadata: ::core::option::Option<part::Metadata>,
 }
 /// Nested message and enum types in `Part`.
 pub mod part {
@@ -68,6 +71,14 @@ pub mod part {
         /// Inline media bytes.
         #[prost(message, tag = "3")]
         InlineData(super::Blob),
+    }
+    /// Controls extra preprocessing of data.
+    #[derive(Clone, Copy, PartialEq, ::prost::Oneof)]
+    pub enum Metadata {
+        /// Optional. Video metadata. The metadata should only be specified while the
+        /// video data is presented in inline_data or file_data.
+        #[prost(message, tag = "14")]
+        VideoMetadata(super::VideoMetadata),
     }
 }
 /// Raw media bytes.
@@ -88,6 +99,20 @@ pub struct Blob {
     /// Raw bytes for media formats.
     #[prost(bytes = "vec", tag = "2")]
     pub data: ::prost::alloc::vec::Vec<u8>,
+}
+/// Metadata describes the input video content.
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct VideoMetadata {
+    /// Optional. The start offset of the video.
+    #[prost(message, optional, tag = "1")]
+    pub start_offset: ::core::option::Option<::prost_types::Duration>,
+    /// Optional. The end offset of the video.
+    #[prost(message, optional, tag = "2")]
+    pub end_offset: ::core::option::Option<::prost_types::Duration>,
+    /// Optional. The frame rate of the video sent to the model. If not specified,
+    /// the default value will be 1.0. The fps range is (0.0, 24.0\].
+    #[prost(double, tag = "3")]
+    pub fps: f64,
 }
 /// Represents token counting info for a single modality.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
@@ -540,6 +565,9 @@ pub struct GenerateContentResponse {
     /// Output only. The model version used to generate the response.
     #[prost(string, tag = "4")]
     pub model_version: ::prost::alloc::string::String,
+    /// Output only. response_id is used to identify each response.
+    #[prost(string, tag = "5")]
+    pub response_id: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `GenerateContentResponse`.
 pub mod generate_content_response {
@@ -697,6 +725,9 @@ pub struct Candidate {
     /// Output only. Log-likelihood scores for the response tokens and top tokens
     #[prost(message, optional, tag = "11")]
     pub logprobs_result: ::core::option::Option<LogprobsResult>,
+    /// Output only. Metadata related to url context retrieval tool.
+    #[prost(message, optional, tag = "13")]
+    pub url_context_metadata: ::core::option::Option<UrlContextMetadata>,
 }
 /// Nested message and enum types in `Candidate`.
 pub mod candidate {
@@ -741,6 +772,8 @@ pub mod candidate {
         /// Token generation stopped because generated images contain safety
         /// violations.
         ImageSafety = 11,
+        /// Model generated a tool call but no tools were enabled in the request.
+        UnexpectedToolCall = 12,
     }
     impl FinishReason {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -761,6 +794,7 @@ pub mod candidate {
                 Self::Spii => "SPII",
                 Self::MalformedFunctionCall => "MALFORMED_FUNCTION_CALL",
                 Self::ImageSafety => "IMAGE_SAFETY",
+                Self::UnexpectedToolCall => "UNEXPECTED_TOOL_CALL",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -778,6 +812,70 @@ pub mod candidate {
                 "SPII" => Some(Self::Spii),
                 "MALFORMED_FUNCTION_CALL" => Some(Self::MalformedFunctionCall),
                 "IMAGE_SAFETY" => Some(Self::ImageSafety),
+                "UNEXPECTED_TOOL_CALL" => Some(Self::UnexpectedToolCall),
+                _ => None,
+            }
+        }
+    }
+}
+/// Metadata related to url context retrieval tool.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UrlContextMetadata {
+    /// List of url context.
+    #[prost(message, repeated, tag = "1")]
+    pub url_metadata: ::prost::alloc::vec::Vec<UrlMetadata>,
+}
+/// Context of the a single url retrieval.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct UrlMetadata {
+    /// Retrieved url by the tool.
+    #[prost(string, tag = "1")]
+    pub retrieved_url: ::prost::alloc::string::String,
+    /// Status of the url retrieval.
+    #[prost(enumeration = "url_metadata::UrlRetrievalStatus", tag = "2")]
+    pub url_retrieval_status: i32,
+}
+/// Nested message and enum types in `UrlMetadata`.
+pub mod url_metadata {
+    /// Status of the url retrieval.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum UrlRetrievalStatus {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// Url retrieval is successful.
+        Success = 1,
+        /// Url retrieval is failed due to error.
+        Error = 2,
+    }
+    impl UrlRetrievalStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "URL_RETRIEVAL_STATUS_UNSPECIFIED",
+                Self::Success => "URL_RETRIEVAL_STATUS_SUCCESS",
+                Self::Error => "URL_RETRIEVAL_STATUS_ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "URL_RETRIEVAL_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "URL_RETRIEVAL_STATUS_SUCCESS" => Some(Self::Success),
+                "URL_RETRIEVAL_STATUS_ERROR" => Some(Self::Error),
                 _ => None,
             }
         }
@@ -1435,6 +1533,9 @@ pub struct Model {
     /// allowed as a generation parameter.
     #[prost(int32, optional, tag = "11")]
     pub top_k: ::core::option::Option<i32>,
+    /// Whether the model supports thinking.
+    #[prost(bool, tag = "15")]
+    pub thinking: bool,
 }
 /// Request for getting information about a specific Model.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
