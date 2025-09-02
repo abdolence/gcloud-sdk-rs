@@ -96,6 +96,21 @@ pub struct Instance {
     /// Output only. Reserved for future use.
     #[prost(bool, optional, tag = "11")]
     pub satisfies_pzi: ::core::option::Option<bool>,
+    /// Optional. Input only. Immutable. Tag keys/values directly bound to this
+    /// resource. For example:
+    ///
+    /// * "123/environment": "production",
+    /// * "123/costCenter": "marketing"
+    ///
+    /// Tags and Labels (above) are both used to bind metadata to resources, with
+    /// different use-cases. See
+    /// <https://cloud.google.com/resource-manager/docs/tags/tags-overview> for an
+    /// in-depth overview on the difference between tags and labels.
+    #[prost(map = "string, string", tag = "12")]
+    pub tags: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Nested message and enum types in `Instance`.
 pub mod instance {

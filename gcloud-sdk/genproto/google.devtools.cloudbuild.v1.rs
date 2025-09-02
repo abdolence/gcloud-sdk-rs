@@ -2967,7 +2967,7 @@ pub mod private_pool_v1_config {
     /// the pool.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct WorkerConfig {
-        /// Machine type of a worker, such as `e2-medium`.
+        /// Optional. Machine type of a worker, such as `e2-medium`.
         /// See [Worker pool config
         /// file](<https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema>).
         /// If left blank, Cloud Build will use a sensible default.
@@ -2976,10 +2976,14 @@ pub mod private_pool_v1_config {
         /// Size of the disk attached to the worker, in GB.
         /// See [Worker pool config
         /// file](<https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema>).
-        /// Specify a value of up to 2000. If `0` is specified, Cloud Build will use
+        /// Specify a value of up to 4000. If `0` is specified, Cloud Build will use
         /// a standard disk size.
         #[prost(int64, tag = "2")]
         pub disk_size_gb: i64,
+        /// Optional. Enable nested virtualization on the worker, if supported by the
+        /// machine type. By default, nested virtualization is disabled.
+        #[prost(bool, optional, tag = "3")]
+        pub enable_nested_virtualization: ::core::option::Option<bool>,
     }
     /// Defines the network configuration for the pool.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]

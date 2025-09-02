@@ -81,6 +81,51 @@ pub struct Reservation {
     /// charges for the failover reservation will be applied to this location.
     #[prost(string, tag = "20")]
     pub original_primary_location: ::prost::alloc::string::String,
+    /// Optional. The overall max slots for the reservation, covering slot_capacity
+    /// (baseline), idle slots (if ignore_idle_slots is false) and scaled slots.
+    /// If present, the reservation won't use more than the specified number of
+    /// slots, even if there is demand and supply (from idle slots).
+    /// NOTE: capping a reservation's idle slot usage is best effort and its
+    /// usage may exceed the max_slots value. However, in terms of
+    /// autoscale.current_slots (which accounts for the additional added slots), it
+    /// will never exceed the max_slots - baseline.
+    ///
+    /// This field must be set together with the scaling_mode enum value.
+    ///
+    /// If the max_slots and scaling_mode are set, the autoscale or
+    /// autoscale.max_slots field must be unset. However, the
+    /// autoscale field may still be in the output. The autopscale.max_slots will
+    /// always show as 0 and the autoscaler.current_slots will represent the
+    /// current slots from autoscaler excluding idle slots.
+    /// For example, if the max_slots is 1000 and scaling_mode is AUTOSCALE_ONLY,
+    /// then in the output, the autoscaler.max_slots will be 0 and the
+    /// autoscaler.current_slots may be any value between 0 and 1000.
+    ///
+    /// If the max_slots is 1000, scaling_mode is ALL_SLOTS, the baseline is 100
+    /// and idle slots usage is 200, then in the output, the autoscaler.max_slots
+    /// will be 0 and the autoscaler.current_slots will not be higher than 700.
+    ///
+    /// If the max_slots is 1000, scaling_mode is IDLE_SLOTS_ONLY, then in the
+    /// output, the autoscaler field will be null.
+    ///
+    /// If the max_slots and scaling_mode are set, then the ignore_idle_slots field
+    /// must be aligned with the scaling_mode enum value.(See details in
+    /// ScalingMode comments).
+    ///
+    /// Please note,  the max_slots is for user to manage the part of slots greater
+    /// than the baseline. Therefore, we don't allow users to set max_slots smaller
+    /// or equal to the baseline as it will not be meaningful. If the field is
+    /// present and slot_capacity>=max_slots.
+    ///
+    /// Please note that if max_slots is set to 0, we will treat it as unset.
+    /// Customers can set max_slots to 0 and set scaling_mode to
+    /// SCALING_MODE_UNSPECIFIED to disable the max_slots feature.
+    #[prost(int64, optional, tag = "21")]
+    pub max_slots: ::core::option::Option<i64>,
+    /// Optional. The scaling mode for the reservation.
+    /// If the field is present but max_slots is not present.
+    #[prost(enumeration = "reservation::ScalingMode", tag = "22")]
+    pub scaling_mode: i32,
     /// Output only. The Disaster Recovery(DR) replication status of the
     /// reservation. This is only available for the primary replicas of DR/failover
     /// reservations and provides information about the both the staleness of the
@@ -127,6 +172,96 @@ pub mod reservation {
         /// that was successfully replicated to the secondary.
         #[prost(message, optional, tag = "3")]
         pub last_replication_time: ::core::option::Option<::prost_types::Timestamp>,
+    }
+    /// The scaling mode for the reservation. This enum determines how the
+    /// reservation scales up and down.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ScalingMode {
+        /// Default value of ScalingMode.
+        Unspecified = 0,
+        /// The reservation will scale up only using slots from autoscaling. It will
+        /// not use any idle slots even if there may be some available. The upper
+        /// limit that autoscaling can scale up to will be max_slots - baseline.
+        /// For example, if max_slots is 1000, baseline is 200 and customer sets
+        /// ScalingMode to AUTOSCALE_ONLY, then autoscalerg will scale up to 800
+        /// slots and no idle slots will be used.
+        ///
+        /// Please note, in this mode, the ignore_idle_slots field must be set to
+        /// true.
+        AutoscaleOnly = 1,
+        /// The reservation will scale up using only idle slots contributed by
+        /// other reservations or from unassigned commitments. If no idle slots are
+        /// available it will not scale up further. If the idle slots which it is
+        /// using are reclaimed by the contributing reservation(s) it may be forced
+        /// to scale down. The max idle slots the reservation can be max_slots -
+        /// baseline capacity. For example, if max_slots is 1000, baseline is 200 and
+        /// customer sets ScalingMode to IDLE_SLOTS_ONLY,
+        ///
+        /// 1. if there are 1000 idle slots available in other reservations, the
+        ///    reservation will scale up to 1000 slots with 200 baseline and 800 idle
+        ///    slots.
+        /// 1. if there are 500 idle slots available in other reservations, the
+        ///    reservation will scale up to 700 slots with 200 baseline and 300 idle
+        ///    slots.
+        ///    Please note, in this mode, the reservation might not be able to scale up
+        ///    to max_slots.
+        ///
+        /// Please note, in this mode, the ignore_idle_slots field must be set to
+        /// false.
+        IdleSlotsOnly = 2,
+        /// The reservation will scale up using all slots available to it. It will
+        /// use idle slots contributed by other reservations or from unassigned
+        /// commitments first. If no idle slots are available it will scale up using
+        /// autoscaling. For example, if max_slots is 1000, baseline is 200 and
+        /// customer sets ScalingMode to ALL_SLOTS,
+        ///
+        /// 1. if there are 800 idle slots available in other reservations, the
+        ///    reservation will scale up to 1000 slots with 200 baseline and 800 idle
+        ///    slots.
+        /// 1. if there are 500 idle slots available in other reservations, the
+        ///    reservation will scale up to 1000 slots with 200 baseline, 500 idle
+        ///    slots and 300 autoscaling slots.
+        /// 1. if there are no idle slots available in other reservations, it will
+        ///    scale up to 1000 slots with 200 baseline and 800 autoscaling slots.
+        ///
+        /// Please note, in this mode, the ignore_idle_slots field must be set to
+        /// false.
+        AllSlots = 3,
+    }
+    impl ScalingMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Self::Unspecified => "SCALING_MODE_UNSPECIFIED",
+                Self::AutoscaleOnly => "AUTOSCALE_ONLY",
+                Self::IdleSlotsOnly => "IDLE_SLOTS_ONLY",
+                Self::AllSlots => "ALL_SLOTS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SCALING_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUTOSCALE_ONLY" => Some(Self::AutoscaleOnly),
+                "IDLE_SLOTS_ONLY" => Some(Self::IdleSlotsOnly),
+                "ALL_SLOTS" => Some(Self::AllSlots),
+                _ => None,
+            }
+        }
     }
 }
 /// Capacity commitment is a way to purchase compute capacity for BigQuery jobs

@@ -270,6 +270,10 @@ pub struct VoiceSelectionParams {
     /// clone matching the specified configuration.
     #[prost(message, optional, tag = "5")]
     pub voice_clone: ::core::option::Option<VoiceCloneParams>,
+    /// Optional. The name of the model. If set, the service will choose the model
+    /// matching the specified configuration.
+    #[prost(string, tag = "6")]
+    pub model_name: ::prost::alloc::string::String,
 }
 /// Description of audio data to be synthesized.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -438,6 +442,9 @@ pub struct StreamingSynthesizeConfig {
 /// Input to be synthesized.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamingSynthesisInput {
+    /// This is system instruction supported only for controllable voice models.
+    #[prost(string, optional, tag = "6")]
+    pub prompt: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(oneof = "streaming_synthesis_input::InputSource", tags = "1, 5")]
     pub input_source: ::core::option::Option<streaming_synthesis_input::InputSource>,
 }
@@ -543,7 +550,8 @@ impl SsmlVoiceGender {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum AudioEncoding {
-    /// Not specified. Will return result
+    /// Not specified. Only used by GenerateVoiceCloningKey. Otherwise, will return
+    /// result
     /// \[google.rpc.Code.INVALID_ARGUMENT\]\[google.rpc.Code.INVALID_ARGUMENT\].
     Unspecified = 0,
     /// Uncompressed 16-bit signed little-endian samples (Linear PCM).
@@ -566,6 +574,8 @@ pub enum AudioEncoding {
     /// Note that as opposed to LINEAR16, audio won't be wrapped in a WAV (or
     /// any other) header.
     Pcm = 7,
+    /// M4A audio.
+    M4a = 8,
 }
 impl AudioEncoding {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -581,6 +591,7 @@ impl AudioEncoding {
             Self::Mulaw => "MULAW",
             Self::Alaw => "ALAW",
             Self::Pcm => "PCM",
+            Self::M4a => "M4A",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -593,6 +604,7 @@ impl AudioEncoding {
             "MULAW" => Some(Self::Mulaw),
             "ALAW" => Some(Self::Alaw),
             "PCM" => Some(Self::Pcm),
+            "M4A" => Some(Self::M4a),
             _ => None,
         }
     }

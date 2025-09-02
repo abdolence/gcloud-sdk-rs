@@ -874,8 +874,8 @@ pub struct TypeMeta {
 /// Request message for `GkeHub.ListFeatures` method.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct ListFeaturesRequest {
-    /// Required. The parent (project and location) where the Features will be listed.
-    /// Specified in the format `projects/*/locations/*`.
+    /// Required. The parent (project and location) where the Features will be
+    /// listed. Specified in the format `projects/*/locations/*`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// When requesting a 'page' of resources, `page_size` specifies number of
@@ -934,8 +934,8 @@ pub struct GetFeatureRequest {
 /// Request message for the `GkeHub.CreateFeature` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFeatureRequest {
-    /// Required. The parent (project and location) where the Feature will be created.
-    /// Specified in the format `projects/*/locations/*`.
+    /// Required. The parent (project and location) where the Feature will be
+    /// created. Specified in the format `projects/*/locations/*`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The ID of the feature to create.
@@ -1044,8 +1044,9 @@ pub struct OperationMetadata {
     pub status_detail: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have \[Operation.error\]\[\] value with a \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1,
-    /// corresponding to `Code.CANCELLED`.
+    /// have \[Operation.error\]\[\] value with a
+    /// \[google.rpc.Status.code\]\[google.rpc.Status.code\] of 1, corresponding to
+    /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub cancel_requested: bool,
     /// Output only. API version used to start the operation.

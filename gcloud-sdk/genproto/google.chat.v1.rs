@@ -2159,7 +2159,8 @@ pub struct Space {
     /// and `SpaceType` is `SPACE`, otherwise should not be set.
     ///
     /// In the format `customers/{customer}`, where `customer` is the `id` from the
-    /// [Admin SDK customer resource](<https://developers.google.com/admin-sdk/directory/reference/rest/v1/customers>).
+    /// [Admin SDK customer
+    /// resource](<https://developers.google.com/admin-sdk/directory/reference/rest/v1/customers>).
     /// Private apps can also use the `customers/my_customer` alias to create
     /// the space in the same Google Workspace organization as the app.
     ///
@@ -3150,8 +3151,17 @@ pub struct Message {
     /// `delete_time` is set.
     #[prost(message, optional, tag = "38")]
     pub deletion_metadata: ::core::option::Option<DeletionMetadata>,
-    /// Output only. Information about a message that's quoted by a Google Chat
-    /// user in a space. Google Chat users can quote a message to reply to it.
+    /// Optional. Information about a message that another message quotes.
+    ///
+    /// When you create a message, you can quote messages within the same
+    /// thread, or quote a root message to create a new root message.
+    /// However, you can't quote a message reply from a different thread.
+    ///
+    /// When you update a message, you can't add or replace the
+    /// `quotedMessageMetadata` field, but you can remove it.
+    ///
+    /// For example usage, see [Quote another
+    /// message](<https://developers.google.com/workspace/chat/create-messages#quote-a-message>).
     #[prost(message, optional, tag = "39")]
     pub quoted_message_metadata: ::core::option::Option<QuotedMessageMetadata>,
     /// Output only. GIF images that are attached to the message.
@@ -3176,16 +3186,32 @@ pub struct AttachedGif {
     #[prost(string, tag = "1")]
     pub uri: ::prost::alloc::string::String,
 }
-/// Information about a quoted message.
+/// Information about a message that another message quotes.
+///
+/// When you create a message, you can quote messages within the same
+/// thread, or quote a root message to create a new root message.
+/// However, you can't quote a message reply from a different thread.
+///
+/// When you update a message, you can't add or replace the
+/// `quotedMessageMetadata` field, but you can remove it.
+///
+/// For example usage, see [Quote another
+/// message](<https://developers.google.com/workspace/chat/create-messages#quote-a-message>).
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct QuotedMessageMetadata {
-    /// Output only. Resource name of the quoted message.
+    /// Required. Resource name of the message that is quoted.
     ///
     /// Format: `spaces/{space}/messages/{message}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. The timestamp when the quoted message was created or when the
+    /// Required. The timestamp when the quoted message was created or when the
     /// quoted message was last updated.
+    ///
+    /// If the message was edited, use this field, `last_update_time`.
+    /// If the message was never edited, use `create_time`.
+    ///
+    /// If `last_update_time` doesn't match the latest version of the quoted
+    /// message, the request fails.
     #[prost(message, optional, tag = "2")]
     pub last_update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
@@ -3409,6 +3435,8 @@ pub struct UpdateMessageRequest {
     ///
     /// * `accessory_widgets`  (Requires [app
     ///   authentication](/chat/api/guides/auth/service-accounts).)
+    ///
+    /// * `quoted_message_metadata` (Only allows removal of the quoted message.)
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Optional. If `true` and the message isn't found, a new message is created

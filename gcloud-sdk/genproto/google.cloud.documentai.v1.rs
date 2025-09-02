@@ -820,6 +820,9 @@ pub mod document {
         /// purposes.
         #[prost(bool, tag = "12")]
         pub redacted: bool,
+        /// Optional. Specifies how the entity's value is obtained.
+        #[prost(enumeration = "entity::Method", tag = "15")]
+        pub method: i32,
     }
     /// Nested message and enum types in `Entity`.
     pub mod entity {
@@ -845,7 +848,7 @@ pub mod document {
             /// populated.
             #[prost(
                 oneof = "normalized_value::StructuredValue",
-                tags = "2, 3, 4, 5, 6, 7, 8"
+                tags = "2, 3, 4, 5, 6, 7, 8, 10"
             )]
             pub structured_value: ::core::option::Option<
                 normalized_value::StructuredValue,
@@ -889,6 +892,53 @@ pub mod document {
                 /// Float value.
                 #[prost(float, tag = "8")]
                 FloatValue(f32),
+                #[prost(bool, tag = "10")]
+                SignatureValue(bool),
+            }
+        }
+        /// Specifies how the entity's value is obtained.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Method {
+            /// When the method is not specified, it should be treated as `EXTRACT`.
+            Unspecified = 0,
+            /// The entity's value is directly extracted as-is from the document
+            /// text.
+            Extract = 1,
+            /// The entity's value is derived through inference and is not
+            /// necessarily an exact text extraction from the document.
+            Derive = 2,
+        }
+        impl Method {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Self::Unspecified => "METHOD_UNSPECIFIED",
+                    Self::Extract => "EXTRACT",
+                    Self::Derive => "DERIVE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                    "EXTRACT" => Some(Self::Extract),
+                    "DERIVE" => Some(Self::Derive),
+                    _ => None,
+                }
             }
         }
     }
@@ -1709,6 +1759,9 @@ pub mod document_schema {
             /// in the document.
             #[prost(enumeration = "property::OccurrenceType", tag = "3")]
             pub occurrence_type: i32,
+            /// Specifies how the entity's value is obtained.
+            #[prost(enumeration = "property::Method", tag = "8")]
+            pub method: i32,
         }
         /// Nested message and enum types in `Property`.
         pub mod property {
@@ -1769,6 +1822,51 @@ pub mod document_schema {
                         "OPTIONAL_MULTIPLE" => Some(Self::OptionalMultiple),
                         "REQUIRED_ONCE" => Some(Self::RequiredOnce),
                         "REQUIRED_MULTIPLE" => Some(Self::RequiredMultiple),
+                        _ => None,
+                    }
+                }
+            }
+            /// Specifies how the entity's value is obtained from the document.
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
+            #[repr(i32)]
+            pub enum Method {
+                /// Unspecified method. It defaults to `EXTRACT`.
+                Unspecified = 0,
+                /// The entity's value is directly extracted as-is from the document
+                /// text.
+                Extract = 1,
+                /// The entity's value is derived through inference and is not
+                /// necessarily an exact text extraction from the document.
+                Derive = 2,
+            }
+            impl Method {
+                /// String value of the enum field names used in the ProtoBuf definition.
+                ///
+                /// The values are not transformed in any way and thus are considered stable
+                /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+                pub fn as_str_name(&self) -> &'static str {
+                    match self {
+                        Self::Unspecified => "METHOD_UNSPECIFIED",
+                        Self::Extract => "EXTRACT",
+                        Self::Derive => "DERIVE",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                        "EXTRACT" => Some(Self::Extract),
+                        "DERIVE" => Some(Self::Derive),
                         _ => None,
                     }
                 }
@@ -2091,28 +2189,30 @@ pub struct ProcessorVersion {
     /// The display name of the processor version.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// The schema of the processor version. Describes the output.
+    /// Output only. The schema of the processor version. Describes the output.
     #[prost(message, optional, tag = "12")]
     pub document_schema: ::core::option::Option<DocumentSchema>,
     /// Output only. The state of the processor version.
     #[prost(enumeration = "processor_version::State", tag = "6")]
     pub state: i32,
-    /// The time the processor version was created.
+    /// Output only. The time the processor version was created.
     #[prost(message, optional, tag = "7")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The most recently invoked evaluation for the processor version.
+    /// Output only. The most recently invoked evaluation for the processor
+    /// version.
     #[prost(message, optional, tag = "8")]
     pub latest_evaluation: ::core::option::Option<EvaluationReference>,
-    /// The KMS key name used for encryption.
+    /// Output only. The KMS key name used for encryption.
     #[prost(string, tag = "9")]
     pub kms_key_name: ::prost::alloc::string::String,
-    /// The KMS key version with which data is encrypted.
+    /// Output only. The KMS key version with which data is encrypted.
     #[prost(string, tag = "10")]
     pub kms_key_version_name: ::prost::alloc::string::String,
     /// Output only. Denotes that this `ProcessorVersion` is managed by Google.
     #[prost(bool, tag = "11")]
     pub google_managed: bool,
-    /// If set, information about the eventual deprecation of this version.
+    /// Output only. If set, information about the eventual deprecation of this
+    /// version.
     #[prost(message, optional, tag = "13")]
     pub deprecation_info: ::core::option::Option<processor_version::DeprecationInfo>,
     /// Output only. The model type of this processor version.
@@ -2384,7 +2484,7 @@ pub struct Processor {
     /// processing.
     #[prost(string, tag = "6")]
     pub process_endpoint: ::prost::alloc::string::String,
-    /// The time the processor was created.
+    /// Output only. The time the processor was created.
     #[prost(message, optional, tag = "7")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The [KMS key](<https://cloud.google.com/security-key-management>) used for

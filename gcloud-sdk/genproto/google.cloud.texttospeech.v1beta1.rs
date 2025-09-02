@@ -41,8 +41,8 @@ pub struct Voice {
 /// Used for advanced voice options.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct AdvancedVoiceOptions {
-    /// Only for Journey voices. If false, the synthesis will be context aware
-    /// and have higher latency.
+    /// Only for Journey voices. If false, the synthesis is context aware
+    /// and has a higher latency.
     #[prost(bool, optional, tag = "1")]
     pub low_latency_journey_synthesis: ::core::option::Option<bool>,
 }
@@ -114,9 +114,9 @@ pub mod synthesize_speech_request {
 /// Pronunciation customization for a phrase.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct CustomPronunciationParams {
-    /// The phrase to which the customization will be applied.
-    /// The phrase can be multiple words (in the case of proper nouns etc), but
-    /// should not span to a whole sentence.
+    /// The phrase to which the customization is applied.
+    /// The phrase can be multiple words, such as proper nouns, but shouldn't span
+    /// the length of the sentence.
     #[prost(string, optional, tag = "1")]
     pub phrase: ::core::option::Option<::prost::alloc::string::String>,
     /// The phonetic encoding of the phrase.
@@ -149,12 +149,35 @@ pub mod custom_pronunciation_params {
     pub enum PhoneticEncoding {
         /// Not specified.
         Unspecified = 0,
-        /// IPA. (e.g. apple -> ˈæpəl )
+        /// IPA, such as apple -> ˈæpəl.
         /// <https://en.wikipedia.org/wiki/International_Phonetic_Alphabet>
         Ipa = 1,
-        /// X-SAMPA (e.g. apple -> "{p@l" )
+        /// X-SAMPA, such as apple -> "{p@l".
         /// <https://en.wikipedia.org/wiki/X-SAMPA>
         XSampa = 2,
+        /// For reading-to-pron conversion to work well, the `pronunciation` field
+        /// should only contain Kanji, Hiragana, and Katakana.
+        ///
+        /// The pronunciation can also contain pitch accents.
+        /// The start of a pitch phrase is specified with `^` and the down-pitch
+        /// position is specified with `!`, for example:
+        ///
+        /// ```text
+        /// phrase:端  pronunciation:^はし
+        /// phrase:箸  pronunciation:^は!し
+        /// phrase:橋  pronunciation:^はし!
+        /// ```
+        ///
+        /// We currently only support the Tokyo dialect, which allows at most one
+        /// down-pitch per phrase (i.e. at most one `!` between `^`).
+        JapaneseYomigana = 3,
+        /// Used to specify pronunciations for Mandarin words. See
+        /// <https://en.wikipedia.org/wiki/Pinyin.>
+        ///
+        /// For example: 朝阳, the pronunciation is "chao2 yang2". The number
+        /// represents the tone, and there is a space between syllables. Neutral
+        /// tones are represented by 5, for example 孩子 "hai2 zi5".
+        Pinyin = 4,
     }
     impl PhoneticEncoding {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -166,6 +189,8 @@ pub mod custom_pronunciation_params {
                 Self::Unspecified => "PHONETIC_ENCODING_UNSPECIFIED",
                 Self::Ipa => "PHONETIC_ENCODING_IPA",
                 Self::XSampa => "PHONETIC_ENCODING_X_SAMPA",
+                Self::JapaneseYomigana => "PHONETIC_ENCODING_JAPANESE_YOMIGANA",
+                Self::Pinyin => "PHONETIC_ENCODING_PINYIN",
             }
         }
         /// Creates an enum from field names used in the ProtoBuf definition.
@@ -174,6 +199,8 @@ pub mod custom_pronunciation_params {
                 "PHONETIC_ENCODING_UNSPECIFIED" => Some(Self::Unspecified),
                 "PHONETIC_ENCODING_IPA" => Some(Self::Ipa),
                 "PHONETIC_ENCODING_X_SAMPA" => Some(Self::XSampa),
+                "PHONETIC_ENCODING_JAPANESE_YOMIGANA" => Some(Self::JapaneseYomigana),
+                "PHONETIC_ENCODING_PINYIN" => Some(Self::Pinyin),
                 _ => None,
             }
         }
@@ -182,7 +209,7 @@ pub mod custom_pronunciation_params {
 /// A collection of pronunciation customizations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomPronunciations {
-    /// The pronunciation customizations to be applied.
+    /// The pronunciation customizations are applied.
     #[prost(message, repeated, tag = "1")]
     pub pronunciations: ::prost::alloc::vec::Vec<CustomPronunciationParams>,
 }
@@ -195,7 +222,7 @@ pub struct MultiSpeakerMarkup {
 }
 /// Nested message and enum types in `MultiSpeakerMarkup`.
 pub mod multi_speaker_markup {
-    /// A Multi-speaker turn.
+    /// A multi-speaker turn.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
     pub struct Turn {
         /// Required. The speaker of the turn, for example, 'O' or 'Q'. Please refer
@@ -213,22 +240,20 @@ pub mod multi_speaker_markup {
 /// input size is limited to 5000 bytes.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SynthesisInput {
-    /// Optional. The pronunciation customizations to be applied to the input. If
-    /// this is set, the input will be synthesized using the given pronunciation
+    /// Optional. The pronunciation customizations are applied to the input. If
+    /// this is set, the input is synthesized using the given pronunciation
     /// customizations.
     ///
-    /// The initial support will be for EFIGS (English, French,
-    /// Italian, German, Spanish) languages, as provided in
-    /// VoiceSelectionParams. Journey and Instant Clone voices are
-    /// not supported yet.
+    /// The initial support is for en-us, with plans to expand to other locales in
+    /// the future. Instant Clone voices aren't supported.
     ///
     /// In order to customize the pronunciation of a phrase, there must be an exact
     /// match of the phrase in the input types. If using SSML, the phrase must not
-    /// be inside a phoneme tag (entirely or partially).
+    /// be inside a phoneme tag.
     #[prost(message, optional, tag = "3")]
     pub custom_pronunciations: ::core::option::Option<CustomPronunciations>,
     /// The input source, which is either plain text or SSML.
-    #[prost(oneof = "synthesis_input::InputSource", tags = "1, 2, 4")]
+    #[prost(oneof = "synthesis_input::InputSource", tags = "1, 5, 2, 4")]
     pub input_source: ::core::option::Option<synthesis_input::InputSource>,
 }
 /// Nested message and enum types in `SynthesisInput`.
@@ -239,6 +264,10 @@ pub mod synthesis_input {
         /// The raw text to be synthesized.
         #[prost(string, tag = "1")]
         Text(::prost::alloc::string::String),
+        /// Markup for HD voices specifically. This field may not be used with any
+        /// other voices.
+        #[prost(string, tag = "5")]
+        Markup(::prost::alloc::string::String),
         /// The SSML document to be synthesized. The SSML document must be valid
         /// and well-formed. Otherwise the RPC will fail and return
         /// \[google.rpc.Code.INVALID_ARGUMENT\]\[google.rpc.Code.INVALID_ARGUMENT\]. For
@@ -286,10 +315,14 @@ pub struct VoiceSelectionParams {
     #[prost(message, optional, tag = "4")]
     pub custom_voice: ::core::option::Option<CustomVoiceParams>,
     /// Optional. The configuration for a voice clone. If
-    /// \[VoiceCloneParams.voice_clone_key\] is set, the service will choose the
-    /// voice clone matching the specified configuration.
+    /// \[VoiceCloneParams.voice_clone_key\] is set, the service chooses the voice
+    /// clone matching the specified configuration.
     #[prost(message, optional, tag = "5")]
     pub voice_clone: ::core::option::Option<VoiceCloneParams>,
+    /// Optional. The name of the model. If set, the service will choose the model
+    /// matching the specified configuration.
+    #[prost(string, tag = "6")]
+    pub model_name: ::prost::alloc::string::String,
 }
 /// Description of audio data to be synthesized.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -297,10 +330,10 @@ pub struct AudioConfig {
     /// Required. The format of the audio byte stream.
     #[prost(enumeration = "AudioEncoding", tag = "1")]
     pub audio_encoding: i32,
-    /// Optional. Input only. Speaking rate/speed, in the range \[0.25, 4.0\]. 1.0 is
+    /// Optional. Input only. Speaking rate/speed, in the range \[0.25, 2.0\]. 1.0 is
     /// the normal native speed supported by the specific voice. 2.0 is twice as
     /// fast, and 0.5 is half as fast. If unset(0.0), defaults to the native 1.0
-    /// speed. Any other values \< 0.25 or > 4.0 will return an error.
+    /// speed. Any other values \< 0.25 or > 2.0 will return an error.
     #[prost(double, tag = "2")]
     pub speaking_rate: f64,
     /// Optional. Input only. Speaking pitch, in the range \[-20.0, 20.0\]. 20 means
@@ -434,19 +467,25 @@ pub struct Timepoint {
     pub time_seconds: f64,
 }
 /// Description of the desired output audio data.
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct StreamingAudioConfig {
     /// Required. The format of the audio byte stream.
-    /// For now, streaming only supports PCM and OGG_OPUS. All other encodings
-    /// will return an error.
+    /// Streaming supports PCM, ALAW, MULAW and OGG_OPUS. All other encodings
+    /// return an error.
     #[prost(enumeration = "AudioEncoding", tag = "1")]
     pub audio_encoding: i32,
     /// Optional. The synthesis sample rate (in hertz) for this audio.
     #[prost(int32, tag = "2")]
     pub sample_rate_hertz: i32,
+    /// Optional. Input only. Speaking rate/speed, in the range \[0.25, 2.0\]. 1.0 is
+    /// the normal native speed supported by the specific voice. 2.0 is twice as
+    /// fast, and 0.5 is half as fast. If unset(0.0), defaults to the native 1.0
+    /// speed. Any other values \< 0.25 or > 2.0 will return an error.
+    #[prost(double, tag = "3")]
+    pub speaking_rate: f64,
 }
 /// Provides configuration information for the StreamingSynthesize request.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingSynthesizeConfig {
     /// Required. The desired voice of the synthesized audio.
     #[prost(message, optional, tag = "1")]
@@ -454,11 +493,26 @@ pub struct StreamingSynthesizeConfig {
     /// Optional. The configuration of the synthesized audio.
     #[prost(message, optional, tag = "4")]
     pub streaming_audio_config: ::core::option::Option<StreamingAudioConfig>,
+    /// Optional. The pronunciation customizations are applied to the input. If
+    /// this is set, the input is synthesized using the given pronunciation
+    /// customizations.
+    ///
+    /// The initial support is for en-us, with plans to expand to other locales in
+    /// the future. Instant Clone voices aren't supported.
+    ///
+    /// In order to customize the pronunciation of a phrase, there must be an exact
+    /// match of the phrase in the input types. If using SSML, the phrase must not
+    /// be inside a phoneme tag.
+    #[prost(message, optional, tag = "5")]
+    pub custom_pronunciations: ::core::option::Option<CustomPronunciations>,
 }
 /// Input to be synthesized.
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct StreamingSynthesisInput {
-    #[prost(oneof = "streaming_synthesis_input::InputSource", tags = "1")]
+    /// This is system instruction supported only for controllable voice models.
+    #[prost(string, optional, tag = "6")]
+    pub prompt: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(oneof = "streaming_synthesis_input::InputSource", tags = "1, 5")]
     pub input_source: ::core::option::Option<streaming_synthesis_input::InputSource>,
 }
 /// Nested message and enum types in `StreamingSynthesisInput`.
@@ -466,11 +520,14 @@ pub mod streaming_synthesis_input {
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum InputSource {
         /// The raw text to be synthesized. It is recommended that each input
-        /// contains complete, terminating sentences, as this will likely result in
-        /// better prosody in the output audio. That being said, users are free to
-        /// input text however they please.
+        /// contains complete, terminating sentences, which results in better prosody
+        /// in the output audio.
         #[prost(string, tag = "1")]
         Text(::prost::alloc::string::String),
+        /// Markup for HD voices specifically. This field may not be used with any
+        /// other voices.
+        #[prost(string, tag = "5")]
+        Markup(::prost::alloc::string::String),
     }
 }
 /// Request message for the `StreamingSynthesize` method. Multiple
@@ -478,7 +535,7 @@ pub mod streaming_synthesis_input {
 /// The first message must contain a `streaming_config` that
 /// fully specifies the request configuration and must not contain `input`. All
 /// subsequent messages must only have `input` set.
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingSynthesizeRequest {
     /// The request to be sent, either a StreamingSynthesizeConfig or
     /// StreamingSynthesisInput.
@@ -491,7 +548,7 @@ pub struct StreamingSynthesizeRequest {
 pub mod streaming_synthesize_request {
     /// The request to be sent, either a StreamingSynthesizeConfig or
     /// StreamingSynthesisInput.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum StreamingRequest {
         /// StreamingSynthesizeConfig to be used in this streaming attempt. Only
         /// specified in the first message sent in a `StreamingSynthesize` call.
@@ -560,7 +617,8 @@ impl SsmlVoiceGender {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum AudioEncoding {
-    /// Not specified. Will return result
+    /// Not specified. Only used by GenerateVoiceCloningKey. Otherwise, will return
+    /// result
     /// \[google.rpc.Code.INVALID_ARGUMENT\]\[google.rpc.Code.INVALID_ARGUMENT\].
     Unspecified = 0,
     /// Uncompressed 16-bit signed little-endian samples (Linear PCM).
@@ -570,7 +628,7 @@ pub enum AudioEncoding {
     Mp3 = 2,
     /// MP3 at 64kbps.
     Mp364Kbps = 4,
-    /// Opus encoded audio wrapped in an ogg container. The result will be a
+    /// Opus encoded audio wrapped in an ogg container. The result is a
     /// file which can be played natively on Android, and in browsers (at least
     /// Chrome and Firefox). The quality of the encoding is considerably higher
     /// than MP3 while using approximately the same bitrate.
@@ -582,9 +640,11 @@ pub enum AudioEncoding {
     /// Audio content returned as ALAW also contains a WAV header.
     Alaw = 6,
     /// Uncompressed 16-bit signed little-endian samples (Linear PCM).
-    /// Note that as opposed to LINEAR16, audio will not be wrapped in a WAV (or
+    /// Note that as opposed to LINEAR16, audio won't be wrapped in a WAV (or
     /// any other) header.
     Pcm = 7,
+    /// M4A audio.
+    M4a = 8,
 }
 impl AudioEncoding {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -601,6 +661,7 @@ impl AudioEncoding {
             Self::Mulaw => "MULAW",
             Self::Alaw => "ALAW",
             Self::Pcm => "PCM",
+            Self::M4a => "M4A",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -614,6 +675,7 @@ impl AudioEncoding {
             "MULAW" => Some(Self::Mulaw),
             "ALAW" => Some(Self::Alaw),
             "PCM" => Some(Self::Pcm),
+            "M4A" => Some(Self::M4a),
             _ => None,
         }
     }
@@ -771,7 +833,7 @@ pub mod text_to_speech_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Performs bidirectional streaming speech synthesis: receive audio while
+        /// Performs bidirectional streaming speech synthesis: receives audio while
         /// sending text.
         pub async fn streaming_synthesize(
             &mut self,

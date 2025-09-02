@@ -226,6 +226,27 @@ pub struct TimeOfDay {
     #[prost(int32, tag = "4")]
     pub nanos: i32,
 }
+/// Represents a time interval, encoded as a Timestamp start (inclusive) and a
+/// Timestamp end (exclusive).
+///
+/// The start must be less than or equal to the end.
+/// When the start equals the end, the interval is empty (matches no time).
+/// When both start and end are unspecified, the interval matches any time.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct Interval {
+    /// Optional. Inclusive start of the interval.
+    ///
+    /// If specified, a Timestamp matching this interval will have to be the same
+    /// or after the start.
+    #[prost(message, optional, tag = "1")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Exclusive end of the interval.
+    ///
+    /// If specified, a Timestamp matching this interval will have to be before the
+    /// end.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
 /// Represents a color in the RGBA color space. This representation is designed
 /// for simplicity of conversion to/from color representations in various
 /// languages over compactness. For example, the fields of this representation
@@ -439,27 +460,6 @@ pub struct Expr {
     /// reporting, e.g. a file name and a position in the file.
     #[prost(string, tag = "4")]
     pub location: ::prost::alloc::string::String,
-}
-/// Represents a time interval, encoded as a Timestamp start (inclusive) and a
-/// Timestamp end (exclusive).
-///
-/// The start must be less than or equal to the end.
-/// When the start equals the end, the interval is empty (matches no time).
-/// When both start and end are unspecified, the interval matches any time.
-#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
-pub struct Interval {
-    /// Optional. Inclusive start of the interval.
-    ///
-    /// If specified, a Timestamp matching this interval will have to be the same
-    /// or after the start.
-    #[prost(message, optional, tag = "1")]
-    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Optional. Exclusive end of the interval.
-    ///
-    /// If specified, a Timestamp matching this interval will have to be before the
-    /// end.
-    #[prost(message, optional, tag = "2")]
-    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Represents a month in the Gregorian calendar.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

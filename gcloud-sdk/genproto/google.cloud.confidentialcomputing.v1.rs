@@ -32,8 +32,8 @@ pub struct CreateChallengeRequest {
     #[prost(message, optional, tag = "2")]
     pub challenge: ::core::option::Option<Challenge>,
 }
-/// A request for an OIDC token, providing all the necessary information needed
-/// for this service to verify the platform state of the requestor.
+/// A request for an attestation token, providing all the necessary information
+/// needed for this service to verify the platform state of the requestor.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VerifyAttestationRequest {
     /// Required. The name of the Challenge whose nonce was used to generate the
@@ -119,7 +119,7 @@ pub struct SevSnpAttestation {
     pub aux_blob: ::prost::alloc::vec::Vec<u8>,
 }
 /// A response once an attestation has been successfully verified, containing a
-/// signed OIDC token.
+/// signed attestation token.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VerifyAttestationResponse {
     /// Output only. Same as claims_token, but as a string.
@@ -161,47 +161,47 @@ pub struct TokenOptions {
 }
 /// Nested message and enum types in `TokenOptions`.
 pub mod token_options {
-    /// Token options that only apply to the AWS Principal Tags token type.
-    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-    pub struct AwsPrincipalTagsOptions {
-        /// Optional. Principal tags to allow in the token.
-        #[prost(message, optional, tag = "1")]
-        pub allowed_principal_tags: ::core::option::Option<
-            aws_principal_tags_options::AllowedPrincipalTags,
-        >,
-    }
-    /// Nested message and enum types in `AwsPrincipalTagsOptions`.
-    pub mod aws_principal_tags_options {
-        /// Allowed principal tags is used to define what principal tags will be
-        /// placed in the token.
-        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-        pub struct AllowedPrincipalTags {
-            /// Optional. Container image signatures allowed in the token.
-            #[prost(message, optional, tag = "1")]
-            pub container_image_signatures: ::core::option::Option<
-                allowed_principal_tags::ContainerImageSignatures,
-            >,
-        }
-        /// Nested message and enum types in `AllowedPrincipalTags`.
-        pub mod allowed_principal_tags {
-            /// Allowed Container Image Signatures. Key IDs are required to allow this
-            /// claim to fit within the narrow AWS IAM restrictions.
-            #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
-            pub struct ContainerImageSignatures {
-                /// Optional. List of key ids to filter into the Principal tags. Only
-                /// keys that have been validated and added to the token will be filtered
-                /// into principal tags. Unrecognized key ids will be ignored.
-                #[prost(string, repeated, tag = "1")]
-                pub key_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-            }
-        }
-    }
     /// An optional additional configuration per token type.
     #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
     pub enum TokenTypeOptions {
-        /// Optional. Options for the Limited AWS token type.
+        /// Optional. Options for AWS token type.
         #[prost(message, tag = "4")]
-        AwsPrincipalTagsOptions(AwsPrincipalTagsOptions),
+        AwsPrincipalTagsOptions(super::AwsPrincipalTagsOptions),
+    }
+}
+/// Token options that only apply to the AWS Principal Tags token type.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct AwsPrincipalTagsOptions {
+    /// Optional. Principal tags to allow in the token.
+    #[prost(message, optional, tag = "1")]
+    pub allowed_principal_tags: ::core::option::Option<
+        aws_principal_tags_options::AllowedPrincipalTags,
+    >,
+}
+/// Nested message and enum types in `AwsPrincipalTagsOptions`.
+pub mod aws_principal_tags_options {
+    /// Allowed principal tags is used to define what principal tags will be
+    /// placed in the token.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct AllowedPrincipalTags {
+        /// Optional. Container image signatures allowed in the token.
+        #[prost(message, optional, tag = "1")]
+        pub container_image_signatures: ::core::option::Option<
+            allowed_principal_tags::ContainerImageSignatures,
+        >,
+    }
+    /// Nested message and enum types in `AllowedPrincipalTags`.
+    pub mod allowed_principal_tags {
+        /// Allowed Container Image Signatures. Key IDs are required to allow
+        /// this claim to fit within the narrow AWS IAM restrictions.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+        pub struct ContainerImageSignatures {
+            /// Optional. List of key ids to filter into the Principal tags. Only keys
+            /// that have been validated and added to the token will be filtered into
+            /// principal tags. Unrecognized key ids will be ignored.
+            #[prost(string, repeated, tag = "1")]
+            pub key_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        }
     }
 }
 /// TPM2 data containing everything necessary to validate any platform state
@@ -294,6 +294,159 @@ pub struct ContainerImageSignature {
     #[prost(enumeration = "SigningAlgorithm", tag = "4")]
     pub sig_alg: i32,
 }
+/// A request for an attestation token, providing all the necessary information
+/// needed for this service to verify the platform state of the requestor.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VerifyConfidentialSpaceRequest {
+    /// Required. The name of the Challenge whose nonce was used to generate the
+    /// attestation, in the format `projects/*/locations/*/challenges/*`. The
+    /// provided Challenge will be consumed, and cannot be used again.
+    #[prost(string, tag = "1")]
+    pub challenge: ::prost::alloc::string::String,
+    /// Optional. Credentials used to populate the "emails" claim in the
+    /// claims_token. If not present, token will not contain the "emails" claim.
+    #[prost(message, optional, tag = "2")]
+    pub gcp_credentials: ::core::option::Option<GcpCredentials>,
+    /// Optional. A list of signed entities containing container image signatures
+    /// that can be used for server-side signature verification.
+    #[prost(message, repeated, tag = "5")]
+    pub signed_entities: ::prost::alloc::vec::Vec<SignedEntity>,
+    /// Optional. Information about the associated Compute Engine instance.
+    /// Required for td_ccel requests only - tpm_attestation requests will provide
+    /// this information in the attestation.
+    #[prost(message, optional, tag = "6")]
+    pub gce_shielded_identity: ::core::option::Option<GceShieldedIdentity>,
+    /// Optional. A collection of fields that modify the token output.
+    #[prost(message, optional, tag = "7")]
+    pub options: ::core::option::Option<
+        verify_confidential_space_request::ConfidentialSpaceOptions,
+    >,
+    /// Required. A tee attestation report, used to populate hardware rooted
+    /// claims.
+    #[prost(oneof = "verify_confidential_space_request::TeeAttestation", tags = "3, 4")]
+    pub tee_attestation: ::core::option::Option<
+        verify_confidential_space_request::TeeAttestation,
+    >,
+}
+/// Nested message and enum types in `VerifyConfidentialSpaceRequest`.
+pub mod verify_confidential_space_request {
+    /// Token options for Confidential Space attestation.
+    #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+    pub struct ConfidentialSpaceOptions {
+        /// Optional. Optional string to issue the token with a custom audience
+        /// claim. Required if custom nonces are specified.
+        #[prost(string, tag = "1")]
+        pub audience: ::prost::alloc::string::String,
+        /// Optional. Optional specification for token claims profile.
+        #[prost(enumeration = "super::TokenProfile", tag = "2")]
+        pub token_profile: i32,
+        /// Optional. Optional parameter to place one or more nonces in the eat_nonce
+        /// claim in the output token. The minimum size for JSON-encoded EATs is 10
+        /// bytes and the maximum size is 74 bytes.
+        #[prost(string, repeated, tag = "3")]
+        pub nonce: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. Optional specification for how to sign the attestation token.
+        /// Defaults to SIGNATURE_TYPE_OIDC if unspecified.
+        #[prost(enumeration = "super::SignatureType", tag = "4")]
+        pub signature_type: i32,
+        /// An optional additional configuration per token type.
+        #[prost(oneof = "confidential_space_options::TokenProfileOptions", tags = "5")]
+        pub token_profile_options: ::core::option::Option<
+            confidential_space_options::TokenProfileOptions,
+        >,
+    }
+    /// Nested message and enum types in `ConfidentialSpaceOptions`.
+    pub mod confidential_space_options {
+        /// An optional additional configuration per token type.
+        #[derive(Clone, PartialEq, Eq, Hash, ::prost::Oneof)]
+        pub enum TokenProfileOptions {
+            /// Optional. Options for the AWS token type.
+            #[prost(message, tag = "5")]
+            AwsPrincipalTagsOptions(super::super::AwsPrincipalTagsOptions),
+        }
+    }
+    /// Required. A tee attestation report, used to populate hardware rooted
+    /// claims.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum TeeAttestation {
+        /// Input only. A TDX with CCEL and RTMR Attestation Quote.
+        #[prost(message, tag = "3")]
+        TdCcel(super::TdxCcelAttestation),
+        /// Input only. The TPM-specific data provided by the attesting platform,
+        /// used to populate any of the claims regarding platform state.
+        #[prost(message, tag = "4")]
+        TpmAttestation(super::TpmAttestation),
+    }
+}
+/// GceShieldedIdentity contains information about a Compute Engine instance.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct GceShieldedIdentity {
+    /// Optional. DER-encoded X.509 certificate of the Attestation Key (otherwise
+    /// known as an AK or a TPM restricted signing key) used to generate the
+    /// quotes.
+    #[prost(bytes = "vec", tag = "1")]
+    pub ak_cert: ::prost::alloc::vec::Vec<u8>,
+    /// Optional. List of DER-encoded X.509 certificates which, together with the
+    /// ak_cert, chain back to a trusted Root Certificate.
+    #[prost(bytes = "vec", repeated, tag = "2")]
+    pub ak_cert_chain: ::prost::alloc::vec::Vec<::prost::alloc::vec::Vec<u8>>,
+}
+/// VerifyConfidentialSpaceResponse is returned once a Confidential Space
+/// attestation has been successfully verified, containing a signed token.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VerifyConfidentialSpaceResponse {
+    /// Output only. The attestation token issued by this service. It contains
+    /// specific platform claims based on the contents of the provided attestation.
+    #[prost(string, tag = "1")]
+    pub attestation_token: ::prost::alloc::string::String,
+    /// Output only. A list of messages that carry the partial error details
+    /// related to VerifyConfidentialSpace. This field is populated by errors
+    /// during container image signature verification, which may reflect problems
+    /// in the provided image signatures. This does not block the issuing of an
+    /// attestation token, but the token will not contain claims for the failed
+    /// image signatures.
+    #[prost(message, repeated, tag = "2")]
+    pub partial_errors: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
+}
+/// A request for an attestation token, providing all the necessary information
+/// needed for this service to verify Confidential GKE platform state of the
+/// requestor.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VerifyConfidentialGkeRequest {
+    /// Required. The name of the Challenge whose nonce was used to generate the
+    /// attestation, in the format projects/*/locations/*/challenges/\*. The
+    /// provided Challenge will be consumed, and cannot be used again.
+    #[prost(string, tag = "1")]
+    pub challenge: ::prost::alloc::string::String,
+    /// Required. A tee attestation report, used to populate hardware rooted
+    /// claims.
+    #[prost(oneof = "verify_confidential_gke_request::TeeAttestation", tags = "2")]
+    pub tee_attestation: ::core::option::Option<
+        verify_confidential_gke_request::TeeAttestation,
+    >,
+}
+/// Nested message and enum types in `VerifyConfidentialGkeRequest`.
+pub mod verify_confidential_gke_request {
+    /// Required. A tee attestation report, used to populate hardware rooted
+    /// claims.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum TeeAttestation {
+        /// The TPM-specific data provided by the attesting platform, used to
+        /// populate any of the claims regarding platform state.
+        #[prost(message, tag = "2")]
+        TpmAttestation(super::TpmAttestation),
+    }
+}
+/// VerifyConfidentialGkeResponse response is returened once a Confidential GKE
+/// attestation has been successfully verified, containing a signed OIDC token.
+#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct VerifyConfidentialGkeResponse {
+    /// Output only. The attestation token issued by this service for Confidential
+    /// GKE. It contains specific platform claims based on the contents of the
+    /// provided attestation.
+    #[prost(string, tag = "1")]
+    pub attestation_token: ::prost::alloc::string::String,
+}
 /// SigningAlgorithm enumerates all the supported signing algorithms.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -369,6 +522,72 @@ impl TokenType {
             "TOKEN_TYPE_PKI" => Some(Self::Pki),
             "TOKEN_TYPE_LIMITED_AWS" => Some(Self::LimitedAws),
             "TOKEN_TYPE_AWS_PRINCIPALTAGS" => Some(Self::AwsPrincipaltags),
+            _ => None,
+        }
+    }
+}
+/// SignatureType enumerates supported signature types for attestation tokens.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum SignatureType {
+    /// Unspecified signature type.
+    Unspecified = 0,
+    /// Google OIDC signature.
+    Oidc = 1,
+    /// Public Key Infrastructure (PKI) signature.
+    Pki = 2,
+}
+impl SignatureType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "SIGNATURE_TYPE_UNSPECIFIED",
+            Self::Oidc => "SIGNATURE_TYPE_OIDC",
+            Self::Pki => "SIGNATURE_TYPE_PKI",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SIGNATURE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "SIGNATURE_TYPE_OIDC" => Some(Self::Oidc),
+            "SIGNATURE_TYPE_PKI" => Some(Self::Pki),
+            _ => None,
+        }
+    }
+}
+/// TokenProfile enumerates the supported token claims profiles.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum TokenProfile {
+    /// Unspecified token profile.
+    Unspecified = 0,
+    /// EAT claims.
+    DefaultEat = 1,
+    /// AWS Principal Tags claims.
+    Aws = 2,
+}
+impl TokenProfile {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Unspecified => "TOKEN_PROFILE_UNSPECIFIED",
+            Self::DefaultEat => "TOKEN_PROFILE_DEFAULT_EAT",
+            Self::Aws => "TOKEN_PROFILE_AWS",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TOKEN_PROFILE_UNSPECIFIED" => Some(Self::Unspecified),
+            "TOKEN_PROFILE_DEFAULT_EAT" => Some(Self::DefaultEat),
+            "TOKEN_PROFILE_AWS" => Some(Self::Aws),
             _ => None,
         }
     }
@@ -492,7 +711,8 @@ pub mod confidential_computing_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        /// Verifies the provided attestation info, returning a signed OIDC token.
+        /// Verifies the provided attestation info, returning a signed attestation
+        /// token.
         pub async fn verify_attestation(
             &mut self,
             request: impl tonic::IntoRequest<super::VerifyAttestationRequest>,
@@ -518,6 +738,68 @@ pub mod confidential_computing_client {
                     GrpcMethod::new(
                         "google.cloud.confidentialcomputing.v1.ConfidentialComputing",
                         "VerifyAttestation",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Verifies whether the provided attestation info is valid, returning a signed
+        /// attestation token if so.
+        pub async fn verify_confidential_space(
+            &mut self,
+            request: impl tonic::IntoRequest<super::VerifyConfidentialSpaceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::VerifyConfidentialSpaceResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.confidentialcomputing.v1.ConfidentialComputing/VerifyConfidentialSpace",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.confidentialcomputing.v1.ConfidentialComputing",
+                        "VerifyConfidentialSpace",
+                    ),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Verifies the provided Confidential GKE attestation info, returning a signed
+        /// OIDC token.
+        pub async fn verify_confidential_gke(
+            &mut self,
+            request: impl tonic::IntoRequest<super::VerifyConfidentialGkeRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::VerifyConfidentialGkeResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::unknown(
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic_prost::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.confidentialcomputing.v1.ConfidentialComputing/VerifyConfidentialGke",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new(
+                        "google.cloud.confidentialcomputing.v1.ConfidentialComputing",
+                        "VerifyConfidentialGke",
                     ),
                 );
             self.inner.unary(req, path, codec).await
